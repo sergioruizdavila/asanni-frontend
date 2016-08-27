@@ -1,0 +1,62 @@
+/**********************************************************/
+/*                        BUTTONS                         */
+/**********************************************************/
+
+.ma_btn {
+    position: relative;
+    width: $button-sizes.default;
+
+    ///BUTTON_SIZE
+    &--tiny {
+        width: $button-sizes.tiny;
+    }
+
+    &--small {
+        width: $button-sizes.small;
+    }
+
+    &--large {
+        width: $button-sizes.large;
+    }
+
+    ///BUTTON_COLOR
+    &--primary {
+        background-color: $button-background-primary;
+        color: $button-color;
+    }
+
+    &--secundary {
+        background-color: $button-background-secundary;
+        color: $button-color;
+    }
+
+    ///BUTTON_TYPE
+    &--with_icon {
+        text-align: center;
+        font-size: 1rem;
+        padding: 0;
+
+        &__icon {
+            font-size: 35px;
+            vertical-align: middle;
+        }
+
+        &__button_inner {
+            margin-left: 10px;
+            vertical-align: middle;
+            position: relative;
+            bottom: 2px;
+        }
+    }
+
+    &--round {
+        -webkit-border-radius: 30px;
+        -moz-border-radius: 30px;
+        border-radius: 30px;
+    }
+
+}
+
+.ma_btn[disabled] {
+    opacity: $button-opacity-disabled;
+}

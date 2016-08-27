@@ -7,7 +7,7 @@ var connect = require('gulp-connect');
 
 /*Path Files*/
 var paths = {
-    htmlTemplates: 'www/app/**/*.html',
+    htmlTemplates: ['www/*.html', 'www/app/**/*.html'],
     appTypescript: ['www/**/*.ts', '!typings/**/*.*'],
     appJs: ['www/**/*.js', 'www/**/*.js.map'],
     appSass: ['www/**/**/*.scss'],

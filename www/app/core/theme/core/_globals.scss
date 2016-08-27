@@ -1,0 +1,14 @@
+/**********************************************************/
+/*                    BODY MAIN STYLES                    */
+/**********************************************************/
+
+body.mainApp {
+
+    padding: 0;
+    margin: 0;
+    font-family: $body-font-family;
+    font-weight: $global-weight-normal;
+    line-height: $global-lineheight;
+    color: $body-font-color;
+
+}
