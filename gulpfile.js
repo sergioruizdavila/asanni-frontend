@@ -11,8 +11,8 @@ var paths = {
     appTypescript: ['www/**/*.ts', '!typings/**/*.*'],
     appJs: ['www/**/*.js', 'www/**/*.js.map'],
     appSass: ['www/**/**/*.scss'],
-    inputSass: 'www/app/app.scss',
-    outputSass: 'www/app',
+    inputSass: 'www/app/core/theme/app.scss',
+    outputSass: 'www/app/core/theme/',
     sassdocOptions: {dest: './www/css/doc'}
 };
 
