@@ -17,6 +17,7 @@
         <!-- THIRD PARTY -->
 
         <!-- APP STYLES -->
+        <link rel="stylesheet" href="bower_components/normalize-css/normalize.css">
         <link rel="stylesheet" href="app/core/theme/app.css">
 
     </head>
@@ -24,8 +25,27 @@
         <!--[if lt IE 7]>
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <h1>HELLO WORLD</h1>
-        <a href="#" ui-sref="signUp">TEST</a>
+        <h3 style="
+                    text-decoration: none;
+                    letter-spacing: 0;
+                    font-style: normal;
+                    white-space: nowrap;">Tab</h3>
+
+        <p style="color: rgba(0,0,0,.44);
+                    font-size: 16px;
+                    text-decoration: none;
+                    letter-spacing: 0;
+                    font-weight: 400;
+                    font-style: normal;
+                    white-space: nowrap;">Profesores</p>
+        <a class="ma_btn ma_btn--primary ma_btn--round ma_btn--large"
+           href="#"
+           ui-sref="signUp"
+           style="text-decoration: none;
+                padding: 8px 18px;
+                letter-spacing: 0;
+                text-rendering: optimizeLegibility;
+                -webkit-font-smoothing: antialiased;">Continuar</a>
         <div ui-view="container" class="app_content"></div>
 
         <!-- Google Analytics -->

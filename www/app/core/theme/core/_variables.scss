@@ -21,6 +21,8 @@ $global-weight-bold: bold;
 $global-radius: 0;
 $global-text-direction: ltr;
 $global-flexbox: false;
+$global-font-path: "../../../../assets/fonts";
+$global-font-family: "MainAppFont";
 
 $main-palette: (
   primary: #00B592,
@@ -33,12 +35,15 @@ $main-palette: (
 $light-gray: #e6e6e6;
 $medium-gray: #cacaca;
 $dark-gray: #8a8a8a;
-$black: #212121;
+$black: #373737;
 $white: #fefefe;
 
 $body-background: $white;
 $body-font-color: $black;
-$body-font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
+//$body-font-family: $global-font-family;
+//TEST
+$body-font-family: 'Roboto', sans-serif;
+
 $body-antialiased: true;
 
 $print-transparent-backgrounds: true;
@@ -50,9 +55,9 @@ $print-transparent-backgrounds: true;
 $button-padding: 0.85em 1em;
 $button-margin: 0 0 $global-margin 0;
 $button-fill: solid;
-$button-background-primary: $main-palette.primary;
+$button-background-primary: map-get($main-palette, primary);
 $button-background-primary-hover: scale-color($button-background-primary, $lightness: -15%);
-$button-background-secundary: $main-palette.secundary;
+$button-background-secundary: map-get($main-palette, secondary);
 $button-background-secundary-hover: scale-color($button-background-secundary, $lightness: -15%);
 $button-color: $white;
 $button-color-alt: $black;
@@ -64,6 +69,7 @@ $button-sizes: (
   large: 1.25rem,
 );
 $button-opacity-disabled: 0.25;
+
 
 
 // reference: https://github.com/zurb/foundation-sites/blob/develop/scss/settings/_settings.scss

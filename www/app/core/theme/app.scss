@@ -1,6 +1,19 @@
-$VAR: white;
+// App Shared Sass
+// --------------------------------------------------
+// All Core Sass files goes into the theme/core files (variables, globals)
+@import 'core/variables';
+@import 'core/globals';
 
-.test {
-    color: $VAR;
-    font-size: 50px;
-}
+// MainApp Components
+// --------------------------------------------------
+// buttons Style
+@import 'components/buttons';
+
+// TEST: Import kind of fonts
+@import 'https://fonts.googleapis.com/css?family=Roboto';
+
+// MainApp Pages
+// --------------------------------------------------
+
+// signUp Pages Style
+@import '../../pages/signUpPage/signUpPage';
