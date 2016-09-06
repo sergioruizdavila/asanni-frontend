@@ -2,9 +2,29 @@
 /*                        BUTTONS                         */
 /**********************************************************/
 
-.ma_btn {
-    position: relative;
-    width: map-get($button-sizes, default);
+.ma-btn {
+    display: inline-block;
+    margin-bottom: 0;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    border: 1px solid;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    line-height: 1.43;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    white-space: nowrap;
+    cursor: pointer;
+    text-decoration: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    transition: background 300ms ease-out;
+    padding: 7px 21px;
+    font-size: 14px;
 
     ///BUTTON_SIZE
     &--tiny {
@@ -12,51 +32,53 @@
     }
 
     &--small {
-        width: map-get($button-sizes, small);
+        //width: map-get($button-sizes, small);
+        padding: 4px 12px;
+        font-size: 12px;
     }
 
     &--large {
-        width: map-get($button-sizes, large);
+        //width: map-get($button-sizes, large);
+        padding: 9px 27px;
+        font-size: 16px;
     }
+
+    &--block {
+        display: block;
+        white-space: normal;
+        width: 100%;
+    }
+
 
     ///BUTTON_COLOR
     &--primary {
         background-color: $button-background-primary;
         color: $button-color;
-    }
+        border-bottom-color: #018a6f;
 
-    &--secundary {
-        background-color: $button-background-secundary;
-        color: $button-color;
-    }
-
-    ///BUTTON_TYPE
-    &--with_icon {
-        text-align: center;
-        font-size: 1rem;
-        padding: 0;
-
-        &__icon {
-            font-size: 35px;
-            vertical-align: middle;
-        }
-
-        &__button_inner {
-            margin-left: 10px;
-            vertical-align: middle;
-            position: relative;
-            bottom: 2px;
+        &:hover, &:focus {
+            background-color: #00987b;
+            text-decoration: none;
+            color: #FFF;
         }
     }
 
-    &--round {
-        -webkit-border-radius: 30px;
-        -moz-border-radius: 30px;
-        border-radius: 30px;
+    &--secondary {
+        background: 0 0;
+        border: 2px solid $button-background-primary;
+        //TODO: Cambiar esto a una variable especifica
+        color: $button-background-primary;
+
+        &:hover, &:focus {
+            background-color: $button-background-primary;
+            color: $button-color;
+            border-bottom-color: #018a6f;
+            text-decoration: none;
+        }
     }
 
 }
 
-.ma_btn[disabled] {
+.ma-btn[disabled] {
     opacity: $button-opacity-disabled;
 }
