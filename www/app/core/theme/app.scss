@@ -7,12 +7,14 @@
 // Third Party Styles
 //---------------------------------------------------
 // Boostrap 3 Style
-@import '../../../bower_components/bootstrap/dist/css/bootstrap.css'; 
+@import '../../../bower_components/bootstrap/dist/css/bootstrap.css';
 
 // MainApp Components
 // --------------------------------------------------
 // buttons Style
 @import 'components/buttons';
+// header Style
+@import 'components/header';
 
 // TEST: Import kind of fonts
 @import 'https://fonts.googleapis.com/css?family=Roboto';

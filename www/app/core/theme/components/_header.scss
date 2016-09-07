@@ -1,0 +1,72 @@
+/**********************************************************/
+/*                        HEADER                          */
+/**********************************************************/
+//TODO: Hacer una limpieza grande en este archivo, pasando los valores repetidos a variables
+.ma-header {
+    height: 61px;
+    //padding: 0 20px;
+    background: #fff;
+    border-bottom: 1px solid #dce0e0;
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+
+    &--small{
+
+    }
+
+    &--regular {
+
+    }
+
+    //header block
+    &__block:nth-of-type(1)
+    {
+        border-left: 1px solid #dce0e0;
+    }
+
+    &__block {
+        height: 60px;
+        line-height: 60px;
+        border-left: 1px dashed #dce0e0;
+        position: relative;
+
+        &__btn {
+            display: block;
+            padding: 0 19px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #f5f5f5;
+            }
+
+            &__ma-logo {
+                position: relative;
+                top: 13px;
+            }
+
+            &__icon {
+                display: inline-block;
+                position: relative;
+                width: 24px;
+                height: 24px;
+                background-color: transparent;
+                background-repeat: no-repeat;
+                vertical-align: baseline;
+
+                &__ma-photo {
+                    top: 10px;
+
+                    img {
+                        vertical-align: top;
+                    }
+                }
+
+            }
+
+        }
+    }
+}

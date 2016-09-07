@@ -82,3 +82,15 @@
 .ma-btn[disabled] {
     opacity: $button-opacity-disabled;
 }
+
+
+/**********************************************************/
+/*                         LINK                           */
+/**********************************************************/
+
+.ma-link:hover, .ma-link:focus {
+    background-color: #00B592;
+    border-bottom-color: #018a6f!important;
+    color: #FFF!important;
+    border-radius: 3px;
+}

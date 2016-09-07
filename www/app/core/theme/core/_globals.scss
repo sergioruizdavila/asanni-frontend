@@ -1,7 +1,21 @@
 /**********************************************************/
-/*                    BODY MAIN STYLES                    */
+/*                       MODIFIERS                        */
 /**********************************************************/
 
+.link-reset {
+    color: inherit;
+}
+
+.round {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+
+/**********************************************************/
+/*                    BODY MAIN STYLES                    */
+/**********************************************************/
+//TODO: Hacer una limpieza grande en este archivo, pasando los valores repetidos a variables
 body.mainApp {
 
     padding: 0;
@@ -10,6 +24,34 @@ body.mainApp {
     font-weight: $global-weight-normal;
     line-height: $global-lineheight;
     color: $body-font-color;
+
+    .ma-logo {
+        background-image: url($logo-path);
+        background-repeat: no-repeat;
+        height: 32px;
+        width: 75px;
+        display: block;
+    }
+
+    .ma-photo {
+        -webkit-backface-visibility: hidden;
+        -moz-backface-visibility: hidden;
+        backface-visibility: hidden;
+        position: relative;
+        display: inline-block;
+        overflow: hidden;
+        background-color: #bbb;
+    }
+
+    .ma-photo-default {
+        background: url($image-photo-default-path) 0 0 no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        height: 32px;
+        width: 32px;
+    }
 
 }
 

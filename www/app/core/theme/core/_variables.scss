@@ -5,7 +5,9 @@
 //  Table of Contents:
 //
 //   1. Global
-//   2. Button
+//   2. Logo
+//   3. Buttons
+//   4. Images
 
 
 // 1. Global
@@ -23,6 +25,9 @@ $global-text-direction: ltr;
 $global-flexbox: false;
 $global-font-path: "../../../../assets/fonts";
 $global-font-family: "MainAppFont";
+$global-image-path: "../../../../assets/images";
+$global-logo-file: "waysily-logo.png";
+$global-photo-default-file: "waysily-photo-default.png";
 
 $main-palette: (
   primary: #00B592,
@@ -48,8 +53,11 @@ $body-antialiased: true;
 
 $print-transparent-backgrounds: true;
 
+// 2. Logo
+// ----------
+$logo-path: $global-image-path + '/' + $global-logo-file;
 
-// 2. Button
+// 3. Buttons
 // ----------
 
 $button-padding: 0.85em 1em;
@@ -70,6 +78,10 @@ $button-sizes: (
 );
 $button-opacity-disabled: 0.25;
 
+// 3. Images
+// ----------
+
+$image-photo-default-path: $global-image-path + '/' + $global-photo-default-file;
 
 
 // reference: https://github.com/zurb/foundation-sites/blob/develop/scss/settings/_settings.scss
