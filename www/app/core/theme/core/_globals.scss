@@ -15,7 +15,7 @@
 /**********************************************************/
 /*                    BODY MAIN STYLES                    */
 /**********************************************************/
-//TODO: Hacer una limpieza grande en este archivo, pasando los valores repetidos a variables
+
 body.mainApp {
 
     padding: 0;
@@ -28,8 +28,8 @@ body.mainApp {
     .ma-logo {
         background-image: url($logo-path);
         background-repeat: no-repeat;
-        height: 32px;
-        width: 75px;
+        height: $logo-height;
+        width: $logo-width;
         display: block;
     }
 
@@ -40,7 +40,7 @@ body.mainApp {
         position: relative;
         display: inline-block;
         overflow: hidden;
-        background-color: #bbb;
+        background-color: $image-photo-background;
     }
 
     .ma-photo-default {
@@ -49,8 +49,8 @@ body.mainApp {
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover;
-        height: 32px;
-        width: 32px;
+        height: $image-photo-default-size;
+        width: $image-photo-default-size;
     }
 
 }

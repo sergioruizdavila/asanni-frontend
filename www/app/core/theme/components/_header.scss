@@ -3,16 +3,15 @@
 /**********************************************************/
 //TODO: Hacer una limpieza grande en este archivo, pasando los valores repetidos a variables
 .ma-header {
-    height: 61px;
-    //padding: 0 20px;
-    background: #fff;
-    border-bottom: 1px solid #dce0e0;
+    height: $header-height;
+    background: $header-background;
+    border-bottom: $header-border;
     display: block;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 2;
+    top: $header-top;
+    left: $header-left;
+    width: $header-width;
+    z-index: $header-index;
 
     &--small{
 
@@ -25,40 +24,45 @@
     //header block
     &__block:nth-of-type(1)
     {
-        border-left: 1px solid #dce0e0;
+        border-left: $header-block-border-solid;
+
+        &:hover {
+            background-color: $header-block-logo-background-hover;
+        }
+
     }
 
     &__block {
-        height: 60px;
-        line-height: 60px;
-        border-left: 1px dashed #dce0e0;
+        height: $header-block-height;
+        line-height: $header-block-lineheight;
+        border-left: $header-block-border-dashed;
         position: relative;
+
+        &:hover {
+            background-color: $header-block-background-hover;
+        }
 
         &__btn {
             display: block;
-            padding: 0 19px;
+            padding: $header-block-btn-padding;
             cursor: pointer;
-
-            &:hover {
-                background-color: #f5f5f5;
-            }
 
             &__ma-logo {
                 position: relative;
-                top: 13px;
+                top: $header-block-btn-logo-top;
             }
 
             &__icon {
                 display: inline-block;
                 position: relative;
-                width: 24px;
-                height: 24px;
-                background-color: transparent;
+                width: $header-block-btn-icon-size;
+                height: $header-block-btn-icon-size;
+                background-color: $header-block-btn-icon-background;
                 background-repeat: no-repeat;
                 vertical-align: baseline;
 
                 &__ma-photo {
-                    top: 10px;
+                    top: $header-block-btn-photo-top;
 
                     img {
                         vertical-align: top;

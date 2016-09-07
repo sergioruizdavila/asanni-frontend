@@ -8,11 +8,14 @@
 //   2. Logo
 //   3. Buttons
 //   4. Images
+//   5. Header
+//   6. Header - Blocks (Tabs)
+
+//**********************************************************
 
 
 // 1. Global
 // ---------
-
 $global-font-size: 100%;
 $global-width: rem-calc(1200);
 $global-lineheight: 1.5;
@@ -37,7 +40,7 @@ $main-palette: (
   alert: #ec5840,
 );
 
-$light-gray: #e6e6e6;
+$light-gray: #dce0e0;
 $medium-gray: #cacaca;
 $dark-gray: #8a8a8a;
 $black: #373737;
@@ -56,10 +59,11 @@ $print-transparent-backgrounds: true;
 // 2. Logo
 // ----------
 $logo-path: $global-image-path + '/' + $global-logo-file;
+$logo-width: 75px;
+$logo-height: 32px;
 
 // 3. Buttons
 // ----------
-
 $button-padding: 0.85em 1em;
 $button-margin: 0 0 $global-margin 0;
 $button-fill: solid;
@@ -78,10 +82,39 @@ $button-sizes: (
 );
 $button-opacity-disabled: 0.25;
 
-// 3. Images
+// 4. Images
 // ----------
-
 $image-photo-default-path: $global-image-path + '/' + $global-photo-default-file;
+$image-photo-default-size: 32px;
+$image-photo-background: $dark-gray;
+
+// 5. Header
+// ---------
+$header-height: 61px;
+$header-background: $white;
+$header-border: 1px solid $light-gray;
+$header-top: 0;
+$header-left: 0;
+$header-width: 100%;
+$header-index: 2;
+
+// 6. Header - Blocks (Tabs)
+// ---------
+$header-block-border-solid: 1px solid $light-gray;
+$header-block-border-dashed: 1px dashed $light-gray;
+$header-block-height: 60px;
+$header-block-lineheight: 60px;
+$header-block-logo-background-hover: transparent;
+$header-block-background-hover: #f5f5f5;
+
+$header-block-btn-padding: 0 19px;
+
+$header-block-btn-logo-top: 13px;
+
+$header-block-btn-icon-size: 24px;
+$header-block-btn-icon-background: transparent;
+
+$header-block-btn-photo-top: 10px;
 
 
 // reference: https://github.com/zurb/foundation-sites/blob/develop/scss/settings/_settings.scss
