@@ -5,11 +5,12 @@
 //  Table of Contents:
 //
 //   1. Global
-//   2. Logo
-//   3. Buttons
-//   4. Images
-//   5. Header
-//   6. Header - Blocks (Tabs)
+//   2. Buttons
+//   3. Header
+//   4. Header - Blocks (Tabs)
+//   5. Images
+//   6. Links
+//   7. Logo
 
 //**********************************************************
 
@@ -34,7 +35,7 @@ $global-photo-default-file: "waysily-photo-default.png";
 
 $main-palette: (
   primary: #00B592,
-  secondary: #006E58,
+  secondary: #018a6f,
   success: #3adb76,
   warning: #e8ce47,
   alert: #ec5840,
@@ -56,39 +57,39 @@ $body-antialiased: true;
 
 $print-transparent-backgrounds: true;
 
-// 2. Logo
-// ----------
-$logo-path: $global-image-path + '/' + $global-logo-file;
-$logo-width: 75px;
-$logo-height: 32px;
 
-// 3. Buttons
+// 2. Buttons
 // ----------
-$button-padding: 0.85em 1em;
 $button-margin: 0 0 $global-margin 0;
-$button-fill: solid;
-$button-background-primary: map-get($main-palette, primary);
-$button-background-primary-hover: scale-color($button-background-primary, $lightness: -15%);
-$button-background-secundary: map-get($main-palette, secondary);
-$button-background-secundary-hover: scale-color($button-background-secundary, $lightness: -15%);
-$button-color: $white;
-$button-color-alt: $black;
-$button-radius: $global-radius;
-$button-sizes: (
-  tiny: 0.6rem,
-  small: 0.75rem,
-  default: 0.9rem,
-  large: 1.25rem,
+$button-font-sizes: (
+  small: 12px,
+  default: 14px,
+  large: 16px,
 );
-$button-opacity-disabled: 0.25;
+$button-color: $white;
+$button-radius: 4px;
+$button-lineheight: 1.43;
+$button-paddings: (
+  small: 4px 12px,
+  default: 7px 21px,
+  large: 9px 27px,
+);
+$button-opacity-disabled: 0.45;
 
-// 4. Images
-// ----------
-$image-photo-default-path: $global-image-path + '/' + $global-photo-default-file;
-$image-photo-default-size: 32px;
-$image-photo-background: $dark-gray;
+$button-primary-border-color: map-get($main-palette, secondary);
+$button-primary-background: map-get($main-palette, primary);
+$button-primary-background-hover: #00987b;
 
-// 5. Header
+$button-secondary-border: 2px solid $button-primary-background;
+$button-secondary-background: map-get($main-palette, secondary);
+$button-secondary-background-hover: scale-color($button-secondary-background, $lightness: -15%);
+$button-secondary-color: map-get($main-palette, primary);
+$button-secondary-border-color: map-get($main-palette, secondary);
+
+$button-block-width: 100%;
+
+
+// 3. Header
 // ---------
 $header-height: 61px;
 $header-background: $white;
@@ -98,12 +99,14 @@ $header-left: 0;
 $header-width: 100%;
 $header-index: 2;
 
-// 6. Header - Blocks (Tabs)
+
+// 4. Header - Blocks (Tabs)
 // ---------
 $header-block-border-solid: 1px solid $light-gray;
 $header-block-border-dashed: 1px dashed $light-gray;
 $header-block-height: 60px;
 $header-block-lineheight: 60px;
+
 $header-block-logo-background-hover: transparent;
 $header-block-background-hover: #f5f5f5;
 
@@ -115,6 +118,32 @@ $header-block-btn-icon-size: 24px;
 $header-block-btn-icon-background: transparent;
 
 $header-block-btn-photo-top: 10px;
+
+
+// 5. Images
+// ----------
+$image-photo-default-path: $global-image-path + '/' + $global-photo-default-file;
+$image-photo-default-size: 32px;
+$image-photo-background: $dark-gray;
+
+
+// 6. Links
+// ---------
+$link-color: map-get($main-palette, primary);
+$link-border: 1px solid transparent;
+
+$link-radius-hover: 3px;
+$link-background-hover: map-get($main-palette, primary);
+$link-border-hover: map-get($main-palette, secondary);
+$link-color-hover: $white;
+
+
+// 7. Logo
+// ----------
+$logo-path: $global-image-path + '/' + $global-logo-file;
+$logo-width: 75px;
+$logo-height: 32px;
+
 
 
 // reference: https://github.com/zurb/foundation-sites/blob/develop/scss/settings/_settings.scss

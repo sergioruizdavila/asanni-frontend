@@ -1,0 +1,19 @@
+/**********************************************************/
+/*                         LINK                           */
+/**********************************************************/
+
+.ma-link {
+    text-decoration: none;
+    font-weight: normal;
+    color: $link-color;
+    border: $link-border;
+    transition: background 300ms ease-out;
+
+    &:hover, &:focus {
+        background-color: $link-background-hover;
+        border-bottom-color: $link-border-hover;
+        color: $link-color-hover;
+        border-radius: $link-radius-hover;
+        text-decoration: none;
+    }
+}

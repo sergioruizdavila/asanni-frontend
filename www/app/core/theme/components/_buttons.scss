@@ -5,14 +5,14 @@
 .ma-btn {
     display: inline-block;
     margin-bottom: 0;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
+    -webkit-border-radius: $button-radius;
+    -moz-border-radius: $button-radius;
+    border-radius: $button-radius;
     border: 1px solid;
     text-align: center;
     vertical-align: middle;
     font-weight: bold;
-    line-height: 1.43;
+    line-height: $button-lineheight;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -23,56 +23,52 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     transition: background 300ms ease-out;
-    padding: 7px 21px;
-    font-size: 14px;
+    padding: map-get($button-paddings, default);
+    font-size: map-get($button-font-sizes, default);
+
 
     ///BUTTON_SIZE
-    &--tiny {
-        width: map-get($button-sizes, tiny);
-    }
 
     &--small {
-        //width: map-get($button-sizes, small);
-        padding: 4px 12px;
-        font-size: 12px;
+        padding: map-get($button-paddings, small);
+        font-size: map-get($button-font-sizes, small);
     }
 
     &--large {
-        //width: map-get($button-sizes, large);
-        padding: 9px 27px;
-        font-size: 16px;
+        padding: map-get($button-paddings, large);
+        font-size: map-get($button-font-sizes, large);
     }
 
     &--block {
         display: block;
         white-space: normal;
-        width: 100%;
+        width: $button-block-width;
     }
 
 
     ///BUTTON_COLOR
-    &--primary {
-        background-color: $button-background-primary;
-        color: $button-color;
-        border-bottom-color: #018a6f;
 
-        &:hover, &:focus {
-            background-color: #00987b;
+    &--primary {
+        background-color: $button-primary-background;
+        color: $button-color;
+        border-bottom-color: $button-primary-border-color;
+
+        &:hover:enabled, &:focus {
+            background-color: $button-primary-background-hover;
             text-decoration: none;
-            color: #FFF;
+            color: $button-color;
         }
     }
 
     &--secondary {
         background: 0 0;
-        border: 2px solid $button-background-primary;
-        //TODO: Cambiar esto a una variable especifica
-        color: $button-background-primary;
+        border: $button-secondary-border;
+        color: $button-primary-background;
 
-        &:hover, &:focus {
-            background-color: $button-background-primary;
+        &:hover:enabled, &:focus {
+            background-color: $button-secondary-color;
             color: $button-color;
-            border-bottom-color: #018a6f;
+            border-bottom-color: $button-secondary-border-color;
             text-decoration: none;
         }
     }
@@ -81,16 +77,4 @@
 
 .ma-btn[disabled] {
     opacity: $button-opacity-disabled;
-}
-
-
-/**********************************************************/
-/*                         LINK                           */
-/**********************************************************/
-
-.ma-link:hover, .ma-link:focus {
-    background-color: #00B592;
-    border-bottom-color: #018a6f!important;
-    color: #FFF!important;
-    border-radius: 3px;
 }
