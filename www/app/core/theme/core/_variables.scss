@@ -8,9 +8,11 @@
 //   2. Buttons
 //   3. Header
 //   4. Header - Blocks (Tabs)
-//   5. Images
-//   6. Links
-//   7. Logo
+//   5. Header - Search Bar
+//   6. Images
+//   7. Links
+//   8. Logo
+//   9. Search Page
 
 //**********************************************************
 
@@ -42,7 +44,7 @@ $main-palette: (
 );
 
 $light-gray: #dce0e0;
-$medium-gray: #cacaca;
+$medium-gray: #bcc1c1;
 $dark-gray: #8a8a8a;
 $black: #373737;
 $white: #fefefe;
@@ -114,10 +116,31 @@ $header-block-btn-padding: 0 19px;
 
 $header-block-btn-logo-top: 13px;
 
+$header-block-btn-icon-top: 7px;
 $header-block-btn-icon-size: 24px;
 $header-block-btn-icon-background: transparent;
+$header-block-btn-icon-color: $medium-gray;
 
 $header-block-btn-photo-top: 10px;
+
+
+// 5. Header - Search Bar
+// ----------
+$header-search-wrapper-width: 10000px;
+$header-search-wrapper-paddingtop: 0;
+
+$header-search-form-margin: 0;
+$header-search-form-index: 11;
+
+$header-search-bar-icon-top: 19px;
+$header-search-bar-icon-left: 16px;
+$header-search-bar-icon-index: 1;
+
+$header-search-input-width: 100%;
+$header-search-input-padding: 0 0 0 48px;
+$header-search-input-border: 0;
+$header-search-input-outline: 0;
+$header-search-input-font-size: 17px;
 
 
 // 5. Images
@@ -145,5 +168,23 @@ $logo-width: 75px;
 $logo-height: 32px;
 
 
+// 9. Search Page
+// ---------
+$search-info-padding: 0;
+$search-info-left: 0;
+$search-info-bottom: 0;
+$search-info-top: 61px;
+
+$search-info-block-height: 200px;
+$search-info-block-background: $white;
+$search-info-block-padding: 10px;
+$search-info-block-margin: 20px;
+$search-info-block-border: 1px solid $light-gray;
+
+$search-map-background: $dark-gray;
+$search-map-right: 0;
+$search-map-left: auto;
+$search-map-bottom: 0;
+$search-map-top: 61px;
 
 // reference: https://github.com/zurb/foundation-sites/blob/develop/scss/settings/_settings.scss

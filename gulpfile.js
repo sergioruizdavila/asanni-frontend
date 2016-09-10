@@ -76,7 +76,7 @@ gulp.task('ts', function () {
  */
 
 gulp.task('watch', function() {
-    gulp.watch(paths.inputSass, ['sass']);
+    gulp.watch(paths.appSass, ['sass']);
     gulp.watch([paths.htmlTemplates], ['html']);
     gulp.watch([paths.appTypescript], ['ts']);
 })

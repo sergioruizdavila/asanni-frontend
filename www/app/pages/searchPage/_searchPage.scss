@@ -1,0 +1,32 @@
+.search-result {
+    margin: 0;
+
+    //INFO SIDE
+    &__info {
+        padding: $search-info-padding;
+        overflow-y: scroll;
+        position: fixed;
+        left: $search-info-left;
+        bottom: $search-info-bottom;
+        top: $search-info-top;
+
+        &__block {
+            height: $search-info-block-height;
+            background-color: $search-info-block-background;
+            padding: $search-info-block-padding;
+            margin: $search-info-block-margin;
+            border: $search-info-block-border;
+        }
+    }
+
+    //MAP SIDE
+    &__map {
+        background-color: $search-map-background;
+        position: fixed;
+        right: $search-map-right;
+        left: $search-map-left;
+        bottom: $search-map-bottom;
+        top: $search-map-top;
+    }
+
+}

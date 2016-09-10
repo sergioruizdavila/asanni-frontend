@@ -25,11 +25,6 @@
     &__block:nth-of-type(1)
     {
         border-left: $header-block-border-solid;
-
-        &:hover {
-            background-color: $header-block-logo-background-hover;
-        }
-
     }
 
     &__block {
@@ -38,14 +33,15 @@
         border-left: $header-block-border-dashed;
         position: relative;
 
-        &:hover {
-            background-color: $header-block-background-hover;
-        }
-
         &__btn {
             display: block;
             padding: $header-block-btn-padding;
             cursor: pointer;
+
+            &:hover {
+                background-color: $header-block-background-hover;
+                text-decoration: none;
+            }
 
             &__ma-logo {
                 position: relative;
@@ -60,6 +56,8 @@
                 background-color: $header-block-btn-icon-background;
                 background-repeat: no-repeat;
                 vertical-align: baseline;
+                top: $header-block-btn-icon-top;
+                color: $header-block-btn-icon-color;
 
                 &__ma-photo {
                     top: $header-block-btn-photo-top;
@@ -72,5 +70,65 @@
             }
 
         }
+
+        &__logo-wrapper {
+            &:hover {
+                background-color: $header-block-logo-background-hover;
+            }
+        }
+
+        /***********************************************/
+        /*                  SEARCH BAR                 */
+        /***********************************************/
+
+        &__search-wrapper {
+            padding-top: $header-search-wrapper-paddingtop;
+            display: table-cell;
+            width: $header-search-wrapper-width;
+
+            &__form {
+                margin: $header-search-form-margin;
+                position: relative;
+                z-index: $header-search-form-index;
+
+                &__search-bar {
+                    position: relative;
+
+                    &__icon {
+                        position: absolute;
+                        top: $header-search-bar-icon-top;
+                        left: $header-search-bar-icon-left;
+                        z-index: $header-search-bar-icon-index;
+                    }
+
+                    /* TODO: Verificar si esto es necesario o no, cuando este desarrollando
+                       la logica del search, si es necesario, pasar todo a variables */
+                    &__screen-reader-only {
+                        border: 0;
+                        clip: rect(0, 0, 0, 0);
+                        height: 1px;
+                        margin: -1px;
+                        overflow: hidden;
+                        padding: 0;
+                        position: absolute;
+                        width: 1px;
+                    }
+
+                    &__input {
+                        height: auto;
+                        width: $header-search-input-width;
+                        padding: $header-search-input-padding;
+                        border: $header-search-input-border;
+                        outline: $header-search-input-outline;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+                        font-size: $header-search-input-font-size;
+                    }
+                }
+            }
+        }
+
     }
+
 }

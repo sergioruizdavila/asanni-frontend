@@ -34,10 +34,14 @@
 
                 <!-- LOGO -->
                 <div class="ma-header__block pull-left">
-                    <a href="/" class="ma-header__block__btn link-reset" aria-label="Waysily">
+                    <a href="/"
+                       class="ma-header__block__btn
+                              ma-header__block__logo-wrapper
+                              link-reset" aria-label="Waysily">
                         <i class="ma-logo ma-header__block__btn__ma-logo"></i>
                     </a>
                 </div>
+
                 <!-- PROFILE IMAGE -->
                 <div class="ma-header__block pull-right">
                     <a class="ma-header__block__btn link-reset" rel="nofollow">
@@ -51,11 +55,73 @@
                     </a>
                 </div>
 
+                <!-- LOG IN -->
+                <div class="ma-header__block pull-right">
+                    <a href="#" class="ma-header__block__btn link-reset">
+                        Log In
+                    </a>
+                </div>
+
+                <!-- SIGN UP -->
+                <div class="ma-header__block pull-right">
+                    <a href="#" class="ma-header__block__btn link-reset">
+                        Sign Up
+                    </a>
+                </div>
+
+                <!-- MESSAGES -->
+                <div class="ma-header__block pull-right">
+                    <a href="#" class="ma-header__block__btn link-reset">
+                        <i class="material-icons ma-header__block__btn__icon">inbox</i>
+                    </a>
+                </div>
+
+                <!-- SEARCH -->
+                <div class="ma-header__block ma-header__block__search-wrapper" role="search">
+                    <form class="ma-header__block__search-wrapper__form">
+                        <div class="ma-header__block__search-wrapper__form__search-bar">
+                            <i class="material-icons
+                                      ma-header__block__btn__icon
+                                      ma-header__block__search-wrapper__form__search-bar__icon">
+                                      search
+                            </i>
+                            <label class="ma-header__block__search-wrapper__form__search-bar__screen-reader-only"
+                                   for="header-search-form"
+                                   aria-hidden="true">
+                                   Where to?
+                            </label>
+                            <input type="text"
+                                   class="ma-header__block__search-wrapper__form__search-bar__input"
+                                   placeholder="Where to?"
+                                   autocomplete="off"
+                                   name="location"
+                                   class="location" value="">
+                            <input type="hidden" name="source" value="hdr">
+                        </div>
+                    </form>
+                </div>
+
             </header>
         </div>
 
         <!-- MAIN -->
         <main role="main">
+
+            <!-- SEARCH PAGE -->
+            <div class="search-result row">
+                <!-- INFO SIDE -->
+                <div class="search-result__info col-xs-7 col-md-7">
+                    <div class="search-result__info__block">
+
+                    </div>
+                </div>
+                <!-- MAP SIDE -->
+                <div class="search-result__map col-xs-5 col-md-5">
+                    <div class="test" style="height: 500px">
+
+                    </div>
+                </div>
+            </div>
 
             <div ui-view="container" class="app_content"></div>
 
