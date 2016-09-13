@@ -10,6 +10,7 @@
 //   4. Header - Blocks (Tabs)
 //   5. Header - Search Bar
 //   6. Images
+//   7. Labels
 //   7. Links
 //   8. Logo
 //   9. Search Page
@@ -150,6 +151,26 @@ $image-photo-default-size: 32px;
 $image-photo-background: $dark-gray;
 
 
+// 6. Labels
+// ---------
+$label-radius: 4px;
+$label-font-sizes: (
+  small: 12px,
+  default: 14px,
+  large: 16px,
+);
+$label-lineheight: 1.43;
+$label-box-paddings: (
+  small: 4px 12px,
+  default: 7px 21px,
+  large: 9px 27px,
+);
+
+$label-simple-color: $dark-gray;
+
+$label-box-secondary-color: map-get($main-palette, primary);
+$label-box-secondary-border: 2px solid map-get($main-palette, primary);
+
 // 6. Links
 // ---------
 $link-color: map-get($main-palette, primary);
@@ -175,7 +196,7 @@ $search-info-left: 0;
 $search-info-bottom: 0;
 $search-info-top: 61px;
 
-$search-info-block-height: 200px;
+$search-info-block-height: 340px;
 $search-info-block-background: $white;
 $search-info-block-padding: 10px;
 $search-info-block-margin: 20px;

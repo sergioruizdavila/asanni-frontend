@@ -1,5 +1,4 @@
 .search-result {
-    margin: 0;
 
     //INFO SIDE
     &__info {
@@ -13,7 +12,7 @@
         &__block {
             height: $search-info-block-height;
             background-color: $search-info-block-background;
-            padding: $search-info-block-padding;
+            //padding: $search-info-block-padding;
             margin: $search-info-block-margin;
             border: $search-info-block-border;
         }

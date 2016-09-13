@@ -1,0 +1,82 @@
+/**********************************************************/
+/*                         LABELS                         */
+/**********************************************************/
+
+.ma-label {
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
+    line-height: $label-lineheight;
+    cursor: default;
+    white-space: nowrap;
+    text-decoration: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+
+
+    /*               LABEL BOX               */
+    /*****************************************/
+
+    &--box {
+        -webkit-border-radius: $label-radius;
+        -moz-border-radius: $label-radius;
+        border-radius: $label-radius;
+        border: 1px solid;
+        text-align: center;
+        font-weight: bold;
+        padding: map-get($label-box-paddings, default);
+        font-size: map-get($label-font-sizes, default);
+
+        ///LABEL BOX SIZE
+
+        &--small {
+            padding: map-get($label-box-paddings, small);
+            font-size: map-get($label-font-sizes, small);
+        }
+
+        &--default {
+            padding: map-get($label-box-paddings, default);
+            font-size: map-get($label-font-sizes, default);
+        }
+
+        &--large {
+            padding: map-get($label-box-paddings, large);
+            font-size: map-get($label-font-sizes, large);
+        }
+
+        ///LABEL BOX COLOR
+
+        &--secondary {
+            background: 0 0;
+            border: $label-box-secondary-border;
+            color: $label-box-secondary-color;
+        }
+
+    }
+
+
+    /*              SIMPLE LABEL             */
+    /*****************************************/
+
+    &--simple {
+        color: $label-simple-color;
+        letter-spacing: 0;
+        font-style: normal;
+        margin: 0;
+
+        ///SIMPLE LABEL SIZE
+
+        &--small {
+            font-size: map-get($label-font-sizes, small);
+        }
+
+        &--default {
+            font-size: map-get($label-font-sizes, default);
+        }
+
+        &--large {
+            font-size: map-get($label-font-sizes, large);
+        }
+    }
+
+}

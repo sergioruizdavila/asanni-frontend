@@ -6,6 +6,10 @@
     color: inherit;
 }
 
+.margin-reset {
+    margin: 0;
+}
+
 .round {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
@@ -74,7 +78,6 @@
 body.mainApp {
 
     padding: 0;
-    margin: 0;
     background-color: $body-background;
     font-family: $body-font-family;
     font-weight: $global-weight-normal;

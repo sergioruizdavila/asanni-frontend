@@ -1,0 +1,36 @@
+/**********************************************************/
+/*                         STARS                          */
+/**********************************************************/
+
+.stars {
+    display:inline-block;
+
+    &__icon {
+        color: #ffd800;
+
+            &--tiny {
+                width: 18px;
+                height: 18px;
+                font-size: 18px;
+            }
+
+            &--small {
+                width: 24px;
+                height: 24px;
+                font-size: 24px;
+            }
+
+            &--default {
+                width: 30px;
+                height: 30px;
+                font-size: 30px;
+            }
+
+            &--large {
+                width: 36px;
+                height: 36px;
+                font-size: 36px;
+            }
+    }
+
+}
