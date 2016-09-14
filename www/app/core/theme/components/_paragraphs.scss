@@ -1,0 +1,16 @@
+/**********************************************************/
+/*                       PARAGRAPHS                       */
+/**********************************************************/
+
+.ma-p {
+    letter-spacing: 0;
+    font-weight: 400;
+    font-style: normal;
+    color: $paragraph-font-color;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+
+    &__bold {
+        color: $paragraph-bold-font-color;
+    }
+}

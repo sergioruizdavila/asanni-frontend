@@ -1,0 +1,35 @@
+/**********************************************************/
+/*                      PHOTO PROFILE                     */
+/**********************************************************/
+
+.ma-photo-profile {
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+
+    background-color: $image-photo-background;
+    background: url($image-photo-default-path) 0 0 no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+    &--small {
+        height: map-get($image-photo-sizes, small);
+        width: map-get($image-photo-sizes, small);
+    }
+
+    &--default {
+        width: map-get($image-photo-sizes, default);
+        height: map-get($image-photo-sizes, default);
+    }
+
+    &--large {
+        width: map-get($image-photo-sizes, large);
+        height: map-get($image-photo-sizes, large);
+    }
+
+}

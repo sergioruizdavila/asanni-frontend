@@ -20,55 +20,31 @@
 
 
 /**********************************************************/
-/*                         ICONS                          */
+/*                GENERAL COMPONENTS STYLES               */
 /**********************************************************/
-///MATERIAL DESIGN ICONS
-.material-icons {
-  font-family: 'Material Icons';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px;  /* Preferred icon size */
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  line-height: 1;
-  text-transform: none;
-  letter-spacing: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-  direction: ltr;
 
-  /* Support for all WebKit browsers. */
-  -webkit-font-smoothing: antialiased;
-  /* Support for Safari and Chrome. */
-  text-rendering: optimizeLegibility;
+/// USER PHOTO + REVIEWS COMPONENT
+.ma-user-photo-review-block {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: normal;
+    text-align: center;
+    position:relative;
+    display: block;
 
-  /* Support for Firefox. */
-  -moz-osx-font-smoothing: grayscale;
+    &__photo {
+        display: inline-block;
+        vertical-align: middle;
+    }
 
-  /* Support for IE. */
-  font-feature-settings: 'liga';
-
-  /* Rules for sizing the icon. */
-  &.md-18 { font-size: 18px; }
-  &.md-24 { font-size: 24px; }
-  &.md-36 { font-size: 36px; }
-  &.md-48 { font-size: 48px; }
-  &.md-60 { font-size: 60px; }
-  &.md-72 { font-size: 72px; }
-
-  /* Rules for using icons as black on a light background. */
-  &.md-dark { color: rgba(0, 0, 0, 0.54); }
-  &.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
-
-  /* Rules for using icons as white on a dark background. */
-  &.md-light { color: rgba(255, 255, 255, 1); }
-  &.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
-
+    &__reviews {
+        text-align: center;
+    }
 }
 
 
-/********************** END - ICONS ***********************/
+/************ END - GENERAL COMPONENTS STYLES  ************/
 
 
 /**********************************************************/
@@ -92,48 +68,4 @@ body.mainApp {
         display: block;
     }
 
-    .ma-photo {
-        -webkit-backface-visibility: hidden;
-        -moz-backface-visibility: hidden;
-        backface-visibility: hidden;
-        position: relative;
-        display: inline-block;
-        overflow: hidden;
-        background-color: $image-photo-background;
-    }
-
-    .ma-photo-default {
-        background: url($image-photo-default-path) 0 0 no-repeat;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-        height: $image-photo-default-size;
-        width: $image-photo-default-size;
-    }
-
 }
-
-/**********************************************************/
-/*                       FONT FACES                       */
-/**********************************************************/
-@font-face {
-    font-family: $global-font-family;
-    src:url("#{$global-font-path}/ProximaNovaSoft-Regular.otf");
-    src: url("#{$global-font-path}/ProximaNovaSoft-Regular.otf") format('opentype');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-  font-family: 'Material Icons';
-  font-style: normal;
-  font-weight: 400;
-  src: url(MaterialIcons-Regular.eot); /* For IE6-8 */
-  src: local('Material Icons'),
-       local('MaterialIcons-Regular'),
-       url('#{$global-font-path}/materialDesign/MaterialIcons-Regular.woff2') format('woff2'),
-       url('#{$global-font-path}/materialDesign/MaterialIcons-Regular.woff') format('woff'),
-       url('#{$global-font-path}/materialDesign/MaterialIcons-Regular.ttf') format('truetype');
-}
-/******************** END - FONT FACES ********************/

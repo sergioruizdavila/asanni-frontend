@@ -5,15 +5,59 @@
 .ma-link {
     text-decoration: none;
     font-weight: normal;
-    color: $link-color;
+    color: $link-font-color;
     border: $link-border;
     transition: background 300ms ease-out;
 
-    &:hover, &:focus {
-        background-color: $link-background-hover;
-        border-bottom-color: $link-border-hover;
-        color: $link-color-hover;
-        border-radius: $link-radius-hover;
-        text-decoration: none;
+
+    /*               LINK BOX                */
+    /*****************************************/
+
+    &--box {
+        &:hover, &:focus {
+            background-color: $link-box-background-hover;
+            border-bottom-color: $link-box-border-hover;
+            color: $link-box-font-color-hover;
+            border-radius: $link-box-radius-hover;
+            text-decoration: none;
+        }
     }
+
+
+    /*              SIMPLE LINK              */
+    /*****************************************/
+
+    &--simple {
+        word-break: break-word;
+        letter-spacing: 0;
+        font-style: normal;
+        font-weight: bold;
+        white-space: nowrap;
+        word-wrap: break-word;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin-bottom: 0;
+        color: $link-simple-font-color;
+
+        &:hover {
+            text-decoration: none;
+            color: $link-simple-font-color;
+        }
+
+        ///SIMPLE LINK SIZE
+
+        &--small {
+            font-size: map-get($link-simple-font-sizes, small);
+        }
+
+        &--default {
+            font-size: map-get($link-simple-font-sizes, default);
+        }
+
+        &--large {
+            font-size: map-get($link-simple-font-sizes, large);
+        }
+
+    }
+
 }

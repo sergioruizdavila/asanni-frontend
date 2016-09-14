@@ -10,11 +10,31 @@
         top: $search-info-top;
 
         &__block {
+            text-align: left;
             height: $search-info-block-height;
             background-color: $search-info-block-background;
             //padding: $search-info-block-padding;
             margin: $search-info-block-margin;
             border: $search-info-block-border;
+
+            &__basic-info {
+                padding: 20px;
+
+                &__from {
+                    margin: 0 0 15px 0;
+                }
+            }
+
+            &__about {
+                padding: 0 20px;
+            }
+
+            &__interests {
+                padding: 0 20px;
+                &__title {
+                    margin-top: 0;
+                }
+            }
         }
     }
 

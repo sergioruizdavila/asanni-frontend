@@ -50,13 +50,13 @@
 
     &--primary {
         background-color: $button-primary-background;
-        color: $button-color;
+        color: $button-font-color;
         border-bottom-color: $button-primary-border-color;
 
         &:hover:enabled, &:focus {
             background-color: $button-primary-background-hover;
             text-decoration: none;
-            color: $button-color;
+            color: $button-font-color;
         }
     }
 
@@ -67,7 +67,7 @@
 
         &:hover:enabled, &:focus {
             background-color: $button-secondary-color;
-            color: $button-color;
+            color: $button-font-color;
             border-bottom-color: $button-secondary-border-color;
             text-decoration: none;
         }
