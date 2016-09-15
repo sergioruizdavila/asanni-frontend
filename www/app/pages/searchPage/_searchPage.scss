@@ -1,3 +1,69 @@
+/*************************/
+/*       VARIABLES       */
+/*************************/
+$search-info-padding: 0;
+$search-info-left: 0;
+$search-info-bottom: 0;
+$search-info-top: 61px;
+
+$search-info-block-height: 520px;
+$search-info-block-background: $white;
+$search-info-block-padding: 10px;
+$search-info-block-margin: 20px 0;
+$search-info-block-border: 1px solid $light-gray;
+
+$search-info-block-basicInfo-padding: 15px 0;
+
+$search-info-block-basicInfo-name-width: 80%;
+$search-info-block-basicInfo-name-marginTop: 0;
+$search-info-block-basicInfo-name-marginBottom: 0;
+
+$search-info-block-basicInfo-name-width: 76%;
+$search-info-block-basicInfo-from-margin: 0 0 10px 0;
+
+$search-info-block-basicInfo-reviews-width: 80%;
+$search-info-block-basicInfo-reviews-amount-lineHeight: 1.2;
+$search-info-block-basicInfo-reviews-amount-margin: 3px;
+
+$search-info-block-fluent-padding: 0;
+$search-info-block-fluent-height: 65px;
+
+$search-info-block-fluent-title-marginTop: 0;
+
+$search-info-block-fluent-options-language-margin: 2px;
+
+$search-info-block-learning-padding: 0;
+$search-info-block-learning-height: 65px;
+
+$search-info-block-learning-title-marginTop: 0;
+
+$search-info-block-learning-options-language-margin: 2px;
+
+$search-info-block-about-padding: 0;
+$search-info-block-about-height: 100px;
+
+$search-info-block-about-title-marginTop: 0;
+
+$search-info-block-about-options-language-margin: 2px;
+
+$search-info-block-interests-padding: 0;
+
+$search-info-block-interests-title-marginTop: 0;
+
+$search-info-block-interests-options-interest-margin: 2px;
+
+
+$search-map-background: $dark-gray;
+$search-map-right: 0;
+$search-map-left: auto;
+$search-map-bottom: 0;
+$search-map-top: 61px;
+
+
+/**********************************************************/
+/*                      SEARCH PAGE                       */
+/**********************************************************/
+
 .search-result {
 
     //INFO SIDE
@@ -13,26 +79,106 @@
             text-align: left;
             height: $search-info-block-height;
             background-color: $search-info-block-background;
-            //padding: $search-info-block-padding;
             margin: $search-info-block-margin;
             border: $search-info-block-border;
 
             &__basic-info {
-                padding: 20px;
+                padding: $search-info-block-basicInfo-padding;
+
+                &__name {
+
+                    h3 {
+                        width: $search-info-block-basicInfo-name-width;
+                        margin-top: $search-info-block-basicInfo-name-marginTop;
+                        margin-bottom: $search-info-block-basicInfo-name-marginBottom;
+                    }
+                }
 
                 &__from {
-                    margin: 0 0 15px 0;
+                    margin: $search-info-block-basicInfo-from-margin;
+
+                    div {
+                        width: $search-info-block-basicInfo-name-width;
+                    }
+                }
+
+                &__reviews {
+                    text-align: left;
+                    width: $search-info-block-basicInfo-reviews-width;
+
+                    &__amount {
+                        display: inline-block;
+                        vertical-align: top;
+                        line-height: $search-info-block-basicInfo-reviews-amount-lineHeight;
+                        margin-left: $search-info-block-basicInfo-reviews-amount-margin;
+                    }
+                }
+
+            }
+
+            &__fluent {
+                padding: $search-info-block-fluent-padding;
+                height: $search-info-block-fluent-height;
+
+                &__title {
+                    margin-top: $search-info-block-fluent-title-marginTop;
+                }
+
+                &__options {
+                    text-align: center;
+
+                    &__language {
+                        margin: $search-info-block-fluent-options-language-margin;
+                    }
+                }
+            }
+
+            &__learning {
+                padding: $search-info-block-learning-padding;
+                height: $search-info-block-learning-height;
+
+                &__title {
+                    margin-top: $search-info-block-learning-title-marginTop;
+                }
+
+                &__options {
+                    text-align: center;
+
+                    &__language {
+                        margin: $search-info-block-fluent-options-language-margin;
+                    }
                 }
             }
 
             &__about {
-                padding: 0 20px;
+                padding: $search-info-block-about-padding;
+                height: $search-info-block-about-height;
+
+                &__title {
+                    margin-top: $search-info-block-about-title-marginTop;
+                }
+
+                p {
+                    @include text-truncate-multiline($font-size: $paragraph-font-size,
+                                                     $line-height: $paragraph-lineHeight,
+                                                     $lines-to-show: $paragraph-lines-to-show,
+                                                     $excerpt-bg: $white);
+                }
             }
 
             &__interests {
-                padding: 0 20px;
+                padding: $search-info-block-interests-padding;
+
                 &__title {
-                    margin-top: 0;
+                    margin-top: $search-info-block-interests-title-marginTop;
+                }
+
+                &__options {
+                    text-align: center;
+
+                    &__interest {
+                        margin: $search-info-block-interests-options-interest-margin;
+                    }
                 }
             }
         }

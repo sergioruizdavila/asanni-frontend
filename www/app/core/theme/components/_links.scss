@@ -28,14 +28,9 @@
     /*****************************************/
 
     &--simple {
-        word-break: break-word;
         letter-spacing: 0;
         font-style: normal;
         font-weight: bold;
-        white-space: nowrap;
-        word-wrap: break-word;
-        text-overflow: ellipsis;
-        overflow: hidden;
         margin-bottom: 0;
         color: $link-simple-font-color;
 

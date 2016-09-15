@@ -14,7 +14,6 @@
 //   7. Links
 //   8. Logo
 //   9. Paragraph
-//   10. Search Page
 //   11. Stars
 
 //**********************************************************
@@ -205,28 +204,14 @@ $logo-height: 32px;
 
 // 9. Paragraph
 // -------------
+
+$paragraph-font-size: 14px;
+$paragraph-lineHeight: 1.5;
+$paragraph-lines-to-show: 3;
+//reference: http://revelry.co/multi-line-ellipsis-using-pure-css/
+
 $paragraph-font-color: $dark-gray;
 $paragraph-bold-font-color: $black;
-
-
-// 9. Search Page
-// --------------
-$search-info-padding: 0;
-$search-info-left: 0;
-$search-info-bottom: 0;
-$search-info-top: 61px;
-
-$search-info-block-height: 340px;
-$search-info-block-background: $white;
-$search-info-block-padding: 10px;
-$search-info-block-margin: 20px;
-$search-info-block-border: 1px solid $light-gray;
-
-$search-map-background: $dark-gray;
-$search-map-right: 0;
-$search-map-left: auto;
-$search-map-bottom: 0;
-$search-map-top: 61px;
 
 
 // 11. Stars
