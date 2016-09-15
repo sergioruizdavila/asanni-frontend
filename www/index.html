@@ -33,9 +33,47 @@
 
     <!-- HEADER -->
     <div class="ma-header">
-        <!-- TODO: Crear html cuando sea en un celular o una pantalla pequeña. Guia de Airbnb -->
-        <div class="ma-header--small hidden"></div>
-        <header class="ma-header--regular clearfix">
+
+        <!-- HEADER (SMALL SCREEN) -->
+        <div class="ma-header--small visible-xs">
+
+            <!-- MENU (SMALL SCREEN) -->
+            <div class="ma-header__block pull-left">
+                <a href="#" aria-label="Homepage" class="ma-header__block__btn link-reset">
+                    <i class="material-icons ma-header__block__btn__icon">menu</i>
+                    <span class="screen-reader-only">
+                        Waysily
+                    </span>
+                </a>
+            </div>
+
+            <!-- SEARCH -->
+            <div class="ma-header__block ma-header__block__search-wrapper" role="search">
+                <form class="ma-header__block__search-wrapper__form">
+                    <div class="ma-header__block__search-wrapper__form__search-bar">
+                        <i class="material-icons
+                                      ma-header__block__btn__icon
+                                      ma-header__block__search-wrapper__form__search-bar__icon">
+                            search
+                        </i>
+                        <label class="screen-reader-only" for="header-search-form" aria-hidden="true">
+                            Where to?
+                        </label>
+                        <input type="text" class="ma-header__block__search-wrapper__form__search-bar__input" placeholder="Where to?" autocomplete="off" name="location" class="location" value="">
+                        <input type="hidden" name="source" value="hdr">
+                    </div>
+                </form>
+            </div>
+
+            <!-- NAV (SMALL SCREEN)-->
+            <nav class="ma-nav--small">
+
+            </nav>
+
+        </div>
+
+        <!-- HEADER (MD AND LG SCREEN) -->
+        <header class="hidden-xs clearfix">
 
             <!-- LOGO -->
             <div class="ma-header__block pull-left">
@@ -89,7 +127,7 @@
                                       ma-header__block__search-wrapper__form__search-bar__icon">
                             search
                         </i>
-                        <label class="ma-header__block__search-wrapper__form__search-bar__screen-reader-only" for="header-search-form" aria-hidden="true">
+                        <label class="screen-reader-only" for="header-search-form" aria-hidden="true">
                             Where to?
                         </label>
                         <input type="text" class="ma-header__block__search-wrapper__form__search-bar__input" placeholder="Where to?" autocomplete="off" name="location" class="location" value="">
@@ -99,6 +137,7 @@
             </div>
 
         </header>
+
     </div>
 
     <!-- MAIN -->
@@ -107,7 +146,7 @@
         <!-- SEARCH PAGE -->
         <div class="search-result row margin-reset">
             <!-- INFO SIDE -->
-            <div class="search-result__info col-sm-12 col-md-7">
+            <div class="search-result__info col-xs-12 col-sm-7 col-md-7">
 
                 <div class="row margin-reset">
 
@@ -270,7 +309,7 @@
                 </div>
             </div>
             <!-- MAP SIDE -->
-            <div class="search-result__map col-xs-5 col-md-5">
+            <div class="search-result__map col-md-5 col-sm-5 visible-lg visible-md visible-sm">
                 <div class="test" style="height: 500px">
 
                 </div>
@@ -280,6 +319,7 @@
         <div ui-view="container" class="app_content"></div>
 
     </main>
+
 
     <!-- Google Analytics -->
     <script>

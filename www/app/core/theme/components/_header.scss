@@ -14,12 +14,10 @@
     z-index: $header-index;
 
     &--small{
+        position: relative;
 
     }
 
-    &--regular {
-
-    }
 
     //header block
     &__block:nth-of-type(1)
@@ -99,19 +97,6 @@
                         top: $header-search-bar-icon-top;
                         left: $header-search-bar-icon-left;
                         z-index: $header-search-bar-icon-index;
-                    }
-
-                    /* TODO: Verificar si esto es necesario o no, cuando este desarrollando
-                       la logica del search, si es necesario, pasar todo a variables */
-                    &__screen-reader-only {
-                        border: 0;
-                        clip: rect(0, 0, 0, 0);
-                        height: 1px;
-                        margin: -1px;
-                        overflow: hidden;
-                        padding: 0;
-                        position: absolute;
-                        width: 1px;
                     }
 
                     &__input {
