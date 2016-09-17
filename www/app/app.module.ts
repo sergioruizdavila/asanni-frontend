@@ -14,7 +14,9 @@
             'mainApp.auth',
             'mainApp.core',
             'mainApp.localStorage',
-            'mainApp.pages.signUpPage'
+            'mainApp.pages.main',
+            'mainApp.pages.signUpPage',
+            'mainApp.components.header'
         ])
         .config(config);
 
@@ -25,7 +27,7 @@
         $locationProvider.html5Mode(true);
         $locationProvider.hashPrefix('!');
 
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/page');
 
         /* Translate Provider */
         let prefix = 'assets/i18n/';

@@ -130,7 +130,11 @@
         right: $left-nav-right;
         z-index: $left-nav-index;
         //TODO: Esto deberia cambiar cuando le doy click al menu
-        //visibility: hidden;
+        visibility: hidden;
+
+        &--active {
+            visibility: visible;
+        }
 
         &__mask {
             position: absolute;
@@ -138,14 +142,16 @@
             height: $mask-height;
             width: $mask-width;
             background-color: $mask-background;
-            //TODO: Esto deberia cambiar cuando le doy click al menu
-            //opacity: 0.7;
             opacity: $mask-opacity;
             -ms-filter: " progid:DXImageTransform.Microsoft.Alpha(Opacity=0) ";
             -webkit-transition: $mask-opacity-transition;
             -moz-transition: $mask-opacity-transition;
             -o-transition: $mask-opacity-transition;
             transition: $mask-opacity-transition;
+
+            &--active {
+                opacity: $mask-opacity-active;
+            }
         }
 
         &__content {
@@ -159,6 +165,10 @@
             -moz-transition: $left-nav-content-left-transition;
             -o-transition: $left-nav-content-left-transition;
             transition: $left-nav-content-left-transition;
+
+            &--active {
+                left: $left-nav-content-left-active;
+            }
         }
     }
 

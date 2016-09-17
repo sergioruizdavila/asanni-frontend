@@ -190,6 +190,7 @@ $left-nav-right: 0;
 $left-nav-index: 2001;
 
 $left-nav-content-left: -285px;
+$left-nav-content-left-active: 0;
 $left-nav-content-left-transition: left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 $left-nav-content-width: 285px;
 $left-nav-content-height: 100%;
@@ -224,6 +225,7 @@ $mask-height: 100%;
 $mask-width: 100%;
 $mask-background: $black;
 $mask-opacity: 0;
+$mask-opacity-active: 0.7;
 $mask-opacity-transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
 // 6. Links

@@ -1,0 +1,202 @@
+<!-- HEADER -->
+<div class="ma-header">
+
+    <!-- HEADER (SMALL SCREEN) -->
+    <div class="ma-header--small visible-xs">
+
+        <!-- MENU (SMALL SCREEN) -->
+        <div class="ma-header__block pull-left">
+            <a href="#"
+               aria-label="Homepage"
+               class="ma-header__block__btn link-reset"
+               ng-click="vm.navMenu()">
+                <i class="material-icons ma-header__block__btn__icon">menu</i>
+                <span class="screen-reader-only">
+                    Waysily
+                </span>
+            </a>
+        </div>
+
+        <!-- SEARCH -->
+        <div class="ma-header__block ma-header__block__search-wrapper" role="search">
+            <form class="ma-header__block__search-wrapper__form">
+                <div class="ma-header__block__search-wrapper__form__search-bar">
+                    <i class="material-icons
+                                  ma-header__block__btn__icon
+                                  ma-header__block__search-wrapper__form__search-bar__icon">
+                        search
+                    </i>
+                    <label class="screen-reader-only" for="header-search-form" aria-hidden="true">
+                        Where to?
+                    </label>
+                    <input type="text" class="ma-header__block__search-wrapper__form__search-bar__input" placeholder="Where to?" autocomplete="off" name="location" class="location" value="">
+                    <input type="hidden" name="source" value="hdr">
+                </div>
+            </form>
+        </div>
+
+        <!-- NAV (SMALL SCREEN)-->
+        <nav class="ma-nav--small"
+             ng-class="{'ma-nav--small--active': vm.slideout}"
+             role="navigation">
+
+            <div class="ma-nav--small__mask"
+                 ng-class="{'ma-nav--small__mask--active': vm.slideout}"
+                 ng-click="vm.navMenu()"></div>
+
+            <div class="ma-nav--small__content ma-nav-content"
+                 ng-class="{'ma-nav--small__content--active': vm.slideout}">
+
+                <div class="ma-nav-content__header">
+                    <div class="ma-nav-content__header__profile">
+
+                        <div class="ma-nav-content__header__profile__user-item">
+                            <div class="ma-photo-profile
+                                        ma-photo-profile--small
+                                        round">
+                                <img width="32" height="32" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="">
+                            </div>
+                            <div class="ma-label
+                                        ma-label--simple
+                                        ma-label--simple--large
+                                        ma-label--simple--primary
+                                        text-truncate">Sergio Ruiz Davila</div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="nav-menu-wrapper">
+                    <div class="nav-menu-wrapper__container">
+                        <div class="nav-menu-wrapper__container__menu">
+                            <ul class="nav-menu-wrapper__container__menu__group
+                                       nav-menu-wrapper__container__menu__group--first
+                                       list-unstyled">
+                                <li class="items-logged-in">
+                                    <a href="/dashboard" class="link-reset menu-item dashboard hide" rel="nofollow">
+                                        Dashboard
+                                    </a>
+                                </li>
+                                <li class="items-logged-out">
+                                    <a data-signup-modal="" href="/signup_login" class="link-reset menu-item" rel="nofollow">
+                                        Sign Up
+                                    </a>
+                                </li>
+                                <li class="items-logged-out">
+                                    <a data-login-modal="" href="/login" class="link-reset menu-item" rel="nofollow">
+                                        Log In
+                                    </a>
+                                </li>
+                                <li class="items-logged-in">
+                                    <a href="/alerts" rel="nofollow" class="link-reset menu-item">
+                                        Messages
+                                    </a>
+                                </li>
+                                <li class="items-logged-in">
+                                    <a href="/inbox" rel="nofollow" class="link-reset menu-item">
+                                        Inbox
+                                    </a>
+                                </li>
+                                <li class="items-logged-out">
+                                    <a href="/how-it-works" class="link-reset menu-item" rel="nofollow">
+                                        How it Works
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <ul class="nav-menu-wrapper__container__menu__group list-unstyled">
+                                <li>
+                                    <a href="/help" rel="nofollow" class="link-reset menu-item">
+                                        Help
+                                    </a>
+                                </li>
+                                <li class="items-logged-in">
+                                    <a href="/invite" rel="nofollow" class="link-reset menu-item">
+                                        Invite Friends
+                                    </a>
+                                </li>
+                                <li class="items-logged-in">
+                                    <a href="/logout" rel="nofollow" class="link-reset menu-item logout">
+                                        Log Out
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </nav>
+
+    </div>
+
+    <!-- HEADER (MD AND LG SCREEN) -->
+    <header class="hidden-xs clearfix">
+
+        <!-- LOGO -->
+        <div class="ma-header__block pull-left">
+            <a href="/" class="ma-header__block__btn
+                          ma-header__block__logo-wrapper
+                          link-reset" aria-label="Waysily">
+                <i class="ma-logo ma-header__block__btn__ma-logo"></i>
+            </a>
+        </div>
+
+        <!-- PROFILE IMAGE -->
+        <div class="ma-header__block pull-right">
+            <a class="ma-header__block__btn link-reset" rel="nofollow">
+                <div class="ma-photo-profile
+                            ma-photo-profile--small
+                            round
+                            ma-header__block__btn__icon
+                            ma-header__block__btn__icon__ma-photo">
+                    <img width="32" height="32" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="">
+                </div>
+            </a>
+        </div>
+
+        <!-- LOG IN -->
+        <div class="ma-header__block pull-right">
+            <a href="#" class="ma-header__block__btn link-reset">
+                Log In
+            </a>
+        </div>
+
+        <!-- SIGN UP -->
+        <div class="ma-header__block pull-right">
+            <a href="#" class="ma-header__block__btn link-reset">
+                Sign Up
+            </a>
+        </div>
+
+        <!-- MESSAGES -->
+        <div class="ma-header__block pull-right">
+            <a href="#" class="ma-header__block__btn link-reset">
+                <i class="material-icons ma-header__block__btn__icon">inbox</i>
+            </a>
+        </div>
+
+        <!-- SEARCH -->
+        <div class="ma-header__block ma-header__block__search-wrapper" role="search">
+            <form class="ma-header__block__search-wrapper__form">
+                <div class="ma-header__block__search-wrapper__form__search-bar">
+                    <i class="material-icons
+                                  ma-header__block__btn__icon
+                                  ma-header__block__search-wrapper__form__search-bar__icon">
+                        search
+                    </i>
+                    <label class="screen-reader-only" for="header-search-form" aria-hidden="true">
+                        Where to?
+                    </label>
+                    <input type="text" class="ma-header__block__search-wrapper__form__search-bar__input" placeholder="Where to?" autocomplete="off" name="location" class="location" value="">
+                    <input type="hidden" name="source" value="hdr">
+                </div>
+            </form>
+        </div>
+
+    </header>
+
+</div>
