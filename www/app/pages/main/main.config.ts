@@ -17,8 +17,8 @@
         /*TODO: Revisar porque da error si coloco directamente en la url:
                 localhost:8080/page se rompe y dice que no puede obtenet /page*/
         $stateProvider
-            .state('page', {
-                url: '/page',
+            .state('main', {
+                url: '/',
                 cache: false,
                 templateUrl: 'app/pages/main/main.html',
                 controller: 'mainApp.pages.main.MainController',
