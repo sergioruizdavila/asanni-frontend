@@ -11,10 +11,11 @@
 //   5. Header - Search Bar
 //   6. Images
 //   7. Labels
-//   7. Links
-//   8. Logo
-//   9. Paragraph
-//   11. Stars
+//   8. Left Nav (small devices)
+//   9. Links
+//   10. Logo
+//   11. Paragraph
+//   12. Stars
 
 //**********************************************************
 
@@ -177,6 +178,53 @@ $label-simple-color-primary: map-get($main-palette, primary);
 
 $label-box-secondary-font-color: map-get($main-palette, primary);
 $label-box-secondary-border: 2px solid map-get($main-palette, primary);
+
+
+// 8. Left Nav (small devices)
+// ---------------------------
+
+$left-nav-top: 0;
+$left-nav-bottom: 0;
+$left-nav-left: 0;
+$left-nav-right: 0;
+$left-nav-index: 2001;
+
+$left-nav-content-left: -285px;
+$left-nav-content-left-transition: left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+$left-nav-content-width: 285px;
+$left-nav-content-height: 100%;
+$left-nav-content-border: 0;
+$left-nav-content-background: $white;
+
+$left-nav-content-header-height: 48px;
+
+$left-nav-content-header-profile-font-size: 16px;
+$left-nav-content-header-profile-lineHeight: 28px;
+$left-nav-content-header-profile-padding: 10px;
+
+$left-nav-content-header-profile-userItem-padding: 15px;
+$left-nav-content-header-profile-userItem-font-color: map-get($main-palette, primary);
+
+$left-nav-content-header-profile-photo-top: 8px;
+
+$left-nav-content-header-profile-label-width: 75%;
+$left-nav-content-header-profile-label-margin: 10px;
+
+$left-nav-menu-width: 100%;
+$left-nav-menu-height: 100%;
+$left-nav-menu-font-size: 20px;
+$left-nav-menu-padding: 25px;
+$left-nav-menu-border: $white;
+
+$left-nav-menu-group-lineHeight: 46px;
+$left-nav-menu-group-first-border: $global-border-dashed;
+$left-nav-menu-group-first-padding: 10px;
+
+$mask-height: 100%;
+$mask-width: 100%;
+$mask-background: $black;
+$mask-opacity: 0;
+$mask-opacity-transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
 // 6. Links
 // ---------

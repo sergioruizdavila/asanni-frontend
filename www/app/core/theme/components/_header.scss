@@ -124,41 +124,41 @@
     &--small {
         display: block;
         position: fixed;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 2001;
+        top: $left-nav-top;
+        bottom: $left-nav-bottom;
+        left: $left-nav-left;
+        right: $left-nav-right;
+        z-index: $left-nav-index;
         //TODO: Esto deberia cambiar cuando le doy click al menu
         //visibility: hidden;
 
         &__mask {
             position: absolute;
             cursor: pointer;
-            height: 100%;
-            width: 100%;
-            background-color: #000;
+            height: $mask-height;
+            width: $mask-width;
+            background-color: $mask-background;
             //TODO: Esto deberia cambiar cuando le doy click al menu
-            //opacity: 0;
-            opacity: 0.7;
+            //opacity: 0.7;
+            opacity: $mask-opacity;
             -ms-filter: " progid:DXImageTransform.Microsoft.Alpha(Opacity=0) ";
-            -webkit-transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            -moz-transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            -o-transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-transition: $mask-opacity-transition;
+            -moz-transition: $mask-opacity-transition;
+            -o-transition: $mask-opacity-transition;
+            transition: $mask-opacity-transition;
         }
 
         &__content {
             position: absolute;
-            left: -285px;
-            width: 285px;
-            height: 100%;
-            border: 0;
-            background-color: #FFF;
-            -webkit-transition: left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            -moz-transition: left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            -o-transition: left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            transition: left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            left: $left-nav-content-left;
+            width: $left-nav-content-width;
+            height: $left-nav-content-height;
+            border: $left-nav-content-border;
+            background-color: $left-nav-content-background;
+            -webkit-transition: $left-nav-content-left-transition;
+            -moz-transition: $left-nav-content-left-transition;
+            -o-transition: $left-nav-content-left-transition;
+            transition: $left-nav-content-left-transition;
         }
     }
 
@@ -167,26 +167,26 @@
 .ma-nav-content {
     &__header {
         display: block;
-        height: 48px;
+        height: $left-nav-content-header-height;
 
         &__profile {
-            font-size: 16px;
-            line-height: 28px;
-            padding: 10px;
+            font-size: $left-nav-content-header-profile-font-size;
+            line-height: $left-nav-content-header-profile-lineHeight;
+            padding: $left-nav-content-header-profile-padding;
 
             &__user-item {
                 position: relative;
-                padding-left: 15px;
-                color: #00b592;
+                padding-left: $left-nav-content-header-profile-userItem-padding;
+                color: $left-nav-content-header-profile-userItem-font-color;
 
                 .ma-photo-profile {
                     display: inline-block;
-                    top: 8px;
+                    top: $left-nav-content-header-profile-photo-top;
                 }
 
                 .ma-label {
-                    width: 75%;
-                    margin-left: 10px;
+                    width: $left-nav-content-header-profile-label-width;
+                    margin-left: $left-nav-content-header-profile-label-margin;
                     vertical-align: text-bottom;
                     display: inline-block;
                 }
@@ -204,24 +204,23 @@
     -webkit-overflow-scrolling: touch;
 
     &__container {
-        width: 100%;
-        height: 100%;
+        width: $left-nav-menu-width;
+        height: $left-nav-menu-height;
         display: table;
         position: relative;
 
         &__menu {
-            font-size: 20px;
-            padding-left: 25px;
-            padding-right: 25px;
-            border-color: #ffffff;
-            border-color: rgba(255,255,255,0.2);
+            font-size: $left-nav-menu-font-size;
+            padding-left: $left-nav-menu-padding;
+            padding-right: $left-nav-menu-padding;
+            border-color: $left-nav-menu-border;
 
             &__group {
-                line-height: 46px;
+                line-height: $left-nav-menu-group-lineHeight;
 
                 &--first {
-                    border-bottom: 1px dashed #dce0e0;
-                    padding-bottom: 10px;
+                    border-bottom: $left-nav-menu-group-first-border;
+                    padding-bottom: $left-nav-menu-group-first-padding;
                 }
             }
         }
