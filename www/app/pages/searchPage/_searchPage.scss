@@ -127,7 +127,7 @@ $search-map-top: 61px;
                 &__options {
                     text-align: center;
 
-                    &__language {
+                    .ma-label {
                         margin: $search-info-block-fluent-options-language-margin;
                     }
                 }
@@ -144,7 +144,7 @@ $search-map-top: 61px;
                 &__options {
                     text-align: center;
 
-                    &__language {
+                    .ma-label {
                         margin: $search-info-block-fluent-options-language-margin;
                     }
                 }
@@ -176,7 +176,7 @@ $search-map-top: 61px;
                 &__options {
                     text-align: center;
 
-                    &__interest {
+                    .ma-label {
                         margin: $search-info-block-interests-options-interest-margin;
                     }
                 }

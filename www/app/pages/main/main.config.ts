@@ -14,8 +14,6 @@
     //config.$inject = ['ionic'];
 
     function config($stateProvider: angular.ui.IStateProvider) {
-        /*TODO: Revisar porque da error si coloco directamente en la url:
-                localhost:8080/page se rompe y dice que no puede obtenet /page*/
         $stateProvider
             .state('main', {
                 url: '/',
