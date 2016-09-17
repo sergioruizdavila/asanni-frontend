@@ -21,22 +21,6 @@
 
 // 1. Global
 // ---------
-$global-font-size: 100%;
-$global-width: rem-calc(1200);
-$global-lineheight: 1.5;
-$global-margin: 1rem;
-$global-padding: 1rem;
-$global-weight-normal: normal;
-$global-weight-bold: bold;
-$global-radius: 0;
-$global-text-direction: ltr;
-$global-flexbox: false;
-$global-font-path: "../../../../assets/fonts";
-$global-font-family: "MainAppFont";
-$global-image-path: "../../../../assets/images";
-$global-logo-file: "waysily-logo.png";
-$global-photo-default-file: "waysily-photo-default.png";
-
 $main-palette: (
   primary: #00B592,
   secondary: #018a6f,
@@ -50,6 +34,23 @@ $medium-gray: #bcc1c1;
 $dark-gray: #8a8a8a;
 $black: #373737;
 $white: #fefefe;
+
+$global-font-size: 100%;
+$global-width: rem-calc(1200);
+$global-lineheight: 1.5;
+$global-margin: 1rem;
+$global-padding: 1rem;
+$global-weight-normal: normal;
+$global-weight-bold: bold;
+$global-radius: 0;
+$global-text-direction: ltr;
+$global-flexbox: false;
+$global-border-dashed: 1px dashed $light-gray;
+$global-font-path: "../../../../assets/fonts";
+$global-font-family: "MainAppFont";
+$global-image-path: "../../../../assets/images";
+$global-logo-file: "waysily-logo.png";
+$global-photo-default-file: "waysily-photo-default.png";
 
 $body-background: #fafafa;
 $body-font-color: $black;
@@ -107,7 +108,7 @@ $header-index: 2;
 // 4. Header - Blocks (Tabs)
 // ---------
 $header-block-border-solid: 1px solid $light-gray;
-$header-block-border-dashed: 1px dashed $light-gray;
+$header-block-border-dashed: $global-border-dashed;
 $header-block-height: 60px;
 $header-block-lineheight: 60px;
 
