@@ -9,7 +9,7 @@
             <a href="#"
                aria-label="Homepage"
                class="ma-header__block__btn link-reset"
-               ng-click="vm.navMenu()">
+               ng-click="vm.slideNavMenu()">
                 <i class="material-icons ma-header__block__btn__icon">menu</i>
                 <span class="screen-reader-only">
                     Waysily
@@ -37,15 +37,15 @@
 
         <!-- NAV (SMALL SCREEN)-->
         <nav class="ma-nav--small"
-             ng-class="{'ma-nav--small--active': vm.slideout}"
+             ng-class="{'ma-nav--small--active': vm._slideout}"
              role="navigation">
 
             <div class="ma-nav--small__mask"
-                 ng-class="{'ma-nav--small__mask--active': vm.slideout}"
-                 ng-click="vm.navMenu()"></div>
+                 ng-class="{'ma-nav--small__mask--active': vm._slideout}"
+                 ng-click="vm.slideNavMenu()"></div>
 
             <div class="ma-nav--small__content ma-nav-content"
-                 ng-class="{'ma-nav--small__content--active': vm.slideout}">
+                 ng-class="{'ma-nav--small__content--active': vm._slideout}">
 
                 <div class="ma-nav-content__header">
                     <div class="ma-nav-content__header__profile">

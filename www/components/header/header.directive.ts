@@ -69,9 +69,8 @@ module components.header {
     /*           INTERFACES           */
     /**********************************/
     export interface IHeaderController {
-        slideout: boolean;
         activate: () => void;
-        navMenu: () => void;
+        slideNavMenu: () => void;
     }
 
     export interface IHeaderScope extends angular.IScope {
@@ -88,11 +87,9 @@ module components.header {
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
-        slideout: boolean;
+        private _slideout: boolean;
         // --------------------------------
 
-        /*-- INJECT DEPENDENCIES --*/
-        //static $inject = ['$scope', 'finApp.core.util.FunctionsUtilService'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -103,12 +100,13 @@ module components.header {
 
         /*-- INITIALIZE METHOD --*/
         private init() {
-            this.slideout = false;
+            this._slideout = false;
             this.activate();
         }
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
+            //LOG
             console.log('header controller actived');
         }
 
@@ -117,12 +115,12 @@ module components.header {
         /**********************************/
 
         /*
-        * navMenu method
+        * slideNavMenu method
         * @description Show or Hide Nav Menu when user press 'menu' button
         * (small devices)
         */
-        navMenu(): void {
-            this.slideout = !this.slideout;
+        slideNavMenu(): void {
+            this._slideout = !this._slideout;
         }
 
     }
