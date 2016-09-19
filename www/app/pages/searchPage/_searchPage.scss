@@ -58,6 +58,7 @@ $search-map-right: 0;
 $search-map-left: auto;
 $search-map-bottom: 0;
 $search-map-top: 61px;
+$search-map-padding: 0;
 
 
 /**********************************************************/
@@ -192,6 +193,7 @@ $search-map-top: 61px;
         left: $search-map-left;
         bottom: $search-map-bottom;
         top: $search-map-top;
+        padding: $search-map-padding;
     }
 
 }

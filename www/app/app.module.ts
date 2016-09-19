@@ -16,7 +16,8 @@
             'mainApp.localStorage',
             'mainApp.pages.main',
             'mainApp.pages.signUpPage',
-            'mainApp.components.header'
+            'mainApp.components.header',
+            'mainApp.components.map'
         ])
         .config(config);
 
@@ -39,6 +40,7 @@
         });
 
         $translateProvider.preferredLanguage('es');
+
     }
 
 })();
