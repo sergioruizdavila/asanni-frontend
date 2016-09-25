@@ -1,0 +1,142 @@
+/**********************************************************/
+/*                          BOX                           */
+/**********************************************************/
+
+.ma-box {
+    background-color: white;
+    border: 1px solid #dce0e0;
+    text-align: left;
+
+    &__title {
+        border-bottom: 1px dashed #dce0e0;
+        padding:20px;
+    }
+
+    &__content {
+        padding:20px;
+    }
+
+    &__footer {
+        padding: 20px;
+        border-top: 1px dashed #dce0e0;
+
+        .row {
+            margin-bottom:0!important;
+        }
+    }
+}
+
+/* VERIFIED BOX */
+.verified-box {
+
+    &__item {
+        margin-top: 5px;
+        padding-left: 10px;
+
+        &__icon {
+            vertical-align:middle;
+        }
+
+        &__text {
+            display: inline-block;
+            position: relative;
+            font-size: 17px;
+            margin-left: 10px;
+
+            .ma-label {
+                display: table;
+            }
+        }
+    }
+
+}
+
+/* BASIC INFO BOX */
+.basic-info-box {
+
+    .row {
+        margin-bottom: 20px;
+    }
+
+    &__last-block {
+        margin-bottom: 0!important;
+    }
+
+    &__age {
+        border-bottom: 1px dashed #dce0e0;
+    }
+
+    &__name {
+        margin-bottom: 10px;
+    }
+
+    &__from {
+        padding-left: 5px;
+    }
+    &__live {
+        padding-left: 5px;
+    }
+    &__job, &__degree {
+        display: inline-block;
+
+        .material-icons {
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+
+        .ma-label {
+            line-height: 1.2;
+        }
+    }
+}
+
+/* BADGES SECTION */
+.badges-section {
+    &__container {
+        display: inline-block;
+        margin-right: 25px;
+
+        .ma-p {
+            display: inline-block;
+            margin-left: 12px;
+        }
+    }
+}
+
+/* LANGUAGE SECTION */
+.language-info-box {
+    margin-bottom: 20px;
+
+    &__content {
+       display: flex;
+       flex-wrap: wrap;
+       justify-content: space-around;
+
+       .ma-label {
+           margin: 10px;
+       }
+    }
+}
+
+/* REVIEWS SECTION */
+.reviews-info-box {
+    margin-bottom: 20px;
+
+    &__content {
+
+       &__block {
+           display: inline-block;
+           margin-right: 20px;
+       }
+    }
+
+    &__footer {
+        &__comments-block {
+            &__date-flag {
+                .material-icons {
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+}

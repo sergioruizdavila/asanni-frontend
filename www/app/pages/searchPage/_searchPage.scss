@@ -37,8 +37,6 @@ $search-info-block-learning-height: 65px;
 
 $search-info-block-learning-title-marginTop: 0;
 
-$search-info-block-learning-options-language-margin: 2px;
-
 $search-info-block-about-padding: 0;
 $search-info-block-about-height: 100px;
 
@@ -127,10 +125,6 @@ $search-map-padding: 0;
 
                 &__options {
                     text-align: center;
-
-                    .ma-label {
-                        margin: $search-info-block-fluent-options-language-margin;
-                    }
                 }
             }
 

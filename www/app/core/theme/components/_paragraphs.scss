@@ -13,4 +13,16 @@
     &__bold {
         color: $paragraph-bold-font-color;
     }
+
+    &--small {
+        font-size: 14px;
+    }
+
+    &--default {
+        font-size: 17px;
+    }
+
+    &--large {
+        font-size: 20px;
+    }
 }

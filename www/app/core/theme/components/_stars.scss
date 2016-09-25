@@ -34,3 +34,12 @@
     }
 
 }
+
+.ma-stars-withLabel {
+    &__label-container {
+        display: inline-block;
+        vertical-align: top;
+        line-height: 1.2;
+        margin-left: 3px;
+    }
+}

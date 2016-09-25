@@ -176,6 +176,9 @@ $label-box-paddings: (
 $label-simple-color-gray: $dark-gray;
 $label-simple-color-primary: map-get($main-palette, primary);
 
+$label-box-primary-font-color: $white;
+$label-box-primary-background: map-get($main-palette, primary);
+
 $label-box-secondary-font-color: map-get($main-palette, primary);
 $label-box-secondary-border: 2px solid map-get($main-palette, primary);
 
@@ -267,7 +270,8 @@ $paragraph-bold-font-color: $black;
 
 // 11. Stars
 // ---------
-$star-font-color: #ffd800;
+//$star-font-color: #ffd800; //Original
+$star-font-color: #ffb400; //Airbnb
 $star-sizes: (
   tiny: 18px,
   small: 24px,

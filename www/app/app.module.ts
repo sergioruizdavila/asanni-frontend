@@ -16,6 +16,8 @@
             'mainApp.localStorage',
             'mainApp.pages.main',
             'mainApp.pages.signUpPage',
+            'mainApp.pages.searchPage',
+            'mainApp.pages.userProfilePage',
             'mainApp.components.header',
             'mainApp.components.map'
         ])
@@ -28,7 +30,7 @@
         /*$locationProvider.html5Mode(true);
         $locationProvider.hashPrefix('!');*/
 
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/page');
 
         /* Translate Provider */
         let prefix = 'assets/i18n/';

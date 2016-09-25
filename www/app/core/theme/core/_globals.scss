@@ -52,11 +52,19 @@
     margin: 0;
 }
 
+.padding-reset {
+    padding: 0;
+}
+
 .text-truncate {
     overflow: hidden;
     white-space: nowrap;
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
+}
+
+.text-wrap {
+    word-wrap: break-word;
 }
 
 .round {
@@ -92,6 +100,14 @@
     }
 }
 
+/// POINT SEPARATE
+.point-separate {
+    padding: 0px 10px;
+    
+    &:before {
+        content: ' · ';
+    }
+}
 
 /************ END - GENERAL COMPONENTS STYLES  ************/
 
@@ -115,6 +131,11 @@ body.mainApp {
         height: $logo-height;
         width: $logo-width;
         display: block;
+    }
+
+    .header-separator {
+        display: block;
+        height: 61px;
     }
 
 

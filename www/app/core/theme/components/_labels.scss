@@ -45,10 +45,26 @@
 
         ///LABEL BOX COLOR
 
+        &--primary {
+            background: 0 0;
+            background-color: $label-box-primary-background;
+            color: $label-box-primary-font-color;
+        }
+
         &--secondary {
             background: 0 0;
             border: $label-box-secondary-border;
             color: $label-box-secondary-font-color;
+        }
+
+        ///SPACE BETWEEN LABELS
+
+        &--space2 {
+            margin: 2px;
+        }
+
+        &--space5 {
+            margin: 5px;
         }
 
     }
