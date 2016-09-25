@@ -1,7 +1,17 @@
+/*************************/
+/*       VARIABLES       */
+/*************************/
+$userProfile-padding: 20px;
+$userProfile-block-margin: 20px;
+
+/**********************************************************/
+/*                   USER PROFILE PAGE                    */
+/**********************************************************/
+
 .userProfilePage {
-    padding-top: 20px;
+    padding-top: $userProfile-padding;
 
     &__block {
-        margin-bottom: 20px;
+        margin-bottom: $userProfile-block-margin;
     }
 }

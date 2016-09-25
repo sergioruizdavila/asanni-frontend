@@ -3,25 +3,25 @@
 /**********************************************************/
 
 .ma-box {
-    background-color: white;
-    border: 1px solid #dce0e0;
+    background-color: $box-background;
+    border: $box-border;
     text-align: left;
 
     &__title {
-        border-bottom: 1px dashed #dce0e0;
-        padding:20px;
+        border-bottom: $box-title-border;
+        padding: $box-title-padding;
     }
 
     &__content {
-        padding:20px;
+        padding: $box-content-padding;
     }
 
     &__footer {
-        padding: 20px;
-        border-top: 1px dashed #dce0e0;
+        padding: $box-footer-padding;
+        border-top: $box-footer-border;
 
         .row {
-            margin-bottom:0!important;
+            margin-bottom: $box-footer-row-margin;
         }
     }
 }
@@ -30,8 +30,8 @@
 .verified-box {
 
     &__item {
-        margin-top: 5px;
-        padding-left: 10px;
+        margin-top: $boxVerified-item-margin;
+        padding-left: $boxVerified-item-padding;
 
         &__icon {
             vertical-align:middle;
@@ -40,8 +40,8 @@
         &__text {
             display: inline-block;
             position: relative;
-            font-size: 17px;
-            margin-left: 10px;
+            font-size: $boxVerified-item-text-font-size;
+            margin-left: $boxVerified-item-text-margin;
 
             .ma-label {
                 display: table;
@@ -55,37 +55,37 @@
 .basic-info-box {
 
     .row {
-        margin-bottom: 20px;
+        margin-bottom: $boxBasicInfo-row-margin;
     }
 
     &__last-block {
-        margin-bottom: 0!important;
+        margin-bottom: $boxBasicInfo-lastBlock-margin;
     }
 
     &__age {
-        border-bottom: 1px dashed #dce0e0;
+        border-bottom: $boxBasicInfo-age-border;
     }
 
     &__name {
-        margin-bottom: 10px;
+        margin-bottom: $boxBasicInfo-name-margin;
     }
 
     &__from {
-        padding-left: 5px;
+        padding-left: $boxBasicInfo-from-padding;
     }
     &__live {
-        padding-left: 5px;
+        padding-left: $boxBasicInfo-live-padding;
     }
     &__job, &__degree {
         display: inline-block;
 
         .material-icons {
             vertical-align: middle;
-            margin-right: 5px;
+            margin-right: $boxBasicInfo-jobDegree-icon-margin;
         }
 
         .ma-label {
-            line-height: 1.2;
+            line-height: $boxBasicInfo-jobDegree-label-lineHeight;
         }
     }
 }
@@ -94,18 +94,18 @@
 .badges-section {
     &__container {
         display: inline-block;
-        margin-right: 25px;
+        margin-right: $boxBadgeSection-container-margin;
 
         .ma-p {
             display: inline-block;
-            margin-left: 12px;
+            margin-left: $boxBadgeSection-paragraph-margin;
         }
     }
 }
 
 /* LANGUAGE SECTION */
 .language-info-box {
-    margin-bottom: 20px;
+    margin-bottom: $boxLanguage-margin;
 
     &__content {
        display: flex;
@@ -113,20 +113,20 @@
        justify-content: space-around;
 
        .ma-label {
-           margin: 10px;
+           margin: $boxLanguage-content-label-margin;
        }
     }
 }
 
 /* REVIEWS SECTION */
 .reviews-info-box {
-    margin-bottom: 20px;
+    margin-bottom: $boxReviews-margin;
 
     &__content {
 
        &__block {
            display: inline-block;
-           margin-right: 20px;
+           margin-right: $boxReviews-content-block-margin;
        }
     }
 
