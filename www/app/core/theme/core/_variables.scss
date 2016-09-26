@@ -5,6 +5,7 @@
 //  Table of Contents:
 //
 //   1. Global
+//   2. Box
 //   2. Buttons
 //   3. Header
 //   4. Header - Blocks (Tabs)
@@ -62,6 +63,53 @@ $body-font-family: 'Roboto', sans-serif;
 $body-antialiased: true;
 
 $print-transparent-backgrounds: true;
+
+
+// 2. Box
+// ----------
+$box-background: $white;
+$box-border: 1px solid $light-gray;
+
+$box-title-border: $global-border-dashed;
+$box-title-padding: 20px;
+
+$box-content-padding: 20px;
+
+$box-footer-padding: 20px;
+$box-footer-border: $global-border-dashed;
+$box-footer-row-margin: 0!important;
+
+$boxVerified-item-margin: 5px;
+$boxVerified-item-padding: 10px;
+$boxVerified-item-text-font-size: 17px;
+$boxVerified-item-text-margin: 10px;
+
+$boxBasicInfo-row-margin: 20px;
+
+$boxBasicInfo-lastBlock-margin: 0!important;
+
+$boxBasicInfo-age-border: $global-border-dashed;
+
+$boxBasicInfo-name-margin: 10px;
+
+$boxBasicInfo-from-padding: 5px;
+
+$boxBasicInfo-live-padding: 5px;
+
+$boxBasicInfo-jobDegree-icon-margin: 5px;
+$boxBasicInfo-jobDegree-label-lineHeight: 1.2;
+
+$boxBadgeSection-container-margin: 25px;
+
+$boxBadgeSection-paragraph-margin: 12px;
+
+$boxLanguage-margin: 20px;
+
+$boxLanguage-content-label-margin: 10px;
+
+$boxReviews-margin: 20px;
+
+$boxReviews-content-block-margin: 20px;
 
 
 // 2. Buttons
@@ -176,6 +224,9 @@ $label-box-paddings: (
 $label-simple-color-gray: $dark-gray;
 $label-simple-color-primary: map-get($main-palette, primary);
 
+$label-box-primary-font-color: $white;
+$label-box-primary-background: map-get($main-palette, primary);
+
 $label-box-secondary-font-color: map-get($main-palette, primary);
 $label-box-secondary-border: 2px solid map-get($main-palette, primary);
 
@@ -267,7 +318,8 @@ $paragraph-bold-font-color: $black;
 
 // 11. Stars
 // ---------
-$star-font-color: #ffd800;
+//$star-font-color: #ffd800; //Original
+$star-font-color: #ffb400; //Airbnb
 $star-sizes: (
   tiny: 18px,
   small: 24px,

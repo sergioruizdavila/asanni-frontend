@@ -15,9 +15,9 @@
 
     function config($stateProvider: angular.ui.IStateProvider) {
         $stateProvider
-            .state('main', {
-                url: '/',
-                cache: false,
+            .state('page', {
+                url: '/page',
+                abstract: true,
                 templateUrl: 'app/pages/main/main.html',
                 controller: 'mainApp.pages.main.MainController',
                 controllerAs: 'vm'

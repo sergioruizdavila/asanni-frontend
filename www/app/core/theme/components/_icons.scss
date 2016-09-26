@@ -31,10 +31,15 @@
   /* Rules for sizing the icon. */
   &.md-18 { font-size: 18px; }
   &.md-24 { font-size: 24px; }
+  &.md-30 { font-size: 30px; }
   &.md-36 { font-size: 36px; }
   &.md-48 { font-size: 48px; }
   &.md-60 { font-size: 60px; }
   &.md-72 { font-size: 72px; }
+
+  /* Rules for using icons as black on a light background. */
+  &.md-primary { color: map-get($main-palette, primary); }
+  &.md-primary.md-inactive { opacity: 0.7; }
 
   /* Rules for using icons as black on a light background. */
   &.md-dark { color: rgba(0, 0, 0, 0.54); }
