@@ -16,7 +16,7 @@
 
         $stateProvider
             .state('page.userProfilePage', {
-                url: '/userProfile',
+                url: '/users/show/:id',
                 views: {
                     'container': {
                         templateUrl: 'app/pages/userProfilePage/userProfilePage.html',
@@ -26,7 +26,8 @@
                 },
                 parent: 'page',
                 params: {
-                    user: null
+                    user: null,
+                    id: '1'
                 }
             });
     }
