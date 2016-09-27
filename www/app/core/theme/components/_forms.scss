@@ -1,0 +1,49 @@
+/**********************************************************/
+/*                          FORM                         */
+/**********************************************************/
+
+.ma-form {
+
+    &--basic {
+        .ma-form-group {
+            .ma-p {
+                margin-top: 6px;
+            }
+        }
+    }
+
+    &--horizontal {
+
+        .ma-form-group {
+
+            label {
+                display: block;
+                padding-bottom: 8px;
+                margin-bottom: 0;
+            }
+
+            &--small {
+                label {
+                    padding-top: 6px;
+                }
+            }
+
+            &--default {
+                label{
+                    padding-top: 10px;
+                }
+            }
+
+            &--large {
+                label {
+                    padding-top: 16px;
+                }
+            }
+
+            .ma-p {
+                margin-top: 6px;
+            }
+        }
+
+    }
+}

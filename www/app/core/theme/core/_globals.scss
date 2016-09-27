@@ -103,7 +103,7 @@
 /// POINT SEPARATE
 .point-separate {
     padding: 0px 10px;
-    
+
     &:before {
         content: ' · ';
     }
@@ -124,6 +124,10 @@ body.mainApp {
     font-weight: $global-weight-normal;
     line-height: $global-lineheight;
     color: $body-font-color;
+
+    label {
+        display: block;
+    }
 
     .ma-logo {
         background-image: url($logo-path);

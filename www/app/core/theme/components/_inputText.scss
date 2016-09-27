@@ -1,0 +1,90 @@
+/**********************************************************/
+/*                     INPUT TEXT                         */
+/**********************************************************/
+
+/* TEXT INPUT */
+.ma-input {
+    border: 1px solid $medium-gray;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    background-color: $white;
+    color: $black;
+    display: block;
+    width: 100%;
+
+    &:focus {
+        border-color: #00B592;
+        outline: 0;
+    }
+
+    &--small {
+        padding: 6px 8px;
+    }
+
+    &--default {
+        padding: 10px;
+    }
+
+    &--large {
+        padding: 13px;
+        font-size: 18px;
+    }
+}
+
+/* SELECT INPUT */
+.ma-select {
+    position: relative;
+    display: inline-block;
+    vertical-align: bottom;
+
+    &:before {
+        content: '\25bc';
+        position: absolute;
+        pointer-events: none;
+        color: #767676;
+        top: 0;
+        bottom: 1px;
+        padding-top: 0.7em;
+        line-height: 1;
+        right: 0;
+        width: 2em;
+        text-align: center;
+        transform: scale(0.84, 0.42);
+        -webkit-transform: scale(0.84, 0.42);
+        -moz-transform: scale(0.84, 0.42);
+        -ms-transform: scale(0.84, 0.42);
+        -o-transform: scale(0.84, 0.42);
+        -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.84, M12=0, M21=0, M22=0.42, SizingMethod='auto expand')";
+        filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.84, M12=0, M21=0, M22=0.42, SizingMethod='auto expand');
+    }
+
+    &--default {
+        &:before {
+            top: 1px;
+            bottom: 0px;
+            right: 1px;
+        }
+    }
+
+    &--large {
+        &:before {
+            top: 5px;
+            bottom: 0px;
+            right: 3px;
+        }
+    }
+
+    select {
+        -webkit-appearance: none;
+        -moz-appearance:    none;
+        appearance:         none;
+        background: white\0 !important;
+        padding-right: 2em;
+        line-height: normal;
+    }
+
+}
