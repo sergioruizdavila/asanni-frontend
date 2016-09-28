@@ -18,6 +18,7 @@
             'mainApp.pages.signUpPage',
             'mainApp.pages.searchPage',
             'mainApp.pages.userProfilePage',
+            'mainApp.pages.userEditProfilePage',
             'mainApp.components.header',
             'mainApp.components.map'
         ])

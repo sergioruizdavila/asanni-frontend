@@ -6,17 +6,20 @@
 //
 //   1. Global
 //   2. Box
-//   2. Buttons
-//   3. Header
-//   4. Header - Blocks (Tabs)
-//   5. Header - Search Bar
-//   6. Images
-//   7. Labels
-//   8. Left Nav (small devices)
-//   9. Links
-//   10. Logo
-//   11. Paragraph
-//   12. Stars
+//   3. Buttons
+//   4. Form
+//   5. Header
+//   6. Header - Blocks (Tabs)
+//   7. Header - Search Bar
+//   8. Images
+//   9. Input Text
+//   10. Labels
+//   11. Left Nav (small devices)
+//   12. Links
+//   13. Logo
+//   14. Paragraph
+//   15. Select List
+//   16. Stars
 
 //**********************************************************
 
@@ -143,6 +146,21 @@ $button-secondary-border-color: map-get($main-palette, secondary);
 $button-block-width: 100%;
 
 
+// 3. Form
+// ---------
+$form-basic-p-margin: 6px;
+
+$form-horizontal-label-paddings: (
+    withoutModifier: 8px,
+    small: 6px,
+    default: 10px,
+    large: 16px,
+);
+$form-horizontal-label-margin: 0;
+
+$form-horizontal-p-margin: 6px;
+
+
 // 3. Header
 // ---------
 $header-height: 61px;
@@ -205,6 +223,23 @@ $image-photo-sizes: (
 );
 $image-photo-background: $dark-gray;
 
+
+// 7. Input Text and Select List
+// ----------
+$input-border: 1px solid $medium-gray;
+$input-radius: 0;
+$input-background: $white;
+$input-font-color: $black;
+$input-width: 100%;
+$input-paddings: (
+  small: 6px 8px,
+  default: 10px,
+  large: 13px,
+);
+$input-font-size-large: 18px;
+
+$input-primary-border-focus: map-get($main-palette, primary);
+$input-outline-focus: 0;
 
 // 6. Labels
 // ---------
@@ -315,6 +350,32 @@ $paragraph-lines-to-show: 3;
 $paragraph-font-color: $dark-gray;
 $paragraph-bold-font-color: $black;
 
+
+// 11. Select List
+// ---------
+$select-padding: 2em;
+$select-background: white\0 !important;
+
+$select-icon-color: $medium-gray;
+$select-icon-width: 2em;
+$select-icon-padding: 0.7em;
+$select-icon-lineHeight: 1;
+$select-icon-transform: scale(0.84, 0.42);
+$select-icon-top: (
+    small: 0,
+    default: 1px,
+    large: 5px,
+);
+$select-icon-bottom: (
+    small: 0,
+    default: 0,
+    large: 0,
+);
+$select-icon-right: (
+    small: 0,
+    default: 1px,
+    large: 3px,
+);
 
 // 11. Stars
 // ---------
