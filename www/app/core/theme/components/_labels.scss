@@ -33,13 +33,13 @@
             font-size: map-get($label-font-sizes, small);
 
             &--with-icon {
-                padding: 5px 7px 4px 12px;
+                padding: map-get($label-box-withIcon-paddings, small);
 
                 &__icon {
                     vertical-align: text-top;
                     cursor: pointer;
-                    margin-left: 10px;
-                    font-size: 15px;
+                    margin-left: map-get($label-box-withIcon-icon-margins, small);
+                    font-size: map-get($label-box-withIcon-icon-font-size, small);
                     &:hover {
                         color: map-get($main-palette, secondary);
                     }
@@ -52,13 +52,13 @@
             font-size: map-get($label-font-sizes, default);
 
             &--with-icon {
-                padding: 7px 9px 7px 21px;
+                padding: map-get($label-box-withIcon-paddings, default);
 
                 &__icon {
                     vertical-align: text-top;
                     cursor: pointer;
-                    margin-left: 12px;
-                    font-size: 18px;
+                    margin-left: map-get($label-box-withIcon-icon-margins, default);
+                    font-size: map-get($label-box-withIcon-icon-font-size, default);
                     &:hover {
                         color: map-get($main-palette, secondary);
                     }
@@ -71,13 +71,13 @@
             font-size: map-get($label-font-sizes, large);
 
             &--with-icon {
-                padding: 9px 12px 9px 27px;
+                padding: map-get($label-box-withIcon-paddings, large);
 
                 &__icon {
                     vertical-align: text-top;
                     cursor: pointer;
-                    margin-left: 14px;
-                    font-size: 19px;
+                    margin-left: map-get($label-box-withIcon-icon-margins, large);
+                    font-size: map-get($label-box-withIcon-icon-font-size, large);
                     &:hover {
                         color: map-get($main-palette, secondary);
                     }
@@ -109,19 +109,6 @@
             margin: 5px;
         }
 
-        ///WITH ICON
-
-        /*&--with-icon {
-            padding: 7px 9px 7px 21px;
-
-            &__icon {
-                vertical-align: text-top;
-                cursor: pointer;
-                margin-left: 12px;
-                font-size: 18px;
-            }
-        }*/
-
     }
 
 
@@ -131,7 +118,6 @@
     &--simple {
         letter-spacing: 0;
         font-style: normal;
-        margin: 0;
 
         ///SIMPLE LABEL SIZE
 
@@ -164,8 +150,8 @@
 /* LABELS CONTAINER */
 .ma-labels-box {
     &--dashed {
-        border: 2px dashed $light-gray;
-        min-height: 100px;
-        padding: 5px;
+        border: $labelsBox-dashed-border;
+        min-height: $labelsBox-dashed-height;
+        padding: $labelsBox-dashed-padding;
     }
 }

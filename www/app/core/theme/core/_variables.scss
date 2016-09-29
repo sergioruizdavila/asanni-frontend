@@ -20,6 +20,7 @@
 //   14. Paragraph
 //   15. Select List
 //   16. Stars
+//   17. Switchs
 
 //**********************************************************
 
@@ -114,6 +115,21 @@ $boxReviews-margin: 20px;
 
 $boxReviews-content-block-margin: 20px;
 
+$boxMenu-item-border: 1px dashed $light-gray;
+$boxMenu-item-padding: 15px 25px;
+$boxMenu-item-margin: 0;
+$boxMenu-item-font-size: 18px;
+
+$boxMenu-item-border-active: 7px solid map-get($main-palette, primary);
+$boxMenu-item-background-hover: #f5f5f5;
+$boxMenu-item-border-hover: 7px solid $dark-gray;
+
+$boxMenu-item-background-green-hover: map-get($main-palette, primary);
+$boxMenu-item-border-green-hover: 7px solid map-get($main-palette, secondary);
+$boxMenu-item-font-color-green-hover: $white;
+
+$boxMenu-item-withIcon-padding: 15px 25px;
+$boxMenu-item-withIcon-margin: 0;
 
 // 2. Buttons
 // ----------
@@ -254,6 +270,22 @@ $label-box-paddings: (
   large: 9px 27px,
 );
 
+$label-box-withIcon-paddings: (
+    small: 5px 7px 4px 12px,
+    default: 7px 9px 7px 21px,
+    large: 9px 12px 9px 27px,
+);
+$label-box-withIcon-icon-margins: (
+    small: 10px,
+    default: 12px,
+    large: 14px,
+);
+$label-box-withIcon-icon-font-size: (
+    small: 15px,
+    default: 18px,
+    large: 19px,
+);
+
 $label-simple-color-gray: $dark-gray;
 $label-simple-color-primary: map-get($main-palette, primary);
 
@@ -263,6 +295,9 @@ $label-box-primary-background: map-get($main-palette, primary);
 $label-box-secondary-font-color: map-get($main-palette, primary);
 $label-box-secondary-border: 2px solid map-get($main-palette, primary);
 
+$labelsBox-dashed-border: 2px dashed $light-gray;
+$labelsBox-dashed-height: 100px;
+$labelsBox-dashed-padding: 5px;
 
 // 8. Left Nav (small devices)
 // ---------------------------
@@ -391,5 +426,35 @@ $star-font-sizes: (
   default: 30px,
   large: 36px,
 );
+
+// 13. Switch
+// ---------
+$switch-height: 40px;
+$switch-border: 1px solid rgba(0,0,0,0.15);
+$switch-radius: 4px;
+
+$switch-button-opacity-disabled: 1;
+$switch-button-background-disabled: map-get($main-palette, primary);
+$switch-button-font-color-disabled: $white;
+$switch-button-boxShadow-disabled: 0 0 0 1px map-get($main-palette, primary);
+$switch-button-border-disabled: 1px solid map-get($main-palette, secondary);
+
+$switch-button-font-color-disabled-hover: $white;
+
+$switch-button-border: 0;
+$switch-button-height: 100%;
+$switch-button-font-color: $dark-gray;
+$switch-button-padding: 0 16px;
+
+$switch-button-font-color-hover: $black;
+
+$switch-button-firstChild-radius: 4px 0 0 4px;
+
+$switch-button-secondChild-radius: 0;
+$switch-button-secondChild-margin: -4px;
+
+$switch-button-lastChild-radius: 0 4px 4px 0;
+$switch-button-lastChild-border: 0;
+$switch-button-lastChild-margin: -3px;
 
 // reference: https://github.com/zurb/foundation-sites/blob/develop/scss/settings/_settings.scss
