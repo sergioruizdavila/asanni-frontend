@@ -31,16 +31,58 @@
         &--small {
             padding: map-get($label-box-paddings, small);
             font-size: map-get($label-font-sizes, small);
+
+            &--with-icon {
+                padding: 5px 7px 4px 12px;
+
+                &__icon {
+                    vertical-align: text-top;
+                    cursor: pointer;
+                    margin-left: 10px;
+                    font-size: 15px;
+                    &:hover {
+                        color: map-get($main-palette, secondary);
+                    }
+                }
+            }
         }
 
         &--default {
             padding: map-get($label-box-paddings, default);
             font-size: map-get($label-font-sizes, default);
+
+            &--with-icon {
+                padding: 7px 9px 7px 21px;
+
+                &__icon {
+                    vertical-align: text-top;
+                    cursor: pointer;
+                    margin-left: 12px;
+                    font-size: 18px;
+                    &:hover {
+                        color: map-get($main-palette, secondary);
+                    }
+                }
+            }
         }
 
         &--large {
             padding: map-get($label-box-paddings, large);
             font-size: map-get($label-font-sizes, large);
+
+            &--with-icon {
+                padding: 9px 12px 9px 27px;
+
+                &__icon {
+                    vertical-align: text-top;
+                    cursor: pointer;
+                    margin-left: 14px;
+                    font-size: 19px;
+                    &:hover {
+                        color: map-get($main-palette, secondary);
+                    }
+                }
+            }
         }
 
         ///LABEL BOX COLOR
@@ -66,6 +108,19 @@
         &--space5 {
             margin: 5px;
         }
+
+        ///WITH ICON
+
+        /*&--with-icon {
+            padding: 7px 9px 7px 21px;
+
+            &__icon {
+                vertical-align: text-top;
+                cursor: pointer;
+                margin-left: 12px;
+                font-size: 18px;
+            }
+        }*/
 
     }
 
@@ -103,4 +158,14 @@
         }
     }
 
+}
+
+
+/* LABELS CONTAINER */
+.ma-labels-box {
+    &--dashed {
+        border: 2px dashed $light-gray;
+        min-height: 100px;
+        padding: 5px;
+    }
 }

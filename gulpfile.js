@@ -35,6 +35,7 @@ gulp.task('webserver', function() {
  */
 
 var sassOptions = {
+    outputStyle: 'compressed',
     errLogToConsole: true
 };
 
