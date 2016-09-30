@@ -1,0 +1,28 @@
+/*************************/
+/*       VARIABLES       */
+/*************************/
+$userEditMedia-padding: 20px;
+$userEditMedia-block-margin: 20px;
+
+$userEditMedia-block-background-top: 0;
+$userEditMedia-block-background-opacity: 0.3;
+
+
+/**********************************************************/
+/*                   USER EDIT MEDIA PAGE                 */
+/**********************************************************/
+
+.userEditMediaPage {
+    padding-top: $userEditMedia-padding;
+
+    &__block {
+        margin-bottom: $userEditMedia-block-margin;
+
+        &__background {
+            position: absolute;
+            top: $userEditMedia-block-background-top;
+            left: auto;
+            opacity: $userEditMedia-block-background-opacity;
+        }
+    }
+}

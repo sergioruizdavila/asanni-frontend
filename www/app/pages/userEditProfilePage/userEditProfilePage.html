@@ -1,0 +1,497 @@
+<!--------------------------------------------->
+<!--           USER EDIT PROFILE PAGE        -->
+<!--------------------------------------------->
+
+<div class="userEditProfilePage container">
+
+    <div class="row">
+
+        <!--                     START: LEFT COLUMN                          -->
+        <!--------------------------------------------------------------------->
+        <div id="userEditProfile-left-column" class="col-md-3 col-lg-3">
+
+            <!--------------------- START: LEFT MENU BLOCK -------------------->
+            <div id="userEditProfile-menu-block"
+                 class="userEditProfilePage__block row">
+
+                <div class="col-md-12">
+
+                    <div class="ma-box ma-box">
+
+                        <div class="ma-box__content ma-box__content--padding-reset">
+                            <div class="menu-box">
+                                <div class="menu-box__item menu-box__item--active">
+                                    Edit Profile
+                                </div>
+                                <div class="menu-box__item"
+                                     ng-click="vm.goToEditMedia()">
+                                    Edit Photo
+                                </div>
+                                <div class="menu-box__item"
+                                     ng-click="vm.goToEditAgenda()">
+                                    Edit Agenda
+                                </div>
+                                <div class="menu-box__item menu-box__item--with-button">
+                                    <a class="ma-btn ma-btn--primary ma-btn--block"
+                                       ui-sref="page.userProfilePage({id: '1'})"
+                                       href="#/page/users/show/1">Ver Perfil</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <!--                    END: LEFT MENU BLOCK                     -->
+
+        </div>
+        <!--                        END: LEFT COLUMN                         -->
+
+
+
+        <!--                     START: MIDDLE COLUMN                        -->
+        <!--------------------------------------------------------------------->
+        <div id="userEditProfile-middle-column" class="col-md-9 col-lg-9">
+
+            <!-------------------- START: BASIC INFO BLOCK -------------------->
+            <div id="userEditProfile-basicInfo-block"
+                 class="userEditProfilePage__block row">
+
+                <div class="col-md-12">
+
+                    <div class="ma-box">
+
+                        <h4 class="ma-box__title margin-reset">Basic Info</h4>
+
+                        <div class="ma-box__content">
+
+                            <form class="form-horizontal
+                                         ma-form--horizontal">
+
+                                <!-- First Name Input -->
+                                <div class="form-group
+                                            ma-form-group
+                                            ma-form-group--default">
+                                    <label class="text-right col-xs-3 col-sm-3"
+                                           for="firstNameInput">First Name</label>
+                                    <div class="col-xs-9 col-sm-9">
+                                        <input id="firstNameInput"
+                                               type="text"
+                                               class="ma-input ma-input--default">
+                                    </div>
+                                </div>
+
+                                <!-- Last Name Input -->
+                                <div class="form-group
+                                            ma-form-group
+                                            ma-form-group--default">
+                                    <label class="text-right col-xs-3 col-sm-3"
+                                           for="lastNameInput">Last Name</label>
+                                    <div class="col-xs-9 col-sm-9">
+                                        <input id="lastNameInput"
+                                               type="text"
+                                               class="ma-input ma-input--default">
+                                    </div>
+                                </div>
+
+                                <!-- I am Select Input -->
+                                <div class="form-group
+                                            ma-form-group
+                                            ma-form-group--default">
+                                    <label class="text-right col-xs-3 col-sm-3"
+                                           for="smallSelect">I am</label>
+                                    <div class="col-xs-9 col-sm-9">
+                                        <div class="ma-select ma-select--default">
+                                            <select id="smallSelect"
+                                                    class="ma-input ma-input--default"
+                                                    name="user[sex]">
+                                                <option value="">Gender</option>
+                                                <option value="Male" selected="selected">Male</option>
+                                                <option value="Female">Female</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Birthday Select Input with Help Text -->
+                                <div class="form-group
+                                            ma-form-group
+                                            ma-form-group--default">
+                                    <label class="text-right col-xs-3 col-sm-3">Birth Date</label>
+                                    <div class="col-xs-9 col-sm-9">
+                                        <div class="ma-select ma-select--default">
+                                            <select id="month"
+                                                    class="ma-input ma-input--default"
+                                                    name="user[month]">
+                                                <option value="January" selected="selected">January</option>
+                                                <option value="February">February</option>
+                                                <option value="March">March</option>
+                                            </select>
+                                        </div>
+                                        <div class="ma-select ma-select--default">
+                                            <select id="day"
+                                                    class="ma-input ma-input--default"
+                                                    name="user[day]">
+                                                <option value="1" selected="selected">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="31">31</option>
+                                            </select>
+                                        </div>
+                                        <div class="ma-select ma-select--default">
+                                            <select id="year"
+                                                    class="ma-input ma-input--default"
+                                                    name="user[year]">
+                                                <option value="1987" selected="selected">1987</option>
+                                                <option value="1988">1988</option>
+                                                <option value="1989">1989</option>
+                                                <option value="1990">1990</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Where you born Input -->
+                                <div class="form-group
+                                            ma-form-group
+                                            ma-form-group--default">
+                                    <label class="text-right col-xs-3 col-sm-3"
+                                           for="whereYouBornInput">Where you born?</label>
+                                    <div class="col-xs-9 col-sm-9">
+                                        <input id="whereYouBornInput"
+                                               type="text"
+                                               class="ma-input ma-input--default"
+                                               placeholder="e.g. Miami, Florida / Lisboa, Portugal">
+                                    </div>
+                                </div>
+
+                                <!-- Where you live Input -->
+                                <div class="form-group
+                                            ma-form-group
+                                            ma-form-group--default">
+                                    <label class="text-right col-xs-3 col-sm-3"
+                                           for="whereYouLiveInput">Where you live?</label>
+                                    <div class="col-xs-9 col-sm-9">
+                                        <input id="whereYouLiveInput"
+                                               type="text"
+                                               class="ma-input ma-input--default"
+                                               placeholder="e.g. New Zealand, Auckland / Envigado, Colombia">
+                                    </div>
+                                </div>
+
+                                <!-- School Input -->
+                                <div class="form-group
+                                            ma-form-group
+                                            ma-form-group--default">
+                                    <label class="text-right col-xs-3 col-sm-3"
+                                           for="schoolInput">School</label>
+                                    <div class="col-xs-9 col-sm-9">
+                                        <input id="schoolInput"
+                                               type="text"
+                                               class="ma-input ma-input--default">
+                                    </div>
+                                </div>
+
+                                <!-- Occupation Input -->
+                                <div class="form-group
+                                            ma-form-group
+                                            ma-form-group--default">
+                                    <label class="text-right col-xs-3 col-sm-3"
+                                           for="occupationInput">Occupation</label>
+                                    <div class="col-xs-9 col-sm-9">
+                                        <input id="occupationInput"
+                                               type="text"
+                                               class="ma-input ma-input--default"
+                                               placeholder="e.g. Web Developer / Veterinarian">
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <!--                     END: BASIC INFO BLOCK                   -->
+
+
+
+            <!---------------- START: FLUENT AND LEARNING BLOCK --------------->
+            <div id="userEditProfile-language-block"
+                 class="userEditProfilePage__block row">
+
+                <div class="col-md-12">
+
+                    <div class="ma-box">
+
+                        <h4 class="ma-box__title margin-reset">Languages</h4>
+
+                        <div class="ma-box__content">
+
+                            <form class="form-horizontal
+                                         ma-form--horizontal">
+
+                                <!-- Fluent in Box -->
+                                <div class="form-group
+                                            ma-form-group
+                                            ma-form-group--small
+                                            space-6">
+                                    <label class="text-right col-xs-3 col-sm-3"
+                                           for="fluentInBox">Fluent in</label>
+                                           <div class="col-xs-9 col-sm-9">
+                                               <div class="text-left ma-labels-box ma-labels-box--dashed">
+                                                   <div class="ma-label ma-label--box
+                                                               ma-label--box--secondary
+                                                               ma-label--box--default
+                                                               ma-label--box--default--with-icon
+                                                               ma-label--box--space2">
+                                                        Mandarin
+                                                        <i class="ma-label--box--default--with-icon__icon
+                                                                          material-icons">clear</i>
+                                                    </div>
+                                                    <div class="ma-label ma-label--box
+                                                                ma-label--box--secondary
+                                                                ma-label--box--default
+                                                                ma-label--box--default--with-icon
+                                                                ma-label--box--space2">
+                                                         Español
+                                                         <i class="ma-label--box--default--with-icon__icon
+                                                                           material-icons">clear</i>
+                                                     </div>
+                                               </div>
+                                               <div class="row margin-reset">
+                                                   <div class="col-sm-8 padding-reset">
+                                                       <p class="ma-p ma-p--small space-top-1 margin-reset">
+                                                           The magical day you were dropped from the sky
+                                                           by a stork. We use this data for analysis and
+                                                           never share it with other users.
+                                                       </p>
+                                                   </div>
+                                                   <div class="col-sm-4 padding-reset">
+                                                       <a class="ma-link ma-link--box space-top-1 pull-right"
+                                                          href="#">
+                                                          + Add More
+                                                      </a>
+                                                   </div>
+                                               </div>
+
+                                           </div>
+                                </div>
+
+
+
+                                <!-- Learning Box -->
+                                <div class="form-group
+                                            ma-form-group
+                                            ma-form-group--small">
+                                    <label class="text-right col-xs-3 col-sm-3" for="learningBox">Learning</label>
+                                           <div class="col-xs-9 col-sm-9">
+                                               <div class="text-left ma-labels-box" style="border: 2px dashed #CCC;min-height: 100px;padding: 5px;">
+                                                   <div class="ma-label ma-label--box
+                                                               ma-label--box--secondary
+                                                               ma-label--box--default
+                                                               ma-label--box--default--with-icon
+                                                               ma-label--box--space2">
+                                                        Español
+                                                        <i class="ma-label--box--default--with-icon__icon
+                                                                          material-icons">clear</i>
+                                                    </div>
+                                                    <div class="ma-label ma-label--box
+                                                                ma-label--box--secondary
+                                                                ma-label--box--default
+                                                                ma-label--box--default--with-icon
+                                                                ma-label--box--space2">
+                                                         Alemania
+                                                         <i class="ma-label--box--default--with-icon__icon
+                                                                           material-icons">clear</i>
+                                                     </div>
+                                                     <div class="ma-label ma-label--box
+                                                                 ma-label--box--secondary
+                                                                 ma-label--box--default
+                                                                 ma-label--box--default--with-icon
+                                                                 ma-label--box--space2">
+                                                          Ingles
+                                                          <i class="ma-label--box--default--with-icon__icon
+                                                                            material-icons">clear</i>
+                                                      </div>
+                                                      <div class="ma-label ma-label--box
+                                                                  ma-label--box--secondary
+                                                                  ma-label--box--default
+                                                                  ma-label--box--default--with-icon
+                                                                  ma-label--box--space2">
+                                                           Mandarin
+                                                           <i class="ma-label--box--default--with-icon__icon
+                                                                             material-icons">clear</i>
+                                                       </div>
+                                               </div>
+                                               <div class="row margin-reset">
+                                                   <div class="col-sm-8 padding-reset">
+                                                       <p class="ma-p ma-p--small space-top-1 margin-reset">
+                                                           The magical day you were dropped from the sky
+                                                           by a stork. We use this data for analysis and
+                                                           never share it with other users.
+                                                       </p>
+                                                   </div>
+                                                   <div class="col-sm-4 padding-reset">
+                                                       <a class="ma-link ma-link--box space-top-1 pull-right"
+                                                          href="#">
+                                                          + Add More
+                                                      </a>
+                                                   </div>
+                                               </div>
+
+                                           </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <!--               END: FLUENT AND LEARNING BLOCK                -->
+
+
+
+            <!---------------- START: ABOUT ME & INTEREST BLOCK --------------->
+            <div id="userEditProfile-aboutMe-block"
+                 class="userEditProfilePage__block row">
+
+                <div class="col-md-12">
+
+                    <div class="ma-box">
+
+                        <h4 class="ma-box__title margin-reset">Information about you</h4>
+
+                        <div class="ma-box__content">
+                            <form class="form-horizontal
+                                         ma-form--horizontal">
+
+                                <!-- About me -->
+                                <div class="form-group
+                                            ma-form-group
+                                            ma-form-group--default">
+                                    <label class="text-right col-xs-3 col-sm-3"
+                                           for="aboutMeTextarea">About Me</label>
+                                    <div class="col-xs-9 col-sm-9">
+                                        <textarea id="aboutMeTextarea"
+                                                  name="user_profile_info[about]"
+                                                  class="ma-input ma-input--default"
+                                                  style="resize: vertical;"
+                                                  placeholder="e.g. I enjoy traveling around the world, and I feel good cooking on my free time"
+                                                  rows="5" cols="40"></textarea>
+                                        <p class="ma-p ma-p--small space-top-1">
+                                            The magical day you were dropped from the sky
+                                            by a stork. We use this data for analysis and
+                                            never share it with other users.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <!-- Interests -->
+                                <div class="form-group
+                                            ma-form-group
+                                            ma-form-group--small
+                                            space-top-6">
+                                    <label class="text-right col-xs-3 col-sm-3"
+                                           for="interestsBox">Your interests</label>
+                                    <div class="col-xs-9 col-sm-9">
+                                        <div class="text-left ma-labels-box ma-labels-box--dashed">
+                                            <div class="ma-label ma-label--box
+                                                       ma-label--box--secondary
+                                                       ma-label--box--default
+                                                       ma-label--box--default--with-icon
+                                                       ma-label--box--space2">
+                                                Play Soccer
+                                                <i class="ma-label--box--default--with-icon__icon
+                                                                  material-icons">clear</i>
+                                            </div>
+                                            <div class="ma-label ma-label--box
+                                                        ma-label--box--secondary
+                                                        ma-label--box--default
+                                                        ma-label--box--default--with-icon
+                                                        ma-label--box--space2">
+                                                 Exchange Language
+                                                 <i class="ma-label--box--default--with-icon__icon
+                                                                   material-icons">clear</i>
+                                            </div>
+                                            <div class="ma-label ma-label--box
+                                                        ma-label--box--secondary
+                                                        ma-label--box--default
+                                                        ma-label--box--default--with-icon
+                                                        ma-label--box--space2">
+                                                 Read Books
+                                                 <i class="ma-label--box--default--with-icon__icon
+                                                                   material-icons">clear</i>
+                                            </div>
+                                            <div class="ma-label ma-label--box
+                                                        ma-label--box--secondary
+                                                        ma-label--box--default
+                                                        ma-label--box--default--with-icon
+                                                        ma-label--box--space2">
+                                                 Artist
+                                                 <i class="ma-label--box--default--with-icon__icon
+                                                                   material-icons">clear</i>
+                                            </div>
+                                            <div class="ma-label ma-label--box
+                                                        ma-label--box--secondary
+                                                        ma-label--box--default
+                                                        ma-label--box--default--with-icon
+                                                        ma-label--box--space2">
+                                                 Business
+                                                 <i class="ma-label--box--default--with-icon__icon
+                                                                   material-icons">clear</i>
+                                            </div>
+                                            <div class="ma-label ma-label--box
+                                                        ma-label--box--secondary
+                                                        ma-label--box--default
+                                                        ma-label--box--default--with-icon
+                                                        ma-label--box--space2">
+                                                 Travel around the world
+                                                 <i class="ma-label--box--default--with-icon__icon
+                                                                   material-icons">clear</i>
+                                            </div>
+                                       </div>
+                                       <div class="row margin-reset">
+                                            <div class="col-sm-8 padding-reset">
+                                                <p class="ma-p ma-p--small space-top-1 margin-reset">
+                                                   The magical day you were dropped from the sky
+                                                   by a stork. We use this data for analysis and
+                                                   never share it with other users.
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-4 padding-reset">
+                                                <a class="ma-link ma-link--box space-top-1 pull-right"
+                                                   href="#">
+                                                   + Add More
+                                                </a>
+                                            </div>
+                                       </div>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <!--                END: ABOUT ME & INTEREST BLOCK               -->
+
+        </div>
+        <!--                      END: MIDDLE COLUMN                         -->
+
+    </div>
+
+</div>

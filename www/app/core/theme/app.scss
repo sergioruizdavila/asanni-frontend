@@ -11,14 +11,20 @@
 
 // MainApp Components
 // --------------------------------------------------
+// box Style
+@import 'components/box';
 // buttons Style
 @import 'components/buttons';
-// buttons Style
+// fonts Style
 @import 'components/fonts';
+// forms Style
+@import 'components/forms';
 // header Style
 @import 'components/header';
 // icons Style
 @import 'components/icons';
+// input text Style
+@import 'components/inputText';
 // links Style
 @import 'components/links';
 // labels Style
@@ -29,6 +35,12 @@
 @import 'components/photoProfile';
 // stars Style
 @import 'components/stars';
+// switch Style
+@import 'components/switchs';
+// map Style
+@import 'components/map';
+// search map Style
+@import 'components/searchMap';
 
 
 // TEST: Import kind of fonts
@@ -41,3 +53,9 @@
 @import '../../pages/signUpPage/signUpPage';
 // search Pages Style
 @import '../../pages/searchPage/searchPage';
+// user Profile Pages Style
+@import '../../pages/userProfilePage/userProfilePage';
+// user Edit Profile Pages Style
+@import '../../pages/userEditProfilePage/userEditProfilePage';
+// user Edit Media Pages Style
+@import '../../pages/userEditMediaPage/userEditMediaPage';

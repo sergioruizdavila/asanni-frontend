@@ -1,0 +1,95 @@
+/**********************************************************/
+/*                     INPUT TEXT                         */
+/**********************************************************/
+
+/* TEXT INPUT */
+.ma-input {
+    border: $input-border;
+    -webkit-border-radius: $input-radius;
+    -moz-border-radius: $input-radius;
+    border-radius: $input-radius;
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    background-color: $input-background;
+    color: $input-font-color;
+    display: block;
+    width: $input-width;
+
+    &:focus {
+        border-color: $input-primary-border-focus;
+        outline: $input-outline-focus;
+    }
+
+    &--small {
+        padding: map-get($input-paddings, small);
+    }
+
+    &--default {
+        padding: map-get($input-paddings, default);
+    }
+
+    &--large {
+        padding: map-get($input-paddings, large);
+        font-size: $input-font-size-large;
+    }
+}
+
+/* SELECT INPUT */
+.ma-select {
+    position: relative;
+    display: inline-block;
+    vertical-align: bottom;
+
+    &:before {
+        content: '\25bc';
+        position: absolute;
+        pointer-events: none;
+        color: $select-icon-color;
+        padding-top: $select-icon-padding;
+        line-height: $select-icon-lineHeight;
+        width: $select-icon-width;
+        text-align: center;
+        transform: $select-icon-transform;
+        -webkit-transform: $select-icon-transform;
+        -moz-transform: $select-icon-transform;
+        -ms-transform: $select-icon-transform;
+        -o-transform: $select-icon-transform;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.84, M12=0, M21=0, M22=0.42, SizingMethod='auto expand')";
+        filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.84, M12=0, M21=0, M22=0.42, SizingMethod='auto expand');
+    }
+
+    &--small {
+        &:before {
+            top: map-get($select-icon-top, small);
+            bottom: map-get($select-icon-bottom, small);
+            right: map-get($select-icon-right, small);
+        }
+    }
+
+    &--default {
+        &:before {
+            top: map-get($select-icon-top, default);
+            bottom: map-get($select-icon-bottom, default);
+            right: map-get($select-icon-right, default);
+        }
+    }
+
+    &--large {
+        &:before {
+            top: map-get($select-icon-top, large);
+            bottom: map-get($select-icon-bottom, large);
+            right: map-get($select-icon-right, large);
+        }
+    }
+
+    select {
+        -webkit-appearance: none;
+        -moz-appearance:    none;
+        appearance:         none;
+        background: $select-background;
+        padding-right: $select-padding;
+        line-height: normal;
+    }
+
+}

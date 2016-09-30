@@ -19,6 +19,9 @@ module app.pages.main {
 
         static controllerId = 'mainApp.pages.main.MainController';
 
+        /*-- INJECT DEPENDENCIES --*/
+        //public static $inject = ['$scope'];
+
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/

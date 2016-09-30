@@ -37,8 +37,6 @@ $search-info-block-learning-height: 65px;
 
 $search-info-block-learning-title-marginTop: 0;
 
-$search-info-block-learning-options-language-margin: 2px;
-
 $search-info-block-about-padding: 0;
 $search-info-block-about-height: 100px;
 
@@ -58,6 +56,7 @@ $search-map-right: 0;
 $search-map-left: auto;
 $search-map-bottom: 0;
 $search-map-top: 61px;
+$search-map-padding: 0;
 
 
 /**********************************************************/
@@ -126,10 +125,6 @@ $search-map-top: 61px;
 
                 &__options {
                     text-align: center;
-
-                    .ma-label {
-                        margin: $search-info-block-fluent-options-language-margin;
-                    }
                 }
             }
 
@@ -192,6 +187,7 @@ $search-map-top: 61px;
         left: $search-map-left;
         bottom: $search-map-bottom;
         top: $search-map-top;
+        padding: $search-map-padding;
     }
 
 }

@@ -28,6 +28,9 @@
     },
     "angular-translate/angular-translate.d.ts": {
       "commit": "57ec5fbb76060329c10959d449eb1d4e70b15a65"
+    },
+    "googlemaps/google.maps.d.ts": {
+      "commit": "7c9f3114a756f052ca10caba615540d7b5eb19be"
     }
   }
 }

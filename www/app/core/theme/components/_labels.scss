@@ -31,24 +31,82 @@
         &--small {
             padding: map-get($label-box-paddings, small);
             font-size: map-get($label-font-sizes, small);
+
+            &--with-icon {
+                padding: map-get($label-box-withIcon-paddings, small);
+
+                &__icon {
+                    vertical-align: text-top;
+                    cursor: pointer;
+                    margin-left: map-get($label-box-withIcon-icon-margins, small);
+                    font-size: map-get($label-box-withIcon-icon-font-size, small);
+                    &:hover {
+                        color: map-get($main-palette, secondary);
+                    }
+                }
+            }
         }
 
         &--default {
             padding: map-get($label-box-paddings, default);
             font-size: map-get($label-font-sizes, default);
+
+            &--with-icon {
+                padding: map-get($label-box-withIcon-paddings, default);
+
+                &__icon {
+                    vertical-align: text-top;
+                    cursor: pointer;
+                    margin-left: map-get($label-box-withIcon-icon-margins, default);
+                    font-size: map-get($label-box-withIcon-icon-font-size, default);
+                    &:hover {
+                        color: map-get($main-palette, secondary);
+                    }
+                }
+            }
         }
 
         &--large {
             padding: map-get($label-box-paddings, large);
             font-size: map-get($label-font-sizes, large);
+
+            &--with-icon {
+                padding: map-get($label-box-withIcon-paddings, large);
+
+                &__icon {
+                    vertical-align: text-top;
+                    cursor: pointer;
+                    margin-left: map-get($label-box-withIcon-icon-margins, large);
+                    font-size: map-get($label-box-withIcon-icon-font-size, large);
+                    &:hover {
+                        color: map-get($main-palette, secondary);
+                    }
+                }
+            }
         }
 
         ///LABEL BOX COLOR
+
+        &--primary {
+            background: 0 0;
+            background-color: $label-box-primary-background;
+            color: $label-box-primary-font-color;
+        }
 
         &--secondary {
             background: 0 0;
             border: $label-box-secondary-border;
             color: $label-box-secondary-font-color;
+        }
+
+        ///SPACE BETWEEN LABELS
+
+        &--space2 {
+            margin: 2px;
+        }
+
+        &--space5 {
+            margin: 5px;
         }
 
     }
@@ -60,7 +118,6 @@
     &--simple {
         letter-spacing: 0;
         font-style: normal;
-        margin: 0;
 
         ///SIMPLE LABEL SIZE
 
@@ -87,4 +144,14 @@
         }
     }
 
+}
+
+
+/* LABELS CONTAINER */
+.ma-labels-box {
+    &--dashed {
+        border: $labelsBox-dashed-border;
+        min-height: $labelsBox-dashed-height;
+        padding: $labelsBox-dashed-padding;
+    }
 }

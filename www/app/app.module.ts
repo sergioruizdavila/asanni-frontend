@@ -16,7 +16,12 @@
             'mainApp.localStorage',
             'mainApp.pages.main',
             'mainApp.pages.signUpPage',
-            'mainApp.components.header'
+            'mainApp.pages.searchPage',
+            'mainApp.pages.userProfilePage',
+            'mainApp.pages.userEditProfilePage',
+            'mainApp.pages.userEditMediaPage',
+            'mainApp.components.header',
+            'mainApp.components.map'
         ])
         .config(config);
 
@@ -27,7 +32,7 @@
         /*$locationProvider.html5Mode(true);
         $locationProvider.hashPrefix('!');*/
 
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/page');
 
         /* Translate Provider */
         let prefix = 'assets/i18n/';
@@ -39,6 +44,7 @@
         });
 
         $translateProvider.preferredLanguage('es');
+
     }
 
 })();

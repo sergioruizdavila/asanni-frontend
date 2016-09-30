@@ -53,8 +53,8 @@
             <h4 style="text-decoration: none;
                            letter-spacing: 0;
                            font-style: normal;
-                           white-space: nowrap;">Paragraph 1</h4>
-            <p class="ma-p">
+                           white-space: nowrap;">Small Paragraph</h4>
+            <p class="ma-p ma-p--small">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque rutrum pulvinar magna, et iaculis neque posuere a. Suspendisse sit amet mollis nunc, nec faucibus ipsum. Nunc et nisl eget enim gravida sagittis. Donec massa nulla, tempor eu orci quis,
                 tincidunt tincidunt odio. Cras eleifend ex non arcu sollicitudin, ac rhoncus lectus sollicitudin. Donec auctor eu risus in tincidunt. In tincidunt erat volutpat dolor varius ullamcorper. Mauris laoreet orci eget purus pretium auctor. Duis
                 ex sem, vulputate ac tellus vel, posuere gravida nulla. Integer diam diam, luctus sit amet tellus in, eleifend viverra purus. Vestibulum commodo elit lorem, eget blandit sem placerat sed. Quisque eu metus iaculis, consequat augue id, auctor
@@ -65,8 +65,8 @@
             <h4 style="text-decoration: none;
                            letter-spacing: 0;
                            font-style: normal;
-                           white-space: nowrap;">Paragraph 2</h4>
-            <p class="ma-p">
+                           white-space: nowrap;">Default Paragraph</h4>
+            <p class="ma-p ma-p--default">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque rutrum pulvinar magna, et iaculis neque posuere a. Suspendisse sit amet mollis nunc, nec faucibus ipsum. Nunc et nisl eget enim gravida sagittis. Donec massa nulla, tempor eu orci quis,
                 tincidunt tincidunt odio. Cras eleifend ex non arcu sollicitudin, ac rhoncus lectus sollicitudin. Donec auctor eu risus in tincidunt. In tincidunt erat volutpat dolor varius ullamcorper. Mauris laoreet orci eget purus pretium auctor. Duis
                 ex sem, vulputate ac tellus vel, posuere gravida nulla. Integer diam diam, luctus sit amet tellus in, eleifend viverra purus. Vestibulum commodo elit lorem, eget blandit sem placerat sed. Quisque eu metus iaculis, consequat augue id, auctor
@@ -75,8 +75,610 @@
 
     </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <h4 style="text-decoration: none;
+                           letter-spacing: 0;
+                           font-style: normal;
+                           white-space: nowrap;">Large Paragraph</h4>
+            <p class="ma-p ma-p--large">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque rutrum pulvinar magna, et iaculis neque posuere a. Suspendisse sit amet mollis nunc, nec faucibus ipsum. Nunc et nisl eget enim gravida sagittis. Donec massa nulla, tempor eu orci quis,
+                tincidunt tincidunt odio. Cras eleifend ex non arcu sollicitudin, ac rhoncus lectus sollicitudin. Donec auctor eu risus in tincidunt. In tincidunt erat volutpat dolor varius ullamcorper. Mauris laoreet orci eget purus pretium auctor. Duis
+                ex sem, vulputate ac tellus vel, posuere gravida nulla. Integer diam diam, luctus sit amet tellus in, eleifend viverra purus. Vestibulum commodo elit lorem, eget blandit sem placerat sed. Quisque eu metus iaculis, consequat augue id, auctor
+                massa. Phasellus aliquet nec urna vitae.</p>
+        </div>
+    </div>
+
     <hr>
 
+
+    <!------------------------------>
+    <!--      FORM'S ELEMENT      -->
+    <!------------------------------>
+
+    <h2 style="text-decoration: none;
+                   letter-spacing: 0;
+                   font-style: normal;
+                   font-weight:bold;
+                   white-space: nowrap;">Element of Form</h2>
+
+    <!-- BASIC FORM -->
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="ma-box">
+
+                <h4 class="ma-box__title margin-reset">Basic Form</h4>
+
+                <div class="ma-box__content">
+
+                    <form class="ma-form ma-form--basic">
+
+                        <!-- Small Input Text -->
+                        <div class="form-group ma-form-group">
+                            <label for="smallInput1">Small Input Text</label>
+                            <input id="smallInput1" type="text"
+                                   class="ma-input
+                                          ma-input--small" placeholder="Name">
+                        </div>
+
+                        <!-- Default Input Text -->
+                        <div class="form-group ma-form-group">
+                            <label for="defaultInput1">Default Input Text</label>
+                            <input id="defaultInput1" type="text"
+                                   class="ma-input
+                                          ma-input--default" placeholder="Last Name">
+                        </div>
+
+                        <!-- Large Input Text -->
+                        <div class="form-group ma-form-group">
+                            <label for="largeInput1">Large Input Text</label>
+                            <input id="largeInput1" type="text"
+                                   class="ma-input
+                                          ma-input--large" placeholder="Last Name">
+                        </div>
+
+                        <!-- Input with Help Text -->
+                        <div class="form-group ma-form-group">
+                            <label for="inputWithHelpText1">Input with Help Text</label>
+                            <input id="inputWithHelpText1" type="text"
+                                   placeholder="Input with Help Text"
+                                   class="ma-input ma-input--default">
+                            <p class="ma-p ma-p--small space-top-1">
+                                The magical day you were dropped from the sky
+                                by a stork. We use this data for analysis and
+                                never share it with other users.
+                            </p>
+                        </div>
+
+                        <!-- Small Select Input -->
+                        <div class="form-group ma-form-group">
+                            <label for="smallSelect">Small Select</label>
+                            <div class="ma-select ma-select--small">
+                                <select id="smallSelect"
+                                        class="ma-input ma-input--small"
+                                        name="user[sex]">
+                                    <option value="">Carlos Eduardo</option>
+                                    <option value="Male" selected="selected">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Default Select Input -->
+                        <div class="form-group ma-form-group">
+                            <label for="smallSelect">Default Select</label>
+                            <div class="ma-select ma-select--default">
+                                <select id="smallSelect"
+                                        class="ma-input ma-input--default"
+                                        name="user[sex]">
+                                    <option value="">Gender</option>
+                                    <option value="Male" selected="selected">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Large Select Input -->
+                        <div class="form-group ma-form-group">
+                            <label for="smallSelect">Large Select</label>
+                            <div class="ma-select ma-select--large">
+                                <select id="smallSelect"
+                                        class="ma-input ma-input--large"
+                                        name="user[sex]">
+                                    <option value="">Gender</option>
+                                    <option value="Male" selected="selected">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- TextArea Input -->
+                        <div class="form-group ma-form-group">
+                            <label for="textarea1">Textarea Description</label>
+                            <textarea id="textarea1"
+                                      name="user_profile_info[about]"
+                                      class="ma-input ma-input--default"
+                                      placeholder="Last Name"rows="5" cols="40"></textarea>
+                        </div>
+
+                        <!-- Item Box -->
+                        <div class="form-group ma-form-group">
+                            <label for="itemBox1">Item Box</label>
+                            <div class="text-left ma-labels-box ma-labels-box--dashed">
+                                <div class="ma-label ma-label--box
+                                            ma-label--box--secondary
+                                            ma-label--box--default
+                                            ma-label--box--default--with-icon
+                                            ma-label--box--space2">
+                                    Item1
+                                    <i class="ma-label--box--default--with-icon__icon
+                                                  material-icons">clear</i>
+                                </div>
+                                <div class="ma-label ma-label--box
+                                            ma-label--box--secondary
+                                            ma-label--box--default
+                                            ma-label--box--default--with-icon
+                                            ma-label--box--space2">
+                                    Item2
+                                    <i class="ma-label--box--default--with-icon__icon
+                                              material-icons">clear</i>
+                                </div>
+                            </div>
+                            <div class="row margin-reset">
+                                <div class="col-sm-8 padding-reset">
+                                    <p class="ma-p ma-p--small space-top-1 margin-reset">
+                                        The magical day you were dropped from the sky
+                                        by a stork. We use this data for analysis and
+                                        never share it with other users.
+                                    </p>
+                                </div>
+                                <div class="col-sm-4 padding-reset">
+                                    <a class="ma-link ma-link--box space-top-1 pull-right"
+                                       href="#">
+                                        + Add More
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- HORIZONTAL FORM -->
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="ma-box">
+
+                <h4 class="ma-box__title margin-reset">Horizontal Form</h4>
+
+                <div class="ma-box__content">
+
+                    <form class="form-horizontal
+                                 ma-form--horizontal">
+
+                        <!-- Small Input Text -->
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--small">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                   for="smallInput2">Small Input Text</label>
+                            <div class="col-xs-9 col-sm-9">
+                                <input id="smallInput2"
+                                       type="text"
+                                       class="ma-input ma-input--small">
+                            </div>
+                        </div>
+
+                        <!-- Default Input Text -->
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--default">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                   for="defaultInput2">Default Input Text</label>
+                            <div class="col-xs-9 col-sm-9">
+                                <input id="defaultInput2"
+                                       type="text"
+                                       class="ma-input ma-input--default">
+                            </div>
+                        </div>
+
+                        <!-- Large Input Text -->
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--large">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                   for="largeInput2">Large Input Text</label>
+                            <div class="col-xs-9 col-sm-9">
+                                <input id="largeInput2"
+                                       type="text"
+                                       class="ma-input ma-input--large">
+                            </div>
+                        </div>
+
+                        <!-- Input with Help Text -->
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--default">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                   for="inputWithHelpText2">Input with Help Text</label>
+                            <div class="col-xs-9 col-sm-9">
+                                <input id="inputWithHelpText2"
+                                       type="text"
+                                       class="ma-input ma-input--default">
+                                <p class="ma-p ma-p--small space-top-1">
+                                    The magical day you were dropped from the sky
+                                    by a stork. We use this data for analysis and
+                                    never share it with other users.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Small Select Input -->
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--small">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                   for="smallSelect">Small Select</label>
+                            <div class="col-xs-9 col-sm-9">
+                                <div class="ma-select ma-select--small">
+                                    <select id="smallSelect"
+                                            class="ma-input ma-input--small"
+                                            name="user[sex]">
+                                        <option value="">Carlos Eduardo</option>
+                                        <option value="Male" selected="selected">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Default Select Input -->
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--default">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                   for="defaultSelect">Default Select</label>
+                            <div class="col-xs-9 col-sm-9">
+                                <div class="ma-select ma-select--default">
+                                    <select id="defaultSelect"
+                                            class="ma-input ma-input--default"
+                                            name="user[sex]">
+                                        <option value="Male" selected="selected">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Large Select Input -->
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--large">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                   for="largeSelect">Large Select</label>
+                            <div class="col-xs-9 col-sm-9">
+                                <div class="ma-select ma-select--large">
+                                    <select id="largeSelect"
+                                            class="ma-input ma-input--large"
+                                            name="user[sex]">
+                                        <option value="Male" selected="selected">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Select Input with Help Text-->
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--default">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                   for="largeSelect">Select with Help Text</label>
+                            <div class="col-xs-9 col-sm-9">
+                                <div class="ma-select ma-select--default">
+                                    <select id="largeSelect"
+                                            class="ma-input ma-input--default"
+                                            name="user[sex]">
+                                        <option value="Male" selected="selected">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <p class="ma-p ma-p--small space-top-1">
+                                    The magical day you were dropped from the sky
+                                    by a stork. We use this data for analysis and
+                                    never share it with other users
+                                    <a href="#" class="ma-link ma-link--box">Learn more</a>.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Birthday Select Input with Help Text -->
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--default">
+                            <label class="text-right col-xs-3 col-sm-3">Birth Date</label>
+                            <div class="col-xs-9 col-sm-9">
+                                <div class="ma-select ma-select--default">
+                                    <select id="month"
+                                            class="ma-input ma-input--default"
+                                            name="user[month]">
+                                        <option value="January" selected="selected">January</option>
+                                        <option value="February">February</option>
+                                        <option value="March">March</option>
+                                    </select>
+                                </div>
+                                <div class="ma-select ma-select--default">
+                                    <select id="day"
+                                            class="ma-input ma-input--default"
+                                            name="user[day]">
+                                        <option value="1" selected="selected">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="31">31</option>
+                                    </select>
+                                </div>
+                                <div class="ma-select ma-select--default">
+                                    <select id="year"
+                                            class="ma-input ma-input--default"
+                                            name="user[year]">
+                                        <option value="1987" selected="selected">1987</option>
+                                        <option value="1988">1988</option>
+                                        <option value="1989">1989</option>
+                                        <option value="1990">1990</option>
+                                    </select>
+                                </div>
+                                <p class="ma-p ma-p--small space-top-1">
+                                    The magical day you were dropped from the sky
+                                    by a stork. We use this data for analysis and
+                                    never share it with other users
+                                    <a href="#" class="ma-link ma-link--box">Learn more</a>.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- TextArea Input -->
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--default">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                   for="textarea2">Description Text</label>
+                            <div class="col-xs-9 col-sm-9">
+                                <textarea id="textarea2"
+                                          name="user_profile_info[about]"
+                                          class="ma-input ma-input--default"
+                                          style="resize: vertical;"
+                                          placeholder="Last Name"rows="5" cols="40"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Item Box -->
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--small
+                                    space-6">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                   for="itemBox2">Item Box</label>
+                            <div class="col-xs-9 col-sm-9">
+                                <div class="text-left ma-labels-box ma-labels-box--dashed">
+                                    <div class="ma-label ma-label--box
+                                                ma-label--box--secondary
+                                                ma-label--box--default
+                                                ma-label--box--default--with-icon
+                                                ma-label--box--space2">
+                                        Item1
+                                        <i class="ma-label--box--default--with-icon__icon
+                                                  material-icons">clear</i>
+                                    </div>
+                                    <div class="ma-label ma-label--box
+                                                ma-label--box--secondary
+                                                ma-label--box--default
+                                                ma-label--box--default--with-icon
+                                                ma-label--box--space2">
+                                        Item2
+                                        <i class="ma-label--box--default--with-icon__icon
+                                                  material-icons">clear</i>
+                                    </div>
+                                </div>
+                                <div class="row margin-reset">
+                                    <div class="col-sm-8 padding-reset">
+                                        <p class="ma-p ma-p--small space-top-1 margin-reset">
+                                            The magical day you were dropped from the sky
+                                            by a stork. We use this data for analysis and
+                                            never share it with other users.
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-4 padding-reset">
+                                        <a class="ma-link ma-link--box space-top-1 pull-right"
+                                           href="#">
+                                            + Add More
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- SWITCH BLOCK -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="ma-box">
+
+                <h4 class="ma-box__title margin-reset">Switch Block</h4>
+
+                <div class="ma-box__content">
+
+                    <h5 style="text-decoration: none;
+                                   letter-spacing: 0;
+                                   font-style: normal;
+                                   font-weight:bold;
+                                   white-space: nowrap;">ON Switch</h2>
+
+                    <div class="ma-switch">
+                        <button class="ma-btn ma-switch__btn"
+                                disabled="disabled" value="1">
+                            ON
+                        </button>
+                        <button class="ma-btn ma-switch__btn"
+                                value="0">
+                            OFF
+                        </button>
+                    </div>
+
+                    <hr>
+
+                    <h5 style="text-decoration: none;
+                                   letter-spacing: 0;
+                                   font-style: normal;
+                                   font-weight:bold;
+                                   white-space: nowrap;">OFF Switch</h2>
+
+                    <div class="ma-switch">
+                        <button class="ma-btn ma-switch__btn"
+                                value="1">
+                            ON
+                        </button>
+                        <button class="ma-btn ma-switch__btn"
+                                disabled="disabled" value="0">
+                            OFF
+                        </button>
+                    </div>
+
+                    <hr>
+
+                    <h5 style="text-decoration: none;
+                                   letter-spacing: 0;
+                                   font-style: normal;
+                                   font-weight:bold;
+                                   white-space: nowrap;">Switch 3 options (First Option Checked)</h2>
+
+                    <div class="ma-switch">
+                        <button class="ma-btn ma-switch__btn"
+                                disabled="disabled"  value="1">
+                            Daily
+                        </button>
+                        <button class="ma-btn ma-switch__btn"
+                                value="2">
+                            Weekly
+                        </button>
+                        <button class="ma-btn ma-switch__btn"
+                                value="0">
+                            OFF
+                        </button>
+                    </div>
+
+                    <hr>
+
+                    <h5 style="text-decoration: none;
+                                   letter-spacing: 0;
+                                   font-style: normal;
+                                   font-weight:bold;
+                                   white-space: nowrap;">Switch 3 options (Second Option Checked)</h2>
+
+                    <div class="ma-switch">
+                        <button class="ma-btn ma-switch__btn"
+                                value="1">
+                            Daily
+                        </button>
+                        <button class="ma-btn ma-switch__btn"
+                                disabled="disabled" value="2">
+                            Weekly
+                        </button>
+                        <button class="ma-btn ma-switch__btn"
+                                value="0">
+                            OFF
+                        </button>
+                    </div>
+
+                    <hr>
+
+                    <h5 style="text-decoration: none;
+                                   letter-spacing: 0;
+                                   font-style: normal;
+                                   font-weight:bold;
+                                   white-space: nowrap;">Switch 3 options (Third Option Checked)</h2>
+
+                    <div class="ma-switch">
+                        <button class="ma-btn ma-switch__btn"
+                                value="1">
+                            Daily
+                        </button>
+                        <button class="ma-btn ma-switch__btn"
+                                value="2">
+                            Weekly
+                        </button>
+                        <button class="ma-btn ma-switch__btn"
+                                disabled="disabled" value="0">
+                            OFF
+                        </button>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-sm-8 col-md-8">
+                            <h5 style="text-decoration: none;
+                                           letter-spacing: 0;
+                                           font-style: normal;
+                                           font-weight:bold;
+                                           white-space: nowrap;">Switch 3 options with Help Text</h2>
+                            <p class="ma-p ma-p--small">
+                                The magical day you were dropped from the sky
+                                by a stork. We use this data for analysis and
+                                never share it with other users.
+                            </p>
+                        </div>
+                        <div class="col-sm-4 col-md-4 text-right">
+                            <div class="ma-switch">
+                                <button class="ma-btn ma-switch__btn"
+                                        value="1">
+                                    Daily
+                                </button>
+                                <button class="ma-btn ma-switch__btn"
+                                        value="2">
+                                    Weekly
+                                </button>
+                                <button class="ma-btn ma-switch__btn"
+                                        disabled="disabled" value="0">
+                                    OFF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <!------------------------------>
     <!--    BUTTONS AND LINKS     -->
@@ -108,7 +710,7 @@
 
     <button class="ma-btn ma-btn--secondary ma-btn--large" disabled="true">large secondary</button>
 
-    <a class="ma-link" href="#">See more link...</a>
+    <a class="ma-link ma-link--box" href="#">See more link...</a>
 
     <hr>
 
@@ -129,9 +731,53 @@
                       font-style: normal;
                       white-space: nowrap;">Label Box</h3>
 
-        <div class="ma-label ma-label--box ma-label--box--secondary ma-label--box--small">small box label</div>
-        <div class="ma-label ma-label--box ma-label--box--secondary ma-label--box--default">default box label</div>
-        <div class="ma-label ma-label--box ma-label--box--secondary ma-label--box--large">large box label</div>
+        <div class="ma-label
+                    ma-label--box
+                    ma-label--box--secondary
+                    ma-label--box--small
+                    ma-label--box--space5">small label box</div>
+        <div class="ma-label
+                    ma-label--box
+                    ma-label--box--secondary
+                    ma-label--box--default
+                    ma-label--box--space5">default label box</div>
+        <div class="ma-label
+                    ma-label--box
+                    ma-label--box--secondary
+                    ma-label--box--large
+                    ma-label--box--space5">large label box</div>
+    </div>
+
+    <div class="row margin-reset">
+        <h3>Label Box with Icon</h3>
+        <div class="ma-label ma-label--box
+                    ma-label--box--secondary
+                    ma-label--box--small
+                    ma-label--box--small--with-icon
+                    ma-label--box--space5">
+             Small Label Box
+             <i class="ma-label--box--small--with-icon__icon
+                               material-icons">clear</i>
+         </div>
+         <div class="ma-label ma-label--box
+                     ma-label--box--secondary
+                     ma-label--box--default
+                     ma-label--box--default--with-icon
+                     ma-label--box--space5">
+              Default Label Box
+              <i class="ma-label--box--default--with-icon__icon
+                                material-icons">clear</i>
+          </div>
+          <div class="ma-label ma-label--box
+                      ma-label--box--secondary
+                      ma-label--box--large
+                      ma-label--box--large--with-icon
+                      ma-label--box--space5">
+               Large Label Box
+               <i class="ma-label--box--large--with-icon__icon
+                                 material-icons">clear</i>
+           </div>
+
     </div>
 
     <div class="row margin-reset">
@@ -140,9 +786,11 @@
                       font-style: normal;
                       white-space: nowrap;">Simple Label</h3>
 
-        <div class="ma-label ma-label--simple ma-label--simple--small">small simple label</div> ·
-        <div class="ma-label ma-label--simple ma-label--simple--default">default simple label</div> ·
-        <div class="ma-label ma-label--simple ma-label--simple--large">large simple label</div>
+        <div class="ma-label ma-label--simple ma-label--simple--small margin-reset">small simple label</div>
+        <strong class="point-separate"></strong>
+        <div class="ma-label ma-label--simple ma-label--simple--default margin-reset">default simple label</div>
+        <strong class="point-separate"></strong>
+        <div class="ma-label ma-label--simple ma-label--simple--large margin-reset">large simple label</div>
     </div>
 
     <hr>
@@ -220,6 +868,37 @@
         <i class="material-icons ma-stars__icon ma-stars__icon--large">star_half</i>
         <i class="material-icons ma-stars__icon ma-stars__icon--large">star_border</i>
 
+    </div>
+
+    <!-- Stars with Amount reviews -->
+    <div class="row margin-reset">
+
+        <h3 style="text-decoration: none;
+                      letter-spacing: 0;
+                      font-style: normal;
+                      white-space: nowrap;">Stars with Amount reviews</h3>
+
+        <div class="ma-stars-withLabel">
+            <div class="ma-stars">
+                <i class="material-icons ma-stars__icon
+                        ma-stars__icon--tiny">star</i>
+                <i class="material-icons ma-stars__icon
+                        ma-stars__icon--tiny">star</i>
+                <i class="material-icons ma-stars__icon
+                        ma-stars__icon--tiny">star</i>
+                <i class="material-icons ma-stars__icon
+                        ma-stars__icon--tiny">star_half</i>
+                <i class="material-icons ma-stars__icon
+                        ma-stars__icon--tiny">star_border</i>
+            </div>
+            <div class="ma-stars-withLabel__label-container">
+                <div class="ma-label
+                          ma-label--simple
+                          ma-label--simple--small
+                          ma-label--simple--gray
+                          margin-reset">(33 reviews)</div>
+            </div>
+        </div>
     </div>
 
     <hr>
