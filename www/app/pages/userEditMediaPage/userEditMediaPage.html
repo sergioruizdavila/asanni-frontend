@@ -1,0 +1,118 @@
+<!--------------------------------------------->
+<!--           USER EDIT PROFILE PAGE        -->
+<!--------------------------------------------->
+
+<div class="userEditMediaPage container">
+
+    <div class="row">
+
+        <!--                     START: LEFT COLUMN                          -->
+        <!--------------------------------------------------------------------->
+        <div id="userEditMedia-left-column" class="col-md-3 col-lg-3">
+
+            <!--------------------- START: LEFT MENU BLOCK -------------------->
+            <div id="userEditMedia-menu-block"
+                 class="userEditMediaPage__block row">
+
+                <div class="col-md-12">
+
+                    <div class="ma-box ma-box">
+
+                        <div class="ma-box__content ma-box__content--padding-reset">
+                            <div class="menu-box">
+                                <div class="menu-box__item"
+                                     ng-click="vm.goToEditProfile()">
+                                    Edit Profile
+                                </div>
+                                <div class="menu-box__item menu-box__item--active">
+                                    Edit Photo
+                                </div>
+                                <div class="menu-box__item"
+                                     ng-click="vm.goToEditAgenda()">
+                                    Edit Agenda
+                                </div>
+                                <div class="menu-box__item menu-box__item--with-button">
+                                    <a class="ma-btn ma-btn--primary ma-btn--block"
+                                       ui-sref="page.userProfilePage({id: '1'})"
+                                       href="#/page/users/show/1">Ver Perfil</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <!--                    END: LEFT MENU BLOCK                     -->
+
+        </div>
+        <!--                        END: LEFT COLUMN                         -->
+
+
+
+        <!--                     START: MIDDLE COLUMN                        -->
+        <!--------------------------------------------------------------------->
+        <div id="userEditMedia-middle-column" class="col-md-9 col-lg-9">
+
+            <!------------------ START: PROFILE PHOTO BLOCK ------------------->
+            <div id="userEditMedia-profilePhoto-block"
+                 class="userEditMediaPage__block row">
+
+                <div class="col-md-12">
+
+                    <div class="ma-box profile-photo-box">
+
+                        <h4 class="ma-box__title margin-reset">Profile Photo</h4>
+
+                        <!-- Photo -->
+                        <div class="ma-box__content">
+
+                            <div class="row margin-reset">
+                                <div class="col-lg-4 text-center">
+                                    <div class="userEditMediaPage__block__background
+                                                ma-photo-profile
+                                                ma-photo-profile--large">
+                                        <img width="240" height="240"
+                                             src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg"
+                                             alt="Sergio Ruiz">
+                                    </div>
+                                    <div class="ma-photo-profile
+                                                ma-photo-profile--large
+                                                round">
+                                        <img width="240" height="240"
+                                             src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg"
+                                             alt="Sergio Ruiz">
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 space-top-5 space-4">
+                                    <p class="ma-p ma-p--default">
+                                        Clear frontal face photos are an important way for hosts and guests
+                                        to learn about each other. It’s not much fun to host a landscape!
+                                        Please upload a photo that clearly shows your face.
+                                    </p>
+                                    <div class="row space-top-5">
+                                        <div class="col-md-12 text-center">
+                                            <a href="#" ui-sref="signUp"
+                                               class="ma-btn ma-btn--secondary
+                                                      ma-btn--large">
+                                               Upload a file from your computer
+                                           </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <!--                  END: PROFILE PHOTO BLOCK                   -->
+
+        </div>
+        <!--                      END: MIDDLE COLUMN                         -->
+
+    </div>
+
+</div>

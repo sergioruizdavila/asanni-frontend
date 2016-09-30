@@ -19,6 +19,7 @@
             'mainApp.pages.searchPage',
             'mainApp.pages.userProfilePage',
             'mainApp.pages.userEditProfilePage',
+            'mainApp.pages.userEditMediaPage',
             'mainApp.components.header',
             'mainApp.components.map'
         ])
