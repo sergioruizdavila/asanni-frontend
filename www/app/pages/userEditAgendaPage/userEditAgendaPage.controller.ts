@@ -1,42 +1,42 @@
 /**
- * userEditMediaPageController
- * @description - User Edit Medi Page Controller
+ * userEditAgendaPageController
+ * @description - User Edit Agenda Page Controller
  */
 
-module app.pages.userEditMediaPage {
+module app.pages.userEditAgendaPage {
 
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
-    export interface IUserEditMediaPageController {
-        form: IUserEditMediaForm;
-        error: IUserEditMediaError;
+    export interface IUserEditAgendaPageController {
+        form: IUserEditAgendaForm;
+        error: IUserEditAgendaError;
         activate: () => void;
         goToEditProfile: () => void;
-        goToEditAgenda: () => void;
+        goToEditMedia: () => void;
     }
 
-    export interface IUserEditMediaForm {
+    export interface IUserEditAgendaForm {
         username: string;
         email: string;
     }
 
-    export interface IUserEditMediaError {
+    export interface IUserEditAgendaError {
         message: string;
     }
 
     /****************************************/
     /*           CLASS DEFINITION           */
     /****************************************/
-    export class UserEditMediaPageController implements IUserEditMediaPageController {
+    export class UserEditAgendaPageController implements IUserEditAgendaPageController {
 
-        static controllerId = 'mainApp.pages.userEditMediaPage.UserEditMediaPageController';
+        static controllerId = 'mainApp.pages.userEditAgendaPage.UserEditAgendaPageController';
 
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
-        form: IUserEditMediaForm;
-        error: IUserEditMediaError;
+        form: IUserEditAgendaForm;
+        error: IUserEditAgendaError;
         // --------------------------------
 
 
@@ -77,7 +77,7 @@ module app.pages.userEditMediaPage {
         /*-- ACTIVATE METHOD --*/
         activate(): void {
             //LOG
-            console.log('userEditMediaPage controller actived');
+            console.log('userEditAgendaPage controller actived');
         }
 
         /**********************************/
@@ -90,25 +90,24 @@ module app.pages.userEditMediaPage {
         * menu option
         */
         goToEditProfile(): void {
-            // Go to next page on calls stack
             this.$state.go('page.userEditProfilePage');
         }
 
 
         /*
-        * Go to edit agenda page
-        * @description this method is launched when user press 'Edit Agenda'
+        * Go to edit media page
+        * @description this method is launched when user press 'Edit Media'
         * menu option
         */
-        goToEditAgenda(): void {
-            this.$state.go('page.userEditAgendaPage');
+        goToEditMedia(): void {
+            this.$state.go('page.userEditMediaPage');
         }
 
     }
 
     /*-- MODULE DEFINITION --*/
     angular
-        .module('mainApp.pages.userEditMediaPage')
-        .controller(UserEditMediaPageController.controllerId, UserEditMediaPageController);
+        .module('mainApp.pages.userEditAgendaPage')
+        .controller(UserEditAgendaPageController.controllerId, UserEditAgendaPageController);
 
 }

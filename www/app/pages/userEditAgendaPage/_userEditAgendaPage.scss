@@ -1,0 +1,28 @@
+/*************************/
+/*       VARIABLES       */
+/*************************/
+$userEditAgenda-padding: 20px;
+$userEditAgenda-block-margin: 20px;
+
+$userEditAgenda-block-background-top: 0;
+$userEditAgenda-block-background-opacity: 0.3;
+
+
+/**********************************************************/
+/*                   USER EDIT MEDIA PAGE                 */
+/**********************************************************/
+
+.userEditAgendaPage {
+    padding-top: $userEditAgenda-padding;
+
+    &__block {
+        margin-bottom: $userEditAgenda-block-margin;
+
+        &__background {
+            position: absolute;
+            top: $userEditAgenda-block-background-top;
+            left: auto;
+            opacity: $userEditAgenda-block-background-opacity;
+        }
+    }
+}

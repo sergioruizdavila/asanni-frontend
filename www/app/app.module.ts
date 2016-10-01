@@ -20,6 +20,7 @@
             'mainApp.pages.userProfilePage',
             'mainApp.pages.userEditProfilePage',
             'mainApp.pages.userEditMediaPage',
+            'mainApp.pages.userEditAgendaPage',
             'mainApp.components.header',
             'mainApp.components.map'
         ])
