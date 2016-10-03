@@ -23,15 +23,19 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     transition: background 300ms ease-out;
-    padding: map-get($button-paddings, default);
-    font-size: map-get($button-font-sizes, default);
-
+    outline: none;
+    box-shadow: none;
 
     ///BUTTON_SIZE
 
     &--small {
         padding: map-get($button-paddings, small);
         font-size: map-get($button-font-sizes, small);
+    }
+
+    &--default {
+        padding: map-get($button-paddings, default);
+        font-size: map-get($button-font-sizes, default);
     }
 
     &--large {

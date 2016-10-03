@@ -1,0 +1,146 @@
+.ma-agenda {
+
+    /* TOOLBAR */
+    .fc-toolbar {
+        .fc-button {
+            @extend .ma-btn;
+            @extend .ma-btn--secondary;
+        }
+
+        .fc-center {
+            h2 {
+                color: #999;
+            }
+        }
+
+        .fc-agendaDay-button {
+            display: none!important;
+        }
+    }
+
+    /* CALENDAR */
+    .fc-view {
+
+        /*calendar header (months list)*/
+        .fc-head-container {
+            border-top: 0 hidden transparent;
+            border-left: 0 hidden transparent;
+            border-right: 0 hidden transparent;
+            border-color: #eee;
+
+            .fc-row {
+
+                .fc-day-header {
+                    border: 0 hidden transparent;
+                    text-align: left;
+
+                    span {
+                        color: #ddd;
+                        border: 0;
+                        font-size: 12px;
+                        font-weight: normal;
+                    }
+                }
+            }
+
+        }
+
+        /* body */
+        .fc-body {
+            border-color: #eee;
+
+            .fc-widget-content {
+                border-color: #eee;
+
+                .fc-row {
+
+                    .fc-bg {
+                        /* days */
+                        .fc-day {
+                            border-color: #eee;
+                        }
+                        /* today */
+                        .fc-today {
+                            background-color: rgba(0, 181, 146, 0.47);
+                        }
+                        /* disabled days */
+                        .fc-past {
+                            background-color: #eee;
+                        }
+                    }
+
+                    .fc-content-skeleton {
+
+                        .fc-day-top {
+                            .fc-day-number {
+                                color: $dark-gray;
+                            }
+                        }
+
+                        .fc-today {
+                            .fc-day-number {
+                                color: $white;
+                                font-weight: bold;
+                            }
+                        }
+
+                        .fc-event-container {
+                            /* event label*/
+                            .fc-event {
+                                padding: 4px;
+                                background-color: map-get($main-palette, primary);
+                                border: 0 hidden transparent;
+                            }
+                        }
+                    }
+                }
+
+                .fc-time-grid-container {
+
+                    .fc-content-skeleton {
+
+                        .fc-event-container {
+                            /* event label*/
+                            .fc-event {
+                                padding: 4px;
+                                background-color: map-get($main-palette, primary);
+                                border: 0 hidden transparent;
+                                font-size: 15px;
+                            }
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+    .fc-agendaDay-view {
+
+        /*calendar header on agendaDay view */
+        .fc-head-container {
+
+            .fc-row {
+                border-right: 0 hidden transparent;
+
+                .fc-day-header {
+                    border: 0 hidden transparent;
+                    text-align: left;
+
+                    span {
+                        color: #ddd;
+                        border: 0;
+                        font-size: 15px;
+                        font-weight: normal;
+                    }
+                }
+            }
+
+        }
+    }
+
+
+}

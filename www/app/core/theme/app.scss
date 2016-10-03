@@ -8,9 +8,13 @@
 //---------------------------------------------------
 // Boostrap 3 Style
 @import '../../../bower_components/bootstrap/dist/css/bootstrap.css';
+// Angular UI Calendar Styles
+@import '../../../bower_components/fullcalendar/dist/fullcalendar.css';
 
 // MainApp Components
 // --------------------------------------------------
+// agenda Style
+@import 'components/agenda';
 // box Style
 @import 'components/box';
 // buttons Style

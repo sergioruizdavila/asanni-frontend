@@ -13,7 +13,8 @@
         'ngResource',
         'ui.router',
         /*3rd Party*/
-        'pascalprecht.translate'
+        'pascalprecht.translate',
+        'ui.calendar'
     ]);
 
 })();

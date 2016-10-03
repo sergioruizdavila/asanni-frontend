@@ -16,6 +16,13 @@ module app.pages.userEditAgendaPage {
         goToEditMedia: () => void;
     }
 
+    export interface IUserEditAgendaScope extends angular.IScope {
+        calendarConfig: any;
+        eventSources: any;
+        events: any;
+        changeView: any;
+    }
+
     export interface IUserEditAgendaForm {
         username: string;
         email: string;
@@ -44,7 +51,8 @@ module app.pages.userEditAgendaPage {
         public static $inject = [
             '$state',
             '$filter',
-            '$scope'];
+            '$scope',
+            'uiCalendarConfig'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -52,7 +60,8 @@ module app.pages.userEditAgendaPage {
         constructor(
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
-            private $scope: angular.IScope) {
+            private $scope: IUserEditAgendaScope,
+            private uiCalendarConfig) {
 
             this._init();
 
@@ -60,6 +69,8 @@ module app.pages.userEditAgendaPage {
 
         /*-- INITIALIZE METHOD --*/
         private _init() {
+
+            let self = this;
 
             //Init form
             this.form = {
@@ -70,6 +81,55 @@ module app.pages.userEditAgendaPage {
             this.error = {
                 message: ''
             };
+
+            //Calendar Config
+            this.$scope.calendarConfig = {
+                calendar: {
+                    editable: true,
+                    header: {
+                     left: 'prev',
+                     center: 'title',
+                     right: 'month, agendaDay, next'
+                    },
+                    slotDuration: '01:00:00',
+                    slotLabelFormat: 'h(:mm) a',
+                    navLinks: true,
+                    allDaySlot: false,
+                    events: [
+     				    {
+                            title: 'Rosa',
+                            start: '2016-10-12T17:00:00',
+                            end: '2016-10-12T18:00:00',
+                            editable: false
+                        },
+                        {
+                            title: 'Carlos',
+                            start: '2016-10-20T20:00:00',
+                            end: '2016-10-20T21:00:00',
+                            editable: false
+                        },
+                        {
+                            title: 'Michaelson',
+                            start: '2016-10-23T07:00:00',
+                            end: '2016-10-23T08:00:00',
+                            editable: false
+                        }
+                    ],
+                    timeFormat: 'h:mm a',
+                    buttonText: {
+                        month: 'view calendar'
+                    }
+                }
+            };
+
+            /* Change View */
+            this.$scope.changeView = function(view,calendar) {
+              self.uiCalendarConfig.calendars['userAgenda'].fullCalendar('changeView','agendaDay');
+            };
+
+
+            //Agenda sources
+            this.$scope.eventSources = [];
 
             this.activate();
         }

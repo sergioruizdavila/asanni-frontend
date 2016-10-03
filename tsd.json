@@ -31,6 +31,9 @@
     },
     "googlemaps/google.maps.d.ts": {
       "commit": "7c9f3114a756f052ca10caba615540d7b5eb19be"
+    },
+    "fullCalendar/fullCalendar.d.ts": {
+      "commit": "2c65d5ca7267fda6d49a3b447c8b089632fb5358"
     }
   }
 }
