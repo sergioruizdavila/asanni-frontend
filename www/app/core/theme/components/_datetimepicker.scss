@@ -10,41 +10,42 @@
         /* TABLE HEAD (BUTTONS LEFT, RIGHT, MONTH) */
         thead {
             .left, .right  {
-                color: map-get($main-palette, primary);
-                font-size: 20px;
+                color: $datetimepicker-head-button-font-color;
+                font-size: $datetimepicker-head-button-font-size;
                 &:hover {
-                    color: map-get($main-palette, secondary);
-                    background-color: transparent;
+                    color: $datetimepicker-head-button-font-color-hover;
+                    background-color: $datetimepicker-head-button-background-hover;
                 }
             }
         }
 
         td, span {
-            border-radius: 0;
+            border-radius: $datetimepicker-span-radius;
         }
 
         /* DAYS TITLES ON EACH COLUMN */
         th.dow {
-            color: #00B592;
+            color: $datetimepicker-titleDays-font-color;
             font-weight: normal;
             text-shadow: none;
         }
 
         /*TITLE BLOCK*/
         .switch {
-            color: #00B592;
-            font-size: 20px;
+            color: $datetimepicker-switch-font-color;
+            font-size: $datetimepicker-head-button-font-size;
         }
 
+        /*CURRENT DAY (TODAY)*/
         .current {
-            background-color: rgba(0,181,146,0.47);
-            color: $white;
+            background-color: $datetimepicker-currentDay-background;
+            color: $datetimepicker-currentDay-font-color;
         }
 
         .active, .active:hover {
             background-color: map-get($main-palette, primary);
-            color: $white;
-            border: 0 hidden transparent;
+            color: $datetimepicker-activeDay-font-color;
+            border: $datetimepicker-activeDay-border;
             background-image: none;
             text-shadow: none;
         }
