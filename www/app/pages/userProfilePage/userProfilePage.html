@@ -53,7 +53,7 @@
                                               material-icons md-30
                                               md-primary">check</i>
                                     <div class="verified-box__item__text">
-                                        6 Reviews
+                                        33 Reviews
                                     </div>
                                 </div>
                                 <div class="verified-box__item">
@@ -502,41 +502,66 @@
                 <div class="col-md-12">
 
                     <div class="ma-box">
-                        <h4 class="ma-box__title margin-reset">Meet with me</h4>
+                        <h4 class="ma-box__title margin-reset">Exchange Language</h4>
                         <div class="ma-box__content">
                             <div class="verified-box">
 
-                                <!-- DateTimePicker Dropdown -->
-                                <div class="dropdown">
+                                <div class="row space-2">
+                                    <div class="col-md-12">
+                                        <!-- DateTimePicker Dropdown -->
+                                        <label for="meeting-date-input">
+                                            Meeting Date
+                                        </label>
+                                        <div class="dropdown">
 
-                                    <button id="dLabel"
-                                       class="dropdown-toggle my-toggle-select"
-                                       role="button" data-toggle="dropdown">
+                                            <div id="dateBlock"
+                                               class="dropdown-toggle my-toggle-select"
+                                               role="button" data-toggle="dropdown">
 
-                                       <div class="input-append">
-                                           <input type="text"
-                                                  class="ma-input ma-input--default"
-                                                  data-ng-model="data.date">
-                                                  <!-- TODO: http://indrimuska.github.io/angular-moment-picker/ -->
-                                       </div>
+                                               <div class="input-append">
+                                                   <input id="meeting-date-input"
+                                                          type="text"
+                                                          placeholder="dd/mm/yyyy"
+                                                          class="ma-input ma-input--default"
+                                                          data-ng-model="data.date">
+                                               </div>
+                                           </div>
 
-                                   </button>
+                                            <ul class="dropdown-menu dropdown-menu-right"
+                                                role="menu"
+                                                aria-labelledby="dateBlock">
+                                                <datetimepicker class="ma-datetimepicker"
+                                                                data-ng-model="data.date"
+                                                                data-datetimepicker-config="vm.$scope.datetimepickerConfig"
+                                                                data-on-set-time="vm.onTimeSet(newDate, oldDate)"
+                                                                data-before-render="vm.beforeRender($view, $dates, $leftDate, $upDate, $rightDate)">
+                                                </datetimepicker>
+                                            </ul>
 
-                                    <ul class="dropdown-menu dropdown-menu-right"
-                                        role="menu"
-                                        aria-labelledby="dLabel">
-                                        <datetimepicker class="ma-datetimepicker"
-                                                        data-ng-model="data.date"
-                                                        data-datetimepicker-config="vm.$scope.datetimepickerConfig"
-                                                        data-on-set-time="vm.onTimeSet(newDate, oldDate)"
-                                                        data-before-render="vm.beforeRender($view, $dates, $leftDate, $upDate, $rightDate)">
-                                        </datetimepicker>
-                                    </ul>
-
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <a class="ma-btn ma-btn--primary
-                                          ma-btn--large ma-btn--block" href="#">Meet me</a>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <a class="ma-btn ma-btn--primary
+                                                  ma-btn--large ma-btn--block"
+                                                  href="#">Invite to exchange</a>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <p class="ma-p ma-p--small margin-reset">
+                                            <strong>70</strong> successful meetings
+                                        </p>
+                                    </div>
+                                </div>
+
+
+
                             </div>
                         </div>
                     </div>
