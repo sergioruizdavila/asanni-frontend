@@ -14,7 +14,8 @@
         'ui.router',
         /*3rd Party*/
         'pascalprecht.translate',
-        'ui.calendar'
+        'ui.calendar',
+        'ui.bootstrap.datetimepicker'
     ]);
 
 })();
