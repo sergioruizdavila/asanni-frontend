@@ -33,60 +33,20 @@
 
 
 
-<!--------------------------------------------->
-<!--          USER EDIT AGENDA PAGE          -->
-<!--------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!--                        USER EDIT AGENDA PAGE                            -->
+<!----------------------------------------------------------------------------->
 
 <div class="userEditAgendaPage container">
 
     <div class="row">
 
-        <!--                     START: LEFT COLUMN                      -->
-        <!----------------------------------------------------------------->
-        <div id="userEditAgenda-left-column" class="col-md-3 col-lg-3 hidden">
-
-            <!------------------- START: LEFT MENU BLOCK ------------------>
-            <div id="userEditAgenda-menu-block" class="userEditAgendaPage__block row">
-
-                <div class="col-md-12">
-
-                    <div class="ma-box ma-box">
-
-                        <div class="ma-box__content ma-box__content--padding-reset">
-                            <div class="menu-box">
-                                <div class="menu-box__item" ng-click="vm.goToEditProfile()">
-                                    Edit Profile
-                                </div>
-                                <div class="menu-box__item" ng-click="vm.goToEditMedia()">
-                                    Edit Photo
-                                </div>
-                                <div class="menu-box__item menu-box__item--active">
-                                    Edit Agenda
-                                </div>
-                                <div class="menu-box__item menu-box__item--with-button">
-                                    <a class="ma-btn ma-btn--default ma-btn--primary ma-btn--block" ui-sref="page.userProfilePage({id: '1'})" href="#/page/users/show/1">Ver Perfil</a>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-            <!--                    END: LEFT MENU BLOCK                     -->
-
-        </div>
-        <!--                        END: LEFT COLUMN                     -->
-
-
-
-        <!--                    START: MIDDLE COLUMN                     -->
-        <!----------------------------------------------------------------->
+        <!--                      START: MIDDLE COLUMN                       -->
+        <!--------------------------------------------------------------------->
         <!--<div id="userEditAgenda-middle-column" class="col-md-9 col-lg-9">-->
         <div id="userEditAgenda-middle-column" class="col-md-12 col-lg-12">
 
-            <!------------------- START: AGENDA BLOCK --------------------->
+            <!---------------------- START: AGENDA BLOCK ---------------------->
             <div id="userEditAgenda-agenda-block"
                  class="userEditAgendaPage__block row">
 
@@ -120,18 +80,27 @@
                                     <div class="userEditAgendaPage__block__config-section">
                                         <div class="ma-box ma-box">
 
-                                            <h4 class="ma-box__title margin-reset">Fast Configuration</h4>
+                                            <h4 class="ma-box__title margin-reset">
+                                                Fast Configuration
+                                            </h4>
 
                                             <div class="ma-box__content">
+                                                <!-- Available / Blocked -->
                                                 <div class="row">
-                                                    <div class="col-md-12 text-center">
+                                                    <div class="col-md-12
+                                                                text-center">
                                                         <div class="ma-switch">
-                                                            <button class="ma-btn ma-btn--default ma-switch__btn"
+                                                            <button class="ma-btn
+                                                                           ma-btn--default
+                                                                           ma-switch__btn"
                                                                     value="1">
                                                                 DISPONIBLE
                                                             </button>
-                                                            <button class="ma-btn ma-btn--default ma-switch__btn"
-                                                                    disabled="disabled" value="0">
+                                                            <button class="ma-btn
+                                                                           ma-btn--default
+                                                                           ma-switch__btn"
+                                                                    disabled="disabled"
+                                                                    value="0">
                                                                 BLOQUEADO
                                                             </button>
                                                         </div>
@@ -140,18 +109,28 @@
 
                                                 <hr>
 
-                                                <form class="form-inline text-center">
+                                                <!-- Availability Weekdays (hours) -->
+                                                <form class="ma-form ma-form--basic form-inline text-center">
 
-                                                    <label for="inputGroup" style="margin-bottom: 10px;">¿Disponibilidad entre semana? <div class="ma-label ma-label--simple ma-label--simple--primary ma-label--simple--small margin-reset">(Lunes a Viernes)</div></label>
+                                                    <label for="inputGroup" class="space-2">
+                                                        ¿Availability Weekdays?
+                                                        <div class="ma-label
+                                                                    ma-label--simple
+                                                                    ma-label--simple--primary
+                                                                    ma-label--simple--small
+                                                                    margin-reset">
+                                                            (Monday to Friday)
+                                                        </div>
+                                                    </label>
 
-                                                    <!-- First SelectList -->
+                                                    <!-- Start Time (Availability Weekdays) -->
                                                     <div class="form-group ma-form-group">
                                                         <label class="sr-only"
-                                                               for="defaultSelect3">
-                                                            Default Select Label Hidden
+                                                               for="startTimeWeekdays">
+                                                            Start Time Weekdays
                                                         </label>
                                                         <div class="ma-select ma-select--default">
-                                                            <select id="defaultSelect3"
+                                                            <select id="startTimeWeekdays"
                                                                     class="ma-input ma-input--default"
                                                                     name="agenda[time]">
                                                                 <option value="">time</option>
@@ -162,18 +141,18 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group ma-form-group" style="margin: 0 10px;">
-                                                        <label for=""> a </label>
+                                                    <div class="form-group ma-form-group">
+                                                        <label class="middle-label"> to </label>
                                                     </div>
 
-                                                    <!-- Second SelectList -->
+                                                    <!-- End Time (Availability Weekdays) -->
                                                     <div class="form-group ma-form-group">
                                                         <label class="sr-only"
-                                                               for="defaultSelect4">
-                                                            Default Select Label Hidden
+                                                               for="endTimeWeekdays">
+                                                            End Time Weekdays
                                                         </label>
                                                         <div class="ma-select ma-select--default">
-                                                            <select id="defaultSelect4"
+                                                            <select id="endTimeWeekdays"
                                                                     class="ma-input
                                                                            ma-input--default"
                                                                     name="agenda[time]">
@@ -189,27 +168,28 @@
 
                                                 <hr>
 
-                                                <form class="form-inline text-center">
+                                                <!-- Availability Weekends (hours) -->
+                                                <form class="ma-form ma-form--basic form-inline text-center">
 
-                                                    <label for="inputGroup" style="margin-bottom: 10px;">
-                                                        ¿Disponibilidad fin de semana?
+                                                    <label for="inputGroup" class="space-2">
+                                                        ¿Availability Weekends?
                                                         <div class="ma-label
                                                                     ma-label--simple
                                                                     ma-label--simple--primary
                                                                     ma-label--simple--small
                                                                     margin-reset">
-                                                            (Sabados y Domingos)
+                                                            (Saturdays and Sundays)
                                                         </div>
                                                     </label>
 
-                                                    <!-- First SelectList -->
+                                                    <!-- Start Time (Availability Weekends) -->
                                                     <div class="form-group ma-form-group">
                                                         <label class="sr-only"
-                                                               for="defaultSelect3">
-                                                            Default Select Label Hidden
-                                                            </label>
+                                                               for="startTimeWeekends">
+                                                            Start Time Weekends
+                                                        </label>
                                                         <div class="ma-select ma-select--default">
-                                                            <select id="defaultSelect3"
+                                                            <select id="startTimeWeekends"
                                                                     class="ma-input ma-input--default"
                                                                     name="agenda[time]">
                                                                 <option value="">time</option>
@@ -220,18 +200,18 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group ma-form-group" style="margin: 0 10px;">
-                                                        <label for=""> a </label>
+                                                    <div class="form-group ma-form-group">
+                                                        <label class="middle-label"> to </label>
                                                     </div>
 
-                                                    <!-- Second SelectList -->
+                                                    <!-- End Time (Availability Weekends) -->
                                                     <div class="form-group ma-form-group">
                                                         <label class="sr-only"
-                                                               for="defaultSelect4">
-                                                            Default Select Label Hidden
+                                                               for="endTimeWeekends">
+                                                            End Time Weekends
                                                         </label>
                                                         <div class="ma-select ma-select--default">
-                                                            <select id="defaultSelect4"
+                                                            <select id="endTimeWeekends"
                                                                     class="ma-input ma-input--default"
                                                                     name="agenda[time]">
                                                                 <option value="">time</option>
