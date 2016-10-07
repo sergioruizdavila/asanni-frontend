@@ -7,6 +7,17 @@ $userEditAgenda-block-margin: 20px;
 $userEditAgenda-block-background-top: 0;
 $userEditAgenda-block-background-opacity: 0.3;
 
+$userEditAgenda-block-exceptions-border:  1px solid #ddd;
+$userEditAgenda-block-exceptions-background:  rgba(245, 245, 245, 0.48);
+$userEditAgenda-block-exceptions-padding: 15px 0;
+$userEditAgenda-block-exceptions-marginLeft: -21px;
+$userEditAgenda-block-exceptions-marginRight: -21px;
+$userEditAgenda-block-exceptions-day-marginRight: 30px;
+$userEditAgenda-block-exceptions-add-marginLeft: 20px;
+$userEditAgenda-block-exceptions-add-button-font-color: $dark-gray;
+$userEditAgenda-block-exceptions-add-button-font-color-hover: map-get($main-palette, alert);
+
+
 
 /**********************************************************/
 /*                   USER EDIT MEDIA PAGE                 */
@@ -28,27 +39,27 @@ $userEditAgenda-block-background-opacity: 0.3;
         &__config-section {
 
             &__exceptions {
-                border: 1px solid #ddd;
+                border: $userEditAgenda-block-exceptions-border;
                 //background-color: #f5f5f5;
-                background-color: rgba(245, 245, 245, 0.48);
-                padding: 15px 0;
-                margin-left: -21px;
-                margin-right: -21px;
+                background-color: $userEditAgenda-block-exceptions-background;
+                padding: $userEditAgenda-block-exceptions-padding;
+                margin-left: $userEditAgenda-block-exceptions-marginLeft;
+                margin-right: $userEditAgenda-block-exceptions-marginRight;
 
                 .day-exception {
-                    margin-right: 30px;
+                    margin-right: $userEditAgenda-block-exceptions-day-marginRight;
                 }
 
                 .add-exception {
                     vertical-align: bottom;
-                    margin-left: 20px;
+                    margin-left: $userEditAgenda-block-exceptions-add-marginLeft;
 
                     &__btn {
                         vertical-align: text-bottom;
                         cursor: pointer;
-                        color: $dark-gray;
+                        color: $userEditAgenda-block-exceptions-add-button-font-color;
                         &:hover {
-                            color: map-get($main-palette, alert);
+                            color: $userEditAgenda-block-exceptions-add-button-font-color-hover;
                         }
                     }
                 }

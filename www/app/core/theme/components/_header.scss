@@ -245,37 +245,37 @@
 
 .ma-subnav {
     position: relative;
-    background-color: #eee;
+    background-color: $header-subnav-background;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    border-bottom: 1px solid #DDD;
+    border-bottom: $header-subnav-border;
 
     &__list {
-        margin-bottom: 0;
-        padding-left: 0;
+        margin-bottom: $header-subnav-list-margin;
+        padding-left: $header-subnav-list-padding;
         list-style: none;
 
         &__option {
             display: inline-block;
-            padding: 10px 5px;
+            padding: $header-subnav-list-option-padding;
 
             &__tab {
-                color: #555;
+                color: $header-subnav-list-option-tab-font-color;
                 position: relative;
-                padding: 10px 10px;
+                padding: $header-subnav-list-option-tab-font-padding;
 
                 &:hover {
                     text-decoration: none;
-                    border-bottom: 3px solid #00b592;
-                    color: #555;
+                    border-bottom: $header-subnav-list-option-tab-border-hover;
+                    color: $header-subnav-list-option-tab-font-color;
                 }
 
                 &--active {
-                    border-bottom: 3px solid $dark-gray;
+                    border-bottom: $header-subnav-list-option-tab-border-active;
                     &:hover {
-                        border-bottom: 3px solid $dark-gray;
+                        border-bottom: $header-subnav-list-option-tab-border-active;
                     }
                 }
             }

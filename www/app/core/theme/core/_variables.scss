@@ -13,6 +13,7 @@
 //   6. Header
 //   7. Header - Blocks (Tabs)
 //   8. Header - Search Bar
+//   9. Header - SubNav
 //   9. Images
 //   10. Input Text
 //   11. Labels
@@ -277,6 +278,24 @@ $header-search-input-padding: 0 0 0 48px;
 $header-search-input-border: 0;
 $header-search-input-outline: 0;
 $header-search-input-font-size: 17px;
+
+
+// 5. Header - SubNav
+// ----------
+$header-subnav-border: 1px solid #ddd;
+$header-subnav-background: #eee;
+
+$header-subnav-list-margin: 0;
+$header-subnav-list-padding: 0;
+
+$header-subnav-list-option-padding: 10px 5px;
+
+$header-subnav-list-option-tab-font-color: #555;
+$header-subnav-list-option-tab-font-padding: 10px;
+
+$header-subnav-list-option-tab-border-hover: 3px solid map-get($main-palette, primary);
+
+$header-subnav-list-option-tab-border-active: 3px solid $dark-gray;
 
 
 // 5. Images
