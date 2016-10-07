@@ -30,7 +30,7 @@
     &--simple {
         letter-spacing: 0;
         font-style: normal;
-        font-weight: bold;
+        font-weight: normal;
         margin-bottom: 0;
         color: $link-simple-font-color;
 
@@ -51,6 +51,16 @@
 
         &--large {
             font-size: map-get($link-simple-font-sizes, large);
+        }
+
+        ///SIMPLE LINK COLOR
+
+        &--primary {
+            color: map-get($main-palette, primary);
+
+            &:hover:enabled, &:focus {
+                color: map-get($main-palette, secondary);
+            }
         }
 
     }
