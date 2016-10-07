@@ -34,7 +34,7 @@ $main-palette: (
   secondary: #018a6f,
   success: #3adb76,
   warning: #e8ce47,
-  alert: #ec5840,
+  alert: #ff5a5f,
 );
 
 $light-gray: #dce0e0;
@@ -338,6 +338,8 @@ $label-box-withIcon-icon-font-size: (
     large: 19px,
 );
 
+$label-box-width-block: 99%;
+
 $label-simple-color-gray: $dark-gray;
 $label-simple-color-primary: map-get($main-palette, primary);
 
@@ -438,16 +440,27 @@ $paragraph-bold-font-color: $black;
 
 // 11. Select List
 // ---------
+$select-container-font-size-small: 13px;
+
 $select-padding: 2em;
+$select-padding-small: 1.6em;
 $select-background: white\0 !important;
 
+$select-icon-font-size-small: 10px;
 $select-icon-color: $medium-gray;
 $select-icon-width: 2em;
 $select-icon-padding: 0.7em;
 $select-icon-lineHeight: 1;
 $select-icon-transform: scale(0.84, 0.42);
-$select-icon-top: (
+//legacy version - remove when it would be necessary anymore
+/*$select-icon-top: (
     small: 0,
+    default: 1px,
+    large: 5px,
+);*/
+
+$select-icon-top: (
+    small: 2px,
     default: 1px,
     large: 5px,
 );
@@ -460,6 +473,12 @@ $select-icon-right: (
     small: 0,
     default: 1px,
     large: 3px,
+);
+
+$select-icon-top: (
+    small: 2px,
+    default: 1px,
+    large: 5px,
 );
 
 // 11. Stars
