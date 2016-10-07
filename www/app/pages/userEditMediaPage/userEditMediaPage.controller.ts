@@ -13,7 +13,6 @@ module app.pages.userEditMediaPage {
         error: IUserEditMediaError;
         activate: () => void;
         goToEditProfile: () => void;
-        goToEditAgenda: () => void;
     }
 
     export interface IUserEditMediaForm {
@@ -94,15 +93,6 @@ module app.pages.userEditMediaPage {
             this.$state.go('page.userEditProfilePage');
         }
 
-
-        /*
-        * Go to edit agenda page
-        * @description this method is launched when user press 'Edit Agenda'
-        * menu option
-        */
-        goToEditAgenda(): void {
-            this.$state.go('page.userEditAgendaPage');
-        }
 
     }
 

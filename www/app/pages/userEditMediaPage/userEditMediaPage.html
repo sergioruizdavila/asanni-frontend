@@ -1,3 +1,38 @@
+
+<!--                          START: NAVBAR MENU                             -->
+<!----------------------------------------------------------------------------->
+
+<div class="ma-subnav">
+
+    <div class="container">
+        <ul class="ma-subnav__list text-center">
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab"
+                   href="/users/edit">Bandeja de Entrada</a>
+            </li>
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab"
+                   href="/users/edit">Invitar amigos</a>
+            </li>
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab
+                          ma-subnav__list__option__tab--active"
+                   ui-sref="page.userEditProfilePage"
+                   href="#">Perfil</a>
+            </li>
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab"
+                   ui-sref="page.userEditAgendaPage"
+                   href="#">Agenda</a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+<!--                             END: NAVBAR MENU                            -->
+
+
+
 <!--------------------------------------------->
 <!--           USER EDIT PROFILE PAGE        -->
 <!--------------------------------------------->
@@ -26,10 +61,6 @@
                                 </div>
                                 <div class="menu-box__item menu-box__item--active">
                                     Edit Photo
-                                </div>
-                                <div class="menu-box__item"
-                                     ng-click="vm.goToEditAgenda()">
-                                    Edit Agenda
                                 </div>
                                 <div class="menu-box__item menu-box__item--with-button">
                                     <a class="ma-btn ma-btn--default  ma-btn--primary ma-btn--block"

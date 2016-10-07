@@ -156,13 +156,17 @@
         font-size: $boxMenu-item-font-size;
         cursor: pointer;
 
-        &--active {
-            border-left: $boxMenu-item-border-active;
-        }
-
         &:hover {
             background-color: $boxMenu-item-background-hover;
             border-left: $boxMenu-item-border-hover;
+        }
+
+        &--active {
+            border-left: $boxMenu-item-border-active;
+            &:hover {
+                background-color: transparent;
+                border-left: $boxMenu-item-border-active;
+            }
         }
 
         &--green-option:hover {

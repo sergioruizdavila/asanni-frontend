@@ -1,10 +1,14 @@
-<!-- HEADER -->
+<!--------------------------------------------->
+<!--                 HEADER                  -->
+<!--------------------------------------------->
+
 <div class="ma-header">
 
-    <!-- HEADER (SMALL SCREEN) -->
+    <!--                     START: HEADER (SMALL SCREEN)                    -->
+    <!------------------------------------------------------------------------->
     <div class="ma-header--small visible-xs">
 
-        <!-- MENU (SMALL SCREEN) -->
+        <!-------------------- START: MENU (SMALL SCREEN) --------------------->
         <div class="ma-header__block pull-left">
             <a href="#"
                aria-label="Homepage"
@@ -16,26 +20,37 @@
                 </span>
             </a>
         </div>
+        <!--                    END: MENU (SMALL SCREEN)                     -->
 
-        <!-- SEARCH -->
-        <div class="ma-header__block ma-header__block__search-wrapper" role="search">
+
+
+        <!--------------------- START: SEARCH (SMALL SCREEN) ------------------>
+        <div class="ma-header__block ma-header__block__search-wrapper"
+             role="search">
             <form class="ma-header__block__search-wrapper__form">
                 <div class="ma-header__block__search-wrapper__form__search-bar">
                     <i class="material-icons
-                                  ma-header__block__btn__icon
-                                  ma-header__block__search-wrapper__form__search-bar__icon">
+                              ma-header__block__btn__icon
+                              ma-header__block__search-wrapper__form__search-bar__icon">
                         search
                     </i>
-                    <label class="screen-reader-only" for="header-search-form" aria-hidden="true">
+                    <label class="screen-reader-only"
+                           for="header-search-form" aria-hidden="true">
                         Where to?
                     </label>
-                    <input type="text" class="ma-header__block__search-wrapper__form__search-bar__input" placeholder="Where to?" autocomplete="off" name="location" class="location" value="">
+                    <input type="text"
+                           class="ma-header__block__search-wrapper__form__search-bar__input"
+                           placeholder="Where to?" autocomplete="off"
+                           name="location" class="location" value="">
                     <input type="hidden" name="source" value="hdr">
                 </div>
             </form>
         </div>
+        <!--                     END: SEARCH (SMALL SCREEN)                  -->
 
-        <!-- NAV (SMALL SCREEN)-->
+
+
+        <!---------------------- START: NAV (SMALL SCREEN) -------------------->
         <nav class="ma-nav--small"
              ng-class="{'ma-nav--small--active': vm._slideout}"
              role="navigation">
@@ -131,13 +146,18 @@
             </div>
 
         </nav>
+        <!--                     END: NAV (SMALL SCREEN)                     -->
 
     </div>
+    <!--                      END: HEADER (SMALL SCREEN)                     -->
 
-    <!-- HEADER (MD AND LG SCREEN) -->
+
+
+    <!--                   START: HEADER (MD AND LG SCREEN)                  -->
+    <!------------------------------------------------------------------------->
     <header class="hidden-xs clearfix">
 
-        <!-- LOGO -->
+        <!-------------------- START: LOGO (MD AND LG SCREEN) ----------------->
         <div class="ma-header__block pull-left">
             <a href="/" class="ma-header__block__btn
                           ma-header__block__logo-wrapper
@@ -145,8 +165,11 @@
                 <i class="ma-logo ma-header__block__btn__ma-logo"></i>
             </a>
         </div>
+        <!--                   END: LOGO (MD AND LG SCREEN)                  -->
 
-        <!-- PROFILE IMAGE -->
+
+
+        <!---------------- START: PROFILE IMAGE (MD AND LG SCREEN) ------------>
         <div class="ma-header__block pull-right">
             <a class="ma-header__block__btn link-reset" rel="nofollow">
                 <div class="ma-photo-profile
@@ -154,50 +177,71 @@
                             round
                             ma-header__block__btn__icon
                             ma-header__block__btn__icon__ma-photo">
-                    <img width="32" height="32" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="">
+                    <img width="32" height="32"
+                         src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg"
+                         alt="">
                 </div>
             </a>
         </div>
+        <!--                END: PROFILE IMAGE (MD AND LG SCREEN)            -->
 
-        <!-- LOG IN -->
+
+
+        <!---------------- START: LOG IN BUTTON (MD AND LG SCREEN) ------------>
         <div class="ma-header__block pull-right">
             <a href="#" class="ma-header__block__btn link-reset">
                 Log In
             </a>
         </div>
+        <!--                END: LOG IN BUTTON (MD AND LG SCREEN)            -->
 
-        <!-- SIGN UP -->
+
+
+        <!--------------- START: SIGN UP BUTTON (MD AND LG SCREEN) ------------>
         <div class="ma-header__block pull-right">
             <a href="#" class="ma-header__block__btn link-reset">
                 Sign Up
             </a>
         </div>
+        <!--               END: SIGN UP BUTTON (MD AND LG SCREEN)            -->
 
-        <!-- MESSAGES -->
+
+
+        <!---------------- START: INBOX BUTTON (MD AND LG SCREEN) ------------->
         <div class="ma-header__block pull-right">
             <a href="#" class="ma-header__block__btn link-reset">
                 <i class="material-icons ma-header__block__btn__icon">inbox</i>
             </a>
         </div>
+        <!--               END: INBOX BUTTON (MD AND LG SCREEN)              -->
 
-        <!-- SEARCH -->
-        <div class="ma-header__block ma-header__block__search-wrapper" role="search">
+
+
+        <!------------------ START: SEARCH (MD AND LG SCREEN) ----------------->
+        <div class="ma-header__block ma-header__block__search-wrapper"
+             role="search">
             <form class="ma-header__block__search-wrapper__form">
                 <div class="ma-header__block__search-wrapper__form__search-bar">
                     <i class="material-icons
-                                  ma-header__block__btn__icon
-                                  ma-header__block__search-wrapper__form__search-bar__icon">
+                              ma-header__block__btn__icon
+                              ma-header__block__search-wrapper__form__search-bar__icon">
                         search
                     </i>
-                    <label class="screen-reader-only" for="header-search-form" aria-hidden="true">
+                    <label class="screen-reader-only" for="header-search-form"
+                           aria-hidden="true">
                         Where to?
                     </label>
-                    <input type="text" class="ma-header__block__search-wrapper__form__search-bar__input" placeholder="Where to?" autocomplete="off" name="location" class="location" value="">
+                    <input type="text"
+                           class="ma-header__block__search-wrapper__form__search-bar__input"
+                           placeholder="Where to?" autocomplete="off"
+                           name="location" class="location" value="">
                     <input type="hidden" name="source" value="hdr">
                 </div>
             </form>
         </div>
+        <!--                  END: SEARCH (MD AND LG SCREEN)                 -->
 
     </header>
+    <!--                    END: HEADER (MD AND LG SCREEN)                   -->
 
 </div>

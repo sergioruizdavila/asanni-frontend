@@ -16,7 +16,7 @@
                 color: $agenda-toolbar-center-font-color;
             }
         }
-        // This important is necesary in order to hide 'day' button
+        // This important is necessary in order to hide 'day' button
         .fc-agendaDay-button {
             display: none!important;
         }
@@ -77,7 +77,7 @@
 
                         .fc-day-top {
                             .fc-day-number {
-                                color: $agenda-view-content-dayNumber-font-color;
+                                color: $agenda-view-content-dayTop-number-font-color;
                             }
                         }
 
@@ -138,7 +138,7 @@
                     span {
                         color: $agenda-view-header-day-span-font-color;
                         border: $agenda-view-header-day-span-border;
-                        font-size: $agenda-view-header-day-span-font-size-large: 12px;
+                        font-size: $agenda-view-header-day-span-font-size-large;
                         font-weight: normal;
                     }
                 }

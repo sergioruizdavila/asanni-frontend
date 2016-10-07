@@ -236,3 +236,48 @@
         }
     }
 }
+
+
+/**********************************************************/
+/*                        SUBNAV                          */
+/**********************************************************/
+
+.ma-subnav {
+    position: relative;
+    background-color: #eee;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-bottom: 1px solid #DDD;
+
+    &__list {
+        margin-bottom: 0;
+        padding-left: 0;
+        list-style: none;
+
+        &__option {
+            display: inline-block;
+            padding: 10px 5px;
+
+            &__tab {
+                color: #555;
+                position: relative;
+                padding: 10px 10px;
+
+                &:hover {
+                    text-decoration: none;
+                    border-bottom: 3px solid #00b592;
+                    color: #555;
+                }
+
+                &--active {
+                    border-bottom: 3px solid $dark-gray;
+                    &:hover {
+                        border-bottom: 3px solid $dark-gray;
+                    }
+                }
+            }
+        }
+    }
+}
