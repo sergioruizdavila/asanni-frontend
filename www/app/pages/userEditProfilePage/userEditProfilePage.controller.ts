@@ -97,13 +97,13 @@ module app.pages.userEditProfilePage {
 
         /*
         * Go to edit agenda page
-        * @description this method is launched when user press 'Edit Photo' menu
+        * @description this method is launched when user press 'Edit Agenda' menu
         * option
         */
         goToEditAgenda(): void {
-            // Go to next page on calls stack
-            //this.$state.go('page.userEditMediaPage');
+            this.$state.go('page.userEditAgendaPage');
         }
+    
 
 
     }

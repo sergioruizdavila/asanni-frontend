@@ -1,0 +1,409 @@
+
+<!--                          START: NAVBAR MENU                             -->
+<!----------------------------------------------------------------------------->
+
+<div class="ma-subnav">
+
+    <div class="container">
+        <ul class="ma-subnav__list text-center">
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab"
+                   href="/users/edit">Bandeja de Entrada</a>
+            </li>
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab"
+                   href="/users/edit">Invitar amigos</a>
+            </li>
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab"
+                   ui-sref="page.userEditProfilePage"
+                   href="#">Perfil</a>
+            </li>
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab
+                          ma-subnav__list__option__tab--active"
+                   ui-sref="page.userEditAgendaPage"
+                   href="#">Agenda</a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+<!--                             END: NAVBAR MENU                            -->
+
+
+
+<!----------------------------------------------------------------------------->
+<!--                        USER EDIT AGENDA PAGE                            -->
+<!----------------------------------------------------------------------------->
+
+<div class="userEditAgendaPage container">
+
+    <div class="row">
+
+        <!--                      START: MIDDLE COLUMN                       -->
+        <!--------------------------------------------------------------------->
+        <!--<div id="userEditAgenda-middle-column" class="col-md-9 col-lg-9">-->
+        <div id="userEditAgenda-middle-column" class="col-md-12 col-lg-12">
+
+            <!---------------------- START: AGENDA BLOCK ---------------------->
+            <div id="userEditAgenda-agenda-block"
+                 class="userEditAgendaPage__block row">
+
+                <div class="col-md-12">
+
+                    <div class="ma-box">
+
+                        <h4 class="ma-box__title margin-reset">User Agenda</h4>
+
+                        <button class="menu-box__item menu-box__item--active
+                                       hidden"
+                                ng-click="vm.$scope.changeView()">
+                            Change View
+                        </button>
+
+                        <div class="ma-box__content">
+
+                            <div class="row">
+                                <div class="col-lg-7">
+                                    <!-- Agenda -->
+                                    <div class="agenda-container">
+                                        <div class="ma-agenda"
+                                             ui-calendar="vm.$scope.calendarConfig.calendar"
+                                             calendar="userAgenda"
+                                             ng-model="vm.$scope.eventSources">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5">
+                                    <!-- Config Section -->
+                                    <div class="userEditAgendaPage__block__config-section">
+                                        <div class="ma-box ma-box">
+
+                                            <h4 class="ma-box__title margin-reset">
+                                                Fast Configuration
+                                            </h4>
+
+                                            <div class="ma-box__content">
+                                                <!-- Available / Blocked -->
+                                                <div class="row">
+                                                    <div class="col-md-12
+                                                                text-center">
+                                                        <div class="ma-switch">
+                                                            <button class="ma-btn
+                                                                           ma-btn--default
+                                                                           ma-switch__btn"
+                                                                    value="1">
+                                                                DISPONIBLE
+                                                            </button>
+                                                            <button class="ma-btn
+                                                                           ma-btn--default
+                                                                           ma-switch__btn"
+                                                                    disabled="disabled"
+                                                                    value="0">
+                                                                BLOQUEADO
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <hr>
+
+                                                <!-- Availability Weekdays (hours) -->
+                                                <form id="userEditAgenda-config-weekdays"
+                                                      class="ma-form ma-form--basic form-inline text-center">
+
+                                                    <label for="inputGroup" class="space-2">
+                                                        ¿Availability Weekdays?
+                                                        <div class="ma-label
+                                                                    ma-label--simple
+                                                                    ma-label--simple--primary
+                                                                    ma-label--simple--small
+                                                                    margin-reset">
+                                                            (Monday to Friday)
+                                                        </div>
+                                                    </label>
+
+                                                    <!-- Start Time (Availability Weekdays) -->
+                                                    <div class="form-group ma-form-group">
+                                                        <label class="sr-only"
+                                                               for="startTimeWeekdays">
+                                                            Start Time Weekdays
+                                                        </label>
+                                                        <div class="ma-select-container ma-select-container--default">
+                                                            <select id="startTimeWeekdays"
+                                                                    class="ma-input ma-select ma-select--default"
+                                                                    name="agenda[time]">
+                                                                <option value="">time</option>
+                                                                <option value="11:00" selected="selected">11:00 am</option>
+                                                                <option value="12:00">12:00 pm</option>
+                                                                <option value="13:00">1:00 pm</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group ma-form-group">
+                                                        <label class="middle-label"> to </label>
+                                                    </div>
+
+                                                    <!-- End Time (Availability Weekdays) -->
+                                                    <div class="form-group ma-form-group">
+                                                        <label class="sr-only"
+                                                               for="endTimeWeekdays">
+                                                            End Time Weekdays
+                                                        </label>
+                                                        <div class="ma-select-container ma-select-container--default">
+                                                            <select id="endTimeWeekdays"
+                                                                    class="ma-input
+                                                                           ma-select
+                                                                           ma-select--default"
+                                                                    name="agenda[time]">
+                                                                <option value="">time</option>
+                                                                <option value="11:00" selected="selected">11:00 am</option>
+                                                                <option value="12:00">12:00 pm</option>
+                                                                <option value="13:00">1:00 pm</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                </form>
+
+                                                <hr>
+
+                                                <!-- Availability Weekends (hours) -->
+                                                <form id="userEditAgenda-config-weekends"
+                                                      class="ma-form ma-form--basic form-inline text-center">
+
+                                                    <label for="inputGroup" class="space-2">
+                                                        ¿Availability Weekends?
+                                                        <div class="ma-label
+                                                                    ma-label--simple
+                                                                    ma-label--simple--primary
+                                                                    ma-label--simple--small
+                                                                    margin-reset">
+                                                            (Saturdays and Sundays)
+                                                        </div>
+                                                    </label>
+
+                                                    <!-- Start Time (Availability Weekends) -->
+                                                    <div class="form-group ma-form-group">
+                                                        <label class="sr-only"
+                                                               for="startTimeWeekends">
+                                                            Start Time Weekends
+                                                        </label>
+                                                        <div class="ma-select-container ma-select-container--default">
+                                                            <select id="startTimeWeekends"
+                                                                    class="ma-input ma-select ma-select--default"
+                                                                    name="agenda[time]">
+                                                                <option value="">time</option>
+                                                                <option value="11:00" selected="selected">11:00 am</option>
+                                                                <option value="12:00">12:00 pm</option>
+                                                                <option value="13:00">1:00 pm</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group ma-form-group">
+                                                        <label class="middle-label"> to </label>
+                                                    </div>
+
+                                                    <!-- End Time (Availability Weekends) -->
+                                                    <div class="form-group ma-form-group">
+                                                        <label class="sr-only"
+                                                               for="endTimeWeekends">
+                                                            End Time Weekends
+                                                        </label>
+                                                        <div class="ma-select-container ma-select-container--default">
+                                                            <select id="endTimeWeekends"
+                                                                    class="ma-input ma-select ma-select--default"
+                                                                    name="agenda[time]">
+                                                                <option value="">time</option>
+                                                                <option value="11:00" selected="selected">11:00 am</option>
+                                                                <option value="12:00">12:00 pm</option>
+                                                                <option value="13:00">1:00 pm</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                </form>
+
+                                                <hr>
+                                                <!-- TODO: ORGANIZAR LOS ESTILOS DE SELECT LIST YA QUE LOS CAMBIE Y SE DAÑARON LOS DE DEFAULT-->
+
+                                                <h4 class="margin-reset space-2 text-center">
+                                                    Exceptions
+                                                </h4>
+
+                                                <!-- Exceptions List -->
+                                                <form id="userEditAgenda-config-exceptions"
+                                                      class="userEditAgendaPage__block__config-section__exceptions
+                                                             ma-form ma-form--basic form-inline text-center">
+
+                                                    <div class="row margin-reset space-4">
+                                                        <div class="col-md-12">
+                                                            <!-- Day List -->
+                                                            <div class="day-exception
+                                                                        form-group
+                                                                        ma-form-group
+                                                                        text-center">
+                                                                <label for="daysList">
+                                                                    Day
+                                                                </label>
+                                                                <div class="ma-select-container ma-select-container--small">
+                                                                    <select id="daysList"
+                                                                            class="ma-input ma-select ma-select--small"
+                                                                            name="agenda[day]">
+                                                                        <option value="">day</option>
+                                                                        <option value="Monday" selected="selected">Monday</option>
+                                                                        <option value="Tuesday">Tuesday</option>
+                                                                        <option value="Wednesday">Wednesday</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Available Time List -->
+                                                            <div class="form-group
+                                                                        ma-form-group
+                                                                        text-center">
+
+                                                                <label for="availableList">
+                                                                    Available
+                                                                </label>
+                                                                <!-- Start Time Exception-->
+                                                                <div class="form-group ma-form-group">
+                                                                    <label class="sr-only"
+                                                                           for="startTimeException">
+                                                                        Start Time Exception
+                                                                    </label>
+                                                                    <div class="ma-select-container ma-select-container--small">
+                                                                        <select id="startTimeException"
+                                                                                class="ma-input ma-select ma-select--small"
+                                                                                name="agenda[time]">
+                                                                            <option value="">time</option>
+                                                                            <option value="11:00" selected="selected">11:00 am</option>
+                                                                            <option value="12:00">12:00 pm</option>
+                                                                            <option value="13:00">1:00 pm</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group ma-form-group">
+                                                                    <label class="middle-label"> to </label>
+                                                                </div>
+
+                                                                <!-- End Time Exception -->
+                                                                <div class="form-group ma-form-group">
+                                                                    <label class="sr-only"
+                                                                           for="endTimeException">
+                                                                        End Time Exception
+                                                                    </label>
+                                                                    <div class="ma-select-container ma-select-container--small">
+                                                                        <select id="endTimeException"
+                                                                                class="ma-input ma-select ma-select--small"
+                                                                                name="agenda[time]">
+                                                                            <option value="">time</option>
+                                                                            <option value="11:00" selected="selected">11:00 am</option>
+                                                                            <option value="12:00">12:00 pm</option>
+                                                                            <option value="13:00">1:00 pm</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <!-- Add Button -->
+                                                            <div class="add-exception
+                                                                        form-group
+                                                                        ma-form-group">
+                                                                <i class="add-exception__btn
+                                                                          material-icons
+                                                                          md-24 md-dark">add_circle</i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Exceptions List -->
+                                                    <div class="row margin-reset">
+                                                        <div class="col-md-12">
+                                                            <!-- Item Box -->
+                                                            <div class="form-group ma-form-group">
+                                                                <label for="itemBox1" class="text-left">Exceptions List</label>
+                                                                <div class="text-left ma-labels-box ma-labels-box--dashed">
+                                                                    <div class="ma-label ma-label--box
+                                                                                ma-label--box--secondary
+                                                                                ma-label--box--default
+                                                                                ma-label--box--default--with-icon
+                                                                                ma-label--box--block
+                                                                                ma-label--box--space2">
+                                                                        Every Tuesday from 12:00 am to 12:00 pm
+                                                                        <i class="ma-label--box--default--with-icon__icon
+                                                                                      material-icons pull-right">clear</i>
+                                                                    </div>
+                                                                    <div class="ma-label ma-label--box
+                                                                                ma-label--box--secondary
+                                                                                ma-label--box--default
+                                                                                ma-label--box--default--with-icon
+                                                                                ma-label--box--block
+                                                                                ma-label--box--space2">
+                                                                        Every Wednesday from 12:00 am to 12:00 pm
+                                                                        <i class="ma-label--box--default--with-icon__icon
+                                                                                  material-icons pull-right">clear</i>
+                                                                    </div>
+                                                                    <div class="ma-label ma-label--box
+                                                                                ma-label--box--secondary
+                                                                                ma-label--box--default
+                                                                                ma-label--box--default--with-icon
+                                                                                ma-label--box--block
+                                                                                ma-label--box--space2">
+                                                                        Every Wednesday from 12:00 am to 12:00 pm
+                                                                        <i class="ma-label--box--default--with-icon__icon
+                                                                                  material-icons pull-right">clear</i>
+                                                                    </div>
+                                                                    <div class="ma-label ma-label--box
+                                                                                ma-label--box--secondary
+                                                                                ma-label--box--default
+                                                                                ma-label--box--default--with-icon
+                                                                                ma-label--box--block
+                                                                                ma-label--box--space2">
+                                                                        Every Wednesday from 12:00 am to 12:00 pm
+                                                                        <i class="ma-label--box--default--with-icon__icon
+                                                                                  material-icons pull-right">clear</i>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row margin-reset">
+                                                                    <div class="col-sm-12 padding-reset">
+                                                                        <p class="ma-p ma-p--small space-top-1 margin-reset">
+                                                                            The magical day you were dropped from the sky
+                                                                            by a stork. We use this data for analysis and
+                                                                            never share it with other users.
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </form>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <!--                     END: BASIC INFO BLOCK                   -->
+
+            </div>
+            <!--                      END: MIDDLE COLUMN                         -->
+
+
+        </div>
+
+    </div>
+
+</div>

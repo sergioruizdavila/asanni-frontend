@@ -36,7 +36,7 @@
 }
 
 /* SELECT INPUT */
-.ma-select {
+.ma-select-container {
     position: relative;
     display: inline-block;
     vertical-align: bottom;
@@ -60,11 +60,15 @@
     }
 
     &--small {
+        font-size: $select-container-font-size-small;
+
         &:before {
             top: map-get($select-icon-top, small);
             bottom: map-get($select-icon-bottom, small);
             right: map-get($select-icon-right, small);
+            font-size: $select-icon-font-size-small;
         }
+
     }
 
     &--default {
@@ -83,13 +87,33 @@
         }
     }
 
-    select {
+    .ma-select {
         -webkit-appearance: none;
         -moz-appearance:    none;
         appearance:         none;
         background: $select-background;
-        padding-right: $select-padding;
         line-height: normal;
+
+        &--small {
+            padding: map-get($input-paddings, small);
+            padding-right: $select-padding-small;
+        }
+
+        &--default {
+            padding: map-get($input-paddings, default);
+            padding-right: $select-padding;
+        }
+
+        &--large {
+            padding: map-get($input-paddings, large);
+            padding-right: $select-padding;
+            font-size: $input-font-size-large;
+        }
     }
 
+}
+
+/* TEXTAREA */
+.ma-textarea {
+    resize: vertical;
 }

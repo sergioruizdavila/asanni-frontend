@@ -85,6 +85,12 @@
             }
         }
 
+        &--block {
+            display: block;
+            white-space: normal;
+            width: $label-box-width-block;
+        }
+
         ///LABEL BOX COLOR
 
         &--primary {

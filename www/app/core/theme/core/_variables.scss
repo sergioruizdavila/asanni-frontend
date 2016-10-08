@@ -5,22 +5,25 @@
 //  Table of Contents:
 //
 //   1. Global
-//   2. Box
-//   3. Buttons
-//   4. Form
-//   5. Header
-//   6. Header - Blocks (Tabs)
-//   7. Header - Search Bar
-//   8. Images
-//   9. Input Text
-//   10. Labels
-//   11. Left Nav (small devices)
-//   12. Links
-//   13. Logo
-//   14. Paragraph
-//   15. Select List
-//   16. Stars
-//   17. Switchs
+//   2. Agenda
+//   3. Box
+//   4. Buttons
+//   5. DateTime Picker
+//   5. Form
+//   6. Header
+//   7. Header - Blocks (Tabs)
+//   8. Header - Search Bar
+//   9. Header - SubNav
+//   9. Images
+//   10. Input Text
+//   11. Labels
+//   12. Left Nav (small devices)
+//   13. Links
+//   14. Logo
+//   15. Paragraph
+//   16. Select List
+//   17. Stars
+//   18. Switchs
 
 //**********************************************************
 
@@ -32,7 +35,7 @@ $main-palette: (
   secondary: #018a6f,
   success: #3adb76,
   warning: #e8ce47,
-  alert: #ec5840,
+  alert: #ff5a5f,
 );
 
 $light-gray: #dce0e0;
@@ -68,6 +71,34 @@ $body-antialiased: true;
 
 $print-transparent-backgrounds: true;
 
+
+// 2. Agenda
+// ----------
+$agenda-toolbar-center-font-color: #999;
+
+$agenda-view-header-border: 0 hidden transparent;
+$agenda-view-header-border-color: #eee;
+
+$agenda-view-header-day-border: 0 hidden transparent;
+
+$agenda-view-header-day-span-font-color: #ddd;
+$agenda-view-header-day-span-font-size: 12px;
+$agenda-view-header-day-span-font-size-large: 15px;
+$agenda-view-header-day-span-border: 0;
+$agenda-view-header-day-span-font-weight: normal;
+
+$agenda-view-body-border: #eee;
+$agenda-view-body-today-background: rgba(0, 181, 146, 0.47);
+
+$agenda-view-content-dayTop-number-font-color: $dark-gray;
+
+$agenda-view-content-today-number-font-color: $white;
+
+$agenda-view-content-event-padding: 4px;
+$agenda-view-content-event-background: map-get($main-palette, primary);
+$agenda-view-content-event-border: 0 hidden transparent;
+
+$agenda-view-body-timeContainer-event-font-size: 15px;
 
 // 2. Box
 // ----------
@@ -131,6 +162,7 @@ $boxMenu-item-font-color-green-hover: $white;
 $boxMenu-item-withIcon-padding: 15px 25px;
 $boxMenu-item-withIcon-margin: 0;
 
+
 // 2. Buttons
 // ----------
 $button-margin: 0 0 $global-margin 0;
@@ -161,6 +193,27 @@ $button-secondary-border-color: map-get($main-palette, secondary);
 
 $button-block-width: 100%;
 
+
+// 2. DateTime Picker
+// ------------------
+$datetimepicker-head-button-font-color: map-get($main-palette, primary);
+$datetimepicker-head-button-font-size: 20px;
+
+$datetimepicker-head-button-font-color-hover: map-get($main-palette, secondary);
+$datetimepicker-head-button-background-hover: transparent;
+
+$datetimepicker-span-radius: 0;
+
+$datetimepicker-titleDays-font-color: map-get($main-palette, primary);
+
+$datetimepicker-switch-font-color: map-get($main-palette, primary);
+
+$datetimepicker-currentDay-background: rgba(0,181,146,0.47);
+$datetimepicker-currentDay-font-color: $white;
+
+$datetimepicker-activeDay-background: map-get($main-palette, primary);
+$datetimepicker-activeDay-font-color: $white;
+$datetimepicker-activeDay-border: 0 hidden transparent;
 
 // 3. Form
 // ---------
@@ -227,6 +280,24 @@ $header-search-input-outline: 0;
 $header-search-input-font-size: 17px;
 
 
+// 5. Header - SubNav
+// ----------
+$header-subnav-border: 1px solid #ddd;
+$header-subnav-background: #eee;
+
+$header-subnav-list-margin: 0;
+$header-subnav-list-padding: 0;
+
+$header-subnav-list-option-padding: 10px 5px;
+
+$header-subnav-list-option-tab-font-color: #555;
+$header-subnav-list-option-tab-font-padding: 10px;
+
+$header-subnav-list-option-tab-border-hover: 3px solid map-get($main-palette, primary);
+
+$header-subnav-list-option-tab-border-active: 3px solid $dark-gray;
+
+
 // 5. Images
 // ----------
 $image-photo-default-path: $global-image-path + '/' + $global-photo-default-file;
@@ -285,6 +356,8 @@ $label-box-withIcon-icon-font-size: (
     default: 18px,
     large: 19px,
 );
+
+$label-box-width-block: 99%;
 
 $label-simple-color-gray: $dark-gray;
 $label-simple-color-primary: map-get($main-palette, primary);
@@ -386,16 +459,27 @@ $paragraph-bold-font-color: $black;
 
 // 11. Select List
 // ---------
+$select-container-font-size-small: 13px;
+
 $select-padding: 2em;
+$select-padding-small: 1.6em;
 $select-background: white\0 !important;
 
+$select-icon-font-size-small: 10px;
 $select-icon-color: $medium-gray;
 $select-icon-width: 2em;
 $select-icon-padding: 0.7em;
 $select-icon-lineHeight: 1;
 $select-icon-transform: scale(0.84, 0.42);
-$select-icon-top: (
+//legacy version - remove when it would be necessary anymore
+/*$select-icon-top: (
     small: 0,
+    default: 1px,
+    large: 5px,
+);*/
+
+$select-icon-top: (
+    small: 2px,
     default: 1px,
     large: 5px,
 );
@@ -408,6 +492,12 @@ $select-icon-right: (
     small: 0,
     default: 1px,
     large: 3px,
+);
+
+$select-icon-top: (
+    small: 2px,
+    default: 1px,
+    large: 5px,
 );
 
 // 11. Stars

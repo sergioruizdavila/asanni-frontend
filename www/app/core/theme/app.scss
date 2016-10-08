@@ -8,13 +8,21 @@
 //---------------------------------------------------
 // Boostrap 3 Style
 @import '../../../bower_components/bootstrap/dist/css/bootstrap.css';
+// Angular UI Calendar Styles
+@import '../../../bower_components/fullcalendar/dist/fullcalendar.css';
+// Angular Booststrap DateTimepicker
+@import '../../../libs/angular-bootstrap-datetimepicker/src/scss/datetimepicker';
 
 // MainApp Components
 // --------------------------------------------------
+// agenda Style
+@import 'components/agenda';
 // box Style
 @import 'components/box';
 // buttons Style
 @import 'components/buttons';
+// date time picker
+@import 'components/datetimepicker';
 // fonts Style
 @import 'components/fonts';
 // forms Style
@@ -59,3 +67,5 @@
 @import '../../pages/userEditProfilePage/userEditProfilePage';
 // user Edit Media Pages Style
 @import '../../pages/userEditMediaPage/userEditMediaPage';
+// user Edit Agenda Pages Style
+@import '../../pages/userEditAgendaPage/userEditAgendaPage';

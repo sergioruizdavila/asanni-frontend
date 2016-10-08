@@ -23,6 +23,25 @@
 
 
 
+            <!------------------- START: EDIT PROFILE BUTTON ------------------>
+            <div id="userProfile-edit-block" class="row">
+                <div class="col-md-12 space-2 text-center">
+                    <a class="ma-link
+                              ma-link--simple
+                              ma-link--simple--default
+                              ma-link--simple--primary
+                              text-center"
+                       ui-sref="page.userEditProfilePage"
+                       href="#">
+                       <i class="material-icons md-18 md-primary">mode_edit</i>
+                       Edit Profile
+                   </a>
+                </div>
+            </div>
+            <!--                   END: EDIT PROFILE BUTTON                  -->
+
+
+
             <!---------------------- START: VERIFIED BLOCK -------------------->
             <div id="userProfile-verified-block" class="userProfilePage__block row">
 
@@ -53,7 +72,7 @@
                                               material-icons md-30
                                               md-primary">check</i>
                                     <div class="verified-box__item__text">
-                                        6 Reviews
+                                        33 Reviews
                                     </div>
                                 </div>
                                 <div class="verified-box__item">
@@ -487,6 +506,31 @@
             </div>
             <!--                      END: REVIEWS BLOCK                     -->
 
+
+
+            <!-------------------- START: LOCATION MAP BLOCK ------------------>
+            <div id="userProfile-location-block" class="userProfilePage__block row">
+
+                <div class="col-md-12">
+
+                    <div class="ma-box location-info-box">
+                        <h4 class="ma-box__title margin-reset">
+                            Location and Meeting Points
+                        </h4>
+                        <div class="ma-box__content
+                                    ma-box__content--map
+                                    ma-box__content--padding-reset">
+                            <div class="search-map">
+                                <ma-map map-config="vm.mapConfig"></ma-map>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <!--                    END: LOCATION MAP BLOCK                  -->
+
         </div>
         <!--                      END: MIDDLE COLUMN                         -->
 
@@ -502,11 +546,66 @@
                 <div class="col-md-12">
 
                     <div class="ma-box">
-                        <h4 class="ma-box__title margin-reset">Meet with me</h4>
+                        <h4 class="ma-box__title margin-reset">Exchange Language</h4>
                         <div class="ma-box__content">
-                            <div class="verified-box">
-                                <a class="ma-btn ma-btn--primary
-                                          ma-btn--large ma-btn--block" href="#">Meet me</a>
+                            <div class="meeting-box">
+
+                                <div class="row space-2">
+                                    <div class="col-md-12">
+                                        <!-- DateTimePicker Dropdown -->
+                                        <label for="meeting-date-input">
+                                            Meeting Date
+                                        </label>
+                                        <div class="dropdown">
+
+                                            <div id="dateBlock"
+                                               class="dropdown-toggle my-toggle-select"
+                                               role="button" data-toggle="dropdown">
+
+                                               <div class="input-append">
+                                                   <input id="meeting-date-input"
+                                                          type="text"
+                                                          placeholder="dd/mm/yyyy"
+                                                          class="ma-input ma-input--default"
+                                                          data-ng-model="data.date">
+                                               </div>
+                                           </div>
+
+                                            <ul class="dropdown-menu dropdown-menu-right"
+                                                role="menu"
+                                                aria-labelledby="dateBlock">
+                                                <datetimepicker class="ma-datetimepicker"
+                                                                data-ng-model="data.date"
+                                                                data-datetimepicker-config="vm.$scope.datetimepickerConfig"
+                                                                data-on-set-time="vm.onTimeSet(newDate, oldDate)"
+                                                                data-before-render="vm.beforeRender($view, $dates, $leftDate, $upDate, $rightDate)">
+                                                </datetimepicker>
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <a class="ma-btn ma-btn--primary
+                                                  ma-btn--large ma-btn--block"
+                                                  href="#">Invite to exchange</a>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <p class="ma-p ma-p--small margin-reset">
+                                            <strong>70</strong> successful meetings
+                                        </p>
+                                    </div>
+                                </div>
+
+
+
                             </div>
                         </div>
                     </div>

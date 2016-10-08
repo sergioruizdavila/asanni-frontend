@@ -28,6 +28,7 @@ module app.pages.searchPage {
         /*           PROPERTIES           */
         /**********************************/
         error: ISearchPageError;
+        mapConfig: components.map.IMapConfig;
         // --------------------------------
 
 
@@ -54,6 +55,11 @@ module app.pages.searchPage {
 
             this.error = {
                 message: ''
+            };
+
+            // init map config
+            this.mapConfig = {
+                type: 'search-map'
             };
 
             this.activate();

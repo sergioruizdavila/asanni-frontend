@@ -14,6 +14,11 @@ module app.pages.userProfilePage {
         activate: () => void;
     }
 
+    export interface IUserProfileScope extends angular.IScope {
+        date: any;
+        datetimepickerConfig: any;
+    }
+
     export interface IUserProfileForm {
         username: string;
         email: string;
@@ -35,6 +40,7 @@ module app.pages.userProfilePage {
         /**********************************/
         form: IUserProfileForm;
         error: IUserProfileError;
+        mapConfig: components.map.IMapConfig;
         // --------------------------------
 
 
@@ -50,7 +56,7 @@ module app.pages.userProfilePage {
         constructor(
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
-            private $scope: angular.IScope) {
+            private $scope: IUserProfileScope) {
 
             this._init();
 
@@ -69,6 +75,20 @@ module app.pages.userProfilePage {
                 message: ''
             };
 
+            // init map config
+            this.mapConfig = {
+                type: 'location-map'
+            };
+
+
+            this.$scope.date;
+
+            //date time picker Config
+            this.$scope.datetimepickerConfig = {
+                minView: 'hour',
+                dropdownSelector: '.my-toggle-select'
+            };
+
             this.activate();
         }
 
@@ -82,7 +102,15 @@ module app.pages.userProfilePage {
         /*            METHODS             */
         /**********************************/
 
+        onTimeSet (newDate, oldDate): void {
+            console.log(newDate);
+            console.log(oldDate);
+        }
 
+        beforeRender ($view, $dates, $leftDate, $upDate, $rightDate): void {
+            var index = Math.floor(Math.random() * $dates.length);
+            $dates[index].selectable = false;
+        }
 
     }
 
