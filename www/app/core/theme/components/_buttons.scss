@@ -39,6 +39,11 @@
         font-size: map-get($button-font-sizes, default);
     }
 
+    &--medium {
+        padding: map-get($button-paddings, medium);
+        font-size: map-get($button-font-sizes, medium);
+    }
+
     &--large {
         padding: map-get($button-paddings, large);
         font-size: map-get($button-font-sizes, large);
@@ -82,4 +87,5 @@
 
 .ma-btn[disabled] {
     opacity: $button-opacity-disabled;
+    cursor: not-allowed;
 }
