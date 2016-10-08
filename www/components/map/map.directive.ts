@@ -28,6 +28,9 @@ module components.map {
         controller = MapController.controllerId;
         controllerAs: string = 'vm';
         restrict: string = 'E';
+        scope = {
+            mapConfig: '='
+        };
         templateUrl: string = 'components/map/map.html';
         // --------------------------------
 
@@ -78,6 +81,7 @@ module components.map {
 
     export interface IMapScope extends angular.IScope {
         options: IMapOptions;
+        mapConfig: IMapConfig;
     }
 
     export interface IMapOptions extends google.maps.MapOptions {
@@ -87,6 +91,10 @@ module components.map {
         zoomControl: boolean;
         zoomControlOptions: any;
         streetViewControl: boolean;
+    }
+
+    export interface IMapConfig {
+        type: string; //static, dynamic
     }
 
     /****************************************/
@@ -102,6 +110,7 @@ module components.map {
         private _map: google.maps.Map;
         private _infoWindow: google.maps.InfoWindow;
         private _markers: Array<any>;
+        mapConfig: IMapConfig;
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/
@@ -120,16 +129,33 @@ module components.map {
             this._markers = [];
 
             //default map options
-            this.$scope.options = {
-                center: new google.maps.LatLng(50, 2),
-                zoom: 4,
-                mapTypeControl: false,
-                zoomControl: true,
-                streetViewControl: false,
-                zoomControlOptions: {
-                    position: google.maps.ControlPosition.TOP_LEFT
-                }
-            };
+            switch(this.mapConfig.type) {
+                case 'search-map':
+                    this.$scope.options = {
+                        center: new google.maps.LatLng(50, 2),
+                        zoom: 4,
+                        mapTypeControl: false,
+                        zoomControl: true,
+                        streetViewControl: false,
+                        zoomControlOptions: {
+                            position: google.maps.ControlPosition.TOP_LEFT
+                        }
+                    };
+                break;
+                case 'location-map':
+                    this.$scope.options = {
+                        center: new google.maps.LatLng(6.1739743, -75.5822414),
+                        zoom: 16,
+                        mapTypeControl: false,
+                        zoomControl: true,
+                        streetViewControl: false,
+                        zoomControlOptions: {
+                            position: google.maps.ControlPosition.TOP_RIGHT
+                        }
+                    };
+                break;
+            }
+
 
             this.init();
         }
@@ -141,9 +167,26 @@ module components.map {
                 this._map = new google.maps.Map(document.getElementById("ma-map"), this.$scope.options);
             }
 
-            this.setMarker(new google.maps.LatLng(51.508515, -0.125487), 'London', 'Just some content');
-            this.setMarker(new google.maps.LatLng(52.370216, 4.895168), 'Amsterdam', 'More content');
-            this.setMarker(new google.maps.LatLng(48.856614, 2.352222), 'Paris', 'Text here');
+            if(this.mapConfig.type == 'location-map') {
+                var cityCircle = new google.maps.Circle({
+                  strokeColor: '#ff5a5f',
+                  strokeOpacity: 0.8,
+                  strokeWeight: 2,
+                  fillColor: '#ff5a5f',
+                  fillOpacity: 0.35,
+                  map: this._map,
+                  center: new google.maps.LatLng(6.1739743, -75.5822414),
+                  radius: 200
+                });
+
+                this.setMarker(new google.maps.LatLng(6.175298, -75.582289), 'London', 'Just some content');
+                this.setMarker(new google.maps.LatLng(6.175169, -75.584871), 'Amsterdam', 'More content');
+                this.setMarker(new google.maps.LatLng(6.175686, -75.584099), 'Paris', 'Text here');
+            } else {
+                this.setMarker(new google.maps.LatLng(51.508515, -0.125487), 'London', 'Just some content');
+                this.setMarker(new google.maps.LatLng(52.370216, 4.895168), 'Amsterdam', 'More content');
+                this.setMarker(new google.maps.LatLng(48.856614, 2.352222), 'Paris', 'Text here');
+            }
 
             this.activate();
         }
@@ -165,7 +208,7 @@ module components.map {
                 position: position,
                 map: this._map,
                 title: title,
-                icon: 'assets/images/location.png'
+                icon: 'assets/images/meeting-point.png'
             };
 
             marker = new google.maps.Marker(markerOptions);

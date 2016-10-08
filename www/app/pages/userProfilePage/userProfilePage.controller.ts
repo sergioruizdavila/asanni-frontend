@@ -40,6 +40,7 @@ module app.pages.userProfilePage {
         /**********************************/
         form: IUserProfileForm;
         error: IUserProfileError;
+        mapConfig: components.map.IMapConfig;
         // --------------------------------
 
 
@@ -72,6 +73,11 @@ module app.pages.userProfilePage {
 
             this.error = {
                 message: ''
+            };
+
+            // init map config
+            this.mapConfig = {
+                type: 'location-map'
             };
 
 
