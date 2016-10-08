@@ -37,6 +37,8 @@
 @import 'components/links';
 // labels Style
 @import 'components/labels';
+// search map Style
+@import 'components/locationMap';
 // paragraphs Style
 @import 'components/paragraphs';
 // photo profile Style
@@ -57,6 +59,8 @@
 // MainApp Pages
 // --------------------------------------------------
 
+// meeting Confirmation Page Style
+@import '../../pages/meetingConfirmationPage/meetingConfirmationPage';
 // signUp Pages Style
 @import '../../pages/signUpPage/signUpPage';
 // search Pages Style

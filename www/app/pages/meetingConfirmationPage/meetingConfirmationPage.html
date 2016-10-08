@@ -1,0 +1,147 @@
+<!----------------------------------------------------->
+<!--             MEETING CONFIRMATION PAGE           -->
+<!----------------------------------------------------->
+
+<div class="meetingConfirmationPage container">
+
+    <div class="row">
+
+        <!--                  START: MEETING CONFIRMATION BLOCK              -->
+        <!--------------------------------------------------------------------->
+        <div id="meetingConfirmation-main-block" class="col-md-12">
+
+
+            <div class="ma-box row">
+
+                <h4 class="ma-box__title margin-reset">About this meeting</h4>
+
+                <div class="ma-box__content">
+
+                    <!----------------- START: LEFT COLUMN -------------------->
+                    <div id="meetingConfirmation-left-column" class="col-md-7">
+
+                        <!--------------- START: SAY HELLO BLOCK -------------->
+                        <form id="meetingConfirmation-sayHello-block"
+                              class="ma-form ma-form--basic space-6">
+                            <!-- Say hello textarea -->
+                            <div class="form-group ma-form-group">
+                                <label for="helloTextarea" style="font-size: 17px; font-weight:normal;">
+                                    Say hello to Rosa and tell her why you want a language exchange with her
+                                </label>
+                                <textarea id="helloTextarea"
+                                          name="confirmation[hello]"
+                                          class="ma-input ma-input--default ma-textarea"
+                                          placeholder="Hola, estoy por presentar un examen importante, y me gustaria prepararme."
+                                          rows="4" cols="40"></textarea>
+                            </div>
+                        </form>
+                        <!--               END: SAY HELLO BLOCK              -->
+
+
+                        <hr>
+
+
+                        <!-------------- START: LOCATION MAP BLOCK ------------>
+                        <h4 class="space-top-4 space-3">Choose a meeting point</h4>
+
+                        <div id="meetingConfirmation-location-block"
+                             class="meetingConfirmationPage__block row">
+
+                            <div class="col-md-12" style="height: 500px;">
+                                <div class="location-map" style="border: 1px solid #dce0e0">
+                                    <ma-map map-config="vm.mapConfig"></ma-map>
+                                </div>
+                                <div class="row margin-reset">
+                                    <div class="col-md-12 padding-reset">
+                                        <p class="ma-p ma-p--small space-top-1 margin-reset">
+                                            Deseas sugerir un punto de encuentro que no esta en el mapa?
+                                            <a class="ma-link ma-link--box"
+                                               href="#">
+                                                Agregar un nuevo punto de encuentro
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--              END: LOCATION MAP BLOCK            -->
+
+
+
+                        <!----------- START: MEETING POINT INFO BLOCK --------->
+                        <div id="meetingConfirmation-meetingPointInfo-block"
+                             class="row space-top-8">
+
+                            <div class="col-md-12">
+                                <div class="ma-box" style="height: 300px;">
+
+                                    <div class="ma-box__content">
+
+
+                                    </div>
+
+                                    <div class="ma-box__footer">
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--           END: MEETING POINT INFO BLOCK         -->
+
+
+                    </div>
+                    <!--                 END: LEFT COLUMN                    -->
+
+
+
+                    <!------------------- START: RIGHT COLUMN ----------------->
+                    <div id="meetingConfirmation-right-column" class="col-md-5">
+
+                        <div class="ma-box">
+
+                            <h4 class="ma-box__title margin-reset">Invited Profile</h4>
+
+                            <div class="ma-box__content">
+
+                                <!--------- START: PROFILE IMAGE BLOCK -------->
+                                <div id="meetingConfirmation-image-block"
+                                     class="meetingConfirmationPage__block
+                                            row margin-reset text-center">
+
+                                    <div class="ma-photo-profile
+                                                ma-photo-profile--medium
+                                                round">
+                                        <img class="img-responsive center-block"
+                                             src="https://a2.muscache.com/im/pictures/27b8a775-011e-4659-a82d-95320b05c1c8.jpg?aki_policy=profile_x_medium"
+                                             width="170" height="170"
+                                             alt="Sergio Ruiz">
+                                    </div>
+
+                                </div>
+                                <!--         END: PROFILE IMAGE BLOCK        -->
+
+                            </div>
+
+                            <div class="ma-box__footer">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!--                  END: RIGHT COLUMN                  -->
+
+                </div>
+
+            </div>
+
+
+        </div>
+        <!--                  END: MEETING CONFIRMATION BLOCK                -->
+
+    </div>
+
+</div>

@@ -304,6 +304,7 @@ $image-photo-default-path: $global-image-path + '/' + $global-photo-default-file
 $image-photo-sizes: (
     small: 32px,
     default: 100px,
+    medium: 170px,
     large: 240px,
 );
 $image-photo-background: $dark-gray;
