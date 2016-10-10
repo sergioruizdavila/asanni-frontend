@@ -11,7 +11,7 @@
         <div id="meetingConfirmation-main-block" class="col-md-12">
 
 
-            <div class="ma-box row">
+            <div class="ma-box row space-5">
 
                 <h4 class="ma-box__title margin-reset">About this meeting</h4>
 
@@ -47,7 +47,7 @@
                         <div id="meetingConfirmation-location-block"
                              class="meetingConfirmationPage__block row">
 
-                            <div class="col-md-12" style="height: 500px;">
+                            <div class="col-md-12" style="height: 300px;">
                                 <div class="location-map" style="border: 1px solid #dce0e0">
                                     <ma-map map-config="vm.mapConfig"></ma-map>
                                 </div>
@@ -73,19 +73,207 @@
 
                         <!----------- START: MEETING POINT INFO BLOCK --------->
                         <div id="meetingConfirmation-meetingPointInfo-block"
-                             class="row space-top-8">
+                             class="row space-top-8" ng-show="true">
 
                             <div class="col-md-12">
-                                <div class="ma-box" style="height: 300px;">
+                                <div class="meetingPointInfo ma-box  space-5">
+
+                                    <!-- Amount of reviews -->
+                                    <h3 id="meetingConfirmation-meeting-amount"
+                                        class="ma-box__title margin-reset">
+                                        <div class="ma-box__title__right-block pull-right">
+                                            <a class="ma-btn
+                                                      ma-btn--default
+                                                      ma-btn--primary" href="#">
+                                            Choose this one</a>
+                                        </div>
+                                        Café Vervlet
+                                        <p class="ma-p ma-p--default margin-reset">
+                                            <strong>70</strong> successful meetings here
+                                        </p>
+                                    </h3>
 
                                     <div class="ma-box__content">
+                                        <!-- meeting point Category -->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <a class="ma-link
+                                                          ma-link--box
+                                                          ma-link--box--small
+                                                          ma-link--box--primary"
+                                                    href="#">
+                                                    Café
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <!-- meeting point Address and Map -->
+                                        <div class="row">
+                                            <div class="col-md-12">
 
+                                                <div class="ma-label
+                                                            ma-label--simple
+                                                            ma-label--simple--default
+                                                            margin-reset">
+                                                Trans 32 Diagonal 33A Sur - 20
+                                                </div>
+                                                <strong class="point-separate"></strong>
+                                                <a class="ma-link
+                                                          ma-link--box
+                                                          ma-link--box--small
+                                                          ma-link--box--primary"
+                                                    href="#">
+                                                    Map
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                        <!-- meeting point prices, hours, website -->
+                                        <div class="row space-3">
+                                            <div class="col-md-12">
+
+                                                <div class="ma-label
+                                                            ma-label--simple
+                                                            ma-label--simple--default
+                                                            margin-reset">
+                                                $10 to $230
+                                                </div>
+                                                <strong class="point-separate"></strong>
+                                                <a class="ma-link
+                                                          ma-link--box
+                                                          ma-link--box--small
+                                                          ma-link--box--primary"
+                                                    href="#">
+                                                    Hours
+                                                </a>
+                                                <strong class="point-separate"></strong>
+                                                <a class="ma-link
+                                                          ma-link--box
+                                                          ma-link--box--small
+                                                          ma-link--box--primary"
+                                                    href="#">
+                                                    Website
+                                                </a>
+
+                                            </div>
+                                        </div>
+
+                                        <!-- meeting point prices, hours, website -->
+                                        <div class="row">
+                                            <div class="col-md-12">
+
+                                                <p class="ma-p ma-p--small">
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque rutrum pulvinar magna, et iaculis neque posuere a. Suspendisse sit amet mollis nunc, nec faucibus ipsum. Nunc et nisl eget enim gravida sagittis. Donec massa nulla, tempor eu orci quis,
+                                                    tincidunt tincidunt odio.
+                                                </p>
+
+                                            </div>
+                                        </div>
+
+                                        <hr>
+
+                                        <!-- recommends amounts -->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h4> 336 personas recomendaron este lugar</h4>
+                                            </div>
+                                        </div>
+
+                                        <!-- comments -->
+                                        <div class="meetingPointInfo__comments-block
+                                                    space-top-3">
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <blockquote style="font-size: 14px;color: #00B592;">
+                                                      <p class="ma-p ma-p--small margin-reset">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                                                                                adipiscing elit. Integer posuere erat a ante.</p>
+
+                                                            <div class="ma-photo-profile
+                                                                      ma-photo-profile--small
+                                                                      round
+                                                                      ma-header__block__btn__icon
+                                                                      ma-header__block__btn__icon__ma-photo" style="margin-right: 10px;">
+                                                                <img width="32" height="32" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="">
+                                                            </div>
+                                                            Rosa Alvarez
+
+                                                    </blockquote>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <blockquote style="font-size: 14px;color: #00B592;">
+                                                      <p class="ma-p ma-p--small margin-reset">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                                                                                adipiscing elit. Integer posuere erat a ante.</p>
+
+                                                            <div class="ma-photo-profile
+                                                                      ma-photo-profile--small
+                                                                      round
+                                                                      ma-header__block__btn__icon
+                                                                      ma-header__block__btn__icon__ma-photo" style="margin-right: 10px;">
+                                                                <img width="32" height="32" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="">
+                                                            </div>
+                                                            Rosa Alvarez
+
+                                                    </blockquote>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <blockquote style="font-size: 14px;color: #00B592;">
+                                                      <p class="ma-p ma-p--small margin-reset">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                                                                                adipiscing elit. Integer posuere erat a ante.</p>
+
+                                                            <div class="ma-photo-profile
+                                                                      ma-photo-profile--small
+                                                                      round
+                                                                      ma-header__block__btn__icon
+                                                                      ma-header__block__btn__icon__ma-photo" style="margin-right: 10px;">
+                                                                <img width="32" height="32" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="">
+                                                            </div>
+                                                            Rosa Alvarez
+
+                                                    </blockquote>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <blockquote style="font-size: 14px;color: #00B592;">
+                                                      <p class="ma-p ma-p--small margin-reset">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                                                                                adipiscing elit. Integer posuere erat a ante.</p>
+
+                                                            <div class="ma-photo-profile
+                                                                      ma-photo-profile--small
+                                                                      round
+                                                                      ma-header__block__btn__icon
+                                                                      ma-header__block__btn__icon__ma-photo" style="margin-right: 10px;">
+                                                                <img width="32" height="32" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="">
+                                                            </div>
+                                                            Rosa Alvarez
+
+                                                    </blockquote>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12 text-center">
+                                                    <a class="ma-link
+                                                              ma-link--box
+                                                              ma-link--box--small
+                                                              ma-link--box--primary"
+                                                        href="#">
+                                                        See More...
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                        </div>
 
                                     </div>
 
-                                    <div class="ma-box__footer">
-
-                                    </div>
 
                                 </div>
                             </div>
@@ -102,7 +290,7 @@
                     <!------------------- START: RIGHT COLUMN ----------------->
                     <div id="meetingConfirmation-right-column" class="col-md-5">
 
-                        <div class="ma-box">
+                        <div class="ma-box space-5">
 
                             <h4 class="ma-box__title margin-reset">Invited Profile</h4>
 
@@ -110,8 +298,7 @@
 
                                 <!--------- START: PROFILE IMAGE BLOCK -------->
                                 <div id="meetingConfirmation-image-block"
-                                     class="meetingConfirmationPage__block
-                                            row margin-reset text-center">
+                                     class="row margin-reset text-center">
 
                                     <div class="ma-photo-profile
                                                 ma-photo-profile--medium
@@ -132,7 +319,7 @@
                                      class="row margin-reset text-center">
 
                                     <!-- User Name Block -->
-                                    <h2 class="space-3 margin-reset">Sergio</h2>
+                                    <h2 class="space-2 margin-reset">Sergio</h2>
 
                                     <!-- User Rating -->
                                     <div class="ma-stars-withLabel">
@@ -164,7 +351,7 @@
 
                                     <!-- Fluent in Block -->
                                     <div class="language-info-box space-top-5">
-                                        <h4 class="margin-reset space-2">Fluent in</h4>
+                                        <h4 class="margin-reset space-1">Fluent in</h4>
                                         <div class="language-info-box__content
                                                     text-center">
                                             <div class="ma-label
@@ -177,8 +364,8 @@
 
 
                                     <!-- Learning Block -->
-                                    <div class="language-info-box space-top-5">
-                                        <h4 class="margin-reset space-2">Learning</h4>
+                                    <div class="language-info-box space-top-3">
+                                        <h4 class="margin-reset space-1">Learning</h4>
                                         <div class="language-info-box__content
                                                     text-center">
                                             <div class="ma-label
@@ -222,7 +409,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row space-top-4">
+                                <div class="row space-top-3">
                                     <div class="col-md-12 text-center">
                                         <p class="ma-p ma-p--large margin-reset">
                                             Lugar
@@ -235,7 +422,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row space-top-6">
+                                <div class="row space-top-5">
                                     <div class="col-md-12">
                                         <button class="ma-btn
                                                   ma-btn--primary
