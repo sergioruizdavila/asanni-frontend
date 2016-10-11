@@ -32,7 +32,7 @@
 
 (function (angular) {
 
-  function localStorageServiceFactory($window){
+  function localStorageServiceFactory($window) {
     if($window.localStorage){
       return $window.localStorage;
     }

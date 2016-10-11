@@ -27,6 +27,12 @@
         height: map-get($image-photo-sizes, default);
     }
 
+    &--medium {
+        width: map-get($image-photo-sizes, medium);
+        height: map-get($image-photo-sizes, medium);
+    }
+
+
     &--large {
         width: map-get($image-photo-sizes, large);
         height: map-get($image-photo-sizes, large);

@@ -128,15 +128,19 @@
         ///SIMPLE LABEL SIZE
 
         &--small {
-            font-size: map-get($label-font-sizes, small);
+            font-size: map-get($label-font-sizes-simple, small);
         }
 
         &--default {
-            font-size: map-get($label-font-sizes, default);
+            font-size: map-get($label-font-sizes-simple, default);
+        }
+
+        &--medium {
+            font-size: map-get($label-font-sizes-simple, medium);
         }
 
         &--large {
-            font-size: map-get($label-font-sizes, large);
+            font-size: map-get($label-font-sizes-simple, large);
         }
 
         ///SIMPLE LABEL COLOR

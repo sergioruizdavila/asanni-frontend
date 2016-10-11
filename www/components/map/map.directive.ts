@@ -110,6 +110,7 @@ module components.map {
         private _map: google.maps.Map;
         private _infoWindow: google.maps.InfoWindow;
         private _markers: Array<any>;
+        private _meetingPointDetailsData: any;
         mapConfig: IMapConfig;
         // --------------------------------
 
@@ -162,6 +163,21 @@ module components.map {
 
         /*-- INITIALIZE METHOD --*/
         private init() {
+            /* Pantalla meeting Confirmation Page:
+               Paso 1: Obtener los datos de todos los puntos de encuentro
+               alrededor del usuario.
+            */
+            var meetingPointData = {
+                id: 1,
+                position: {
+                    lat: 6.175298,
+                    lng: -75.582289
+                }
+            };
+
+            /********************************************/
+
+
             // init map
             if (this._map === void 0) {
                 this._map = new google.maps.Map(document.getElementById("ma-map"), this.$scope.options);
@@ -179,13 +195,13 @@ module components.map {
                   radius: 200
                 });
 
-                this.setMarker(new google.maps.LatLng(6.175298, -75.582289), 'London', 'Just some content');
-                this.setMarker(new google.maps.LatLng(6.175169, -75.584871), 'Amsterdam', 'More content');
-                this.setMarker(new google.maps.LatLng(6.175686, -75.584099), 'Paris', 'Text here');
+                this.setMarker(meetingPointData.id, new google.maps.LatLng(meetingPointData.position.lat, meetingPointData.position.lng), 'London', 'Just some content');
+                this.setMarker(2, new google.maps.LatLng(6.175169, -75.584871), 'Amsterdam', 'More content');
+                this.setMarker(3, new google.maps.LatLng(6.175686, -75.584099), 'Paris', 'Text here');
             } else {
-                this.setMarker(new google.maps.LatLng(51.508515, -0.125487), 'London', 'Just some content');
-                this.setMarker(new google.maps.LatLng(52.370216, 4.895168), 'Amsterdam', 'More content');
-                this.setMarker(new google.maps.LatLng(48.856614, 2.352222), 'Paris', 'Text here');
+                this.setMarker(4, new google.maps.LatLng(51.508515, -0.125487), 'London', 'Just some content');
+                this.setMarker(5, new google.maps.LatLng(52.370216, 4.895168), 'Amsterdam', 'More content');
+                this.setMarker(6, new google.maps.LatLng(48.856614, 2.352222), 'Paris', 'Text here');
             }
 
             this.activate();
@@ -201,10 +217,12 @@ module components.map {
         /*            METHODS             */
         /**********************************/
 
-        setMarker(position, title, content): void {
+        setMarker(id, position, title, content): void {
             //VARIABLES
+            let self = this;
             let marker;
             let markerOptions = {
+                id: id,
                 position: position,
                 map: this._map,
                 title: title,
@@ -214,7 +232,46 @@ module components.map {
             marker = new google.maps.Marker(markerOptions);
             this._markers.push(marker); // add marker to array
 
-            google.maps.event.addListener(marker, 'click', function () {
+            google.maps.event.addListener(marker, 'click', function (e) {
+
+                //change icon (actived)
+                for (var i = 0; i < self._markers.length; i++) {
+                   self._markers[i].setIcon('assets/images/meeting-point.png');
+                }
+                this.setIcon('assets/images/location.png');
+
+                /* Pantalla meeting Confirmation Page:
+                   Paso 2: Activamos el loading (dentro del contenedor que muestra
+                   la info del punto de encuentro), y luego llamamos al servicio
+                   que nos trae el detalle del puntos de encuentro,
+                   para que nos retorne un JSON
+                   (TODO: NOTA: Analizar mejor, ya que no puedo aqui prender y apagar
+                    el loading de meetingConfirmationPage, ni mostrar ni ocultar
+                    el cuadro que muestra la info del punto de encuentro. Eso lo
+                    deberia controlar con un broadcast o con un watch, ya que esto
+                    es una especie de: master-details)
+                */
+
+                self._meetingPointDetailsData = {
+                    name: 'Café Vervlet',
+                    meetings: 70,
+                    category: 'Café',
+                    address: 'Trans 32 Diagonal 33A Sur - 20',
+                    prices: {
+                        min: 130,
+                        max: 300
+                    },
+                    website: 'http://www.place-book.com',
+                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque rutrum pulvinar magna, et iaculis neque posuere a. Suspendisse sit amet mollis nunc, nec faucibus ipsum. Nunc et nisl eget enim gravida sagittis. Donec massa nulla, tempor eu orci quis, tincidunt tincidunt odio.'
+                };
+
+                /* Pantalla meeting Confirmation Page:
+                   Paso 3: Llamamos al servicio que nos trae el detalle del puntos
+                   de encuentro, para que nos retorne un JSON
+                */
+
+
+                /*
                 // close window if not undefined
                 if (this._infoWindow !== void 0) {
                     this._infoWindow.close();
@@ -225,6 +282,7 @@ module components.map {
                 };
                 this._infoWindow = new google.maps.InfoWindow(infoWindowOptions);
                 this._infoWindow.open(this._map, marker);
+                */
             });
 
         }

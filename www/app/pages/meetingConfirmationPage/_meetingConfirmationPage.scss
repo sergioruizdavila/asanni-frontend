@@ -1,0 +1,46 @@
+/*************************/
+/*       VARIABLES       */
+/*************************/
+$meetingConfirmation-padding: 20px;
+$meetingConfirmation-block-margin: 20px;
+
+/**********************************************************/
+/*                MEETING CONFIRMATION PAGE               */
+/**********************************************************/
+
+.meetingConfirmationPage {
+    padding-top: $meetingConfirmation-padding;
+
+    &__block {
+        margin-bottom: $meetingConfirmation-block-margin;
+    }
+
+    &__sayHello {
+        label {
+            font-size: 17px;
+            font-weight:normal;
+        }
+    }
+
+    &__map-block {
+        height: 300px;
+
+        .location-map {
+             border: 1px solid #dce0e0;
+        }
+    }
+}
+
+
+.meetingPointInfo {
+    &__comments-block {
+        blockquote {
+            font-size: 14px;
+            color: #00B592;
+
+            .ma-photo-profile {
+                margin-right: 10px;
+            }
+        }
+    }
+}
