@@ -22,10 +22,11 @@
 
                         <!--------------- START: SAY HELLO BLOCK -------------->
                         <form id="meetingConfirmation-sayHello-block"
-                              class="ma-form ma-form--basic space-6">
+                              class="meetingConfirmationPage__sayHello
+                                     ma-form ma-form--basic space-6">
                             <!-- Say hello textarea -->
                             <div class="form-group ma-form-group">
-                                <label for="helloTextarea" style="font-size: 17px; font-weight:normal;">
+                                <label for="helloTextarea">
                                     Say hello to Rosa and tell her why you want a language exchange with her
                                 </label>
                                 <textarea id="helloTextarea"
@@ -38,8 +39,6 @@
                         <!--               END: SAY HELLO BLOCK              -->
 
 
-                        <hr>
-
 
                         <!-------------- START: LOCATION MAP BLOCK ------------>
                         <h4 class="space-top-4 space-3">Choose a meeting point</h4>
@@ -47,14 +46,16 @@
                         <div id="meetingConfirmation-location-block"
                              class="meetingConfirmationPage__block row">
 
-                            <div class="col-md-12" style="height: 300px;">
-                                <div class="location-map" style="border: 1px solid #dce0e0">
+                            <div class="meetingConfirmationPage__map-block
+                                        col-md-12">
+                                <div class="location-map">
                                     <ma-map map-config="vm.mapConfig"></ma-map>
                                 </div>
                                 <div class="row margin-reset">
                                     <div class="col-md-12 padding-reset">
                                         <p class="ma-p ma-p--small space-top-1 margin-reset">
-                                            Deseas sugerir un punto de encuentro que no esta en el mapa?
+                                            Deseas sugerir un punto de encuentro
+                                            que no esta en el mapa?
                                             <a class="ma-link
                                                       ma-link--box
                                                       ma-link--box--primary"
@@ -94,6 +95,7 @@
                                     </h3>
 
                                     <div class="ma-box__content">
+
                                         <!-- meeting point Category -->
                                         <div class="row">
                                             <div class="col-md-12">
@@ -106,6 +108,7 @@
                                                 </a>
                                             </div>
                                         </div>
+
                                         <!-- meeting point Address and Map -->
                                         <div class="row">
                                             <div class="col-md-12">
@@ -127,6 +130,7 @@
 
                                             </div>
                                         </div>
+
                                         <!-- meeting point prices, hours, website -->
                                         <div class="row space-3">
                                             <div class="col-md-12">
@@ -162,7 +166,12 @@
                                             <div class="col-md-12">
 
                                                 <p class="ma-p ma-p--small">
-                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque rutrum pulvinar magna, et iaculis neque posuere a. Suspendisse sit amet mollis nunc, nec faucibus ipsum. Nunc et nisl eget enim gravida sagittis. Donec massa nulla, tempor eu orci quis,
+                                                    Lorem ipsum dolor sit amet, consectetur
+                                                    adipiscing elit. Quisque rutrum pulvinar magna,
+                                                    et iaculis neque posuere a. Suspendisse sit
+                                                    amet mollis nunc, nec faucibus ipsum.
+                                                    Nunc et nisl eget enim gravida sagittis.
+                                                    Donec massa nulla, tempor eu orci quis,
                                                     tincidunt tincidunt odio.
                                                 </p>
 
@@ -184,15 +193,17 @@
 
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <blockquote style="font-size: 14px;color: #00B592;">
-                                                      <p class="ma-p ma-p--small margin-reset">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-                                                                                adipiscing elit. Integer posuere erat a ante.</p>
+                                                    <blockquote>
+                                                      <p class="ma-p ma-p--small margin-reset">
+                                                          Lorem ipsum dolor sit amet, consectetur
+                                                          adipiscing elit. Integer posuere erat a ante.
+                                                          adipiscing elit. Integer posuere erat a ante.</p>
 
                                                             <div class="ma-photo-profile
                                                                       ma-photo-profile--small
                                                                       round
                                                                       ma-header__block__btn__icon
-                                                                      ma-header__block__btn__icon__ma-photo" style="margin-right: 10px;">
+                                                                      ma-header__block__btn__icon__ma-photo">
                                                                 <img width="32" height="32" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="">
                                                             </div>
                                                             Rosa Alvarez
@@ -203,7 +214,7 @@
 
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <blockquote style="font-size: 14px;color: #00B592;">
+                                                    <blockquote>
                                                       <p class="ma-p ma-p--small margin-reset">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
                                                                                 adipiscing elit. Integer posuere erat a ante.</p>
 
@@ -211,7 +222,7 @@
                                                                       ma-photo-profile--small
                                                                       round
                                                                       ma-header__block__btn__icon
-                                                                      ma-header__block__btn__icon__ma-photo" style="margin-right: 10px;">
+                                                                      ma-header__block__btn__icon__ma-photo">
                                                                 <img width="32" height="32" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="">
                                                             </div>
                                                             Rosa Alvarez
@@ -222,7 +233,7 @@
 
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <blockquote style="font-size: 14px;color: #00B592;">
+                                                    <blockquote>
                                                       <p class="ma-p ma-p--small margin-reset">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
                                                                                 adipiscing elit. Integer posuere erat a ante.</p>
 
@@ -230,7 +241,7 @@
                                                                       ma-photo-profile--small
                                                                       round
                                                                       ma-header__block__btn__icon
-                                                                      ma-header__block__btn__icon__ma-photo" style="margin-right: 10px;">
+                                                                      ma-header__block__btn__icon__ma-photo">
                                                                 <img width="32" height="32" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="">
                                                             </div>
                                                             Rosa Alvarez
@@ -241,7 +252,7 @@
 
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <blockquote style="font-size: 14px;color: #00B592;">
+                                                    <blockquote>
                                                       <p class="ma-p ma-p--small margin-reset">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
                                                                                 adipiscing elit. Integer posuere erat a ante.</p>
 
@@ -249,7 +260,7 @@
                                                                       ma-photo-profile--small
                                                                       round
                                                                       ma-header__block__btn__icon
-                                                                      ma-header__block__btn__icon__ma-photo" style="margin-right: 10px;">
+                                                                      ma-header__block__btn__icon__ma-photo">
                                                                 <img width="32" height="32" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="">
                                                             </div>
                                                             Rosa Alvarez
