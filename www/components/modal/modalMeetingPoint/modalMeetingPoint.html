@@ -1,0 +1,16 @@
+<div class="ma-box modalMeetingPoint">
+    <h4 class="ma-box__title margin-reset">I'm a modal!</h4>
+    <div class="ma-box__content modalMeetingPoint__content">
+
+        <div class="modalMeetingPoint__content__map" style="height:300px;">
+            <div class="location-map">
+                <ma-map map-config="vm.mapConfigModal"></ma-map>
+            </div>
+        </div>
+
+    </div>
+    <div class="ma-box__footer">
+        <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="vm.close()">Cancel</button>
+    </div>
+</div>

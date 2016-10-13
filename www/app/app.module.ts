@@ -23,7 +23,8 @@
             'mainApp.pages.userEditAgendaPage',
             'mainApp.pages.meetingConfirmationPage',
             'mainApp.components.header',
-            'mainApp.components.map'
+            'mainApp.components.map',
+            'mainApp.components.modal'
         ])
         .config(config);
 

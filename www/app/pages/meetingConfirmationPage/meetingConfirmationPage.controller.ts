@@ -45,17 +45,21 @@ module app.pages.meetingConfirmationPage {
 
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = [
+            'dataConfig',
             '$state',
             '$filter',
-            '$scope'];
+            '$scope',
+            '$uibModal'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
+            private dataConfig: IDataConfig,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
-            private $scope: IMeetingConfirmationScope) {
+            private $scope: IMeetingConfirmationScope,
+            private $uibModal: ng.ui.bootstrap.IModalService) {
 
             this._init();
 
@@ -91,6 +95,35 @@ module app.pages.meetingConfirmationPage {
         /**********************************/
         /*            METHODS             */
         /**********************************/
+        addNewMeetingPoint(): void {
+            let self = this;
+            // modal default options
+            let options: ng.ui.bootstrap.IModalSettings = {
+                animation: false,
+                templateUrl: this.dataConfig.modalMeetingPointTmpl,
+                controller: 'mainApp.components.modal.ModalMeetingPointController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            model: {test: 'data'}
+                        }
+                    }
+                }
+            };
+
+            var modalInstance = this.$uibModal.open(options);
+
+            //When Modal closed, return the new meeting point
+            modalInstance.result.then(function (newMeetingPoint) {
+                /* TODO: Mostrar aqui el nuevo punto en el mapa, la info en el
+                        cuadro, habilitamos el boton: Send Request */
+            }, function () {
+                console.info('Modal dismissed at: ' + new Date());
+            });
+
+            event.preventDefault();
+        }
 
 
     }
