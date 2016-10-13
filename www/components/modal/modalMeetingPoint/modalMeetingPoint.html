@@ -1,16 +1,153 @@
+<!----------------------------------------------------->
+<!--                MEETING POINT MODAL              -->
+<!----------------------------------------------------->
+
 <div class="ma-box modalMeetingPoint">
-    <h4 class="ma-box__title margin-reset">I'm a modal!</h4>
+
+    <!--                               TITLE                                 -->
+    <!------------------------------------------------------------------------->
+    <h4 class="ma-box__title margin-reset">Add New Meeting Point
+        <div class="ma-box__title__right-block pull-right">
+            <i class="material-icons
+                      md-18
+                      md-dark md-dark--clicked"
+                      ng-click="vm.close()">close</i>
+        </div>
+    </h4>
+
+
+    <!--                              CONTENT                                -->
+    <!------------------------------------------------------------------------->
     <div class="ma-box__content modalMeetingPoint__content">
 
-        <div class="modalMeetingPoint__content__map" style="height:300px;">
+        <!--                START: ADD MEETING POINT FORM BLOCK              -->
+        <!--------------------------------------------------------------------->
+        <form  id="modalMeetingPoint-form-block" class="form-horizontal
+                                                        ma-form--horizontal">
+
+            <!-- Name of Point Input -->
+            <div class="form-group
+                     ma-form-group
+                     ma-form-group--default">
+                <label class="text-right col-xs-3 col-sm-3"
+                       for="namePointInput">Name</label>
+                <div class="col-xs-9 col-sm-9">
+                    <input id="namePointInput"
+                           type="text"
+                           class="ma-input ma-input--default"
+                           placeholder="nombre del café, restaurante, biblioteca, etc.">
+                </div>
+            </div>
+
+            <!-- Address of Point Input -->
+            <div class="form-group
+                     ma-form-group
+                     ma-form-group--default">
+                <label class="text-right col-xs-3 col-sm-3"
+                       for="addressPointInput">Address</label>
+                <div class="col-xs-9 col-sm-9">
+                    <input id="addressPointInput"
+                           type="text"
+                           class="ma-input ma-input--default">
+                </div>
+            </div>
+
+            <!-- City of Point Input -->
+            <div class="form-group
+                     ma-form-group
+                     ma-form-group--default">
+                <label class="text-right col-xs-3 col-sm-3"
+                       for="cityPointInput">City/Town</label>
+                <div class="col-xs-9 col-sm-9">
+                    <input id="cityPointInput"
+                           type="text"
+                           class="ma-input ma-input--default">
+                </div>
+            </div>
+
+            <!-- State of Point Input -->
+            <div class="form-group
+                     ma-form-group
+                     ma-form-group--default">
+                <label class="text-right col-xs-3 col-sm-3"
+                       for="statePointInput">State/Province</label>
+                <div class="col-xs-9 col-sm-9">
+                    <input id="statePointInput"
+                           type="text"
+                           class="ma-input ma-input--default">
+                </div>
+            </div>
+
+            <!-- Country Select Input -->
+            <div class="form-group
+                        ma-form-group
+                        ma-form-group--default">
+                <label class="text-right col-xs-3 col-sm-3"
+                       for="countrySelect">Country</label>
+                <div class="col-xs-9 col-sm-9">
+                    <div class="ma-select-container
+                                ma-select-container--default">
+                        <select id="countrySelect"
+                                class="ma-input ma-select
+                                       ma-select--default"
+                                name="point[country]">
+                            <option value="Argentina" selected="selected">Argentina</option>
+                            <option value="Colombia">Colombia</option>
+                            <option value="New Zealand">New Zealand</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Select Input -->
+            <div class="form-group
+                        ma-form-group
+                        ma-form-group--default">
+                <label class="text-right col-xs-3 col-sm-3"
+                       for="categorySelect">Category</label>
+                <div class="col-xs-9 col-sm-9">
+                    <div class="ma-select-container
+                                ma-select-container--default">
+                        <select id="categorySelect"
+                                class="ma-input ma-input--block ma-select
+                                       ma-select--default"
+                                name="point[category]">
+                            <option value="Café" selected="selected">Café</option>
+                            <option value="Super Market">Super Market</option>
+                            <option value="Mall Center">Mall Center</option>
+                            <option value="Restaurant">Restaurant</option>
+                            <option value="Library">Library</option>
+                            <option value="Park">Park</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        <!--                END: ADD MEETING POINT FORM BLOCK                -->
+
+
+
+        <!--              START: MEETING POINT MAP LOCATION BLOCK            -->
+        <!--------------------------------------------------------------------->
+        <div id="modalMeetingPoint-map-block"
+             class="modalMeetingPoint__content__map" style="height:200px;">
             <div class="location-map">
                 <ma-map map-config="vm.mapConfigModal"></ma-map>
             </div>
         </div>
+        <!--              END: MEETING POINT MAP LOCATION BLOCK              -->
 
     </div>
-    <div class="ma-box__footer">
-        <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
-        <button class="btn btn-warning" type="button" ng-click="vm.close()">Cancel</button>
+
+
+    <!--                              FOOTER                                 -->
+    <!------------------------------------------------------------------------->
+    <div class="ma-box__footer text-center">
+        <button class="ma-btn ma-btn--primary ma-btn--large" style="margin-right: 30px;">Guardar</button>
+        <a class="ma-link
+                  ma-link--simple
+                  ma-link--simple--default" href="#" ng-click="vm.close()">Cancelar</a>
     </div>
+
 </div>

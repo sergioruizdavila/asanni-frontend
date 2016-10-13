@@ -96,6 +96,7 @@ module components.modal.modalMeetingPoint {
 
         close(): void {
             this.$uibModalInstance.close();
+            event.preventDefault();
         }
 
     }

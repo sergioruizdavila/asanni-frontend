@@ -115,7 +115,6 @@ module app.pages.userProfilePage {
         goToConfirm (): void {
             //TODO: Buscar la forma de poder recargar la pagina cuando sea
             // necesario ya que muchas veces voy a tener que limpiar todo
-            window.location.reload();
             this.$state.go('page.meetingConfirmationPage');
         }
 
