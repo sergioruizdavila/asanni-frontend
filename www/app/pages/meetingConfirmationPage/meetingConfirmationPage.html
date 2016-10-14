@@ -17,28 +17,42 @@
 
                 <div class="ma-box__content">
 
+                    <div class="col-md-3" ng-show="vm.processCompleted"></div>
+
                     <!----------------- START: LEFT COLUMN -------------------->
-                    <div id="meetingConfirmation-left-column" class="col-md-7">
+                    <div id="meetingConfirmation-left-column"
+                         ng-hide="vm.processCompleted"
+                         class="col-md-7">
 
                         <!--------------- START: SAY HELLO BLOCK -------------->
                         <form id="meetingConfirmation-sayHello-block"
                               class="meetingConfirmationPage__sayHello
                                      ma-form ma-form--basic space-6">
                             <!-- Say hello textarea -->
-                            <div class="form-group ma-form-group">
-                                <label for="helloTextarea">
+                            <div class="form-group ma-form-group text-right">
+                                <label class="text-left" for="helloTextarea">
                                     Say hello to Rosa and tell her why you want a language exchange with her
                                 </label>
                                 <textarea id="helloTextarea"
                                           name="confirmation[hello]"
-                                          class="ma-input ma-input--default ma-textarea"
+                                          class="ma-input
+                                                 ma-input--default
+                                                 ma-textarea space-3"
+                                          ng-model="vm.form.helloText"
                                           placeholder="Hola, estoy por presentar un examen importante, y me gustaria prepararme."
                                           rows="4" cols="40"></textarea>
+                                <button type="button"
+                                        class="ma-btn
+                                               ma-btn--primary
+                                               ma-btn--default"
+                                        ng-click="vm.saveMessage()">
+                                        Guardar
+                                </button>
                             </div>
                         </form>
                         <!--               END: SAY HELLO BLOCK              -->
 
-
+                        <hr>
 
                         <!-------------- START: LOCATION MAP BLOCK ------------>
                         <h4 class="space-top-4 space-3">Choose a meeting point</h4>
@@ -84,10 +98,12 @@
                                     <h3 id="meetingConfirmation-meeting-amount"
                                         class="ma-box__title margin-reset">
                                         <div class="ma-box__title__right-block pull-right">
-                                            <a class="ma-btn
+                                            <button class="ma-btn
                                                       ma-btn--default
-                                                      ma-btn--primary" href="#">
-                                            Choose this one</a>
+                                                      ma-btn--primary"
+                                                    ng-click="vm.chooseMeetingPoint()">
+                                                Choose this one
+                                            </button>
                                         </div>
                                         Café Vervlet
                                         <p class="ma-p ma-p--default margin-reset">
@@ -300,7 +316,8 @@
 
 
                     <!------------------- START: RIGHT COLUMN ----------------->
-                    <div id="meetingConfirmation-right-column" class="col-md-5">
+                    <div id="meetingConfirmation-right-column"
+                         ng-class="vm.processCompleted ? 'col-md-6' : 'col-md-5'">
 
                         <div class="ma-box space-5">
 
@@ -421,6 +438,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row space-top-3">
                                     <div class="col-md-12 text-center">
                                         <p class="ma-p ma-p--large margin-reset">
@@ -428,8 +446,25 @@
                                         </p>
                                         <a class="ma-link
                                                   ma-link--box
-                                                  ma-link--box--default">
-                                            Escoge un punto de encuentro
+                                                  ma-link--box--default"
+                                            href="#"
+                                            ng-click="vm.edit()">
+                                            {{vm.form.meetingPoint.name}}
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="row space-top-3">
+                                    <div class="col-md-12 text-center">
+                                        <p class="ma-p ma-p--large margin-reset">
+                                            Mensaje a Rosa
+                                        </p>
+                                        <a class="ma-link
+                                                  ma-link--box
+                                                  ma-link--box--default"
+                                           href="#"
+                                           ng-click="vm.edit()">
+                                            {{vm.form.helloText}}
                                         </a>
                                     </div>
                                 </div>
@@ -440,6 +475,7 @@
                                                   ma-btn--primary
                                                   ma-btn--large
                                                   ma-btn--block"
+                                                  ng-disabled="!vm.processCompleted"
                                                   disabled="true">
                                             Send Request
                                         </button>
@@ -451,6 +487,8 @@
 
                     </div>
                     <!--                  END: RIGHT COLUMN                  -->
+
+                    <div class="col-md-3" ng-show="vm.processCompleted"></div>
 
                 </div>
 

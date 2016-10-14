@@ -19,12 +19,25 @@ module app.pages.meetingConfirmationPage {
     }
 
     export interface IMeetingConfirmationForm {
-        username: string;
-        email: string;
+        helloText: string;
+        meetingPoint: IMeetingPoint;
     }
 
     export interface IMeetingConfirmationError {
         message: string;
+    }
+
+    export interface IMeetingPoint {
+        name: string;
+        category: string;
+        address: string;
+        prices: IPrice;
+        position: components.map.IPosition;
+    }
+
+    export interface IPrice {
+        min: number;
+        max: number;
     }
 
     /****************************************/
@@ -40,6 +53,7 @@ module app.pages.meetingConfirmationPage {
         form: IMeetingConfirmationForm;
         error: IMeetingConfirmationError;
         mapConfig: components.map.IMapConfig;
+        processCompleted: boolean;
         // --------------------------------
 
 
@@ -70,8 +84,14 @@ module app.pages.meetingConfirmationPage {
 
             //Init form
             this.form = {
-                username: '',
-                email: ''
+                helloText: '',
+                meetingPoint: {
+                    name: 'Escoge un punto de encuentro',
+                    category: '',
+                    address: '',
+                    prices: {min:0, max:0},
+                    position: {lat: null, lng: null}
+                }
             };
 
             this.error = {
@@ -95,7 +115,7 @@ module app.pages.meetingConfirmationPage {
         /**********************************/
         /*            METHODS             */
         /**********************************/
-        
+
         addNewMeetingPoint(): void {
             let self = this;
             // modal default options
@@ -126,6 +146,59 @@ module app.pages.meetingConfirmationPage {
             });
 
             event.preventDefault();
+        }
+
+
+        chooseMeetingPoint(): void {
+            /*TODO: Aqui deberiamos:
+                1. Tomar el punto escogido, y reemplazarlo con el
+                    texto que dice: Escoge punto de encuentro. */
+
+            //Build Meeting Point Model
+            // e.g. this.meetingPoint = new meetingPoint(this.form.meetingPoint);
+            var meetingPoint = {
+                name: 'Café Vervlet',
+                category: 'Café',
+                address: 'Trans 33 Sur',
+                prices: {min:23000, max:30000},
+                position: {lat: 6.1739743,lng: -75.5822414}
+            };
+
+            this.form.meetingPoint = meetingPoint;
+
+            /*
+                2. Validar si el usuario ya lleno el textarea de: Say Hello.
+                3. Deberia ocultar todo el bloque izquierdo, dandole
+                   protagonismo al bloque derecho, habilitando el
+                   botón: Send Request.
+                4. El texto del textarea: Decir hola!, deberia aparecer
+                   debajo del punto de encuentro, con la opción de poder
+                   editarlo, cuando presione de nuevo ahi, apareceria el
+                   bloque izquierdo (igualmente al dar clicn en el punto de
+                   encuentro).
+            */
+            if(this.form.helloText != '' &&
+               this.form.meetingPoint.position.lat != null &&
+               this.form.meetingPoint.position.lng != null) {
+
+                this.processCompleted = true;
+
+            }
+
+        }
+
+        saveMessage (): void {
+            if(this.form.helloText != '' &&
+               this.form.meetingPoint.position.lat != null &&
+               this.form.meetingPoint.position.lng != null) {
+
+                this.processCompleted = true;
+
+            }
+        }
+
+        edit(): void {
+            this.processCompleted = false;
         }
 
 

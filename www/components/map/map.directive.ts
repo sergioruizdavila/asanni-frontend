@@ -81,6 +81,10 @@ module components.map {
     }
 
     interface IMapForm {
+        position: IPosition;
+    }
+
+    export interface IPosition {
         lat: number;
         lng: number;
     }
@@ -149,8 +153,10 @@ module components.map {
             this.$scope.options = null;
             //Form init
             this.form = {
-                lat: null,
-                lng: null
+                position: {
+                    lat: null,
+                    lng: null
+                }
             };
 
             //default map options
@@ -369,8 +375,8 @@ module components.map {
 
             // Get position of Marker draggable
             google.maps.event.addListener(marker, 'dragend', function (event) {
-                self.form.lat = this.getPosition().lat();
-                self.form.lng = this.getPosition().lng();
+                self.form.position.lat = this.getPosition().lat();
+                self.form.position.lng = this.getPosition().lng();
             });
 
             // add click event on each marker
