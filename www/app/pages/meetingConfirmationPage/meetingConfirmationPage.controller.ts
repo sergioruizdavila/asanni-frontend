@@ -14,16 +14,16 @@ module app.pages.meetingConfirmationPage {
         activate: () => void;
     }
 
-    export interface IMeetingConfirmationScope extends angular.IScope {
+    interface IMeetingConfirmationScope extends angular.IScope {
 
     }
 
-    export interface IMeetingConfirmationForm {
+    interface IMeetingConfirmationForm {
         helloText: string;
         meetingPoint: IMeetingPoint;
     }
 
-    export interface IMeetingConfirmationError {
+    interface IMeetingConfirmationError {
         message: string;
     }
 
