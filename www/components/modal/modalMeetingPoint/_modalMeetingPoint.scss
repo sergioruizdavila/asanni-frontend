@@ -1,0 +1,24 @@
+/*************************/
+/*       VARIABLES       */
+/*************************/
+$modalMeetingPoint-map-height: 200px;
+
+
+/**********************************************************/
+/*                  MEETING POINT MODAL                   */
+/**********************************************************/
+
+.modalMeetingPoint {
+
+    &__content {
+
+        &__map-block {
+
+            .location-map {
+                height: $modalMeetingPoint-map-height;
+            }
+
+        }
+
+    }
+}

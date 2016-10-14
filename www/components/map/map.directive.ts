@@ -72,7 +72,7 @@ module components.map {
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
-    export interface IMapController {
+    interface IMapController {
         activate: () => void;
         setMarker: (map:google.maps.Map,
                     position: google.maps.LatLng,
@@ -80,14 +80,19 @@ module components.map {
                     content: string) => void;
     }
 
-    export interface IMapScope extends angular.IScope {
+    interface IMapForm {
+        lat: number;
+        lng: number;
+    }
+
+    interface IMapScope extends angular.IScope {
         options: IMapOptions;
         modalOptions: IMapOptions;
         mapConfig: IMapConfig;
         mapId: string;
     }
 
-    export interface IMapOptions extends google.maps.MapOptions {
+    interface IMapOptions extends google.maps.MapOptions {
         center: any;
         zoom: number;
         mapTypeControl: boolean;
@@ -111,10 +116,11 @@ module components.map {
         /*           PROPERTIES           */
         /**********************************/
         private _map: google.maps.Map;
-        private mapId: string;
         private _infoWindow: google.maps.InfoWindow;
         private _markers: Array<any>;
         private _meetingPointDetailsData: any;
+        form: IMapForm;
+        mapId: string;
         mapConfig: IMapConfig;
         // --------------------------------
 
@@ -141,6 +147,11 @@ module components.map {
             this._infoWindow = null;
             this._markers = [];
             this.$scope.options = null;
+            //Form init
+            this.form = {
+                lat: null,
+                lng: null
+            };
 
             //default map options
             switch(this.mapConfig.type) {
@@ -203,6 +214,7 @@ module components.map {
                 mapTypeControl: false,
                 zoomControl: true,
                 streetViewControl: false,
+                scrollwheel: false,
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.TOP_LEFT
                 }
@@ -254,6 +266,7 @@ module components.map {
                 mapTypeControl: false,
                 zoomControl: true,
                 streetViewControl: false,
+                scrollwheel: false,
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.TOP_RIGHT
                 }
@@ -280,11 +293,10 @@ module components.map {
                       radius: circle_radius
                     });
 
+                    //set markers
+                    self.setMarker(7, new google.maps.LatLng(center.lat, center.lng), 'London', 'Just some content');
                 });
             }
-
-            //set markers
-            //this.setMarker(7, new google.maps.LatLng(6.1739743, -75.5822414), 'London', 'Just some content');
         }
 
         /*
@@ -307,6 +319,7 @@ module components.map {
                 mapTypeControl: false,
                 zoomControl: true,
                 streetViewControl: false,
+                scrollwheel: false,
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.TOP_RIGHT
                 }
@@ -346,22 +359,28 @@ module components.map {
                 position: position,
                 map: this._map,
                 title: title,
-                icon: 'assets/images/meeting-point.png'
+                icon: 'assets/images/meeting-point.png',
+                draggable: true
             };
             /********************/
 
             // create marker object
             marker = new google.maps.Marker(markerOptions);
-            // add marker to markers array
-            this._markers.push(marker);
+
+            // Get position of Marker draggable
+            google.maps.event.addListener(marker, 'dragend', function (event) {
+                self.form.lat = this.getPosition().lat();
+                self.form.lng = this.getPosition().lng();
+            });
 
             // add click event on each marker
-            google.maps.event.addListener(marker, 'click', function (e) {
+            google.maps.event.addListener(marker, 'click', function (event) {
 
                 //change icon (actived)
                 for (var i = 0; i < self._markers.length; i++) {
                    self._markers[i].setIcon('assets/images/meeting-point.png');
                 }
+
                 this.setIcon('assets/images/location.png');
 
                 /* Pantalla meeting Confirmation Page:
@@ -408,6 +427,9 @@ module components.map {
                 this._infoWindow.open(this._map, marker);
                 */
             });
+
+            // add marker to markers array
+            this._markers.push(marker);
 
         }
 

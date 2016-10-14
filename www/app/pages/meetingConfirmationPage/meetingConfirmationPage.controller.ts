@@ -95,11 +95,14 @@ module app.pages.meetingConfirmationPage {
         /**********************************/
         /*            METHODS             */
         /**********************************/
+        
         addNewMeetingPoint(): void {
             let self = this;
             // modal default options
             let options: ng.ui.bootstrap.IModalSettings = {
                 animation: false,
+                backdrop: 'static',
+                keyboard: false,
                 templateUrl: this.dataConfig.modalMeetingPointTmpl,
                 controller: 'mainApp.components.modal.ModalMeetingPointController as vm',
                 resolve: {

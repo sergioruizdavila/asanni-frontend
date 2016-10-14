@@ -5,7 +5,6 @@ $meetingConfirmation-padding: 20px;
 $meetingConfirmation-block-margin: 20px;
 $meetingConfirmation-block-sayHello-label-font-size: 17px;
 $meetingConfirmation-mapBlock-height: 300px;
-$meetingConfirmation-mapBlock-location-border: 1px solid $light-gray;
 
 $meetingPointInfo-comments-blockquote-font-size: 14px;
 $meetingPointInfo-comments-blockquote-color: map-get($main-palette, primary);
@@ -31,10 +30,6 @@ $meetingPointInfo-comments-blockquote-photo-margin: 10px;
 
     &__map-block {
         height: $meetingConfirmation-mapBlock-height;
-
-        .location-map {
-             border: $meetingConfirmation-mapBlock-location-border;
-        }
     }
 }
 

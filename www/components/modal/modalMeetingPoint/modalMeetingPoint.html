@@ -131,11 +131,24 @@
         <!--              START: MEETING POINT MAP LOCATION BLOCK            -->
         <!--------------------------------------------------------------------->
         <div id="modalMeetingPoint-map-block"
-             class="modalMeetingPoint__content__map" style="height:200px;">
-            <div class="location-map">
-                <ma-map map-config="vm.mapConfigModal"></ma-map>
+             class="row">
+            <div class="modalMeetingPoint__content__map-block
+                        col-md-12">
+                <h4 class="space-top-4 space-2">Arrastra el indicador, para escoger la ubicación exacta</h4>
+                <div class="location-map location-map--border">
+                    <ma-map map-config="vm.mapConfigModal"></ma-map>
+                </div>
+                <div class="row margin-reset">
+                    <div class="col-md-12 padding-reset">
+                        <p class="ma-p ma-p--small space-top-1 margin-reset">
+                            Help text
+                        </p>
+                    </div>
+                </div>
             </div>
+
         </div>
+
         <!--              END: MEETING POINT MAP LOCATION BLOCK              -->
 
     </div>
@@ -144,10 +157,7 @@
     <!--                              FOOTER                                 -->
     <!------------------------------------------------------------------------->
     <div class="ma-box__footer text-center">
-        <button class="ma-btn ma-btn--primary ma-btn--large" style="margin-right: 30px;">Guardar</button>
-        <a class="ma-link
-                  ma-link--simple
-                  ma-link--simple--default" href="#" ng-click="vm.close()">Cancelar</a>
+        <button class="ma-btn ma-btn--primary ma-btn--large">Guardar</button>
     </div>
 
 </div>
