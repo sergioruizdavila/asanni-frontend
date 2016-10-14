@@ -14,6 +14,7 @@
         'ui.router',
         /*3rd Party*/
         'pascalprecht.translate',
+        'ui.bootstrap',
         'ui.calendar',
         'ui.bootstrap.datetimepicker'
     ]);

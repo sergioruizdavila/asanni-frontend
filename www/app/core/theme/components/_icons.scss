@@ -38,16 +38,50 @@
   &.md-72 { font-size: 72px; }
 
   /* Rules for using icons as black on a light background. */
-  &.md-primary { color: map-get($main-palette, primary); }
-  &.md-primary.md-inactive { opacity: 0.7; }
+  &.md-primary {
+      color: map-get($main-palette, primary);
+
+      &--clicked {
+          &:hover {
+            cursor: pointer;
+            color: shade(map-get($main-palette, primary), 100);
+            font-weight: bold;
+          }
+      }
+
+      &.md-inactive { opacity: 0.7; }
+  }
 
   /* Rules for using icons as black on a light background. */
-  &.md-dark { color: rgba(0, 0, 0, 0.54); }
-  &.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+  &.md-dark {
+      color: rgba(0, 0, 0, 0.54);
+
+      &--clicked {
+          &:hover {
+            cursor: pointer;
+            color: shade(rgba(0, 0, 0, 0.54), 100);
+            font-weight: bold;
+          }
+      }
+
+      &.md-inactive { color: rgba(0, 0, 0, 0.26); }
+  }
+
 
   /* Rules for using icons as white on a dark background. */
-  &.md-light { color: rgba(255, 255, 255, 1); }
-  &.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+  &.md-light {
+      color: rgba(255, 255, 255, 1);
+
+      &--clicked {
+          &:hover {
+            cursor: pointer;
+            color: shade(rgba(255, 255, 255, 1), 100);
+            font-weight: bold;
+          }
+      }
+
+      &.md-inactive { color: rgba(255, 255, 255, 0.3); }
+  }
 
 }
 

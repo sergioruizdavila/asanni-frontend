@@ -549,7 +549,7 @@
                     <div class="ma-box">
                         <h4 class="ma-box__title margin-reset">Exchange Language</h4>
                         <div class="ma-box__content">
-                            <div class="meeting-box">
+                            <form class="meeting-box">
 
                                 <div class="row space-2">
                                     <div class="col-md-12">
@@ -589,12 +589,11 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <a class="ma-btn ma-btn--primary
+                                        <button class="ma-btn ma-btn--primary
                                                   ma-btn--medium ma-btn--block"
-                                                  href="#"
-                                                  ui-sref="page.meetingConfirmationPage">
+                                                  ng-click="vm.goToConfirm()">
                                             Invite to exchange
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
 
@@ -608,7 +607,7 @@
                                     </div>
                                 </div>
 
-                            </div>
+                            </form>
                         </div>
                     </div>
 

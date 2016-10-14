@@ -112,6 +112,12 @@ module app.pages.userProfilePage {
             $dates[index].selectable = false;
         }
 
+        goToConfirm (): void {
+            //TODO: Buscar la forma de poder recargar la pagina cuando sea
+            // necesario ya que muchas veces voy a tener que limpiar todo
+            this.$state.go('page.meetingConfirmationPage');
+        }
+
     }
 
     /*-- MODULE DEFINITION --*/

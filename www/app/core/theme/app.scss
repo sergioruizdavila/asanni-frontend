@@ -4,6 +4,10 @@
 @import 'core/variables';
 @import 'core/globals';
 
+// All Utils Functions and Mixins
+// --------------------------------------------------
+@import 'utils/utils';
+
 // Third Party Styles
 //---------------------------------------------------
 // Boostrap 3 Style
@@ -39,6 +43,8 @@
 @import 'components/labels';
 // search map Style
 @import 'components/locationMap';
+// map Style
+@import 'components/map';
 // paragraphs Style
 @import 'components/paragraphs';
 // photo profile Style
@@ -47,8 +53,6 @@
 @import 'components/stars';
 // switch Style
 @import 'components/switchs';
-// map Style
-@import 'components/map';
 // search map Style
 @import 'components/searchMap';
 
@@ -56,7 +60,7 @@
 // TEST: Import kind of fonts
 @import 'https://fonts.googleapis.com/css?family=Roboto';
 
-// MainApp Pages
+// MainApp Pages and Other components (modals, etc)
 // --------------------------------------------------
 
 // meeting Confirmation Page Style
@@ -73,3 +77,5 @@
 @import '../../pages/userEditMediaPage/userEditMediaPage';
 // user Edit Agenda Pages Style
 @import '../../pages/userEditAgendaPage/userEditAgendaPage';
+// add meeting Point Modals Style
+@import '../../../components/modal/modalMeetingPoint/modalMeetingPoint';

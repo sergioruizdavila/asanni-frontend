@@ -10,11 +10,7 @@
 interface IDataConfig {
     baseUrl: string;
     googleMapKey: string;
-    salaryIncomeUrl: string;
-    investmentIncomeUrl: string;
-    businessIncomeUrl: string;
-    neccesaryExpenseUrl: string;
-    unneccesaryExpenseUrl: string;
+    modalMeetingPointTmpl: string;
     userId: string;
 }
 
@@ -26,11 +22,8 @@ interface IDataConfig {
     var dataConfig: IDataConfig = {
         baseUrl: 'https://shining-fire-8072.firebaseio.com',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
-        salaryIncomeUrl: '/income/salary',
-        investmentIncomeUrl: '/income/investment',
-        businessIncomeUrl: '/income/business',
-        neccesaryExpenseUrl: '/typeOfExpense/necessaries/',
-        unneccesaryExpenseUrl: '/typeOfExpense/unnecessaries/',
+
+        modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
         userId: ''
     };
 

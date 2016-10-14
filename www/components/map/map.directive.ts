@@ -28,6 +28,7 @@ module components.map {
         controller = MapController.controllerId;
         controllerAs: string = 'vm';
         restrict: string = 'E';
+        transclude: true;
         scope = {
             mapConfig: '='
         };
@@ -44,7 +45,7 @@ module components.map {
             console.log('maMap directive constructor');
         }
 
-        link($scope: angular.IScope, elm: Element, attr: angular.IAttributes): void {
+        link($scope: IMapScope, elm: Element, attr: angular.IAttributes): void {
             console.log('maMap link function');
         }
 
@@ -71,7 +72,7 @@ module components.map {
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
-    export interface IMapController {
+    interface IMapController {
         activate: () => void;
         setMarker: (map:google.maps.Map,
                     position: google.maps.LatLng,
@@ -79,12 +80,19 @@ module components.map {
                     content: string) => void;
     }
 
-    export interface IMapScope extends angular.IScope {
-        options: IMapOptions;
-        mapConfig: IMapConfig;
+    interface IMapForm {
+        lat: number;
+        lng: number;
     }
 
-    export interface IMapOptions extends google.maps.MapOptions {
+    interface IMapScope extends angular.IScope {
+        options: IMapOptions;
+        modalOptions: IMapOptions;
+        mapConfig: IMapConfig;
+        mapId: string;
+    }
+
+    interface IMapOptions extends google.maps.MapOptions {
         center: any;
         zoom: number;
         mapTypeControl: boolean;
@@ -94,7 +102,7 @@ module components.map {
     }
 
     export interface IMapConfig {
-        type: string; //static, dynamic
+        type: string;
     }
 
     /****************************************/
@@ -111,58 +119,53 @@ module components.map {
         private _infoWindow: google.maps.InfoWindow;
         private _markers: Array<any>;
         private _meetingPointDetailsData: any;
+        form: IMapForm;
+        mapId: string;
         mapConfig: IMapConfig;
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/
-        static $inject = ['$scope'];
+        static $inject = ['$scope', '$timeout'];
 
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        constructor(public $scope: IMapScope) {
-
-            let self = this;
-
-            this._map;
-            this._infoWindow = null;
-            this._markers = [];
-
-            //default map options
-            switch(this.mapConfig.type) {
-                case 'search-map':
-                    this.$scope.options = {
-                        center: new google.maps.LatLng(50, 2),
-                        zoom: 4,
-                        mapTypeControl: false,
-                        zoomControl: true,
-                        streetViewControl: false,
-                        zoomControlOptions: {
-                            position: google.maps.ControlPosition.TOP_LEFT
-                        }
-                    };
-                break;
-                case 'location-map':
-                    this.$scope.options = {
-                        center: new google.maps.LatLng(6.1739743, -75.5822414),
-                        zoom: 16,
-                        mapTypeControl: false,
-                        zoomControl: true,
-                        streetViewControl: false,
-                        zoomControlOptions: {
-                            position: google.maps.ControlPosition.TOP_RIGHT
-                        }
-                    };
-                break;
-            }
-
-
+        constructor(public $scope: IMapScope, private $timeout) {
             this.init();
         }
 
         /*-- INITIALIZE METHOD --*/
         private init() {
+            //VARIABLES
+            let self = this;
+            /********************/
+
+            //init properties
+            this._map;
+            this.mapId = 'ma-map-' + Math.floor((Math.random() * 100) + 1);
+            this._infoWindow = null;
+            this._markers = [];
+            this.$scope.options = null;
+            //Form init
+            this.form = {
+                lat: null,
+                lng: null
+            };
+
+            //default map options
+            switch(this.mapConfig.type) {
+                case 'search-map':
+                    this._searchMapBuilder();
+                break;
+                case 'location-map':
+                    this._locationMapBuilder();
+                break;
+                case 'modal-assign-marker-map':
+                    this._assignMarkerMapBuilder();
+                break;
+            }
+
             /* Pantalla meeting Confirmation Page:
                Paso 1: Obtener los datos de todos los puntos de encuentro
                alrededor del usuario.
@@ -177,33 +180,6 @@ module components.map {
 
             /********************************************/
 
-
-            // init map
-            if (this._map === void 0) {
-                this._map = new google.maps.Map(document.getElementById("ma-map"), this.$scope.options);
-            }
-
-            if(this.mapConfig.type == 'location-map') {
-                var cityCircle = new google.maps.Circle({
-                  strokeColor: '#ff5a5f',
-                  strokeOpacity: 0.8,
-                  strokeWeight: 2,
-                  fillColor: '#ff5a5f',
-                  fillOpacity: 0.35,
-                  map: this._map,
-                  center: new google.maps.LatLng(6.1739743, -75.5822414),
-                  radius: 200
-                });
-
-                this.setMarker(meetingPointData.id, new google.maps.LatLng(meetingPointData.position.lat, meetingPointData.position.lng), 'London', 'Just some content');
-                this.setMarker(2, new google.maps.LatLng(6.175169, -75.584871), 'Amsterdam', 'More content');
-                this.setMarker(3, new google.maps.LatLng(6.175686, -75.584099), 'Paris', 'Text here');
-            } else {
-                this.setMarker(4, new google.maps.LatLng(51.508515, -0.125487), 'London', 'Just some content');
-                this.setMarker(5, new google.maps.LatLng(52.370216, 4.895168), 'Amsterdam', 'More content');
-                this.setMarker(6, new google.maps.LatLng(48.856614, 2.352222), 'Paris', 'Text here');
-            }
-
             this.activate();
         }
 
@@ -217,7 +193,164 @@ module components.map {
         /*            METHODS             */
         /**********************************/
 
-        setMarker(id, position, title, content): void {
+        /*
+        * _searchMapBuilder
+        * @description - this method builds Search Map
+        */
+        private _searchMapBuilder(): void {
+            //VARIABLES
+            let self = this;
+            let zoom = 12;
+            let center = {
+                lat: 50,
+                lng: 2
+            };
+            /********************/
+
+            //Map options
+            this.$scope.options = {
+                center: new google.maps.LatLng(center.lat, center.lng),
+                zoom: zoom,
+                mapTypeControl: false,
+                zoomControl: true,
+                streetViewControl: false,
+                scrollwheel: false,
+                zoomControlOptions: {
+                    position: google.maps.ControlPosition.TOP_LEFT
+                }
+            };
+
+            // init map
+            if (this._map === void 0) {
+                this.$timeout(function(){
+                    self._map = new google.maps.Map(
+                        document.getElementById(self.mapId),
+                        self.$scope.options
+                    );
+
+                    //set markers
+                    self.setMarker(7, new google.maps.LatLng(center.lat, center.lng), 'London', 'Just some content');
+                });
+            }
+
+        }
+
+        /*
+        * _locationMapBuilder
+        * @description - this method builds Location Map
+        */
+        private _locationMapBuilder(): void {
+            //VARIABLES
+            let self = this;
+            let zoom = 16;
+            let center = {
+                lat: 6.1739743,
+                lng: -75.5822414
+            };
+            let circle = null;
+            let circle_strokeColor = '#ff5a5f';
+            let circle_strokeOpacity = 0.8;
+            let circle_strokeWeight = 2;
+            let circle_fillColor = '#ff5a5f';
+            let circle_fillOpacity = 0.35;
+            let circle_center = {
+                lat: 6.1739743,
+                lng: -75.5822414
+            };
+            let circle_radius = 200;
+            /********************/
+
+            this.$scope.options = {
+                center: new google.maps.LatLng(center.lat, center.lng),
+                zoom: zoom,
+                mapTypeControl: false,
+                zoomControl: true,
+                streetViewControl: false,
+                scrollwheel: false,
+                zoomControlOptions: {
+                    position: google.maps.ControlPosition.TOP_RIGHT
+                }
+            };
+
+            // init map
+            if (this._map === void 0) {
+                this.$timeout(function() {
+
+                    self._map = new google.maps.Map(
+                        document.getElementById(self.mapId),
+                        self.$scope.options
+                    );
+
+                    // init circle position
+                    circle = new google.maps.Circle ({
+                      strokeColor: circle_strokeColor,
+                      strokeOpacity: circle_strokeOpacity,
+                      strokeWeight: circle_strokeWeight,
+                      fillColor: circle_fillColor,
+                      fillOpacity: circle_fillOpacity,
+                      map: self._map,
+                      center: new google.maps.LatLng(center.lat, center.lng),
+                      radius: circle_radius
+                    });
+
+                    //set markers
+                    self.setMarker(7, new google.maps.LatLng(center.lat, center.lng), 'London', 'Just some content');
+                });
+            }
+        }
+
+        /*
+        * _assignMarkerMapBuilder
+        * @description - this method builds Assign Marker Map
+        */
+        private _assignMarkerMapBuilder(): void {
+            //VARIABLES
+            let self = this;
+            let zoom = 16;
+            let center = {
+                lat: 6.1739743,
+                lng: -75.5822414
+            };
+            /********************/
+
+            this.$scope.options = {
+                center: new google.maps.LatLng(center.lat, center.lng),
+                zoom: zoom,
+                mapTypeControl: false,
+                zoomControl: true,
+                streetViewControl: false,
+                scrollwheel: false,
+                zoomControlOptions: {
+                    position: google.maps.ControlPosition.TOP_RIGHT
+                }
+            };
+
+            // init map
+            if (this._map === void 0) {
+                this.$timeout(function(){
+
+                    self._map = new google.maps.Map(
+                        document.getElementById(self.mapId),
+                        self.$scope.options
+                    );
+
+                    //set markers
+                    self.setMarker(7, new google.maps.LatLng(6.1739743, -75.5822414), 'London', 'Just some content');
+
+                    //When it is a map inside modal, is necessary resize map
+                    google.maps.event.trigger(self._map, "resize");
+
+                });
+            }
+
+        }
+
+
+        /*
+        * setMarker
+        * @description - this method assings every marker on map
+        */
+        setMarker (id, position, title, content): void {
             //VARIABLES
             let self = this;
             let marker;
@@ -226,18 +359,28 @@ module components.map {
                 position: position,
                 map: this._map,
                 title: title,
-                icon: 'assets/images/meeting-point.png'
+                icon: 'assets/images/meeting-point.png',
+                draggable: true
             };
+            /********************/
 
+            // create marker object
             marker = new google.maps.Marker(markerOptions);
-            this._markers.push(marker); // add marker to array
 
-            google.maps.event.addListener(marker, 'click', function (e) {
+            // Get position of Marker draggable
+            google.maps.event.addListener(marker, 'dragend', function (event) {
+                self.form.lat = this.getPosition().lat();
+                self.form.lng = this.getPosition().lng();
+            });
+
+            // add click event on each marker
+            google.maps.event.addListener(marker, 'click', function (event) {
 
                 //change icon (actived)
                 for (var i = 0; i < self._markers.length; i++) {
                    self._markers[i].setIcon('assets/images/meeting-point.png');
                 }
+
                 this.setIcon('assets/images/location.png');
 
                 /* Pantalla meeting Confirmation Page:
@@ -284,6 +427,9 @@ module components.map {
                 this._infoWindow.open(this._map, marker);
                 */
             });
+
+            // add marker to markers array
+            this._markers.push(marker);
 
         }
 
