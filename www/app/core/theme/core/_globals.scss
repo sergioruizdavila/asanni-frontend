@@ -125,6 +125,23 @@
     text-overflow: ellipsis;
 }
 
+.vertical-align {
+  display: flex;
+  flex-direction: row;
+}
+
+.vertical-align > [class^="col-"],
+.vertical-align > [class*=" col-"] {
+  display: flex;
+  align-items: center;
+  //justify-content: center;
+}
+
+.vertical-align > [class^="col-"] > div,
+.vertical-align > [class*=" col-"] > div {
+  flex-grow: 1;
+}
+
 .text-wrap {
     word-wrap: break-word;
 }

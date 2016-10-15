@@ -22,6 +22,7 @@
             'mainApp.pages.userEditMediaPage',
             'mainApp.pages.userEditAgendaPage',
             'mainApp.pages.meetingConfirmationPage',
+            'mainApp.pages.userInboxPage',
             'mainApp.components.header',
             'mainApp.components.map',
             'mainApp.components.modal'

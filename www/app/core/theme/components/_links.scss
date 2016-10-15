@@ -84,6 +84,13 @@
             }
         }
 
+        /// SIMPLE LINK WITH ICON
+        &--withIcon {
+            .material-icons {
+                vertical-align: text-bottom;
+            }
+        }
+
     }
 
 }
