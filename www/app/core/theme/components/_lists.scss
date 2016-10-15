@@ -1,0 +1,40 @@
+/**********************************************************/
+/*                          LISTS                         */
+/**********************************************************/
+
+.ma-message-list {
+
+    &__info {
+
+        &__message {
+            &--unread {
+                font-weight: bold!important;
+                color: $black!important;
+            }
+        }
+
+    }
+
+    &__status {
+        display: none;
+        &--unread {
+            display: inline-block;
+            background-color: #ff5a5f;
+            width: 15px;
+            height: 15px;
+            flex-grow: 0!important;
+        }
+    }
+
+    &--unread {
+        &__status {
+
+        }
+    }
+
+    &.vertical-align {
+        .status-container {
+            justify-content: flex-end;
+        }
+    }
+}

@@ -37,10 +37,12 @@
 @import 'components/icons';
 // input text Style
 @import 'components/inputText';
-// links Style
-@import 'components/links';
 // labels Style
 @import 'components/labels';
+// links Style
+@import 'components/links';
+// lists Style
+@import 'components/lists';
 // search map Style
 @import 'components/locationMap';
 // map Style
@@ -55,6 +57,8 @@
 @import 'components/switchs';
 // search map Style
 @import 'components/searchMap';
+// strong map Style
+@import 'components/strong';
 
 
 // TEST: Import kind of fonts
@@ -77,5 +81,7 @@
 @import '../../pages/userEditMediaPage/userEditMediaPage';
 // user Edit Agenda Pages Style
 @import '../../pages/userEditAgendaPage/userEditAgendaPage';
+// user Inbox Pages Style
+@import '../../pages/userInboxPage/userInboxPage';
 // add meeting Point Modals Style
 @import '../../../components/modal/modalMeetingPoint/modalMeetingPoint';
