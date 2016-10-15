@@ -8,8 +8,8 @@
 
         &__message {
             &--unread {
-                font-weight: bold!important;
-                color: $black!important;
+                font-weight: $list-message-info-font-weight-unread;
+                color: $list-message-info-font-color-unread;
             }
         }
 
@@ -19,16 +19,10 @@
         display: none;
         &--unread {
             display: inline-block;
-            background-color: #ff5a5f;
-            width: 15px;
-            height: 15px;
+            background-color: $list-message-status-background-unread;
+            width: $list-message-status-width-unread;
+            height: $list-message-status-height-unread;
             flex-grow: 0!important;
-        }
-    }
-
-    &--unread {
-        &__status {
-
         }
     }
 

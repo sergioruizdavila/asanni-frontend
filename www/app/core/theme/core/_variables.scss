@@ -19,6 +19,7 @@
 //   11. Labels
 //   12. Left Nav (small devices)
 //   13. Links
+//   13. List
 //   14. Logo
 //   15. Paragraph
 //   16. Select List
@@ -452,6 +453,15 @@ $link-simple-font-sizes: (
   default: 20px,
   large: 30px,
 );
+
+// 13. Lists
+// ----------
+$list-message-info-font-weight-unread: bold!important;
+$list-message-info-font-color-unread: $black!important;
+
+$list-message-status-background-unread: map-get($main-palette, alert);
+$list-message-status-width-unread: 15px;
+$list-message-status-height-unread: 15px;
 
 
 // 7. Logo
