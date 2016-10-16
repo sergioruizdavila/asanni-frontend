@@ -87,3 +87,71 @@
 
 
 /********************** END - ICONS ***********************/
+
+
+
+/**********************************************************/
+/*                    ICONS WITH COUNTER                  */
+/**********************************************************/
+
+.ma-icon-container {
+    position: relative;
+
+    &__count {
+        display:inline-block;
+        top: -5px;
+        left: 14px;
+        right: auto;
+        position: absolute;
+        font-style: normal;
+        font-weight: bold;
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 12px;
+        border-radius: 12px;
+        display: inline-block;
+
+        /// COUNT COLOR
+
+        &--primary {
+            background-color: map-get($main-palette, primary);
+            color: $white;
+            border: 2px solid map-get($main-palette, primary);
+        }
+
+        &--secondary {
+            background-color: $white;
+            color: map-get($main-palette, primary);
+            border: 2px solid map-get($main-palette, primary);
+        }
+
+        &--alert {
+            background-color: $white;
+            color: map-get($main-palette, alert);
+            border: 2px solid map-get($main-palette, alert);
+        }
+
+        /// COUNT SIZE
+
+        &--tiny {
+            padding: 0px 4px;
+            line-height: 13px;
+            font-size: 10px;
+        }
+
+        &--small {
+            padding: 3px 6px;
+            line-height: 11px;
+            font-size: 10px;
+        }
+
+        &--default {
+            padding: 4px 7px;
+            line-height: 12px;
+            font-size: 12px;
+        }
+
+    }
+}
+
+
+/********************** END - ICONS ***********************/
