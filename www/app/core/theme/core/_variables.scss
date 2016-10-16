@@ -9,6 +9,7 @@
 //   3. Box
 //   4. Buttons
 //   5. DateTime Picker
+//   5. Dropdown
 //   5. Form
 //   6. Header
 //   7. Header - Blocks (Tabs)
@@ -223,6 +224,35 @@ $datetimepicker-currentDay-font-color: $white;
 $datetimepicker-activeDay-background: map-get($main-palette, primary);
 $datetimepicker-activeDay-font-color: $white;
 $datetimepicker-activeDay-border: 0 hidden transparent;
+
+
+// 3. Dropdown
+// -----------
+$dropdown-radius: 1px;
+$dropdown-boxShadow: 0 1px 1px rgba(0,0,0,.25),0 0 0 rgba(0,0,0,.35);
+$dropdown-border: 0 hidden transparent;
+$dropdown-minWidth: 200px;
+$dropdown-padding: 0;
+
+$dropdown-divider-margin: 0;
+
+$dropdown-option-width: 100%;
+$dropdown-option-lineHeight: 1.4;
+$dropdown-option-font-size: 16px;
+$dropdown-option-font-weight: 300;
+
+$dropdown-option-button-padding: 12px 25px;
+$dropdown-option-button-width: 100%;
+$dropdown-option-button-lineHeight: 1.4;
+$dropdown-option-button-font-size: 16px;
+$dropdown-option-button-font-color: $light-gray;
+$dropdown-option-button-font-weight: 100;
+
+$dropdown-option-button-font-color-hover: $black;
+$dropdown-option-button-font-weight-hover: 400;
+$dropdown-option-button-margin-left-hover: 5px;
+
+$dropdown-lastOption-button-font-size: 14px;
 
 // 3. Form
 // ---------
