@@ -171,18 +171,88 @@
 
         <!---------------- START: PROFILE IMAGE (MD AND LG SCREEN) ------------>
         <div class="ma-header__block pull-right">
-            <a class="ma-header__block__btn link-reset"
-               ui-sref="page.userProfilePage" href="#">
-                <div class="ma-photo-profile
-                            ma-photo-profile--tiny
-                            round
-                            ma-header__block__btn__icon
-                            ma-header__block__btn__icon__ma-photo">
-                    <img width="32" height="32"
-                         src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg"
-                         alt="">
-                </div>
-            </a>
+
+            <!-- User menu options dropdown -->
+            <span uib-dropdown on-toggle="toggled(open)">
+                <a id="user-menu-options" class="ma-header__block__btn link-reset dropdown-toggle" uib-dropdown-toggle="" href="" aria-haspopup="true" aria-expanded="true">
+                    <div class="ma-photo-profile
+                                ma-photo-profile--tiny
+                                round
+                                ma-header__block__btn__icon
+                                ma-header__block__btn__icon__ma-photo">
+                        <img width="32" height="32" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="">
+                    </div>
+                </a>
+                <ul class="ma-dropdown
+                           dropdown-menu
+                           dropdown-menu-right"
+                    uib-dropdown-menu
+                    role="menu"
+                    aria-labelledby="user-menu-options">
+                    <li class="ma-dropdown__option">
+                        <a ui-sref="page.userProfilePage"
+                           class="ma-dropdown__option__btn"
+                           href>
+                           View Profile
+                        </a>
+                    </li>
+                    <li class="ma-dropdown__option">
+                        <a ui-sref="page.userEditProfilePage"
+                           class="ma-dropdown__option__btn"
+                           href>
+                            Edit Profile
+                        </a>
+                    </li>
+                    <li class="ma-dropdown__option">
+                        <a ui-sref="page.userEditAgendaPage"
+                           class="ma-dropdown__option__btn"
+                           href>
+                            Edit Agenda</a>
+                    </li>
+
+                    <li class="ma-dropdown__option last-option">
+                        <a class="ma-dropdown__option__btn"
+                           href>
+                           Log Out
+                        </a>
+                    </li>
+                </ul>
+            </span>
+            <!--<span uib-dropdown on-toggle="toggled(open)">
+                <a id="user-menu-options"
+                   class="ma-header__block__btn link-reset"
+                   uib-dropdown-toggle
+                   href>
+                    <div class="ma-photo-profile
+                                ma-photo-profile--tiny
+                                round
+                                ma-header__block__btn__icon
+                                ma-header__block__btn__icon__ma-photo">
+                        <img width="32" height="32"
+                             src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg"
+                             alt="">
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right"
+                    uib-dropdown-menu
+                    role="menu"
+                    aria-labelledby="user-menu-options"
+                    style="top: inherit;">
+                    <li>
+                        <a ui-sref="page.userProfilePage" href>View Profile</a>
+                    </li>
+                    <li>
+                        <a ui-sref="page.userEditProfilePage" href>Edit Profile</a>
+                    </li>
+                    <li>
+                        <a ui-sref="page.userEditAgendaPage" href>Edit Agenda</a>
+                    </li>
+                    <li>
+                        <a href>Log Out</a>
+                    </li>
+                </ul>
+            </span>-->
+
         </div>
         <!--                END: PROFILE IMAGE (MD AND LG SCREEN)            -->
 
