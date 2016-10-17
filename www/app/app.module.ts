@@ -23,6 +23,7 @@
             'mainApp.pages.userEditAgendaPage',
             'mainApp.pages.meetingConfirmationPage',
             'mainApp.pages.userInboxPage',
+            'mainApp.pages.userInboxDetailsPage',
             'mainApp.components.header',
             'mainApp.components.map',
             'mainApp.components.modal'
