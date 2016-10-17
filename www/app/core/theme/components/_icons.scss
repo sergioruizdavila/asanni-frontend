@@ -93,61 +93,61 @@
 /**********************************************************/
 /*                    ICONS WITH COUNTER                  */
 /**********************************************************/
-
+//TODO: Pasar a variables
 .ma-icon-container {
     position: relative;
 
     &__count {
         display:inline-block;
-        top: -5px;
-        left: 14px;
+        top: $icon-container-count-top;
+        left: $icon-container-count-left;
         right: auto;
         position: absolute;
         font-style: normal;
         font-weight: bold;
-        -webkit-border-radius: 12px;
-        -moz-border-radius: 12px;
-        border-radius: 12px;
+        -webkit-border-radius: $icon-container-count-radius;
+        -moz-border-radius: $icon-container-count-radius;
+        border-radius: $icon-container-count-radius;
         display: inline-block;
 
         /// COUNT COLOR
 
         &--primary {
-            background-color: map-get($main-palette, primary);
-            color: $white;
-            border: 2px solid map-get($main-palette, primary);
+            background-color: $icon-container-count-background-primary;
+            color: $icon-container-count-font-color-primary;
+            border: $icon-container-count-border-primary;
         }
 
         &--secondary {
-            background-color: $white;
-            color: map-get($main-palette, primary);
-            border: 2px solid map-get($main-palette, primary);
+            background-color: $icon-container-count-background-secondary;
+            color: $icon-container-count-font-color-secondary;
+            border: $icon-container-count-border-secondary;
         }
 
         &--alert {
-            background-color: $white;
-            color: map-get($main-palette, alert);
-            border: 2px solid map-get($main-palette, alert);
+            background-color: $icon-container-count-background-alert;
+            color: $icon-container-count-font-color-alert;
+            border: $icon-container-count-border-alert;
         }
 
         /// COUNT SIZE
 
         &--tiny {
-            padding: 0px 4px;
-            line-height: 13px;
-            font-size: 10px;
+            padding: map-get($icon-container-count-paddings, tiny);
+            line-height: map-get($icon-container-count-lineHeight, tiny);
+            font-size: map-get($icon-container-count-font-sizes, tiny);
         }
 
         &--small {
-            padding: 3px 6px;
-            line-height: 11px;
-            font-size: 10px;
+            padding: map-get($icon-container-count-paddings, small);
+            line-height: map-get($icon-container-count-lineHeight, small);
+            font-size: map-get($icon-container-count-font-sizes, small);
         }
 
         &--default {
-            padding: 4px 7px;
-            line-height: 12px;
-            font-size: 12px;
+            padding: map-get($icon-container-count-paddings, default);
+            line-height: map-get($icon-container-count-lineHeight, default);
+            font-size: map-get($icon-container-count-font-sizes, default);
         }
 
     }
