@@ -291,12 +291,14 @@ $header-block-background-hover: #f5f5f5;
 
 $header-block-btn-padding: 0 19px;
 
-$header-block-btn-logo-top: 13px;
+$header-block-btn-logo-top: 10px;
 
 $header-block-btn-icon-top: 7px;
 $header-block-btn-icon-size: 24px;
 $header-block-btn-icon-background: transparent;
 $header-block-btn-icon-font-color: $medium-gray;
+
+$header-block-btn-count-top: -10px!important;
 
 $header-block-btn-photo-top: 10px;
 

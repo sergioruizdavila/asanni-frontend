@@ -109,6 +109,7 @@
         -moz-border-radius: $icon-container-count-radius;
         border-radius: $icon-container-count-radius;
         display: inline-block;
+        z-index: 1;
 
         /// COUNT COLOR
 
