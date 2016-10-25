@@ -1,43 +1,43 @@
 /**
- * UserInboxPageController
- * @description - User Inbox Page Controller
+ * UserInboxDetailsPageController
+ * @description - User Inbox Details Page Controller
  */
 
-module app.pages.userInboxPage {
+module app.pages.userInboxDetailsPage {
 
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
-    interface IUserInboxPageController {
-        form: IUserInboxForm;
-        error: IUserInboxError;
+    interface IUserInboxDetailsPageController {
+        form: IUserInboxDetailsForm;
+        error: IUserInboxDetailsError;
         activate: () => void;
     }
 
-    interface IUserInboxScope extends angular.IScope {
+    interface IUserInboxDetailsScope extends angular.IScope {
 
     }
 
-    interface IUserInboxForm {
+    interface IUserInboxDetailsForm {
 
     }
 
-    interface IUserInboxError {
+    interface IUserInboxDetailsError {
         message: string;
     }
 
     /****************************************/
     /*           CLASS DEFINITION           */
     /****************************************/
-    export class UserInboxPageController implements IUserInboxPageController {
+    export class UserInboxDetailsPageController implements IUserInboxDetailsPageController {
 
-        static controllerId = 'mainApp.pages.userInboxPage.UserInboxPageController';
+        static controllerId = 'mainApp.pages.userInboxDetailsPage.UserInboxDetailsPageController';
 
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
-        form: IUserInboxForm;
-        error: IUserInboxError;
+        form: IUserInboxDetailsForm;
+        error: IUserInboxDetailsError;
         // --------------------------------
 
 
@@ -50,7 +50,7 @@ module app.pages.userInboxPage {
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(private $state: ng.ui.IStateService,
-                    private $scope: IUserInboxScope) {
+                    private $scope: IUserInboxDetailsScope) {
 
             this._init();
 
@@ -72,22 +72,20 @@ module app.pages.userInboxPage {
         /*-- ACTIVATE METHOD --*/
         activate(): void {
             //LOG
-            console.log('userInboxPage controller actived');
+            console.log('userInboxDetailsPage controller actived');
         }
 
         /**********************************/
         /*            METHODS             */
         /**********************************/
-        goToDetail(): void {
-            this.$state.go('page.userInboxDetailsPage');
-        }
+
 
     }
 
     /*-- MODULE DEFINITION --*/
     angular
-        .module('mainApp.pages.userInboxPage')
-        .controller(UserInboxPageController.controllerId,
-                    UserInboxPageController);
+        .module('mainApp.pages.userInboxDetailsPage')
+        .controller(UserInboxDetailsPageController.controllerId,
+                    UserInboxDetailsPageController);
 
 }

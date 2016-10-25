@@ -15,18 +15,19 @@
 //   7. Header - Blocks (Tabs)
 //   8. Header - Search Bar
 //   9. Header - SubNav
-//   9. Images
-//   10. Input Text
-//   11. Labels
-//   12. Left Nav (small devices)
-//   13. Links
-//   13. List
-//   14. Logo
-//   15. Paragraph
-//   16. Select List
-//   17. Stars
-//   18. Strong
-//   19. Switchs
+//   10. Icons
+//   11. Images
+//   12. Input Text
+//   13. Labels
+//   14. Left Nav (small devices)
+//   15. Links
+//   16. List
+//   17. Logo
+//   18. Paragraph
+//   19. Select List
+//   20. Stars
+//   21. Strong
+//   22. Switchs
 
 //**********************************************************
 
@@ -290,12 +291,14 @@ $header-block-background-hover: #f5f5f5;
 
 $header-block-btn-padding: 0 19px;
 
-$header-block-btn-logo-top: 13px;
+$header-block-btn-logo-top: 10px;
 
 $header-block-btn-icon-top: 7px;
 $header-block-btn-icon-size: 24px;
 $header-block-btn-icon-background: transparent;
 $header-block-btn-icon-font-color: $medium-gray;
+
+$header-block-btn-count-top: -10px!important;
 
 $header-block-btn-photo-top: 10px;
 
@@ -336,6 +339,42 @@ $header-subnav-list-option-tab-border-hover: 3px solid map-get($main-palette, pr
 
 $header-subnav-list-option-tab-border-active: 3px solid $dark-gray;
 
+
+// 5. Icons
+// ----------
+$icon-container-count-top: -5px;
+$icon-container-count-left: 14px;
+$icon-container-count-radius: 12px;
+
+$icon-container-count-background-primary: map-get($main-palette, primary);
+$icon-container-count-background-secondary: $white;
+$icon-container-count-background-alert: $white;
+
+$icon-container-count-font-color-primary: $white;
+$icon-container-count-font-color-secondary: map-get($main-palette, primary);
+$icon-container-count-font-color-alert: map-get($main-palette, alert);
+
+$icon-container-count-border-primary: 2px solid map-get($main-palette, primary);
+$icon-container-count-border-secondary: 2px solid map-get($main-palette, primary);
+$icon-container-count-border-alert: 2px solid map-get($main-palette, alert);
+
+$icon-container-count-paddings: (
+    tiny: 0px 4px,
+    small: 3px 6px,
+    default: 4px 7px,
+);
+
+$icon-container-count-lineHeight: (
+    tiny: 13px,
+    small: 11px,
+    default: 12px,
+);
+
+$icon-container-count-font-sizes: (
+    tiny: 10px,
+    small: 10px,
+    default: 12px,
+);
 
 // 5. Images
 // ----------

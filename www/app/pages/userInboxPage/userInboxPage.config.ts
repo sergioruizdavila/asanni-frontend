@@ -16,7 +16,7 @@
 
         $stateProvider
             .state('page.userInboxPage', {
-                url: '/users/:id/inbox',
+                url: '/users/:userId/inbox',
                 views: {
                     'container': {
                         templateUrl: 'app/pages/userInboxPage/userInboxPage.html',
@@ -26,7 +26,7 @@
                 },
                 parent: 'page',
                 params: {
-                    user: null
+                    userId: '123'
                 }
             });
     }
