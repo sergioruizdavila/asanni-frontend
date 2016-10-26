@@ -2,7 +2,7 @@ module.exports = function(){
     var faker =  require("faker");
     var _ = require("lodash");
     return {
-        people: _.times(30, function(n) {
+        users: _.times(30, function(n) {
 
             var userInfo = faker.helpers.createCard();
 
@@ -19,7 +19,8 @@ module.exports = function(){
                 school: faker.company.companyName(),
                 occupation: faker.name.jobType(),
                 about: userInfo.posts[0].paragraph,
-                location: { address: userInfo.address.streetC, position: userInfo.address.geo }
+                location: { address: userInfo.address.streetC, position: userInfo.address.geo },
+                interests: assignInterest()
             }
 
             function assignSex() {
@@ -49,6 +50,17 @@ module.exports = function(){
                     month: birth_date.getMonth(),
                     day: birth_date.getDay()
                 };
+            }
+
+            function assignInterest() {
+                var interests = ['read', 'sports', 'artist', 'business', 'languages', 'geek', 'video games', 'cook'];
+                var amountOfInterests = Math.floor(Math.random() * interests.length) + 1 ;
+                var newInterestsList = [];
+                for (var i = 0; i < amountOfInterests; i++) {
+                    newInterestsList.push(interests[i]);
+                }
+
+                return newInterestsList;
             }
 
         })

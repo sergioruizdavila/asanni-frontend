@@ -46,8 +46,6 @@ module app.models.user {
         private occupation: string;
         private about: string;
         private location: ILocation;
-        //private finances: Array<app.models.finance.Finance>;
-        //private cards: Array<app.models.card.UserCard>;
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -71,18 +69,6 @@ module app.models.user {
             this.occupation = obj.occupation || '';
             this.about = obj.about || '';
             this.location = obj.location || '';
-
-
-            if(!_.isEmpty(obj)) {
-                for (let key in obj.finances) {
-                    //let financeInstance = new app.models.finance.Finance(obj.finances[key]);
-                    //this.addFinance(financeInstance);
-                }
-                for (let key in obj.cards) {
-                    //let cardInstance = new app.models.card.UserCard(obj.cards[key]);
-                    //this.addCard(cardInstance);
-                }
-            }
 
         }
 
@@ -216,7 +202,6 @@ module app.models.user {
             this.location = location;
         }
 
-
     }
 
 
@@ -297,7 +282,7 @@ module app.models.user {
         }
 
         get Interests() {
-            return this.learning;
+            return this.interests;
         }
 
         addInterest(interest: string): void {

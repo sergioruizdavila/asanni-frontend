@@ -107,6 +107,17 @@ module components.map {
 
     export interface IMapConfig {
         type: string;
+        data: IMapDataSet;
+    }
+
+    export interface IMapDataSet {
+        position: IPosition;
+        markers: Array<IMapMarkers>;
+    }
+
+    export interface IMapMarkers {
+        id: string;
+        position: IPosition;
     }
 
     /****************************************/
@@ -207,10 +218,7 @@ module components.map {
             //VARIABLES
             let self = this;
             let zoom = 12;
-            let center = {
-                lat: 50,
-                lng: 2
-            };
+            let center = this.mapConfig.data.position;
             /********************/
 
             //Map options
@@ -235,7 +243,11 @@ module components.map {
                     );
 
                     //set markers
-                    self.setMarker(7, new google.maps.LatLng(center.lat, center.lng), 'London', 'Just some content');
+                    for (let i = 0; i < self.mapConfig.data.markers.length; i++) {
+                        let marker = self.mapConfig.data.markers[i];
+                        self.setMarker( marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), 'London', 'Just some content');
+                    }
+
                 });
             }
 

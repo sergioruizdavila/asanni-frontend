@@ -14,6 +14,8 @@
             'mainApp.auth',
             'mainApp.core',
             'mainApp.localStorage',
+            'mainApp.core.restApi',
+            'mainApp.models.user',
             'mainApp.pages.main',
             'mainApp.pages.signUpPage',
             'mainApp.pages.searchPage',
