@@ -19,6 +19,13 @@ module app.pages.userProfilePage {
         datetimepickerConfig: any;
     }
 
+    /********************************/
+    /*    STATEPARAMS INTERFACES    */
+    /********************************/
+    export interface IParams extends ng.ui.IStateParamsService {
+        id: string;
+    }
+
     export interface IUserProfileForm {
         username: string;
         email: string;
@@ -41,12 +48,15 @@ module app.pages.userProfilePage {
         form: IUserProfileForm;
         error: IUserProfileError;
         mapConfig: components.map.IMapConfig;
+        data: app.models.user.User;
         // --------------------------------
 
 
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = [
+            'mainApp.models.user.UserService',
             '$state',
+            '$stateParams',
             '$filter',
             '$scope'];
 
@@ -54,7 +64,9 @@ module app.pages.userProfilePage {
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
+            private UserService: app.models.user.IUserService,
             private $state: ng.ui.IStateService,
+            private $stateParams: IParams,
             private $filter: angular.IFilterService,
             private $scope: IUserProfileScope) {
 
@@ -64,6 +76,9 @@ module app.pages.userProfilePage {
 
         /*-- INITIALIZE METHOD --*/
         private _init() {
+
+            //Init user data
+            this.data = null;
 
             //Init form
             this.form = {
@@ -94,8 +109,16 @@ module app.pages.userProfilePage {
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
+            //VARIABLES
+            let self = this;
             //LOG
             console.log('userProfilePage controller actived');
+            // Get User information
+            this.UserService.getUserById(this.$stateParams.id).then(
+                function(response) {
+                    self.data = new app.models.user.Student(response);
+                }
+            );
         }
 
         /**********************************/
