@@ -17,6 +17,7 @@
             'mainApp.core.restApi',
             'mainApp.models.user',
             'mainApp.pages.main',
+            'mainApp.pages.studentLandingPage',
             'mainApp.pages.signUpPage',
             'mainApp.pages.searchPage',
             'mainApp.pages.userProfilePage',
