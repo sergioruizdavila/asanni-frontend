@@ -103,8 +103,8 @@ module app.pages.searchPage {
                 type: 'search-map',
                 data: {
                     position: {
-                        lat: 30,
-                        lng: 3
+                        lat: 6.175434,
+                        lng: -75.583329
                     },
                     markers: []
                 }

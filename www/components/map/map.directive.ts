@@ -77,7 +77,8 @@ module components.map {
         setMarker: (map:google.maps.Map,
                     position: google.maps.LatLng,
                     title: string,
-                    content: string) => void;
+                    content: string,
+                    icon: string) => void;
     }
 
     interface IMapForm {
@@ -217,7 +218,7 @@ module components.map {
         private _searchMapBuilder(): void {
             //VARIABLES
             let self = this;
-            let zoom = 12;
+            let zoom = 16;
             let center = this.mapConfig.data.position;
             /********************/
 
@@ -245,7 +246,7 @@ module components.map {
                     //set markers
                     for (let i = 0; i < self.mapConfig.data.markers.length; i++) {
                         let marker = self.mapConfig.data.markers[i];
-                        self.setMarker( marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), 'London', 'Just some content');
+                        self.setMarker( marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), 'London', 'Just some content', 'assets/images/meeting-point.png');
                     }
 
                 });
@@ -312,7 +313,10 @@ module components.map {
                     });
 
                     //set markers
-                    self.setMarker(7, new google.maps.LatLng(center.lat, center.lng), 'London', 'Just some content');
+                    self.setMarker(7, new google.maps.LatLng(6.1739743,-75.5822614), 'London', 'Just some content', 'assets/images/location.png');
+                    self.setMarker(8, new google.maps.LatLng(6.174486, -75.582846), 'London', 'Just some content', 'assets/images/location.png');
+                    self.setMarker(9, new google.maps.LatLng(6.173066, -75.583090), 'London', 'Just some content', 'assets/images/location.png');
+
                 });
             }
         }
@@ -353,7 +357,7 @@ module components.map {
                     );
 
                     //set markers
-                    self.setMarker(7, new google.maps.LatLng(6.1739743, -75.5822414), 'London', 'Just some content');
+                    self.setMarker(7, new google.maps.LatLng(6.1739743, -75.5822414), 'London', 'Just some content', 'assets/images/location.png');
 
                     //When it is a map inside modal, is necessary resize map
                     google.maps.event.trigger(self._map, "resize");
@@ -368,7 +372,7 @@ module components.map {
         * setMarker
         * @description - this method assings every marker on map
         */
-        setMarker (id, position, title, content): void {
+        setMarker (id, position, title, content, icon): void {
             //VARIABLES
             let self = this;
             let marker;
@@ -377,7 +381,7 @@ module components.map {
                 position: position,
                 map: this._map,
                 title: title,
-                icon: 'assets/images/meeting-point.png',
+                icon: icon,
                 draggable: true
             };
             /********************/
