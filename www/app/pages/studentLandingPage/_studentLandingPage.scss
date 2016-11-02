@@ -9,9 +9,141 @@ $studentLanding-block-margin: 20px;
 /**********************************************************/
 
 .studentLandingPage {
-    padding-top: $studentLanding-padding;
 
-    &__block {
-        margin-bottom: $studentLanding-block-margin;
+    background-color: $white;
+
+    /* title block */
+    &__title-block {
+        width: 100%;
+        //background: #414141;
+        background: #ff5a5f;
+        margin: 0 auto;
+        padding: 30px 0;
+        //border-top: 6px solid #292929;
+        border-top: 6px solid shade(#ff5a5f, 20);
+
+        h2 {
+            color: $white;
+        }
+    }
+
+    /* how work block */
+    &__how-work-block {
+        margin-top: 40px;
+        margin-bottom: 40px;
+
+        .row {
+            padding: 0 20px;
+
+            .step-item {
+                position: relative;
+                padding: 45px 0;
+                overflow: hidden;
+
+                &:before {
+                    content: "";
+                    background-image: url(https://iamsteve.me/dist/images/dash-alternate.svg?1473014341);
+                    background-repeat: repeat-x;
+                    background-position: -12px center;
+                    height: 4px;
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    z-index: 2;
+                    bottom: calc(99% - 1px);
+                }
+
+                &--first {
+                    &:before {
+                         background: none;
+                    }
+                }
+
+                &--without-content {
+                    overflow:visible;
+                    padding:20px 0;
+                }
+
+                .step-image {
+                    width: 50%;
+                    height: 0;
+                    background-repeat: no-repeat;
+                    background-position: left center;
+                    background-size: contain;
+                    &.map {
+                        //padding-top: 28%;
+                        padding-top: 37%;
+                        //background-image: url(https://evernote.com/media/img/homepage-redesign/new-story/NOTE.jpg);
+                        background-image: url('../../../assets/images/step-map.png');
+                    }
+                    &.profile {
+                        padding-top: 40%;
+                        background-image: url('../../../assets/images/step-profile.png');
+                    }
+                    &.points {
+                        padding-top: 37%;
+                        //background-position: center center;
+                        //background-image: url(https://evernote.com/media/img/homepage-redesign/new-story/FIND.jpg);
+                        background-image: url('../../../assets/images/step-points.png');
+                    }
+                    &.send {
+                        padding-top: 36%;
+                        background-image: url(https://evernote.com/media/img/homepage-redesign/new-story/SHARE.jpg);
+                    }
+                    &.meeting {
+                        padding-top: 37%;
+                        //background-position: center center;
+                        //background-image: url(https://evernote.com/media/img/homepage-redesign/new-story/FIND.jpg);
+                        background-image: url('../../../assets/images/step-meeting.png');
+                    }
+                }
+
+                .step-content {
+                    width: 50%;
+                    max-width: 450px;
+                    position: absolute;
+                    top: 50%;
+                    -webkit-transform: translateY(-50%);
+                    -ms-transform: translateY(-50%);
+                    transform: translateY(-50%);
+                    padding-left: 50px;
+
+                    p {
+                        font-size: 20px;
+                    }
+                }
+
+                &--image-on-right {
+                    .step-image {
+                        float: right;
+                    }
+                }
+
+                &--image-on-left {
+                    .step-image {
+                        float: left;
+                    }
+                    .step-content {
+                        left: 50%;
+                    }
+                }
+            }
+
+        }
+    }
+
+
+    /* get early access block */
+    &__early-access-block {
+       padding: 20px 0;
+       background-color: #00B592;
+       border-top: 6px solid #018a6f;
+       color: #FFF;
+
+       &__form-block {
+           .ma-p {
+               color: $white;
+           }
+       }
     }
 }

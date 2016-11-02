@@ -8,7 +8,7 @@
     -webkit-border-radius: $button-radius;
     -moz-border-radius: $button-radius;
     border-radius: $button-radius;
-    border: 1px solid;
+    border: 1px solid transparent;
     text-align: center;
     vertical-align: middle;
     font-weight: bold;
@@ -79,6 +79,19 @@
             background-color: $button-secondary-color;
             color: $button-font-color;
             border-bottom-color: $button-secondary-border-color;
+            text-decoration: none;
+        }
+    }
+
+    &--tertiary {
+        background: 0 0;
+        border: $button-tertiary-border;
+        color: $button-tertiary-color;
+
+        &:hover:enabled, &:focus {
+            background-color: $button-tertiary-color;
+            color: $button-secondary-color-hover;
+            border-bottom-color: $button-tertiary-border-color;
             text-decoration: none;
         }
     }

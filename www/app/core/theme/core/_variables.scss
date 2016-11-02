@@ -68,6 +68,7 @@ $global-font-path: "../../../../assets/fonts";
 $global-font-family: "MainAppFont";
 $global-image-path: "../../../../assets/images";
 $global-logo-file: "waysily-logo.png";
+$global-logo-secondary-file: "waysily-logo-secondary.png";
 $global-photo-default-file: "waysily-photo-default.png";
 
 $body-background: #fafafa;
@@ -201,6 +202,11 @@ $button-secondary-background: map-get($main-palette, secondary);
 $button-secondary-background-hover: scale-color($button-secondary-background, $lightness: -15%);
 $button-secondary-color: map-get($main-palette, primary);
 $button-secondary-border-color: map-get($main-palette, secondary);
+
+$button-tertiary-border: 2px solid $white;
+$button-tertiary-color: $white;
+$button-secondary-color-hover: map-get($main-palette, primary);
+$button-tertiary-border-color: $light-gray;
 
 $button-block-width: 100%;
 
@@ -536,6 +542,7 @@ $list-message-status-height-unread: 15px;
 // 7. Logo
 // ----------
 $logo-path: $global-image-path + '/' + $global-logo-file;
+$logo-path-secondary: $global-image-path + '/' + $global-logo-secondary-file;
 $logo-width: 145px;
 $logo-height: 32px;
 
