@@ -87,6 +87,12 @@
         }
     }
 
+    &--tertiary {
+        &:before {
+            color: $select-tertiary-icon-color;
+        }
+    }
+
     .ma-select {
         -webkit-appearance: none;
         -moz-appearance:    none;
@@ -108,6 +114,17 @@
             padding: map-get($input-paddings, large);
             padding-right: $select-padding;
             font-size: $input-font-size-large;
+        }
+
+        /// SELECT COLOR
+        &--tertiary {
+            background: 0 0;
+            border: $select-tertiary-border;
+            color: $select-tertiary-font-color;
+        }
+
+        &--border-round {
+            border-radius: $select-borderRound-radius;
         }
     }
 

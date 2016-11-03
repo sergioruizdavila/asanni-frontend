@@ -121,12 +121,16 @@
     }
 
     &--transparent {
-        background: transparent;
-        border: 0 hidden transparent;
+        background: $header-transparent-background;
+        border: $header-transparent-border;
         position: absolute;
 
-        &__block:nth-of-type(1) {
-            border-left: 0 hidden transparent;
+        &__block {
+            border: $header-transparent-block-border;
+
+            &--right {
+                padding-right: $header-transparent-block-right-padding;
+            }
         }
     }
 

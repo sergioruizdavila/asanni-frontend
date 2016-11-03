@@ -28,6 +28,7 @@
             'mainApp.pages.userInboxPage',
             'mainApp.pages.userInboxDetailsPage',
             'mainApp.components.header',
+            'mainApp.components.footer',
             'mainApp.components.map',
             'mainApp.components.modal'
         ])

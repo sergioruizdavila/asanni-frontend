@@ -284,6 +284,12 @@ $header-left: 0;
 $header-width: 100%;
 $header-index: 2;
 
+$header-transparent-background: transparent;
+$header-transparent-border: 0 hidden transparent;
+
+$header-transparent-block-border: 0 hidden transparent!important;
+$header-transparent-block-right-padding: 20px;
+
 
 // 4. Header - Blocks (Tabs)
 // ---------
@@ -393,6 +399,16 @@ $image-photo-sizes: (
     large: 240px,
 );
 $image-photo-background: $dark-gray;
+
+$image-dashed-alternate: $global-image-path + '/dash-alternate.svg';
+
+$image-studentLanding-step-map: $global-image-path + '/step-map.png';
+$image-studentLanding-step-profile: $global-image-path + '/step-profile.png';
+$image-studentLanding-step-points: $global-image-path + '/step-points.png';
+$image-studentLanding-step-request: $global-image-path + '/step-request.png';
+$image-studentLanding-step-meeting: $global-image-path + '/step-meeting.png';
+
+
 
 
 // 7. Input Text and Select List
@@ -567,18 +583,20 @@ $select-padding: 2em;
 $select-padding-small: 1.6em;
 $select-background: white\0 !important;
 
+$select-tertiary-background: 0 0;
+$select-tertiary-border: 2px solid #FFF;
+$select-tertiary-font-color: #FFF;
+
+$select-borderRound-radius: 7px;
+
+$select-tertiary-icon-color: $white;
+
 $select-icon-font-size-small: 10px;
 $select-icon-color: $medium-gray;
 $select-icon-width: 2em;
 $select-icon-padding: 0.7em;
 $select-icon-lineHeight: 1;
 $select-icon-transform: scale(0.84, 0.42);
-//legacy version - remove when it would be necessary anymore
-/*$select-icon-top: (
-    small: 0,
-    default: 1px,
-    large: 5px,
-);*/
 
 $select-icon-top: (
     small: 2px,

@@ -1,8 +1,60 @@
 /*************************/
 /*       VARIABLES       */
 /*************************/
-$studentLanding-padding: 20px;
-$studentLanding-block-margin: 20px;
+$studentLanding-background: $white;
+
+$studentLanding-titleBlock-width: 100%;
+$studentLanding-titleBlock-background: #fff3f0;
+$studentLanding-titleBlock-margin: 0 auto;
+$studentLanding-titleBlock-padding: 30px 0;
+$studentLanding-titleBlock-border: 2px dashed #F59689;
+
+$studentLanding-titleBlock-h2-font-color: #F59689;
+
+$studentLanding-howWorkBlock-margin-top: 40px;
+$studentLanding-howWorkBlock-margin-bottom: 40px;
+
+$studentLanding-howWorkBlock-row-padding: 0 20px;
+
+$studentLanding-howWorkBlock-stepItem-padding: 45px 0;
+
+$studentLanding-dashedAlternate-background-position: -12px center;
+$studentLanding-dashedAlternate-height: 4px;
+$studentLanding-dashedAlternate-left: 0;
+$studentLanding-dashedAlternate-right: 0;
+$studentLanding-dashedAlternate-index: 2;
+$studentLanding-dashedAlternate-bottom: calc(99% - 1px);
+
+$studentLanding-withoutContent-padding: 20px 0;
+
+$studentLanding-howWorkBlock-stepImage-width: 50%;
+$studentLanding-howWorkBlock-stepImage-height: 0;
+
+$studentLanding-howWorkBlock-stepImage-map-padding: 37%;
+$studentLanding-howWorkBlock-stepImage-profile-padding: 40%;
+$studentLanding-howWorkBlock-stepImage-points-padding: 37%;
+$studentLanding-howWorkBlock-stepImage-request-padding: 36%;
+$studentLanding-howWorkBlock-stepImage-meeting-padding: 37%;
+
+$studentLanding-howWorkBlock-stepContent-width: 50%;
+$studentLanding-howWorkBlock-stepContent-max-width: 450px;
+$studentLanding-howWorkBlock-stepContent-top: 50%;
+$studentLanding-howWorkBlock-stepContent-transform: translateY(-50%);
+$studentLanding-howWorkBlock-stepContent-padding: 50px;
+
+$studentLanding-howWorkBlock-stepContent-text-font-size: 20px;
+
+$studentLanding-howWorkBlock-imageOnLeft-stepContent-left: 50%;
+
+$studentLanding-earlyAccessBlock-padding: 20px 0;
+$studentLanding-earlyAccessBlock-background: #E1F7EE;
+$studentLanding-earlyAccessBlock-border: 2px dashed map-get($main-palette, primary);
+$studentLanding-earlyAccessBlock-font-color: map-get($main-palette, primary);
+
+$studentLanding-earlyAccessBlock-formBlock-text-font-color: map-get($main-palette, primary);
+
+$studentLanding-earlyAccessBlock-formBlock-formGroup-padding: 0 20px;
+
 
 /**********************************************************/
 /*                   USER PROFILE PAGE                    */
@@ -10,47 +62,45 @@ $studentLanding-block-margin: 20px;
 
 .studentLandingPage {
 
-    background-color: $white;
+    background-color: $studentLanding-background;
 
     /* title block */
     &__title-block {
-        width: 100%;
-        //background: #414141;
-        background: #ff5a5f;
-        margin: 0 auto;
-        padding: 30px 0;
-        //border-top: 6px solid #292929;
-        border-top: 6px solid shade(#ff5a5f, 20);
+        width: $studentLanding-titleBlock-width;
+        background: $studentLanding-titleBlock-background;
+        margin: $studentLanding-titleBlock-margin;
+        padding: $studentLanding-titleBlock-padding;
+        border-bottom: $studentLanding-titleBlock-border;
 
         h2 {
-            color: $white;
+            color: $studentLanding-titleBlock-h2-font-color;
         }
     }
 
     /* how work block */
     &__how-work-block {
-        margin-top: 40px;
-        margin-bottom: 40px;
+        margin-top: $studentLanding-howWorkBlock-margin-top;
+        margin-bottom: $studentLanding-howWorkBlock-margin-bottom;
 
         .row {
-            padding: 0 20px;
+            padding: $studentLanding-howWorkBlock-row-padding;
 
             .step-item {
                 position: relative;
-                padding: 45px 0;
+                padding: $studentLanding-howWorkBlock-stepItem-padding;
                 overflow: hidden;
 
                 &:before {
                     content: "";
-                    background-image: url(https://iamsteve.me/dist/images/dash-alternate.svg?1473014341);
+                    background-image: url($image-dashed-alternate);
                     background-repeat: repeat-x;
-                    background-position: -12px center;
-                    height: 4px;
+                    background-position: $studentLanding-dashedAlternate-background-position;
+                    height: $studentLanding-dashedAlternate-height;
                     position: absolute;
-                    left: 0;
-                    right: 0;
-                    z-index: 2;
-                    bottom: calc(99% - 1px);
+                    left: $studentLanding-dashedAlternate-left;
+                    right: $studentLanding-dashedAlternate-right;
+                    z-index: $studentLanding-dashedAlternate-index;
+                    bottom: $studentLanding-dashedAlternate-bottom;
                 }
 
                 &--first {
@@ -60,56 +110,50 @@ $studentLanding-block-margin: 20px;
                 }
 
                 &--without-content {
-                    overflow:visible;
-                    padding:20px 0;
+                    overflow: visible;
+                    padding: $studentLanding-withoutContent-padding;
                 }
 
                 .step-image {
-                    width: 50%;
-                    height: 0;
+                    width: $studentLanding-howWorkBlock-stepImage-width;
+                    height: $studentLanding-howWorkBlock-stepImage-height;
                     background-repeat: no-repeat;
                     background-position: left center;
                     background-size: contain;
                     &.map {
-                        //padding-top: 28%;
-                        padding-top: 37%;
-                        //background-image: url(https://evernote.com/media/img/homepage-redesign/new-story/NOTE.jpg);
-                        background-image: url('../../../assets/images/step-map.png');
+                        padding-top: $studentLanding-howWorkBlock-stepImage-map-padding;
+                        background-image: url($image-studentLanding-step-map);
                     }
                     &.profile {
-                        padding-top: 40%;
-                        background-image: url('../../../assets/images/step-profile.png');
+                        padding-top: $studentLanding-howWorkBlock-stepImage-profile-padding;
+                        background-image: url($image-studentLanding-step-profile);
                     }
                     &.points {
-                        padding-top: 37%;
-                        //background-position: center center;
-                        //background-image: url(https://evernote.com/media/img/homepage-redesign/new-story/FIND.jpg);
-                        background-image: url('../../../assets/images/step-points.png');
+                        padding-top: $studentLanding-howWorkBlock-stepImage-points-padding;
+                        background-image: url($image-studentLanding-step-points);
                     }
-                    &.send {
-                        padding-top: 36%;
-                        background-image: url(https://evernote.com/media/img/homepage-redesign/new-story/SHARE.jpg);
+                    &.request {
+                        padding-top: $studentLanding-howWorkBlock-stepImage-request-padding;
+                        background-image: url($image-studentLanding-step-request);
                     }
                     &.meeting {
-                        padding-top: 37%;
-                        //background-position: center center;
-                        //background-image: url(https://evernote.com/media/img/homepage-redesign/new-story/FIND.jpg);
-                        background-image: url('../../../assets/images/step-meeting.png');
+                        padding-top: $studentLanding-howWorkBlock-stepImage-meeting-padding;
+                        background-image: url($image-studentLanding-step-meeting);
                     }
                 }
 
                 .step-content {
-                    width: 50%;
-                    max-width: 450px;
+                    width: $studentLanding-howWorkBlock-stepContent-width;
+                    max-width: $studentLanding-howWorkBlock-stepContent-max-width;
                     position: absolute;
-                    top: 50%;
-                    -webkit-transform: translateY(-50%);
-                    -ms-transform: translateY(-50%);
-                    transform: translateY(-50%);
-                    padding-left: 50px;
+                    top: $studentLanding-howWorkBlock-stepContent-top;
+                    -webkit-transform: $studentLanding-howWorkBlock-stepContent-transform;
+                    -ms-transform: $studentLanding-howWorkBlock-stepContent-transform;
+                    transform: $studentLanding-howWorkBlock-stepContent-transform;
+                    padding-left: $studentLanding-howWorkBlock-stepContent-padding;
 
                     p {
-                        font-size: 20px;
+                        font-size: $studentLanding-howWorkBlock-stepContent-text-font-size;
                     }
                 }
 
@@ -124,7 +168,7 @@ $studentLanding-block-margin: 20px;
                         float: left;
                     }
                     .step-content {
-                        left: 50%;
+                        left: $studentLanding-howWorkBlock-imageOnLeft-stepContent-left;
                     }
                 }
             }
@@ -135,18 +179,18 @@ $studentLanding-block-margin: 20px;
 
     /* get early access block */
     &__early-access-block {
-       padding: 20px 0;
-       background-color: #00B592;
-       border-top: 6px solid #018a6f;
-       color: #FFF;
+        padding: $studentLanding-earlyAccessBlock-padding;
+        background-color: $studentLanding-earlyAccessBlock-background;
+        border-top: $studentLanding-earlyAccessBlock-border;
+        color: $studentLanding-earlyAccessBlock-font-color;
 
        &__form-block {
            .ma-p {
-               color: $white;
+               color: $studentLanding-earlyAccessBlock-formBlock-text-font-color;
            }
 
            .form-group {
-               padding: 0 20px;
+               padding: $studentLanding-earlyAccessBlock-formBlock-formGroup-padding;
            }
        }
     }
