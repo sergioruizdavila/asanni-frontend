@@ -98,4 +98,4 @@ gulp.task('watch', function() {
 /*DEV*/
 //gulp.task('default', ['sass', 'webserver', 'watch']);
 /*PROD*/
-gulp.task('default', ['sass', 'serveprod']);
+gulp.task('default', ['sass']);
