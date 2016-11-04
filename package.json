@@ -5,7 +5,7 @@
     "node": "4.x"
 },
   "description": "Language Platform",
-  "main": "/",
+  "main": "www/",
   "scripts": {
     "test": "make test"
   },
