@@ -7,8 +7,6 @@
   "description": "Language Platform",
   "main": "/",
   "scripts": {
-    "start": "node node_modules/gulp/bin/gulp",
-    "postinstall": "gulp default",
     "test": "make test"
   },
   "keywords": [
