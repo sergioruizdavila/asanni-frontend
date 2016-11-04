@@ -1,0 +1,137 @@
+<style>
+/*
+	Ratings Stars
+	(with as little code as possible)
+*/
+.rating {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+  text-align: center;
+}
+.rating > span {
+  display: inline-block;
+  position: relative;
+  width: 1.1em;
+  font-size: 30px;
+  color: gold;
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+}
+.rating > span:hover,
+.rating > span:hover ~ span {
+  color: transparent;
+}
+.rating > span:hover:before,
+.rating > span:hover ~ span:before {
+   content: "\2605";
+   position: absolute;
+   left: 0;
+   color: gold;
+}
+
+.rating.active > span,
+.rating.active > span ~ span {
+  color: transparent;
+}
+.rating.active > span:before,
+.rating.active > span ~ span:before {
+   content: "\2605";
+   position: absolute;
+   left: 0;
+   color: gold;
+}
+.rating1.active > span,
+.rating1.active > span ~ span {
+  color: transparent;
+}
+.rating1.active > span:before,
+.rating1.active > span ~ span:before {
+   content: "\2605";
+   position: absolute;
+   left: 0;
+   color: gold;
+}
+.rating2.active > span,
+.rating2.active > span ~ span {
+  color: transparent;
+}
+.rating2.active > span:before,
+.rating2.active > span ~ span:before {
+   content: "\2605";
+   position: absolute;
+   left: 0;
+   color: gold;
+}
+
+.rating1 {  unicode-bidi: bidi-override;  direction: rtl;  text-align: center;}
+
+.rating1 > span {  display: inline-block;  position: relative;  width: 1.1em;  font-size: 30px;  color: gold; cursor: pointer;}
+
+.rating1 > span:hover,.rating1 > span:hover ~ span {  color: transparent;}
+
+.rating1 > span:hover:before,.rating1 > span:hover ~ span:before {   content: "\2605";   position: absolute;   left: 0;    color: gold;}
+
+
+.rating2 {  unicode-bidi: bidi-override;  direction: rtl;  text-align: center;}
+.rating2 > span {  display: inline-block;  position: relative;  width: 1.1em;  font-size: 30px;  color: gold; cursor: pointer;}
+.rating2 > span:hover,.rating2 > span:hover ~ span {  color: transparent;}
+.rating2 > span:hover:before,.rating2 > span:hover ~ span:before {   content: "\2605";   position: absolute;   left: 0;    color: gold;}
+
+#star-last.active:before {
+    content: none;
+}
+
+#star-hide {
+    display: inline-block;
+    position: relative;
+    width: 1.1em;
+    font-size: 30px;
+    color: gold;
+    cursor: pointer;
+}
+
+.text {
+	color: #555;
+	font-size: 25px;
+	margin: 0;
+	margin-top: 20px;
+}
+
+
+body { padding: 100px; }
+</style>
+
+<div class="rating space-top-6">
+<p class="text">Communication</p>
+<span id="star1">☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+</div>
+
+<div class="rating1">
+<p class="text">Teaching</p>
+<div id="star-hide" class="hidden">☆</div><span id="star-last">☆</span><span id="star2">☆</span><span>☆</span><span>☆</span><span>☆</span>
+</div>
+
+<div class="rating2 space-6">
+<p class="text">Fun</p>
+<span id="star3">☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+</div>
+
+<script type="text/javascript">
+    $("#star1").click(
+        function(e){
+            $(".rating").addClass('active');
+        }
+    );
+    $("#star2").click(
+        function(e){
+            $(".rating1").addClass('active');
+            $("#star-last").addClass('hidden');
+            $("#star-hide").removeClass('hidden');
+        }
+    );
+    $("#star3").click(
+        function(e){
+            $(".rating2").addClass('active');
+        }
+    );
+</script>
