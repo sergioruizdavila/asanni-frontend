@@ -30,6 +30,19 @@ gulp.task('webserver', function() {
 });
 
 /**
+ * REMOTE SERVER
+ * @desc This task is the responsible to run a remote server
+ */
+
+gulp.task('serveprod', function() {
+  connect.server({
+    root: 'www',
+    port: process.env.PORT || 5000, // localhost:5000
+    livereload: false
+  });
+});
+
+/**
  * SASS to CSS - based on http://www.sitepoint.com/simple-gulpy-workflow-sass/
  * @desc This task take app.scss and transform this to .css, after that put each new .css into App_Web -> dist -> styles
  */
@@ -83,4 +96,4 @@ gulp.task('watch', function() {
 })
 
 
-gulp.task('default', ['sass', 'webserver', 'watch']);
+gulp.task('default', ['sass', 'serveprod', 'watch']);
