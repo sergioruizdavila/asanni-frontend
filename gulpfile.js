@@ -95,5 +95,7 @@ gulp.task('watch', function() {
     gulp.watch([paths.appTypescript], ['ts']);
 })
 
-
-gulp.task('default', ['sass', 'serveprod', 'watch']);
+/*DEV*/
+//gulp.task('default', ['sass', 'webserver', 'watch']);
+/*PROD*/
+gulp.task('default', ['sass', 'serveprod']);
