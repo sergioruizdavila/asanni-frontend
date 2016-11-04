@@ -1,6 +1,9 @@
 {
   "name": "waysily",
   "version": "1.0.0",
+  "engines": {
+    "node": "4.x"
+  }
   "description": "Language Platform",
   "main": "/",
   "scripts": {
@@ -13,19 +16,17 @@
   ],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^3.1.1",
-    "gulp-connect": "^5.0.0",
-    "gulp-debug": "^2.1.2",
-    "gulp-inject": "^4.1.0",
-    "gulp-rimraf": "^0.2.0",
-    "gulp-sass": "^2.3.2",
-    "gulp-sourcemaps": "^1.6.0",
-    "gulp-tslint": "^6.0.2",
-    "gulp-typescript": "^2.13.6"
-  },
   "dependencies": {
+      "gulp": "^3.9.1",
+      "gulp-autoprefixer": "^3.1.1",
+      "gulp-connect": "^5.0.0",
+      "gulp-debug": "^2.1.2",
+      "gulp-inject": "^4.1.0",
+      "gulp-rimraf": "^0.2.0",
+      "gulp-sass": "^2.3.2",
+      "gulp-sourcemaps": "^1.6.0",
+      "gulp-tslint": "^6.0.2",
+      "gulp-typescript": "^2.13.6",
     "angular-bootstrap-datetimepicker": "^1.1.2"
   }
 }
