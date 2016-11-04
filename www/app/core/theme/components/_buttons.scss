@@ -8,7 +8,7 @@
     -webkit-border-radius: $button-radius;
     -moz-border-radius: $button-radius;
     border-radius: $button-radius;
-    border: 1px solid;
+    border: 1px solid transparent;
     text-align: center;
     vertical-align: middle;
     font-weight: bold;
@@ -23,15 +23,25 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     transition: background 300ms ease-out;
-    padding: map-get($button-paddings, default);
-    font-size: map-get($button-font-sizes, default);
-
+    outline: none;
+    box-shadow: none;
+    text-shadow: none;
 
     ///BUTTON_SIZE
 
     &--small {
         padding: map-get($button-paddings, small);
         font-size: map-get($button-font-sizes, small);
+    }
+
+    &--default {
+        padding: map-get($button-paddings, default);
+        font-size: map-get($button-font-sizes, default);
+    }
+
+    &--medium {
+        padding: map-get($button-paddings, medium);
+        font-size: map-get($button-font-sizes, medium);
     }
 
     &--large {
@@ -73,8 +83,22 @@
         }
     }
 
+    &--tertiary {
+        background: 0 0;
+        border: $button-tertiary-border;
+        color: $button-tertiary-color;
+
+        &:hover:enabled, &:focus {
+            background-color: $button-tertiary-color;
+            color: $button-secondary-color-hover;
+            border-bottom-color: $button-tertiary-border-color;
+            text-decoration: none;
+        }
+    }
+
 }
 
 .ma-btn[disabled] {
     opacity: $button-opacity-disabled;
+    cursor: not-allowed;
 }

@@ -17,6 +17,11 @@
     -o-background-size: cover;
     background-size: cover;
 
+    &--tiny {
+        height: map-get($image-photo-sizes, tiny);
+        width: map-get($image-photo-sizes, tiny);
+    }
+
     &--small {
         height: map-get($image-photo-sizes, small);
         width: map-get($image-photo-sizes, small);
@@ -25,6 +30,11 @@
     &--default {
         width: map-get($image-photo-sizes, default);
         height: map-get($image-photo-sizes, default);
+    }
+
+    &--medium {
+        width: map-get($image-photo-sizes, medium);
+        height: map-get($image-photo-sizes, medium);
     }
 
     &--large {

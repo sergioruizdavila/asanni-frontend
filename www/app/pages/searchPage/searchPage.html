@@ -9,9 +9,9 @@
     <div id="search-result-left-column"
          class="search-result__info col-xs-12 col-sm-7 col-md-7">
 
-        <div class="row margin-reset">
+        <div class="row margin-reset" ng-repeat="rows in vm.data">
 
-            <div class="col-sm-12 col-md-6">
+            <div class="col-sm-12 col-md-6" ng-repeat="item in rows">
 
                 <!-------------------- START: INFO BLOCK ---------------------->
                 <div id="search-result-info-block"
@@ -32,8 +32,8 @@
                                               ma-link--simple
                                               ma-link--simple--default
                                               margin-reset"
-                                              ui-sref="page.userProfilePage({id: '1'})" href="#" aria-label="Go to the profile of Sergio Ruiz">
-                                        Sergio Enrique Ruiz Davila
+                                              ui-sref="page.userProfilePage({id: item.id})" href="#" aria-label="Go to the profile of Sergio Ruiz">
+                                        {{item.first_name}}
                                     </a>
                                 </h3>
                             </div>
@@ -48,7 +48,8 @@
                                             ma-label--simple--primary
                                             margin-reset
                                             text-truncate">
-                                    Santa Marta, Colombia</div>
+                                    {{item.born.city}}, {{item.born.country}}
+                                </div>
                             </div>
 
                             <!-- Reviews -->
@@ -94,7 +95,7 @@
                                             round
                                             ma-user-photo-review-block__photo">
                                     <img width="100" height="100"
-                                         src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg"
+                                         src="{{item.avatar}}"
                                          alt="Sergio Ruiz">
                                 </div>
 
@@ -120,17 +121,17 @@
                             <div class="search-result__info__block__fluent__options">
                                 <div class="ma-label
                                             ma-label--simple
-                                            ma-label--simple--large
+                                            ma-label--simple--medium
                                             ma-label--simple--primary
                                             margin-reset">Spanish</div> ·
                                 <div class="ma-label
                                             ma-label--simple
-                                            ma-label--simple--large
+                                            ma-label--simple--medium
                                             ma-label--simple--primary
                                             margin-reset">English</div> ·
                                 <div class="ma-label
                                             ma-label--simple
-                                            ma-label--simple--large
+                                            ma-label--simple--medium
                                             ma-label--simple--primary
                                             margin-reset">Italian</div>
                             </div>
@@ -153,7 +154,7 @@
                             <div class="search-result__info__block__learning__options">
                                 <div class="ma-label
                                             ma-label--simple
-                                            ma-label--simple--large
+                                            ma-label--simple--medium
                                             ma-label--simple--primary
                                             margin-reset">Arabic</div>
                             </div>
@@ -174,8 +175,7 @@
                                 About me
                             </h4>
                             <p class="ma-p margin-reset">
-                                Estoy interesado en mejorar mi inglés ya que necesito adquirir un nuevo empleo Estoy interesado en mejorar mi inglés ya que necesito adquirir un nuevo empleo Estoy interesado en mejorar mi inglés ya que necesito adquirir un nuevo empleo Estoy interesado
-                                en mejorar mi inglés ya que necesito adquirir un nuevo empleo Estoy interesado en mejorar mi inglés ya que necesito adquirir un nuevo empleo
+                                {{item.about}}
                             </p>
                         </div>
 
@@ -194,21 +194,12 @@
                                 Interests
                             </h4>
                             <div class="search-result__info__block__interests__options">
-                                <div class="ma-label
+                                <div ng-repeat="interest in item.interests"
+                                     class="ma-label
                                             ma-label--box
                                             ma-label--box--secondary
                                             ma-label--box--space2
-                                            ma-label--box--small">cine</div>
-                                <div class="ma-label
-                                            ma-label--box
-                                            ma-label--box--secondary
-                                            ma-label--box--space2
-                                            ma-label--box--small">lenguajes</div>
-                                <div class="ma-label
-                                            ma-label--box
-                                            ma-label--box--secondary
-                                            ma-label--box--space2
-                                            ma-label--box--small">+3</div>
+                                            ma-label--box--small">{{interest}}</div>
                             </div>
                         </div>
 
@@ -232,7 +223,7 @@
                 col-md-5 col-sm-5
                 visible-lg visible-md visible-sm">
         <div class="search-map">
-            <ma-map></ma-map>
+            <ma-map ng-if="vm.mapConfig" map-config="vm.mapConfig"></ma-map>
         </div>
     </div>
     <!--                    END: MAP SIDE (RIGHT COLUMN)                     -->

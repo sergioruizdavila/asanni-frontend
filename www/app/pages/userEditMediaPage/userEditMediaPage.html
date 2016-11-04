@@ -1,3 +1,39 @@
+
+<!--                          START: NAVBAR MENU                             -->
+<!----------------------------------------------------------------------------->
+
+<div class="ma-subnav">
+
+    <div class="container">
+        <ul class="ma-subnav__list text-center">
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab"
+                   ui-sref="page.userInboxPage"
+                   href="/users/edit">Bandeja de Entrada</a>
+            </li>
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab"
+                   href="/users/edit">Invitar amigos</a>
+            </li>
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab
+                          ma-subnav__list__option__tab--active"
+                   ui-sref="page.userEditProfilePage"
+                   href="#">Perfil</a>
+            </li>
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab"
+                   ui-sref="page.userEditAgendaPage"
+                   href="#">Agenda</a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+<!--                             END: NAVBAR MENU                            -->
+
+
+
 <!--------------------------------------------->
 <!--           USER EDIT PROFILE PAGE        -->
 <!--------------------------------------------->
@@ -27,12 +63,8 @@
                                 <div class="menu-box__item menu-box__item--active">
                                     Edit Photo
                                 </div>
-                                <div class="menu-box__item"
-                                     ng-click="vm.goToEditAgenda()">
-                                    Edit Agenda
-                                </div>
                                 <div class="menu-box__item menu-box__item--with-button">
-                                    <a class="ma-btn ma-btn--primary ma-btn--block"
+                                    <a class="ma-btn ma-btn--default  ma-btn--primary ma-btn--block"
                                        ui-sref="page.userProfilePage({id: '1'})"
                                        href="#/page/users/show/1">Ver Perfil</a>
                                 </div>
@@ -73,14 +105,14 @@
                                                 ma-photo-profile
                                                 ma-photo-profile--large">
                                         <img width="240" height="240"
-                                             src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg"
+                                             src="https://a2.muscache.com/im/pictures/27b8a775-011e-4659-a82d-95320b05c1c8.jpg?aki_policy=profile_x_medium"
                                              alt="Sergio Ruiz">
                                     </div>
                                     <div class="ma-photo-profile
                                                 ma-photo-profile--large
                                                 round">
                                         <img width="240" height="240"
-                                             src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg"
+                                             src="https://a2.muscache.com/im/pictures/27b8a775-011e-4659-a82d-95320b05c1c8.jpg?aki_policy=profile_x_medium"
                                              alt="Sergio Ruiz">
                                     </div>
                                 </div>
@@ -94,7 +126,7 @@
                                         <div class="col-md-12 text-center">
                                             <a href="#" ui-sref="signUp"
                                                class="ma-btn ma-btn--secondary
-                                                      ma-btn--large">
+                                                      ma-btn--medium">
                                                Upload a file from your computer
                                            </a>
                                         </div>

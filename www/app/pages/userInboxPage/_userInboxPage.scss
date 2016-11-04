@@ -1,0 +1,18 @@
+/*************************/
+/*       VARIABLES       */
+/*************************/
+$userInbox-padding: 20px;
+$userInbox-block-margin: 20px;
+
+/**********************************************************/
+/*                     USER INBOX PAGE                    */
+/**********************************************************/
+
+.userInboxPage {
+    padding-top: $userInbox-padding;
+
+    &__block {
+        margin-bottom: $userInbox-block-margin;
+    }
+
+}

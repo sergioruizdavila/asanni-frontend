@@ -1,0 +1,78 @@
+/**********************************************************/
+/*                          HERO                          */
+/**********************************************************/
+
+.ma-hero {
+    background: linear-gradient(rgba(18,18,18,0.6), rgba(18,18,18,0.5)), url("../../../../assets/images/hero-image.jpg");
+    min-height: 400px;
+    height: 100vh;
+    background-size: cover;
+    color: #fff;
+    overflow: hidden;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 65px;
+    position: relative;
+
+    &__wrapper {
+        width: 800px;
+        height: 500px;
+        margin: 0 auto;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -400px;
+        margin-top: -250px;
+
+        &__title {
+            margin-top: 80px;
+            font-size: 74px;
+            font-weight: 300;
+            //max-width: 715px;
+        }
+
+        &__description {
+            font-size: 22px;
+            line-height: 30px;
+            color: #fff;
+            margin: auto;
+            max-width: 660px;
+            font-weight: 300;
+        }
+
+        &__btn-container {
+            margin-bottom: 40px;
+            margin-top: 50px;
+        }
+    }
+}
+
+/*****************************************/
+/*             MEDIA QUERIES             */
+/*****************************************/
+
+@media (max-width: 667px) {
+    .ma-hero {
+        height: 80vh;
+        background-position: -200px 0px;
+
+        &__wrapper {
+            height: auto;
+            left: 0;
+            position: relative;
+            top: 20px;
+            width: auto;
+            margin: auto;
+
+            &__title {
+                font-size: 50px !important;
+                margin-top: 55px !important;
+            }
+
+            &__description {
+                font-size: 18px;
+                line-height: 24px;
+            }
+        }
+    }
+}

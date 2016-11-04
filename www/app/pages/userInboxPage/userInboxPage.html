@@ -1,0 +1,259 @@
+
+<!--                          START: NAVBAR MENU                             -->
+<!----------------------------------------------------------------------------->
+
+<div class="ma-subnav">
+
+    <div class="container">
+        <ul class="ma-subnav__list text-center">
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab
+                          ma-subnav__list__option__tab--active"
+                   ui-sref="page.userInboxPage"
+                   href="#">Bandeja de Entrada</a>
+            </li>
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab"
+                   href="/users/edit">Invitar amigos</a>
+            </li>
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab"
+                   ui-sref="page.userEditProfilePage"
+                   href="#">Perfil</a>
+            </li>
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab"
+                   ui-sref="page.userEditAgendaPage"
+                   href="#">Agenda</a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+<!--                             END: NAVBAR MENU                            -->
+
+
+
+<!----------------------------------------------------------------------------->
+<!--                            USER INBOX PAGE                              -->
+<!----------------------------------------------------------------------------->
+
+<div class="userInboxPage container">
+
+    <div class="row">
+
+        <!--                       START: INBOX BLOCK                        -->
+        <!--------------------------------------------------------------------->
+        <div id="userInbox-main-block" class="col-md-12">
+
+            <div class="ma-box">
+
+                <div class="ma-box__content">
+
+                    <div class="row space-5">
+
+                        <div class="col-md-12">
+
+                            <!------------- START: FILTER MESSAGE BLOCK ----------->
+                            <div id="userInbox-filter-block" class="row">
+
+                                <div class="col-md-12">
+
+                                    <!-- Status Message Select Input -->
+                                    <div class="form-group ma-form-group pull-right">
+                                        <div class="ma-select-container
+                                                    ma-select-container--default">
+                                            <select id="statusMessageSelect"
+                                                    class="ma-input ma-select
+                                                           ma-select--default"
+                                                    name="message[status]">
+                                                <option value="">Todos los mensajes</option>
+                                                <option value="No Leidos" selected="selected">No Leidos</option>
+                                                <option value="Leidos">Leidos</option>
+                                                <option value="Archivados">Archivados</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <!--             END: FILTER MESSAGE BLOCK           -->
+
+                            
+
+                            <!--------------- START: MESSAGES BLOCK --------------->
+                            <div id="userInbox-messages-block" class="row">
+
+                                <div class="col-md-12">
+
+                                    <!-- Unread Message -->
+                                    <div class="ma-message-list
+                                                ma-message-list--unread
+                                                row vertical-align">
+
+                                        <!-- user photo message -->
+                                        <div class="col-xs-2 col-sm-2 col-md-2
+                                                    text-right">
+                                            <div class="row vertical-align">
+                                                <div class="status-container
+                                                            col-xs-5 col-sm-4
+                                                            col-md-4">
+                                                    <div class="ma-message-list__status
+                                                                ma-message-list__status--unread
+                                                                round"></div>
+                                                </div>
+                                                <div class="col-xs-7 col-sm-8 col-md-8">
+                                                    <div class="ma-message__photo">
+                                                        <div class="ma-photo-profile
+                                                                    ma-photo-profile--small
+                                                                    round
+                                                                    ma-user-photo-review-block__photo">
+                                                            <img width="70" height="70" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="Sergio Ruiz">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- message info: user name, last date, message text, point info -->
+                                        <div class="col-xs-8 col-sm-8 col-md-8 text-truncate">
+                                            <div class="row text-truncate">
+                                                <div class="ma-message__info
+                                                            col-md-12" ng-click="vm.goToDetail()">
+                                                    <p class="ma-message__info__nameAndDate
+                                                              ma-p ma-p--small
+                                                              margin-reset">
+                                                        <strong class="ma-strong
+                                                                       ma-strong--medium
+                                                                       ma-strong--dark">Sergio</strong> a 4 days ago
+                                                    </p>
+                                                    <p class="ma-message__info__message
+                                                              ma-message-list__info__message--unread
+                                                              ma-p ma-p--default
+                                                              margin-reset
+                                                              text-truncate">
+                                                        Las cosas son como deberian ser la verdad, no entiendo por que deberiamos estar pensando en esto, si la verdad somos personas grandes
+                                                    </p>
+                                                    <p class="ma-message__info__meetingInfo
+                                                              ma-p
+                                                              ma-p--small
+                                                              margin-reset">
+                                                        <strong class="ma-strong
+                                                                       ma-strong--dark">Encuentro:</strong> Café Vervlet, Envigado, Antioquia. <strong class="ma-strong ma-strong--dark">10 Apr 2016</strong>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- button block: Archive -->
+                                        <div class="col-xs-2 col-sm-2 col-md-2 text-center">
+                                            <div class="ma-message__btn-block">
+                                                <a class="ma-link
+                                                          ma-link--simple
+                                                          ma-link--simple--small
+                                                          ma-link--simple--withIcon" href="#">
+                                                    <i class="material-icons md-18 md-dark">
+                                                        archive
+                                                    </i>
+                                                    Archive
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <hr>
+
+                                    <!-- Read Message -->
+                                    <div class="ma-message-list
+                                                row vertical-align">
+
+                                        <!-- user photo message -->
+                                        <div class="col-xs-2 col-sm-2 col-md-2
+                                                    text-right">
+                                            <div class="row vertical-align">
+                                                <div class="status-container col-xs-5
+                                                            col-sm-4 col-md-4">
+                                                    <div class="ma-message-list__status
+                                                                round"></div>
+                                                </div>
+                                                <div class="col-xs-7 col-sm-8 col-md-8">
+                                                    <div class="ma-message__photo">
+                                                        <div class="ma-photo-profile
+                                                                    ma-photo-profile--small
+                                                                    round
+                                                                    ma-user-photo-review-block__photo">
+                                                            <img width="70" height="70" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="Sergio Ruiz">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- message info: user name, last date, message text, point info -->
+                                        <div class="col-xs-8 col-sm-8 col-md-8 text-truncate">
+                                            <div class="row text-truncate">
+                                                <div class="ma-message__info
+                                                            col-md-12" ng-click="vm.goToDetail()">
+                                                    <p class="ma-message__info__nameAndDate
+                                                              ma-p ma-p--small
+                                                              margin-reset">
+                                                        <strong class="ma-strong
+                                                                       ma-strong--medium
+                                                                       ma-strong--dark">Sergio</strong> a 4 days ago
+                                                    </p>
+                                                    <p class="ma-message__info__message
+                                                              ma-p ma-p--default
+                                                              margin-reset
+                                                              text-truncate">
+                                                        Las cosas son como deberian ser la verdad, no entiendo por que deberiamos estar pensando en esto, si la verdad somos personas grandes
+                                                    </p>
+                                                    <p class="ma-message__info__meetingInfo
+                                                              ma-p
+                                                              ma-p--small
+                                                              margin-reset">
+                                                        <strong class="ma-strong
+                                                                       ma-strong--dark">Encuentro:</strong> Café Vervlet, Envigado, Antioquia. <strong class="ma-strong ma-strong--dark">10 Apr 2016</strong>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- button block: Archive -->
+                                        <div class="col-xs-2 col-sm-2 col-md-2 text-center">
+                                            <div class="ma-message__btn-block">
+                                                <a class="ma-link
+                                                          ma-link--simple
+                                                          ma-link--simple--small
+                                                          ma-link--simple--withIcon" href="#">
+                                                    <i class="material-icons md-18 md-dark">
+                                                        archive
+                                                    </i>
+                                                    Archive
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <!--               END: MESSAGES BLOCK               -->
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+        <!--                        END: INBOX BLOCK                         -->
+
+    </div>
+
+</div>

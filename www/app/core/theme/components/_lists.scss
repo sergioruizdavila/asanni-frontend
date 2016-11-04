@@ -1,0 +1,42 @@
+/**********************************************************/
+/*                          LISTS                         */
+/**********************************************************/
+
+.ma-message-list {
+
+    &__info {
+
+        &__message {
+            &--unread {
+                font-weight: $list-message-info-font-weight-unread;
+                color: $list-message-info-font-color-unread;
+            }
+        }
+
+    }
+
+    &__status {
+        display: none;
+        &--unread {
+            display: inline-block;
+            background-color: $list-message-status-background-unread;
+            width: $list-message-status-width-unread;
+            height: $list-message-status-height-unread;
+            flex-grow: 0!important;
+        }
+    }
+
+    &.vertical-align {
+        .status-container {
+            justify-content: flex-end;
+        }
+    }
+}
+
+
+.ma-message {
+
+    &__info {
+        cursor: pointer;
+    }
+}

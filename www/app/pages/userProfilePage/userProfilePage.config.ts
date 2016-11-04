@@ -27,7 +27,7 @@
                 parent: 'page',
                 params: {
                     user: null,
-                    id: '1'
+                    id: null
                 }
             });
     }

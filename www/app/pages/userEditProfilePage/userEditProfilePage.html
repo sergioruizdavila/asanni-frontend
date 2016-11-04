@@ -1,3 +1,39 @@
+
+<!--                          START: NAVBAR MENU                             -->
+<!----------------------------------------------------------------------------->
+
+<div class="ma-subnav">
+
+    <div class="container">
+        <ul class="ma-subnav__list text-center">
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab"
+                   ui-sref="page.userInboxPage"
+                   href="/users/edit">Bandeja de Entrada</a>
+            </li>
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab"
+                   href="/users/edit">Invitar amigos</a>
+            </li>
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab
+                          ma-subnav__list__option__tab--active"
+                   ui-sref="page.userEditProfilePage"
+                   href="#">Perfil</a>
+            </li>
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab"
+                   ui-sref="page.userEditAgendaPage"
+                   href="#">Agenda</a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+<!--                             END: NAVBAR MENU                            -->
+
+
+
 <!--------------------------------------------->
 <!--           USER EDIT PROFILE PAGE        -->
 <!--------------------------------------------->
@@ -27,12 +63,9 @@
                                      ng-click="vm.goToEditMedia()">
                                     Edit Photo
                                 </div>
-                                <div class="menu-box__item"
-                                     ng-click="vm.goToEditAgenda()">
-                                    Edit Agenda
-                                </div>
                                 <div class="menu-box__item menu-box__item--with-button">
-                                    <a class="ma-btn ma-btn--primary ma-btn--block"
+                                    <a class="ma-btn ma-btn--default ma-btn--primary
+                                              ma-btn--block"
                                        ui-sref="page.userProfilePage({id: '1'})"
                                        href="#/page/users/show/1">Ver Perfil</a>
                                 </div>
@@ -102,9 +135,11 @@
                                     <label class="text-right col-xs-3 col-sm-3"
                                            for="smallSelect">I am</label>
                                     <div class="col-xs-9 col-sm-9">
-                                        <div class="ma-select ma-select--default">
+                                        <div class="ma-select-container
+                                                    ma-select-container--default">
                                             <select id="smallSelect"
-                                                    class="ma-input ma-input--default"
+                                                    class="ma-input ma-select
+                                                           ma-select--default"
                                                     name="user[sex]">
                                                 <option value="">Gender</option>
                                                 <option value="Male" selected="selected">Male</option>
@@ -121,18 +156,22 @@
                                             ma-form-group--default">
                                     <label class="text-right col-xs-3 col-sm-3">Birth Date</label>
                                     <div class="col-xs-9 col-sm-9">
-                                        <div class="ma-select ma-select--default">
+                                        <div class="ma-select-container
+                                                    ma-select-container--default">
                                             <select id="month"
-                                                    class="ma-input ma-input--default"
+                                                    class="ma-input ma-select
+                                                           ma-select--default"
                                                     name="user[month]">
                                                 <option value="January" selected="selected">January</option>
                                                 <option value="February">February</option>
                                                 <option value="March">March</option>
                                             </select>
                                         </div>
-                                        <div class="ma-select ma-select--default">
+                                        <div class="ma-select-container
+                                                    ma-select-container--default">
                                             <select id="day"
-                                                    class="ma-input ma-input--default"
+                                                    class="ma-input ma-select
+                                                           ma-select--default"
                                                     name="user[day]">
                                                 <option value="1" selected="selected">1</option>
                                                 <option value="2">2</option>
@@ -140,9 +179,11 @@
                                                 <option value="31">31</option>
                                             </select>
                                         </div>
-                                        <div class="ma-select ma-select--default">
+                                        <div class="ma-select-container
+                                                    ma-select-container--default">
                                             <select id="year"
-                                                    class="ma-input ma-input--default"
+                                                    class="ma-input ma-select
+                                                           ma-select--default"
                                                     name="user[year]">
                                                 <option value="1987" selected="selected">1987</option>
                                                 <option value="1988">1988</option>
@@ -272,7 +313,10 @@
                                                        </p>
                                                    </div>
                                                    <div class="col-sm-4 padding-reset">
-                                                       <a class="ma-link ma-link--box space-top-1 pull-right"
+                                                       <a class="ma-link ma-link--box
+                                                                 ma-link--box--small
+                                                                 ma-link--box--primary
+                                                                 space-top-1 pull-right"
                                                           href="#">
                                                           + Add More
                                                       </a>
@@ -290,7 +334,7 @@
                                             ma-form-group--small">
                                     <label class="text-right col-xs-3 col-sm-3" for="learningBox">Learning</label>
                                            <div class="col-xs-9 col-sm-9">
-                                               <div class="text-left ma-labels-box" style="border: 2px dashed #CCC;min-height: 100px;padding: 5px;">
+                                               <div class="text-left ma-labels-box ma-labels-box--dashed">
                                                    <div class="ma-label ma-label--box
                                                                ma-label--box--secondary
                                                                ma-label--box--default
@@ -337,7 +381,10 @@
                                                        </p>
                                                    </div>
                                                    <div class="col-sm-4 padding-reset">
-                                                       <a class="ma-link ma-link--box space-top-1 pull-right"
+                                                       <a class="ma-link ma-link--box
+                                                                 ma-link--box--small
+                                                                 ma-link--box--primary
+                                                                 space-top-1 pull-right"
                                                           href="#">
                                                           + Add More
                                                       </a>
@@ -382,8 +429,7 @@
                                     <div class="col-xs-9 col-sm-9">
                                         <textarea id="aboutMeTextarea"
                                                   name="user_profile_info[about]"
-                                                  class="ma-input ma-input--default"
-                                                  style="resize: vertical;"
+                                                  class="ma-input ma-input--default ma-textarea"
                                                   placeholder="e.g. I enjoy traveling around the world, and I feel good cooking on my free time"
                                                   rows="5" cols="40"></textarea>
                                         <p class="ma-p ma-p--small space-top-1">
@@ -469,7 +515,10 @@
                                                 </p>
                                             </div>
                                             <div class="col-sm-4 padding-reset">
-                                                <a class="ma-link ma-link--box space-top-1 pull-right"
+                                                <a class="ma-link ma-link--box
+                                                          ma-link--box--small
+                                                          ma-link--box--primary
+                                                          space-top-1 pull-right"
                                                    href="#">
                                                    + Add More
                                                 </a>

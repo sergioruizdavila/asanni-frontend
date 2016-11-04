@@ -5,22 +5,29 @@
 //  Table of Contents:
 //
 //   1. Global
-//   2. Box
-//   3. Buttons
-//   4. Form
-//   5. Header
-//   6. Header - Blocks (Tabs)
-//   7. Header - Search Bar
-//   8. Images
-//   9. Input Text
-//   10. Labels
-//   11. Left Nav (small devices)
-//   12. Links
-//   13. Logo
-//   14. Paragraph
-//   15. Select List
-//   16. Stars
-//   17. Switchs
+//   2. Agenda
+//   3. Box
+//   4. Buttons
+//   5. DateTime Picker
+//   5. Dropdown
+//   5. Form
+//   6. Header
+//   7. Header - Blocks (Tabs)
+//   8. Header - Search Bar
+//   9. Header - SubNav
+//   10. Icons
+//   11. Images
+//   12. Input Text
+//   13. Labels
+//   14. Left Nav (small devices)
+//   15. Links
+//   16. List
+//   17. Logo
+//   18. Paragraph
+//   19. Select List
+//   20. Stars
+//   21. Strong
+//   22. Switchs
 
 //**********************************************************
 
@@ -32,16 +39,21 @@ $main-palette: (
   secondary: #018a6f,
   success: #3adb76,
   warning: #e8ce47,
-  alert: #ec5840,
+  alert: #ff5a5f,
 );
 
 $light-gray: #dce0e0;
 $medium-gray: #bcc1c1;
 $dark-gray: #8a8a8a;
-$black: #373737;
+$black: #555;
 $white: #fefefe;
 
-$global-font-size: 100%;
+$global-font-sizes:(
+    small: 12px,
+    default: 14px,
+    medium: 16px,
+    large: 20px,
+);
 $global-width: rem-calc(1200);
 $global-lineheight: 1.5;
 $global-margin: 1rem;
@@ -56,6 +68,7 @@ $global-font-path: "../../../../assets/fonts";
 $global-font-family: "MainAppFont";
 $global-image-path: "../../../../assets/images";
 $global-logo-file: "waysily-logo.png";
+$global-logo-secondary-file: "waysily-logo-secondary.png";
 $global-photo-default-file: "waysily-photo-default.png";
 
 $body-background: #fafafa;
@@ -68,6 +81,34 @@ $body-antialiased: true;
 
 $print-transparent-backgrounds: true;
 
+
+// 2. Agenda
+// ----------
+$agenda-toolbar-center-font-color: #999;
+
+$agenda-view-header-border: 0 hidden transparent;
+$agenda-view-header-border-color: #eee;
+
+$agenda-view-header-day-border: 0 hidden transparent;
+
+$agenda-view-header-day-span-font-color: #ddd;
+$agenda-view-header-day-span-font-size: 12px;
+$agenda-view-header-day-span-font-size-large: 15px;
+$agenda-view-header-day-span-border: 0;
+$agenda-view-header-day-span-font-weight: normal;
+
+$agenda-view-body-border: #eee;
+$agenda-view-body-today-background: rgba(0, 181, 146, 0.47);
+
+$agenda-view-content-dayTop-number-font-color: $dark-gray;
+
+$agenda-view-content-today-number-font-color: $white;
+
+$agenda-view-content-event-padding: 4px;
+$agenda-view-content-event-background: map-get($main-palette, primary);
+$agenda-view-content-event-border: 0 hidden transparent;
+
+$agenda-view-body-timeContainer-event-font-size: 15px;
 
 // 2. Box
 // ----------
@@ -131,13 +172,15 @@ $boxMenu-item-font-color-green-hover: $white;
 $boxMenu-item-withIcon-padding: 15px 25px;
 $boxMenu-item-withIcon-margin: 0;
 
+
 // 2. Buttons
 // ----------
 $button-margin: 0 0 $global-margin 0;
 $button-font-sizes: (
-  small: 12px,
-  default: 14px,
-  large: 16px,
+  small: map-get($global-font-sizes, small),
+  default: map-get($global-font-sizes, default),
+  medium: map-get($global-font-sizes, medium),
+  large: map-get($global-font-sizes, large),
 );
 $button-font-color: $white;
 $button-radius: 4px;
@@ -145,9 +188,10 @@ $button-lineheight: 1.43;
 $button-paddings: (
   small: 4px 12px,
   default: 7px 21px,
-  large: 9px 27px,
+  medium: 9px 27px,
+  large: 12px 27px,
 );
-$button-opacity-disabled: 0.45;
+$button-opacity-disabled: 0.25;
 
 $button-primary-border-color: map-get($main-palette, secondary);
 $button-primary-background: map-get($main-palette, primary);
@@ -159,8 +203,63 @@ $button-secondary-background-hover: scale-color($button-secondary-background, $l
 $button-secondary-color: map-get($main-palette, primary);
 $button-secondary-border-color: map-get($main-palette, secondary);
 
+$button-tertiary-border: 2px solid $white;
+$button-tertiary-color: $white;
+$button-secondary-color-hover: map-get($main-palette, primary);
+$button-tertiary-border-color: $light-gray;
+
 $button-block-width: 100%;
 
+
+// 2. DateTime Picker
+// ------------------
+$datetimepicker-head-button-font-color: map-get($main-palette, primary);
+$datetimepicker-head-button-font-size: 20px;
+
+$datetimepicker-head-button-font-color-hover: map-get($main-palette, secondary);
+$datetimepicker-head-button-background-hover: transparent;
+
+$datetimepicker-span-radius: 0;
+
+$datetimepicker-titleDays-font-color: map-get($main-palette, primary);
+
+$datetimepicker-switch-font-color: map-get($main-palette, primary);
+
+$datetimepicker-currentDay-background: rgba(0,181,146,0.47);
+$datetimepicker-currentDay-font-color: $white;
+
+$datetimepicker-activeDay-background: map-get($main-palette, primary);
+$datetimepicker-activeDay-font-color: $white;
+$datetimepicker-activeDay-border: 0 hidden transparent;
+
+
+// 3. Dropdown
+// -----------
+$dropdown-radius: 1px;
+$dropdown-boxShadow: 0 1px 1px rgba(0,0,0,.25),0 0 0 rgba(0,0,0,.35);
+$dropdown-border: 0 hidden transparent;
+$dropdown-minWidth: 200px;
+$dropdown-padding: 0;
+
+$dropdown-divider-margin: 0;
+
+$dropdown-option-width: 100%;
+$dropdown-option-lineHeight: 1.4;
+$dropdown-option-font-size: 16px;
+$dropdown-option-font-weight: 300;
+
+$dropdown-option-button-padding: 12px 25px;
+$dropdown-option-button-width: 100%;
+$dropdown-option-button-lineHeight: 1.4;
+$dropdown-option-button-font-size: 16px;
+$dropdown-option-button-font-color: $dark-gray;
+$dropdown-option-button-font-weight: 100;
+
+$dropdown-option-button-font-color-hover: $black;
+$dropdown-option-button-font-weight-hover: 400;
+$dropdown-option-button-margin-left-hover: 5px;
+
+$dropdown-lastOption-button-font-size: 14px;
 
 // 3. Form
 // ---------
@@ -185,6 +284,12 @@ $header-left: 0;
 $header-width: 100%;
 $header-index: 2;
 
+$header-transparent-background: transparent;
+$header-transparent-border: 0 hidden transparent;
+
+$header-transparent-block-border: 0 hidden transparent!important;
+$header-transparent-block-right-padding: 20px;
+
 
 // 4. Header - Blocks (Tabs)
 // ---------
@@ -198,12 +303,14 @@ $header-block-background-hover: #f5f5f5;
 
 $header-block-btn-padding: 0 19px;
 
-$header-block-btn-logo-top: 13px;
+$header-block-btn-logo-top: 10px;
 
 $header-block-btn-icon-top: 7px;
 $header-block-btn-icon-size: 24px;
 $header-block-btn-icon-background: transparent;
 $header-block-btn-icon-font-color: $medium-gray;
+
+$header-block-btn-count-top: -10px!important;
 
 $header-block-btn-photo-top: 10px;
 
@@ -227,15 +334,81 @@ $header-search-input-outline: 0;
 $header-search-input-font-size: 17px;
 
 
+// 5. Header - SubNav
+// ----------
+$header-subnav-border: 1px solid #ddd;
+$header-subnav-background: #eee;
+
+$header-subnav-list-margin: 0;
+$header-subnav-list-padding: 0;
+
+$header-subnav-list-option-padding: 10px 5px;
+
+$header-subnav-list-option-tab-font-color: $black;
+$header-subnav-list-option-tab-font-padding: 10px;
+
+$header-subnav-list-option-tab-border-hover: 3px solid map-get($main-palette, primary);
+
+$header-subnav-list-option-tab-border-active: 3px solid $dark-gray;
+
+
+// 5. Icons
+// ----------
+$icon-container-count-top: -5px;
+$icon-container-count-left: 14px;
+$icon-container-count-radius: 12px;
+
+$icon-container-count-background-primary: map-get($main-palette, primary);
+$icon-container-count-background-secondary: $white;
+$icon-container-count-background-alert: $white;
+
+$icon-container-count-font-color-primary: $white;
+$icon-container-count-font-color-secondary: map-get($main-palette, primary);
+$icon-container-count-font-color-alert: map-get($main-palette, alert);
+
+$icon-container-count-border-primary: 2px solid map-get($main-palette, primary);
+$icon-container-count-border-secondary: 2px solid map-get($main-palette, primary);
+$icon-container-count-border-alert: 2px solid map-get($main-palette, alert);
+
+$icon-container-count-paddings: (
+    tiny: 0px 4px,
+    small: 3px 6px,
+    default: 4px 7px,
+);
+
+$icon-container-count-lineHeight: (
+    tiny: 13px,
+    small: 11px,
+    default: 12px,
+);
+
+$icon-container-count-font-sizes: (
+    tiny: 10px,
+    small: 10px,
+    default: 12px,
+);
+
 // 5. Images
 // ----------
 $image-photo-default-path: $global-image-path + '/' + $global-photo-default-file;
 $image-photo-sizes: (
-    small: 32px,
+    tiny: 32px,
+    small: 70px,
     default: 100px,
+    medium: 170px,
     large: 240px,
 );
 $image-photo-background: $dark-gray;
+
+$image-dashed-alternate: $global-image-path + '/dash-alternate.svg';
+
+$image-studentLanding-step-map: $global-image-path + '/step-map.png';
+$image-studentLanding-step-profile: $global-image-path + '/step-profile.png';
+$image-studentLanding-step-points: $global-image-path + '/step-points.png';
+$image-studentLanding-step-request: $global-image-path + '/step-request.png';
+$image-studentLanding-step-meeting: $global-image-path + '/step-meeting.png';
+
+
 
 
 // 7. Input Text and Select List
@@ -259,9 +432,15 @@ $input-outline-focus: 0;
 // ---------
 $label-radius: 4px;
 $label-font-sizes: (
-  small: 12px,
-  default: 14px,
-  large: 16px,
+  small: map-get($global-font-sizes, small),
+  default: map-get($global-font-sizes, default),
+  large: map-get($global-font-sizes, large),
+);
+$label-font-sizes-simple: (
+  small: map-get($global-font-sizes, small),
+  default: map-get($global-font-sizes, default),
+  medium: map-get($global-font-sizes, medium),
+  large: map-get($global-font-sizes, large),
 );
 $label-lineheight: 1.43;
 $label-box-paddings: (
@@ -285,6 +464,8 @@ $label-box-withIcon-icon-font-size: (
     default: 18px,
     large: 19px,
 );
+
+$label-box-width-block: 99%;
 
 $label-simple-color-gray: $dark-gray;
 $label-simple-color-primary: map-get($main-palette, primary);
@@ -349,7 +530,7 @@ $mask-opacity-transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
 // 6. Links
 // ---------
-$link-font-color: map-get($main-palette, primary);
+$link-font-color: $black;
 $link-border: 1px solid transparent;
 
 $link-box-radius-hover: 3px;
@@ -364,11 +545,21 @@ $link-simple-font-sizes: (
   large: 30px,
 );
 
+// 13. Lists
+// ----------
+$list-message-info-font-weight-unread: bold!important;
+$list-message-info-font-color-unread: $black!important;
+
+$list-message-status-background-unread: map-get($main-palette, alert);
+$list-message-status-width-unread: 15px;
+$list-message-status-height-unread: 15px;
+
 
 // 7. Logo
 // ----------
 $logo-path: $global-image-path + '/' + $global-logo-file;
-$logo-width: 75px;
+$logo-path-secondary: $global-image-path + '/' + $global-logo-secondary-file;
+$logo-width: 145px;
 $logo-height: 32px;
 
 
@@ -386,16 +577,29 @@ $paragraph-bold-font-color: $black;
 
 // 11. Select List
 // ---------
+$select-container-font-size-small: 13px;
+
 $select-padding: 2em;
+$select-padding-small: 1.6em;
 $select-background: white\0 !important;
 
+$select-tertiary-background: 0 0;
+$select-tertiary-border: 2px solid #FFF;
+$select-tertiary-font-color: #FFF;
+
+$select-borderRound-radius: 7px;
+
+$select-tertiary-icon-color: $white;
+
+$select-icon-font-size-small: 10px;
 $select-icon-color: $medium-gray;
 $select-icon-width: 2em;
 $select-icon-padding: 0.7em;
 $select-icon-lineHeight: 1;
 $select-icon-transform: scale(0.84, 0.42);
+
 $select-icon-top: (
-    small: 0,
+    small: 2px,
     default: 1px,
     large: 5px,
 );
@@ -408,6 +612,12 @@ $select-icon-right: (
     small: 0,
     default: 1px,
     large: 3px,
+);
+
+$select-icon-top: (
+    small: 2px,
+    default: 1px,
+    large: 5px,
 );
 
 // 11. Stars
@@ -425,6 +635,15 @@ $star-font-sizes: (
   small: 24px,
   default: 30px,
   large: 36px,
+);
+
+// 12. Strong
+// ----------
+$strong-font-sizes: (
+  small: map-get($global-font-sizes, small),
+  default: map-get($global-font-sizes, default),
+  medium: map-get($global-font-sizes, medium),
+  large: map-get($global-font-sizes, large),
 );
 
 // 13. Switch

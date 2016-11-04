@@ -31,12 +31,13 @@
         position: relative;
 
         &__btn {
-            display: block;
+            display: inline-block;
             padding: $header-block-btn-padding;
             cursor: pointer;
 
             &:hover {
                 background-color: $header-block-background-hover;
+                color: $black;
                 text-decoration: none;
             }
 
@@ -64,6 +65,10 @@
                     }
                 }
 
+            }
+
+            &__count {
+                top: $header-block-btn-count-top;
             }
 
         }
@@ -113,6 +118,20 @@
             }
         }
 
+    }
+
+    &--transparent {
+        background: $header-transparent-background;
+        border: $header-transparent-border;
+        position: absolute;
+
+        &__block {
+            border: $header-transparent-block-border;
+
+            &--right {
+                padding-right: $header-transparent-block-right-padding;
+            }
+        }
     }
 
 }
@@ -231,6 +250,51 @@
                 &--first {
                     border-bottom: $left-nav-menu-group-first-border;
                     padding-bottom: $left-nav-menu-group-first-padding;
+                }
+            }
+        }
+    }
+}
+
+
+/**********************************************************/
+/*                        SUBNAV                          */
+/**********************************************************/
+
+.ma-subnav {
+    position: relative;
+    background-color: $header-subnav-background;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-bottom: $header-subnav-border;
+
+    &__list {
+        margin-bottom: $header-subnav-list-margin;
+        padding-left: $header-subnav-list-padding;
+        list-style: none;
+
+        &__option {
+            display: inline-block;
+            padding: $header-subnav-list-option-padding;
+
+            &__tab {
+                color: $header-subnav-list-option-tab-font-color;
+                position: relative;
+                padding: $header-subnav-list-option-tab-font-padding;
+
+                &:hover {
+                    text-decoration: none;
+                    border-bottom: $header-subnav-list-option-tab-border-hover;
+                    color: $header-subnav-list-option-tab-font-color;
+                }
+
+                &--active {
+                    border-bottom: $header-subnav-list-option-tab-border-active;
+                    &:hover {
+                        border-bottom: $header-subnav-list-option-tab-border-active;
+                    }
                 }
             }
         }

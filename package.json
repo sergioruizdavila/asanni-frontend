@@ -22,5 +22,8 @@
     "gulp-sourcemaps": "^1.6.0",
     "gulp-tslint": "^6.0.2",
     "gulp-typescript": "^2.13.6"
+  },
+  "dependencies": {
+    "angular-bootstrap-datetimepicker": "^1.1.2"
   }
 }
