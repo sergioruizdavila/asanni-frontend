@@ -1,0 +1,31 @@
+/**********************************************************/
+/*                        FOOTER                          */
+/**********************************************************/
+
+.ma-footer {
+   padding: 20px;
+   padding-bottom: 13px;
+   background-color: #F4F4F4;
+   color: #FFF;
+   border-top: 1px solid #dce0e0;
+
+   &__options-list {
+       display: inline-block;
+       padding: 5px;
+       margin: 0;
+
+       &__option {
+           display: inline-block;
+           .ma-link {
+                color: #555;
+                &:hover {
+                    text-decoration: underline;
+                }
+           }
+       }
+   }
+
+   &__copyright {
+       padding: 5px;
+   }
+}

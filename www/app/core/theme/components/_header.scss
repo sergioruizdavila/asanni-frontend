@@ -120,6 +120,20 @@
 
     }
 
+    &--transparent {
+        background: $header-transparent-background;
+        border: $header-transparent-border;
+        position: absolute;
+
+        &__block {
+            border: $header-transparent-block-border;
+
+            &--right {
+                padding-right: $header-transparent-block-right-padding;
+            }
+        }
+    }
+
 }
 
 

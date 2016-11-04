@@ -203,6 +203,7 @@ body.mainApp {
     font-weight: $global-weight-normal;
     line-height: $global-lineheight;
     color: $body-font-color;
+    overflow-x: hidden;
 
     label {
         display: block;
@@ -214,6 +215,10 @@ body.mainApp {
         height: $logo-height;
         width: $logo-width;
         display: block;
+
+        &--secondary {
+            background-image: url($logo-path-secondary);
+        }
     }
 
     .header-separator {

@@ -31,10 +31,14 @@
 @import 'components/dropdown';
 // fonts Style
 @import 'components/fonts';
+// footer Style
+@import 'components/footer';
 // forms Style
 @import 'components/forms';
 // header Style
 @import 'components/header';
+// hero Style
+@import 'components/hero';
 // icons Style
 @import 'components/icons';
 // input text Style
@@ -69,6 +73,8 @@
 // MainApp Pages and Other components (modals, etc)
 // --------------------------------------------------
 
+// student Landing Page Style
+@import '../../pages/studentLandingPage/studentLandingPage';
 // meeting Confirmation Page Style
 @import '../../pages/meetingConfirmationPage/meetingConfirmationPage';
 // signUp Pages Style

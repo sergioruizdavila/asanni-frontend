@@ -17,6 +17,7 @@
             'mainApp.core.restApi',
             'mainApp.models.user',
             'mainApp.pages.main',
+            'mainApp.pages.studentLandingPage',
             'mainApp.pages.signUpPage',
             'mainApp.pages.searchPage',
             'mainApp.pages.userProfilePage',
@@ -27,6 +28,7 @@
             'mainApp.pages.userInboxPage',
             'mainApp.pages.userInboxDetailsPage',
             'mainApp.components.header',
+            'mainApp.components.footer',
             'mainApp.components.map',
             'mainApp.components.modal'
         ])
