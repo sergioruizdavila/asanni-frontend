@@ -10,7 +10,7 @@
     "accounting": "^0.3.2",
     "material-design-icons": "^2.2.3",
     "animate.css": "^3.5.2",
-    "jquery": "^2.2.4",
+    "jquery": "^3.1.0",
     "angular-resource": "^1.5.8",
     "angular-ui-router": "^0.3.1",
     "normalize-css": "^4.2.0",
@@ -30,6 +30,6 @@
   "resolutions": {
     "angular": "1.5.8",
     "fullcalendar": "^3.0.1",
-    "jquery": "^2.2.4"
+    "jquery": "^3.1.0"
   }
 }
