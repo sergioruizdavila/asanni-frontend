@@ -99,4 +99,4 @@ gulp.task('watch', function() {
 //gulp.task('default', ['sass', 'webserver', 'watch']);
 /*PROD*/
 //gulp.task('default', ['sass']);
-gulp.task('heroku:production', ['sass']);
+gulp.task('heroku:production', ['sass', 'serveprod']);
