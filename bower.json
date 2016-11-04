@@ -28,6 +28,8 @@
     "angular-translate-loader-static-files": "^2.11.0"
   },
   "resolutions": {
-    "angular": "1.5.8"
+    "angular": "1.5.8",
+    "fullcalendar": "^3.0.1",
+    "jquery": "^2.2.4"
   }
 }
