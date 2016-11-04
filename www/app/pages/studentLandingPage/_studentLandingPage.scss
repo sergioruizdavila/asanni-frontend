@@ -46,14 +46,14 @@ $studentLanding-howWorkBlock-stepContent-text-font-size: 20px;
 
 $studentLanding-howWorkBlock-imageOnLeft-stepContent-left: 50%;
 
-$studentLanding-earlyAccessBlock-padding: 20px 0;
+$studentLanding-earlyAccessBlock-padding: 40px 20px;
 $studentLanding-earlyAccessBlock-background: #E1F7EE;
 $studentLanding-earlyAccessBlock-border: 2px dashed map-get($main-palette, primary);
 $studentLanding-earlyAccessBlock-font-color: map-get($main-palette, primary);
 
 $studentLanding-earlyAccessBlock-formBlock-text-font-color: map-get($main-palette, primary);
 
-$studentLanding-earlyAccessBlock-formBlock-formGroup-padding: 0 20px;
+$studentLanding-earlyAccessBlock-formBlock-formGroup-padding: 0;
 
 
 /**********************************************************/
