@@ -38,9 +38,15 @@
                                    ma-select--default
                                    ma-select--tertiary
                                    ma-select--border-round"
+                            ng-model="vm.form.language"
+                            ng-change="vm.changeLanguage()"
                             name="language">
-                        <option value="Spanish" selected="selected">Spanish</option>
-                        <option value="English">English</option>
+                        <option value="es" selected="selected" translate>
+                            %header.languages.options.es.text
+                        </option>
+                        <option value="en" translate>
+                            %header.languages.options.en.text
+                        </option>
                     </select>
                 </div>
             </div>
@@ -63,25 +69,16 @@
     <section class="ma-hero text-center">
 		<div class="ma-hero__wrapper">
 
-			<h1 class="ma-hero__wrapper__title animated fadeIn">
-                Immerse yourself in another culture
+			<h1 class="ma-hero__wrapper__title animated fadeIn" translate>
+                %landing.student.puv
             </h1>
-            <h2 class="ma-hero__wrapper__description animated fadeIn">
-                When you learn a language with real people, you will learn more than just a language. You'll be exposed to a different culture, and a new way of seeing the world.
+            <h2 class="ma-hero__wrapper__description animated fadeIn" translate>
+                %landing.student.puv.description
             </h2>
-            <!-- Spanish text -->
-            <h1 class="ma-hero__wrapper__title animated fadeIn hidden">
-                Sumérgete en otra cultura
-            </h1>
-            <h2 class="ma-hero__wrapper__description animated fadeIn hidden">
-                Cuando aprendes un idioma con gente de verdad, aprendes más que un idioma. Estarás expuesto a una cultura diferente y verás el mundo de otra forma.
-            </h2>
-
-
 
 			<div class="ma-hero__wrapper__btn-container">
-                <button class="ma-btn ma-btn--primary ma-btn--large">
-                    GET EARLY ACCESS
+                <button class="ma-btn ma-btn--primary ma-btn--large" translate>
+                    %landing.student.get_early_button.text
                 </button>
 			</div>
 		</div>
@@ -94,7 +91,9 @@
     <section class="studentLandingPage__title-block">
         <div class="row">
             <div class="col-md-12 text-center">
-                <h2 class="margin-reset">¿Como funciona?</h2>
+                <h2 class="margin-reset" translate>
+                    %landing.student.how_work.title.text
+                </h2>
             </div>
 
         </div>
@@ -111,62 +110,74 @@
             <div class="step-item step-item--image-on-right step-item--first">
                 <div class="step-image map"></div>
                 <div class="step-content">
-                    <h2 class="hidden">Make a note of it</h2>
-                    <p class="hidden">Create a project to-do list. Jot down a reminder. Or snap a picture of a sketch. A note can be anything you want it to be. And once you make a note, it’s accessible wherever you go, forever.</p>
-                    <h2>Busca personas locales</h2>
-                    <p>Solo tienes que indicar en la barra de búsqueda tu destino o lugar donde te hospedas y podrás descubrir lugareños con los que puedes encontrarte para aprender su idioma y sumergirte en nuevas culturas.</p>
+                    <h2 translate>
+                        %landing.student.how_work.step_1.title.text
+                    </h2>
+                    <p translate>
+                        %landing.student.how_work.step_1.description.text
+                    </p>
                 </div>
             </div>
 
             <div class="step-item step-item--image-on-left">
                 <div class="step-image profile"></div>
                 <div class="step-content">
-                    <h2>Elige una persona</h2>
-                    <p>Conoce amigos locales con pasatiempos e intereses similares y practica el idioma mientras te sumerges en una cultura diferente.</p>
+                    <h2 translate>
+                        %landing.student.how_work.step_2.title.text
+                    </h2>
+                    <p translate>
+                        %landing.student.how_work.step_2.description.text
+                    </p>
                 </div>
             </div>
 
             <div class="step-item step-item--image-on-right">
                 <div class="step-image points"></div>
                 <div class="step-content">
-                    <h2>Selecciona un punto de encuentro</h2>
-                    <p>Encuentra los mejores lugares para comer, beber o divertirte mientras haces amigos  locales.</p>
+                    <h2 translate>
+                        %landing.student.how_work.step_3.title.text
+                    </h2>
+                    <p translate>
+                        %landing.student.how_work.step_3.description.text
+                    </p>
                 </div>
             </div>
 
             <div class="step-item step-item--image-on-left">
                 <div class="step-image request"></div>
                 <div class="step-content">
-                    <h2>Elige una fecha/hora y enviale una invitación</h2>
-                    <p>Revisa la agenda de la otra persona y la tuya para escoger una fecha y hora apropiada para concretar el encuentro. Cuando este todo listo, enviale la invitación.</p>
+                    <h2 translate>
+                        %landing.student.how_work.step_4.title.text
+                    </h2>
+                    <p translate>
+                        %landing.student.how_work.step_4.description.text
+                    </p>
                 </div>
             </div>
 
             <div class="step-item step-item--image-on-right">
                 <div class="step-image meeting"></div>
                 <div class="step-content">
-                    <h2>Disfruta de tu encuentro con locales</h2>
-                    <p>Una vez que acuerden  fecha, hora y punto de encuentro, ¡Solo tienes que disfrutar de tu reunión y abrir la mente a nuevas culturas, veras el mundo de otra forma.</p>
+                    <h2 translate>
+                        %landing.student.how_work.step_5.title.text
+                    </h2>
+                    <p translate>
+                        %landing.student.how_work.step_5.description.text
+                    </p>
                 </div>
             </div>
-
-            <!--<div class="step-item step-item--image-on-left">
-                <video preload="auto" loop="loop" id="like-video" class="video-playing" autoplay>
-                    <source src="../../../assets/videos/like-button.mp4" type="video/mp4">
-                </video>
-                <div class="step-content">
-                    <h2>Califica como fue tu experiencia</h2>
-                    <p>Al terminar tu encuentro, califica como fue tu experiencia con esa persona.</p>
-                </div>
-            </div>-->
 
             <div class="step-item step-item--without-content"></div>
 
             <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6 text-center">
-                    <h2>Al terminar tu encuentro, califica como fue tu experiencia</h2>
-                    <p class="ma-p ma-p--large">Practica el idioma y crea conexiones con personas locales.</p>
+                    <h2 translate>
+                        %landing.student.how_work.step_6.title.text
+                    </h2>
+                    <p class="ma-p ma-p--large" translate>
+                        %landing.student.how_work.step_6.description.text
+                    </p>
                     <video preload="auto" loop="loop" id="like-video" class="video-playing" autoplay>
                         <source src="../../../assets/videos/like-button.mp4" type="video/mp4">
                     </video>
@@ -192,10 +203,12 @@
             <div class="studentLandingPage__early-access-block__form-block
                         col-sm-6 col-md-6 col-lg-6 center-block text-center">
                 <!-- title -->
-                <h2 class="margin-reset space-top-2 space-2">Waysily está a punto de llegar</h2>
+                <h2 class="margin-reset space-top-2 space-2" translate>
+                    %landing.student.notify_block.title.text
+                </h2>
                 <!-- description text -->
-                <p class="ma-p ma-p--large">
-                    Se el primero en sumar una nueva aventura a tu viaje.
+                <p class="ma-p ma-p--large" translate>
+                    %landing.student.notify_block.description.text
                 </p>
                 <!-- form -->
                 <form action="https://www.evernote.com/Registration.action?register=&amp;_sourcePage=TRewqUBoP0TiMUD9T65RG_YvRLZ-1eYO3fqfqRu0fynRL_1nukNa4gH1t86pc1SP"
@@ -206,13 +219,16 @@
 
                             <input class="ma-input ma-input--large"
                                    type="email" name="email"
-                                   placeholder="Email">
+                                   translate
+                                   translate-attr-placeholder="%landing.student.input_email.placeholder.text">
 
                         </fieldset>
 
                         <button name="btn"
-                                class="ma-btn ma-btn--large ma-btn--secondary">
-                                NOTIFY ME
+                                class="ma-btn
+                                       ma-btn--large
+                                       ma-btn--secondary" translate>
+                                %landing.student.notify_block.send_button.text
                         </button>
                     </div>
                 </form>
