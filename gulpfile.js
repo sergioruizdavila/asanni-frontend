@@ -83,6 +83,50 @@ gulp.task('ts', function () {
     .pipe(connect.reload());
 });
 
+/*
+ * TypeScript to Javascript
+ */
+//var paths = {
+//    appTypescript: ['**/*.ts', '!node_modules/**/*.*', '!App_Web/typings/**/*.*']
+//}
+
+var tsProject1 = ts.createProject('tsconfig.json', {
+    declaration: true,
+    noExternalResolve: true,
+    sortOutput: true
+}); // loads our configuration
+
+gulp.task('tsToJs4', function() {
+    var tsResult = tsProject.src(paths.appTypescript) // load all files from our pathspecification
+        .pipe(ts(tsProject)) // transpile the files into .js
+        .pipe(gulp.dest(''));
+
+    //return tsResult.js.pipe(gulp.dest('')).on('end', done); // save the .js in the same place as the original .ts-file
+    //return tsResult.js.pipe(gulp.dest(paths.outputJs)).on('end', done); // save the .js in the same place as the original .ts-file
+});
+
+
+gulp.task('tsToJs3', function () {
+    return gulp.src(paths.appTypescript)
+        .pipe(ts(tsProject()))
+        .pipe(gulp.dest(''));
+});
+
+gulp.task('tsToJs2', function() {
+    var tsResult = tsProject.src() // instead of gulp.src(...)
+        .pipe(ts(tsProject));
+
+    return tsResult.js.pipe(gulp.dest('release'));
+});
+
+var tsProject = ts.createProject("tsconfig.json");
+
+gulp.task("tsToJs", function () {
+    return tsProject.src(paths.appTypescript)
+        .pipe(ts(tsProject))
+        .js.pipe(gulp.dest('dist/js/'));
+});
+
 /**
  * WATCH METHOD
  * @desc This task is the responsible to listen each change on some files in order to reload browser or
@@ -96,7 +140,7 @@ gulp.task('watch', function() {
 })
 
 /*DEV*/
-//gulp.task('default', ['sass', 'webserver', 'watch']);
+gulp.task('default', ['sass', 'tsToJs', 'webserver', 'watch']);
 /*PROD*/
 //gulp.task('default', ['sass']);
 gulp.task('heroku:production', ['sass', 'serveprod']);

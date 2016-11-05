@@ -103,7 +103,7 @@ module app.pages.userEditProfilePage {
         goToEditAgenda(): void {
             this.$state.go('page.userEditAgendaPage');
         }
-    
+
 
 
     }

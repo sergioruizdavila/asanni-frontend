@@ -3,7 +3,6 @@
 * @description - meeting confirmation page config file
 */
 
-
 (function() {
     'use strict';
 

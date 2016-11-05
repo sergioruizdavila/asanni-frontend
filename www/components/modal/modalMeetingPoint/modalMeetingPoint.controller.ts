@@ -24,6 +24,7 @@ module components.modal.modalMeetingPoint {
 
     }
 
+
     interface IModalMeetingPointError {
         message: string;
     }

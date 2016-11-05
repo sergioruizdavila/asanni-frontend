@@ -2,9 +2,7 @@
  * UserService
  * @description - Services related on User Model.
  * @constructor
- * @param {app.core.firebase.IFirebaseFactory} FirebaseFactory - instance Firebase services.
- * @param {AngularFireObjectService} $firebaseObject - firebase provider that let create three binding objects.
- * @param {AngularFireArrayService} $firebaseArray - firebase provider that let create three binding array objects.
+ * @param {app.core.restApi.IRestApi} restApi - instance rest Api service.
  */
 
 module app.models.user {

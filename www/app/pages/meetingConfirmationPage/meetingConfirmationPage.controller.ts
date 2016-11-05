@@ -100,7 +100,8 @@ module app.pages.meetingConfirmationPage {
 
             // init map config
             this.mapConfig = {
-                type: 'location-map'
+                type: 'location-map',
+                data: null
             };
 
             this.activate();

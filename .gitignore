@@ -4,4 +4,4 @@
 node_modules/
 # www/**/*.js
 typings
-# www/bower_components
+www/bower_components
