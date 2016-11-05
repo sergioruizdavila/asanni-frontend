@@ -5,3 +5,5 @@ node_modules/
 # www/**/*.js
 typings
 www/bower_components
+index-backup.html
+app.module-backup.ts

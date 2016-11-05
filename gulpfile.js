@@ -140,7 +140,7 @@ gulp.task('watch', function() {
 })
 
 /*DEV*/
-gulp.task('default', ['sass', 'tsToJs', 'webserver', 'watch']);
+gulp.task('default', ['sass', 'webserver', 'watch']);
 /*PROD*/
 //gulp.task('default', ['sass']);
 gulp.task('heroku:production', ['sass', 'serveprod']);
