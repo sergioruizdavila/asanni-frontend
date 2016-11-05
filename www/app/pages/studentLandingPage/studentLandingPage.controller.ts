@@ -28,6 +28,7 @@ module app.pages.studentLandingPage {
     export interface IStudentLandingForm {
         username: string;
         email: string;
+        language: string;
     }
 
     export interface IStudentLandingError {
@@ -50,13 +51,14 @@ module app.pages.studentLandingPage {
 
 
         /*-- INJECT DEPENDENCIES --*/
-        public static $inject = ['$state'];
+        public static $inject = ['$state', '$translate'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
-            private $state: ng.ui.IStateService) {
+            private $state: ng.ui.IStateService,
+            private $translate: any) {
 
             this._init();
 
@@ -68,7 +70,8 @@ module app.pages.studentLandingPage {
             //Init form
             this.form = {
                 username: '',
-                email: ''
+                email: '',
+                language: 'en'
             };
 
             this.error = {
@@ -89,7 +92,9 @@ module app.pages.studentLandingPage {
         /**********************************/
         /*            METHODS             */
         /**********************************/
-
+        changeLanguage(): void {
+             this.$translate.use(this.form.language);
+        }
 
     }
 

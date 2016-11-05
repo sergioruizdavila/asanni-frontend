@@ -5,14 +5,16 @@ var app;
         var studentLandingPage;
         (function (studentLandingPage) {
             var StudentLandingPageController = (function () {
-                function StudentLandingPageController($state) {
+                function StudentLandingPageController($state, $translate) {
                     this.$state = $state;
+                    this.$translate = $translate;
                     this._init();
                 }
                 StudentLandingPageController.prototype._init = function () {
                     this.form = {
                         username: '',
-                        email: ''
+                        email: '',
+                        language: 'en'
                     };
                     this.error = {
                         message: ''
@@ -23,10 +25,13 @@ var app;
                     var self = this;
                     console.log('studentLandingPage controller actived');
                 };
+                StudentLandingPageController.prototype.changeLanguage = function () {
+                    this.$translate.use(this.form.language);
+                };
                 return StudentLandingPageController;
             }());
             StudentLandingPageController.controllerId = 'mainApp.pages.studentLandingPage.StudentLandingPageController';
-            StudentLandingPageController.$inject = ['$state'];
+            StudentLandingPageController.$inject = ['$state', '$translate'];
             studentLandingPage.StudentLandingPageController = StudentLandingPageController;
             angular
                 .module('mainApp.pages.studentLandingPage')
