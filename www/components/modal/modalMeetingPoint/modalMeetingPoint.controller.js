@@ -16,7 +16,8 @@ var components;
                         message: ''
                     };
                     this.mapConfigModal = {
-                        type: 'modal-assign-marker-map'
+                        type: 'modal-assign-marker-map',
+                        data: null
                     };
                     this.activate();
                 };

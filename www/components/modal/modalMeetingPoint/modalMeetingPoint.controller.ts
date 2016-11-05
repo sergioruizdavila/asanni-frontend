@@ -79,7 +79,8 @@ module components.modal.modalMeetingPoint {
 
             // init map config
             this.mapConfigModal = {
-                type: 'modal-assign-marker-map'
+                type: 'modal-assign-marker-map',
+                data: null
             };
 
             this.activate();
