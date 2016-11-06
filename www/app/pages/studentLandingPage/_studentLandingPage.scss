@@ -359,6 +359,10 @@ $studentLanding-earlyAccessBlock-formBlock-formGroup-padding: 0;
              }
 
              &--image-right {
+                -webkit-box-orient: horizontal;
+                -webkit-box-direction: reverse;
+                -ms-flex-direction: row-reverse;
+                flex-direction: row-reverse;
 
                  .image-block {
                      padding-left: 0;

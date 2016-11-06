@@ -188,6 +188,18 @@
     }
 }
 
+
+/// SEPARATOR WITH DASHED ALTERNATE IMAGE
+.ma-separator-dashed-image {
+    background-image: url(../../../../assets/images/dash-alternate.svg);
+    background-repeat: repeat-x;
+    height: 4px;
+    background-position: -12px center;
+    //margin-top: 20px;
+    //margin-bottom: 20px;
+    border: 0;
+}
+
 /************ END - GENERAL COMPONENTS STYLES  ************/
 
 
