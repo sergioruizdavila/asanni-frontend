@@ -4,6 +4,63 @@
 
 <div class="ma-header ma-header--transparent">
 
+
+        <!--                  START: HEADER (SMALL SCREEN)                   -->
+        <!--------------------------------------------------------------------->
+        <header class="visible-xs clearfix">
+
+            <!--------------- START: CHANGE LANGUAGE (SMALL SCREEN) ----------->
+            <div class="ma-header__block
+                        ma-header--transparent__block
+                        ma-header--transparent__block--right
+                        text-right">
+
+                <!-- Default Select Input -->
+                <div class="form-group ma-form-group">
+                    <div class="ma-select-container
+                                ma-select-container--default
+                                ma-select-container--tertiary">
+                        <select id="languageSelect"
+                                class="ma-input ma-select
+                                       ma-select--default
+                                       ma-select--tertiary
+                                       ma-select--border-round"
+                                ng-model="vm.form.language"
+                                ng-change="vm.changeLanguage()"
+                                name="language">
+                            <option value="es" selected="selected" translate>
+                                %header.languages.options.es.text
+                            </option>
+                            <option value="en" translate>
+                                %header.languages.options.en.text
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!--              END: CHANGE LANGUAGE (SMALL SCREEN)            -->
+
+
+            <!------------------- START: LOGO (SMALL SCREEN) ------------------>
+            <div class="ma-header__block ma-header--transparent__block text-center" style="margin-top: 10px;">
+                <a ui-sref="page.searchPage" class="ma-header__block__btn
+                                                    ma-header__block__logo-wrapper
+                                                    link-reset" aria-label="Waysily">
+                    <i class="ma-logo
+                              ma-logo--secondary
+                              ma-header__block__btn__ma-logo" style="width:50px;"></i>
+                </a>
+            </div>
+            <!--                   END: LOGO (SMALL SCREEN)                  -->
+
+
+
+        </header>
+        <!--                    END: HEADER (SMALL SCREEN)                   -->
+
+
+
+
     <!--                   START: HEADER (MD AND LG SCREEN)                  -->
     <!------------------------------------------------------------------------->
     <header class="hidden-xs clearfix">
@@ -172,7 +229,7 @@
 
 
         <div class="row middle-xs center-xs start-sm start-md start-lg
-                    how-work__step how-work__step--image-left space-8 reverse">
+                    how-work__step how-work__step--image-left space-8">
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6
                         image-block text-center">
                 <img class="image-block__image"
