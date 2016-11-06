@@ -28,6 +28,9 @@ var app;
                 StudentLandingPageController.prototype.changeLanguage = function () {
                     this.$translate.use(this.form.language);
                 };
+                StudentLandingPageController.prototype.goToEarlyAccessForm = function () {
+                    document.querySelector('.studentLandingPage__early-access-block').scrollIntoView({ behavior: 'smooth' });
+                };
                 return StudentLandingPageController;
             }());
             StudentLandingPageController.controllerId = 'mainApp.pages.studentLandingPage.StudentLandingPageController';

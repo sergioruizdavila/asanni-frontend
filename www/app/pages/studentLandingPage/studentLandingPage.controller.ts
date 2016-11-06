@@ -96,6 +96,11 @@ module app.pages.studentLandingPage {
              this.$translate.use(this.form.language);
         }
 
+        goToEarlyAccessForm(): void {
+            // Scroll to a certain element
+            document.querySelector('.studentLandingPage__early-access-block').scrollIntoView({ behavior: 'smooth' });
+        }
+
     }
 
     /*-- MODULE DEFINITION --*/
