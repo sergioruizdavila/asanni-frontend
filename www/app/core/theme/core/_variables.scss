@@ -68,7 +68,10 @@ $global-font-path: "../../../../assets/fonts";
 $global-font-family: "MainAppFont";
 $global-image-path: "../../../../assets/images";
 $global-logo-file: "waysily-logo.png";
+//$global-logo-file: "waysily-logo.svg";
 $global-logo-secondary-file: "waysily-logo-secondary.png";
+//$global-logo-secondary-file: "waysily-logo.svg";
+$global-logo-secondary-short-file: "waysily-logo-secondary-short.svg";
 $global-photo-default-file: "waysily-photo-default.png";
 
 $body-background: #fafafa;
@@ -559,8 +562,11 @@ $list-message-status-height-unread: 15px;
 // ----------
 $logo-path: $global-image-path + '/' + $global-logo-file;
 $logo-path-secondary: $global-image-path + '/' + $global-logo-secondary-file;
+$logo-path-secondary-short: $global-image-path + '/' + $global-logo-secondary-short-file;
 $logo-width: 145px;
 $logo-height: 32px;
+$logo-short-width: 45px;
+$logo-short-height: 32px;
 
 
 // 9. Paragraph
