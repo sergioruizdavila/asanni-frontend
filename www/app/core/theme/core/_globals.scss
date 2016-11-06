@@ -219,6 +219,11 @@ body.mainApp {
         &--secondary {
             background-image: url($logo-path-secondary);
         }
+        &--secondary-short {
+            background-image: url($logo-path-secondary-short);
+            height: $logo-short-height;
+            width: $logo-short-width;
+        }
     }
 
     .header-separator {
