@@ -19,6 +19,7 @@ var app;
                     this.error = {
                         message: ''
                     };
+                    this.addComment = false;
                     this.activate();
                 };
                 StudentLandingPageController.prototype.activate = function () {
@@ -30,6 +31,10 @@ var app;
                 };
                 StudentLandingPageController.prototype.goToEarlyAccessForm = function () {
                     document.querySelector('.studentLandingPage__early-access-block').scrollIntoView({ behavior: 'smooth' });
+                };
+                StudentLandingPageController.prototype.showCommentsTextarea = function () {
+                    event.preventDefault();
+                    this.addComment = true;
                 };
                 return StudentLandingPageController;
             }());
