@@ -296,89 +296,6 @@
             <div class="col-md-3"></div>
         </div>
 
-        <!--<div class="row margin-reset">
-
-            <div class="step-item step-item--image-on-right step-item--first">
-                <div class="step-image map"></div>
-                <div class="step-content">
-                    <h2 translate>
-                        %landing.student.how_work.step_1.title.text
-                    </h2>
-                    <p translate>
-                        %landing.student.how_work.step_1.description.text
-                    </p>
-                </div>
-            </div>
-
-            <div class="step-item step-item--image-on-left">
-                <div class="step-image profile"></div>
-                <div class="step-content">
-                    <h2 translate>
-                        %landing.student.how_work.step_2.title.text
-                    </h2>
-                    <p translate>
-                        %landing.student.how_work.step_2.description.text
-                    </p>
-                </div>
-            </div>
-
-            <div class="step-item step-item--image-on-right">
-                <div class="step-image points"></div>
-                <div class="step-content">
-                    <h2 translate>
-                        %landing.student.how_work.step_3.title.text
-                    </h2>
-                    <p translate>
-                        %landing.student.how_work.step_3.description.text
-                    </p>
-                </div>
-            </div>
-
-            <div class="step-item step-item--image-on-left">
-                <div class="step-image request"></div>
-                <div class="step-content">
-                    <h2 translate>
-                        %landing.student.how_work.step_4.title.text
-                    </h2>
-                    <p translate>
-                        %landing.student.how_work.step_4.description.text
-                    </p>
-                </div>
-            </div>
-
-            <div class="step-item step-item--image-on-right">
-                <div class="step-image meeting"></div>
-                <div class="step-content">
-                    <h2 translate>
-                        %landing.student.how_work.step_5.title.text
-                    </h2>
-                    <p translate>
-                        %landing.student.how_work.step_5.description.text
-                    </p>
-                </div>
-            </div>
-
-            <div class="step-item step-item--without-content"></div>
-
-            <div class="row">
-                <div class="col-md-3"></div>
-                <div class="col-md-6 text-center">
-                    <h2 translate>
-                        %landing.student.how_work.step_6.title.text
-                    </h2>
-                    <p class="ma-p ma-p--large" translate>
-                        %landing.student.how_work.step_6.description.text
-                    </p>
-                    <video preload="auto" loop="loop" id="like-video" class="video-playing" autoplay>
-                        <source src="../../../assets/videos/like-button.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="col-md-3"></div>
-            </div>
-
-        </div>-->
-
-
     </section>
     <!--                    END: HOW DOES IT WORK BLOCK                      -->
 
@@ -412,6 +329,27 @@
                                    type="email" name="email"
                                    translate
                                    translate-attr-placeholder="%landing.student.input_email.placeholder.text">
+
+                            <div class="row margin-reset">
+                               <div class="col-xs-12 col-sm-12
+                                           col-md-12 col-lg-12 padding-reset">
+                                   <a class="ma-link ma-link--box
+                                             ma-link--box--primary
+                                             space-top-1 pull-right"
+                                      ng-class="{'hidden' : vm.addComment}"
+                                      ng-click="vm.showCommentsTextarea()"
+                                      href="#">
+                                       + Add Comments
+                                   </a>
+                               </div>
+                            </div>
+
+                            <div class="form-group ma-form-group text-left space-top-3 animated fadeIn" ng-class="{'hidden' : !vm.addComment}">
+                               <textarea id="commentsTextArea"
+                                         name="user_profile_info[about]"
+                                         class="ma-input ma-input--large ma-textarea"
+                                         placeholder="Compartenos tus dudas, comentarios o sugerencias, nos pondremos en contacto contigo lo más rapido posible." rows="5" cols="40"></textarea>
+                            </div>
 
                         </fieldset>
 

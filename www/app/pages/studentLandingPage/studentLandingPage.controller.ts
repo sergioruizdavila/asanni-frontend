@@ -47,6 +47,7 @@ module app.pages.studentLandingPage {
         /**********************************/
         form: IStudentLandingForm;
         error: IStudentLandingError;
+        addComment: boolean;
         // --------------------------------
 
 
@@ -78,6 +79,8 @@ module app.pages.studentLandingPage {
                 message: ''
             };
 
+            this.addComment = false;
+
             this.activate();
         }
 
@@ -99,6 +102,11 @@ module app.pages.studentLandingPage {
         goToEarlyAccessForm(): void {
             // Scroll to a certain element
             document.querySelector('.studentLandingPage__early-access-block').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        showCommentsTextarea(): void {
+            event.preventDefault();
+            this.addComment = true;
         }
 
     }
