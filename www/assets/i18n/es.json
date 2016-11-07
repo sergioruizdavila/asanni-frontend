@@ -1,8 +1,6 @@
 {
     "__GLOBAL__":"",
     "%global.zone": "es-ES",
-    "%global.continue.button.text": "CONTINUAR",
-    "%global.total.text": "TOTAL",
 
     "__HEADER__": "",
     "%header.languages.options.en.text": "Inglés",
@@ -11,7 +9,7 @@
     "__STUDENT LANDING PAGE__":"",
     "%landing.student.puv": "Sumérgete en otra cultura",
     "%landing.student.puv.description": "Cuando aprendes un idioma con gente de verdad, aprendes más que un idioma. Estarás expuesto a una cultura diferente y verás el mundo de otra forma.",
-    "%landing.student.get_early_button.text": "GET EARLY ACCESS",
+    "%landing.student.get_early_button.text": "DESCUBRIR",
     "%landing.student.how_work.title.text": "¿Como funciona?",
     "%landing.student.how_work.step_1.title.text": "1. Busca personas locales",
     "%landing.student.how_work.step_1.description.text": "Solo tienes que indicar en la barra de búsqueda tu destino o lugar donde te hospedas y podrás descubrir lugareños con los que podrás encontrarte para aprender su idioma y sumergirte en su cultura.",
@@ -28,10 +26,13 @@
     "%landing.student.how_work.step_6.description.text": "Practica el idioma y crea conexiones con personas locales.",
     "%landing.student.notify_block.title.text": "Waysily está a punto de llegar",
     "%landing.student.notify_block.description.text": "Se el primero en sumarle una nueva experiencia a tu viaje.",
-    "%landing.student.input_email.placeholder.text": "Email",
-    "%landing.student.notify_block.send_button.text": "NOTIFY ME",
+    "%landing.student.input_email.placeholder.text": "Correo electrónico",
+    "%landing.student.notify_block.send_button.text": "NOTIFICARME",
+    "%landing.student.add_comment.button.text": "+ Agregar un comentario",
+    "%landing.student.input_comment.placeholder.text": "¿Tienes dudas?, ¿Quieres saber más de Waysily?, escríbenos.",
 
-
+    "__FOOTER__": "",
+    "%footer.contact_us.title.text": "Contáctanos",
 
     "": ""
 }
