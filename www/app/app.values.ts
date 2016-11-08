@@ -19,8 +19,14 @@ interface IDataConfig {
 
     'use strict';
 
+    // DEV Fake
+    // baseUrl: 'http://localhost:3000/'
+    // DEV BackEnd
+    // baseUrl: 'http://127.0.0.1:8000/api/v1/'
+    // PRD BackEnd
+    // baseUrl: 'https://asanni.herokuapp.com/api/v1/'
     var dataConfig: IDataConfig = {
-        baseUrl: 'http://localhost:3000/',
+        baseUrl: 'https://asanni.herokuapp.com/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
 
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',

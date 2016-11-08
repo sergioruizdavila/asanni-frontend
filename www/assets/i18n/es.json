@@ -30,6 +30,8 @@
     "%landing.student.notify_block.send_button.text": "NOTIFICARME",
     "%landing.student.add_comment.button.text": "+ Agregar un comentario",
     "%landing.student.input_comment.placeholder.text": "¿Tienes dudas?, ¿Quieres saber más de Waysily?, escríbenos.",
+    "%landing.student.input_name.placeholder.text": "Tu nombre",
+    "%landing.student.notify_block.success_msg.text": "Ya está todo listo. Estaremos en contacto.",
 
     "__FOOTER__": "",
     "%footer.contact_us.title.text": "Contáctanos",
