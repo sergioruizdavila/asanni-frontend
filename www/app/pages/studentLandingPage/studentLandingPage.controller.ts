@@ -26,9 +26,14 @@ module app.pages.studentLandingPage {
     }
 
     export interface IStudentLandingForm {
-        username: string;
-        email: string;
+        userData: IUserData;
         language: string;
+    }
+
+    export interface IUserData {
+        name: string;
+        comment: string;
+        email: string;
     }
 
     export interface IStudentLandingError {
@@ -47,19 +52,23 @@ module app.pages.studentLandingPage {
         /**********************************/
         form: IStudentLandingForm;
         error: IStudentLandingError;
+        success: boolean;
         addComment: boolean;
         // --------------------------------
 
 
         /*-- INJECT DEPENDENCIES --*/
-        public static $inject = ['$state', '$translate'];
+        public static $inject = ['$state',
+                                 '$translate',
+                                 'mainApp.pages.studentLandingPage.StudentLandingPageService'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
             private $state: ng.ui.IStateService,
-            private $translate: any) {
+            private $translate: any,
+            private StudentLandingPageService: app.pages.studentLandingPage.IStudentLandingPageService) {
 
             this._init();
 
@@ -70,10 +79,15 @@ module app.pages.studentLandingPage {
 
             //Init form
             this.form = {
-                username: '',
-                email: '',
+                userData: {
+                    name: '',
+                    email: '',
+                    comment: ''
+                },
                 language: 'en'
             };
+
+            this.success = false;
 
             this.error = {
                 message: ''
@@ -107,6 +121,24 @@ module app.pages.studentLandingPage {
         showCommentsTextarea(): void {
             event.preventDefault();
             this.addComment = true;
+        }
+
+        createEarlyAdopter(): void {
+            // VARIABLES
+            let self = this;
+            //TODO: Validate If email is not null
+            let userData = {
+                name: this.form.userData.name || '*',
+                email: this.form.userData.email,
+                comment: this.form.userData.comment || '*'
+            };
+            this.StudentLandingPageService.createEarlyAdopter(userData).then(
+                function(response) {
+                    if(response.createdAt) {
+                        self.success = true;
+                    }
+                }
+            );
         }
 
     }

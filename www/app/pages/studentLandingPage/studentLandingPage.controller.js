@@ -5,17 +5,22 @@ var app;
         var studentLandingPage;
         (function (studentLandingPage) {
             var StudentLandingPageController = (function () {
-                function StudentLandingPageController($state, $translate) {
+                function StudentLandingPageController($state, $translate, StudentLandingPageService) {
                     this.$state = $state;
                     this.$translate = $translate;
+                    this.StudentLandingPageService = StudentLandingPageService;
                     this._init();
                 }
                 StudentLandingPageController.prototype._init = function () {
                     this.form = {
-                        username: '',
-                        email: '',
+                        userData: {
+                            name: '',
+                            email: '',
+                            comment: ''
+                        },
                         language: 'en'
                     };
+                    this.success = false;
                     this.error = {
                         message: ''
                     };
@@ -36,10 +41,25 @@ var app;
                     event.preventDefault();
                     this.addComment = true;
                 };
+                StudentLandingPageController.prototype.createEarlyAdopter = function () {
+                    var self = this;
+                    var userData = {
+                        name: this.form.userData.name || '*',
+                        email: this.form.userData.email,
+                        comment: this.form.userData.comment || '*'
+                    };
+                    this.StudentLandingPageService.createEarlyAdopter(userData).then(function (response) {
+                        if (response.createdAt) {
+                            self.success = true;
+                        }
+                    });
+                };
                 return StudentLandingPageController;
             }());
             StudentLandingPageController.controllerId = 'mainApp.pages.studentLandingPage.StudentLandingPageController';
-            StudentLandingPageController.$inject = ['$state', '$translate'];
+            StudentLandingPageController.$inject = ['$state',
+                '$translate',
+                'mainApp.pages.studentLandingPage.StudentLandingPageService'];
             studentLandingPage.StudentLandingPageController = StudentLandingPageController;
             angular
                 .module('mainApp.pages.studentLandingPage')
