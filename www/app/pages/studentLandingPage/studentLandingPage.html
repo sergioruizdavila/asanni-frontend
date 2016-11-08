@@ -309,7 +309,8 @@
 
             <!-- form block -->
             <div class="studentLandingPage__early-access-block__form-block
-                        col-sm-6 col-md-6 col-lg-6 center-block text-center">
+                        col-sm-6 col-md-6 col-lg-6 center-block text-center"
+                 ng-class="{'hidden' : vm.success}">
                 <!-- title -->
                 <h2 class="margin-reset space-top-2 space-2" translate>
                     %landing.student.notify_block.title.text
@@ -319,14 +320,14 @@
                     %landing.student.notify_block.description.text
                 </p>
                 <!-- form -->
-                <form action="https://www.evernote.com/Registration.action?register=&amp;_sourcePage=TRewqUBoP0TiMUD9T65RG_YvRLZ-1eYO3fqfqRu0fynRL_1nukNa4gH1t86pc1SP"
-                      method="post" novalidate="novalidate">
+                <form>
 
                     <div class="form-group">
                         <fieldset class="space-3">
 
                             <input class="ma-input ma-input--large"
                                    type="email" name="email"
+                                   ng-model="vm.form.userData.email"
                                    translate
                                    translate-attr-placeholder="%landing.student.input_email.placeholder.text">
 
@@ -345,10 +346,18 @@
                                </div>
                             </div>
 
+                            <input class="ma-input ma-input--large animated fadeIn space-top-3"
+                                   ng-class="{'hidden' : !vm.addComment}"
+                                   type="text" name="name"
+                                   ng-model="vm.form.userData.name"
+                                   translate
+                                   translate-attr-placeholder="%landing.student.input_name.placeholder.text">
+
                             <div class="form-group ma-form-group text-left space-top-3 animated fadeIn" ng-class="{'hidden' : !vm.addComment}">
                                <textarea id="commentsTextArea"
                                          name="user_profile_info[about]"
                                          class="ma-input ma-input--large ma-textarea"
+                                         ng-model="vm.form.userData.comment"
                                          translate
                                          translate-attr-placeholder="%landing.student.input_comment.placeholder.text"
                                          rows="5" cols="40"></textarea>
@@ -359,11 +368,24 @@
                         <button name="btn"
                                 class="ma-btn
                                        ma-btn--large
-                                       ma-btn--secondary" translate>
+                                       ma-btn--secondary"
+                                ng-click="vm.createEarlyAdopter()"
+                                translate>
                                 %landing.student.notify_block.send_button.text
                         </button>
                     </div>
                 </form>
+            </div>
+
+            <div class="studentLandingPage__early-access-block__form-block
+                        col-sm-6 col-md-6 col-lg-6 center-block text-center"
+                 ng-class="{'hidden' : !vm.success}">
+
+                <!-- title -->
+                <h2 class="margin-reset space-top-2 space-2" translate>
+                    %landing.student.notify_block.success_msg.text
+                </h2>
+
             </div>
 
             <div class="col-sm-3 col-md-3 col-lg-3"></div>
