@@ -111,6 +111,7 @@ module app.pages.studentLandingPage {
         /**********************************/
         changeLanguage(): void {
              this.$translate.use(this.form.language);
+             mixpanel.track("Change Language");
         }
 
         goToEarlyAccessForm(): void {
