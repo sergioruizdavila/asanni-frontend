@@ -117,6 +117,7 @@ module app.pages.studentLandingPage {
         goToEarlyAccessForm(): void {
             // Scroll to a certain element
             document.querySelector('.studentLandingPage__early-access-block').scrollIntoView({ behavior: 'smooth' });
+            mixpanel.track("Go to early access form");
         }
 
         showCommentsTextarea(): void {
@@ -127,6 +128,13 @@ module app.pages.studentLandingPage {
         createEarlyAdopter(): void {
             // VARIABLES
             let self = this;
+            
+            mixpanel.track("Click on Notify button", {
+                "name": this.form.userData.name || '*',
+                "email": this.form.userData.email,
+                "comment": this.form.userData.comment || '*'
+            });
+
             //TODO: Validate If email is not null
             let userData = {
                 name: this.form.userData.name || '*',
