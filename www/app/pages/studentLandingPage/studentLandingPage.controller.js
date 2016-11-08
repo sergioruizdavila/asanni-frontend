@@ -33,6 +33,7 @@ var app;
                 };
                 StudentLandingPageController.prototype.changeLanguage = function () {
                     this.$translate.use(this.form.language);
+                    mixpanel.track("Change Language");
                 };
                 StudentLandingPageController.prototype.goToEarlyAccessForm = function () {
                     document.querySelector('.studentLandingPage__early-access-block').scrollIntoView({ behavior: 'smooth' });
