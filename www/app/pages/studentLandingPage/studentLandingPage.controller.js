@@ -21,6 +21,7 @@ var app;
                         language: 'en'
                     };
                     this.success = false;
+                    this.sending = false;
                     this.error = {
                         message: ''
                     };
@@ -45,6 +46,7 @@ var app;
                 };
                 StudentLandingPageController.prototype.createEarlyAdopter = function () {
                     var self = this;
+                    this.sending = true;
                     mixpanel.track("Click on Notify button", {
                         "name": this.form.userData.name || '*',
                         "email": this.form.userData.email,
@@ -58,6 +60,9 @@ var app;
                     this.StudentLandingPageService.createEarlyAdopter(userData).then(function (response) {
                         if (response.createdAt) {
                             self.success = true;
+                        }
+                        else {
+                            self.sending = false;
                         }
                     });
                 };
