@@ -53,6 +53,7 @@ module app.pages.studentLandingPage {
         form: IStudentLandingForm;
         error: IStudentLandingError;
         success: boolean;
+        sending: boolean;
         addComment: boolean;
         // --------------------------------
 
@@ -76,7 +77,6 @@ module app.pages.studentLandingPage {
 
         /*-- INITIALIZE METHOD --*/
         private _init() {
-
             //Init form
             this.form = {
                 userData: {
@@ -88,6 +88,8 @@ module app.pages.studentLandingPage {
             };
 
             this.success = false;
+
+            this.sending = false;
 
             this.error = {
                 message: ''
@@ -128,7 +130,9 @@ module app.pages.studentLandingPage {
         createEarlyAdopter(): void {
             // VARIABLES
             let self = this;
-            
+
+            this.sending = true;
+
             mixpanel.track("Click on Notify button", {
                 "name": this.form.userData.name || '*',
                 "email": this.form.userData.email,
@@ -145,6 +149,8 @@ module app.pages.studentLandingPage {
                 function(response) {
                     if(response.createdAt) {
                         self.success = true;
+                    } else {
+                        self.sending = false;
                     }
                 }
             );

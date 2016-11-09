@@ -28,6 +28,7 @@
     "%landing.student.notify_block.description.text": "Se el primero en sumarle una nueva experiencia a tu viaje.",
     "%landing.student.input_email.placeholder.text": "Correo electrónico",
     "%landing.student.notify_block.send_button.text": "NOTIFICARME",
+    "%landing.student.notify_block.send_button.loading.text": "ENVIANDO...",
     "%landing.student.add_comment.button.text": "+ Agregar un comentario",
     "%landing.student.input_comment.placeholder.text": "¿Tienes dudas?, ¿Quieres saber más de Waysily?, escríbenos.",
     "%landing.student.input_name.placeholder.text": "Tu nombre",

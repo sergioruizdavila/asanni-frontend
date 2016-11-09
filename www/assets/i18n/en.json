@@ -28,6 +28,7 @@
     "%landing.student.notify_block.description.text": "Be the first to know when it's ready.",
     "%landing.student.input_email.placeholder.text": "Email",
     "%landing.student.notify_block.send_button.text": "NOTIFY ME",
+    "%landing.student.notify_block.send_button.loading.text": "SENDING...",
     "%landing.student.add_comment.button.text": "+ Add a comment",
     "%landing.student.input_comment.placeholder.text": "Do you want to know more about Waysily?. Any doubts?, write us.",
     "%landing.student.input_name.placeholder.text": "Your name",

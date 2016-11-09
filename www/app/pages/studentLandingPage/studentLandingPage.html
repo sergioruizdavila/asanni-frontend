@@ -370,8 +370,15 @@
                                        ma-btn--large
                                        ma-btn--secondary"
                                 ng-click="vm.createEarlyAdopter()"
-                                translate>
-                                %landing.student.notify_block.send_button.text
+                                ng-disabled="vm.sending">
+                                <span ng-class="{'hidden' : vm.sending}"
+                                      translate>
+                                    %landing.student.notify_block.send_button.text
+                                </span>
+                                <span ng-class="{'hidden' : !vm.sending}"
+                                      translate>
+                                    %landing.student.notify_block.send_button.loading.text
+                                </span>
                         </button>
                     </div>
                 </form>
