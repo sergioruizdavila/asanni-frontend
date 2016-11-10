@@ -11,21 +11,44 @@
     "%landing.student.puv.description": "Cuando aprendes un idioma con gente de verdad, aprendes más que un idioma. Estarás expuesto a una cultura diferente y verás el mundo de otra forma.",
     "%landing.student.get_early_button.text": "DESCUBRIR",
     "%landing.student.how_work.title.text": "¿Como funciona?",
+
     "%landing.student.how_work.step_1.title.text": "1. Busca personas locales",
-    "%landing.student.how_work.step_1.description.text": "Solo tienes que indicar en la barra de búsqueda tu destino o lugar donde te hospedas y podrás descubrir lugareños con los que podrás encontrarte para aprender su idioma y sumergirte en su cultura.",
+
+    "%landing.student.how_work.step_1.description.text": "Solo tienes que indicar tu ubicación en la barra de búsqueda y podrás encontrar lugareños en tu área con los que puedas reunirte para aprender su idioma y sumergirte en nuevas culturas.",
+    "%landing.student.how_work.step_1.description.text.backup": "Solo tienes que indicar en la barra de búsqueda tu destino o lugar donde te hospedas y podrás descubrir lugareños con los que podrás encontrarte para aprender su idioma y sumergirte en su cultura.",
+
     "%landing.student.how_work.step_2.title.text": "2. Elige una persona",
-    "%landing.student.how_work.step_2.description.text": "Conoce nuevos amigos locales con pasatiempos e intereses similares y practica el idioma.",
+
+    "%landing.student.how_work.step_2.description.text": "Selecciona una persona con intereses y pasatiempos similares para practicar un idioma.",
+    "%landing.student.how_work.step_2.description.text.backup": "Conoce nuevos amigos locales con pasatiempos e intereses similares y practica el idioma.",
+
     "%landing.student.how_work.step_3.title.text": "3. Selecciona un punto de encuentro",
-    "%landing.student.how_work.step_3.description.text": "Encuentra los mejores lugares para comer, beber y diviertete practicando el idioma.",
-    "%landing.student.how_work.step_3.description.text-backup": "Encuentra los mejores lugares para comer, beber y diviwrtete practicando el idioma  mientras haces amigos  locales.",
-    "%landing.student.how_work.step_4.title.text": "4. Elige una fecha/hora y envíale una invitación",
-    "%landing.student.how_work.step_4.description.text": "Revisa la agenda de la otra persona y la tuya para escoger una fecha y hora apropiada para concretar el encuentro. Cuando este todo listo, envíale la invitación.",
-    "%landing.student.how_work.step_5.title.text": "5. Disfruta de tu encuentro con locales",
-    "%landing.student.how_work.step_5.description.text": "Una vez que acuerden  fecha, hora y punto de encuentro, ¡Solo tienes que disfrutar de tu reunión y abrir la mente a nuevas culturas, veras el mundo de otra forma.",
+
+    "%landing.student.how_work.step_3.description.text": "Encuentre los mejores lugares para comer, beber y disfrutar practicando un idioma.",
+    "%landing.student.how_work.step_3.description.text.backup": "Encuentra los mejores lugares para comer, beber y diviertete practicando el idioma.",
+    "%landing.student.how_work.step_3.description.text-backup": "Encuentra los mejores lugares para comer, beber y diviertete practicando el idioma  mientras haces amigos  locales.",
+
+    "%landing.student.how_work.step_4.title.text": "4. Elige una fecha y hora",
+    "%landing.student.how_work.step_4.title.text.backup": "4. Elige una fecha/hora y envíale una invitación",
+
+    "%landing.student.how_work.step_4.description.text": "Comprueba la disponibilidad de la otra persona, elije una fecha y hora para reunirse. Cuando este todo listo, envíale la invitación.",
+    "%landing.student.how_work.step_4.description.text.backup": "Revisa la agenda de la otra persona y la tuya para escoger una fecha y hora apropiada para concretar el encuentro. Cuando este todo listo, envíale la invitación.",
+
+    "%landing.student.how_work.step_5.title.text": "5. Disfruta de tu encuentro",
+    "%landing.student.how_work.step_5.title.text.backup": "5. Disfruta de tu encuentro con locales",
+
+    "%landing.student.how_work.step_5.description.text": "Una vez que acuerden una fecha, hora y punto de encuentro, todo lo que tienes que hacer es disfrutar de la reunión. Debes estar abierto a nuevas culturas y verás el mundo de manera diferente.",
+    "%landing.student.how_work.step_5.description.text.backup": "Una vez que acuerden fecha, hora y punto de encuentro, ¡Solo tienes que disfrutar de tu reunión y abrir la mente a nuevas culturas, veras el mundo de otra forma.",
+
     "%landing.student.how_work.step_6.title.text": "6. Al terminar tu encuentro, califica como fue tu experiencia",
-    "%landing.student.how_work.step_6.description.text": "Practica el idioma y crea conexiones con personas locales.",
+
+    "%landing.student.how_work.step_6.description.text": "Puedes calificar tu experiencia basado en múltiples apreciaciones.",
+    "%landing.student.how_work.step_6.description.text.backup": "Practica el idioma y crea conexiones con personas locales.",
+
     "%landing.student.notify_block.title.text": "Waysily está a punto de llegar",
-    "%landing.student.notify_block.description.text": "Se el primero en sumarle una nueva experiencia a tu viaje.",
+    "%landing.student.notify_block.description.text": "Sé el primero en saber cuándo este listo.",
+    "%landing.student.notify_block.description.text.backup": "Se el primero en sumarle una nueva experiencia a tu viaje.",
+
     "%landing.student.input_email.placeholder.text": "Correo electrónico",
     "%landing.student.notify_block.send_button.text": "NOTIFICARME",
     "%landing.student.notify_block.send_button.loading.text": "ENVIANDO...",
