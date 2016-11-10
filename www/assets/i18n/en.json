@@ -8,22 +8,46 @@
 
     "__STUDENT LANDING PAGE__":"",
     "%landing.student.puv": "Immerse yourself in another culture",
-    "%landing.student.puv.description": "When you learn a language with real people, you will learn more than just a language. You'll be exposed to a different culture, and a new way of seeing the world.",
+
+    "%landing.student.puv.description": "When you learn a language with real people, you will learn more than just a language. You'll be exposed to a different culture and a new way of seeing the world.",
+    "%landing.student.puv.description.backup": "When you learn a language with real people, you will learn more than just a language. You'll be exposed to a different culture, and a new way of seeing the world.",
+
     "%landing.student.get_early_button.text": "GET EARLY ACCESS",
     "%landing.student.how_work.title.text": "How does it work?",
+
     "%landing.student.how_work.step_1.title.text": "1. Search local people",
-    "%landing.student.how_work.step_1.description.text": "All you have to do is enter in the search bar your destination or place where you stay to discover locals with whom you can meet to learn their language and immerse yourself in new cultures.",
+
+    "%landing.student.how_work.step_1.description.text": "All you have to do is enter your location in the search bar to find locals in your area with whom you can meet to learn their language and immerse yourself in new cultures.",
+    "%landing.student.how_work.step_1.description.text.backup": "All you have to do is enter in the search bar your destination or place where you stay to discover locals with whom you can meet to learn their language and immerse yourself in new cultures.",
+
     "%landing.student.how_work.step_2.title.text": "2. Choose a person",
-    "%landing.student.how_work.step_2.description.text": "Meet new local friends with similar interests and hobbies and practice the language.",
+
+    "%landing.student.how_work.step_2.description.text": "Select a person with similar interests and hobbies to practice a language.",
+    "%landing.student.how_work.step_2.description.text.backup": "Meet new local friends with similar interests and hobbies and practice the language.",
+
     "%landing.student.how_work.step_3.title.text": "3. Select a meeting point",
-    "%landing.student.how_work.step_3.description.text": "Find the best places to eat, drink and fun practicing the language.",
-    "%landing.student.how_work.step_3.description.text-backup": "Encuentra los mejores lugares para comer, beber y diviwrtete practicando el idioma  mientras haces amigos  locales.",
-    "%landing.student.how_work.step_4.title.text": "4. Choose a date / time and send an invitation",
-    "%landing.student.how_work.step_4.description.text": "Check the other person's agenda and your agenda in order to choose an appropiate date/time to agree the meeting. When everything is ready, send the invitation.",
-    "%landing.student.how_work.step_5.title.text": "5. Enjoy your meeting with local person",
-    "%landing.student.how_work.step_5.description.text": "Once you agreed on the date, time and meeting point, all you have to do is enjoy the meeting and open your mind to new cultures, you will see the world differently.",
-    "%landing.student.how_work.step_6.title.text": "6. The end of your meeting, you could rate how was your experiences",
-    "%landing.student.how_work.step_6.description.text": "Practice the language while making friends with locals.",
+
+    "%landing.student.how_work.step_3.description.text": "Find the best places to eat, drink and enjoy practicing a language.",
+    "%landing.student.how_work.step_3.description.text.backup": "Find the best places to eat, drink and fun practicing the language.",
+
+    "%landing.student.how_work.step_4.title.text": "4. Choose a date and time",
+    "%landing.student.how_work.step_4.title.text.backup": "4. Choose a date / time and send an invitation",
+
+    "%landing.student.how_work.step_4.description.text": "Check the other person availability and choose a date and time to meet by sending an invitation.",
+    "%landing.student.how_work.step_4.description.text.backup": "Check the other person's agenda and your agenda in order to choose an appropiate date/time to agree the meeting. When everything is ready, send the invitation.",
+
+    "%landing.student.how_work.step_5.title.text": "5. Enjoy your meeting",
+    "%landing.student.how_work.step_5.title.text.backup": "5. Enjoy your meeting with local person",
+
+    "%landing.student.how_work.step_5.description.text": "Once you agree on a date, time and meeting point, all you have to do is enjoy the meeting. Be open to new cultures and you will see the world differently.",
+    "%landing.student.how_work.step_5.description.text.backup": "Once you agreed on the date, time and meeting point, all you have to do is enjoy the meeting and open your mind to new cultures, you will see the world differently.",
+
+    "%landing.student.how_work.step_6.title.text": "6. At the end of your meeting, you can rate your experience",
+    "%landing.student.how_work.step_6.title.text.backup": "6. The end of your meeting, you could rate how was your experiences",
+
+    "%landing.student.how_work.step_6.description.text": "You can rate your experience on multiple criteria.",
+    "%landing.student.how_work.step_6.description.text.backup": "Practice the language while making friends with locals.",
+
     "%landing.student.notify_block.title.text": "Waysily is coming soon",
     "%landing.student.notify_block.description.text": "Be the first to know when it's ready.",
     "%landing.student.input_email.placeholder.text": "Email",
