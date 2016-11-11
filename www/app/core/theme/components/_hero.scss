@@ -3,16 +3,38 @@
 /**********************************************************/
 
 .ma-hero {
-    background: linear-gradient(rgba(18,18,18,0.6), rgba(18,18,18,0.5)), url("../../../../assets/images/hero-image.jpg");
     min-height: 400px;
-    height: 100vh;
     background-size: cover;
     color: #fff;
     overflow: hidden;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-bottom: 65px;
     position: relative;
+    width: 100%;
+    background: #222222;
+    background-size: 100% 100%;
+
+    .mobile-poster {
+        background: linear-gradient(rgba(18,18,18,0.6), rgba(18,18,18,0.5)), url(../../../../assets/images/hero-image.jpg);
+        height: 70vh;
+        background-size: cover;
+        overflow: hidden;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        position: absolute;
+    }
+
+    .video-hero {
+        opacity: 0.6;
+        visibility: visible;
+        margin: auto;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: auto;
+        height: 730px;
+    }
 
     &__wrapper {
         width: 800px;
@@ -53,8 +75,13 @@
 
 @media (max-width: 667px) {
     .ma-hero {
-        height: 90vh;
-        background-position: -200px 0px;
+        height: 100vh;
+        //background-position: -200px 0px;
+
+        .mobile-poster {
+            height: 90vh;
+            background-position: -200px 0px;
+        }
 
         &__wrapper {
             height: auto;
@@ -83,8 +110,13 @@
  /* Custom, iPhone Retina */
  @media only screen and (min-width : 320px) {
      .ma-hero {
-         height: 90vh;
-         background-position: -240px 0px;
+         height: 85vh;
+         //background-position: -240px 0px;
+
+         .mobile-poster {
+             height: 85vh;
+             background-position: -220px 0px;
+         }
 
          &__wrapper {
              height: auto;
@@ -93,6 +125,7 @@
              top: 20px;
              width: auto;
              margin: auto;
+             padding: 0 30px;
 
              &__title {
                  font-size: 30px;
@@ -110,8 +143,17 @@
  /* Extra Small Devices, Phones */
  @media only screen and (min-width : 480px) {
      .ma-hero {
-         height: 90vh;
-         background-position: -200px 0px;
+         height: 89vh;
+         //background-position: -200px 0px;
+
+         .mobile-poster {
+            height: 90vh;
+            background-position: -60px 0px;
+         }
+
+         .video-hero {
+             height: 730px;
+         }
 
          &__wrapper {
              height: auto;
@@ -120,6 +162,7 @@
              top: 20px;
              width: auto;
              margin: auto;
+             padding: 0 30px;
 
              &__title {
                  font-size: 40px;
@@ -137,8 +180,18 @@
  /* Small Devices, Tablets */
  @media only screen and (min-width : 768px) {
      .ma-hero {
-         height: 90vh;
-         background-position: -120px 0px;
+         //height: 70vh;
+         height: 80vh;
+         //background-position: -120px 0px;
+
+         .mobile-poster {
+            height: 90vh;
+            background-position: -120px 0px;
+         }
+
+         .video-hero {
+             height: 80vh;
+         }
 
          &__wrapper {
              height: auto;
@@ -164,8 +217,17 @@
  /* Medium Devices, Desktops */
  @media only screen and (min-width : 992px) {
      .ma-hero {
-         height: 100vh;
-         background-position: 0 0;
+         height: 80vh;
+         //background-position: 0 0;
+
+         .mobile-poster {
+            height: 100vh;
+            background-position: 0 0;
+         }
+
+         .video-hero {
+             height: 96vh;
+         }
 
          &__wrapper {
              width: 800px;
@@ -194,6 +256,14 @@
  @media only screen and (min-width : 1200px) {
      .ma-hero {
          height: 100vh;
+
+         .mobile-poster {
+            height: 100vh;
+         }
+
+         .video-hero {
+             height: 110vh;
+         }
 
          &__wrapper {
              width: 800px;
