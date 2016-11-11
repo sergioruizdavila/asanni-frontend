@@ -124,8 +124,17 @@
 <div class="studentLandingPage">
 
     <!--------------------------- START: HERO BLOCK --------------------------->
-    <section class="ma-hero text-center">
-		<div class="ma-hero__wrapper">
+    <section class="ma-hero">
+
+    <div class="visible-xs mobile-poster"></div>
+
+    <video class="hidden-xs video-hero"
+           autoplay loop muted poster="../../../assets/images/cover-waysily.png">
+        <source data-src="../../../assets/videos/hero-video.mp4"
+                type="video/mp4" src="../../../assets/videos/hero-video.mp4">
+    </video>
+
+		<div class="ma-hero__wrapper text-center">
 
 			<h1 class="ma-hero__wrapper__title animated fadeIn" translate>
                 %landing.student.puv
@@ -141,6 +150,7 @@
                 </button>
 			</div>
 		</div>
+
 	</section>
     <!--                          END: HERO BLOCK                            -->
 
