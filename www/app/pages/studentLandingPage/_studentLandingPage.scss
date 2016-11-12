@@ -123,6 +123,18 @@ $studentLanding-earlyAccessBlock-formBlock-formGroup-padding: 0;
         margin-bottom: $studentLanding-howWorkBlock-margin-bottom;
 
         .row {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+
+            &:before {
+                display: inline-block;
+            }
+
+            &:after {
+                display: inline-block;
+            }
+
             padding: $studentLanding-howWorkBlock-row-padding;
 
             .step-item {
@@ -224,15 +236,29 @@ $studentLanding-earlyAccessBlock-formBlock-formGroup-padding: 0;
         border-top: $studentLanding-earlyAccessBlock-border;
         color: $studentLanding-earlyAccessBlock-font-color;
 
-       &__form-block {
-           .ma-p {
-               color: $studentLanding-earlyAccessBlock-formBlock-text-font-color;
-           }
+        .row {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
 
-           .form-group {
-               padding: $studentLanding-earlyAccessBlock-formBlock-formGroup-padding;
-           }
-       }
+            &:before {
+                display: inline-block;
+            }
+
+            &:after {
+                display: inline-block;
+            }
+
+            &__form-block {
+                .ma-p {
+                    color: $studentLanding-earlyAccessBlock-formBlock-text-font-color;
+                }
+
+                .form-group {
+                    padding: $studentLanding-earlyAccessBlock-formBlock-formGroup-padding;
+                }
+            }
+        }
     }
 }
 
