@@ -20,6 +20,17 @@
     function run($rootScope: ng.IRootScopeService,
                  dataConfig: IDataConfig,
                  $http: any ): void {
+
+        mixpanel.init(dataConfig.mixpanelToken, {
+            loaded: function(mixpanel) {
+                let first_visit = mixpanel.get_property("First visit");
+                if(first_visit == null) {
+                    mixpanel.register_once({ "First visit": $.now() });
+                    mixpanel.track("Visit");
+                }
+            }
+        });
+
         //TODO: Get these values from the logged user
         dataConfig.userId = 'id1234';
         $http.defaults.xsrfHeaderName = 'X-CSRFToken';
