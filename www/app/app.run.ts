@@ -24,8 +24,9 @@
         mixpanel.init(dataConfig.mixpanelToken, {
             loaded: function(mixpanel) {
                 let first_visit = mixpanel.get_property("First visit");
+                let current_date = moment().format('MMMM Do YYYY, h:mm:ss a');
                 if(first_visit == null) {
-                    mixpanel.register_once({ "First visit": $.now() });
+                    mixpanel.register_once({ "First visit": current_date });
                     mixpanel.track("Visit");
                 }
             }
