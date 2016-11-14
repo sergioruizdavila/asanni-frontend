@@ -8,7 +8,7 @@
   "main": "www/",
   "scripts": {
     "test": "make test",
-    "postinstall": "bower install"
+    "postinstall": ""
   },
   "keywords": [
     "language"
