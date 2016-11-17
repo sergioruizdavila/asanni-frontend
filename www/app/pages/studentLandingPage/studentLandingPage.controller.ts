@@ -122,6 +122,12 @@ module app.pages.studentLandingPage {
             mixpanel.track("Go to early access form");
         }
 
+        goDown(): void {
+            // Scroll to a certain element
+            document.querySelector('.studentLandingPage__title-block').scrollIntoView({ behavior: 'smooth' });
+            mixpanel.track('Go down');
+        }
+
         showCommentsTextarea(): void {
             event.preventDefault();
             this.addComment = true;

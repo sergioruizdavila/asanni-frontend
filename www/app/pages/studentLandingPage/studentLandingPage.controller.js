@@ -40,6 +40,10 @@ var app;
                     document.querySelector('.studentLandingPage__early-access-block').scrollIntoView({ behavior: 'smooth' });
                     mixpanel.track("Go to early access form");
                 };
+                StudentLandingPageController.prototype.goDown = function () {
+                    document.querySelector('.studentLandingPage__title-block').scrollIntoView({ behavior: 'smooth' });
+                    mixpanel.track('Go down');
+                };
                 StudentLandingPageController.prototype.showCommentsTextarea = function () {
                     event.preventDefault();
                     this.addComment = true;
