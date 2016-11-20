@@ -27,7 +27,7 @@ var app;
             ];
             studentLandingPage.StudentLandingPageService = StudentLandingPageService;
             angular
-                .module('mainApp.models.user', [])
+                .module('mainApp.pages.studentLandingPage')
                 .service(StudentLandingPageService.serviceId, StudentLandingPageService);
         })(studentLandingPage = pages.studentLandingPage || (pages.studentLandingPage = {}));
     })(pages = app.pages || (app.pages = {}));

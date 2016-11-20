@@ -71,24 +71,6 @@
 
 <body ng-app="mainApp" class="mainApp margin-reset">
 
-    <!--<script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '1850089328610772',
-          xfbml      : true,
-          version    : 'v2.8'
-        });
-      };
-
-      (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "//connect.facebook.net/en_US/sdk.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
-   </script>-->
-
     <!--[if lt IE 7]>
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -120,57 +102,16 @@ mixpanel.init("86a48c88274599c662ad64edb74b12da");</script>
 
     <!-- third party -->
     <!--bower_components-->
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-    <script src="bower_components/angular-translate/angular-translate.min.js"></script>
-    <script src="bower_components/angular-translate-loader-url/angular-translate-loader-url.min.js"></script>
-    <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
-    <script src="bower_components/moment/min/moment.min.js"></script>
-    <script src="bower_components/lodash/dist/lodash.min.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!--<script src="bower_components/angular-ui-calendar/src/calendar.js"></script>-->
-    <!--script src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script-->
-    <!--script src="bower_components/fullcalendar/dist/gcal.js"></script-->
-    <!--script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script-->
-    <!--script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script-->
+    <script src="build/js/vendor.min.js"></script>
     <!-- libs (node modules libraries) -->
-    <!--script src="libs/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script-->
-    <!--script src="libs/angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js"></script-->
-
+    <script src="build/js/vendor-libs.min.js"></script>
     <!-- main App -->
-    <!-- APP FILES -->
-    <script src="app/app.module.js"></script>
-    <script src="app/app.core.module.js"></script>
-    <script src="app/app.values.js"></script>
-    <script src="app/app.run.js"></script>
-    <script src="app/auth/auth.service.js"></script>
-
-    <script src="app/core/restApi/restApi.config.js"></script>
-    <script src="app/core/restApi/restApi.service.js"></script>
-
-    <!-- MODELS -->
-    <script src="app/models/user/user.model.js"></script>
-    <script src="app/models/user/user.service.js"></script>
-
-    <!-- COMPONENTS -->
-    <script src="components/header/header.config.js"></script>
-    <script src="components/header/header.directive.js"></script>
-    <script src="components/footer/footer.config.js"></script>
-    <script src="components/footer/footer.directive.js"></script>
-
-    <script src="app/pages/main/main.config.js"></script>
-    <script src="app/pages/main/main.controller.js"></script>
-    <script src="app/pages/studentLandingPage/studentLandingPage.config.js"></script>
-    <script src="app/pages/studentLandingPage/studentLandingPage.controller.js"></script>
-    <script src="app/pages/studentLandingPage/studentLandingPage.service.js"></script>
+    <script src="build/js/app.js"></script>
 
     <!-- TODO: Buscar una forma mas segura de incluir google map API ya que esta expuesto el KEY-->
-    <!--script async defer
-     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y&libraries=places">
- </script-->
-
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y&libraries=places">
+    </script>
 
 </body>
 
