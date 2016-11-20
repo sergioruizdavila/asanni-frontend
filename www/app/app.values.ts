@@ -22,6 +22,7 @@ interface IDataConfig {
 
     // DEV Fake
     // baseUrl: 'http://localhost:3000/'
+    // Use: command - json-server --watch db.json
     // DEV BackEnd
     // baseUrl: 'http://127.0.0.1:8000/api/v1/'
     // PRD BackEnd

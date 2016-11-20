@@ -8,6 +8,7 @@ var app;
             var UserService = (function () {
                 function UserService(restApi) {
                     this.restApi = restApi;
+                    console.log('user service instanced');
                 }
                 UserService.prototype.getUserById = function (id) {
                     var url = 'users/';

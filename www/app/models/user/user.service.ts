@@ -42,7 +42,8 @@ module app.models.user {
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(private restApi: app.core.restApi.IRestApi) {
-
+            //LOG
+            console.log('user service instanced');
         }
 
         /**********************************/
@@ -103,6 +104,6 @@ module app.models.user {
     /*-- MODULE DEFINITION --*/
     angular
         .module('mainApp.models.user', [])
-        .service(UserService.serviceId,UserService);
+        .service(UserService.serviceId, UserService);
 
 }

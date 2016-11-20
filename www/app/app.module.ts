@@ -19,6 +19,7 @@
             'mainApp.pages.main',
             'mainApp.pages.studentLandingPage',
             'mainApp.components.header',
+            'mainApp.components.map',
             'mainApp.components.footer'
         ])
         .config(config);

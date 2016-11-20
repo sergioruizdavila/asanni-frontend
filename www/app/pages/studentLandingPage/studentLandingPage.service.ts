@@ -76,7 +76,7 @@ module app.pages.studentLandingPage {
 
     /*-- MODULE DEFINITION --*/
     angular
-        .module('mainApp.models.user', [])
+        .module('mainApp.pages.studentLandingPage')
         .service(StudentLandingPageService.serviceId, StudentLandingPageService);
 
 }
