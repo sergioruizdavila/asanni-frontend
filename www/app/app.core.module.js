@@ -3,7 +3,10 @@
     angular.module('mainApp.core', [
         'ngResource',
         'ui.router',
-        'pascalprecht.translate'
+        'pascalprecht.translate',
+        'ui.bootstrap',
+        'ui.calendar',
+        'ui.bootstrap.datetimepicker'
     ]);
 })();
 //# sourceMappingURL=app.core.module.js.map

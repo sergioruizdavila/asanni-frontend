@@ -1,15 +1,23 @@
 var gulp = require('gulp');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
 var ts = require('gulp-typescript');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
 var connect = require('gulp-connect');
+var lib = require('bower-files')();
+var ngAnnotate = require('gulp-ng-annotate');
 
 /*Path Files*/
 var paths = {
     htmlTemplates: ['www/*.html', 'www/app/**/*.html'],
     appTypescript: ['www/**/*.ts', '!typings/**/*.*'],
-    appJs: ['www/**/*.js', 'www/**/*.js.map'],
+    appJs: ['www/app/**/*.js', 'www/components/**/*.js'],
+    appLibsJs: [
+        'www/libs/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',
+        'www/libs/angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js'
+    ],
     appSass: ['www/**/**/*.scss'],
     inputSass: 'www/app/core/theme/**/*.scss',
     outputSass: 'www/app/core/theme/',
@@ -127,6 +135,44 @@ gulp.task("tsToJs", function () {
         .js.pipe(gulp.dest('dist/js/'));
 });
 
+
+/**
+ * BUILD BOWER JS
+ * @desc This task is the responsible to build bower file to one vendor js
+ */
+
+gulp.task('bowerJS', function () {
+  return gulp.src(lib.ext('js').files)
+    .pipe(concat('vendor.min.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('www/build/js'));
+});
+
+/**
+ * BUILD LIBS JS
+ * @desc This task is the responsible to build lib folder files to one vendor js
+ */
+
+gulp.task('libsJS', function () {
+  return gulp.src(paths.appLibsJs)
+    .pipe(concat('vendor-libs.min.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('www/build/js'));
+});
+
+/**
+ * BUILD APP JS
+ * @desc This task is the responsible to build app folder files to one vendor js
+ */
+
+gulp.task('appJS', function () {
+  return gulp.src(paths.appJs)
+    .pipe(concat('app.js'))
+    //.pipe(ngAnnotate())
+    //.pipe(uglify())
+    .pipe(gulp.dest('www/build/js'));
+});
+
 /**
  * WATCH METHOD
  * @desc This task is the responsible to listen each change on some files in order to reload browser or
@@ -138,6 +184,8 @@ gulp.task('watch', function() {
     gulp.watch([paths.htmlTemplates], ['html']);
     gulp.watch([paths.appTypescript], ['ts']);
 })
+
+gulp.task('build-vendor', ['bowerJS', 'libsJS', 'appJS']);
 
 /*DEV*/
 gulp.task('default', ['sass', 'webserver', 'watch']);

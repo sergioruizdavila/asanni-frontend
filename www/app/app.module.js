@@ -9,12 +9,14 @@
         'mainApp.models.user',
         'mainApp.pages.main',
         'mainApp.pages.studentLandingPage',
+        'mainApp.pages.searchPage',
         'mainApp.components.header',
+        'mainApp.components.map',
         'mainApp.components.footer'
     ])
         .config(config);
     function config($locationProvider, $urlRouterProvider, $translateProvider) {
-        $urlRouterProvider.otherwise('/page/landing/student');
+        $urlRouterProvider.otherwise('/page');
         var prefix = 'assets/i18n/';
         var suffix = '.json';
         $translateProvider.useStaticFilesLoader({
