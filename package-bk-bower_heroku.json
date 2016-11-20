@@ -6,6 +6,10 @@
   },
   "description": "Language Platform",
   "main": "www/",
+  "scripts": {
+    "test": "make test",
+    "postinstall": "bower install"
+  },
   "keywords": [
     "language"
   ],
