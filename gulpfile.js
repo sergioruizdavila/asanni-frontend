@@ -18,6 +18,13 @@ var paths = {
         'www/libs/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',
         'www/libs/angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js'
     ],
+    vendorStyles: [
+        'www/bower_components/normalize-css/normalize.css',
+        'www/bower_components/animate.css/animate.min.css',
+        'www/bower_components/flexboxgrid/dist/flexboxgrid.min.css',
+        'www/bower_components/bootstrap/dist/css/bootstrap.min.css',
+        'www/bower_components/fullcalendar/dist/fullcalendar.min.css'
+    ],
     appSass: ['www/**/**/*.scss'],
     inputSass: 'www/app/core/theme/**/*.scss',
     outputSass: 'www/app/core/theme/',
@@ -135,6 +142,16 @@ gulp.task("tsToJs", function () {
         .js.pipe(gulp.dest('dist/js/'));
 });
 
+/**
+ * BUILD VENDOR CSS
+ * @desc This task is the responsible to build vendor styles to one vendor css
+ */
+
+gulp.task('vendorCSS', function () {
+  return gulp.src(paths.vendorStyles)
+    .pipe(concat('vendor.min.css'))
+    .pipe(gulp.dest('www/build/css'));
+});
 
 /**
  * BUILD BOWER JS
@@ -185,7 +202,7 @@ gulp.task('watch', function() {
     gulp.watch([paths.appTypescript], ['ts']);
 })
 
-gulp.task('build-vendor', ['bowerJS', 'libsJS', 'appJS']);
+gulp.task('build-vendor', ['bowerJS', 'libsJS', 'appJS', 'vendorCSS']);
 
 /*DEV*/
 gulp.task('default', ['sass', 'webserver', 'watch']);
