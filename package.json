@@ -7,9 +7,11 @@
   "description": "Language Platform",
   "main": "www/",
   "keywords": [
-    "language"
+    "language",
+    "teachers",
+    "schools"
   ],
-  "author": "",
+  "author": "waysily",
   "license": "ISC",
   "dependencies": {
     "angular-bootstrap-datetimepicker": "^1.1.2",
