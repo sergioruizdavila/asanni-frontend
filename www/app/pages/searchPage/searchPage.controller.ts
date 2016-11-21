@@ -29,13 +29,16 @@ module app.pages.searchPage {
         /**********************************/
         error: ISearchPageError;
         mapConfig: components.map.IMapConfig;
-        data: Array<app.models.user.Student>;
+        data: Array<app.models.student.Student>;
+        type: string;
         // --------------------------------
 
 
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = [
-            'mainApp.models.user.UserService',
+            'mainApp.models.student.StudentService',
+            'mainApp.models.teacher.TeacherService',
+            'mainApp.core.util.FunctionsUtilService',
             '$state',
             '$filter',
             '$scope'];
@@ -44,7 +47,9 @@ module app.pages.searchPage {
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
-            private UserService: app.models.user.IUserService,
+            private StudentService: app.models.student.IStudentService,
+            private TeacherService: app.models.teacher.ITeacherService,
+            private FunctionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
             private $scope: angular.IScope) {
@@ -58,6 +63,9 @@ module app.pages.searchPage {
 
             //Init users list
             this.data = [];
+
+            //Type of results (student, teacher, school)
+            this.type = null;
 
             this.error = {
                 message: ''
@@ -73,29 +81,36 @@ module app.pages.searchPage {
             //LOG
             console.log('searchPage controller actived');
 
-            //Get All User of this zone
-            this.UserService.getAllUsers().then(
-                function(response: Array<app.models.user.Student>) {
-                    self.mapConfig = self._buildMarkers(response);
-                    self.data = self._chunk(response, 2);
+            //Get All Users of this zone
+            this.StudentService.getAllStudents().then(
+                function(response: Array<app.models.student.Student>) {
+                    self.type = 'student';
+                    self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(
+                        response,
+                        'search-map',
+                        {lat: 6.175434,lng: -75.583329}
+                    );
+                    self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                 }
             );
+
+            //Get All Teachers of this zone
+            /*this.TeacherService.getAllTeachers().then(
+                function(response: Array<app.models.teacher.Teacher>) {
+                    self.type = 'teacher';
+                    self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(
+                        response,
+                        'search-map',
+                        {lat: 6.175434,lng: -75.583329}
+                    );
+                    self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                }
+            );*/
         }
 
         /**********************************/
         /*            METHODS             */
         /**********************************/
-        //TODO: Esta funcion se encarga de dividir el array en 2 columnas, ya que
-        //      era necesario crear dos ng-repeat, uno para generar los rows
-        //      dinamicamente, y otro para cada uno de los contenedores con la
-        //      info de cada usuario.
-        private _chunk(arr, size) {
-            var newArr = [];
-            for (var i = 0; i < arr.length; i += size) {
-                newArr.push(arr.slice(i, i+size));
-            }
-            return newArr;
-        }
 
         private _buildMarkers(userData): components.map.IMapConfig {
             //VARIABLES
@@ -118,6 +133,24 @@ module app.pages.searchPage {
             }
 
             return mapConfig;
+        }
+
+
+        getResultTemplate(type): string {
+            //CONSTANTS
+            const STUDENT_TYPE = 'student';
+            const TEACHER_TYPE = 'teacher';
+            const SCHOOL_TYPE = 'school';
+            /*********************************/
+
+            switch (type) {
+                case STUDENT_TYPE:
+                return 'app/pages/searchPage/studentResult/studentResult.html';
+                case TEACHER_TYPE:
+                return 'app/pages/searchPage/teacherResult/teacherResult.html';
+                case SCHOOL_TYPE:
+                return 'app/pages/searchPage/schoolResult/schoolResult.html';
+            }
         }
 
 

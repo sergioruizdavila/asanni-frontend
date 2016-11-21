@@ -1,29 +1,29 @@
 /**
- * UserService
- * @description - Services related on User Model.
+ * StudentService
+ * @description - Services related on Student Model.
  * @constructor
  * @param {app.core.restApi.IRestApi} restApi - instance rest Api service.
  */
 
-module app.models.user {
+module app.models.student {
 
     'use strict';
 
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
-    export interface IUserService {
-        getUserById: (id: string) => angular.IPromise<any>;
-        getAllUsers: () => angular.IPromise<any>;
+    export interface IStudentService {
+        getStudentById: (id: string) => angular.IPromise<any>;
+        getAllStudents: () => angular.IPromise<any>;
     }
 
 
     /****************************************/
     /*           CLASS DEFINITION           */
     /****************************************/
-    export class UserService implements IUserService {
+    export class StudentService implements IStudentService {
 
-        static serviceId = 'mainApp.models.user.UserService';
+        static serviceId = 'mainApp.models.student.StudentService';
 
         /**********************************/
         /*           PROPERTIES           */
@@ -43,7 +43,7 @@ module app.models.user {
         /**********************************/
         constructor(private restApi: app.core.restApi.IRestApi) {
             //LOG
-            console.log('user service instanced');
+            console.log('student service instanced');
         }
 
         /**********************************/
@@ -51,16 +51,16 @@ module app.models.user {
         /**********************************/
 
         /**
-        * getUserById
-        * @description - get user by Id
-        * @use - this.UserService.getUserById('98d667ae');
+        * getStudentById
+        * @description - get teacher by Id
+        * @use - this.StudentService.getStudentByUid('98d667ae');
         * @function
-        * @params {string} id - user id
-        * @return {angular.IPromise<any>} promise - return user by Id
+        * @params {string} id - student id
+        * @return {angular.IPromise<any>} promise - return student by Id
         */
-        getUserById(id): angular.IPromise<any> {
+        getStudentById(id): angular.IPromise<any> {
             //VARIABLES
-            let url = 'users/';
+            let url = 'students/';
 
             return this.restApi.show({url: url, id: id}).$promise
                 .then(
@@ -76,15 +76,15 @@ module app.models.user {
         }
 
         /**
-        * getAllUsers
-        * @description - get all Users
+        * getAllStudents
+        * @description - get all Students
         * @function
         * @return {angular.IPromise<any>} return a promise with
-        * users list
+        * students list
         */
-        getAllUsers(): angular.IPromise<any> {
+        getAllStudents(): angular.IPromise<any> {
             //VARIABLES
-            let url = 'users/';
+            let url = 'students/';
 
             return this.restApi.query({url: url}).$promise
                 .then(
@@ -103,7 +103,7 @@ module app.models.user {
 
     /*-- MODULE DEFINITION --*/
     angular
-        .module('mainApp.models.user', [])
-        .service(UserService.serviceId, UserService);
+        .module('mainApp.models.student', [])
+        .service(StudentService.serviceId, StudentService);
 
 }

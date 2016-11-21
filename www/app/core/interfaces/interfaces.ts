@@ -7,10 +7,9 @@ module app.core.interfaces {
     /*******************************/
     /*     ROOTSCOPE INTERFACE     */
     /*******************************/
-    export interface IFinAppRootScope extends angular.IRootScopeService {
-        User: any;
-        auth: any;
-        session: any;
+    export interface IMainAppRootScope extends angular.IRootScopeService {
+        activeHeader: boolean;
+        activeFooter: boolean;
     }
 
     /*******************************/

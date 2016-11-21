@@ -4,9 +4,12 @@
         .module('mainApp', [
         'mainApp.auth',
         'mainApp.core',
+        'mainApp.core.util',
         'mainApp.localStorage',
         'mainApp.core.restApi',
         'mainApp.models.user',
+        'mainApp.models.student',
+        'mainApp.models.teacher',
         'mainApp.pages.main',
         'mainApp.pages.studentLandingPage',
         'mainApp.pages.searchPage',
