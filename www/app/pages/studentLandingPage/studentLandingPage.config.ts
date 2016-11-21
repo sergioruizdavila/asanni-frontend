@@ -25,6 +25,11 @@
                     }
                 },
                 parent: 'page',
+                onEnter: ['$rootScope', function ($rootScope) {
+                    // Show/Hide header & footer
+                    $rootScope.activeHeader = false;
+                    $rootScope.activeFooter = true;
+                }],
                 params: {
                     user: null,
                     id: null

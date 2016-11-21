@@ -15,6 +15,10 @@
                 }
             },
             parent: 'page',
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = false;
+                    $rootScope.activeFooter = true;
+                }],
             params: {
                 user: null,
                 id: null
