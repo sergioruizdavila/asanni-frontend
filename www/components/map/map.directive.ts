@@ -237,11 +237,23 @@ module components.map {
 
             // init map
             if (this._map === void 0) {
+
                 this.$timeout(function(){
+
+                    //Init Map
                     self._map = new google.maps.Map(
                         document.getElementById(self.mapId),
                         self.$scope.options
                     );
+
+                    //Create Filter Buttons
+                    let buttons = ['Students', 'Teachers', 'Schools'];
+
+                    for (let i = 0; i < buttons.length; i++) {
+                        let controlDiv = document.createElement('div');
+                        let control = new self.filterControl(controlDiv, buttons[i]);
+                        self._map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
+                    }
 
                     //set markers
                     for (let i = 0; i < self.mapConfig.data.markers.length; i++) {
@@ -452,6 +464,90 @@ module components.map {
 
             // add marker to markers array
             this._markers.push(marker);
+
+        }
+
+
+        /*
+        * filterControl
+        * @description - this method build filters button on map
+        */
+        filterControl(controlDiv, type) {
+            //VARIABLES
+            let self = this;
+            let className = 'filterBtnMap';
+            let background_color = 'rgb(255, 255, 255)';
+            let background_color_active = '#00B592';
+            let border_radius = '3px';
+            let box_shadow = 'rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px';
+            let cursor = 'pointer';
+            let margin_top = '10px';
+            let margin_bottom = '22px';
+            let margin_right = '10px';
+            let text_align = 'center';
+            let title = 'Click to search' + type;
+            let color = '#4E4E4E';
+            let color_active = '#FFF';
+            let font_family = 'Roboto,Arial,sans-serif';
+            let font_size = '15px';
+            let line_height = '10px';
+            let padding_top = '10px';
+            let padding_bottom = '10px';
+            let padding_left = '20px';
+            let padding_right = '20px';
+            let border_bottom = '0 hidden transparent';
+            let border_bottom_active = '2px solid #018a6f';
+
+            /********************/
+
+            // Set CSS for the control.
+            var controlUI = document.createElement('div');
+            controlUI.className = className;
+            controlUI.style.backgroundColor = background_color;
+            controlUI.style.borderRadius = border_radius;
+            controlUI.style.boxShadow = box_shadow;
+            controlUI.style.cursor = cursor;
+            controlUI.style.marginTop = margin_top;
+            controlUI.style.marginBottom = margin_bottom;
+            controlUI.style.marginRight = margin_right;
+            controlUI.style.textAlign = text_align;
+            controlUI.title = title;
+            controlDiv.appendChild(controlUI);
+
+            // Set CSS for the control interior.
+            var controlText = document.createElement('div');
+            controlText.style.color = color;
+            controlText.style.fontFamily = font_family;
+            controlText.style.fontSize = font_size;
+            controlText.style.lineHeight = line_height;
+            controlText.style.paddingTop = padding_top;
+            controlText.style.paddingBottom = padding_bottom;
+            controlText.style.paddingLeft = padding_left;
+            controlText.style.paddingRight = padding_right;
+            controlText.innerHTML = type;
+            controlUI.appendChild(controlText);
+
+            controlUI.addEventListener('click', function(e) {
+                //TODO: No me gustaria poner aqui la logica de buscar los
+                // estudiantes o profesores
+
+                // VARIABLES
+                let element = this;
+                let child:any = this.children[0];
+                let filterBtn:any = document.getElementsByClassName('filterBtnMap');
+
+                // Clean button state
+                for (let i = 0; i < filterBtn.length; i++) {
+                    filterBtn[i].style.backgroundColor = background_color;
+                    filterBtn[i].style.borderBottom = border_bottom;
+                    filterBtn[i].children[0].style.color = color;
+                }
+
+                // Active button
+                element.style.backgroundColor = background_color_active;
+                element.style.borderBottom = border_bottom_active;
+                child.style.color = color_active;
+            });
 
         }
 

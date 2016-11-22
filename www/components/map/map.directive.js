@@ -87,6 +87,12 @@ var components;
                 if (this._map === void 0) {
                     this.$timeout(function () {
                         self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
+                        var buttons = ['Students', 'Teachers', 'Schools'];
+                        for (var i = 0; i < buttons.length; i++) {
+                            var controlDiv = document.createElement('div');
+                            var control = new self.filterControl(controlDiv, buttons[i]);
+                            self._map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
+                        }
                         for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                             var marker = self.mapConfig.data.markers[i];
                             self.setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), 'London', 'Just some content', 'assets/images/meeting-point.png');
@@ -203,6 +209,67 @@ var components;
                     };
                 });
                 this._markers.push(marker);
+            };
+            MapController.prototype.filterControl = function (controlDiv, type) {
+                var self = this;
+                var className = 'filterBtnMap';
+                var background_color = 'rgb(255, 255, 255)';
+                var background_color_active = '#00B592';
+                var border_radius = '3px';
+                var box_shadow = 'rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px';
+                var cursor = 'pointer';
+                var margin_top = '10px';
+                var margin_bottom = '22px';
+                var margin_right = '10px';
+                var text_align = 'center';
+                var title = 'Click to search' + type;
+                var color = '#4E4E4E';
+                var color_active = '#FFF';
+                var font_family = 'Roboto,Arial,sans-serif';
+                var font_size = '15px';
+                var line_height = '10px';
+                var padding_top = '10px';
+                var padding_bottom = '10px';
+                var padding_left = '20px';
+                var padding_right = '20px';
+                var border_bottom = '0 hidden transparent';
+                var border_bottom_active = '2px solid #018a6f';
+                var controlUI = document.createElement('div');
+                controlUI.className = className;
+                controlUI.style.backgroundColor = background_color;
+                controlUI.style.borderRadius = border_radius;
+                controlUI.style.boxShadow = box_shadow;
+                controlUI.style.cursor = cursor;
+                controlUI.style.marginTop = margin_top;
+                controlUI.style.marginBottom = margin_bottom;
+                controlUI.style.marginRight = margin_right;
+                controlUI.style.textAlign = text_align;
+                controlUI.title = title;
+                controlDiv.appendChild(controlUI);
+                var controlText = document.createElement('div');
+                controlText.style.color = color;
+                controlText.style.fontFamily = font_family;
+                controlText.style.fontSize = font_size;
+                controlText.style.lineHeight = line_height;
+                controlText.style.paddingTop = padding_top;
+                controlText.style.paddingBottom = padding_bottom;
+                controlText.style.paddingLeft = padding_left;
+                controlText.style.paddingRight = padding_right;
+                controlText.innerHTML = type;
+                controlUI.appendChild(controlText);
+                controlUI.addEventListener('click', function (e) {
+                    var element = this;
+                    var child = this.children[0];
+                    var filterBtn = document.getElementsByClassName('filterBtnMap');
+                    for (var i = 0; i < filterBtn.length; i++) {
+                        filterBtn[i].style.backgroundColor = background_color;
+                        filterBtn[i].style.borderBottom = border_bottom;
+                        filterBtn[i].children[0].style.color = color;
+                    }
+                    element.style.backgroundColor = background_color_active;
+                    element.style.borderBottom = border_bottom_active;
+                    child.style.color = color_active;
+                });
             };
             return MapController;
         }());
