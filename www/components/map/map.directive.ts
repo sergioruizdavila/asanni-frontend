@@ -141,13 +141,15 @@ module components.map {
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/
-        static $inject = ['$scope', '$timeout'];
+        static $inject = ['$scope', '$rootScope', '$timeout'];
 
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        constructor(public $scope: IMapScope, private $timeout) {
+        constructor(public $scope: IMapScope,
+                    public $rootScope: app.core.interfaces.IMainAppRootScope,
+                    private $timeout) {
             this.init();
         }
 
@@ -170,6 +172,7 @@ module components.map {
                     lng: null
                 }
             };
+
 
             //default map options
             switch(this.mapConfig.type) {
@@ -238,7 +241,7 @@ module components.map {
             // init map
             if (this._map === void 0) {
 
-                this.$timeout(function(){
+                this.$timeout(function() {
 
                     //Init Map
                     self._map = new google.maps.Map(
@@ -251,7 +254,7 @@ module components.map {
 
                     for (let i = 0; i < buttons.length; i++) {
                         let controlDiv = document.createElement('div');
-                        let control = new self.filterControl(controlDiv, buttons[i]);
+                        let control = self.filterControl(controlDiv, buttons[i]);
                         self._map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
                     }
 
@@ -382,7 +385,7 @@ module components.map {
 
         /*
         * setMarker
-        * @description - this method assings every marker on map
+        * @description - this method assigns every marker on map
         */
         setMarker (id, position, title, content, icon): void {
             //VARIABLES
@@ -472,7 +475,7 @@ module components.map {
         * filterControl
         * @description - this method build filters button on map
         */
-        filterControl(controlDiv, type) {
+        filterControl(controlDiv, type): void {
             //VARIABLES
             let self = this;
             let className = 'filterBtnMap';
@@ -528,9 +531,6 @@ module components.map {
             controlUI.appendChild(controlText);
 
             controlUI.addEventListener('click', function(e) {
-                //TODO: No me gustaria poner aqui la logica de buscar los
-                // estudiantes o profesores
-
                 // VARIABLES
                 let element = this;
                 let child:any = this.children[0];
@@ -547,8 +547,21 @@ module components.map {
                 element.style.backgroundColor = background_color_active;
                 element.style.borderBottom = border_bottom_active;
                 child.style.color = color_active;
+
+                //Remove all markers
+                self._removeMarkers();
+
+                self.$rootScope.$broadcast(type);
             });
 
+        }
+
+
+        //Remueve todos los marcadores del mapa
+        private _removeMarkers(): void {
+            for (let i = 0; i < this._markers.length; i++) {
+                this._markers[i].setMap(null);
+            }
         }
 
     }

@@ -81,6 +81,36 @@ module app.pages.searchPage {
             //LOG
             console.log('searchPage controller actived');
 
+            this.$scope.$on('Students', function(event, args) {
+                //Get All Users of this zone
+                self.StudentService.getAllStudents().then(
+                    function(response: Array<app.models.student.Student>) {
+                        self.type = 'student';
+                        self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(
+                            response,
+                            'search-map',
+                            {lat: 6.175434,lng: -75.583329}
+                        );
+                        self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                    }
+                );
+            });
+
+            this.$scope.$on('Teachers', function(event, args) {
+                //Get All Teachers of this zone
+                self.TeacherService.getAllTeachers().then(
+                    function(response: Array<app.models.teacher.Teacher>) {
+                        self.type = 'teacher';
+                        self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(
+                            response,
+                            'search-map',
+                            {lat: 6.175434,lng: -75.583329}
+                        );
+                        self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                    }
+                );
+            });
+
             //Get All Users of this zone
             this.StudentService.getAllStudents().then(
                 function(response: Array<app.models.student.Student>) {

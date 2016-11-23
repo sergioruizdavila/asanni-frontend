@@ -28,8 +28,9 @@ var components;
             .module('mainApp.components.map')
             .directive(MaMap.directiveId, MaMap.instance);
         var MapController = (function () {
-            function MapController($scope, $timeout) {
+            function MapController($scope, $rootScope, $timeout) {
                 this.$scope = $scope;
+                this.$rootScope = $rootScope;
                 this.$timeout = $timeout;
                 this.init();
             }
@@ -90,7 +91,7 @@ var components;
                         var buttons = ['Students', 'Teachers', 'Schools'];
                         for (var i = 0; i < buttons.length; i++) {
                             var controlDiv = document.createElement('div');
-                            var control = new self.filterControl(controlDiv, buttons[i]);
+                            var control = self.filterControl(controlDiv, buttons[i]);
                             self._map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
                         }
                         for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
@@ -269,12 +270,19 @@ var components;
                     element.style.backgroundColor = background_color_active;
                     element.style.borderBottom = border_bottom_active;
                     child.style.color = color_active;
+                    self._removeMarkers();
+                    self.$rootScope.$broadcast(type);
                 });
+            };
+            MapController.prototype._removeMarkers = function () {
+                for (var i = 0; i < this._markers.length; i++) {
+                    this._markers[i].setMap(null);
+                }
             };
             return MapController;
         }());
         MapController.controllerId = 'mainApp.components.map.MapController';
-        MapController.$inject = ['$scope', '$timeout'];
+        MapController.$inject = ['$scope', '$rootScope', '$timeout'];
         map_1.MapController = MapController;
         angular.module('mainApp.components.map')
             .controller(MapController.controllerId, MapController);
