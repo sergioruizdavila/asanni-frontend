@@ -1,9 +1,10 @@
-<ma-header class="hidden"></ma-header>
+<ma-header ng-show="activeHeader"></ma-header>
 
-<div class="header-separator hidden"></div>
+<div class="header-separator"
+     ng-show="activeHeader"></div>
 
 <main role="main">
     <div ui-view="container" class="app_content"></div>
 </main>
 
-<ma-footer></ma-footer>
+<ma-footer ng-show="activeFooter"></ma-footer>

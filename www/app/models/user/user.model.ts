@@ -42,8 +42,6 @@ module app.models.user {
         private birth_date: IBirthDate;
         private born: IBorn;
         //private live_in: string;
-        private school: string;
-        private occupation: string;
         private about: string;
         private location: ILocation;
 
@@ -65,8 +63,6 @@ module app.models.user {
             this.birth_date = obj.birth_date || '';
             this.born = obj.born || '';
             //this.live_in = obj.live_in || '';
-            this.school = obj.school || '';
-            this.occupation = obj.occupation || '';
             this.about = obj.about || '';
             this.location = obj.location || '';
 
@@ -166,24 +162,6 @@ module app.models.user {
             this.live_in = live_in;
         }*/
 
-        get School() {
-            return this.school;
-        }
-
-        set School(school: string) {
-            if (school === undefined) { throw 'Please supply school'; }
-            this.school = school;
-        }
-
-        get Occupation() {
-            return this.occupation;
-        }
-
-        set Occupation(occupation: string) {
-            if (occupation === undefined) { throw 'Please supply occupation'; }
-            this.occupation = occupation;
-        }
-
         get About() {
             return this.about;
         }
@@ -200,104 +178,6 @@ module app.models.user {
         set Location(location: ILocation) {
             if (location === undefined) { throw 'Please supply location'; }
             this.location = location;
-        }
-
-    }
-
-
-
-
-    /**
-     * Specifies the Classes and Interfaces related to Students in our Model
-     */
-
-    /****************************************/
-    /*           CLASS DEFINITION           */
-    /****************************************/
-
-    export class Student extends User {
-
-        /*-- PROPERTIES --*/
-        private fluent_in: Array<string>;
-        private learning: Array<string>;
-        private interests: Array<string>;
-
-
-        /**********************************/
-        /*           CONSTRUCTOR          */
-        /**********************************/
-        constructor(obj: any = {}) {
-            //LOG
-            console.log('Student Model instanced');
-
-            //init properties
-            super(obj);
-            this.fluent_in = obj.fluent_in;
-            this.learning = obj.learning;
-            this.interests = obj.interests;
-
-        }
-
-
-        /**********************************/
-        /*             METHODS            */
-        /**********************************/
-
-        get Fluent_in() {
-            return this.fluent_in;
-        }
-
-        addFluentIn(language: string): void {
-            if(language === undefined) { throw 'Please supply fluent in language element (Add)'; }
-            this.fluent_in.push(language);
-        }
-
-        editFluentIn(language: string): void {
-            if(language === undefined) { throw 'Please supply fluent in language element (Edit)'; }
-            //Edit existing Fluent in Language
-            this.fluent_in.forEach(function (element, index, array) {
-                if (language === element) {
-                    array[index] = language;
-                }
-            });
-        }
-
-        get Learning() {
-            return this.learning;
-        }
-
-        addLearning(language: string): void {
-            if(language === undefined) { throw 'Please supply learning language element (Add)'; }
-            this.fluent_in.push(language);
-        }
-
-        editLearning(language: string): void {
-            if(language === undefined) { throw 'Please supply learning language element (Edit)'; }
-            //Edit existing Learning Language
-            this.learning.forEach(function (element, index, array) {
-                if (language === element) {
-                    array[index] = language;
-                }
-            });
-        }
-
-        get Interests() {
-            return this.interests;
-        }
-
-        addInterest(interest: string): void {
-            if(interest === undefined) { throw 'Please supply interest element (Add)'; }
-            this.interests.push(interest);
-        }
-
-        editInterest(interest: string): void {
-            if(interest === undefined) { throw 'Please supply interest element (Edit)'; }
-            //Edit existing Interest
-            this.interests.forEach(function (element, index, array) {
-                if (interest === element) {
-                    array[index] = interest;
-                }
-            });
         }
 
     }

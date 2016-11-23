@@ -19,13 +19,21 @@ module app.pages.main {
 
         static controllerId = 'mainApp.pages.main.MainController';
 
+        /**********************************/
+        /*           PROPERTIES           */
+        /**********************************/
+
+        // --------------------------------
+
+
         /*-- INJECT DEPENDENCIES --*/
-        //public static $inject = ['$scope'];
+        public static $inject = ['$rootScope', '$state'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        constructor() {
+        constructor(private $rootScope: any,
+                    private $state: ng.ui.IStateService) {
             this.init();
         }
 
@@ -36,10 +44,15 @@ module app.pages.main {
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
+            //VARIABLES
+            let self = this;
+            //LOG
             console.log('main controller actived');
+
         }
 
     }
+
 
     /*-- MODULE DEFINITION --*/
     angular

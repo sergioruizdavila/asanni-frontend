@@ -1,0 +1,201 @@
+<!----------------------------------------------------------------------------->
+<!--                          SCHOOLS RESULT TEMPLATE                        -->
+<!----------------------------------------------------------------------------->
+
+
+<!-------------------- START: INFO BLOCK ---------------------->
+<div id="search-result-info-block"
+     class="search-result__info__block">
+
+    <!----------------- START: BASIC INFO BLOCK --------------->
+    <div class="search-result__info__block__basic-info
+                row margin-reset">
+
+        <div class="col-xs-9 col-md-9">
+
+            <!-- Name -->
+            <div id="search-result-basicInfo-name"
+                 class="search-result__info__block__basic-info__name
+                        row margin-reset">
+                <h3 class="text-truncate">
+                    <a class="ma-link
+                              ma-link--simple
+                              ma-link--simple--default
+                              margin-reset"
+                              ui-sref="page.userProfilePage({id: item.id})"
+                              href="#" aria-label="Go to the profile of {{item.first_name}}">
+                        {{item.first_name}}
+                    </a>
+                </h3>
+            </div>
+
+            <!-- From -->
+            <div id="search-result-basicInfo-from"
+                 class="search-result__info__block__basic-info__from
+                        row margin-reset">
+                <div class="ma-label
+                            ma-label--simple
+                            ma-label--simple--default
+                            ma-label--simple--primary
+                            margin-reset
+                            text-truncate">
+                    {{item.born.city}}, {{item.born.country}}
+                </div>
+            </div>
+
+            <!-- Reviews -->
+            <div id="search-result-basicInfo-reviews"
+                 class="search-result__info__block__basic-info__reviews
+                        row
+                        margin-reset">
+
+                <div class="ma-stars-withLabel">
+                    <div class="ma-stars">
+                        <i class="material-icons ma-stars__icon
+                                  ma-stars__icon--tiny">star</i>
+                        <i class="material-icons ma-stars__icon
+                                  ma-stars__icon--tiny">star</i>
+                        <i class="material-icons ma-stars__icon
+                                  ma-stars__icon--tiny">star</i>
+                        <i class="material-icons ma-stars__icon
+                                  ma-stars__icon--tiny">star_half</i>
+                        <i class="material-icons ma-stars__icon
+                                  ma-stars__icon--tiny">star_border</i>
+                    </div>
+                    <div class="ma-stars-withLabel__label-container">
+                        <div class="ma-label
+                                    ma-label--simple
+                                    ma-label--simple--small
+                                    ma-label--simple--gray
+                                    margin-reset">(33 reviews)</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xs-3 col-md-3">
+
+            <!------------ START: PROFILE IMAGE BLOCK --------->
+            <div id="search-result-image-block"
+                 class="ma-user-photo-review-block pull-right">
+
+                <div class="ma-photo-profile
+                            ma-photo-profile--default
+                            round
+                            ma-user-photo-review-block__photo">
+                    <img width="100" height="100"
+                         src="{{item.avatar}}"
+                         alt="Sergio Ruiz">
+                </div>
+
+            </div>
+            <!--           END: PROFILE IMAGE BLOCK          -->
+
+        </div>
+
+    </div>
+    <!--                 END: BASIC INFO BLOCK               -->
+
+
+
+    <!------------------- START: FLUENT BLOCK ----------------->
+    <div id="search-result-fluenIn-block"
+         class="search-result__info__block__fluent
+                row margin-reset">
+
+        <div class="col-xs-12 col-md-12">
+            <h4 class="search-result__info__block__fluent__title">
+                Fluent in
+            </h4>
+            <div class="search-result__info__block__fluent__options">
+                <div class="ma-label
+                            ma-label--simple
+                            ma-label--simple--medium
+                            ma-label--simple--primary
+                            margin-reset">Spanish</div> ·
+                <div class="ma-label
+                            ma-label--simple
+                            ma-label--simple--medium
+                            ma-label--simple--primary
+                            margin-reset">English</div> ·
+                <div class="ma-label
+                            ma-label--simple
+                            ma-label--simple--medium
+                            ma-label--simple--primary
+                            margin-reset">Italian</div>
+            </div>
+        </div>
+
+    </div>
+    <!--                   END: FLUENT BLOCK                 -->
+
+
+
+    <!------------------- START: LEARNING BLOCK --------------->
+    <div id="search-result-learning-block"
+         class="search-result__info__block__learning
+                row margin-reset">
+
+        <div class="col-xs-12 col-md-12">
+            <h4 class="search-result__info__block__learning__title">
+                Learning
+            </h4>
+            <div class="search-result__info__block__learning__options">
+                <div class="ma-label
+                            ma-label--simple
+                            ma-label--simple--medium
+                            ma-label--simple--primary
+                            margin-reset">Arabic</div>
+            </div>
+        </div>
+
+    </div>
+    <!--                  END: LEARNING BLOCK                -->
+
+
+
+    <!------------------- START: ABOUT ME BLOCK --------------->
+    <div id="search-result-aboutMe-block"
+         class="search-result__info__block__about
+                row margin-reset">
+
+        <div class="col-xs-12 col-md-12">
+            <h4 class="search-result__info__block__about__title">
+                About me
+            </h4>
+            <p class="ma-p margin-reset">
+                {{item.about}}
+            </p>
+        </div>
+
+    </div>
+    <!--                  END: ABOUT ME BLOCK                -->
+
+    <hr>
+
+    <!------------------- START: INTEREST BLOCK --------------->
+    <div id="search-result-interests-block"
+         class="search-result__info__block__interests
+                row margin-reset">
+
+        <div class="col-xs-12 col-md-12">
+            <h4 class="search-result__info__block__interests__title">
+                Interests
+            </h4>
+            <div class="search-result__info__block__interests__options">
+                <div ng-repeat="interest in item.interests"
+                     class="ma-label
+                            ma-label--box
+                            ma-label--box--secondary
+                            ma-label--box--space2
+                            ma-label--box--small">{{interest}}</div>
+            </div>
+        </div>
+
+    </div>
+    <!--                 END: INTEREST ME BLOCK              -->
+
+</div>
+<!--                    END: INFO BLOCK                      -->

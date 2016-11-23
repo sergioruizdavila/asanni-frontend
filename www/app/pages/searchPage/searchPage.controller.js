@@ -5,8 +5,11 @@ var app;
         var searchPage;
         (function (searchPage) {
             var SearchPageController = (function () {
-                function SearchPageController(UserService, $state, $filter, $scope) {
-                    this.UserService = UserService;
+                function SearchPageController(StudentService, TeacherService, SchoolService, FunctionsUtilService, $state, $filter, $scope) {
+                    this.StudentService = StudentService;
+                    this.TeacherService = TeacherService;
+                    this.SchoolService = SchoolService;
+                    this.FunctionsUtilService = FunctionsUtilService;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
@@ -14,6 +17,7 @@ var app;
                 }
                 SearchPageController.prototype._init = function () {
                     this.data = [];
+                    this.type = null;
                     this.error = {
                         message: ''
                     };
@@ -22,42 +26,61 @@ var app;
                 SearchPageController.prototype.activate = function () {
                     var self = this;
                     console.log('searchPage controller actived');
-                    this.UserService.getAllUsers().then(function (response) {
-                        self.mapConfig = self._buildMarkers(response);
-                        self.data = self._chunk(response, 2);
+                    this._subscribeToEvents();
+                    this.StudentService.getAllStudents().then(function (response) {
+                        self.type = 'student';
+                        self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                        self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                     });
                 };
-                SearchPageController.prototype._chunk = function (arr, size) {
-                    var newArr = [];
-                    for (var i = 0; i < arr.length; i += size) {
-                        newArr.push(arr.slice(i, i + size));
+                SearchPageController.prototype._getResultTemplate = function (type) {
+                    var STUDENT_TYPE = 'student';
+                    var TEACHER_TYPE = 'teacher';
+                    var SCHOOL_TYPE = 'school';
+                    switch (type) {
+                        case STUDENT_TYPE:
+                            return 'app/pages/searchPage/studentResult/studentResult.html';
+                        case TEACHER_TYPE:
+                            return 'app/pages/searchPage/teacherResult/teacherResult.html';
+                        case SCHOOL_TYPE:
+                            return 'app/pages/searchPage/schoolResult/schoolResult.html';
                     }
-                    return newArr;
                 };
-                SearchPageController.prototype._buildMarkers = function (userData) {
-                    var mapConfig = {
-                        type: 'search-map',
-                        data: {
-                            position: {
-                                lat: 6.175434,
-                                lng: -75.583329
-                            },
-                            markers: []
-                        }
-                    };
-                    for (var i = 0; i < userData.length; i++) {
-                        mapConfig.data.markers.push({
-                            id: userData[i].id,
-                            position: userData[i].location.position
+                SearchPageController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Students', function (event, args) {
+                        self.StudentService.getAllStudents().then(function (response) {
+                            self.type = 'student';
+                            self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                            self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                         });
-                    }
-                    return mapConfig;
+                    });
+                    this.$scope.$on('Teachers', function (event, args) {
+                        self.TeacherService.getAllTeachers().then(function (response) {
+                            self.type = 'teacher';
+                            self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                            self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                        });
+                    });
+                    this.$scope.$on('Schools', function (event, args) {
+                        self.SchoolService.getAllSchools().then(function (response) {
+                            self.type = 'school';
+                            self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                            self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                        });
+                    });
                 };
                 return SearchPageController;
             }());
             SearchPageController.controllerId = 'mainApp.pages.searchPage.SearchPageController';
             SearchPageController.$inject = [
-                'mainApp.models.user.UserService',
+                'mainApp.models.student.StudentService',
+                'mainApp.models.teacher.TeacherService',
+                'mainApp.models.school.SchoolService',
+                'mainApp.core.util.FunctionsUtilService',
                 '$state',
                 '$filter',
                 '$scope'
