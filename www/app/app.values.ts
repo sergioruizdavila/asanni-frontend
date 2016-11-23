@@ -35,6 +35,7 @@ interface IDataConfig {
         userId: ''
     };
 
+
     angular
         .module('mainApp')
         .value('dataConfig', dataConfig);
