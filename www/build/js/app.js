@@ -16,18 +16,23 @@
         .module('mainApp', [
         'mainApp.auth',
         'mainApp.core',
+        'mainApp.core.util',
         'mainApp.localStorage',
         'mainApp.core.restApi',
         'mainApp.models.user',
+        'mainApp.models.student',
+        'mainApp.models.teacher',
+        'mainApp.models.school',
         'mainApp.pages.main',
         'mainApp.pages.studentLandingPage',
+        'mainApp.pages.searchPage',
         'mainApp.components.header',
         'mainApp.components.map',
         'mainApp.components.footer'
     ])
         .config(config);
     function config($locationProvider, $urlRouterProvider, $translateProvider) {
-        $urlRouterProvider.otherwise('/page/landing/student');
+        $urlRouterProvider.otherwise('/page');
         var prefix = 'assets/i18n/';
         var suffix = '.json';
         $translateProvider.useStaticFilesLoader({
@@ -76,7 +81,7 @@
 (function () {
     'use strict';
     var dataConfig = {
-        baseUrl: 'https://asanni.herokuapp.com/api/v1/',
+        baseUrl: 'http://localhost:3000/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -221,11 +226,316 @@ var app;
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
 //# sourceMappingURL=restApi.service.js.map
+var app;
+(function (app) {
+    var models;
+    (function (models) {
+        var school;
+        (function (school) {
+            var School = (function () {
+                function School(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('School Model instanced');
+                }
+                return School;
+            }());
+            school.School = School;
+        })(school = models.school || (models.school = {}));
+    })(models = app.models || (app.models = {}));
+})(app || (app = {}));
+//# sourceMappingURL=school.model.js.map
+var app;
+(function (app) {
+    var models;
+    (function (models) {
+        var school;
+        (function (school) {
+            'use strict';
+            var SchoolService = (function () {
+                function SchoolService(restApi) {
+                    this.restApi = restApi;
+                    console.log('school service instanced');
+                }
+                SchoolService.prototype.getSchoolById = function (id) {
+                    var url = 'schools/';
+                    return this.restApi.show({ url: url, id: id }).$promise
+                        .then(function (data) {
+                        return data;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                };
+                SchoolService.prototype.getAllSchools = function () {
+                    var url = 'schools/';
+                    return this.restApi.query({ url: url }).$promise
+                        .then(function (data) {
+                        return data;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                };
+                return SchoolService;
+            }());
+            SchoolService.serviceId = 'mainApp.models.school.SchoolService';
+            SchoolService.$inject = [
+                'mainApp.core.restApi.restApiService'
+            ];
+            school.SchoolService = SchoolService;
+            angular
+                .module('mainApp.models.school', [])
+                .service(SchoolService.serviceId, SchoolService);
+        })(school = models.school || (models.school = {}));
+    })(models = app.models || (app.models = {}));
+})(app || (app = {}));
+//# sourceMappingURL=school.service.js.map
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var app;
+(function (app) {
+    var models;
+    (function (models) {
+        var student;
+        (function (student) {
+            var Student = (function (_super) {
+                __extends(Student, _super);
+                function Student(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    var _this;
+                    console.log('Student Model instanced');
+                    _this = _super.call(this, obj) || this;
+                    _this.school = obj.school || '';
+                    _this.occupation = obj.occupation || '';
+                    _this.fluent_in = obj.fluent_in || '';
+                    _this.learning = obj.learning || '';
+                    _this.interests = obj.interests || '';
+                    return _this;
+                }
+                Object.defineProperty(Student.prototype, "School", {
+                    get: function () {
+                        return this.school;
+                    },
+                    set: function (school) {
+                        if (school === undefined) {
+                            throw 'Please supply school';
+                        }
+                        this.school = school;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Student.prototype, "Occupation", {
+                    get: function () {
+                        return this.occupation;
+                    },
+                    set: function (occupation) {
+                        if (occupation === undefined) {
+                            throw 'Please supply occupation';
+                        }
+                        this.occupation = occupation;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Student.prototype, "Fluent_in", {
+                    get: function () {
+                        return this.fluent_in;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Student.prototype.addFluentIn = function (language) {
+                    if (language === undefined) {
+                        throw 'Please supply fluent in language element (Add)';
+                    }
+                    this.fluent_in.push(language);
+                };
+                Student.prototype.editFluentIn = function (language) {
+                    if (language === undefined) {
+                        throw 'Please supply fluent in language element (Edit)';
+                    }
+                    this.fluent_in.forEach(function (element, index, array) {
+                        if (language === element) {
+                            array[index] = language;
+                        }
+                    });
+                };
+                Object.defineProperty(Student.prototype, "Learning", {
+                    get: function () {
+                        return this.learning;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Student.prototype.addLearning = function (language) {
+                    if (language === undefined) {
+                        throw 'Please supply learning language element (Add)';
+                    }
+                    this.fluent_in.push(language);
+                };
+                Student.prototype.editLearning = function (language) {
+                    if (language === undefined) {
+                        throw 'Please supply learning language element (Edit)';
+                    }
+                    this.learning.forEach(function (element, index, array) {
+                        if (language === element) {
+                            array[index] = language;
+                        }
+                    });
+                };
+                Object.defineProperty(Student.prototype, "Interests", {
+                    get: function () {
+                        return this.interests;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Student.prototype.addInterest = function (interest) {
+                    if (interest === undefined) {
+                        throw 'Please supply interest element (Add)';
+                    }
+                    this.interests.push(interest);
+                };
+                Student.prototype.editInterest = function (interest) {
+                    if (interest === undefined) {
+                        throw 'Please supply interest element (Edit)';
+                    }
+                    this.interests.forEach(function (element, index, array) {
+                        if (interest === element) {
+                            array[index] = interest;
+                        }
+                    });
+                };
+                return Student;
+            }(app.models.user.User));
+            student.Student = Student;
+        })(student = models.student || (models.student = {}));
+    })(models = app.models || (app.models = {}));
+})(app || (app = {}));
+//# sourceMappingURL=student.model.js.map
+var app;
+(function (app) {
+    var models;
+    (function (models) {
+        var student;
+        (function (student) {
+            'use strict';
+            var StudentService = (function () {
+                function StudentService(restApi) {
+                    this.restApi = restApi;
+                    console.log('student service instanced');
+                }
+                StudentService.prototype.getStudentById = function (id) {
+                    var url = 'students/';
+                    return this.restApi.show({ url: url, id: id }).$promise
+                        .then(function (data) {
+                        return data;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                };
+                StudentService.prototype.getAllStudents = function () {
+                    var url = 'students/';
+                    return this.restApi.query({ url: url }).$promise
+                        .then(function (data) {
+                        return data;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                };
+                return StudentService;
+            }());
+            StudentService.serviceId = 'mainApp.models.student.StudentService';
+            StudentService.$inject = [
+                'mainApp.core.restApi.restApiService'
+            ];
+            student.StudentService = StudentService;
+            angular
+                .module('mainApp.models.student', [])
+                .service(StudentService.serviceId, StudentService);
+        })(student = models.student || (models.student = {}));
+    })(models = app.models || (app.models = {}));
+})(app || (app = {}));
+//# sourceMappingURL=student.service.js.map
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var app;
+(function (app) {
+    var models;
+    (function (models) {
+        var teacher;
+        (function (teacher) {
+            var Teacher = (function (_super) {
+                __extends(Teacher, _super);
+                function Teacher(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    var _this;
+                    console.log('Teacher Model instanced');
+                    _this = _super.call(this, obj) || this;
+                    return _this;
+                }
+                return Teacher;
+            }(app.models.user.User));
+            teacher.Teacher = Teacher;
+        })(teacher = models.teacher || (models.teacher = {}));
+    })(models = app.models || (app.models = {}));
+})(app || (app = {}));
+//# sourceMappingURL=teacher.model.js.map
+var app;
+(function (app) {
+    var models;
+    (function (models) {
+        var teacher;
+        (function (teacher) {
+            'use strict';
+            var TeacherService = (function () {
+                function TeacherService(restApi) {
+                    this.restApi = restApi;
+                    console.log('teacher service instanced');
+                }
+                TeacherService.prototype.getTeacherById = function (id) {
+                    var url = 'teachers/';
+                    return this.restApi.show({ url: url, id: id }).$promise
+                        .then(function (data) {
+                        return data;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                };
+                TeacherService.prototype.getAllTeachers = function () {
+                    var url = 'teachers/';
+                    return this.restApi.query({ url: url }).$promise
+                        .then(function (data) {
+                        return data;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                };
+                return TeacherService;
+            }());
+            TeacherService.serviceId = 'mainApp.models.teacher.TeacherService';
+            TeacherService.$inject = [
+                'mainApp.core.restApi.restApiService'
+            ];
+            teacher.TeacherService = TeacherService;
+            angular
+                .module('mainApp.models.teacher', [])
+                .service(TeacherService.serviceId, TeacherService);
+        })(teacher = models.teacher || (models.teacher = {}));
+    })(models = app.models || (app.models = {}));
+})(app || (app = {}));
+//# sourceMappingURL=teacher.service.js.map
 var app;
 (function (app) {
     var models;
@@ -245,8 +555,6 @@ var app;
                     this.sex = obj.sex || '';
                     this.birth_date = obj.birth_date || '';
                     this.born = obj.born || '';
-                    this.school = obj.school || '';
-                    this.occupation = obj.occupation || '';
                     this.about = obj.about || '';
                     this.location = obj.location || '';
                 }
@@ -367,32 +675,6 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "School", {
-                    get: function () {
-                        return this.school;
-                    },
-                    set: function (school) {
-                        if (school === undefined) {
-                            throw 'Please supply school';
-                        }
-                        this.school = school;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "Occupation", {
-                    get: function () {
-                        return this.occupation;
-                    },
-                    set: function (occupation) {
-                        if (occupation === undefined) {
-                            throw 'Please supply occupation';
-                        }
-                        this.occupation = occupation;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
                 Object.defineProperty(User.prototype, "About", {
                     get: function () {
                         return this.about;
@@ -422,90 +704,6 @@ var app;
                 return User;
             }());
             user.User = User;
-            var Student = (function (_super) {
-                __extends(Student, _super);
-                function Student(obj) {
-                    if (obj === void 0) { obj = {}; }
-                    var _this;
-                    console.log('Student Model instanced');
-                    _this = _super.call(this, obj) || this;
-                    _this.fluent_in = obj.fluent_in;
-                    _this.learning = obj.learning;
-                    _this.interests = obj.interests;
-                    return _this;
-                }
-                Object.defineProperty(Student.prototype, "Fluent_in", {
-                    get: function () {
-                        return this.fluent_in;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Student.prototype.addFluentIn = function (language) {
-                    if (language === undefined) {
-                        throw 'Please supply fluent in language element (Add)';
-                    }
-                    this.fluent_in.push(language);
-                };
-                Student.prototype.editFluentIn = function (language) {
-                    if (language === undefined) {
-                        throw 'Please supply fluent in language element (Edit)';
-                    }
-                    this.fluent_in.forEach(function (element, index, array) {
-                        if (language === element) {
-                            array[index] = language;
-                        }
-                    });
-                };
-                Object.defineProperty(Student.prototype, "Learning", {
-                    get: function () {
-                        return this.learning;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Student.prototype.addLearning = function (language) {
-                    if (language === undefined) {
-                        throw 'Please supply learning language element (Add)';
-                    }
-                    this.fluent_in.push(language);
-                };
-                Student.prototype.editLearning = function (language) {
-                    if (language === undefined) {
-                        throw 'Please supply learning language element (Edit)';
-                    }
-                    this.learning.forEach(function (element, index, array) {
-                        if (language === element) {
-                            array[index] = language;
-                        }
-                    });
-                };
-                Object.defineProperty(Student.prototype, "Interests", {
-                    get: function () {
-                        return this.interests;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Student.prototype.addInterest = function (interest) {
-                    if (interest === undefined) {
-                        throw 'Please supply interest element (Add)';
-                    }
-                    this.interests.push(interest);
-                };
-                Student.prototype.editInterest = function (interest) {
-                    if (interest === undefined) {
-                        throw 'Please supply interest element (Edit)';
-                    }
-                    this.interests.forEach(function (element, index, array) {
-                        if (interest === element) {
-                            array[index] = interest;
-                        }
-                    });
-                };
-                return Student;
-            }(User));
-            user.Student = Student;
         })(user = models.user || (models.user = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
@@ -580,18 +778,22 @@ var app;
         var main;
         (function (main) {
             var MainController = (function () {
-                function MainController() {
+                function MainController($rootScope, $state) {
+                    this.$rootScope = $rootScope;
+                    this.$state = $state;
                     this.init();
                 }
                 MainController.prototype.init = function () {
                     this.activate();
                 };
                 MainController.prototype.activate = function () {
+                    var self = this;
                     console.log('main controller actived');
                 };
                 return MainController;
             }());
             MainController.controllerId = 'mainApp.pages.main.MainController';
+            MainController.$inject = ['$rootScope', '$state'];
             main.MainController = MainController;
             angular
                 .module('mainApp.pages.main')
@@ -745,6 +947,10 @@ var app;
                 }
             },
             parent: 'page',
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = true;
+                    $rootScope.activeFooter = false;
+                }],
             params: {
                 user: null
             }
@@ -759,8 +965,11 @@ var app;
         var searchPage;
         (function (searchPage) {
             var SearchPageController = (function () {
-                function SearchPageController(UserService, $state, $filter, $scope) {
-                    this.UserService = UserService;
+                function SearchPageController(StudentService, TeacherService, SchoolService, FunctionsUtilService, $state, $filter, $scope) {
+                    this.StudentService = StudentService;
+                    this.TeacherService = TeacherService;
+                    this.SchoolService = SchoolService;
+                    this.FunctionsUtilService = FunctionsUtilService;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
@@ -768,6 +977,7 @@ var app;
                 }
                 SearchPageController.prototype._init = function () {
                     this.data = [];
+                    this.type = null;
                     this.error = {
                         message: ''
                     };
@@ -776,42 +986,61 @@ var app;
                 SearchPageController.prototype.activate = function () {
                     var self = this;
                     console.log('searchPage controller actived');
-                    this.UserService.getAllUsers().then(function (response) {
-                        self.mapConfig = self._buildMarkers(response);
-                        self.data = self._chunk(response, 2);
+                    this._subscribeToEvents();
+                    this.StudentService.getAllStudents().then(function (response) {
+                        self.type = 'student';
+                        self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                        self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                     });
                 };
-                SearchPageController.prototype._chunk = function (arr, size) {
-                    var newArr = [];
-                    for (var i = 0; i < arr.length; i += size) {
-                        newArr.push(arr.slice(i, i + size));
+                SearchPageController.prototype._getResultTemplate = function (type) {
+                    var STUDENT_TYPE = 'student';
+                    var TEACHER_TYPE = 'teacher';
+                    var SCHOOL_TYPE = 'school';
+                    switch (type) {
+                        case STUDENT_TYPE:
+                            return 'app/pages/searchPage/studentResult/studentResult.html';
+                        case TEACHER_TYPE:
+                            return 'app/pages/searchPage/teacherResult/teacherResult.html';
+                        case SCHOOL_TYPE:
+                            return 'app/pages/searchPage/schoolResult/schoolResult.html';
                     }
-                    return newArr;
                 };
-                SearchPageController.prototype._buildMarkers = function (userData) {
-                    var mapConfig = {
-                        type: 'search-map',
-                        data: {
-                            position: {
-                                lat: 6.175434,
-                                lng: -75.583329
-                            },
-                            markers: []
-                        }
-                    };
-                    for (var i = 0; i < userData.length; i++) {
-                        mapConfig.data.markers.push({
-                            id: userData[i].id,
-                            position: userData[i].location.position
+                SearchPageController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Students', function (event, args) {
+                        self.StudentService.getAllStudents().then(function (response) {
+                            self.type = 'student';
+                            self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                            self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                         });
-                    }
-                    return mapConfig;
+                    });
+                    this.$scope.$on('Teachers', function (event, args) {
+                        self.TeacherService.getAllTeachers().then(function (response) {
+                            self.type = 'teacher';
+                            self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                            self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                        });
+                    });
+                    this.$scope.$on('Schools', function (event, args) {
+                        self.SchoolService.getAllSchools().then(function (response) {
+                            self.type = 'school';
+                            self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                            self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                        });
+                    });
                 };
                 return SearchPageController;
             }());
             SearchPageController.controllerId = 'mainApp.pages.searchPage.SearchPageController';
             SearchPageController.$inject = [
-                'mainApp.models.user.UserService',
+                'mainApp.models.student.StudentService',
+                'mainApp.models.teacher.TeacherService',
+                'mainApp.models.school.SchoolService',
+                'mainApp.core.util.FunctionsUtilService',
                 '$state',
                 '$filter',
                 '$scope'
@@ -913,6 +1142,10 @@ var app;
                 }
             },
             parent: 'page',
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = false;
+                    $rootScope.activeFooter = true;
+                }],
             params: {
                 user: null,
                 id: null
@@ -1565,6 +1798,54 @@ var app;
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
 //# sourceMappingURL=customPopup.service.js.map
+var app;
+(function (app) {
+    var core;
+    (function (core) {
+        var util;
+        (function (util) {
+            var functionsUtil;
+            (function (functionsUtil) {
+                'use strict';
+                var FunctionsUtilService = (function () {
+                    function FunctionsUtilService() {
+                        console.log('functionsUtil service called');
+                    }
+                    FunctionsUtilService.prototype.splitToColumns = function (arr, size) {
+                        var newArr = [];
+                        for (var i = 0; i < arr.length; i += size) {
+                            newArr.push(arr.slice(i, i + size));
+                        }
+                        return newArr;
+                    };
+                    FunctionsUtilService.prototype.buildMarkersOnMap = function (dataSet, mapType, position) {
+                        var mapConfig = {
+                            type: mapType,
+                            data: {
+                                position: position,
+                                markers: []
+                            }
+                        };
+                        for (var i = 0; i < dataSet.length; i++) {
+                            mapConfig.data.markers.push({
+                                id: dataSet[i].id,
+                                position: dataSet[i].location.position
+                            });
+                        }
+                        return mapConfig;
+                    };
+                    return FunctionsUtilService;
+                }());
+                FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
+                functionsUtil.FunctionsUtilService = FunctionsUtilService;
+                angular
+                    .module('mainApp.core.util', [])
+                    .service(FunctionsUtilService.serviceId, FunctionsUtilService);
+            })(functionsUtil = util.functionsUtil || (util.functionsUtil = {}));
+        })(util = core.util || (core.util = {}));
+    })(core = app.core || (app.core = {}));
+})(app || (app = {}));
+//# sourceMappingURL=functionsUtil.service.js.map
 (function () {
     'use strict';
     angular
@@ -1686,7 +1967,7 @@ var components;
 var components;
 (function (components) {
     var map;
-    (function (map_1) {
+    (function (map) {
         'use strict';
         var MaMap = (function () {
             function MaMap() {
@@ -1713,8 +1994,9 @@ var components;
             .module('mainApp.components.map')
             .directive(MaMap.directiveId, MaMap.instance);
         var MapController = (function () {
-            function MapController($scope, $timeout) {
+            function MapController($scope, $rootScope, $timeout) {
                 this.$scope = $scope;
+                this.$rootScope = $rootScope;
                 this.$timeout = $timeout;
                 this.init();
             }
@@ -1735,24 +2017,12 @@ var components;
                     case 'search-map':
                         this._searchMapBuilder();
                         break;
-                    case 'location-map':
-                        this._locationMapBuilder();
-                        break;
-                    case 'modal-assign-marker-map':
-                        this._assignMarkerMapBuilder();
-                        break;
                 }
-                var meetingPointData = {
-                    id: 1,
-                    position: {
-                        lat: 6.175298,
-                        lng: -75.582289
-                    }
-                };
                 this.activate();
             };
             MapController.prototype.activate = function () {
                 console.log('map controller actived');
+                this._subscribeToEvents();
             };
             MapController.prototype._searchMapBuilder = function () {
                 var self = this;
@@ -1772,128 +2042,129 @@ var components;
                 if (this._map === void 0) {
                     this.$timeout(function () {
                         self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
+                        self._createFilterButtons();
                         for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                             var marker = self.mapConfig.data.markers[i];
-                            self.setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), 'London', 'Just some content', 'assets/images/meeting-point.png');
+                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), 'assets/images/meeting-point.png');
                         }
                     });
                 }
             };
-            MapController.prototype._locationMapBuilder = function () {
-                var self = this;
-                var zoom = 16;
-                var center = {
-                    lat: 6.1739743,
-                    lng: -75.5822414
-                };
-                var circle = null;
-                var circle_strokeColor = '#ff5a5f';
-                var circle_strokeOpacity = 0.8;
-                var circle_strokeWeight = 2;
-                var circle_fillColor = '#ff5a5f';
-                var circle_fillOpacity = 0.35;
-                var circle_center = {
-                    lat: 6.1739743,
-                    lng: -75.5822414
-                };
-                var circle_radius = 200;
-                this.$scope.options = {
-                    center: new google.maps.LatLng(center.lat, center.lng),
-                    zoom: zoom,
-                    mapTypeControl: false,
-                    zoomControl: true,
-                    streetViewControl: false,
-                    scrollwheel: false,
-                    zoomControlOptions: {
-                        position: google.maps.ControlPosition.TOP_RIGHT
-                    }
-                };
-                if (this._map === void 0) {
-                    this.$timeout(function () {
-                        self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
-                        circle = new google.maps.Circle({
-                            strokeColor: circle_strokeColor,
-                            strokeOpacity: circle_strokeOpacity,
-                            strokeWeight: circle_strokeWeight,
-                            fillColor: circle_fillColor,
-                            fillOpacity: circle_fillOpacity,
-                            map: self._map,
-                            center: new google.maps.LatLng(center.lat, center.lng),
-                            radius: circle_radius
-                        });
-                        self.setMarker(7, new google.maps.LatLng(6.1739743, -75.5822614), 'London', 'Just some content', 'assets/images/location.png');
-                        self.setMarker(8, new google.maps.LatLng(6.174486, -75.582846), 'London', 'Just some content', 'assets/images/location.png');
-                        self.setMarker(9, new google.maps.LatLng(6.173066, -75.583090), 'London', 'Just some content', 'assets/images/location.png');
-                    });
-                }
-            };
-            MapController.prototype._assignMarkerMapBuilder = function () {
-                var self = this;
-                var zoom = 16;
-                var center = {
-                    lat: 6.1739743,
-                    lng: -75.5822414
-                };
-                this.$scope.options = {
-                    center: new google.maps.LatLng(center.lat, center.lng),
-                    zoom: zoom,
-                    mapTypeControl: false,
-                    zoomControl: true,
-                    streetViewControl: false,
-                    scrollwheel: false,
-                    zoomControlOptions: {
-                        position: google.maps.ControlPosition.TOP_RIGHT
-                    }
-                };
-                if (this._map === void 0) {
-                    this.$timeout(function () {
-                        self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
-                        self.setMarker(7, new google.maps.LatLng(6.1739743, -75.5822414), 'London', 'Just some content', 'assets/images/location.png');
-                        google.maps.event.trigger(self._map, "resize");
-                    });
-                }
-            };
-            MapController.prototype.setMarker = function (id, position, title, content, icon) {
+            MapController.prototype._setMarker = function (id, position, icon) {
                 var self = this;
                 var marker;
                 var markerOptions = {
                     id: id,
                     position: position,
                     map: this._map,
-                    title: title,
-                    icon: icon,
-                    draggable: true
+                    icon: icon
                 };
                 marker = new google.maps.Marker(markerOptions);
-                google.maps.event.addListener(marker, 'dragend', function (event) {
-                    self.form.position.lat = this.getPosition().lat();
-                    self.form.position.lng = this.getPosition().lng();
-                });
-                google.maps.event.addListener(marker, 'click', function (event) {
-                    for (var i = 0; i < self._markers.length; i++) {
-                        self._markers[i].setIcon('assets/images/meeting-point.png');
-                    }
-                    this.setIcon('assets/images/location.png');
-                    self._meetingPointDetailsData = {
-                        name: 'Café Vervlet',
-                        meetings: 70,
-                        category: 'Café',
-                        address: 'Trans 32 Diagonal 33A Sur - 20',
-                        prices: {
-                            min: 130,
-                            max: 300
-                        },
-                        website: 'http://www.place-book.com',
-                        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque rutrum pulvinar magna, et iaculis neque posuere a. Suspendisse sit amet mollis nunc, nec faucibus ipsum. Nunc et nisl eget enim gravida sagittis. Donec massa nulla, tempor eu orci quis, tincidunt tincidunt odio.'
-                    };
-                });
                 this._markers.push(marker);
+            };
+            MapController.prototype._filterControl = function (controlDiv, type) {
+                var self = this;
+                var defaultBtn = 'Students';
+                var className = 'filterBtnMap';
+                var background_color = 'rgb(255, 255, 255)';
+                var background_color_active = '#00B592';
+                var border_radius = '3px';
+                var box_shadow = 'rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px';
+                var cursor = 'pointer';
+                var margin_top = '10px';
+                var margin_bottom = '22px';
+                var margin_right = '10px';
+                var text_align = 'center';
+                var title = 'Click to search' + type;
+                var color = '#4E4E4E';
+                var color_active = '#FFF';
+                var font_family = 'Roboto,Arial,sans-serif';
+                var font_size = '15px';
+                var line_height = '10px';
+                var padding_top = '10px';
+                var padding_bottom = '10px';
+                var padding_left = '20px';
+                var padding_right = '20px';
+                var border_bottom = '0 hidden transparent';
+                var border_bottom_active = '2px solid #018a6f';
+                var controlUI = document.createElement('div');
+                controlUI.className = className;
+                controlUI.style.borderRadius = border_radius;
+                controlUI.style.boxShadow = box_shadow;
+                controlUI.style.cursor = cursor;
+                controlUI.style.marginTop = margin_top;
+                controlUI.style.marginBottom = margin_bottom;
+                controlUI.style.marginRight = margin_right;
+                controlUI.style.textAlign = text_align;
+                controlUI.title = title;
+                if (type === defaultBtn) {
+                    controlUI.style.backgroundColor = background_color_active;
+                    controlUI.style.borderBottom = border_bottom_active;
+                }
+                else {
+                    controlUI.style.backgroundColor = background_color;
+                }
+                controlDiv.appendChild(controlUI);
+                var controlText = document.createElement('div');
+                controlText.style.fontFamily = font_family;
+                controlText.style.fontSize = font_size;
+                controlText.style.lineHeight = line_height;
+                controlText.style.paddingTop = padding_top;
+                controlText.style.paddingBottom = padding_bottom;
+                controlText.style.paddingLeft = padding_left;
+                controlText.style.paddingRight = padding_right;
+                controlText.innerHTML = type;
+                if (type === defaultBtn) {
+                    controlText.style.color = color_active;
+                }
+                else {
+                    controlText.style.color = color;
+                }
+                controlUI.appendChild(controlText);
+                controlUI.addEventListener('click', function (e) {
+                    var element = this;
+                    var child = this.children[0];
+                    var filterBtn = document.getElementsByClassName(className);
+                    for (var i = 0; i < filterBtn.length; i++) {
+                        filterBtn[i].style.backgroundColor = background_color;
+                        filterBtn[i].style.borderBottom = border_bottom;
+                        filterBtn[i].children[0].style.color = color;
+                    }
+                    element.style.backgroundColor = background_color_active;
+                    element.style.borderBottom = border_bottom_active;
+                    child.style.color = color_active;
+                    self._removeMarkers();
+                    self.$scope.$emit(type);
+                });
+            };
+            MapController.prototype._removeMarkers = function () {
+                for (var i = 0; i < this._markers.length; i++) {
+                    this._markers[i].setMap(null);
+                }
+            };
+            MapController.prototype._createFilterButtons = function () {
+                var buttons = ['Students', 'Teachers', 'Schools'];
+                for (var i = 0; i < buttons.length; i++) {
+                    var controlDiv = document.createElement('div');
+                    var control = this._filterControl(controlDiv, buttons[i]);
+                    this._map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
+                }
+            };
+            MapController.prototype._subscribeToEvents = function () {
+                var self = this;
+                this.$scope.$on('BuildMarkers', function (event, args) {
+                    self.mapConfig = args;
+                    for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
+                        var marker = self.mapConfig.data.markers[i];
+                        self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), 'assets/images/meeting-point.png');
+                    }
+                });
             };
             return MapController;
         }());
         MapController.controllerId = 'mainApp.components.map.MapController';
-        MapController.$inject = ['$scope', '$timeout'];
-        map_1.MapController = MapController;
+        MapController.$inject = ['$scope', '$rootScope', '$timeout'];
+        map.MapController = MapController;
         angular.module('mainApp.components.map')
             .controller(MapController.controllerId, MapController);
     })(map = components.map || (components.map = {}));
