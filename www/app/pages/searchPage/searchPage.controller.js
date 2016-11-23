@@ -25,27 +25,14 @@ var app;
                 SearchPageController.prototype.activate = function () {
                     var self = this;
                     console.log('searchPage controller actived');
-                    this.$scope.$on('Students', function (event, args) {
-                        self.StudentService.getAllStudents().then(function (response) {
-                            self.type = 'student';
-                            self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
-                            self.data = self.FunctionsUtilService.splitToColumns(response, 2);
-                        });
-                    });
-                    this.$scope.$on('Teachers', function (event, args) {
-                        self.TeacherService.getAllTeachers().then(function (response) {
-                            self.type = 'teacher';
-                            self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
-                            self.data = self.FunctionsUtilService.splitToColumns(response, 2);
-                        });
-                    });
+                    this._subscribeToEvents();
                     this.StudentService.getAllStudents().then(function (response) {
                         self.type = 'student';
                         self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
                         self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                     });
                 };
-                SearchPageController.prototype.getResultTemplate = function (type) {
+                SearchPageController.prototype._getResultTemplate = function (type) {
                     var STUDENT_TYPE = 'student';
                     var TEACHER_TYPE = 'teacher';
                     var SCHOOL_TYPE = 'school';
@@ -57,6 +44,25 @@ var app;
                         case SCHOOL_TYPE:
                             return 'app/pages/searchPage/schoolResult/schoolResult.html';
                     }
+                };
+                SearchPageController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Students', function (event, args) {
+                        self.StudentService.getAllStudents().then(function (response) {
+                            self.type = 'student';
+                            self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                            self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                        });
+                    });
+                    this.$scope.$on('Teachers', function (event, args) {
+                        self.TeacherService.getAllTeachers().then(function (response) {
+                            self.type = 'teacher';
+                            self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                            self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                        });
+                    });
                 };
                 return SearchPageController;
             }());

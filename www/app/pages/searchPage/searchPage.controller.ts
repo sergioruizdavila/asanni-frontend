@@ -8,12 +8,12 @@ module app.pages.searchPage {
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
-    export interface ISearchPageController {
+    interface ISearchPageController {
         error: ISearchPageError;
         activate: () => void;
     }
 
-    export interface ISearchPageError {
+    interface ISearchPageError {
         message: string;
     }
 
@@ -81,37 +81,10 @@ module app.pages.searchPage {
             //LOG
             console.log('searchPage controller actived');
 
-            this.$scope.$on('Students', function(event, args) {
-                //Get All Users of this zone
-                self.StudentService.getAllStudents().then(
-                    function(response: Array<app.models.student.Student>) {
-                        self.type = 'student';
-                        self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(
-                            response,
-                            'search-map',
-                            {lat: 6.175434,lng: -75.583329}
-                        );
-                        self.data = self.FunctionsUtilService.splitToColumns(response, 2);
-                    }
-                );
-            });
+            //SUBSCRIBE TO EVENTS
+            this._subscribeToEvents();
 
-            this.$scope.$on('Teachers', function(event, args) {
-                //Get All Teachers of this zone
-                self.TeacherService.getAllTeachers().then(
-                    function(response: Array<app.models.teacher.Teacher>) {
-                        self.type = 'teacher';
-                        self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(
-                            response,
-                            'search-map',
-                            {lat: 6.175434,lng: -75.583329}
-                        );
-                        self.data = self.FunctionsUtilService.splitToColumns(response, 2);
-                    }
-                );
-            });
-
-            //Get All Users of this zone
+            //Get All Students of this zone (Default results)
             this.StudentService.getAllStudents().then(
                 function(response: Array<app.models.student.Student>) {
                     self.type = 'student';
@@ -124,25 +97,23 @@ module app.pages.searchPage {
                 }
             );
 
-            //Get All Teachers of this zone
-            /*this.TeacherService.getAllTeachers().then(
-                function(response: Array<app.models.teacher.Teacher>) {
-                    self.type = 'teacher';
-                    self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(
-                        response,
-                        'search-map',
-                        {lat: 6.175434,lng: -75.583329}
-                    );
-                    self.data = self.FunctionsUtilService.splitToColumns(response, 2);
-                }
-            );*/
         }
 
         /**********************************/
         /*            METHODS             */
         /**********************************/
 
-        getResultTemplate(type): string {
+        /**
+        * _getResultTemplate
+        * @description - this method return specific template based on type
+        * result (students, teachers, schools, etc)
+        * @use - this._getResultTemplate('student');
+        * @function
+        * @params {string} type - type of results list (students, teachers, schools, etc)
+        * @return {string} result template path
+        */
+
+        private _getResultTemplate(type: string): string {
             //CONSTANTS
             const STUDENT_TYPE = 'student';
             const TEACHER_TYPE = 'teacher';
@@ -157,6 +128,82 @@ module app.pages.searchPage {
                 case SCHOOL_TYPE:
                 return 'app/pages/searchPage/schoolResult/schoolResult.html';
             }
+        }
+
+        /**
+        * _subscribeToEvents
+        * @description - this method subscribes Search Page to Child's Events
+        * @use - this._subscribeToEvents();
+        * @function
+        * @return {void}
+        */
+
+        private _subscribeToEvents(): void {
+            // VARIABLES
+            let self = this;
+
+            /**
+            * Students event
+            * @child - MapController
+            * @description - Parent (SearchPageController) receive Child's
+                             event (MapController) in order to get
+                             students list from server
+            * @event
+            */
+            this.$scope.$on('Students', function(event, args) {
+                //Get All Users of this zone
+                self.StudentService.getAllStudents().then(
+                    function(response: Array<app.models.student.Student>) {
+                        
+                        self.type = 'student';
+                        self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(
+                            response,
+                            'search-map',
+                            {lat: 6.175434,lng: -75.583329}
+                        );
+
+                        /*
+                        * Send event to child (MapController) in order to It draws
+                        * each Marker on the Map
+                        */
+                        self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+
+                        self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                    }
+                );
+            });
+
+
+            /**
+            * Teachers event
+            * @child - MapController
+            * @description - Parent (SearchPageController) receive Child's
+                             event (MapController) in order to get
+                             teachers list from server
+            * @event
+            */
+            this.$scope.$on('Teachers', function(event, args) {
+                //Get All Teachers of this zone
+                self.TeacherService.getAllTeachers().then(
+                    function(response: Array<app.models.teacher.Teacher>) {
+
+                        self.type = 'teacher';
+                        self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(
+                            response,
+                            'search-map',
+                            {lat: 6.175434,lng: -75.583329}
+                        );
+
+                        /*
+                        * Send event to child (MapController) in order to It draws
+                        * each Marker on the Map
+                        */
+                        self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+
+                        self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                    }
+                );
+            });
         }
 
 
