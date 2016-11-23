@@ -31,25 +31,6 @@ var app;
                         self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                     });
                 };
-                SearchPageController.prototype._buildMarkers = function (userData) {
-                    var mapConfig = {
-                        type: 'search-map',
-                        data: {
-                            position: {
-                                lat: 6.175434,
-                                lng: -75.583329
-                            },
-                            markers: []
-                        }
-                    };
-                    for (var i = 0; i < userData.length; i++) {
-                        mapConfig.data.markers.push({
-                            id: userData[i].id,
-                            position: userData[i].location.position
-                        });
-                    }
-                    return mapConfig;
-                };
                 SearchPageController.prototype.getResultTemplate = function (type) {
                     var STUDENT_TYPE = 'student';
                     var TEACHER_TYPE = 'teacher';

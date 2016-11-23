@@ -112,30 +112,6 @@ module app.pages.searchPage {
         /*            METHODS             */
         /**********************************/
 
-        private _buildMarkers(userData): components.map.IMapConfig {
-            //VARIABLES
-            let mapConfig: components.map.IMapConfig = {
-                type: 'search-map',
-                data: {
-                    position: {
-                        lat: 6.175434,
-                        lng: -75.583329
-                    },
-                    markers: []
-                }
-            };
-
-            for (let i = 0; i < userData.length; i++) {
-                mapConfig.data.markers.push({
-                    id: userData[i].id,
-                    position: userData[i].location.position
-                });
-            }
-
-            return mapConfig;
-        }
-
-
         getResultTemplate(type): string {
             //CONSTANTS
             const STUDENT_TYPE = 'student';

@@ -501,7 +501,7 @@ module components.map {
             /********************/
 
             // Set CSS for the control.
-            var controlUI = document.createElement('div');
+            let controlUI = document.createElement('div');
             controlUI.className = className;
             controlUI.style.backgroundColor = background_color;
             controlUI.style.borderRadius = border_radius;
@@ -515,7 +515,7 @@ module components.map {
             controlDiv.appendChild(controlUI);
 
             // Set CSS for the control interior.
-            var controlText = document.createElement('div');
+            let controlText = document.createElement('div');
             controlText.style.color = color;
             controlText.style.fontFamily = font_family;
             controlText.style.fontSize = font_size;
