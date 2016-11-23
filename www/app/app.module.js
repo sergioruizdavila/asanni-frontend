@@ -10,6 +10,7 @@
         'mainApp.models.user',
         'mainApp.models.student',
         'mainApp.models.teacher',
+        'mainApp.models.school',
         'mainApp.pages.main',
         'mainApp.pages.studentLandingPage',
         'mainApp.pages.searchPage',

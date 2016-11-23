@@ -38,6 +38,7 @@ module app.pages.searchPage {
         public static $inject = [
             'mainApp.models.student.StudentService',
             'mainApp.models.teacher.TeacherService',
+            'mainApp.models.school.SchoolService',
             'mainApp.core.util.FunctionsUtilService',
             '$state',
             '$filter',
@@ -49,6 +50,7 @@ module app.pages.searchPage {
         constructor(
             private StudentService: app.models.student.IStudentService,
             private TeacherService: app.models.teacher.ITeacherService,
+            private SchoolService: app.models.school.ISchoolService,
             private FunctionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
@@ -154,7 +156,7 @@ module app.pages.searchPage {
                 //Get All Users of this zone
                 self.StudentService.getAllStudents().then(
                     function(response: Array<app.models.student.Student>) {
-                        
+
                         self.type = 'student';
                         self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(
                             response,
@@ -188,6 +190,38 @@ module app.pages.searchPage {
                     function(response: Array<app.models.teacher.Teacher>) {
 
                         self.type = 'teacher';
+                        self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(
+                            response,
+                            'search-map',
+                            {lat: 6.175434,lng: -75.583329}
+                        );
+
+                        /*
+                        * Send event to child (MapController) in order to It draws
+                        * each Marker on the Map
+                        */
+                        self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+
+                        self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                    }
+                );
+            });
+
+
+            /**
+            * Schools event
+            * @child - MapController
+            * @description - Parent (SearchPageController) receive Child's
+                             event (MapController) in order to get
+                             schools list from server
+            * @event
+            */
+            this.$scope.$on('Schools', function(event, args) {
+                //Get All Schools of this zone
+                self.SchoolService.getAllSchools().then(
+                    function(response: Array<app.models.school.School>) {
+
+                        self.type = 'school';
                         self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(
                             response,
                             'search-map',

@@ -5,9 +5,10 @@ var app;
         var searchPage;
         (function (searchPage) {
             var SearchPageController = (function () {
-                function SearchPageController(StudentService, TeacherService, FunctionsUtilService, $state, $filter, $scope) {
+                function SearchPageController(StudentService, TeacherService, SchoolService, FunctionsUtilService, $state, $filter, $scope) {
                     this.StudentService = StudentService;
                     this.TeacherService = TeacherService;
+                    this.SchoolService = SchoolService;
                     this.FunctionsUtilService = FunctionsUtilService;
                     this.$state = $state;
                     this.$filter = $filter;
@@ -63,6 +64,14 @@ var app;
                             self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                         });
                     });
+                    this.$scope.$on('Schools', function (event, args) {
+                        self.SchoolService.getAllSchools().then(function (response) {
+                            self.type = 'school';
+                            self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                            self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                        });
+                    });
                 };
                 return SearchPageController;
             }());
@@ -70,6 +79,7 @@ var app;
             SearchPageController.$inject = [
                 'mainApp.models.student.StudentService',
                 'mainApp.models.teacher.TeacherService',
+                'mainApp.models.school.SchoolService',
                 'mainApp.core.util.FunctionsUtilService',
                 '$state',
                 '$filter',
