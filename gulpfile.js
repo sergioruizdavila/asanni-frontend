@@ -9,6 +9,7 @@ var connect = require('gulp-connect');
 var lib = require('bower-files')();
 var ngAnnotate = require('gulp-ng-annotate');
 
+
 /*Path Files*/
 var paths = {
     htmlTemplates: ['www/*.html', 'www/app/**/*.html'],
