@@ -1,0 +1,5 @@
+Proceso para desplegar en cada ambiente:
+
+LOCAL:
+1. Descomentar las etiquetas 'script' en el index.html.
+2. Comentar la etiqueta 'script' que apunta a 'build/app.js' en el index.html.
