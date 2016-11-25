@@ -1,5 +1,32 @@
 Proceso para desplegar en cada ambiente:
 
-LOCAL:
-1. Descomentar las etiquetas 'script' en el index.html.
-2. Comentar la etiqueta 'script' que apunta a 'build/app.js' en el index.html.
+LOCAL y DEV:
+
+1. Correr los siguientes comandos:
+    - npm install
+    - bower install
+    - gulp dev
+
+2. Ir a app.values.ts y cambiar donde debe apuntar baseUrl:
+    DEV Fake
+        baseUrl: 'http://localhost:3000/'
+        Use: command - json-server --watch db.json
+        generar nuevos datos:
+            . modificar el archivo: db_fake/generate.js
+            . correr el comando
+
+    Local DB DEV
+        baseUrl: 'http://127.0.0.1:8000/api/v1/'
+
+    Heroku DB DEV
+        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/'
+
+3. Para desplegar a DEV:
+    - Commitear todos los nuevos cambios a git desde SourceTree.
+    - Hacer el respectivo Push al branch remoto.
+    - en el root del proyecto correr este comando:
+        git push heroku develop
+        ir a Heroku, y hacer un Deploy Manual para asegurarse que el codigo esta desplegado.
+
+
+/******************************************************************************/
