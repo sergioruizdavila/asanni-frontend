@@ -20,7 +20,7 @@
     ])
         .config(config);
     function config($locationProvider, $urlRouterProvider, $translateProvider) {
-        $urlRouterProvider.otherwise('/page');
+        $urlRouterProvider.otherwise('/page/landing/student');
         var prefix = 'assets/i18n/';
         var suffix = '.json';
         $translateProvider.useStaticFilesLoader({
