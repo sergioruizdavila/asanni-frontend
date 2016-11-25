@@ -38,10 +38,12 @@ PRD:
 2. Cuando se aprueben los cambios, y se hagan las respectivas pruebas, se cambia
     en app.value.ts la baseUrl para que apunte a:
         'https://waysily-server.herokuapp.com/api/v1/'
-3. Se despliega al branch Master (desde SourceTree).
-4. Se corre el comando el el root del proyecto:
+3. Se corre el comando: gulp dev con el fin de generar los vendors.
+4. Se hace un Pull Request al branch Master (desde SourceTree).
+5. Se prueba que todo funcione correctamente.
+6. Se corre el comando en el root del proyecto:
     git push heroku master
-5. Automaticamente deberia mostrar el estadios del build en Heroku. Se prueba en
+7. Automaticamente deberia mostrar el estadios del build en Heroku. Se prueba en
     http://www.waysily.com que todo este funcionando correctamente.
 
 
