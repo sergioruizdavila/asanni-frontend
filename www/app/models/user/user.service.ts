@@ -51,7 +51,7 @@ module app.models.user {
         /**********************************/
 
         /**
-        * getUserByUid
+        * getUserById
         * @description - get user by Id
         * @use - this.UserService.getUserById('98d667ae');
         * @function

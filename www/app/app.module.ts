@@ -13,11 +13,16 @@
         .module('mainApp', [
             'mainApp.auth',
             'mainApp.core',
+            'mainApp.core.util',
             'mainApp.localStorage',
             'mainApp.core.restApi',
             'mainApp.models.user',
+            'mainApp.models.student',
+            'mainApp.models.teacher',
+            'mainApp.models.school',
             'mainApp.pages.main',
             'mainApp.pages.studentLandingPage',
+            'mainApp.pages.searchPage',
             'mainApp.components.header',
             'mainApp.components.map',
             'mainApp.components.footer'
@@ -31,8 +36,8 @@
         /*$locationProvider.html5Mode(true);
         $locationProvider.hashPrefix('!');*/
 
-        //$urlRouterProvider.otherwise('/page');
-        $urlRouterProvider.otherwise('/page/landing/student');
+        $urlRouterProvider.otherwise('/page');
+        //$urlRouterProvider.otherwise('/page/landing/student');
 
         /* Translate Provider */
         let prefix = 'assets/i18n/';

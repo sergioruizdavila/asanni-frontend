@@ -25,10 +25,16 @@
                     }
                 },
                 parent: 'page',
+                onEnter: ['$rootScope', function ($rootScope) {
+                    // Show/Hide header & footer
+                    $rootScope.activeHeader = true;
+                    $rootScope.activeFooter = false;
+                }],
                 params: {
                     user: null
                 }
             });
 
     }
+
 })();

@@ -9,11 +9,61 @@ var connect = require('gulp-connect');
 var lib = require('bower-files')();
 var ngAnnotate = require('gulp-ng-annotate');
 
+
 /*Path Files*/
 var paths = {
+    index: 'www/index.html',
     htmlTemplates: ['www/*.html', 'www/app/**/*.html'],
     appTypescript: ['www/**/*.ts', '!typings/**/*.*'],
-    appJs: ['www/app/**/*.js', 'www/components/**/*.js'],
+    appJs: [
+        "www/app/app.module.js",
+        "www/app/app.core.module.js",
+        "www/app/app.values.js",
+        "www/app/app.run.js",
+        "www/app/auth/auth.service.js",
+        "www/app/core/util/functionsUtil/functionsUtil.service.js",
+        "www/app/core/restApi/restApi.config.js",
+        "www/app/core/restApi/restApi.service.js",
+        "www/app/models/user/user.model.js",
+        "www/app/models/user/user.service.js",
+        "www/app/models/student/student.model.js",
+        "www/app/models/student/student.service.js",
+        "www/app/models/teacher/teacher.model.js",
+        "www/app/models/teacher/teacher.service.js",
+        "www/app/models/school/school.model.js",
+        "www/app/models/school/school.service.js",
+        "www/components/header/header.config.js",
+        "www/components/header/header.directive.js",
+        "www/components/footer/footer.config.js",
+        "www/components/footer/footer.directive.js",
+        "www/components/map/map.config.js",
+        "www/components/map/map.directive.js",
+        "www/components/modal/modal.config.js",
+        "www/components/modal/modalMeetingPoint/modalMeetingPoint.controller.js",
+        "www/app/pages/main/main.config.js",
+        "www/app/pages/main/main.controller.js",
+        "www/app/pages/studentLandingPage/studentLandingPage.config.js",
+        "www/app/pages/studentLandingPage/studentLandingPage.controller.js",
+        "www/app/pages/studentLandingPage/studentLandingPage.service.js",
+        "www/app/pages/signUpPage/signUpPage.config.js",
+        "www/app/pages/signUpPage/signUpPage.controller.js",
+        "www/app/pages/searchPage/searchPage.config.js",
+        "www/app/pages/searchPage/searchPage.controller.js",
+        "www/app/pages/userProfilePage/userProfilePage.config.js",
+        "www/app/pages/userProfilePage/userProfilePage.controller.js",
+        "www/app/pages/userEditProfilePage/userEditProfilePage.config.js",
+        "www/app/pages/userEditProfilePage/userEditProfilePage.controller.js",
+        "www/app/pages/userEditMediaPage/userEditMediaPage.config.js",
+        "www/app/pages/userEditMediaPage/userEditMediaPage.controller.js",
+        "www/app/pages/userEditAgendaPage/userEditAgendaPage.config.js",
+        "www/app/pages/userEditAgendaPage/userEditAgendaPage.controller.js",
+        "www/app/pages/meetingConfirmationPage/meetingConfirmationPage.config.js",
+        "www/app/pages/meetingConfirmationPage/meetingConfirmationPage.controller.js",
+        "www/app/pages/userInboxPage/userInboxPage.config.js",
+        "www/app/pages/userInboxPage/userInboxPage.controller.js",
+        "www/app/pages/userInboxDetailsPage/userInboxDetailsPage.config.js",
+        "www/app/pages/userInboxDetailsPage/userInboxDetailsPage.controller.js"
+    ],
     appLibsJs: [
         'www/libs/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',
         'www/libs/angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js'
@@ -98,50 +148,6 @@ gulp.task('ts', function () {
     .pipe(connect.reload());
 });
 
-/*
- * TypeScript to Javascript
- */
-//var paths = {
-//    appTypescript: ['**/*.ts', '!node_modules/**/*.*', '!App_Web/typings/**/*.*']
-//}
-
-var tsProject1 = ts.createProject('tsconfig.json', {
-    declaration: true,
-    noExternalResolve: true,
-    sortOutput: true
-}); // loads our configuration
-
-gulp.task('tsToJs4', function() {
-    var tsResult = tsProject.src(paths.appTypescript) // load all files from our pathspecification
-        .pipe(ts(tsProject)) // transpile the files into .js
-        .pipe(gulp.dest(''));
-
-    //return tsResult.js.pipe(gulp.dest('')).on('end', done); // save the .js in the same place as the original .ts-file
-    //return tsResult.js.pipe(gulp.dest(paths.outputJs)).on('end', done); // save the .js in the same place as the original .ts-file
-});
-
-
-gulp.task('tsToJs3', function () {
-    return gulp.src(paths.appTypescript)
-        .pipe(ts(tsProject()))
-        .pipe(gulp.dest(''));
-});
-
-gulp.task('tsToJs2', function() {
-    var tsResult = tsProject.src() // instead of gulp.src(...)
-        .pipe(ts(tsProject));
-
-    return tsResult.js.pipe(gulp.dest('release'));
-});
-
-var tsProject = ts.createProject("tsconfig.json");
-
-gulp.task("tsToJs", function () {
-    return tsProject.src(paths.appTypescript)
-        .pipe(ts(tsProject))
-        .js.pipe(gulp.dest('dist/js/'));
-});
-
 /**
  * BUILD VENDOR CSS
  * @desc This task is the responsible to build vendor styles to one vendor css
@@ -197,15 +203,14 @@ gulp.task('appJS', function () {
  */
 
 gulp.task('watch', function() {
-    gulp.watch(paths.appSass, ['sass']);
+    gulp.watch(paths.appSass, ['sass', 'vendorCSS']);
     gulp.watch([paths.htmlTemplates], ['html']);
-    gulp.watch([paths.appTypescript], ['ts']);
+    gulp.watch([paths.appTypescript], ['appJS', 'ts']);
 })
 
+/*BUILD VENDOR*/
 gulp.task('build-vendor', ['bowerJS', 'libsJS', 'appJS', 'vendorCSS']);
-
 /*DEV*/
-gulp.task('default', ['sass', 'webserver', 'watch']);
+gulp.task('dev', ['sass', 'webserver', 'build-vendor', 'watch']);
 /*PROD*/
-//gulp.task('default', ['sass']);
 gulp.task('heroku:production', ['sass', 'serveprod']);

@@ -23,9 +23,11 @@ interface IDataConfig {
     // DEV Fake
     // baseUrl: 'http://localhost:3000/'
     // Use: command - json-server --watch db.json
-    // DEV BackEnd
+    // DEV Local
     // baseUrl: 'http://127.0.0.1:8000/api/v1/'
-    // PRD BackEnd
+    // DEV Heroku
+    // baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/'
+    // PRD Heroku
     // baseUrl: 'https://waysily-server.herokuapp.com/api/v1/'
     var dataConfig: IDataConfig = {
         baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
@@ -34,6 +36,7 @@ interface IDataConfig {
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
         userId: ''
     };
+
 
     angular
         .module('mainApp')
