@@ -26,9 +26,9 @@ interface IDataConfig {
     // DEV BackEnd
     // baseUrl: 'http://127.0.0.1:8000/api/v1/'
     // PRD BackEnd
-    // baseUrl: 'https://asanni.herokuapp.com/api/v1/'
+    // baseUrl: 'https://waysily-server.herokuapp.com/api/v1/'
     var dataConfig: IDataConfig = {
-        baseUrl: 'https://asanni.herokuapp.com/api/v1/',
+        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
