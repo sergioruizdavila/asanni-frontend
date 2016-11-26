@@ -24,6 +24,7 @@
 //   16. List
 //   17. Logo
 //   18. Paragraph
+//   19. Progress Bar
 //   19. Select List
 //   20. Stars
 //   21. Strong
@@ -579,6 +580,14 @@ $paragraph-lines-to-show: 3;
 
 $paragraph-font-color: $dark-gray;
 $paragraph-bold-font-color: $black;
+
+
+// 10. Progress Bar
+// --------------
+
+$progressBar-background: #7CD175;
+$progressBar-line: 3px dashed $medium-gray;
+$progressBar-circle-background: $medium-gray;
 
 
 // 11. Select List

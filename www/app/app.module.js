@@ -14,13 +14,21 @@
         'mainApp.pages.main',
         'mainApp.pages.studentLandingPage',
         'mainApp.pages.searchPage',
+        'mainApp.pages.createTeacherPage',
+        'mainApp.pages.userProfilePage',
+        'mainApp.pages.userEditProfilePage',
+        'mainApp.pages.userEditAgendaPage',
+        'mainApp.pages.userEditMediaPage',
+        'mainApp.pages.userInboxPage',
+        'mainApp.pages.userInboxDetailsPage',
+        'mainApp.pages.meetingConfirmationPage',
         'mainApp.components.header',
         'mainApp.components.map',
         'mainApp.components.footer'
     ])
         .config(config);
     function config($locationProvider, $urlRouterProvider, $translateProvider) {
-        $urlRouterProvider.otherwise('/page/landing/student');
+        $urlRouterProvider.otherwise('/page');
         var prefix = 'assets/i18n/';
         var suffix = '.json';
         $translateProvider.useStaticFilesLoader({

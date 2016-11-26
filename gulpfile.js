@@ -62,7 +62,13 @@ var paths = {
         "www/app/pages/userInboxPage/userInboxPage.config.js",
         "www/app/pages/userInboxPage/userInboxPage.controller.js",
         "www/app/pages/userInboxDetailsPage/userInboxDetailsPage.config.js",
-        "www/app/pages/userInboxDetailsPage/userInboxDetailsPage.controller.js"
+        "www/app/pages/userInboxDetailsPage/userInboxDetailsPage.controller.js",
+        "www/app/pages/createTeacherPage/createTeacherPage.config.js",
+        "www/app/pages/createTeacherPage/createTeacherPage.controller.js",
+        "www/app/pages/createTeacherPage/step1Section/step1Section.config.js",
+        "www/app/pages/createTeacherPage/step1Section/step1Section.controller.js",
+        "www/app/pages/createTeacherPage/step2Section/step2Section.config.js",
+        "www/app/pages/createTeacherPage/step2Section/step2Section.controller.js"
     ],
     appLibsJs: [
         'www/libs/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',
