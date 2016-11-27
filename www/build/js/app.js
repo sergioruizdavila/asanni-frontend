@@ -2171,7 +2171,6 @@ var app;
         $stateProvider
             .state('page.createTeacherPage', {
             url: '/create/teacher',
-            abstract: true,
             views: {
                 'container': {
                     templateUrl: 'app/pages/createTeacherPage/createTeacherPage.html',
@@ -2179,14 +2178,10 @@ var app;
                     controllerAs: 'vm'
                 }
             },
-            parent: 'page',
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
                     $rootScope.activeFooter = true;
-                }],
-            params: {
-                user: null
-            }
+                }]
         });
     }
 })();
@@ -2209,7 +2204,7 @@ var app;
                 CreateTeacherPageController.prototype._init = function () {
                     this.form = {};
                     this.step = 1;
-                    this.stepTemplate = 'app/pages/createTeacherPage/step1Section/step1Section.html';
+                    this.stepTemplate = 'app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.html';
                     this.error = {
                         message: ''
                     };
@@ -2221,13 +2216,13 @@ var app;
                 CreateTeacherPageController.prototype._getStepTemplate = function () {
                     switch (this.step) {
                         case 1:
-                            this.stepTemplate = 'app/pages/createTeacherPage/step1Section/step1Section.html';
+                            this.stepTemplate = 'app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.html';
                             break;
                         case 2:
-                            this.stepTemplate = 'app/pages/createTeacherPage/step1Section/step2Section.html';
+                            this.stepTemplate = 'app/pages/createTeacherPage/teacherInfoSection/step2Section.html';
                             break;
                         case 3:
-                            this.stepTemplate = 'app/pages/createTeacherPage/step1Section/step3Section.html';
+                            this.stepTemplate = 'app/pages/createTeacherPage/teacherInfoSection/step3Section.html';
                             break;
                     }
                 };
@@ -2259,69 +2254,17 @@ var app;
         .config(config);
     function config($stateProvider) {
         $stateProvider
-            .state('page.createTeacherPage.step1', {
-            url: '/step1',
+            .state('page.createTeacherPage.basicInfo', {
+            url: '/basicInfo',
             views: {
                 'step': {
-                    templateUrl: 'app/pages/createTeacherPage/step1Section/step1Section.html',
-                    controller: 'mainApp.pages.createTeacherPage.Step1SectionController',
-                    controllerAs: 'vm'
+                    templateUrl: 'app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.html'
                 }
-            },
-            parent: 'page.createTeacherPage',
-            params: {
-                user: null
             }
         });
     }
 })();
-//# sourceMappingURL=step1Section.config.js.map
-var app;
-(function (app) {
-    var pages;
-    (function (pages) {
-        var createTeacherPage;
-        (function (createTeacherPage) {
-            var Step1SectionController = (function () {
-                function Step1SectionController(dataConfig, $state, $filter, $scope, $uibModal) {
-                    this.dataConfig = dataConfig;
-                    this.$state = $state;
-                    this.$filter = $filter;
-                    this.$scope = $scope;
-                    this.$uibModal = $uibModal;
-                    this._init();
-                }
-                Step1SectionController.prototype._init = function () {
-                    this.form = {};
-                    this.error = {
-                        message: ''
-                    };
-                    this.activate();
-                };
-                Step1SectionController.prototype.activate = function () {
-                    console.log('step 1 section controller actived');
-                };
-                Step1SectionController.prototype.nextStep = function () {
-                    this.$state.go('page.createTeacherPage.step2');
-                };
-                return Step1SectionController;
-            }());
-            Step1SectionController.controllerId = 'mainApp.pages.createTeacherPage.Step1SectionController';
-            Step1SectionController.$inject = [
-                'dataConfig',
-                '$state',
-                '$filter',
-                '$scope',
-                '$uibModal'
-            ];
-            createTeacherPage.Step1SectionController = Step1SectionController;
-            angular
-                .module('mainApp.pages.createTeacherPage')
-                .controller(Step1SectionController.controllerId, Step1SectionController);
-        })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
-    })(pages = app.pages || (app.pages = {}));
-})(app || (app = {}));
-//# sourceMappingURL=step1Section.controller.js.map
+//# sourceMappingURL=teacherInfoSection.config.js.map
 (function () {
     'use strict';
     angular
@@ -2333,65 +2276,10 @@ var app;
             url: '/step2',
             views: {
                 'step': {
-                    templateUrl: 'app/pages/createTeacherPage/step2Section/step2Section.html',
-                    controller: 'mainApp.pages.createTeacherPage.Step2SectionController',
-                    controllerAs: 'vm'
+                    templateUrl: 'app/pages/createTeacherPage/step2Section/step2Section.html'
                 }
-            },
-            parent: 'page.createTeacherPage',
-            params: {
-                user: null
             }
         });
     }
 })();
 //# sourceMappingURL=step2Section.config.js.map
-var app;
-(function (app) {
-    var pages;
-    (function (pages) {
-        var createTeacherPage;
-        (function (createTeacherPage) {
-            var Step2SectionController = (function () {
-                function Step2SectionController(dataConfig, $state, $filter, $scope, $uibModal) {
-                    this.dataConfig = dataConfig;
-                    this.$state = $state;
-                    this.$filter = $filter;
-                    this.$scope = $scope;
-                    this.$uibModal = $uibModal;
-                    this._init();
-                }
-                Step2SectionController.prototype._init = function () {
-                    this.form = {};
-                    this.error = {
-                        message: ''
-                    };
-                    this.activate();
-                };
-                Step2SectionController.prototype.activate = function () {
-                    console.log('step 2 section controller actived');
-                };
-                Step2SectionController.prototype.nextStep = function () {
-                    this.$state.go('page.createTeacherPage.step3');
-                };
-                Step2SectionController.prototype.backStep = function () {
-                    this.$state.go('page.createTeacherPage.step1');
-                };
-                return Step2SectionController;
-            }());
-            Step2SectionController.controllerId = 'mainApp.pages.createTeacherPage.Step2SectionController';
-            Step2SectionController.$inject = [
-                'dataConfig',
-                '$state',
-                '$filter',
-                '$scope',
-                '$uibModal'
-            ];
-            createTeacherPage.Step2SectionController = Step2SectionController;
-            angular
-                .module('mainApp.pages.createTeacherPage')
-                .controller(Step2SectionController.controllerId, Step2SectionController);
-        })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
-    })(pages = app.pages || (app.pages = {}));
-})(app || (app = {}));
-//# sourceMappingURL=step2Section.controller.js.map

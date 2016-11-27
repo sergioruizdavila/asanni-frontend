@@ -7,7 +7,6 @@
         $stateProvider
             .state('page.createTeacherPage', {
             url: '/create/teacher',
-            abstract: true,
             views: {
                 'container': {
                     templateUrl: 'app/pages/createTeacherPage/createTeacherPage.html',
@@ -15,14 +14,10 @@
                     controllerAs: 'vm'
                 }
             },
-            parent: 'page',
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
                     $rootScope.activeFooter = true;
-                }],
-            params: {
-                user: null
-            }
+                }]
         });
     }
 })();

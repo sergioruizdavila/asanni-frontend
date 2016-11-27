@@ -185,7 +185,7 @@
                                       ma-link--simple--small
                                       ma-link--simple--withIcon"
                                       href="#"
-                                      ng-click="vm.backStep()">
+                                      ui-sref="page.createTeacherPage.basicInfo">
                                 <i class="material-icons md-18 md-dark">
                                     keyboard_backspace
                                 </i>
@@ -198,12 +198,13 @@
 
                         <div class="col-md-4 text-right">
 
-                            <button class="ma-btn
+                            <a class="ma-btn
                                            ma-btn--primary
                                            ma-btn--medium"
-                               ng-click="vm.nextStep()">
+                               href="#"
+                               ui-sref="page.createTeacherPage.step3">
                                Next
-                           </button>
+                           </a>
 
                         </div>
 

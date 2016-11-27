@@ -74,7 +74,7 @@ module app.pages.createTeacherPage {
 
             this.step = 1;
 
-            this.stepTemplate = 'app/pages/createTeacherPage/step1Section/step1Section.html';
+            this.stepTemplate = 'app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.html';
 
             this.error = {
                 message: ''
@@ -96,13 +96,13 @@ module app.pages.createTeacherPage {
         private _getStepTemplate(): void {
             switch (this.step) {
                 case 1:
-                    this.stepTemplate = 'app/pages/createTeacherPage/step1Section/step1Section.html';
+                    this.stepTemplate = 'app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.html';
                     break;
                 case 2:
-                    this.stepTemplate =  'app/pages/createTeacherPage/step1Section/step2Section.html';
+                    this.stepTemplate =  'app/pages/createTeacherPage/teacherInfoSection/step2Section.html';
                     break;
                 case 3:
-                    this.stepTemplate =  'app/pages/createTeacherPage/step1Section/step3Section.html';
+                    this.stepTemplate =  'app/pages/createTeacherPage/teacherInfoSection/step3Section.html';
                     break;
             }
         }
