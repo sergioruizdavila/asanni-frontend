@@ -36,6 +36,7 @@ module app.models.user {
         private avatar: string;
         private username: string;
         private email: string;
+        private phone_number: string;
         private first_name: string;
         private last_name: string;
         private sex: string;
@@ -57,6 +58,7 @@ module app.models.user {
             this.avatar = obj.avatar;
             this.username = obj.username || '';
             this.email = obj.email || '';
+            this.phone_number = obj.phone_number || '';
             this.first_name = obj.first_name || '';
             this.last_name = obj.last_name || '';
             this.sex = obj.sex || '';
@@ -106,6 +108,15 @@ module app.models.user {
         set Email(email: string) {
             if (email === undefined) { throw 'Please supply email'; }
             this.email = email;
+        }
+
+        get PhoneNumber() {
+            return this.phone_number;
+        }
+
+        set PhoneNumber(phone_number: string) {
+            if (phone_number === undefined) { throw 'Please supply phone number'; }
+            this.phone_number = phone_number;
         }
 
         get First_name() {

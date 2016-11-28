@@ -12,6 +12,7 @@ var app;
                     this.avatar = obj.avatar;
                     this.username = obj.username || '';
                     this.email = obj.email || '';
+                    this.phone_number = obj.phone_number || '';
                     this.first_name = obj.first_name || '';
                     this.last_name = obj.last_name || '';
                     this.sex = obj.sex || '';
@@ -68,6 +69,19 @@ var app;
                             throw 'Please supply email';
                         }
                         this.email = email;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(User.prototype, "PhoneNumber", {
+                    get: function () {
+                        return this.phone_number;
+                    },
+                    set: function (phone_number) {
+                        if (phone_number === undefined) {
+                            throw 'Please supply phone number';
+                        }
+                        this.phone_number = phone_number;
                     },
                     enumerable: true,
                     configurable: true
