@@ -94,6 +94,31 @@ module app.core.util.functionsUtil {
         }
 
         /*
+        * External Function: extractCountriesFromHtml
+        * @external
+        * @description Get Countries and Codes from HTML (assets/schemas/countries/countries.html)
+        * @use 1. You have to paste countries html in one app template (i.e. studentPage.html)
+               2. On Dev Console Chrome put:
+        * var countriesList = app.core.util.functionsUtil.FunctionsUtilService.extractCountriesFromHtml()
+        * return on console: countries list Object formatted to i18n json
+        */
+        public static extractCountriesFromHtml(): any {
+            // VARIABLES
+            let countries_json = {};
+            let language = 'EN'; //Change to specific language (ES, EN, etc)
+            let html:any = document.getElementById("countriesList." + language);
+
+
+            for (let i = 0; i < html.length; i++) {
+                let countryText = html[i].innerText;
+                let countryCode = html[i].attributes[0].nodeValue;
+                countries_json["%country." + countryCode] = countryText;
+            }
+
+            console.log(JSON.stringify(countries_json));
+        }
+
+        /*
         * Split Date Format Method
         * @description Split Date in 3 parts: day, month and year
         */

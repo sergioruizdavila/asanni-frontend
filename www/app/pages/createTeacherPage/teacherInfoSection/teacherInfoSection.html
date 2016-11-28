@@ -4,11 +4,9 @@
 
 
 <!---------------------------- START: LEFT COLUMN ----------------------------->
-<div id="createTeacher-left-column"
-     class="col-md-8">
+<div id="createTeacher-left-column" class="col-md-8">
 
-    <div id="createTeacher-block"
-         class="createTeacherPage__block row">
+    <div id="createTeacher-block" class="createTeacherPage__block row">
 
         <div class="col-md-12">
 
@@ -25,12 +23,9 @@
                         <div class="form-group
                                     ma-form-group
                                     ma-form-group--default">
-                            <label class="text-right col-xs-3 col-sm-3"
-                                   for="firstNameInput">First Name</label>
+                            <label class="text-right col-xs-3 col-sm-3" for="firstNameInput">First Name</label>
                             <div class="col-xs-9 col-sm-9">
-                                <input id="firstNameInput"
-                                       type="text"
-                                       class="ma-input ma-input--default">
+                                <input id="firstNameInput" type="text" ng-model="vm.form.teacherData.firstName" class="ma-input ma-input--default">
                             </div>
                         </div>
 
@@ -38,12 +33,9 @@
                         <div class="form-group
                                     ma-form-group
                                     ma-form-group--default">
-                            <label class="text-right col-xs-3 col-sm-3"
-                                   for="lastNameInput">Last Name</label>
+                            <label class="text-right col-xs-3 col-sm-3" for="lastNameInput">Last Name</label>
                             <div class="col-xs-9 col-sm-9">
-                                <input id="lastNameInput"
-                                       type="text"
-                                       class="ma-input ma-input--default">
+                                <input id="lastNameInput" type="text" ng-model="vm.form.teacherData.lastName" class="ma-input ma-input--default">
                             </div>
                         </div>
 
@@ -51,15 +43,12 @@
                         <div class="form-group
                                     ma-form-group
                                     ma-form-group--default">
-                            <label class="text-right col-xs-3 col-sm-3"
-                                   for="smallSelect">I am</label>
+                            <label class="text-right col-xs-3 col-sm-3" for="teacherSex">I am</label>
                             <div class="col-xs-9 col-sm-9">
                                 <div class="ma-select-container
                                             ma-select-container--default">
-                                    <select id="smallSelect"
-                                            class="ma-input ma-select
-                                                   ma-select--default"
-                                            name="user[sex]">
+                                    <select id="teacherSex" class="ma-input ma-select
+                                                   ma-select--default" name="teacher[sex]" ng-model="vm.form.teacherData.sex">
                                         <option value="">Gender</option>
                                         <option value="Male" selected="selected">Male</option>
                                         <option value="Female">Female</option>
@@ -77,10 +66,8 @@
                             <div class="col-xs-9 col-sm-9">
                                 <div class="ma-select-container
                                             ma-select-container--default">
-                                    <select id="month"
-                                            class="ma-input ma-select
-                                                   ma-select--default"
-                                            name="user[month]">
+                                    <select id="month" class="ma-input ma-select
+                                                   ma-select--default" name="user[month]">
                                         <option value="January" selected="selected">January</option>
                                         <option value="February">February</option>
                                         <option value="March">March</option>
@@ -88,10 +75,8 @@
                                 </div>
                                 <div class="ma-select-container
                                             ma-select-container--default">
-                                    <select id="day"
-                                            class="ma-input ma-select
-                                                   ma-select--default"
-                                            name="user[day]">
+                                    <select id="day" class="ma-input ma-select
+                                                   ma-select--default" name="user[day]">
                                         <option value="1" selected="selected">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -100,10 +85,8 @@
                                 </div>
                                 <div class="ma-select-container
                                             ma-select-container--default">
-                                    <select id="year"
-                                            class="ma-input ma-select
-                                                   ma-select--default"
-                                            name="user[year]">
+                                    <select id="year" class="ma-input ma-select
+                                                   ma-select--default" name="user[year]">
                                         <option value="1987" selected="selected">1987</option>
                                         <option value="1988">1988</option>
                                         <option value="1989">1989</option>
@@ -117,13 +100,9 @@
                         <div class="form-group
                                     ma-form-group
                                     ma-form-group--default">
-                            <label class="text-right col-xs-3 col-sm-3"
-                                   for="whereYouBornInput">Where you born?</label>
+                            <label class="text-right col-xs-3 col-sm-3" for="whereYouBornInput">Where you born?</label>
                             <div class="col-xs-9 col-sm-9">
-                                <input id="whereYouBornInput"
-                                       type="text"
-                                       class="ma-input ma-input--default"
-                                       placeholder="e.g. Miami, Florida / Lisboa, Portugal">
+                                <input id="whereYouBornInput" type="text" class="ma-input ma-input--default" placeholder="e.g. Miami, Florida / Lisboa, Portugal">
                             </div>
                         </div>
 
@@ -131,13 +110,9 @@
                         <div class="form-group
                                     ma-form-group
                                     ma-form-group--default">
-                            <label class="text-right col-xs-3 col-sm-3"
-                                   for="whereYouLiveInput">Where you live?</label>
+                            <label class="text-right col-xs-3 col-sm-3" for="whereYouLiveInput">Where you live?</label>
                             <div class="col-xs-9 col-sm-9">
-                                <input id="whereYouLiveInput"
-                                       type="text"
-                                       class="ma-input ma-input--default"
-                                       placeholder="e.g. New Zealand, Auckland / Envigado, Colombia">
+                                <input id="whereYouLiveInput" type="text" class="ma-input ma-input--default" placeholder="e.g. New Zealand, Auckland / Envigado, Colombia">
                             </div>
                         </div>
 
@@ -145,12 +120,9 @@
                         <div class="form-group
                                     ma-form-group
                                     ma-form-group--default">
-                            <label class="text-right col-xs-3 col-sm-3"
-                                   for="schoolInput">School</label>
+                            <label class="text-right col-xs-3 col-sm-3" for="schoolInput">School</label>
                             <div class="col-xs-9 col-sm-9">
-                                <input id="schoolInput"
-                                       type="text"
-                                       class="ma-input ma-input--default">
+                                <input id="schoolInput" type="text" class="ma-input ma-input--default">
                             </div>
                         </div>
 
@@ -158,13 +130,9 @@
                         <div class="form-group
                                     ma-form-group
                                     ma-form-group--default">
-                            <label class="text-right col-xs-3 col-sm-3"
-                                   for="occupationInput">Occupation</label>
+                            <label class="text-right col-xs-3 col-sm-3" for="occupationInput">Occupation</label>
                             <div class="col-xs-9 col-sm-9">
-                                <input id="occupationInput"
-                                       type="text"
-                                       class="ma-input ma-input--default"
-                                       placeholder="e.g. Web Developer / Veterinarian">
+                                <input id="occupationInput" type="text" class="ma-input ma-input--default" placeholder="e.g. Web Developer / Veterinarian">
                             </div>
                         </div>
 
@@ -186,9 +154,7 @@
 
                             <a class="ma-btn
                                            ma-btn--primary
-                                           ma-btn--medium"
-                               href="#"
-                               ui-sref="page.createTeacherPage.step2">
+                                           ma-btn--medium" href="#" ui-sref="page.createTeacherPage.step2">
                                Next
                            </a>
 
@@ -214,33 +180,32 @@
         <div class="ma-box__content">
 
             <!-------- START: HELP AND INFO BLOCK --------->
-            <div id="createTeacher-info-block"
-                 class="row margin-reset text-center">
+            <div id="createTeacher-info-block" class="row margin-reset text-center">
 
-                 <div class="col-md-12">
-                     <!-- Help Icon Block -->
-                     <div class="row">
-                         <div class="col-md-12 text-right">
-                             <i class="material-icons md-36 md-primary">
+                <div class="col-md-12">
+                    <!-- Help Icon Block -->
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <i class="material-icons md-36 md-primary">
                                  lightbulb_outline
                              </i>
-                         </div>
-                     </div>
-                     <!-- Help Title Block -->
-                     <div class="row">
-                         <div class="col-md-12 text-left">
-                             <h4>Recoge los datos</h4>
-                         </div>
-                     </div>
-                     <!-- Help Text Block -->
-                     <div class="row">
-                         <div class="col-md-12 text-left">
-                             <p class="ma-p ma-p--default">
-                                 Este bloque es para explicar de que trata ese campo de texto, es necesario escribir corto y consiso.
-                             </p>
-                         </div>
-                     </div>
-                 </div>
+                        </div>
+                    </div>
+                    <!-- Help Title Block -->
+                    <div class="row">
+                        <div class="col-md-12 text-left">
+                            <h4>Recoge los datos</h4>
+                        </div>
+                    </div>
+                    <!-- Help Text Block -->
+                    <div class="row">
+                        <div class="col-md-12 text-left">
+                            <p class="ma-p ma-p--default">
+                                Este bloque es para explicar de que trata ese campo de texto, es necesario escribir corto y consiso.
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
             </div>
             <!--        END: HELP AND INFO BLOCK         -->

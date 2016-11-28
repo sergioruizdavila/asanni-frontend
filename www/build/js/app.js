@@ -172,6 +172,17 @@ var app;
                         }
                         return mapConfig;
                     };
+                    FunctionsUtilService.extractCountriesFromHtml = function () {
+                        var countries_json = {};
+                        var language = 'EN';
+                        var html = document.getElementById("countriesList." + language);
+                        for (var i = 0; i < html.length; i++) {
+                            var countryText = html[i].innerText;
+                            var countryCode = html[i].attributes[0].nodeValue;
+                            countries_json["%country." + countryCode] = countryText;
+                        }
+                        console.log(JSON.stringify(countries_json));
+                    };
                     return FunctionsUtilService;
                 }());
                 FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
