@@ -38,8 +38,6 @@ module app.pages.createTeacherPage {
         /**********************************/
         form: ICreateTeacherForm;
         error: ICreateTeacherError;
-        step: number;
-        stepTemplate: string;
         listMonths: Array<string>;
         listDays: Array<number>;
         listYears: Array<number>;
@@ -50,6 +48,7 @@ module app.pages.createTeacherPage {
         public static $inject = [
             'mainApp.core.util.GetDataStaticJsonService',
             'mainApp.core.util.FunctionsUtilService',
+            'mainApp.models.teacher.TeacherService',
             'dataConfig',
             '$state',
             '$filter',
@@ -62,6 +61,7 @@ module app.pages.createTeacherPage {
         constructor(
             private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
             private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
+            private teacherService: app.models.teacher.ITeacherService,
             private dataConfig: IDataConfig,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
@@ -90,10 +90,6 @@ module app.pages.createTeacherPage {
             this.listDays = this.functionsUtilService.generateRangesOfNumbers(1, 31);
             this.listYears = this.functionsUtilService.generateRangesOfNumbers(1916, 1998);
 
-            this.step = 1;
-
-            this.stepTemplate = 'app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.html';
-
             this.error = {
                 message: ''
             };
@@ -110,21 +106,6 @@ module app.pages.createTeacherPage {
         /**********************************/
         /*            METHODS             */
         /**********************************/
-
-        private _getStepTemplate(): void {
-            switch (this.step) {
-                case 1:
-                    this.stepTemplate = 'app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.html';
-                    break;
-                case 2:
-                    this.stepTemplate =  'app/pages/createTeacherPage/teacherInfoSection/step2Section.html';
-                    break;
-                case 3:
-                    this.stepTemplate =  'app/pages/createTeacherPage/teacherInfoSection/step3Section.html';
-                    break;
-            }
-        }
-
         /*
         * progress
         * @description take callsStack and figuring the progress on stack
@@ -137,6 +118,44 @@ module app.pages.createTeacherPage {
             //let percent = (100 / callsStack.length) * (currentPos + 1);
             //return {width: percent + '%'};
             return;
+        }
+
+        goToNext(): void {
+            //CONSTANTS
+            const BASIC_INFO_STATE = 'page.createTeacherPage.basicInfo';
+            const STEP2_STATE = 'page.createTeacherPage.step2';
+            const STEP3_STATE = 'page.createTeacherPage.step3';
+            /*********************************/
+
+            //TODO: Limpiar esto, aqui ya deberia llegar la data lista para enviar
+            // a BE.
+            let date = this.form.teacherData.Birth_date.year + '-' + 'July' + '-' + this.form.teacherData.Birth_date.day;
+            this.form.teacherData.Birth_date = moment(date).format('YYYY-MM-DD');
+
+            //VARIABLES
+            let currentState = this.$state.current.name;
+
+            // TODO: Analizar si es bueno que se llame el BE asyncronamente con
+            // el cambio de pantalla. Que pasa si el server falla? se pierden esos
+            // datos?.
+            this.teacherService.createTeacher(this.form.teacherData)
+            .then(
+                function(response){
+                    console.log('response');
+                }
+            );
+
+            switch (currentState) {
+                case BASIC_INFO_STATE:
+                    this.$state.go('page.createTeacherPage.step2');
+                    break;
+                case STEP2_STATE:
+                    this.$state.go('page.createTeacherPage.step3');
+                    break;
+                case STEP3_STATE:
+                    //TODO: Hacer algo cuando este en el ultimo paso.
+                    break;
+            }
         }
 
     }

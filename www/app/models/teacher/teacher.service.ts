@@ -15,6 +15,7 @@ module app.models.teacher {
     export interface ITeacherService {
         getTeacherById: (id: string) => angular.IPromise<any>;
         getAllTeachers: () => angular.IPromise<any>;
+        createTeacher: (teacher: app.models.teacher.Teacher) => angular.IPromise<any>;
     }
 
 
@@ -97,6 +98,37 @@ module app.models.teacher {
                     }
                 );
         }
+
+
+
+        /**
+        * createTeacher
+        * @description - create Teacher entity on DB
+        * @function
+        * @params {app.models.teacher.Teacher} teacher - teacher Object
+        * @return {promise} promise - Return a promise of "Add Teacher Request".
+        * @return {object} response - Returns response about If request was success or error.
+        */
+        createTeacher(teacher): ng.IPromise<any> {
+            var promise;
+            let url = 'teachers/'
+            promise = this.restApi.create({ url: url }, teacher)
+                .$promise.then(
+                    function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }
+                ).catch(
+                    function(err) {
+                        console.log(err);
+                        return err;
+                    }
+                );
+
+            return promise;
+        }
+
 
     }
 

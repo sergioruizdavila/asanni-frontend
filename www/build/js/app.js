@@ -54,7 +54,7 @@
 (function () {
     'use strict';
     var dataConfig = {
-        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
+        baseUrl: 'http://127.0.0.1:8000/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -202,6 +202,43 @@ var app;
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
 //# sourceMappingURL=functionsUtil.service.js.map
+var app;
+(function (app) {
+    var core;
+    (function (core) {
+        var util;
+        (function (util) {
+            var getDataStaticJson;
+            (function (getDataStaticJson) {
+                'use strict';
+                var GetDataStaticJsonService = (function () {
+                    function GetDataStaticJsonService($translate) {
+                        this.$translate = $translate;
+                        console.log('getDataStaticJsonService service called');
+                    }
+                    GetDataStaticJsonService.prototype.getMonthi18n = function () {
+                        var jsonDoc = this.$translate.getTranslationTable();
+                        var array = [];
+                        for (var element in jsonDoc) {
+                            if (element.indexOf("month") >= 0) {
+                                array.push(element);
+                            }
+                        }
+                        return array;
+                    };
+                    return GetDataStaticJsonService;
+                }());
+                GetDataStaticJsonService.serviceId = 'mainApp.core.util.GetDataStaticJsonService';
+                GetDataStaticJsonService.$inject = ['$translate'];
+                getDataStaticJson.GetDataStaticJsonService = GetDataStaticJsonService;
+                angular
+                    .module('mainApp.core.util')
+                    .service(GetDataStaticJsonService.serviceId, GetDataStaticJsonService);
+            })(getDataStaticJson = util.getDataStaticJson || (util.getDataStaticJson = {}));
+        })(util = core.util || (core.util = {}));
+    })(core = app.core || (app.core = {}));
+})(app || (app = {}));
+//# sourceMappingURL=getDataStaticJson.service.js.map
 (function () {
     'use strict';
     angular
@@ -711,7 +748,7 @@ var app;
     var models;
     (function (models) {
         var teacher;
-        (function (teacher) {
+        (function (teacher_1) {
             'use strict';
             var TeacherService = (function () {
                 function TeacherService(restApi) {
@@ -738,13 +775,27 @@ var app;
                         return err;
                     });
                 };
+                TeacherService.prototype.createTeacher = function (teacher) {
+                    var promise;
+                    var url = 'teachers/';
+                    promise = this.restApi.create({ url: url }, teacher)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
                 return TeacherService;
             }());
             TeacherService.serviceId = 'mainApp.models.teacher.TeacherService';
             TeacherService.$inject = [
                 'mainApp.core.restApi.restApiService'
             ];
-            teacher.TeacherService = TeacherService;
+            teacher_1.TeacherService = TeacherService;
             angular
                 .module('mainApp.models.teacher', [])
                 .service(TeacherService.serviceId, TeacherService);
@@ -2225,9 +2276,10 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var CreateTeacherPageController = (function () {
-                function CreateTeacherPageController(getDataFromJson, functionsUtilService, dataConfig, $state, $filter, $scope, $uibModal) {
+                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, dataConfig, $state, $filter, $scope, $uibModal) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
+                    this.teacherService = teacherService;
                     this.dataConfig = dataConfig;
                     this.$state = $state;
                     this.$filter = $filter;
@@ -2246,8 +2298,6 @@ var app;
                     this.listMonths = this.getDataFromJson.getMonthi18n();
                     this.listDays = this.functionsUtilService.generateRangesOfNumbers(1, 31);
                     this.listYears = this.functionsUtilService.generateRangesOfNumbers(1916, 1998);
-                    this.step = 1;
-                    this.stepTemplate = 'app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.html';
                     this.error = {
                         message: ''
                     };
@@ -2256,21 +2306,30 @@ var app;
                 CreateTeacherPageController.prototype.activate = function () {
                     console.log('createTeacherPage controller actived');
                 };
-                CreateTeacherPageController.prototype._getStepTemplate = function () {
-                    switch (this.step) {
-                        case 1:
-                            this.stepTemplate = 'app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.html';
-                            break;
-                        case 2:
-                            this.stepTemplate = 'app/pages/createTeacherPage/teacherInfoSection/step2Section.html';
-                            break;
-                        case 3:
-                            this.stepTemplate = 'app/pages/createTeacherPage/teacherInfoSection/step3Section.html';
-                            break;
-                    }
-                };
                 CreateTeacherPageController.prototype.progress = function () {
                     return;
+                };
+                CreateTeacherPageController.prototype.goToNext = function () {
+                    var BASIC_INFO_STATE = 'page.createTeacherPage.basicInfo';
+                    var STEP2_STATE = 'page.createTeacherPage.step2';
+                    var STEP3_STATE = 'page.createTeacherPage.step3';
+                    var date = this.form.teacherData.Birth_date.year + '-' + 'July' + '-' + this.form.teacherData.Birth_date.day;
+                    this.form.teacherData.Birth_date = moment(date).format('YYYY-MM-DD');
+                    var currentState = this.$state.current.name;
+                    this.teacherService.createTeacher(this.form.teacherData)
+                        .then(function (response) {
+                        console.log('response');
+                    });
+                    switch (currentState) {
+                        case BASIC_INFO_STATE:
+                            this.$state.go('page.createTeacherPage.step2');
+                            break;
+                        case STEP2_STATE:
+                            this.$state.go('page.createTeacherPage.step3');
+                            break;
+                        case STEP3_STATE:
+                            break;
+                    }
                 };
                 return CreateTeacherPageController;
             }());
@@ -2278,6 +2337,7 @@ var app;
             CreateTeacherPageController.$inject = [
                 'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
+                'mainApp.models.teacher.TeacherService',
                 'dataConfig',
                 '$state',
                 '$filter',
