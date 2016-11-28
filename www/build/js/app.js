@@ -35,7 +35,7 @@
             prefix: prefix,
             suffix: suffix
         });
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.preferredLanguage('es');
     }
 })();
 //# sourceMappingURL=app.module.js.map
@@ -182,6 +182,13 @@ var app;
                             countries_json["%country." + countryCode] = countryText;
                         }
                         console.log(JSON.stringify(countries_json));
+                    };
+                    FunctionsUtilService.prototype.generateRangesOfNumbers = function (from, to) {
+                        var array = [];
+                        for (var i = from; i <= to; i++) {
+                            array.push(i);
+                        }
+                        return array;
                     };
                     return FunctionsUtilService;
                 }());
@@ -2204,7 +2211,9 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var CreateTeacherPageController = (function () {
-                function CreateTeacherPageController(dataConfig, $state, $filter, $scope, $uibModal) {
+                function CreateTeacherPageController(getDataFromJson, functionsUtilService, dataConfig, $state, $filter, $scope, $uibModal) {
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
                     this.dataConfig = dataConfig;
                     this.$state = $state;
                     this.$filter = $filter;
@@ -2213,7 +2222,16 @@ var app;
                     this._init();
                 }
                 CreateTeacherPageController.prototype._init = function () {
-                    this.form = {};
+                    var START_DAY = 1;
+                    var FINAL_DAY = 31;
+                    var START_YEAR = 1916;
+                    var FINAL_YEAR = 1998;
+                    this.form = {
+                        teacherData: new app.models.teacher.Teacher()
+                    };
+                    this.listMonths = this.getDataFromJson.getMonthi18n();
+                    this.listDays = this.functionsUtilService.generateRangesOfNumbers(1, 31);
+                    this.listYears = this.functionsUtilService.generateRangesOfNumbers(1916, 1998);
                     this.step = 1;
                     this.stepTemplate = 'app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.html';
                     this.error = {
@@ -2244,6 +2262,8 @@ var app;
             }());
             CreateTeacherPageController.controllerId = 'mainApp.pages.createTeacherPage.CreateTeacherPageController';
             CreateTeacherPageController.$inject = [
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
                 'dataConfig',
                 '$state',
                 '$filter',

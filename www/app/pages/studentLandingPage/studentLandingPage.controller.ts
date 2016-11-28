@@ -68,7 +68,7 @@ module app.pages.studentLandingPage {
         /**********************************/
         constructor(
             private $state: ng.ui.IStateService,
-            private $translate: any,
+            private $translate: angular.translate.ITranslateService,
             private StudentLandingPageService: app.pages.studentLandingPage.IStudentLandingPageService) {
 
             this._init();

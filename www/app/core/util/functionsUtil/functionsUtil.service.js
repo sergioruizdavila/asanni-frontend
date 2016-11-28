@@ -45,6 +45,13 @@ var app;
                         }
                         console.log(JSON.stringify(countries_json));
                     };
+                    FunctionsUtilService.prototype.generateRangesOfNumbers = function (from, to) {
+                        var array = [];
+                        for (var i = from; i <= to; i++) {
+                            array.push(i);
+                        }
+                        return array;
+                    };
                     return FunctionsUtilService;
                 }());
                 FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';

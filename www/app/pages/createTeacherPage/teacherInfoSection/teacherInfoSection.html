@@ -35,7 +35,10 @@
                                     ma-form-group--default">
                             <label class="text-right col-xs-3 col-sm-3" for="lastNameInput">Last Name</label>
                             <div class="col-xs-9 col-sm-9">
-                                <input id="lastNameInput" type="text" ng-model="vm.form.teacherData.lastName" class="ma-input ma-input--default">
+                                <input id="lastNameInput"
+                                       type="text"
+                                       ng-model="vm.form.teacherData.lastName"
+                                       class="ma-input ma-input--default">
                             </div>
                         </div>
 
@@ -64,33 +67,49 @@
                                     ma-form-group--default">
                             <label class="text-right col-xs-3 col-sm-3">Birth Date</label>
                             <div class="col-xs-9 col-sm-9">
+
+                                <!-- Month -->
                                 <div class="ma-select-container
                                             ma-select-container--default">
-                                    <select id="month" class="ma-input ma-select
-                                                   ma-select--default" name="user[month]">
-                                        <option value="January" selected="selected">January</option>
-                                        <option value="February">February</option>
-                                        <option value="March">March</option>
+                                    <select id="teacher-month-birthdate"
+                                            class="ma-input ma-select
+                                                   ma-select--default"
+                                            ng-model="vm.form.teacherData.birth_date.month"
+                                            ng-options="month | translate for month in vm.listMonths"
+                                            name="teacher[month]" class="form-control">
+                                            <option value="" disabled selected>
+                                                month
+                                            </option>
                                     </select>
                                 </div>
+
+                                <!-- Day -->
                                 <div class="ma-select-container
                                             ma-select-container--default">
-                                    <select id="day" class="ma-input ma-select
-                                                   ma-select--default" name="user[day]">
-                                        <option value="1" selected="selected">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="31">31</option>
+                                    <select id="teacher-day-birthdate"
+                                            class="ma-input ma-select
+                                                   ma-select--default"
+                                            ng-model="vm.form.teacherData.birth_date.day"
+                                            ng-options="day for day in vm.listDays"
+                                            name="teacher[day]" class="form-control">
+                                            <option value="" disabled selected>
+                                                dd
+                                            </option>
                                     </select>
                                 </div>
+
+                                <!-- Year -->
                                 <div class="ma-select-container
                                             ma-select-container--default">
-                                    <select id="year" class="ma-input ma-select
-                                                   ma-select--default" name="user[year]">
-                                        <option value="1987" selected="selected">1987</option>
-                                        <option value="1988">1988</option>
-                                        <option value="1989">1989</option>
-                                        <option value="1990">1990</option>
+                                    <select id="teacher-year-birthdate"
+                                            class="ma-input ma-select
+                                                   ma-select--default"
+                                            ng-model="vm.form.teacherData.birth_date.year"
+                                            ng-options="year for year in vm.listYears"
+                                            name="teacher[year]" class="form-control">
+                                            <option value="" disabled selected>
+                                                yyyy
+                                            </option>
                                     </select>
                                 </div>
                             </div>
@@ -179,7 +198,7 @@
 
         <div class="ma-box__content">
 
-            <!-------- START: HELP AND INFO BLOCK --------->
+            <!----------------- START: HELP AND INFO BLOCK -------------------->
             <div id="createTeacher-info-block" class="row margin-reset text-center">
 
                 <div class="col-md-12">
@@ -208,7 +227,7 @@
                 </div>
 
             </div>
-            <!--        END: HELP AND INFO BLOCK         -->
+            <!--                END: HELP AND INFO BLOCK                     -->
 
         </div>
 

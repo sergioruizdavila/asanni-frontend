@@ -19,6 +19,7 @@ module app.pages.createTeacherPage {
     }
 
     interface ICreateTeacherForm {
+        teacherData: app.models.teacher.Teacher;
     }
 
     interface ICreateTeacherError {
@@ -39,11 +40,16 @@ module app.pages.createTeacherPage {
         error: ICreateTeacherError;
         step: number;
         stepTemplate: string;
+        listMonths: Array<string>;
+        listDays: Array<number>;
+        listYears: Array<number>;
         // --------------------------------
 
 
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = [
+            'mainApp.core.util.GetDataStaticJsonService',
+            'mainApp.core.util.FunctionsUtilService',
             'dataConfig',
             '$state',
             '$filter',
@@ -54,6 +60,8 @@ module app.pages.createTeacherPage {
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
+            private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
+            private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
             private dataConfig: IDataConfig,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
@@ -66,11 +74,21 @@ module app.pages.createTeacherPage {
 
         /*-- INITIALIZE METHOD --*/
         private _init() {
+            //CONSTANTS
+            const START_DAY = 1;
+            const FINAL_DAY = 31;
+            const START_YEAR = 1916;
+            const FINAL_YEAR = 1998;
+            /*********************************/
 
             //Init form
             this.form = {
-
+                teacherData: new app.models.teacher.Teacher()
             };
+
+            this.listMonths = this.getDataFromJson.getMonthi18n();
+            this.listDays = this.functionsUtilService.generateRangesOfNumbers(1, 31);
+            this.listYears = this.functionsUtilService.generateRangesOfNumbers(1916, 1998);
 
             this.step = 1;
 

@@ -15,6 +15,7 @@ module app.core.util.functionsUtil {
         buildMarkersOnMap: (dataSet: Array<any>,
                             mapType: string,
                             position: components.map.IPosition) =>  components.map.IMapConfig;
+        generateRangesOfNumbers: (from: number, to:number) => Array<number>;
         //dateMonthToString: (date: string, zone: string) => string;
         //getPositionByUid: (array: Array<any>, uid: string) => number;
         //groupByYear: (array: Array<any>) => any;
@@ -117,6 +118,25 @@ module app.core.util.functionsUtil {
 
             console.log(JSON.stringify(countries_json));
         }
+
+
+        /**
+        * generateRangesOfNumbers
+        * @description - generate a range of numbers (i.e from 3 until 34)
+        * @use - this.FunctionsUtilService.generateRangesOfNumbers(1, 31);
+        * @function
+        * @params {number} from - start number
+        * @params {number} to - finish number
+        * @return {Array<number>} array - range of numbers array.
+        */
+        generateRangesOfNumbers(from, to): Array<number> {
+            var array = [];
+            for (var i = from; i <= to; i++) {
+                array.push(i);
+            }
+            return array;
+        }
+
 
         /*
         * Split Date Format Method

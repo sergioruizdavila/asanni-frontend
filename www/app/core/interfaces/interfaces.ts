@@ -8,6 +8,7 @@ module app.core.interfaces {
     /*     ROOTSCOPE INTERFACE     */
     /*******************************/
     export interface IMainAppRootScope extends angular.IRootScopeService {
+        language_doc: angular.translate.ITranslateProvider;
         activeHeader: boolean;
         activeFooter: boolean;
     }
