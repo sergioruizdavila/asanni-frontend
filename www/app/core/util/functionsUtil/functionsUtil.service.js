@@ -11,6 +11,15 @@ var app;
                     function FunctionsUtilService() {
                         console.log('functionsUtil service called');
                     }
+                    FunctionsUtilService.prototype.dateFormat = function (date) {
+                        var dateFormatted = moment(date).format('YYYY-MM-DD');
+                        return dateFormatted;
+                    };
+                    FunctionsUtilService.prototype.joinDate = function (day, month, year) {
+                        var newDate = year + '-' + month + '-' + day;
+                        var dateFormatted = moment(newDate).format('YYYY-MM-DD');
+                        return dateFormatted;
+                    };
                     FunctionsUtilService.prototype.splitToColumns = function (arr, size) {
                         var newArr = [];
                         for (var i = 0; i < arr.length; i += size) {

@@ -12,11 +12,11 @@ var app;
                     this.avatar = obj.avatar;
                     this.username = obj.username || '';
                     this.email = obj.email || '';
-                    this.phone_number = obj.phone_number || '';
-                    this.first_name = obj.first_name || '';
-                    this.last_name = obj.last_name || '';
+                    this.phoneNumber = obj.phoneNumber || '';
+                    this.firstName = obj.firstName || '';
+                    this.lastName = obj.lastName || '';
                     this.sex = obj.sex || '';
-                    this.birth_date = obj.birth_date || '';
+                    this.birthDate = obj.birthDate || '';
                     this.born = obj.born || '';
                     this.about = obj.about || '';
                     this.location = obj.location || '';
@@ -75,39 +75,39 @@ var app;
                 });
                 Object.defineProperty(User.prototype, "PhoneNumber", {
                     get: function () {
-                        return this.phone_number;
+                        return this.phoneNumber;
                     },
-                    set: function (phone_number) {
-                        if (phone_number === undefined) {
+                    set: function (phoneNumber) {
+                        if (phoneNumber === undefined) {
                             throw 'Please supply phone number';
                         }
-                        this.phone_number = phone_number;
+                        this.phoneNumber = phoneNumber;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "First_name", {
+                Object.defineProperty(User.prototype, "FirstName", {
                     get: function () {
-                        return this.first_name;
+                        return this.firstName;
                     },
-                    set: function (first_name) {
-                        if (first_name === undefined) {
+                    set: function (firstName) {
+                        if (firstName === undefined) {
                             throw 'Please supply first name';
                         }
-                        this.first_name = first_name;
+                        this.firstName = firstName;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Last_name", {
+                Object.defineProperty(User.prototype, "LastName", {
                     get: function () {
-                        return this.last_name;
+                        return this.lastName;
                     },
-                    set: function (last_name) {
-                        if (last_name === undefined) {
+                    set: function (lastName) {
+                        if (lastName === undefined) {
                             throw 'Please supply last name';
                         }
-                        this.last_name = last_name;
+                        this.lastName = lastName;
                     },
                     enumerable: true,
                     configurable: true
@@ -125,15 +125,15 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Birth_date", {
+                Object.defineProperty(User.prototype, "BirthDate", {
                     get: function () {
-                        return this.birth_date;
+                        return this.birthDate;
                     },
-                    set: function (birth_date) {
-                        if (birth_date === undefined) {
-                            throw 'Please supply sex';
+                    set: function (birthDate) {
+                        if (birthDate === undefined) {
+                            throw 'Please supply birth date';
                         }
-                        this.birth_date = birth_date;
+                        this.birthDate = birthDate;
                     },
                     enumerable: true,
                     configurable: true

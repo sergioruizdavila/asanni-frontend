@@ -149,6 +149,15 @@ var app;
                     function FunctionsUtilService() {
                         console.log('functionsUtil service called');
                     }
+                    FunctionsUtilService.prototype.dateFormat = function (date) {
+                        var dateFormatted = moment(date).format('YYYY-MM-DD');
+                        return dateFormatted;
+                    };
+                    FunctionsUtilService.prototype.joinDate = function (day, month, year) {
+                        var newDate = year + '-' + month + '-' + day;
+                        var dateFormatted = moment(newDate).format('YYYY-MM-DD');
+                        return dateFormatted;
+                    };
                     FunctionsUtilService.prototype.splitToColumns = function (arr, size) {
                         var newArr = [];
                         for (var i = 0; i < arr.length; i += size) {
@@ -221,7 +230,8 @@ var app;
                         var array = [];
                         for (var element in jsonDoc) {
                             if (element.indexOf("month") >= 0) {
-                                array.push(element);
+                                var code = element.replace(/%month./g, '');
+                                array.push({ value: element, code: code });
                             }
                         }
                         return array;
@@ -325,11 +335,11 @@ var app;
                     this.avatar = obj.avatar;
                     this.username = obj.username || '';
                     this.email = obj.email || '';
-                    this.phone_number = obj.phone_number || '';
-                    this.first_name = obj.first_name || '';
-                    this.last_name = obj.last_name || '';
+                    this.phoneNumber = obj.phoneNumber || '';
+                    this.firstName = obj.firstName || '';
+                    this.lastName = obj.lastName || '';
                     this.sex = obj.sex || '';
-                    this.birth_date = obj.birth_date || '';
+                    this.birthDate = obj.birthDate || '';
                     this.born = obj.born || '';
                     this.about = obj.about || '';
                     this.location = obj.location || '';
@@ -388,39 +398,39 @@ var app;
                 });
                 Object.defineProperty(User.prototype, "PhoneNumber", {
                     get: function () {
-                        return this.phone_number;
+                        return this.phoneNumber;
                     },
-                    set: function (phone_number) {
-                        if (phone_number === undefined) {
+                    set: function (phoneNumber) {
+                        if (phoneNumber === undefined) {
                             throw 'Please supply phone number';
                         }
-                        this.phone_number = phone_number;
+                        this.phoneNumber = phoneNumber;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "First_name", {
+                Object.defineProperty(User.prototype, "FirstName", {
                     get: function () {
-                        return this.first_name;
+                        return this.firstName;
                     },
-                    set: function (first_name) {
-                        if (first_name === undefined) {
+                    set: function (firstName) {
+                        if (firstName === undefined) {
                             throw 'Please supply first name';
                         }
-                        this.first_name = first_name;
+                        this.firstName = firstName;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Last_name", {
+                Object.defineProperty(User.prototype, "LastName", {
                     get: function () {
-                        return this.last_name;
+                        return this.lastName;
                     },
-                    set: function (last_name) {
-                        if (last_name === undefined) {
+                    set: function (lastName) {
+                        if (lastName === undefined) {
                             throw 'Please supply last name';
                         }
-                        this.last_name = last_name;
+                        this.lastName = lastName;
                     },
                     enumerable: true,
                     configurable: true
@@ -438,15 +448,15 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Birth_date", {
+                Object.defineProperty(User.prototype, "BirthDate", {
                     get: function () {
-                        return this.birth_date;
+                        return this.birthDate;
                     },
-                    set: function (birth_date) {
-                        if (birth_date === undefined) {
-                            throw 'Please supply sex';
+                    set: function (birthDate) {
+                        if (birthDate === undefined) {
+                            throw 'Please supply birth date';
                         }
-                        this.birth_date = birth_date;
+                        this.birthDate = birthDate;
                     },
                     enumerable: true,
                     configurable: true
@@ -2263,7 +2273,7 @@ var app;
             },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
-                    $rootScope.activeFooter = true;
+                    $rootScope.activeFooter = false;
                 }]
         });
     }
@@ -2293,7 +2303,8 @@ var app;
                     var START_YEAR = 1916;
                     var FINAL_YEAR = 1998;
                     this.form = {
-                        teacherData: new app.models.teacher.Teacher()
+                        teacherData: new app.models.teacher.Teacher(),
+                        dateSplitted: { day: '', month: { value: '', code: '' }, year: '' }
                     };
                     this.listMonths = this.getDataFromJson.getMonthi18n();
                     this.listDays = this.functionsUtilService.generateRangesOfNumbers(1, 31);
@@ -2313,9 +2324,9 @@ var app;
                     var BASIC_INFO_STATE = 'page.createTeacherPage.basicInfo';
                     var STEP2_STATE = 'page.createTeacherPage.step2';
                     var STEP3_STATE = 'page.createTeacherPage.step3';
-                    var date = this.form.teacherData.Birth_date.year + '-' + 'July' + '-' + this.form.teacherData.Birth_date.day;
-                    this.form.teacherData.Birth_date = moment(date).format('YYYY-MM-DD');
                     var currentState = this.$state.current.name;
+                    var dateFormatted = this.functionsUtilService.joinDate(this.form.dateSplitted.day, this.form.dateSplitted.month.code, this.form.dateSplitted.year);
+                    this.form.teacherData.BirthDate = dateFormatted;
                     this.teacherService.createTeacher(this.form.teacherData)
                         .then(function (response) {
                         console.log('response');

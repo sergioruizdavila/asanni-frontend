@@ -20,6 +20,13 @@ module app.pages.createTeacherPage {
 
     interface ICreateTeacherForm {
         teacherData: app.models.teacher.Teacher;
+        dateSplitted: ITeacherBirthdateForm;
+    }
+
+    interface ITeacherBirthdateForm {
+        day: string;
+        month: app.core.interfaces.IDataFromJsonI18n;
+        year: string;
     }
 
     interface ICreateTeacherError {
@@ -38,7 +45,7 @@ module app.pages.createTeacherPage {
         /**********************************/
         form: ICreateTeacherForm;
         error: ICreateTeacherError;
-        listMonths: Array<string>;
+        listMonths: Array<app.core.interfaces.IDataFromJsonI18n>;
         listDays: Array<number>;
         listYears: Array<number>;
         // --------------------------------
@@ -83,7 +90,8 @@ module app.pages.createTeacherPage {
 
             //Init form
             this.form = {
-                teacherData: new app.models.teacher.Teacher()
+                teacherData: new app.models.teacher.Teacher(),
+                dateSplitted: {day:'', month: {value:'', code: ''}, year: ''}
             };
 
             this.listMonths = this.getDataFromJson.getMonthi18n();
@@ -127,13 +135,16 @@ module app.pages.createTeacherPage {
             const STEP3_STATE = 'page.createTeacherPage.step3';
             /*********************************/
 
-            //TODO: Limpiar esto, aqui ya deberia llegar la data lista para enviar
-            // a BE.
-            let date = this.form.teacherData.Birth_date.year + '-' + 'July' + '-' + this.form.teacherData.Birth_date.day;
-            this.form.teacherData.Birth_date = moment(date).format('YYYY-MM-DD');
-
             //VARIABLES
             let currentState = this.$state.current.name;
+
+            let dateFormatted = this.functionsUtilService.joinDate(
+                                    this.form.dateSplitted.day,
+                                    this.form.dateSplitted.month.code,
+                                    this.form.dateSplitted.year);
+
+            this.form.teacherData.BirthDate = dateFormatted;
+
 
             // TODO: Analizar si es bueno que se llame el BE asyncronamente con
             // el cambio de pantalla. Que pasa si el server falla? se pierden esos

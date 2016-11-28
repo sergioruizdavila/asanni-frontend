@@ -22,7 +22,8 @@ var app;
                     var START_YEAR = 1916;
                     var FINAL_YEAR = 1998;
                     this.form = {
-                        teacherData: new app.models.teacher.Teacher()
+                        teacherData: new app.models.teacher.Teacher(),
+                        dateSplitted: { day: '', month: { value: '', code: '' }, year: '' }
                     };
                     this.listMonths = this.getDataFromJson.getMonthi18n();
                     this.listDays = this.functionsUtilService.generateRangesOfNumbers(1, 31);
@@ -42,9 +43,9 @@ var app;
                     var BASIC_INFO_STATE = 'page.createTeacherPage.basicInfo';
                     var STEP2_STATE = 'page.createTeacherPage.step2';
                     var STEP3_STATE = 'page.createTeacherPage.step3';
-                    var date = this.form.teacherData.Birth_date.year + '-' + 'July' + '-' + this.form.teacherData.Birth_date.day;
-                    this.form.teacherData.Birth_date = moment(date).format('YYYY-MM-DD');
                     var currentState = this.$state.current.name;
+                    var dateFormatted = this.functionsUtilService.joinDate(this.form.dateSplitted.day, this.form.dateSplitted.month.code, this.form.dateSplitted.year);
+                    this.form.teacherData.BirthDate = dateFormatted;
                     this.teacherService.createTeacher(this.form.teacherData)
                         .then(function (response) {
                         console.log('response');

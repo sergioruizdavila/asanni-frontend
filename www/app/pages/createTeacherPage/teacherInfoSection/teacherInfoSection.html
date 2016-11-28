@@ -29,7 +29,7 @@
                                 <input id="teacher-first-name"
                                         class="ma-input ma-input--default"
                                         type="text"
-                                        ng-model="vm.form.teacherData.first_name">
+                                        ng-model="vm.form.teacherData.firstName">
                             </div>
                         </div>
 
@@ -44,7 +44,7 @@
                             <div class="col-xs-9 col-sm-9">
                                 <input id="teacher-last-name"
                                        type="text"
-                                       ng-model="vm.form.teacherData.last_name"
+                                       ng-model="vm.form.teacherData.lastName"
                                        class="ma-input ma-input--default">
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                             <div class="col-xs-9 col-sm-9">
                                 <input id="teacher-phone-number"
                                        type="text"
-                                       ng-model="vm.form.teacherData.phone_number"
+                                       ng-model="vm.form.teacherData.phoneNumber"
                                        placeholder="e.g. +57 3052345678"
                                        class="ma-input ma-input--default">
                             </div>
@@ -117,8 +117,8 @@
                                     <select id="teacher-month-birthdate"
                                             class="ma-input ma-select
                                                    ma-select--default"
-                                            ng-model="vm.form.teacherData.birth_date.month"
-                                            ng-options="month | translate for month in vm.listMonths"
+                                            ng-model="vm.form.dateSplitted.month"
+                                            ng-options="month.value | translate for month in vm.listMonths track by month.code"
                                             name="teacher[month]" class="form-control">
                                             <option value="" disabled selected>
                                                 month
@@ -132,7 +132,7 @@
                                     <select id="teacher-day-birthdate"
                                             class="ma-input ma-select
                                                    ma-select--default"
-                                            ng-model="vm.form.teacherData.birth_date.day"
+                                            ng-model="vm.form.dateSplitted.day"
                                             ng-options="day for day in vm.listDays"
                                             name="teacher[day]" class="form-control">
                                             <option value="" disabled selected>
@@ -147,7 +147,7 @@
                                     <select id="teacher-year-birthdate"
                                             class="ma-input ma-select
                                                    ma-select--default"
-                                            ng-model="vm.form.teacherData.birth_date.year"
+                                            ng-model="vm.form.dateSplitted.year"
                                             ng-options="year for year in vm.listYears"
                                             name="teacher[year]" class="form-control">
                                             <option value="" disabled selected>

@@ -7,12 +7,6 @@ module app.models.user {
     /****************************************/
     /*         INTERFACES DEFINITION        */
     /****************************************/
-    export interface IBirthDate {
-        year: string;
-        month: string;
-        day: string;
-    }
-
     export interface IBorn {
         city: string;
         state: string;
@@ -36,11 +30,11 @@ module app.models.user {
         private avatar: string;
         private username: string;
         private email: string;
-        private phone_number: string;
-        private first_name: string;
-        private last_name: string;
+        private phoneNumber: string;
+        private firstName: string;
+        private lastName: string;
         private sex: string;
-        private birth_date: IBirthDate;
+        private birthDate: string;
         private born: IBorn;
         //private live_in: string;
         private about: string;
@@ -58,11 +52,11 @@ module app.models.user {
             this.avatar = obj.avatar;
             this.username = obj.username || '';
             this.email = obj.email || '';
-            this.phone_number = obj.phone_number || '';
-            this.first_name = obj.first_name || '';
-            this.last_name = obj.last_name || '';
+            this.phoneNumber = obj.phoneNumber || '';
+            this.firstName = obj.firstName || '';
+            this.lastName = obj.lastName || '';
             this.sex = obj.sex || '';
-            this.birth_date = obj.birth_date || '';
+            this.birthDate = obj.birthDate || '';
             this.born = obj.born || '';
             //this.live_in = obj.live_in || '';
             this.about = obj.about || '';
@@ -111,30 +105,30 @@ module app.models.user {
         }
 
         get PhoneNumber() {
-            return this.phone_number;
+            return this.phoneNumber;
         }
 
-        set PhoneNumber(phone_number: string) {
-            if (phone_number === undefined) { throw 'Please supply phone number'; }
-            this.phone_number = phone_number;
+        set PhoneNumber(phoneNumber: string) {
+            if (phoneNumber === undefined) { throw 'Please supply phone number'; }
+            this.phoneNumber = phoneNumber;
         }
 
-        get First_name() {
-            return this.first_name;
+        get FirstName() {
+            return this.firstName;
         }
 
-        set First_name(first_name: string) {
-            if (first_name === undefined) { throw 'Please supply first name'; }
-            this.first_name = first_name;
+        set FirstName(firstName: string) {
+            if (firstName === undefined) { throw 'Please supply first name'; }
+            this.firstName = firstName;
         }
 
-        get Last_name() {
-            return this.last_name;
+        get LastName() {
+            return this.lastName;
         }
 
-        set Last_name(last_name: string) {
-            if (last_name === undefined) { throw 'Please supply last name'; }
-            this.last_name = last_name;
+        set LastName(lastName: string) {
+            if (lastName === undefined) { throw 'Please supply last name'; }
+            this.lastName = lastName;
         }
 
         get Sex() {
@@ -146,13 +140,13 @@ module app.models.user {
             this.sex = sex;
         }
 
-        get Birth_date() {
-            return this.birth_date;
+        get BirthDate() {
+            return this.birthDate;
         }
 
-        set Birth_date(birth_date: IBirthDate) {
-            if (birth_date === undefined) { throw 'Please supply sex'; }
-            this.birth_date = birth_date;
+        set BirthDate(birthDate: string) {
+            if (birthDate === undefined) { throw 'Please supply birth date'; }
+            this.birthDate = birthDate;
         }
 
         get Born() {

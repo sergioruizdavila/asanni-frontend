@@ -11,7 +11,7 @@ module app.core.util.getDataStaticJson {
     /*           INTERFACES           */
     /**********************************/
     export interface IGetDataStaticJsonService {
-        getMonthi18n: () => Array<string>;
+        getMonthi18n: () => Array<app.core.interfaces.IDataFromJsonI18n>;
     }
 
     export interface IAppTranslate extends angular.translate.ITranslateService {
@@ -56,14 +56,16 @@ module app.core.util.getDataStaticJson {
         * @params {components.map.IPosition} position - position on map (lat and lng)
         * @return {components.map.IMapConfig} mapConfig - google map config.
         */
-        getMonthi18n(): Array<string> {
+        getMonthi18n(): Array<app.core.interfaces.IDataFromJsonI18n> {
             //VARIABLES
             let jsonDoc = this.$translate.getTranslationTable();
             let array = [];
 
             for (var element in jsonDoc) {
                 if (element.indexOf("month") >= 0) {
-                    array.push(element);
+                    //let code = element.substring(0, element.indexOf('month.'));
+                    let code = element.replace(/%month./g,'');
+                    array.push({value: element, code: code});
                 }
             }
 

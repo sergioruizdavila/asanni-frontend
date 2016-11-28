@@ -3,7 +3,7 @@ var app;
     var models;
     (function (models) {
         var teacher;
-        (function (teacher) {
+        (function (teacher_1) {
             'use strict';
             var TeacherService = (function () {
                 function TeacherService(restApi) {
@@ -30,13 +30,27 @@ var app;
                         return err;
                     });
                 };
+                TeacherService.prototype.createTeacher = function (teacher) {
+                    var promise;
+                    var url = 'teachers/';
+                    promise = this.restApi.create({ url: url }, teacher)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
                 return TeacherService;
             }());
             TeacherService.serviceId = 'mainApp.models.teacher.TeacherService';
             TeacherService.$inject = [
                 'mainApp.core.restApi.restApiService'
             ];
-            teacher.TeacherService = TeacherService;
+            teacher_1.TeacherService = TeacherService;
             angular
                 .module('mainApp.models.teacher', [])
                 .service(TeacherService.serviceId, TeacherService);

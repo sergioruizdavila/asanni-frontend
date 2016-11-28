@@ -23,13 +23,20 @@ module app.core.interfaces {
     }
 
     /*******************************/
-    /*   DATE FORMATTED INTERFACE  */
+    /*   DATE SPLITTED INTERFACE  */
     /*******************************/
-    export interface IDateFormatted {
-        complete: string;
+    export interface IDateSplitted {
         day: string;
         month: string;
         year: string;
+    }
+
+    /********************************************/
+    /*    DATA OBJECT OBTAINED FROM I18N JSON   */
+    /********************************************/
+    export interface IDataFromJsonI18n {
+        value: string;
+        code: string;
     }
 
     /********************************/

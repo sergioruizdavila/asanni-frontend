@@ -17,7 +17,8 @@ var app;
                         var array = [];
                         for (var element in jsonDoc) {
                             if (element.indexOf("month") >= 0) {
-                                array.push(element);
+                                var code = element.replace(/%month./g, '');
+                                array.push({ value: element, code: code });
                             }
                         }
                         return array;
