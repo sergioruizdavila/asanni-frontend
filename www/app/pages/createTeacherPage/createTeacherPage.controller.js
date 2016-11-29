@@ -5,14 +5,16 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var CreateTeacherPageController = (function () {
-                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, dataConfig, $state, $filter, $scope, $uibModal) {
+                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, localStorage, dataConfig, $state, $filter, $scope, $rootScope, $uibModal) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.teacherService = teacherService;
+                    this.localStorage = localStorage;
                     this.dataConfig = dataConfig;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this.$uibModal = $uibModal;
                     this._init();
                 }
@@ -23,11 +25,11 @@ var app;
                     var FINAL_YEAR = 1998;
                     this.form = {
                         teacherData: new app.models.teacher.Teacher(),
-                        dateSplitted: { day: '', month: { value: '', code: '' }, year: '' }
+                        dateSplitted: { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } }
                     };
                     this.listMonths = this.getDataFromJson.getMonthi18n();
-                    this.listDays = this.functionsUtilService.generateRangesOfNumbers(1, 31);
-                    this.listYears = this.functionsUtilService.generateRangesOfNumbers(1916, 1998);
+                    this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
+                    this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
                     this.error = {
                         message: ''
                     };
@@ -35,6 +37,7 @@ var app;
                 };
                 CreateTeacherPageController.prototype.activate = function () {
                     console.log('createTeacherPage controller actived');
+                    this.fillFormWithTeacherData();
                 };
                 CreateTeacherPageController.prototype.progress = function () {
                     return;
@@ -43,13 +46,33 @@ var app;
                     var BASIC_INFO_STATE = 'page.createTeacherPage.basicInfo';
                     var STEP2_STATE = 'page.createTeacherPage.step2';
                     var STEP3_STATE = 'page.createTeacherPage.step3';
+                    var self = this;
                     var currentState = this.$state.current.name;
-                    var dateFormatted = this.functionsUtilService.joinDate(this.form.dateSplitted.day, this.form.dateSplitted.month.code, this.form.dateSplitted.year);
+                    var dateFormatted = this.functionsUtilService.joinDate(this.form.dateSplitted.day.value, this.form.dateSplitted.month.code, this.form.dateSplitted.year.value);
                     this.form.teacherData.BirthDate = dateFormatted;
-                    this.teacherService.createTeacher(this.form.teacherData)
-                        .then(function (response) {
-                        console.log('response');
-                    });
+                    if (this.$rootScope.teacher_id) {
+                        this.form.teacherData.Id = this.$rootScope.teacher_id;
+                        this.teacherService.updateTeacher(this.form.teacherData)
+                            .then(function (response) {
+                            if (response.id) {
+                                self.$rootScope.teacher_id = response.id;
+                                self.localStorage.setItem('waysily.teacher_id', response.id);
+                            }
+                            else {
+                            }
+                        });
+                    }
+                    else {
+                        this.teacherService.createTeacher(this.form.teacherData)
+                            .then(function (response) {
+                            if (response.id) {
+                                self.$rootScope.teacher_id = response.id;
+                                self.localStorage.setItem('waysily.teacher_id', response.id);
+                            }
+                            else {
+                            }
+                        });
+                    }
                     switch (currentState) {
                         case BASIC_INFO_STATE:
                             this.$state.go('page.createTeacherPage.step2');
@@ -61,6 +84,24 @@ var app;
                             break;
                     }
                 };
+                CreateTeacherPageController.prototype.fillFormWithTeacherData = function () {
+                    var self = this;
+                    this.$rootScope.teacher_id = this.localStorage.getItem('waysily.teacher_id');
+                    if (this.$rootScope.teacher_id) {
+                        this.teacherService.getTeacherById(this.$rootScope.teacher_id)
+                            .then(function (response) {
+                            if (response.id) {
+                                var date = self.functionsUtilService.splitDate(response.birthDate);
+                                self.form.dateSplitted.day.value = parseInt(date.day);
+                                self.form.dateSplitted.month.code = date.month;
+                                self.form.dateSplitted.year.value = parseInt(date.year);
+                                self.form.teacherData = new app.models.teacher.Teacher(response);
+                            }
+                            else {
+                            }
+                        });
+                    }
+                };
                 return CreateTeacherPageController;
             }());
             CreateTeacherPageController.controllerId = 'mainApp.pages.createTeacherPage.CreateTeacherPageController';
@@ -68,10 +109,12 @@ var app;
                 'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.models.teacher.TeacherService',
+                'mainApp.localStorageService',
                 'dataConfig',
                 '$state',
                 '$filter',
                 '$scope',
+                '$rootScope',
                 '$uibModal'
             ];
             createTeacherPage.CreateTeacherPageController = CreateTeacherPageController;

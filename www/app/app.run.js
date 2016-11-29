@@ -16,8 +16,6 @@
             }
         });
         dataConfig.userId = 'id1234';
-        $http.defaults.xsrfHeaderName = 'X-CSRFToken';
-        $http.defaults.xsrfCookieName = 'csrftoken';
     }
 })();
 (function (angular) {

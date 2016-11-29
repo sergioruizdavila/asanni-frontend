@@ -20,6 +20,15 @@ var app;
                         var dateFormatted = moment(newDate).format('YYYY-MM-DD');
                         return dateFormatted;
                     };
+                    FunctionsUtilService.prototype.splitDate = function (date) {
+                        var dateString = moment(date).format('YYYY-MM-DD').split('-');
+                        var dateFormatted = {
+                            day: dateString[2],
+                            month: dateString[1],
+                            year: dateString[0]
+                        };
+                        return dateFormatted;
+                    };
                     FunctionsUtilService.prototype.splitToColumns = function (arr, size) {
                         var newArr = [];
                         for (var i = 0; i < arr.length; i += size) {
@@ -60,6 +69,14 @@ var app;
                             array.push(i);
                         }
                         return array;
+                    };
+                    FunctionsUtilService.prototype.buildNumberSelectList = function (from, to) {
+                        var dayRange = this.generateRangesOfNumbers(from, to);
+                        var list = [];
+                        for (var i = 0; i < dayRange.length; i++) {
+                            list.push({ value: dayRange[i] });
+                        }
+                        return list;
                     };
                     return FunctionsUtilService;
                 }());

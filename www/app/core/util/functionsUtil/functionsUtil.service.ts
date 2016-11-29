@@ -16,8 +16,10 @@ module app.core.util.functionsUtil {
                             mapType: string,
                             position: components.map.IPosition) =>  components.map.IMapConfig;
         generateRangesOfNumbers: (from: number, to:number) => Array<number>;
+        buildNumberSelectList: (from: number, to:number) => Array<app.core.interfaces.ISelectListElement>;
         dateFormat: (date: string) => string;
         joinDate: (day:string, month:string, year:string) => string;
+        splitDate: (date:string) => app.core.interfaces.IDateSplitted;
     }
 
 
@@ -72,6 +74,28 @@ module app.core.util.functionsUtil {
         joinDate(day, month, year): string {
             let newDate = year + '-' + month + '-' + day;
             let dateFormatted = moment(newDate).format('YYYY-MM-DD');
+            return dateFormatted;
+        }
+
+
+        /**
+        * splitDate
+        * @description - Split Date in 3 parts: day, month and year
+        * @use - this.FunctionsUtilService.splitDate(date);
+        * @function
+        * @params {string} date - date value
+        * @return {app.core.interfaces.IDateSplitted} dateFormatted - date formatted.
+        */
+        splitDate(date): app.core.interfaces.IDateSplitted {
+
+            let dateString = moment(date).format('YYYY-MM-DD').split('-');
+            //Split date to day, month and year
+            let dateFormatted = {
+                day: dateString[2],
+                month: dateString[1],
+                year: dateString[0]
+            };
+
             return dateFormatted;
         }
 
@@ -163,6 +187,28 @@ module app.core.util.functionsUtil {
                 array.push(i);
             }
             return array;
+        }
+
+
+
+        /**
+        * buildNumberSelectList
+        * @description - buil numbers (days, years, etc) select list
+        * @use - this.FunctionsUtilService.buildNumberSelect(1, 31);
+        * @function
+        * @params {number} from - start number
+        * @params {number} to - finish number
+        * @return {Array<app.core.interfaces.ISelectList>} list - list format
+        * to use on one select list element
+        */
+        buildNumberSelectList(from, to): Array<app.core.interfaces.ISelectListElement> {
+            let dayRange = this.generateRangesOfNumbers(from, to);
+            let list = [];
+            for (let i = 0; i < dayRange.length; i++) {
+                list.push({value: dayRange[i]});
+            }
+
+            return list;
         }
 
     }

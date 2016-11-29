@@ -20,13 +20,13 @@ module app.pages.createTeacherPage {
 
     interface ICreateTeacherForm {
         teacherData: app.models.teacher.Teacher;
-        dateSplitted: ITeacherBirthdateForm;
+        dateSplitted: IBirthdateForm;
     }
 
-    interface ITeacherBirthdateForm {
-        day: string;
+    interface IBirthdateForm {
+        day: app.core.interfaces.ISelectListElement;
         month: app.core.interfaces.IDataFromJsonI18n;
-        year: string;
+        year: app.core.interfaces.ISelectListElement;
     }
 
     interface ICreateTeacherError {
@@ -46,8 +46,8 @@ module app.pages.createTeacherPage {
         form: ICreateTeacherForm;
         error: ICreateTeacherError;
         listMonths: Array<app.core.interfaces.IDataFromJsonI18n>;
-        listDays: Array<number>;
-        listYears: Array<number>;
+        listDays: Array<app.core.interfaces.ISelectListElement>;
+        listYears: Array<app.core.interfaces.ISelectListElement>;
         // --------------------------------
 
 
@@ -56,10 +56,12 @@ module app.pages.createTeacherPage {
             'mainApp.core.util.GetDataStaticJsonService',
             'mainApp.core.util.FunctionsUtilService',
             'mainApp.models.teacher.TeacherService',
+            'mainApp.localStorageService',
             'dataConfig',
             '$state',
             '$filter',
             '$scope',
+            '$rootScope',
             '$uibModal'];
 
         /**********************************/
@@ -69,10 +71,12 @@ module app.pages.createTeacherPage {
             private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
             private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
             private teacherService: app.models.teacher.ITeacherService,
+            private localStorage,
             private dataConfig: IDataConfig,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
             private $scope: ICreateTeacherScope,
+            private $rootScope: app.core.interfaces.IMainAppRootScope,
             private $uibModal: ng.ui.bootstrap.IModalService) {
 
             this._init();
@@ -91,12 +95,12 @@ module app.pages.createTeacherPage {
             //Init form
             this.form = {
                 teacherData: new app.models.teacher.Teacher(),
-                dateSplitted: {day:'', month: {value:'', code: ''}, year: ''}
+                dateSplitted: {day:{value:''}, month: {code:'', value:''}, year: {value:''}}
             };
 
             this.listMonths = this.getDataFromJson.getMonthi18n();
-            this.listDays = this.functionsUtilService.generateRangesOfNumbers(1, 31);
-            this.listYears = this.functionsUtilService.generateRangesOfNumbers(1916, 1998);
+            this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
+            this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
 
             this.error = {
                 message: ''
@@ -109,11 +113,15 @@ module app.pages.createTeacherPage {
         activate(): void {
             //LOG
             console.log('createTeacherPage controller actived');
+
+            //Charge teacher data if teacher entity exist on DB
+            this.fillFormWithTeacherData();
         }
 
         /**********************************/
         /*            METHODS             */
         /**********************************/
+
         /*
         * progress
         * @description take callsStack and figuring the progress on stack
@@ -128,6 +136,12 @@ module app.pages.createTeacherPage {
             return;
         }
 
+        /**
+        * goToNext
+        * @description - go to next step (create or update teacher data on DB)
+        * @function
+        * @return void
+        */
         goToNext(): void {
             //CONSTANTS
             const BASIC_INFO_STATE = 'page.createTeacherPage.basicInfo';
@@ -136,26 +150,51 @@ module app.pages.createTeacherPage {
             /*********************************/
 
             //VARIABLES
+            let self = this;
             let currentState = this.$state.current.name;
 
             let dateFormatted = this.functionsUtilService.joinDate(
-                                    this.form.dateSplitted.day,
+                                    this.form.dateSplitted.day.value,
                                     this.form.dateSplitted.month.code,
-                                    this.form.dateSplitted.year);
+                                    this.form.dateSplitted.year.value);
+            /*********************************/
 
             this.form.teacherData.BirthDate = dateFormatted;
 
+            if(this.$rootScope.teacher_id) {
+                // UPDATE EXISTING TEACHER
+                this.form.teacherData.Id = this.$rootScope.teacher_id;
+                this.teacherService.updateTeacher(this.form.teacherData)
+                .then(
+                    function(response) {
+                        if(response.id) {
+                            //Save teacher id
+                            self.$rootScope.teacher_id = response.id;
+                            self.localStorage.setItem('waysily.teacher_id', response.id);
 
-            // TODO: Analizar si es bueno que se llame el BE asyncronamente con
-            // el cambio de pantalla. Que pasa si el server falla? se pierden esos
-            // datos?.
-            this.teacherService.createTeacher(this.form.teacherData)
-            .then(
-                function(response){
-                    console.log('response');
-                }
-            );
+                        } else {
+                            //error
+                        }
+                    }
+                );
+            } else {
+                // CREATE NEW TEACHER
+                this.teacherService.createTeacher(this.form.teacherData)
+                .then(
+                    function(response) {
+                        if(response.id) {
+                            //Save teacher id
+                            self.$rootScope.teacher_id = response.id;
+                            self.localStorage.setItem('waysily.teacher_id', response.id);
 
+                        } else {
+                            //error
+                        }
+                    }
+                );
+            }
+
+            // GO TO NEXT STEP
             switch (currentState) {
                 case BASIC_INFO_STATE:
                     this.$state.go('page.createTeacherPage.step2');
@@ -169,7 +208,45 @@ module app.pages.createTeacherPage {
             }
         }
 
+
+
+        /**
+        * fillFormWithTeacherData
+        * @description - get teacher data from DB, and fill each field on form.
+        * @function
+        * @return void
+        */
+        fillFormWithTeacherData(): void {
+            // VARIABLES
+            let self = this;
+
+            this.$rootScope.teacher_id = this.localStorage.getItem('waysily.teacher_id');
+
+            if(this.$rootScope.teacher_id) {
+                // GET TEACHER DATA
+                this.teacherService.getTeacherById(this.$rootScope.teacher_id)
+                .then(
+                    function(response) {
+                        if(response.id) {
+                            //Build birthdate
+                            let date = self.functionsUtilService.splitDate(response.birthDate);
+                            self.form.dateSplitted.day.value = parseInt(date.day);
+                            self.form.dateSplitted.month.code = date.month;
+                            self.form.dateSplitted.year.value = parseInt(date.year);
+                            //Fill form fields with teacher data
+                            self.form.teacherData = new app.models.teacher.Teacher(response);
+
+                        } else {
+                            //error
+                        }
+                    }
+                );
+            }
+        }
+
+
     }
+
 
     /*-- MODULE DEFINITION --*/
     angular

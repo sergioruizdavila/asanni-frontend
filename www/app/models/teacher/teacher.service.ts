@@ -16,6 +16,7 @@ module app.models.teacher {
         getTeacherById: (id: string) => angular.IPromise<any>;
         getAllTeachers: () => angular.IPromise<any>;
         createTeacher: (teacher: app.models.teacher.Teacher) => angular.IPromise<any>;
+        updateTeacher: (teacher: app.models.teacher.Teacher) => angular.IPromise<any>;
     }
 
 
@@ -61,7 +62,7 @@ module app.models.teacher {
         */
         getTeacherById(id): angular.IPromise<any> {
             //VARIABLES
-            let url = 'teachers/';
+            let url = 'teachers';
 
             return this.restApi.show({url: url, id: id}).$promise
                 .then(
@@ -84,7 +85,7 @@ module app.models.teacher {
         */
         getAllTeachers(): angular.IPromise<any> {
             //VARIABLES
-            let url = 'teachers/';
+            let url = 'teachers';
 
             return this.restApi.query({url: url}).$promise
                 .then(
@@ -111,7 +112,7 @@ module app.models.teacher {
         */
         createTeacher(teacher): ng.IPromise<any> {
             var promise;
-            let url = 'teachers/'
+            let url = 'teachers';
             promise = this.restApi.create({ url: url }, teacher)
                 .$promise.then(
                     function (response) {
@@ -128,7 +129,37 @@ module app.models.teacher {
 
             return promise;
         }
-        
+
+
+
+        /**
+        * updateTeacher
+        * @description - update Teacher entity on DB
+        * @function
+        * @params {app.models.teacher.Teacher} teacher - teacher Object
+        * @return {promise} promise - Return a promise of "Add Teacher Request".
+        * @return {object} response - Returns response about If request was success or error.
+        */
+        updateTeacher(teacher): ng.IPromise<any> {
+            var promise;
+            let url = 'teachers';
+            promise = this.restApi.update({ url: url, id: teacher.Id }, teacher)
+                .$promise.then(
+                    function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }
+                ).catch(
+                    function(err) {
+                        console.log(err);
+                        return err;
+                    }
+                );
+
+            return promise;
+        }
+
 
 
     }

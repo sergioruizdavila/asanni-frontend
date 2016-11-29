@@ -11,7 +11,7 @@ var app;
                     console.log('teacher service instanced');
                 }
                 TeacherService.prototype.getTeacherById = function (id) {
-                    var url = 'teachers/';
+                    var url = 'teachers';
                     return this.restApi.show({ url: url, id: id }).$promise
                         .then(function (data) {
                         return data;
@@ -21,7 +21,7 @@ var app;
                     });
                 };
                 TeacherService.prototype.getAllTeachers = function () {
-                    var url = 'teachers/';
+                    var url = 'teachers';
                     return this.restApi.query({ url: url }).$promise
                         .then(function (data) {
                         return data;
@@ -32,8 +32,22 @@ var app;
                 };
                 TeacherService.prototype.createTeacher = function (teacher) {
                     var promise;
-                    var url = 'teachers/';
+                    var url = 'teachers';
                     promise = this.restApi.create({ url: url }, teacher)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
+                TeacherService.prototype.updateTeacher = function (teacher) {
+                    var promise;
+                    var url = 'teachers';
+                    promise = this.restApi.update({ url: url, id: teacher.Id }, teacher)
                         .$promise.then(function (response) {
                         return response;
                     }, function (error) {

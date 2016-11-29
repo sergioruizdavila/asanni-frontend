@@ -8,6 +8,7 @@ module app.core.interfaces {
     /*     ROOTSCOPE INTERFACE     */
     /*******************************/
     export interface IMainAppRootScope extends angular.IRootScopeService {
+        teacher_id: string;
         language_doc: angular.translate.ITranslateProvider;
         activeHeader: boolean;
         activeFooter: boolean;
@@ -39,10 +40,12 @@ module app.core.interfaces {
         code: string;
     }
 
-    /********************************/
-    /*    STATEPARAMS INTERFACES    */
-    /********************************/
-
+    /****************************************/
+    /*    SELECT LIST ELEMENT INTERFACES    */
+    /****************************************/
+    export interface ISelectListElement {
+        value: any;
+    }
 
     /////////////////////////////////
 

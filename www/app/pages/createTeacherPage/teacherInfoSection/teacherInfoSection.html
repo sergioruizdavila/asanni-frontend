@@ -133,7 +133,7 @@
                                             class="ma-input ma-select
                                                    ma-select--default"
                                             ng-model="vm.form.dateSplitted.day"
-                                            ng-options="day for day in vm.listDays"
+                                            ng-options="day.value for day in vm.listDays track by day.value"
                                             name="teacher[day]" class="form-control">
                                             <option value="" disabled selected>
                                                 dd
@@ -148,7 +148,7 @@
                                             class="ma-input ma-select
                                                    ma-select--default"
                                             ng-model="vm.form.dateSplitted.year"
-                                            ng-options="year for year in vm.listYears"
+                                            ng-options="year.value for year in vm.listYears track by year.value"
                                             name="teacher[year]" class="form-control">
                                             <option value="" disabled selected>
                                                 yyyy
