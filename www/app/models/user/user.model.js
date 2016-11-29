@@ -19,7 +19,11 @@ var app;
                     this.birthDate = obj.birthDate || '';
                     this.born = obj.born || '';
                     this.about = obj.about || '';
-                    this.location = obj.location || '';
+                    this.countryLocation = obj.countryLocation || '';
+                    this.addressLocation = obj.addressLocation || '';
+                    this.cityLocation = obj.cityLocation || '';
+                    this.stateLocation = obj.stateLocation || '';
+                    this.zipCodeLocation = obj.zipCodeLocation || '';
                 }
                 Object.defineProperty(User.prototype, "Id", {
                     get: function () {
@@ -164,15 +168,67 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Location", {
+                Object.defineProperty(User.prototype, "CountryLocation", {
                     get: function () {
-                        return this.location;
+                        return this.addressLocation;
                     },
-                    set: function (location) {
-                        if (location === undefined) {
-                            throw 'Please supply location';
+                    set: function (countryLocation) {
+                        if (countryLocation === undefined) {
+                            throw 'Please supply country location';
                         }
-                        this.location = location;
+                        this.countryLocation = countryLocation;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(User.prototype, "AddressLocation", {
+                    get: function () {
+                        return this.addressLocation;
+                    },
+                    set: function (addressLocation) {
+                        if (addressLocation === undefined) {
+                            throw 'Please supply address location';
+                        }
+                        this.addressLocation = addressLocation;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(User.prototype, "CityLocation", {
+                    get: function () {
+                        return this.cityLocation;
+                    },
+                    set: function (cityLocation) {
+                        if (cityLocation === undefined) {
+                            throw 'Please supply city location';
+                        }
+                        this.cityLocation = cityLocation;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(User.prototype, "StateLocation", {
+                    get: function () {
+                        return this.stateLocation;
+                    },
+                    set: function (stateLocation) {
+                        if (stateLocation === undefined) {
+                            throw 'Please supply state location';
+                        }
+                        this.stateLocation = stateLocation;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(User.prototype, "ZipCodeLocation", {
+                    get: function () {
+                        return this.zipCodeLocation;
+                    },
+                    set: function (zipCodeLocation) {
+                        if (zipCodeLocation === undefined) {
+                            throw 'Please supply zip code location';
+                        }
+                        this.zipCodeLocation = zipCodeLocation;
                     },
                     enumerable: true,
                     configurable: true

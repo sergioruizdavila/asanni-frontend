@@ -7,15 +7,12 @@ module app.models.user {
     /****************************************/
     /*         INTERFACES DEFINITION        */
     /****************************************/
-    export interface IBorn {
-        city: string;
-        state: string;
-        country: string;
-    }
-
     export interface ILocation {
         address: string;
         position: components.map.IPosition;
+        city: string;
+        state: string;
+        country: string;
     }
 
 
@@ -35,10 +32,13 @@ module app.models.user {
         private lastName: string;
         private sex: string;
         private birthDate: string;
-        private born: IBorn;
-        //private live_in: string;
+        private born: string;
         private about: string;
-        private location: ILocation;
+        private countryLocation: string;
+        private addressLocation: string;
+        private cityLocation: string;
+        private stateLocation: string;
+        private zipCodeLocation: string;
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -60,7 +60,11 @@ module app.models.user {
             this.born = obj.born || '';
             //this.live_in = obj.live_in || '';
             this.about = obj.about || '';
-            this.location = obj.location || '';
+            this.countryLocation = obj.countryLocation || '';
+            this.addressLocation = obj.addressLocation || '';
+            this.cityLocation = obj.cityLocation || '';
+            this.stateLocation = obj.stateLocation || '';
+            this.zipCodeLocation = obj.zipCodeLocation || '';
 
         }
 
@@ -153,19 +157,10 @@ module app.models.user {
             return this.born;
         }
 
-        set Born(born: IBorn) {
+        set Born(born: string) {
             if (born === undefined) { throw 'Please supply born'; }
             this.born = born;
         }
-
-        /*get Live_in() {
-            return this.live_in;
-        }
-
-        set Live_in(live_in: string) {
-            if (live_in === undefined) { throw 'Please supply live in'; }
-            this.live_in = live_in;
-        }*/
 
         get About() {
             return this.about;
@@ -176,13 +171,49 @@ module app.models.user {
             this.about = about;
         }
 
-        get Location() {
-            return this.location;
+        get CountryLocation() {
+            return this.addressLocation;
         }
 
-        set Location(location: ILocation) {
-            if (location === undefined) { throw 'Please supply location'; }
-            this.location = location;
+        set CountryLocation(countryLocation: string) {
+            if (countryLocation === undefined) { throw 'Please supply country location'; }
+            this.countryLocation = countryLocation;
+        }
+
+        get AddressLocation() {
+            return this.addressLocation;
+        }
+
+        set AddressLocation(addressLocation: string) {
+            if (addressLocation === undefined) { throw 'Please supply address location'; }
+            this.addressLocation = addressLocation;
+        }
+
+        get CityLocation() {
+            return this.cityLocation;
+        }
+
+        set CityLocation(cityLocation: string) {
+            if (cityLocation === undefined) { throw 'Please supply city location'; }
+            this.cityLocation = cityLocation;
+        }
+
+        get StateLocation() {
+            return this.stateLocation;
+        }
+
+        set StateLocation(stateLocation: string) {
+            if (stateLocation === undefined) { throw 'Please supply state location'; }
+            this.stateLocation = stateLocation;
+        }
+
+        get ZipCodeLocation() {
+            return this.zipCodeLocation;
+        }
+
+        set ZipCodeLocation(zipCodeLocation: string) {
+            if (zipCodeLocation === undefined) { throw 'Please supply zip code location'; }
+            this.zipCodeLocation = zipCodeLocation;
         }
 
     }

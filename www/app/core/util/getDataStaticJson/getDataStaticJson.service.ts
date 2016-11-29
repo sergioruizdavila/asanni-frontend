@@ -12,6 +12,7 @@ module app.core.util.getDataStaticJson {
     /**********************************/
     export interface IGetDataStaticJsonService {
         getMonthi18n: () => Array<app.core.interfaces.IDataFromJsonI18n>;
+        getCountryi18n: () => Array<app.core.interfaces.IDataFromJsonI18n>;
     }
 
     export interface IAppTranslate extends angular.translate.ITranslateService {
@@ -48,13 +49,10 @@ module app.core.util.getDataStaticJson {
 
         /**
         * getMonthi18n
-        * @description - build each marker on a specific map (based on a dataSet)
-        * @use - this.FunctionsUtilService.buildMarkersOnMap(data, 2);
+        * @description - get months texts & codes from i18n json files
+        * @use - this.FunctionsUtilService.getMonthi18n();
         * @function
-        * @params {Array<any>} dataSet - dataSet array
-        * @params {string} mapType - map type
-        * @params {components.map.IPosition} position - position on map (lat and lng)
-        * @return {components.map.IMapConfig} mapConfig - google map config.
+        * @return {Array<app.core.interfaces.IDataFromJsonI18n>} months object array
         */
         getMonthi18n(): Array<app.core.interfaces.IDataFromJsonI18n> {
             //VARIABLES
@@ -63,8 +61,34 @@ module app.core.util.getDataStaticJson {
 
             for (var element in jsonDoc) {
                 if (element.indexOf("month") >= 0) {
-                    //let code = element.substring(0, element.indexOf('month.'));
+
                     let code = element.replace(/%month./g,'');
+                    array.push({value: element, code: code});
+                }
+            }
+
+            return array;
+
+        }
+
+
+
+        /**
+        * getCountryi18n
+        * @description - get countries texts & codes from i18n json files
+        * @use - this.FunctionsUtilService.getCountryi18n();
+        * @function
+        * @return {Array<app.core.interfaces.IDataFromJsonI18n>} countries object array
+        */
+        getCountryi18n(): Array<app.core.interfaces.IDataFromJsonI18n> {
+            //VARIABLES
+            let jsonDoc = this.$translate.getTranslationTable();
+            let array = [];
+
+            for (var element in jsonDoc) {
+                if (element.indexOf("country") >= 0) {
+
+                    let code = element.replace(/%country./g,'');
                     array.push({value: element, code: code});
                 }
             }

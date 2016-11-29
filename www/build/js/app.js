@@ -251,6 +251,17 @@ var app;
                         }
                         return array;
                     };
+                    GetDataStaticJsonService.prototype.getCountryi18n = function () {
+                        var jsonDoc = this.$translate.getTranslationTable();
+                        var array = [];
+                        for (var element in jsonDoc) {
+                            if (element.indexOf("country") >= 0) {
+                                var code = element.replace(/%country./g, '');
+                                array.push({ value: element, code: code });
+                            }
+                        }
+                        return array;
+                    };
                     return GetDataStaticJsonService;
                 }());
                 GetDataStaticJsonService.serviceId = 'mainApp.core.util.GetDataStaticJsonService';
@@ -357,7 +368,11 @@ var app;
                     this.birthDate = obj.birthDate || '';
                     this.born = obj.born || '';
                     this.about = obj.about || '';
-                    this.location = obj.location || '';
+                    this.countryLocation = obj.countryLocation || '';
+                    this.addressLocation = obj.addressLocation || '';
+                    this.cityLocation = obj.cityLocation || '';
+                    this.stateLocation = obj.stateLocation || '';
+                    this.zipCodeLocation = obj.zipCodeLocation || '';
                 }
                 Object.defineProperty(User.prototype, "Id", {
                     get: function () {
@@ -502,15 +517,67 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Location", {
+                Object.defineProperty(User.prototype, "CountryLocation", {
                     get: function () {
-                        return this.location;
+                        return this.addressLocation;
                     },
-                    set: function (location) {
-                        if (location === undefined) {
-                            throw 'Please supply location';
+                    set: function (countryLocation) {
+                        if (countryLocation === undefined) {
+                            throw 'Please supply country location';
                         }
-                        this.location = location;
+                        this.countryLocation = countryLocation;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(User.prototype, "AddressLocation", {
+                    get: function () {
+                        return this.addressLocation;
+                    },
+                    set: function (addressLocation) {
+                        if (addressLocation === undefined) {
+                            throw 'Please supply address location';
+                        }
+                        this.addressLocation = addressLocation;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(User.prototype, "CityLocation", {
+                    get: function () {
+                        return this.cityLocation;
+                    },
+                    set: function (cityLocation) {
+                        if (cityLocation === undefined) {
+                            throw 'Please supply city location';
+                        }
+                        this.cityLocation = cityLocation;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(User.prototype, "StateLocation", {
+                    get: function () {
+                        return this.stateLocation;
+                    },
+                    set: function (stateLocation) {
+                        if (stateLocation === undefined) {
+                            throw 'Please supply state location';
+                        }
+                        this.stateLocation = stateLocation;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(User.prototype, "ZipCodeLocation", {
+                    get: function () {
+                        return this.zipCodeLocation;
+                    },
+                    set: function (zipCodeLocation) {
+                        if (zipCodeLocation === undefined) {
+                            throw 'Please supply zip code location';
+                        }
+                        this.zipCodeLocation = zipCodeLocation;
                     },
                     enumerable: true,
                     configurable: true
@@ -2336,11 +2403,13 @@ var app;
                     var FINAL_YEAR = 1998;
                     this.form = {
                         teacherData: new app.models.teacher.Teacher(),
-                        dateSplitted: { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } }
+                        dateSplitted: { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } },
+                        locationCountry: { code: '', value: '' }
                     };
                     this.listMonths = this.getDataFromJson.getMonthi18n();
                     this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
                     this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
+                    this.listCountries = this.getDataFromJson.getCountryi18n();
                     this.error = {
                         message: ''
                     };
@@ -2360,7 +2429,9 @@ var app;
                     var self = this;
                     var currentState = this.$state.current.name;
                     var dateFormatted = this.functionsUtilService.joinDate(this.form.dateSplitted.day.value, this.form.dateSplitted.month.code, this.form.dateSplitted.year.value);
+                    var countryCode = this.form.locationCountry.code;
                     this.form.teacherData.BirthDate = dateFormatted;
+                    this.form.teacherData.CountryLocation = countryCode;
                     if (this.$rootScope.teacher_id) {
                         this.form.teacherData.Id = this.$rootScope.teacher_id;
                         this.teacherService.updateTeacher(this.form.teacherData)
@@ -2422,6 +2493,7 @@ var app;
                                 self.form.dateSplitted.day.value = parseInt(date.day);
                                 self.form.dateSplitted.month.code = date.month;
                                 self.form.dateSplitted.year.value = parseInt(date.year);
+                                self.form.locationCountry.code = response.countryLocation;
                                 self.form.teacherData = new app.models.teacher.Teacher(response);
                             }
                             else {

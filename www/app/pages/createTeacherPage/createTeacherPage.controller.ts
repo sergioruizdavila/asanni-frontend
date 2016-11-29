@@ -21,6 +21,7 @@ module app.pages.createTeacherPage {
     interface ICreateTeacherForm {
         teacherData: app.models.teacher.Teacher;
         dateSplitted: IBirthdateForm;
+        locationCountry: app.core.interfaces.IDataFromJsonI18n;
     }
 
     interface IBirthdateForm {
@@ -48,6 +49,7 @@ module app.pages.createTeacherPage {
         listMonths: Array<app.core.interfaces.IDataFromJsonI18n>;
         listDays: Array<app.core.interfaces.ISelectListElement>;
         listYears: Array<app.core.interfaces.ISelectListElement>;
+        listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
         // --------------------------------
 
 
@@ -95,12 +97,15 @@ module app.pages.createTeacherPage {
             //Init form
             this.form = {
                 teacherData: new app.models.teacher.Teacher(),
-                dateSplitted: {day:{value:''}, month: {code:'', value:''}, year: {value:''}}
+                dateSplitted: {day:{value:''}, month: {code:'', value:''}, year: {value:''}},
+                locationCountry: {code: '', value: ''}
             };
 
+            //build select lists
             this.listMonths = this.getDataFromJson.getMonthi18n();
             this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
             this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
+            this.listCountries = this.getDataFromJson.getCountryi18n();
 
             this.error = {
                 message: ''
@@ -157,9 +162,11 @@ module app.pages.createTeacherPage {
                                     this.form.dateSplitted.day.value,
                                     this.form.dateSplitted.month.code,
                                     this.form.dateSplitted.year.value);
+            let countryCode = this.form.locationCountry.code;
             /*********************************/
 
             this.form.teacherData.BirthDate = dateFormatted;
+            this.form.teacherData.CountryLocation = countryCode;
 
             if(this.$rootScope.teacher_id) {
                 // UPDATE EXISTING TEACHER
@@ -252,11 +259,13 @@ module app.pages.createTeacherPage {
                 .then(
                     function(response) {
                         if(response.id) {
-                            //Build birthdate
+                            //Build birthdate (Charge on select List)
                             let date = self.functionsUtilService.splitDate(response.birthDate);
                             self.form.dateSplitted.day.value = parseInt(date.day);
                             self.form.dateSplitted.month.code = date.month;
                             self.form.dateSplitted.year.value = parseInt(date.year);
+                            //Charge Country on select List
+                            self.form.locationCountry.code = response.countryLocation;
                             //Fill form fields with teacher data
                             self.form.teacherData = new app.models.teacher.Teacher(response);
 

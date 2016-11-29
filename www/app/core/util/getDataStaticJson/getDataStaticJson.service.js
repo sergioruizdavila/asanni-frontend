@@ -23,6 +23,17 @@ var app;
                         }
                         return array;
                     };
+                    GetDataStaticJsonService.prototype.getCountryi18n = function () {
+                        var jsonDoc = this.$translate.getTranslationTable();
+                        var array = [];
+                        for (var element in jsonDoc) {
+                            if (element.indexOf("country") >= 0) {
+                                var code = element.replace(/%country./g, '');
+                                array.push({ value: element, code: code });
+                            }
+                        }
+                        return array;
+                    };
                     return GetDataStaticJsonService;
                 }());
                 GetDataStaticJsonService.serviceId = 'mainApp.core.util.GetDataStaticJsonService';

@@ -25,11 +25,13 @@ var app;
                     var FINAL_YEAR = 1998;
                     this.form = {
                         teacherData: new app.models.teacher.Teacher(),
-                        dateSplitted: { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } }
+                        dateSplitted: { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } },
+                        locationCountry: { code: '', value: '' }
                     };
                     this.listMonths = this.getDataFromJson.getMonthi18n();
                     this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
                     this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
+                    this.listCountries = this.getDataFromJson.getCountryi18n();
                     this.error = {
                         message: ''
                     };
@@ -49,7 +51,9 @@ var app;
                     var self = this;
                     var currentState = this.$state.current.name;
                     var dateFormatted = this.functionsUtilService.joinDate(this.form.dateSplitted.day.value, this.form.dateSplitted.month.code, this.form.dateSplitted.year.value);
+                    var countryCode = this.form.locationCountry.code;
                     this.form.teacherData.BirthDate = dateFormatted;
+                    this.form.teacherData.CountryLocation = countryCode;
                     if (this.$rootScope.teacher_id) {
                         this.form.teacherData.Id = this.$rootScope.teacher_id;
                         this.teacherService.updateTeacher(this.form.teacherData)
@@ -111,6 +115,7 @@ var app;
                                 self.form.dateSplitted.day.value = parseInt(date.day);
                                 self.form.dateSplitted.month.code = date.month;
                                 self.form.dateSplitted.year.value = parseInt(date.year);
+                                self.form.locationCountry.code = response.countryLocation;
                                 self.form.teacherData = new app.models.teacher.Teacher(response);
                             }
                             else {
