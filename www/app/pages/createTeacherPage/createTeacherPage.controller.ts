@@ -144,8 +144,8 @@ module app.pages.createTeacherPage {
         */
         goToNext(): void {
             //CONSTANTS
-            const BASIC_INFO_STATE = 'page.createTeacherPage.basicInfo';
-            const STEP2_STATE = 'page.createTeacherPage.step2';
+            const STEP1_STATE = 'page.createTeacherPage.basicInfo';
+            const STEP2_STATE = 'page.createTeacherPage.location';
             const STEP3_STATE = 'page.createTeacherPage.step3';
             /*********************************/
 
@@ -196,11 +196,11 @@ module app.pages.createTeacherPage {
 
             // GO TO NEXT STEP
             switch (currentState) {
-                case BASIC_INFO_STATE:
-                    this.$state.go('page.createTeacherPage.step2');
+                case STEP1_STATE:
+                    this.$state.go(STEP2_STATE, {reload: true});
                     break;
                 case STEP2_STATE:
-                    this.$state.go('page.createTeacherPage.step3');
+                    this.$state.go(STEP3_STATE, {reload: true});
                     break;
                 case STEP3_STATE:
                     //TODO: Hacer algo cuando este en el ultimo paso.
@@ -208,6 +208,30 @@ module app.pages.createTeacherPage {
             }
         }
 
+
+        goToBack(): void {
+            //CONSTANTS
+            const STEP1_STATE = 'page.createTeacherPage.basicInfo';
+            const STEP2_STATE = 'page.createTeacherPage.location';
+            const STEP3_STATE = 'page.createTeacherPage.step3';
+            /*********************************/
+
+            // VARIABLES
+            let currentState = this.$state.current.name;
+
+            // GO TO NEXT STEP
+            switch (currentState) {
+                case STEP1_STATE:
+                    break;
+                case STEP2_STATE:
+                    this.$state.go(STEP1_STATE, {reload: true});
+                    break;
+                case STEP3_STATE:
+                    //TODO: Hacer algo cuando este en el ultimo paso.
+                    this.$state.go(STEP2_STATE, {reload: true});
+                    break;
+            }
+        }
 
 
         /**

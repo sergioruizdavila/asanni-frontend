@@ -4,7 +4,7 @@
 
 
 <!---------------------------- START: LEFT COLUMN ----------------------------->
-<div id="createTeacher-left-column" class="col-md-8">
+<div id="createTeacher-basicInfo-left-column" class="col-md-8">
 
     <div id="createTeacher-block" class="createTeacherPage__block row">
 
@@ -22,12 +22,12 @@
                         <!-- First Name Input -->
                         <div class="form-group
                                     ma-form-group
-                                    ma-form-group--default">
+                                    ma-form-group--large">
                             <label class="text-right col-xs-3 col-sm-3"
                                     for="teacher-first-name">First Name</label>
                             <div class="col-xs-9 col-sm-9">
                                 <input id="teacher-first-name"
-                                        class="ma-input ma-input--default"
+                                        class="ma-input ma-input--large"
                                         type="text"
                                         ng-model="vm.form.teacherData.firstName">
                             </div>
@@ -36,7 +36,7 @@
                         <!-- Last Name Input -->
                         <div class="form-group
                                     ma-form-group
-                                    ma-form-group--default">
+                                    ma-form-group--large">
                             <label class="text-right col-xs-3 col-sm-3"
                                    for="teacher-last-name">
                                 Last Name
@@ -45,14 +45,14 @@
                                 <input id="teacher-last-name"
                                        type="text"
                                        ng-model="vm.form.teacherData.lastName"
-                                       class="ma-input ma-input--default">
+                                       class="ma-input ma-input--large">
                             </div>
                         </div>
 
                         <!-- Email Input -->
                         <div class="form-group
                                     ma-form-group
-                                    ma-form-group--default">
+                                    ma-form-group--large">
                             <label class="text-right col-xs-3 col-sm-3"
                                    for="teacher-email">
                                 Email
@@ -61,14 +61,14 @@
                                 <input id="teacher-email"
                                        type="email"
                                        ng-model="vm.form.teacherData.email"
-                                       class="ma-input ma-input--default">
+                                       class="ma-input ma-input--large">
                             </div>
                         </div>
 
                         <!-- Phone Number Input -->
                         <div class="form-group
                                     ma-form-group
-                                    ma-form-group--default">
+                                    ma-form-group--large">
                             <label class="text-right col-xs-3 col-sm-3"
                                    for="teacher-phone-number">
                                 Phone Number
@@ -78,22 +78,22 @@
                                        type="text"
                                        ng-model="vm.form.teacherData.phoneNumber"
                                        placeholder="e.g. +57 3052345678"
-                                       class="ma-input ma-input--default">
+                                       class="ma-input ma-input--large">
                             </div>
                         </div>
 
                         <!-- I am Select Input -->
                         <div class="form-group
                                     ma-form-group
-                                    ma-form-group--default">
+                                    ma-form-group--large">
                             <label class="text-right col-xs-3 col-sm-3"
-                                    for="teacherSex">I am</label>
+                                    for="teacher-sex">I am</label>
                             <div class="col-xs-9 col-sm-9">
                                 <div class="ma-select-container
-                                            ma-select-container--default">
+                                            ma-select-container--large">
                                     <select id="teacher-sex"
                                             class="ma-input ma-select
-                                                   ma-select--default"
+                                                   ma-select--large"
                                             name="teacher[sex]"
                                             ng-model="vm.form.teacherData.sex">
                                         <option value="M" selected="selected">Male</option>
@@ -107,16 +107,16 @@
                         <!-- Birthday Select Input with Help Text -->
                         <div class="form-group
                                     ma-form-group
-                                    ma-form-group--default">
+                                    ma-form-group--large">
                             <label class="text-right col-xs-3 col-sm-3">Birth Date</label>
                             <div class="col-xs-9 col-sm-9">
 
                                 <!-- Month -->
                                 <div class="ma-select-container
-                                            ma-select-container--default">
+                                            ma-select-container--large">
                                     <select id="teacher-month-birthdate"
                                             class="ma-input ma-select
-                                                   ma-select--default"
+                                                   ma-select--large"
                                             ng-model="vm.form.dateSplitted.month"
                                             ng-options="month.value | translate for month in vm.listMonths track by month.code"
                                             name="teacher[month]" class="form-control">
@@ -128,10 +128,10 @@
 
                                 <!-- Day -->
                                 <div class="ma-select-container
-                                            ma-select-container--default">
+                                            ma-select-container--large">
                                     <select id="teacher-day-birthdate"
                                             class="ma-input ma-select
-                                                   ma-select--default"
+                                                   ma-select--large"
                                             ng-model="vm.form.dateSplitted.day"
                                             ng-options="day.value for day in vm.listDays track by day.value"
                                             name="teacher[day]" class="form-control">
@@ -143,10 +143,10 @@
 
                                 <!-- Year -->
                                 <div class="ma-select-container
-                                            ma-select-container--default">
+                                            ma-select-container--large">
                                     <select id="teacher-year-birthdate"
                                             class="ma-input ma-select
-                                                   ma-select--default"
+                                                   ma-select--large"
                                             ng-model="vm.form.dateSplitted.year"
                                             ng-options="year.value for year in vm.listYears track by year.value"
                                             name="teacher[year]" class="form-control">
@@ -161,13 +161,13 @@
                         <!-- Where you born Input -->
                         <div class="form-group
                                     ma-form-group
-                                    ma-form-group--default">
+                                    ma-form-group--large">
                             <label class="text-right col-xs-3 col-sm-3"
                                    for="teacher-born">Where you born?</label>
                             <div class="col-xs-9 col-sm-9">
                                 <input id="teacher-born"
                                        type="text"
-                                       class="ma-input ma-input--default"
+                                       class="ma-input ma-input--large"
                                        ng-model="vm.form.teacherData.born"
                                        placeholder="e.g. Miami, Florida / Lisboa, Portugal">
                             </div>
@@ -176,13 +176,13 @@
                         <!-- About me -->
                         <div class="form-group
                                     ma-form-group
-                                    ma-form-group--default">
+                                    ma-form-group--large">
                             <label class="text-right col-xs-3 col-sm-3"
                                    for="teacher-about">Describe Yourself</label>
                             <div class="col-xs-9 col-sm-9">
                                 <textarea id="teacher-about"
                                           name="teacher[about]"
-                                          class="ma-input ma-input--default ma-textarea"
+                                          class="ma-input ma-input--large ma-textarea"
                                           placeholder="e.g. I enjoy traveling around the world, and I feel good cooking on my free time"
                                           ng-model="vm.form.teacherData.about"
                                           rows="5" cols="40"></textarea>
@@ -205,12 +205,12 @@
 
                         <div class="col-md-4 text-right">
 
-                            <a class="ma-btn
+                            <button class="ma-btn
                                       ma-btn--primary
-                                      ma-btn--medium" href="#"
+                                      ma-btn--large"
                                 ng-click="vm.goToNext()">
                                Next
-                           </a>
+                           </button>
 
                         </div>
 
@@ -239,7 +239,7 @@
                 <div class="col-md-12">
                     <!-- Help Icon Block -->
                     <div class="row">
-                        <div class="col-md-12 text-right">
+                        <div class="col-md-12 text-right padding-reset">
                             <i class="material-icons md-36 md-primary">
                                  lightbulb_outline
                              </i>

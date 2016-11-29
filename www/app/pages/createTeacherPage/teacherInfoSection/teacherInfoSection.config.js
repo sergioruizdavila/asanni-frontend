@@ -11,8 +11,7 @@
                 'step': {
                     templateUrl: 'app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.html'
                 }
-            },
-            cache: false
+            }
         });
     }
 })();

@@ -1,6 +1,6 @@
 /**
 * config()
-* @description - step2 section config file
+* @description - teacher location section config file
 */
 
 (function() {
@@ -14,11 +14,11 @@
     function config($stateProvider: angular.ui.IStateProvider) {
 
         $stateProvider
-            .state('page.createTeacherPage.step2', {
-                url: '/step2',
+            .state('page.createTeacherPage.location', {
+                url: '/location',
                 views: {
                     'step': {
-                        templateUrl: 'app/pages/createTeacherPage/step2Section/step2Section.html'
+                        templateUrl: 'app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.html'
                     }
                 }
             });

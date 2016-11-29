@@ -2354,8 +2354,8 @@ var app;
                     return;
                 };
                 CreateTeacherPageController.prototype.goToNext = function () {
-                    var BASIC_INFO_STATE = 'page.createTeacherPage.basicInfo';
-                    var STEP2_STATE = 'page.createTeacherPage.step2';
+                    var STEP1_STATE = 'page.createTeacherPage.basicInfo';
+                    var STEP2_STATE = 'page.createTeacherPage.location';
                     var STEP3_STATE = 'page.createTeacherPage.step3';
                     var self = this;
                     var currentState = this.$state.current.name;
@@ -2385,13 +2385,29 @@ var app;
                         });
                     }
                     switch (currentState) {
-                        case BASIC_INFO_STATE:
-                            this.$state.go('page.createTeacherPage.step2');
+                        case STEP1_STATE:
+                            this.$state.go(STEP2_STATE, { reload: true });
                             break;
                         case STEP2_STATE:
-                            this.$state.go('page.createTeacherPage.step3');
+                            this.$state.go(STEP3_STATE, { reload: true });
                             break;
                         case STEP3_STATE:
+                            break;
+                    }
+                };
+                CreateTeacherPageController.prototype.goToBack = function () {
+                    var STEP1_STATE = 'page.createTeacherPage.basicInfo';
+                    var STEP2_STATE = 'page.createTeacherPage.location';
+                    var STEP3_STATE = 'page.createTeacherPage.step3';
+                    var currentState = this.$state.current.name;
+                    switch (currentState) {
+                        case STEP1_STATE:
+                            break;
+                        case STEP2_STATE:
+                            this.$state.go(STEP1_STATE, { reload: true });
+                            break;
+                        case STEP3_STATE:
+                            this.$state.go(STEP2_STATE, { reload: true });
                             break;
                     }
                 };
@@ -2449,27 +2465,8 @@ var app;
                 'step': {
                     templateUrl: 'app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.html'
                 }
-            },
-            cache: false
-        });
-    }
-})();
-//# sourceMappingURL=teacherInfoSection.config.js.map
-(function () {
-    'use strict';
-    angular
-        .module('mainApp.pages.createTeacherPage')
-        .config(config);
-    function config($stateProvider) {
-        $stateProvider
-            .state('page.createTeacherPage.step2', {
-            url: '/step2',
-            views: {
-                'step': {
-                    templateUrl: 'app/pages/createTeacherPage/step2Section/step2Section.html'
-                }
             }
         });
     }
 })();
-//# sourceMappingURL=step2Section.config.js.map
+//# sourceMappingURL=teacherInfoSection.config.js.map

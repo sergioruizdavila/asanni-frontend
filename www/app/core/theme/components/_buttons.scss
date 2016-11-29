@@ -96,6 +96,27 @@
         }
     }
 
+    &--transparent {
+        background-color: transparent;
+        color: $dark-gray;
+        border: 0 hidden transparent;
+        border-radius: 0;
+        font-weight: normal;
+
+        &:hover:enabled, &:focus {
+            text-decoration: none;
+            color: $black;
+            border-bottom: 2px dashed $button-primary-background;
+        }
+    }
+
+    /// SIMPLE BUTTON WITH ICON
+    &--withIcon {
+        .material-icons {
+            vertical-align: text-bottom;
+        }
+    }
+
 }
 
 .ma-btn[disabled] {
