@@ -46,10 +46,15 @@ module app.pages.createTeacherPage {
         /**********************************/
         form: ICreateTeacherForm;
         error: ICreateTeacherError;
+        progressWidth: string;
+        titleSection: string;
         listMonths: Array<app.core.interfaces.IDataFromJsonI18n>;
         listDays: Array<app.core.interfaces.ISelectListElement>;
         listYears: Array<app.core.interfaces.ISelectListElement>;
         listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
+        STEP1_STATE: string;
+        STEP2_STATE: string;
+        STEP3_STATE: string;
         // --------------------------------
 
 
@@ -92,7 +97,28 @@ module app.pages.createTeacherPage {
             const FINAL_DAY = 31;
             const START_YEAR = 1916;
             const FINAL_YEAR = 1998;
+            this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
+            this.STEP2_STATE = 'page.createTeacherPage.location';
+            this.STEP3_STATE = 'page.createTeacherPage.step3';
             /*********************************/
+
+            //Get current state
+            let currentState = this.$state.current.name;
+
+            //Put title section and progress bar width
+            switch (currentState) {
+                case this.STEP1_STATE:
+                    this.titleSection = 'Step1: Basic Information';
+                    this.progress(1);
+                    break;
+                case this.STEP2_STATE:
+                    this.titleSection = 'Step2: Where are you located?';
+                    this.progress(2);
+                    break;
+                case this.STEP3_STATE:
+                    this.progress(3);
+                    break;
+            }
 
             //Init form
             this.form = {
@@ -116,6 +142,9 @@ module app.pages.createTeacherPage {
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
+            //VARIABLES
+            let self = this;
+
             //LOG
             console.log('createTeacherPage controller actived');
 
@@ -127,18 +156,21 @@ module app.pages.createTeacherPage {
         /*            METHODS             */
         /**********************************/
 
-        /*
+        /**
         * progress
-        * @description take callsStack and figuring the progress on stack
-        * in order to draw the progress bar on view.
+        * @description - increase or reduce progress bar width
+        * @param {number} step - number of step
+        * @function
+        * @return void
         */
-        progress(): Object {
-            // VARIABLES
-            //let callsStack = this.addBusinessDataConfig.action.callsStack;
-            //let currentPos = this.addBusinessDataConfig.action.posOnCallsStack;
-            //let percent = (100 / callsStack.length) * (currentPos + 1);
-            //return {width: percent + '%'};
-            return;
+        progress(step: number): void {
+            // CONSTANTS
+            // quantity of steps + 1 (final page with success message)
+            let STEPS = 9;
+            /***********************/
+
+            let percent = (100 / STEPS) * (step);
+            this.progressWidth = percent + '%';
         }
 
         /**
@@ -148,15 +180,9 @@ module app.pages.createTeacherPage {
         * @return void
         */
         goToNext(): void {
-            //CONSTANTS
-            const STEP1_STATE = 'page.createTeacherPage.basicInfo';
-            const STEP2_STATE = 'page.createTeacherPage.location';
-            const STEP3_STATE = 'page.createTeacherPage.step3';
-            /*********************************/
 
             //VARIABLES
             let self = this;
-            let currentState = this.$state.current.name;
 
             let dateFormatted = this.functionsUtilService.joinDate(
                                     this.form.dateSplitted.day.value,
@@ -201,41 +227,50 @@ module app.pages.createTeacherPage {
                 );
             }
 
+            //Get current state
+            let currentState = this.$state.current.name;
+
             // GO TO NEXT STEP
             switch (currentState) {
-                case STEP1_STATE:
-                    this.$state.go(STEP2_STATE, {reload: true});
+                case this.STEP1_STATE:
+                    this.titleSection = 'Step1: Basic Information';
+                    this.progress(2);
+                    this.$state.go(this.STEP2_STATE, {reload: true});
                     break;
-                case STEP2_STATE:
-                    this.$state.go(STEP3_STATE, {reload: true});
+                case this.STEP2_STATE:
+                    this.titleSection = 'Step2: Where are you located?';
+                    this.progress(3);
+                    this.$state.go(this.STEP3_STATE, {reload: true});
                     break;
-                case STEP3_STATE:
-                    //TODO: Hacer algo cuando este en el ultimo paso.
+                case this.STEP3_STATE:
                     break;
             }
         }
 
 
-        goToBack(): void {
-            //CONSTANTS
-            const STEP1_STATE = 'page.createTeacherPage.basicInfo';
-            const STEP2_STATE = 'page.createTeacherPage.location';
-            const STEP3_STATE = 'page.createTeacherPage.step3';
-            /*********************************/
 
-            // VARIABLES
+        /**
+        * goToBack
+        * @description - go to back step
+        * @function
+        * @return void
+        */
+        goToBack(): void {
+            //Get current state
             let currentState = this.$state.current.name;
 
-            // GO TO NEXT STEP
+            // GO TO BACK STEP
             switch (currentState) {
-                case STEP1_STATE:
+                case this.STEP1_STATE:
+                    //Nothing to do
                     break;
-                case STEP2_STATE:
-                    this.$state.go(STEP1_STATE, {reload: true});
+                case this.STEP2_STATE:
+                    this.progress(1);
+                    this.$state.go(this.STEP1_STATE, {reload: true});
                     break;
-                case STEP3_STATE:
-                    //TODO: Hacer algo cuando este en el ultimo paso.
-                    this.$state.go(STEP2_STATE, {reload: true});
+                case this.STEP3_STATE:
+                    this.progress(2);
+                    this.$state.go(this.STEP2_STATE, {reload: true});
                     break;
             }
         }

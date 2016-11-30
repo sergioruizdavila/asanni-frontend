@@ -20,7 +20,8 @@
                     'step': {
                         templateUrl: 'app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.html'
                     }
-                }
+                },
+                cache: false
             });
     }
 })();

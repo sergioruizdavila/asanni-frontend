@@ -35,7 +35,7 @@
             prefix: prefix,
             suffix: suffix
         });
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.preferredLanguage('es');
     }
 })();
 //# sourceMappingURL=app.module.js.map
@@ -2401,6 +2401,23 @@ var app;
                     var FINAL_DAY = 31;
                     var START_YEAR = 1916;
                     var FINAL_YEAR = 1998;
+                    this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
+                    this.STEP2_STATE = 'page.createTeacherPage.location';
+                    this.STEP3_STATE = 'page.createTeacherPage.step3';
+                    var currentState = this.$state.current.name;
+                    switch (currentState) {
+                        case this.STEP1_STATE:
+                            this.titleSection = 'Step1: Basic Information';
+                            this.progress(1);
+                            break;
+                        case this.STEP2_STATE:
+                            this.titleSection = 'Step2: Where are you located?';
+                            this.progress(2);
+                            break;
+                        case this.STEP3_STATE:
+                            this.progress(3);
+                            break;
+                    }
                     this.form = {
                         teacherData: new app.models.teacher.Teacher(),
                         dateSplitted: { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } },
@@ -2416,18 +2433,17 @@ var app;
                     this.activate();
                 };
                 CreateTeacherPageController.prototype.activate = function () {
+                    var self = this;
                     console.log('createTeacherPage controller actived');
                     this.fillFormWithTeacherData();
                 };
-                CreateTeacherPageController.prototype.progress = function () {
-                    return;
+                CreateTeacherPageController.prototype.progress = function (step) {
+                    var STEPS = 9;
+                    var percent = (100 / STEPS) * (step);
+                    this.progressWidth = percent + '%';
                 };
                 CreateTeacherPageController.prototype.goToNext = function () {
-                    var STEP1_STATE = 'page.createTeacherPage.basicInfo';
-                    var STEP2_STATE = 'page.createTeacherPage.location';
-                    var STEP3_STATE = 'page.createTeacherPage.step3';
                     var self = this;
-                    var currentState = this.$state.current.name;
                     var dateFormatted = this.functionsUtilService.joinDate(this.form.dateSplitted.day.value, this.form.dateSplitted.month.code, this.form.dateSplitted.year.value);
                     var countryCode = this.form.locationCountry.code;
                     this.form.teacherData.BirthDate = dateFormatted;
@@ -2455,30 +2471,34 @@ var app;
                             }
                         });
                     }
+                    var currentState = this.$state.current.name;
                     switch (currentState) {
-                        case STEP1_STATE:
-                            this.$state.go(STEP2_STATE, { reload: true });
+                        case this.STEP1_STATE:
+                            this.titleSection = 'Step1: Basic Information';
+                            this.progress(2);
+                            this.$state.go(this.STEP2_STATE, { reload: true });
                             break;
-                        case STEP2_STATE:
-                            this.$state.go(STEP3_STATE, { reload: true });
+                        case this.STEP2_STATE:
+                            this.titleSection = 'Step2: Where are you located?';
+                            this.progress(3);
+                            this.$state.go(this.STEP3_STATE, { reload: true });
                             break;
-                        case STEP3_STATE:
+                        case this.STEP3_STATE:
                             break;
                     }
                 };
                 CreateTeacherPageController.prototype.goToBack = function () {
-                    var STEP1_STATE = 'page.createTeacherPage.basicInfo';
-                    var STEP2_STATE = 'page.createTeacherPage.location';
-                    var STEP3_STATE = 'page.createTeacherPage.step3';
                     var currentState = this.$state.current.name;
                     switch (currentState) {
-                        case STEP1_STATE:
+                        case this.STEP1_STATE:
                             break;
-                        case STEP2_STATE:
-                            this.$state.go(STEP1_STATE, { reload: true });
+                        case this.STEP2_STATE:
+                            this.progress(1);
+                            this.$state.go(this.STEP1_STATE, { reload: true });
                             break;
-                        case STEP3_STATE:
-                            this.$state.go(STEP2_STATE, { reload: true });
+                        case this.STEP3_STATE:
+                            this.progress(2);
+                            this.$state.go(this.STEP2_STATE, { reload: true });
                             break;
                     }
                 };
@@ -2537,7 +2557,8 @@ var app;
                 'step': {
                     templateUrl: 'app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.html'
                 }
-            }
+            },
+            cache: false
         });
     }
 })();

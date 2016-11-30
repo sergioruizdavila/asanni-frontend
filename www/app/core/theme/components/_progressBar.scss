@@ -12,6 +12,10 @@
             -webkit-border-radius: 100px;
             -moz-border-radius: 100px;
             border-radius: 100px;
+            -webkit-transition: width 1.5s ease-in-out;
+            -moz-transition: width 1.5s ease-in-out;
+            -o-transition: width 1.5s ease-in-out;
+            transition: width 1.5s ease-in-out;
             position: absolute;
             top: -4px;
             left: 0;
