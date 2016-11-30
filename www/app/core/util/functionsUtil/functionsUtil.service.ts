@@ -12,9 +12,9 @@ module app.core.util.functionsUtil {
     /**********************************/
     export interface IFunctionsUtilService {
         splitToColumns: (arr: Array<any>, size: number) => Array<any>;
-        buildMarkersOnMap: (dataSet: Array<any>,
-                            mapType: string,
-                            position: components.map.IPosition) =>  components.map.IMapConfig;
+        buildMapConfig: (dataSet: Array<any>,
+                        mapType: string,
+                        position: components.map.IPosition) =>  components.map.IMapConfig;
         generateRangesOfNumbers: (from: number, to:number) => Array<number>;
         buildNumberSelectList: (from: number, to:number) => Array<app.core.interfaces.ISelectListElement>;
         dateFormat: (date: string) => string;
@@ -117,16 +117,19 @@ module app.core.util.functionsUtil {
         }
 
         /**
-        * buildMarkersOnMap
+        * buildMapConfig
         * @description - build each marker on a specific map (based on a dataSet)
-        * @use - this.FunctionsUtilService.buildMarkersOnMap(data, 2);
+        * @use - this.FunctionsUtilService.buildMapConfig(response,
+                                                          'search-map',
+                                                          {lat: 6.175434,lng: -75.583329});
         * @function
+        * TODO: Asignar un tipo de datos al Array, ya que esta muy complicado entender que es dataSet
         * @params {Array<any>} dataSet - dataSet array
         * @params {string} mapType - map type
         * @params {components.map.IPosition} position - position on map (lat and lng)
         * @return {components.map.IMapConfig} mapConfig - google map config.
         */
-        buildMarkersOnMap(dataSet, mapType, position): components.map.IMapConfig {
+        buildMapConfig(dataSet, mapType, position): components.map.IMapConfig {
             //VARIABLES
             let mapConfig: components.map.IMapConfig = {
                 type: mapType,

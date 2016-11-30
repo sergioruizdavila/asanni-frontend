@@ -23,7 +23,8 @@ var app;
                         message: ''
                     };
                     this.mapConfig = {
-                        type: 'location-map'
+                        type: 'location-map',
+                        data: null
                     };
                     this.$scope.date;
                     this.$scope.datetimepickerConfig = {
@@ -36,7 +37,7 @@ var app;
                     var self = this;
                     console.log('userProfilePage controller actived');
                     this.UserService.getUserById(this.$stateParams.id).then(function (response) {
-                        self.data = new app.models.user.Student(response);
+                        self.data = new app.models.user.User(response);
                     });
                 };
                 UserProfilePageController.prototype.onTimeSet = function (newDate, oldDate) {

@@ -25,7 +25,8 @@ var app;
                     var FINAL_YEAR = 1998;
                     this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
                     this.STEP2_STATE = 'page.createTeacherPage.location';
-                    this.STEP3_STATE = 'page.createTeacherPage.step3';
+                    this.STEP3_STATE = 'page.createTeacherPage.map';
+                    this.STEP4_STATE = 'page.createTeacherPage.step4';
                     var currentState = this.$state.current.name;
                     switch (currentState) {
                         case this.STEP1_STATE:
@@ -37,9 +38,12 @@ var app;
                             this.progress(2);
                             break;
                         case this.STEP3_STATE:
+                            this.titleSection = 'Step2: Where are you located?';
                             this.progress(3);
                             break;
                     }
+                    this.geocoder = new google.maps.Geocoder();
+                    this.mapConfig = this.functionsUtilService.buildMapConfig([{ id: 1, location: { position: { lat: 6.175434, lng: -75.583329 } } }], 'drag-maker-map', { lat: 6.175434, lng: -75.583329 });
                     this.form = {
                         teacherData: new app.models.teacher.Teacher(),
                         dateSplitted: { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } },
@@ -68,8 +72,27 @@ var app;
                     var self = this;
                     var dateFormatted = this.functionsUtilService.joinDate(this.form.dateSplitted.day.value, this.form.dateSplitted.month.code, this.form.dateSplitted.year.value);
                     var countryCode = this.form.locationCountry.code;
+                    var city = this.form.teacherData.CityLocation;
+                    var address = this.form.teacherData.AddressLocation;
+                    var zipCode = this.form.teacherData.ZipCodeLocation;
                     this.form.teacherData.BirthDate = dateFormatted;
                     this.form.teacherData.CountryLocation = countryCode;
+                    if (address) {
+                        var dataRequest = {
+                            address: address,
+                            componentRestrictions: {
+                                country: countryCode
+                            }
+                        };
+                        this.geocoder.geocode(dataRequest, function (results, status) {
+                            if (status === 'OK') {
+                                console.log(results, status);
+                            }
+                            else {
+                                console.log(results, status);
+                            }
+                        });
+                    }
                     if (this.$rootScope.teacher_id) {
                         this.form.teacherData.Id = this.$rootScope.teacher_id;
                         this.teacherService.updateTeacher(this.form.teacherData)
@@ -106,6 +129,9 @@ var app;
                             this.$state.go(this.STEP3_STATE, { reload: true });
                             break;
                         case this.STEP3_STATE:
+                            this.titleSection = 'Step2: Where are you located?';
+                            this.progress(3);
+                            this.$state.go(this.STEP4_STATE, { reload: true });
                             break;
                     }
                 };

@@ -5,14 +5,14 @@
         .config(config);
     function config($stateProvider) {
         $stateProvider
-            .state('page.createTeacherPage.step3', {
-            url: '/step3',
+            .state('page.createTeacherPage.map', {
+            url: '/map',
             views: {
                 'step': {
-                    templateUrl: 'app/pages/createTeacherPage/step3Section/step3Section.html'
+                    templateUrl: 'app/pages/createTeacherPage/locationOnMapSection/locationOnMapSection.html'
                 }
             }
         });
     }
 })();
-//# sourceMappingURL=step3Section.config.js.map
+//# sourceMappingURL=locationOnMapSection.config.js.map

@@ -1,6 +1,6 @@
 /**
 * config()
-* @description - step 3 section config file
+* @description - location on map section config file
 */
 
 (function() {
@@ -14,11 +14,11 @@
     function config($stateProvider: angular.ui.IStateProvider) {
 
         $stateProvider
-            .state('page.createTeacherPage.step3', {
-                url: '/step3',
+            .state('page.createTeacherPage.map', {
+                url: '/map',
                 views: {
                     'step': {
-                        templateUrl: 'app/pages/createTeacherPage/step3Section/step3Section.html'
+                        templateUrl: 'app/pages/createTeacherPage/locationOnMapSection/locationOnMapSection.html'
                     }
                 }
             });

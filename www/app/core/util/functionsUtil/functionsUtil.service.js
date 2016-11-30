@@ -36,7 +36,7 @@ var app;
                         }
                         return newArr;
                     };
-                    FunctionsUtilService.prototype.buildMarkersOnMap = function (dataSet, mapType, position) {
+                    FunctionsUtilService.prototype.buildMapConfig = function (dataSet, mapType, position) {
                         var mapConfig = {
                             type: mapType,
                             data: {

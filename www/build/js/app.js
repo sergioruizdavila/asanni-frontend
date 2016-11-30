@@ -172,7 +172,7 @@ var app;
                         }
                         return newArr;
                     };
-                    FunctionsUtilService.prototype.buildMarkersOnMap = function (dataSet, mapType, position) {
+                    FunctionsUtilService.prototype.buildMapConfig = function (dataSet, mapType, position) {
                         var mapConfig = {
                             type: mapType,
                             data: {
@@ -1128,21 +1128,20 @@ var components;
                 this.init();
             }
             MapController.prototype.init = function () {
+                this.RED_PIN = 'assets/images/red-pin.png';
+                this.POSITION_PIN = 'assets/images/red-pin.png';
                 var self = this;
                 this._map;
                 this.mapId = 'ma-map-' + Math.floor((Math.random() * 100) + 1);
                 this._infoWindow = null;
                 this._markers = [];
                 this.$scope.options = null;
-                this.form = {
-                    position: {
-                        lat: null,
-                        lng: null
-                    }
-                };
                 switch (this.mapConfig.type) {
                     case 'search-map':
                         this._searchMapBuilder();
+                        break;
+                    case 'drag-maker-map':
+                        this._dragMarkerMapBuilder();
                         break;
                 }
                 this.activate();
@@ -1172,7 +1171,32 @@ var components;
                         self._createFilterButtons();
                         for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                             var marker = self.mapConfig.data.markers[i];
-                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), 'assets/images/meeting-point.png');
+                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.RED_PIN);
+                        }
+                    });
+                }
+            };
+            MapController.prototype._dragMarkerMapBuilder = function () {
+                var self = this;
+                var zoom = 16;
+                var center = this.mapConfig.data.position;
+                this.$scope.options = {
+                    center: new google.maps.LatLng(center.lat, center.lng),
+                    zoom: zoom,
+                    mapTypeControl: false,
+                    zoomControl: true,
+                    streetViewControl: false,
+                    scrollwheel: false,
+                    zoomControlOptions: {
+                        position: google.maps.ControlPosition.TOP_LEFT
+                    }
+                };
+                if (this._map === void 0) {
+                    this.$timeout(function () {
+                        self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
+                        for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
+                            var marker = self.mapConfig.data.markers[i];
+                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.POSITION_PIN);
                         }
                     });
                 }
@@ -1188,6 +1212,19 @@ var components;
                 };
                 marker = new google.maps.Marker(markerOptions);
                 this._markers.push(marker);
+            };
+            MapController.prototype._removeMarkers = function () {
+                for (var i = 0; i < this._markers.length; i++) {
+                    this._markers[i].setMap(null);
+                }
+            };
+            MapController.prototype._createFilterButtons = function () {
+                var buttons = ['Students', 'Teachers', 'Schools'];
+                for (var i = 0; i < buttons.length; i++) {
+                    var controlDiv = document.createElement('div');
+                    var control = this._filterControl(controlDiv, buttons[i]);
+                    this._map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
+                }
             };
             MapController.prototype._filterControl = function (controlDiv, type) {
                 var self = this;
@@ -1263,19 +1300,6 @@ var components;
                     self._removeMarkers();
                     self.$scope.$emit(type);
                 });
-            };
-            MapController.prototype._removeMarkers = function () {
-                for (var i = 0; i < this._markers.length; i++) {
-                    this._markers[i].setMap(null);
-                }
-            };
-            MapController.prototype._createFilterButtons = function () {
-                var buttons = ['Students', 'Teachers', 'Schools'];
-                for (var i = 0; i < buttons.length; i++) {
-                    var controlDiv = document.createElement('div');
-                    var control = this._filterControl(controlDiv, buttons[i]);
-                    this._map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
-                }
             };
             MapController.prototype._subscribeToEvents = function () {
                 var self = this;
@@ -1677,7 +1701,7 @@ var app;
                     this._subscribeToEvents();
                     this.StudentService.getAllStudents().then(function (response) {
                         self.type = 'student';
-                        self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                        self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
                         self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                     });
                 };
@@ -1699,7 +1723,7 @@ var app;
                     this.$scope.$on('Students', function (event, args) {
                         self.StudentService.getAllStudents().then(function (response) {
                             self.type = 'student';
-                            self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                             self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                         });
@@ -1707,7 +1731,7 @@ var app;
                     this.$scope.$on('Teachers', function (event, args) {
                         self.TeacherService.getAllTeachers().then(function (response) {
                             self.type = 'teacher';
-                            self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                             self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                         });
@@ -1715,7 +1739,7 @@ var app;
                     this.$scope.$on('Schools', function (event, args) {
                         self.SchoolService.getAllSchools().then(function (response) {
                             self.type = 'school';
-                            self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                             self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                         });
@@ -1791,7 +1815,8 @@ var app;
                         message: ''
                     };
                     this.mapConfig = {
-                        type: 'location-map'
+                        type: 'location-map',
+                        data: null
                     };
                     this.$scope.date;
                     this.$scope.datetimepickerConfig = {
@@ -1804,7 +1829,7 @@ var app;
                     var self = this;
                     console.log('userProfilePage controller actived');
                     this.UserService.getUserById(this.$stateParams.id).then(function (response) {
-                        self.data = new app.models.user.Student(response);
+                        self.data = new app.models.user.User(response);
                     });
                 };
                 UserProfilePageController.prototype.onTimeSet = function (newDate, oldDate) {
@@ -2403,7 +2428,8 @@ var app;
                     var FINAL_YEAR = 1998;
                     this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
                     this.STEP2_STATE = 'page.createTeacherPage.location';
-                    this.STEP3_STATE = 'page.createTeacherPage.step3';
+                    this.STEP3_STATE = 'page.createTeacherPage.map';
+                    this.STEP4_STATE = 'page.createTeacherPage.step4';
                     var currentState = this.$state.current.name;
                     switch (currentState) {
                         case this.STEP1_STATE:
@@ -2415,9 +2441,12 @@ var app;
                             this.progress(2);
                             break;
                         case this.STEP3_STATE:
+                            this.titleSection = 'Step2: Where are you located?';
                             this.progress(3);
                             break;
                     }
+                    this.geocoder = new google.maps.Geocoder();
+                    this.mapConfig = this.functionsUtilService.buildMapConfig([{ id: 1, location: { position: { lat: 6.175434, lng: -75.583329 } } }], 'drag-maker-map', { lat: 6.175434, lng: -75.583329 });
                     this.form = {
                         teacherData: new app.models.teacher.Teacher(),
                         dateSplitted: { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } },
@@ -2446,8 +2475,27 @@ var app;
                     var self = this;
                     var dateFormatted = this.functionsUtilService.joinDate(this.form.dateSplitted.day.value, this.form.dateSplitted.month.code, this.form.dateSplitted.year.value);
                     var countryCode = this.form.locationCountry.code;
+                    var city = this.form.teacherData.CityLocation;
+                    var address = this.form.teacherData.AddressLocation;
+                    var zipCode = this.form.teacherData.ZipCodeLocation;
                     this.form.teacherData.BirthDate = dateFormatted;
                     this.form.teacherData.CountryLocation = countryCode;
+                    if (address) {
+                        var dataRequest = {
+                            address: address,
+                            componentRestrictions: {
+                                country: countryCode
+                            }
+                        };
+                        this.geocoder.geocode(dataRequest, function (results, status) {
+                            if (status === 'OK') {
+                                console.log(results, status);
+                            }
+                            else {
+                                console.log(results, status);
+                            }
+                        });
+                    }
                     if (this.$rootScope.teacher_id) {
                         this.form.teacherData.Id = this.$rootScope.teacher_id;
                         this.teacherService.updateTeacher(this.form.teacherData)
@@ -2484,6 +2532,9 @@ var app;
                             this.$state.go(this.STEP3_STATE, { reload: true });
                             break;
                         case this.STEP3_STATE:
+                            this.titleSection = 'Step2: Where are you located?';
+                            this.progress(3);
+                            this.$state.go(this.STEP4_STATE, { reload: true });
                             break;
                     }
                 };
@@ -2563,3 +2614,40 @@ var app;
     }
 })();
 //# sourceMappingURL=teacherInfoSection.config.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.createTeacherPage')
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.createTeacherPage.location', {
+            url: '/location',
+            views: {
+                'step': {
+                    templateUrl: 'app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.html'
+                }
+            },
+            cache: false
+        });
+    }
+})();
+//# sourceMappingURL=teacherLocationSection.config.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.createTeacherPage')
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.createTeacherPage.map', {
+            url: '/map',
+            views: {
+                'step': {
+                    templateUrl: 'app/pages/createTeacherPage/locationOnMapSection/locationOnMapSection.html'
+                }
+            }
+        });
+    }
+})();
+//# sourceMappingURL=locationOnMapSection.config.js.map

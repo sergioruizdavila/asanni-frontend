@@ -46,6 +46,8 @@ module app.pages.createTeacherPage {
         /**********************************/
         form: ICreateTeacherForm;
         error: ICreateTeacherError;
+        mapConfig: components.map.IMapConfig;
+        geocoder: google.maps.Geocoder;
         progressWidth: string;
         titleSection: string;
         listMonths: Array<app.core.interfaces.IDataFromJsonI18n>;
@@ -55,6 +57,7 @@ module app.pages.createTeacherPage {
         STEP1_STATE: string;
         STEP2_STATE: string;
         STEP3_STATE: string;
+        STEP4_STATE: string;
         // --------------------------------
 
 
@@ -99,7 +102,8 @@ module app.pages.createTeacherPage {
             const FINAL_YEAR = 1998;
             this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
             this.STEP2_STATE = 'page.createTeacherPage.location';
-            this.STEP3_STATE = 'page.createTeacherPage.step3';
+            this.STEP3_STATE = 'page.createTeacherPage.map';
+            this.STEP4_STATE = 'page.createTeacherPage.step4';
             /*********************************/
 
             //Get current state
@@ -116,9 +120,20 @@ module app.pages.createTeacherPage {
                     this.progress(2);
                     break;
                 case this.STEP3_STATE:
+                    this.titleSection = 'Step2: Where are you located?';
                     this.progress(3);
                     break;
             }
+
+            //Init geoCode google map in order to get lat & lng base on teacher street
+            this.geocoder = new google.maps.Geocoder();
+
+            //Init map config
+            this.mapConfig = this.functionsUtilService.buildMapConfig(
+                [{id:1, location: {position: {lat: 6.175434, lng: -75.583329}}}], //TODO: Cambiar esta guachada
+                'drag-maker-map',
+                {lat: 6.175434, lng: -75.583329}
+            );
 
             //Init form
             this.form = {
@@ -189,10 +204,31 @@ module app.pages.createTeacherPage {
                                     this.form.dateSplitted.month.code,
                                     this.form.dateSplitted.year.value);
             let countryCode = this.form.locationCountry.code;
+            let city = this.form.teacherData.CityLocation;
+            let address = this.form.teacherData.AddressLocation;
+            let zipCode = this.form.teacherData.ZipCodeLocation;
             /*********************************/
 
             this.form.teacherData.BirthDate = dateFormatted;
             this.form.teacherData.CountryLocation = countryCode;
+
+            if(address) {
+                let dataRequest = {
+                    address: address,
+                    componentRestrictions: {
+                        country: countryCode
+                    }
+                }
+                this.geocoder.geocode( dataRequest, function(results, status: any) {
+                    if (status === 'OK') {
+                        console.log(results, status);
+                        //TODO: Guardar la position en el objeto:
+                        // this.form.teacherData.Position = results[0].geometry.location;
+                    } else {
+                        console.log(results, status);
+                    }
+                });
+            }
 
             if(this.$rootScope.teacher_id) {
                 // UPDATE EXISTING TEACHER
@@ -243,6 +279,9 @@ module app.pages.createTeacherPage {
                     this.$state.go(this.STEP3_STATE, {reload: true});
                     break;
                 case this.STEP3_STATE:
+                    this.titleSection = 'Step2: Where are you located?';
+                    this.progress(3);
+                    this.$state.go(this.STEP4_STATE, {reload: true});
                     break;
             }
         }
