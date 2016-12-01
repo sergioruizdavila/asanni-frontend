@@ -9,7 +9,9 @@
             url: '/basicInfo',
             views: {
                 'step': {
-                    templateUrl: 'app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.html'
+                    templateUrl: 'app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.html',
+                    controller: 'mainApp.pages.createTeacherPage.TeacherInfoSectionController',
+                    controllerAs: 'vm'
                 }
             },
             cache: false

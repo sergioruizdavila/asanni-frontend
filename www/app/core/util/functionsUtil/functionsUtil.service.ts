@@ -20,6 +20,7 @@ module app.core.util.functionsUtil {
         dateFormat: (date: string) => string;
         joinDate: (day:string, month:string, year:string) => string;
         splitDate: (date:string) => app.core.interfaces.IDateSplitted;
+        progress: (currentStep: number, totalSteps: number) => string;
     }
 
 
@@ -149,7 +150,7 @@ module app.core.util.functionsUtil {
             return mapConfig;
         }
 
-        /*
+        /**
         * External Function: extractCountriesFromHtml
         * @external
         * @description Get Countries and Codes from HTML (assets/schemas/countries/countries.html)
@@ -212,6 +213,21 @@ module app.core.util.functionsUtil {
             }
 
             return list;
+        }
+
+
+
+        /**
+        * progress
+        * @description - increase or reduce progress bar width
+        * @param {number} currentStep - current step
+        * @param {number} totalSteps - total steps
+        * @function
+        * @return void
+        */
+        progress(currentStep, totalSteps): string {
+            let percent = (100 / totalSteps) * (currentStep);
+            return percent + '%';
         }
 
     }

@@ -18,7 +18,9 @@
                 url: '/location',
                 views: {
                     'step': {
-                        templateUrl: 'app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.html'
+                        templateUrl: 'app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.html',
+                        controller: 'mainApp.pages.createTeacherPage.TeacherLocationSectionController',
+                        controllerAs: 'vm'
                     }
                 },
                 cache: false

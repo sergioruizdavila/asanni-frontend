@@ -172,7 +172,7 @@ module app.models.user {
         }
 
         get CountryLocation() {
-            return this.addressLocation;
+            return this.countryLocation;
         }
 
         set CountryLocation(countryLocation: string) {

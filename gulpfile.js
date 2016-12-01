@@ -67,7 +67,9 @@ var paths = {
         "www/app/pages/createTeacherPage/createTeacherPage.config.js",
         "www/app/pages/createTeacherPage/createTeacherPage.controller.js",
         "www/app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.config.js",
+        "www/app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.controller.js",
         "www/app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.config.js",
+        "www/app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.controller.js",
         "www/app/pages/createTeacherPage/locationOnMapSection/locationOnMapSection.config.js"
     ],
     appLibsJs: [

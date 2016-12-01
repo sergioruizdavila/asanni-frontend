@@ -33,7 +33,7 @@
                                 <input id="teacher-first-name"
                                         class="ma-input ma-input--large"
                                         type="text"
-                                        ng-model="vm.form.teacherData.firstName">
+                                        ng-model="vm.form.firstName">
                             </div>
                         </div>
 
@@ -48,7 +48,7 @@
                             <div class="col-xs-9 col-sm-9">
                                 <input id="teacher-last-name"
                                        type="text"
-                                       ng-model="vm.form.teacherData.lastName"
+                                       ng-model="vm.form.lastName"
                                        class="ma-input ma-input--large">
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                             <div class="col-xs-9 col-sm-9">
                                 <input id="teacher-email"
                                        type="email"
-                                       ng-model="vm.form.teacherData.email"
+                                       ng-model="vm.form.email"
                                        class="ma-input ma-input--large">
                             </div>
                         </div>
@@ -80,7 +80,7 @@
                             <div class="col-xs-9 col-sm-9">
                                 <input id="teacher-phone-number"
                                        type="text"
-                                       ng-model="vm.form.teacherData.phoneNumber"
+                                       ng-model="vm.form.phoneNumber"
                                        placeholder="e.g. +57 3052345678"
                                        class="ma-input ma-input--large">
                             </div>
@@ -99,7 +99,7 @@
                                             class="ma-input ma-select
                                                    ma-select--large"
                                             name="teacher[sex]"
-                                            ng-model="vm.form.teacherData.sex">
+                                            ng-model="vm.form.sex">
                                         <option value="M" selected="selected">Male</option>
                                         <option value="F">Female</option>
                                         <option value="O">Other</option>
@@ -121,7 +121,7 @@
                                     <select id="teacher-month-birthdate"
                                             class="ma-input ma-select
                                                    ma-select--large"
-                                            ng-model="vm.form.dateSplitted.month"
+                                            ng-model="vm.dateObject.month"
                                             ng-options="month.value | translate for month in vm.listMonths track by month.code"
                                             name="teacher[month]" class="form-control">
                                             <option value="" disabled selected>
@@ -136,7 +136,7 @@
                                     <select id="teacher-day-birthdate"
                                             class="ma-input ma-select
                                                    ma-select--large"
-                                            ng-model="vm.form.dateSplitted.day"
+                                            ng-model="vm.dateObject.day"
                                             ng-options="day.value for day in vm.listDays track by day.value"
                                             name="teacher[day]" class="form-control">
                                             <option value="" disabled selected>
@@ -151,7 +151,7 @@
                                     <select id="teacher-year-birthdate"
                                             class="ma-input ma-select
                                                    ma-select--large"
-                                            ng-model="vm.form.dateSplitted.year"
+                                            ng-model="vm.dateObject.year"
                                             ng-options="year.value for year in vm.listYears track by year.value"
                                             name="teacher[year]" class="form-control">
                                             <option value="" disabled selected>
@@ -172,7 +172,7 @@
                                 <input id="teacher-born"
                                        type="text"
                                        class="ma-input ma-input--large"
-                                       ng-model="vm.form.teacherData.born"
+                                       ng-model="vm.form.born"
                                        placeholder="e.g. Miami, Florida / Lisboa, Portugal">
                             </div>
                         </div>
@@ -188,7 +188,7 @@
                                           name="teacher[about]"
                                           class="ma-input ma-input--large ma-textarea"
                                           placeholder="e.g. I enjoy traveling around the world, and I feel good cooking on my free time"
-                                          ng-model="vm.form.teacherData.about"
+                                          ng-model="vm.form.about"
                                           rows="5" cols="40"></textarea>
                             </div>
                         </div>

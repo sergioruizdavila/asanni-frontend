@@ -9,6 +9,9 @@ module app.pages.createTeacherPage {
     /*           INTERFACES           */
     /**********************************/
     export interface ICreateTeacherPageController {
+        teacherData: app.models.teacher.Teacher;
+        progressWidth: string;
+        titleSection: string;
         form: ICreateTeacherForm;
         error: ICreateTeacherError;
         activate: () => void;
@@ -19,15 +22,6 @@ module app.pages.createTeacherPage {
     }
 
     interface ICreateTeacherForm {
-        teacherData: app.models.teacher.Teacher;
-        dateSplitted: IBirthdateForm;
-        locationCountry: app.core.interfaces.IDataFromJsonI18n;
-    }
-
-    interface IBirthdateForm {
-        day: app.core.interfaces.ISelectListElement;
-        month: app.core.interfaces.IDataFromJsonI18n;
-        year: app.core.interfaces.ISelectListElement;
     }
 
     interface ICreateTeacherError {
@@ -46,18 +40,9 @@ module app.pages.createTeacherPage {
         /**********************************/
         form: ICreateTeacherForm;
         error: ICreateTeacherError;
-        mapConfig: components.map.IMapConfig;
-        geocoder: google.maps.Geocoder;
+        teacherData: app.models.teacher.Teacher;
         progressWidth: string;
         titleSection: string;
-        listMonths: Array<app.core.interfaces.IDataFromJsonI18n>;
-        listDays: Array<app.core.interfaces.ISelectListElement>;
-        listYears: Array<app.core.interfaces.ISelectListElement>;
-        listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
-        STEP1_STATE: string;
-        STEP2_STATE: string;
-        STEP3_STATE: string;
-        STEP4_STATE: string;
         // --------------------------------
 
 
@@ -95,58 +80,12 @@ module app.pages.createTeacherPage {
 
         /*-- INITIALIZE METHOD --*/
         private _init() {
-            //CONSTANTS
-            const START_DAY = 1;
-            const FINAL_DAY = 31;
-            const START_YEAR = 1916;
-            const FINAL_YEAR = 1998;
-            this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
-            this.STEP2_STATE = 'page.createTeacherPage.location';
-            this.STEP3_STATE = 'page.createTeacherPage.map';
-            this.STEP4_STATE = 'page.createTeacherPage.step4';
-            /*********************************/
 
             //Get current state
             let currentState = this.$state.current.name;
 
-            //Put title section and progress bar width
-            switch (currentState) {
-                case this.STEP1_STATE:
-                    this.titleSection = 'Step1: Basic Information';
-                    this.progress(1);
-                    break;
-                case this.STEP2_STATE:
-                    this.titleSection = 'Step2: Where are you located?';
-                    this.progress(2);
-                    break;
-                case this.STEP3_STATE:
-                    this.titleSection = 'Step2: Where are you located?';
-                    this.progress(3);
-                    break;
-            }
-
-            //Init geoCode google map in order to get lat & lng base on teacher street
-            this.geocoder = new google.maps.Geocoder();
-
-            //Init map config
-            this.mapConfig = this.functionsUtilService.buildMapConfig(
-                [{id:1, location: {position: {lat: 6.175434, lng: -75.583329}}}], //TODO: Cambiar esta guachada
-                'drag-maker-map',
-                {lat: 6.175434, lng: -75.583329}
-            );
-
-            //Init form
-            this.form = {
-                teacherData: new app.models.teacher.Teacher(),
-                dateSplitted: {day:{value:''}, month: {code:'', value:''}, year: {value:''}},
-                locationCountry: {code: '', value: ''}
-            };
-
-            //build select lists
-            this.listMonths = this.getDataFromJson.getMonthi18n();
-            this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
-            this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
-            this.listCountries = this.getDataFromJson.getCountryi18n();
+            //Init teacher instance
+            this.teacherData = new app.models.teacher.Teacher();
 
             this.error = {
                 message: ''
@@ -163,6 +102,9 @@ module app.pages.createTeacherPage {
             //LOG
             console.log('createTeacherPage controller actived');
 
+            //SUBSCRIBE TO EVENTS
+            this._subscribeToEvents();
+
             //Charge teacher data if teacher entity exist on DB
             this.fillFormWithTeacherData();
         }
@@ -170,149 +112,6 @@ module app.pages.createTeacherPage {
         /**********************************/
         /*            METHODS             */
         /**********************************/
-
-        /**
-        * progress
-        * @description - increase or reduce progress bar width
-        * @param {number} step - number of step
-        * @function
-        * @return void
-        */
-        progress(step: number): void {
-            // CONSTANTS
-            // quantity of steps + 1 (final page with success message)
-            let STEPS = 9;
-            /***********************/
-
-            let percent = (100 / STEPS) * (step);
-            this.progressWidth = percent + '%';
-        }
-
-        /**
-        * goToNext
-        * @description - go to next step (create or update teacher data on DB)
-        * @function
-        * @return void
-        */
-        goToNext(): void {
-
-            //VARIABLES
-            let self = this;
-
-            let dateFormatted = this.functionsUtilService.joinDate(
-                                    this.form.dateSplitted.day.value,
-                                    this.form.dateSplitted.month.code,
-                                    this.form.dateSplitted.year.value);
-            let countryCode = this.form.locationCountry.code;
-            let city = this.form.teacherData.CityLocation;
-            let address = this.form.teacherData.AddressLocation;
-            let zipCode = this.form.teacherData.ZipCodeLocation;
-            /*********************************/
-
-            this.form.teacherData.BirthDate = dateFormatted;
-            this.form.teacherData.CountryLocation = countryCode;
-
-            if(address) {
-                let dataRequest = {
-                    address: address,
-                    componentRestrictions: {
-                        country: countryCode
-                    }
-                }
-                this.geocoder.geocode( dataRequest, function(results, status: any) {
-                    if (status === 'OK') {
-                        console.log(results, status);
-                        //TODO: Guardar la position en el objeto:
-                        // this.form.teacherData.Position = results[0].geometry.location;
-                    } else {
-                        console.log(results, status);
-                    }
-                });
-            }
-
-            if(this.$rootScope.teacher_id) {
-                // UPDATE EXISTING TEACHER
-                this.form.teacherData.Id = this.$rootScope.teacher_id;
-                this.teacherService.updateTeacher(this.form.teacherData)
-                .then(
-                    function(response) {
-                        if(response.id) {
-                            //Save teacher id
-                            self.$rootScope.teacher_id = response.id;
-                            self.localStorage.setItem('waysily.teacher_id', response.id);
-
-                        } else {
-                            //error
-                        }
-                    }
-                );
-            } else {
-                // CREATE NEW TEACHER
-                this.teacherService.createTeacher(this.form.teacherData)
-                .then(
-                    function(response) {
-                        if(response.id) {
-                            //Save teacher id
-                            self.$rootScope.teacher_id = response.id;
-                            self.localStorage.setItem('waysily.teacher_id', response.id);
-
-                        } else {
-                            //error
-                        }
-                    }
-                );
-            }
-
-            //Get current state
-            let currentState = this.$state.current.name;
-
-            // GO TO NEXT STEP
-            switch (currentState) {
-                case this.STEP1_STATE:
-                    this.titleSection = 'Step1: Basic Information';
-                    this.progress(2);
-                    this.$state.go(this.STEP2_STATE, {reload: true});
-                    break;
-                case this.STEP2_STATE:
-                    this.titleSection = 'Step2: Where are you located?';
-                    this.progress(3);
-                    this.$state.go(this.STEP3_STATE, {reload: true});
-                    break;
-                case this.STEP3_STATE:
-                    this.titleSection = 'Step2: Where are you located?';
-                    this.progress(3);
-                    this.$state.go(this.STEP4_STATE, {reload: true});
-                    break;
-            }
-        }
-
-
-
-        /**
-        * goToBack
-        * @description - go to back step
-        * @function
-        * @return void
-        */
-        goToBack(): void {
-            //Get current state
-            let currentState = this.$state.current.name;
-
-            // GO TO BACK STEP
-            switch (currentState) {
-                case this.STEP1_STATE:
-                    //Nothing to do
-                    break;
-                case this.STEP2_STATE:
-                    this.progress(1);
-                    this.$state.go(this.STEP1_STATE, {reload: true});
-                    break;
-                case this.STEP3_STATE:
-                    this.progress(2);
-                    this.$state.go(this.STEP2_STATE, {reload: true});
-                    break;
-            }
-        }
 
 
         /**
@@ -333,15 +132,9 @@ module app.pages.createTeacherPage {
                 .then(
                     function(response) {
                         if(response.id) {
-                            //Build birthdate (Charge on select List)
-                            let date = self.functionsUtilService.splitDate(response.birthDate);
-                            self.form.dateSplitted.day.value = parseInt(date.day);
-                            self.form.dateSplitted.month.code = date.month;
-                            self.form.dateSplitted.year.value = parseInt(date.year);
-                            //Charge Country on select List
-                            self.form.locationCountry.code = response.countryLocation;
-                            //Fill form fields with teacher data
-                            self.form.teacherData = new app.models.teacher.Teacher(response);
+
+                            self.teacherData = new app.models.teacher.Teacher(response);
+                            self.$scope.$broadcast('Fill Form', self.teacherData);
 
                         } else {
                             //error
@@ -351,6 +144,75 @@ module app.pages.createTeacherPage {
             }
         }
 
+
+
+        /**
+        * _subscribeToEvents
+        * @description - this method subscribes Create Teacher Page to Child's Events
+        * @use - this._subscribeToEvents();
+        * @function
+        * @return {void}
+        */
+
+        private _subscribeToEvents(): void {
+            // VARIABLES
+            let self = this;
+
+            /**
+            * Save Data event
+            * @description - Parent (CreateTeacherPageController) receive Child's
+                             event in order to save teacher data on BD
+            * @event
+            */
+            this.$scope.$on('Save Data', function(event, args) {
+                //VARIABLES
+                let numStep = args;
+                /******************************/
+
+                if(self.$rootScope.teacher_id) {
+                    // UPDATE EXISTING TEACHER
+                    self.teacherData.Id = self.$rootScope.teacher_id;
+                    self.teacherService.updateTeacher(self.teacherData)
+                    .then(
+                        function(response) {
+                            if(response.id) {
+                                //Save teacher id
+                                self.$rootScope.teacher_id = response.id;
+                                self.localStorage.setItem('waysily.teacher_id', response.id);
+
+                                //Fill Form
+                                self.teacherData = new app.models.teacher.Teacher(response);
+                                self.$scope.$broadcast('Fill Form', self.teacherData);
+
+                            } else {
+                                //error
+                            }
+                        }
+                    );
+                } else {
+                    // CREATE NEW TEACHER
+                    self.teacherService.createTeacher(self.teacherData)
+                    .then(
+                        function(response) {
+                            if(response.id) {
+                                //Save teacher id
+                                self.$rootScope.teacher_id = response.id;
+                                self.localStorage.setItem('waysily.teacher_id', response.id);
+
+                                //Fill Form
+                                self.teacherData = new app.models.teacher.Teacher(response);
+                                self.$scope.$broadcast('Fill Form', self.teacherData);
+
+                            } else {
+                                //error
+                            }
+                        }
+                    );
+                }
+
+            });
+
+        }
 
     }
 

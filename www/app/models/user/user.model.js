@@ -170,7 +170,7 @@ var app;
                 });
                 Object.defineProperty(User.prototype, "CountryLocation", {
                     get: function () {
-                        return this.addressLocation;
+                        return this.countryLocation;
                     },
                     set: function (countryLocation) {
                         if (countryLocation === undefined) {

@@ -214,6 +214,10 @@ var app;
                         }
                         return list;
                     };
+                    FunctionsUtilService.prototype.progress = function (currentStep, totalSteps) {
+                        var percent = (100 / totalSteps) * (currentStep);
+                        return percent + '%';
+                    };
                     return FunctionsUtilService;
                 }());
                 FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
@@ -519,7 +523,7 @@ var app;
                 });
                 Object.defineProperty(User.prototype, "CountryLocation", {
                     get: function () {
-                        return this.addressLocation;
+                        return this.countryLocation;
                     },
                     set: function (countryLocation) {
                         if (countryLocation === undefined) {
@@ -2422,40 +2426,8 @@ var app;
                     this._init();
                 }
                 CreateTeacherPageController.prototype._init = function () {
-                    var START_DAY = 1;
-                    var FINAL_DAY = 31;
-                    var START_YEAR = 1916;
-                    var FINAL_YEAR = 1998;
-                    this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
-                    this.STEP2_STATE = 'page.createTeacherPage.location';
-                    this.STEP3_STATE = 'page.createTeacherPage.map';
-                    this.STEP4_STATE = 'page.createTeacherPage.step4';
                     var currentState = this.$state.current.name;
-                    switch (currentState) {
-                        case this.STEP1_STATE:
-                            this.titleSection = 'Step1: Basic Information';
-                            this.progress(1);
-                            break;
-                        case this.STEP2_STATE:
-                            this.titleSection = 'Step2: Where are you located?';
-                            this.progress(2);
-                            break;
-                        case this.STEP3_STATE:
-                            this.titleSection = 'Step2: Where are you located?';
-                            this.progress(3);
-                            break;
-                    }
-                    this.geocoder = new google.maps.Geocoder();
-                    this.mapConfig = this.functionsUtilService.buildMapConfig([{ id: 1, location: { position: { lat: 6.175434, lng: -75.583329 } } }], 'drag-maker-map', { lat: 6.175434, lng: -75.583329 });
-                    this.form = {
-                        teacherData: new app.models.teacher.Teacher(),
-                        dateSplitted: { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } },
-                        locationCountry: { code: '', value: '' }
-                    };
-                    this.listMonths = this.getDataFromJson.getMonthi18n();
-                    this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
-                    this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
-                    this.listCountries = this.getDataFromJson.getCountryi18n();
+                    this.teacherData = new app.models.teacher.Teacher();
                     this.error = {
                         message: ''
                     };
@@ -2464,94 +2436,8 @@ var app;
                 CreateTeacherPageController.prototype.activate = function () {
                     var self = this;
                     console.log('createTeacherPage controller actived');
+                    this._subscribeToEvents();
                     this.fillFormWithTeacherData();
-                };
-                CreateTeacherPageController.prototype.progress = function (step) {
-                    var STEPS = 9;
-                    var percent = (100 / STEPS) * (step);
-                    this.progressWidth = percent + '%';
-                };
-                CreateTeacherPageController.prototype.goToNext = function () {
-                    var self = this;
-                    var dateFormatted = this.functionsUtilService.joinDate(this.form.dateSplitted.day.value, this.form.dateSplitted.month.code, this.form.dateSplitted.year.value);
-                    var countryCode = this.form.locationCountry.code;
-                    var city = this.form.teacherData.CityLocation;
-                    var address = this.form.teacherData.AddressLocation;
-                    var zipCode = this.form.teacherData.ZipCodeLocation;
-                    this.form.teacherData.BirthDate = dateFormatted;
-                    this.form.teacherData.CountryLocation = countryCode;
-                    if (address) {
-                        var dataRequest = {
-                            address: address,
-                            componentRestrictions: {
-                                country: countryCode
-                            }
-                        };
-                        this.geocoder.geocode(dataRequest, function (results, status) {
-                            if (status === 'OK') {
-                                console.log(results, status);
-                            }
-                            else {
-                                console.log(results, status);
-                            }
-                        });
-                    }
-                    if (this.$rootScope.teacher_id) {
-                        this.form.teacherData.Id = this.$rootScope.teacher_id;
-                        this.teacherService.updateTeacher(this.form.teacherData)
-                            .then(function (response) {
-                            if (response.id) {
-                                self.$rootScope.teacher_id = response.id;
-                                self.localStorage.setItem('waysily.teacher_id', response.id);
-                            }
-                            else {
-                            }
-                        });
-                    }
-                    else {
-                        this.teacherService.createTeacher(this.form.teacherData)
-                            .then(function (response) {
-                            if (response.id) {
-                                self.$rootScope.teacher_id = response.id;
-                                self.localStorage.setItem('waysily.teacher_id', response.id);
-                            }
-                            else {
-                            }
-                        });
-                    }
-                    var currentState = this.$state.current.name;
-                    switch (currentState) {
-                        case this.STEP1_STATE:
-                            this.titleSection = 'Step1: Basic Information';
-                            this.progress(2);
-                            this.$state.go(this.STEP2_STATE, { reload: true });
-                            break;
-                        case this.STEP2_STATE:
-                            this.titleSection = 'Step2: Where are you located?';
-                            this.progress(3);
-                            this.$state.go(this.STEP3_STATE, { reload: true });
-                            break;
-                        case this.STEP3_STATE:
-                            this.titleSection = 'Step2: Where are you located?';
-                            this.progress(3);
-                            this.$state.go(this.STEP4_STATE, { reload: true });
-                            break;
-                    }
-                };
-                CreateTeacherPageController.prototype.goToBack = function () {
-                    var currentState = this.$state.current.name;
-                    switch (currentState) {
-                        case this.STEP1_STATE:
-                            break;
-                        case this.STEP2_STATE:
-                            this.progress(1);
-                            this.$state.go(this.STEP1_STATE, { reload: true });
-                            break;
-                        case this.STEP3_STATE:
-                            this.progress(2);
-                            this.$state.go(this.STEP2_STATE, { reload: true });
-                            break;
-                    }
                 };
                 CreateTeacherPageController.prototype.fillFormWithTeacherData = function () {
                     var self = this;
@@ -2560,17 +2446,46 @@ var app;
                         this.teacherService.getTeacherById(this.$rootScope.teacher_id)
                             .then(function (response) {
                             if (response.id) {
-                                var date = self.functionsUtilService.splitDate(response.birthDate);
-                                self.form.dateSplitted.day.value = parseInt(date.day);
-                                self.form.dateSplitted.month.code = date.month;
-                                self.form.dateSplitted.year.value = parseInt(date.year);
-                                self.form.locationCountry.code = response.countryLocation;
-                                self.form.teacherData = new app.models.teacher.Teacher(response);
+                                self.teacherData = new app.models.teacher.Teacher(response);
+                                self.$scope.$broadcast('Fill Form', self.teacherData);
                             }
                             else {
                             }
                         });
                     }
+                };
+                CreateTeacherPageController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Save Data', function (event, args) {
+                        var numStep = args;
+                        if (self.$rootScope.teacher_id) {
+                            self.teacherData.Id = self.$rootScope.teacher_id;
+                            self.teacherService.updateTeacher(self.teacherData)
+                                .then(function (response) {
+                                if (response.id) {
+                                    self.$rootScope.teacher_id = response.id;
+                                    self.localStorage.setItem('waysily.teacher_id', response.id);
+                                    self.teacherData = new app.models.teacher.Teacher(response);
+                                    self.$scope.$broadcast('Fill Form', self.teacherData);
+                                }
+                                else {
+                                }
+                            });
+                        }
+                        else {
+                            self.teacherService.createTeacher(self.teacherData)
+                                .then(function (response) {
+                                if (response.id) {
+                                    self.$rootScope.teacher_id = response.id;
+                                    self.localStorage.setItem('waysily.teacher_id', response.id);
+                                    self.teacherData = new app.models.teacher.Teacher(response);
+                                    self.$scope.$broadcast('Fill Form', self.teacherData);
+                                }
+                                else {
+                                }
+                            });
+                        }
+                    });
                 };
                 return CreateTeacherPageController;
             }());
@@ -2606,7 +2521,9 @@ var app;
             url: '/basicInfo',
             views: {
                 'step': {
-                    templateUrl: 'app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.html'
+                    templateUrl: 'app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.html',
+                    controller: 'mainApp.pages.createTeacherPage.TeacherInfoSectionController',
+                    controllerAs: 'vm'
                 }
             },
             cache: false
@@ -2614,6 +2531,95 @@ var app;
     }
 })();
 //# sourceMappingURL=teacherInfoSection.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var createTeacherPage;
+        (function (createTeacherPage) {
+            var TeacherInfoSectionController = (function () {
+                function TeacherInfoSectionController(getDataFromJson, functionsUtilService, $state, $scope) {
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
+                    this.$state = $state;
+                    this.$scope = $scope;
+                    this._init();
+                }
+                TeacherInfoSectionController.prototype._init = function () {
+                    this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
+                    this.STEP2_STATE = 'page.createTeacherPage.location';
+                    this.STEP3_STATE = 'page.createTeacherPage.map';
+                    this.$scope.$parent.vm.titleSection = 'Step1: Basic Information';
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(1, 9);
+                    this.dateObject = { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } };
+                    this.form = {
+                        firstName: '',
+                        lastName: '',
+                        email: '',
+                        phoneNumber: '',
+                        sex: '',
+                        birthDate: '',
+                        born: '',
+                        about: ''
+                    };
+                    this.listMonths = this.getDataFromJson.getMonthi18n();
+                    this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
+                    this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
+                    this.error = {
+                        message: ''
+                    };
+                    this.activate();
+                };
+                TeacherInfoSectionController.prototype.activate = function () {
+                    console.log('TeacherInfoSectionController controller actived');
+                    this._subscribeToEvents();
+                };
+                TeacherInfoSectionController.prototype.goToNext = function () {
+                    var dateFormatted = this.functionsUtilService.joinDate(this.dateObject.day.value, this.dateObject.month.code, this.dateObject.year.value);
+                    this.$scope.$parent.vm.teacherData.FirstName = this.form.firstName;
+                    this.$scope.$parent.vm.teacherData.LastName = this.form.lastName;
+                    this.$scope.$parent.vm.teacherData.Email = this.form.email;
+                    this.$scope.$parent.vm.teacherData.PhoneNumber = this.form.phoneNumber;
+                    this.$scope.$parent.vm.teacherData.Sex = this.form.sex;
+                    this.$scope.$parent.vm.teacherData.BirthDate = dateFormatted;
+                    this.$scope.$parent.vm.teacherData.Born = this.form.born;
+                    this.$scope.$parent.vm.teacherData.About = this.form.about;
+                    this.$scope.$emit('Save Data');
+                    this.$state.go(this.STEP2_STATE, { reload: true });
+                };
+                TeacherInfoSectionController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Fill Form', function (event, args) {
+                        self.form.firstName = args.FirstName;
+                        self.form.lastName = args.LastName;
+                        self.form.email = args.Email;
+                        self.form.phoneNumber = args.PhoneNumber;
+                        self.form.sex = args.Sex;
+                        var date = self.functionsUtilService.splitDate(args.BirthDate);
+                        self.dateObject.day.value = parseInt(date.day);
+                        self.dateObject.month.code = date.month;
+                        self.dateObject.year.value = parseInt(date.year);
+                        self.form.born = args.Born;
+                        self.form.about = args.About;
+                    });
+                };
+                return TeacherInfoSectionController;
+            }());
+            TeacherInfoSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherInfoSectionController';
+            TeacherInfoSectionController.$inject = [
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                '$state',
+                '$scope'
+            ];
+            createTeacherPage.TeacherInfoSectionController = TeacherInfoSectionController;
+            angular
+                .module('mainApp.pages.createTeacherPage')
+                .controller(TeacherInfoSectionController.controllerId, TeacherInfoSectionController);
+        })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=teacherInfoSection.controller.js.map
 (function () {
     'use strict';
     angular
@@ -2625,7 +2631,9 @@ var app;
             url: '/location',
             views: {
                 'step': {
-                    templateUrl: 'app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.html'
+                    templateUrl: 'app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.html',
+                    controller: 'mainApp.pages.createTeacherPage.TeacherLocationSectionController',
+                    controllerAs: 'vm'
                 }
             },
             cache: false
@@ -2633,6 +2641,86 @@ var app;
     }
 })();
 //# sourceMappingURL=teacherLocationSection.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var createTeacherPage;
+        (function (createTeacherPage) {
+            var TeacherLocationSectionController = (function () {
+                function TeacherLocationSectionController(getDataFromJson, functionsUtilService, $state, $scope) {
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
+                    this.$state = $state;
+                    this.$scope = $scope;
+                    this._init();
+                }
+                TeacherLocationSectionController.prototype._init = function () {
+                    this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
+                    this.STEP2_STATE = 'page.createTeacherPage.location';
+                    this.$scope.$parent.vm.titleSection = 'Step2: Where are you located?';
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(2, 9);
+                    this.countryObject = { code: '', value: '' };
+                    this.form = {
+                        countryLocation: '',
+                        cityLocation: '',
+                        stateLocation: '',
+                        addressLocation: '',
+                        zipCodeLocation: ''
+                    };
+                    this.listCountries = this.getDataFromJson.getCountryi18n();
+                    this.error = {
+                        message: ''
+                    };
+                    this.activate();
+                };
+                TeacherLocationSectionController.prototype.activate = function () {
+                    console.log('TeacherLocationSectionController controller actived');
+                    this._subscribeToEvents();
+                };
+                TeacherLocationSectionController.prototype.goToNext = function () {
+                    var CURRENT_STEP = 2;
+                    var countryCode = this.countryObject.code;
+                    this.form.countryLocation = countryCode;
+                    this.$scope.$parent.vm.teacherData.CountryLocation = this.form.countryLocation;
+                    this.$scope.$parent.vm.teacherData.AddressLocation = this.form.addressLocation;
+                    this.$scope.$parent.vm.teacherData.CityLocation = this.form.cityLocation;
+                    this.$scope.$parent.vm.teacherData.StateLocation = this.form.stateLocation;
+                    this.$scope.$parent.vm.teacherData.ZipCodeLocation = this.form.zipCodeLocation;
+                    this.$scope.$emit('Save Data', CURRENT_STEP);
+                    this.$state.go(this.STEP2_STATE, { reload: true });
+                };
+                TeacherLocationSectionController.prototype.goToBack = function () {
+                    this.$scope.$emit('Save Data');
+                    this.$state.go(this.STEP1_STATE, { reload: true });
+                };
+                TeacherLocationSectionController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Fill Form', function (event, args) {
+                        self.form.addressLocation = args.AddressLocation;
+                        self.form.cityLocation = args.CityLocation;
+                        self.form.stateLocation = args.StateLocation;
+                        self.form.zipCodeLocation = args.ZipCodeLocation;
+                        self.countryObject.code = args.CountryLocation;
+                    });
+                };
+                return TeacherLocationSectionController;
+            }());
+            TeacherLocationSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherLocationSectionController';
+            TeacherLocationSectionController.$inject = [
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                '$state',
+                '$scope'
+            ];
+            createTeacherPage.TeacherLocationSectionController = TeacherLocationSectionController;
+            angular
+                .module('mainApp.pages.createTeacherPage')
+                .controller(TeacherLocationSectionController.controllerId, TeacherLocationSectionController);
+        })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=teacherLocationSection.controller.js.map
 (function () {
     'use strict';
     angular

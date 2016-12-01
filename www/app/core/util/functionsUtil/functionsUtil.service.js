@@ -78,6 +78,10 @@ var app;
                         }
                         return list;
                     };
+                    FunctionsUtilService.prototype.progress = function (currentStep, totalSteps) {
+                        var percent = (100 / totalSteps) * (currentStep);
+                        return percent + '%';
+                    };
                     return FunctionsUtilService;
                 }());
                 FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
