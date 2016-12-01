@@ -192,6 +192,25 @@ module app.pages.createTeacherPage {
         }
 
 
+        /**
+        * changeMapPosition
+        * @description -
+        * @use - this._subscribeToEvents();
+        * @function
+        * @param {string} - teacher's address info
+        * @return {void}
+        */
+        changeMapPosition(): void {
+            let location = {
+                country: this.form.countryLocation,
+                city: this.form.cityLocation,
+                address: this.form.addressLocation
+            };
+
+            this.$scope.$broadcast('CodeAddress', location);
+        }
+
+
 
         /**
         * _subscribeToEvents

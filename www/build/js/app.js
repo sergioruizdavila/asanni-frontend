@@ -2725,6 +2725,14 @@ var app;
                     this.$scope.$emit('Save Data');
                     this.$state.go(this.STEP1_STATE, { reload: true });
                 };
+                TeacherLocationSectionController.prototype.changeMapPosition = function () {
+                    var location = {
+                        country: this.form.countryLocation,
+                        city: this.form.cityLocation,
+                        address: this.form.addressLocation
+                    };
+                    this.$scope.$broadcast('CodeAddress', location);
+                };
                 TeacherLocationSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {

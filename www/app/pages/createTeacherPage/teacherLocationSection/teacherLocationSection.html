@@ -37,6 +37,7 @@
                                             class="ma-input ma-select
                                                    ma-select--large"
                                             ng-model="vm.countryObject"
+                                            ng-change="vm.changeMapPosition()"
                                             ng-options="country.value | translate for country in vm.listCountries track by country.code"
                                             name="teacher[country]" class="form-control">
                                             <option value="" disabled selected>
@@ -57,6 +58,7 @@
                                 <input id="teacher-city-location"
                                        type="text"
                                        ng-model="vm.form.cityLocation"
+                                       ng-blur="vm.changeMapPosition()"
                                        class="ma-input ma-input--large">
                             </div>
                         </div>
@@ -100,6 +102,7 @@
                                        type="text"
                                        placeholder="House name/number + street/road"
                                        ng-model="vm.form.addressLocation"
+                                       ng-blur="vm.changeMapPosition()"
                                        class="ma-input ma-input--large">
                             </div>
                         </div>
