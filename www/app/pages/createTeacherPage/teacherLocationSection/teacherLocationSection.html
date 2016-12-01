@@ -47,21 +47,6 @@
                             </div>
                         </div>
 
-                        <!-- Street Address Input -->
-                        <div class="form-group
-                                    ma-form-group
-                                    ma-form-group--large">
-                            <label class="text-right col-xs-3 col-sm-3"
-                                   for="teacher-address-location">Street Address</label>
-                            <div class="col-xs-9 col-sm-9">
-                                <input id="teacher-address-location"
-                                       type="text"
-                                       placeholder="House name/number + street/road"
-                                       ng-model="vm.form.addressLocation"
-                                       class="ma-input ma-input--large">
-                            </div>
-                        </div>
-
                         <!-- City Input -->
                         <div class="form-group
                                     ma-form-group
@@ -104,9 +89,43 @@
                             </div>
                         </div>
 
+                        <!-- Street Address Input -->
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--large">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                   for="teacher-address-location">Street Address</label>
+                            <div class="col-xs-9 col-sm-9">
+                                <input id="teacher-address-location"
+                                       type="text"
+                                       placeholder="House name/number + street/road"
+                                       ng-model="vm.form.addressLocation"
+                                       class="ma-input ma-input--large">
+                            </div>
+                        </div>
+
                     </form>
 
-                    <!--                END: BASIC INFO BLOCK                -->
+                    <hr>
+
+                    <!---------------- START: LOCATION MAP BLOCK -------------->
+
+                    <div id="createTeacher-map-block"
+                         class="row">
+
+                        <div class="col-md-12" style="height: 300px;">
+                            <div class="location-map location-map--border">
+                                <ma-map map-config="vm.mapConfig"></ma-map>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <p class="ma-p ma-p--large space-top-3">
+                        Drag the marker to change location.
+                    </p>
+
+                    <!--                END: LOCATION MAP BLOCK              -->
 
                 </div>
 

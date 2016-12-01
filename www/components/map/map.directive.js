@@ -85,7 +85,7 @@ var components;
             };
             MapController.prototype._dragMarkerMapBuilder = function () {
                 var self = this;
-                var zoom = 16;
+                var zoom = 17;
                 var center = this.mapConfig.data.position;
                 this.$scope.options = {
                     center: new google.maps.LatLng(center.lat, center.lng),
@@ -214,7 +214,27 @@ var components;
                     self.mapConfig = args;
                     for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                         var marker = self.mapConfig.data.markers[i];
-                        self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), 'assets/images/meeting-point.png');
+                        self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), 'assets/images/red-pin.png');
+                    }
+                });
+                this.$scope.$on('CodeAddress', function (event, args) {
+                    var geocoder = new google.maps.Geocoder();
+                    self._codeAddress(geocoder, args.country, args.address, args.city);
+                });
+            };
+            MapController.prototype._codeAddress = function (geocoder, country, address, city) {
+                var self = this;
+                var location = country + ',' + city + ',' + address;
+                geocoder.geocode({
+                    address: location
+                }, function (results, status) {
+                    if (status == 'OK') {
+                        self._map.setCenter(results[0].geometry.location);
+                        self._removeMarkers();
+                        self._setMarker('1', results[0].geometry.location, 'assets/images/red-pin.png');
+                    }
+                    else {
+                        console.log(status);
                     }
                 });
             };

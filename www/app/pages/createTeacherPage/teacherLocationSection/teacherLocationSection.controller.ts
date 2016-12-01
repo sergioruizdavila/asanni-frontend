@@ -68,7 +68,8 @@ module app.pages.createTeacherPage {
             'mainApp.core.util.GetDataStaticJsonService',
             'mainApp.core.util.FunctionsUtilService',
             '$state',
-            '$scope'
+            '$scope',
+            '$timeout'
         ];
 
         /**********************************/
@@ -78,12 +79,15 @@ module app.pages.createTeacherPage {
             private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
             private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
             private $state: ng.ui.IStateService,
-            private $scope: ITeacherLocationScope) {
+            private $scope: ITeacherLocationScope,
+            private $timeout) {
                 this._init();
         }
 
         /*-- INITIALIZE METHOD --*/
         private _init() {
+            //VARIABLES
+            let self = this;
             //CONSTANTS
             this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
             this.STEP2_STATE = 'page.createTeacherPage.location';
@@ -108,15 +112,22 @@ module app.pages.createTeacherPage {
             //Build Countries select lists
             this.listCountries = this.getDataFromJson.getCountryi18n();
 
-            //Init geoCode google map in order to get lat & lng base on teacher street
-            //this.geocoder = new google.maps.Geocoder();
-
             //Init map config
-            /*this.mapConfig = this.functionsUtilService.buildMapConfig(
+            this.mapConfig = this.functionsUtilService.buildMapConfig(
                 [{id:1, location: {position: {lat: 6.175434, lng: -75.583329}}}], //TODO: Cambiar esta guachada
                 'drag-maker-map',
                 {lat: 6.175434, lng: -75.583329}
-            );*/
+            );
+
+            let location = {
+                country: 'Colombia',
+                city: 'Envigado',
+                address: 'Carrera 31 No 41Sur - 64'
+            };
+
+            this.$timeout(function(){
+                self.$scope.$broadcast('CodeAddress', location);
+            });
 
             this.error = {
                 message: ''

@@ -259,7 +259,7 @@ module components.map {
         _dragMarkerMapBuilder(): void {
             //VARIABLES
             let self = this;
-            let zoom = 16;
+            let zoom = 17;
             let center = this.mapConfig.data.position;
             /********************/
 
@@ -504,8 +504,61 @@ module components.map {
                     let marker = self.mapConfig.data.markers[i];
                     self._setMarker(marker.id,
                                     new google.maps.LatLng(marker.position.lat, marker.position.lng),
-                                    'assets/images/meeting-point.png');
+                                    'assets/images/red-pin.png');
                 }
+            });
+
+            /**
+            * CodeAddress event
+            * @parent - TeacherLocationSectionController
+            * @description - Parent send country, address, zipCode to child
+            * in order to get position (lng, lat) on the map.
+            * @event
+            */
+            this.$scope.$on('CodeAddress', function(event, args) {
+                //Init geoCode google map in order to get lat & lng base on teacher street
+                let geocoder = new google.maps.Geocoder();
+                self._codeAddress(geocoder, args.country, args.address, args.city);
+            });
+        }
+
+
+        /**
+        * _codeAddress
+        * @description - get position on map (lng, lat) based on Address,
+        * Country and zipCode.
+        * @use - this._subscribeToEvents();
+        * @function
+        * @param {google.maps.Geocoder} geocoder - geocoder object
+        * @param {string} country - country code
+        * @param {string} address - user address
+        * @param {string} city - user city
+        * @return {void}
+        */
+
+        private _codeAddress(geocoder: google.maps.Geocoder,
+                             country: string,
+                             address: string,
+                             city: string): void {
+
+            let self = this;
+
+            //Build Address joining 'Country, City, Address'
+            let location = country + ',' + city + ',' + address;
+
+            geocoder.geocode({
+              address: location
+          }, function(results, status: any) {
+              if (status == 'OK') {
+                  self._map.setCenter(results[0].geometry.location);
+                  self._removeMarkers();
+                  self._setMarker('1',
+                                  results[0].geometry.location,
+                                  'assets/images/red-pin.png');
+              } else {
+                  //TODO: Hacer algo cuando no se consigue la posicion exacta
+                  console.log(status);
+              }
             });
         }
 

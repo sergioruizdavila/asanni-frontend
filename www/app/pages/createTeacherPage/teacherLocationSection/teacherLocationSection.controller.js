@@ -5,14 +5,16 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherLocationSectionController = (function () {
-                function TeacherLocationSectionController(getDataFromJson, functionsUtilService, $state, $scope) {
+                function TeacherLocationSectionController(getDataFromJson, functionsUtilService, $state, $scope, $timeout) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.$state = $state;
                     this.$scope = $scope;
+                    this.$timeout = $timeout;
                     this._init();
                 }
                 TeacherLocationSectionController.prototype._init = function () {
+                    var self = this;
                     this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
                     this.STEP2_STATE = 'page.createTeacherPage.location';
                     this.$scope.$parent.vm.titleSection = 'Step2: Where are you located?';
@@ -26,6 +28,15 @@ var app;
                         zipCodeLocation: ''
                     };
                     this.listCountries = this.getDataFromJson.getCountryi18n();
+                    this.mapConfig = this.functionsUtilService.buildMapConfig([{ id: 1, location: { position: { lat: 6.175434, lng: -75.583329 } } }], 'drag-maker-map', { lat: 6.175434, lng: -75.583329 });
+                    var location = {
+                        country: 'Colombia',
+                        city: 'Envigado',
+                        address: 'Carrera 31 No 41Sur - 64'
+                    };
+                    this.$timeout(function () {
+                        self.$scope.$broadcast('CodeAddress', location);
+                    });
                     this.error = {
                         message: ''
                     };
@@ -68,7 +79,8 @@ var app;
                 'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
                 '$state',
-                '$scope'
+                '$scope',
+                '$timeout'
             ];
             createTeacherPage.TeacherLocationSectionController = TeacherLocationSectionController;
             angular
