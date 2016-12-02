@@ -555,6 +555,7 @@ module components.map {
                   self._setMarker('1',
                                   results[0].geometry.location,
                                   'assets/images/red-pin.png');
+                  self.$scope.$emit('Position', results[0].geometry.location);
               } else {
                   //TODO: Hacer algo cuando no se consigue la posicion exacta
                   console.log(status);

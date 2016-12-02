@@ -166,11 +166,11 @@ module app.pages.createTeacherPage {
 
             this.form.countryLocation = countryCode;
             // Send data to parent (createTeacherPage)
-            this.$scope.$parent.vm.teacherData.CountryLocation = this.form.countryLocation;
-            this.$scope.$parent.vm.teacherData.AddressLocation = this.form.addressLocation;
-            this.$scope.$parent.vm.teacherData.CityLocation = this.form.cityLocation;
-            this.$scope.$parent.vm.teacherData.StateLocation = this.form.stateLocation;
-            this.$scope.$parent.vm.teacherData.ZipCodeLocation = this.form.zipCodeLocation;
+            this.$scope.$parent.vm.teacherData.Location.Country = this.form.countryLocation;
+            this.$scope.$parent.vm.teacherData.Location.Address = this.form.addressLocation;
+            this.$scope.$parent.vm.teacherData.Location.City = this.form.cityLocation;
+            this.$scope.$parent.vm.teacherData.Location.State = this.form.stateLocation;
+            this.$scope.$parent.vm.teacherData.Location.ZipCode = this.form.zipCodeLocation;
 
             this.$scope.$emit('Save Data', CURRENT_STEP);
 
@@ -187,6 +187,18 @@ module app.pages.createTeacherPage {
         * @return void
         */
         goToBack(): void {
+            //VARIABLES
+            let countryCode = this.countryObject.code;
+            /*********************************/
+
+            this.form.countryLocation = countryCode;
+            // Send data to parent (createTeacherPage)
+            this.$scope.$parent.vm.teacherData.Location.Country = this.form.countryLocation;
+            this.$scope.$parent.vm.teacherData.Location.Address = this.form.addressLocation;
+            this.$scope.$parent.vm.teacherData.Location.City = this.form.cityLocation;
+            this.$scope.$parent.vm.teacherData.Location.State = this.form.stateLocation;
+            this.$scope.$parent.vm.teacherData.Location.ZipCode = this.form.zipCodeLocation;
+            
             this.$scope.$emit('Save Data');
             this.$state.go(this.STEP1_STATE, {reload: true});
         }
@@ -232,12 +244,24 @@ module app.pages.createTeacherPage {
             * @event
             */
             this.$scope.$on('Fill Form', function(event, args: app.models.teacher.Teacher) {
-                self.form.addressLocation = args.AddressLocation;
-                self.form.cityLocation = args.CityLocation;
-                self.form.stateLocation = args.StateLocation;
-                self.form.zipCodeLocation = args.ZipCodeLocation;
+                self.form.addressLocation = args.Location.Address;
+                self.form.cityLocation = args.Location.City;
+                self.form.stateLocation = args.Location.State;
+                self.form.zipCodeLocation = args.Location.ZipCode;
                 //Charge Country on select List
-                self.countryObject.code = args.CountryLocation;
+                self.countryObject.code = args.Location.Country;
+            });
+
+            /**
+            * Return Position
+            * @child - MapController
+            * @description - Parent (TeacherLocationSectionController) receive
+                             Child's event (MapController) with new position on
+                             map (lng, lat)
+            * @event
+            */
+            this.$scope.$on('Position', function(event, args) {
+                self.$scope.$parent.vm.teacherData.Location.Position = args;
             });
         }
 

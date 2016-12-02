@@ -51,8 +51,7 @@ var app;
                     var self = this;
                     this.$scope.$on('Save Data', function (event, args) {
                         var numStep = args;
-                        if (self.$rootScope.teacher_id) {
-                            self.teacherData.Id = self.$rootScope.teacher_id;
+                        if (self.teacherData.Id) {
                             self.teacherService.updateTeacher(self.teacherData)
                                 .then(function (response) {
                                 if (response.id) {

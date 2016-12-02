@@ -9,15 +9,16 @@ module app.models.user {
     /****************************************/
     export interface ILocation {
         address: string;
-        position: components.map.IPosition;
+        position: Position;
         city: string;
         state: string;
         country: string;
+        zipCode: string;
     }
 
 
     /****************************************/
-    /*           CLASS DEFINITION           */
+    /*          USER CLASS DEFINITION       */
     /****************************************/
 
     export class User {
@@ -34,11 +35,7 @@ module app.models.user {
         private birthDate: string;
         private born: string;
         private about: string;
-        private countryLocation: string;
-        private addressLocation: string;
-        private cityLocation: string;
-        private stateLocation: string;
-        private zipCodeLocation: string;
+        private location: Location;
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -58,13 +55,8 @@ module app.models.user {
             this.sex = obj.sex || '';
             this.birthDate = obj.birthDate || '';
             this.born = obj.born || '';
-            //this.live_in = obj.live_in || '';
             this.about = obj.about || '';
-            this.countryLocation = obj.countryLocation || '';
-            this.addressLocation = obj.addressLocation || '';
-            this.cityLocation = obj.cityLocation || '';
-            this.stateLocation = obj.stateLocation || '';
-            this.zipCodeLocation = obj.zipCodeLocation || '';
+            this.location = new Location(obj.location);
 
         }
 
@@ -167,55 +159,184 @@ module app.models.user {
         }
 
         set About(about: string) {
-            if (about === undefined) { throw 'Please supply about'; }
+            if (about === undefined) { throw 'Please supply location'; }
             this.about = about;
         }
 
-        get CountryLocation() {
-            return this.countryLocation;
+        get Location() {
+            return this.location;
         }
 
-        set CountryLocation(countryLocation: string) {
-            if (countryLocation === undefined) { throw 'Please supply country location'; }
-            this.countryLocation = countryLocation;
-        }
-
-        get AddressLocation() {
-            return this.addressLocation;
-        }
-
-        set AddressLocation(addressLocation: string) {
-            if (addressLocation === undefined) { throw 'Please supply address location'; }
-            this.addressLocation = addressLocation;
-        }
-
-        get CityLocation() {
-            return this.cityLocation;
-        }
-
-        set CityLocation(cityLocation: string) {
-            if (cityLocation === undefined) { throw 'Please supply city location'; }
-            this.cityLocation = cityLocation;
-        }
-
-        get StateLocation() {
-            return this.stateLocation;
-        }
-
-        set StateLocation(stateLocation: string) {
-            if (stateLocation === undefined) { throw 'Please supply state location'; }
-            this.stateLocation = stateLocation;
-        }
-
-        get ZipCodeLocation() {
-            return this.zipCodeLocation;
-        }
-
-        set ZipCodeLocation(zipCodeLocation: string) {
-            if (zipCodeLocation === undefined) { throw 'Please supply zip code location'; }
-            this.zipCodeLocation = zipCodeLocation;
+        set Location(location: Location) {
+            if (location === undefined) { throw 'Please supply location'; }
+            this.location = location;
         }
 
     }
+
+
+
+    /****************************************/
+    /*       LOCATION CLASS DEFINITION      */
+    /****************************************/
+
+    export class Location {
+
+        /*-- PROPERTIES --*/
+        private id: number;
+        private country: string;
+        private address: string;
+        private position: Position;
+        private city: string;
+        private state: string;
+        private zipCode: string;
+
+        /**********************************/
+        /*           CONSTRUCTOR          */
+        /**********************************/
+        constructor(obj: any = {}) {
+            //LOG
+            console.log('User Model instanced');
+
+            //init properties
+            this.id = obj.id;
+            this.country = obj.country || '';
+            this.address = obj.address || '';
+            this.position = new Position(obj.position);
+            this.city = obj.city || '';
+            this.state = obj.state || '';
+            this.zipCode = obj.zipCode || '';
+
+        }
+
+        /**********************************/
+        /*             METHODS            */
+        /**********************************/
+
+        get Id() {
+            return this.id;
+        }
+
+        set Id(id: number) {
+            if (id === undefined) { throw 'Please supply id'; }
+            this.id = id;
+        }
+
+        get Country() {
+            return this.country;
+        }
+
+        set Country(country: string) {
+            if (country === undefined) { throw 'Please supply country location'; }
+            this.country = country;
+        }
+
+        get Address() {
+            return this.address;
+        }
+
+        set Address(address: string) {
+            if (address === undefined) { throw 'Please supply address location'; }
+            this.address = address;
+        }
+
+        get Position() {
+            return this.position;
+        }
+
+        set Position(position: Position) {
+            if (position === undefined) { throw 'Please supply address location'; }
+            this.position = position;
+        }
+
+        get City() {
+            return this.city;
+        }
+
+        set City(city: string) {
+            if (city === undefined) { throw 'Please supply city location'; }
+            this.city = city;
+        }
+
+        get State() {
+            return this.state;
+        }
+
+        set State(state: string) {
+            if (state === undefined) { throw 'Please supply state location'; }
+            this.state = state;
+        }
+
+        get ZipCode() {
+            return this.zipCode;
+        }
+
+        set ZipCode(zipCode: string) {
+            if (zipCode === undefined) { throw 'Please supply zip code location'; }
+            this.zipCode = zipCode;
+        }
+
+    }
+
+
+
+    /****************************************/
+    /*       POSITION CLASS DEFINITION      */
+    /****************************************/
+
+    export class Position {
+
+        /*-- PROPERTIES --*/
+        private id: number;
+        private lng: string;
+        private lat: string;
+
+        /**********************************/
+        /*           CONSTRUCTOR          */
+        /**********************************/
+        constructor(obj: any = {}) {
+            //LOG
+            console.log('User Model instanced');
+
+            //init properties
+            this.id = obj.id;
+            this.lng = obj.lng || '';
+            this.lat = obj.lat || '';
+
+        }
+
+        /**********************************/
+        /*             METHODS            */
+        /**********************************/
+
+        get Id() {
+            return this.id;
+        }
+
+        set Id(id: number) {
+            if (id === undefined) { throw 'Please supply id'; }
+            this.id = id;
+        }
+
+        get Lng() {
+            return this.lng;
+        }
+
+        set Lng(lng: string) {
+            if (lng === undefined) { throw 'Please supply lng position'; }
+            this.lng = lng;
+        }
+
+        get Lat() {
+            return this.lat;
+        }
+
+        set Lat(lat: string) {
+            if (lat === undefined) { throw 'Please supply lat position'; }
+            this.lat = lat;
+        }
+
+    }
+
 
 }

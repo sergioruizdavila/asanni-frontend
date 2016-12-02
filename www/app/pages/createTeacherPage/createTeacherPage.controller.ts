@@ -169,9 +169,8 @@ module app.pages.createTeacherPage {
                 let numStep = args;
                 /******************************/
 
-                if(self.$rootScope.teacher_id) {
+                if(self.teacherData.Id) {
                     // UPDATE EXISTING TEACHER
-                    self.teacherData.Id = self.$rootScope.teacher_id;
                     self.teacherService.updateTeacher(self.teacherData)
                     .then(
                         function(response) {

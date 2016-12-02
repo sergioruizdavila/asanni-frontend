@@ -232,6 +232,7 @@ var components;
                         self._map.setCenter(results[0].geometry.location);
                         self._removeMarkers();
                         self._setMarker('1', results[0].geometry.location, 'assets/images/red-pin.png');
+                        self.$scope.$emit('Position', results[0].geometry.location);
                     }
                     else {
                         console.log(status);

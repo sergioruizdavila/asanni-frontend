@@ -19,11 +19,7 @@ var app;
                     this.birthDate = obj.birthDate || '';
                     this.born = obj.born || '';
                     this.about = obj.about || '';
-                    this.countryLocation = obj.countryLocation || '';
-                    this.addressLocation = obj.addressLocation || '';
-                    this.cityLocation = obj.cityLocation || '';
-                    this.stateLocation = obj.stateLocation || '';
-                    this.zipCodeLocation = obj.zipCodeLocation || '';
+                    this.location = new Location(obj.location);
                 }
                 Object.defineProperty(User.prototype, "Id", {
                     get: function () {
@@ -161,74 +157,22 @@ var app;
                     },
                     set: function (about) {
                         if (about === undefined) {
-                            throw 'Please supply about';
+                            throw 'Please supply location';
                         }
                         this.about = about;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "CountryLocation", {
+                Object.defineProperty(User.prototype, "Location", {
                     get: function () {
-                        return this.countryLocation;
+                        return this.location;
                     },
-                    set: function (countryLocation) {
-                        if (countryLocation === undefined) {
-                            throw 'Please supply country location';
+                    set: function (location) {
+                        if (location === undefined) {
+                            throw 'Please supply location';
                         }
-                        this.countryLocation = countryLocation;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "AddressLocation", {
-                    get: function () {
-                        return this.addressLocation;
-                    },
-                    set: function (addressLocation) {
-                        if (addressLocation === undefined) {
-                            throw 'Please supply address location';
-                        }
-                        this.addressLocation = addressLocation;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "CityLocation", {
-                    get: function () {
-                        return this.cityLocation;
-                    },
-                    set: function (cityLocation) {
-                        if (cityLocation === undefined) {
-                            throw 'Please supply city location';
-                        }
-                        this.cityLocation = cityLocation;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "StateLocation", {
-                    get: function () {
-                        return this.stateLocation;
-                    },
-                    set: function (stateLocation) {
-                        if (stateLocation === undefined) {
-                            throw 'Please supply state location';
-                        }
-                        this.stateLocation = stateLocation;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "ZipCodeLocation", {
-                    get: function () {
-                        return this.zipCodeLocation;
-                    },
-                    set: function (zipCodeLocation) {
-                        if (zipCodeLocation === undefined) {
-                            throw 'Please supply zip code location';
-                        }
-                        this.zipCodeLocation = zipCodeLocation;
+                        this.location = location;
                     },
                     enumerable: true,
                     configurable: true
@@ -236,6 +180,162 @@ var app;
                 return User;
             }());
             user.User = User;
+            var Location = (function () {
+                function Location(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('User Model instanced');
+                    this.id = obj.id;
+                    this.country = obj.country || '';
+                    this.address = obj.address || '';
+                    this.position = new Position(obj.position);
+                    this.city = obj.city || '';
+                    this.state = obj.state || '';
+                    this.zipCode = obj.zipCode || '';
+                }
+                Object.defineProperty(Location.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Location.prototype, "Country", {
+                    get: function () {
+                        return this.country;
+                    },
+                    set: function (country) {
+                        if (country === undefined) {
+                            throw 'Please supply country location';
+                        }
+                        this.country = country;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Location.prototype, "Address", {
+                    get: function () {
+                        return this.address;
+                    },
+                    set: function (address) {
+                        if (address === undefined) {
+                            throw 'Please supply address location';
+                        }
+                        this.address = address;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Location.prototype, "Position", {
+                    get: function () {
+                        return this.position;
+                    },
+                    set: function (position) {
+                        if (position === undefined) {
+                            throw 'Please supply address location';
+                        }
+                        this.position = position;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Location.prototype, "City", {
+                    get: function () {
+                        return this.city;
+                    },
+                    set: function (city) {
+                        if (city === undefined) {
+                            throw 'Please supply city location';
+                        }
+                        this.city = city;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Location.prototype, "State", {
+                    get: function () {
+                        return this.state;
+                    },
+                    set: function (state) {
+                        if (state === undefined) {
+                            throw 'Please supply state location';
+                        }
+                        this.state = state;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Location.prototype, "ZipCode", {
+                    get: function () {
+                        return this.zipCode;
+                    },
+                    set: function (zipCode) {
+                        if (zipCode === undefined) {
+                            throw 'Please supply zip code location';
+                        }
+                        this.zipCode = zipCode;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Location;
+            }());
+            user.Location = Location;
+            var Position = (function () {
+                function Position(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('User Model instanced');
+                    this.id = obj.id;
+                    this.lng = obj.lng || '';
+                    this.lat = obj.lat || '';
+                }
+                Object.defineProperty(Position.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Position.prototype, "Lng", {
+                    get: function () {
+                        return this.lng;
+                    },
+                    set: function (lng) {
+                        if (lng === undefined) {
+                            throw 'Please supply lng position';
+                        }
+                        this.lng = lng;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Position.prototype, "Lat", {
+                    get: function () {
+                        return this.lat;
+                    },
+                    set: function (lat) {
+                        if (lat === undefined) {
+                            throw 'Please supply lat position';
+                        }
+                        this.lat = lat;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Position;
+            }());
+            user.Position = Position;
         })(user = models.user || (models.user = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));

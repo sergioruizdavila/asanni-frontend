@@ -50,15 +50,22 @@ var app;
                     var CURRENT_STEP = 2;
                     var countryCode = this.countryObject.code;
                     this.form.countryLocation = countryCode;
-                    this.$scope.$parent.vm.teacherData.CountryLocation = this.form.countryLocation;
-                    this.$scope.$parent.vm.teacherData.AddressLocation = this.form.addressLocation;
-                    this.$scope.$parent.vm.teacherData.CityLocation = this.form.cityLocation;
-                    this.$scope.$parent.vm.teacherData.StateLocation = this.form.stateLocation;
-                    this.$scope.$parent.vm.teacherData.ZipCodeLocation = this.form.zipCodeLocation;
+                    this.$scope.$parent.vm.teacherData.Location.Country = this.form.countryLocation;
+                    this.$scope.$parent.vm.teacherData.Location.Address = this.form.addressLocation;
+                    this.$scope.$parent.vm.teacherData.Location.City = this.form.cityLocation;
+                    this.$scope.$parent.vm.teacherData.Location.State = this.form.stateLocation;
+                    this.$scope.$parent.vm.teacherData.Location.ZipCode = this.form.zipCodeLocation;
                     this.$scope.$emit('Save Data', CURRENT_STEP);
                     this.$state.go(this.STEP2_STATE, { reload: true });
                 };
                 TeacherLocationSectionController.prototype.goToBack = function () {
+                    var countryCode = this.countryObject.code;
+                    this.form.countryLocation = countryCode;
+                    this.$scope.$parent.vm.teacherData.Location.Country = this.form.countryLocation;
+                    this.$scope.$parent.vm.teacherData.Location.Address = this.form.addressLocation;
+                    this.$scope.$parent.vm.teacherData.Location.City = this.form.cityLocation;
+                    this.$scope.$parent.vm.teacherData.Location.State = this.form.stateLocation;
+                    this.$scope.$parent.vm.teacherData.Location.ZipCode = this.form.zipCodeLocation;
                     this.$scope.$emit('Save Data');
                     this.$state.go(this.STEP1_STATE, { reload: true });
                 };
@@ -73,11 +80,14 @@ var app;
                 TeacherLocationSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self.form.addressLocation = args.AddressLocation;
-                        self.form.cityLocation = args.CityLocation;
-                        self.form.stateLocation = args.StateLocation;
-                        self.form.zipCodeLocation = args.ZipCodeLocation;
-                        self.countryObject.code = args.CountryLocation;
+                        self.form.addressLocation = args.Location.Address;
+                        self.form.cityLocation = args.Location.City;
+                        self.form.stateLocation = args.Location.State;
+                        self.form.zipCodeLocation = args.Location.ZipCode;
+                        self.countryObject.code = args.Location.Country;
+                    });
+                    this.$scope.$on('Position', function (event, args) {
+                        self.$scope.$parent.vm.teacherData.Location.Position = args;
                     });
                 };
                 return TeacherLocationSectionController;
