@@ -127,6 +127,7 @@ module components.map {
         /*           PROPERTIES           */
         /**********************************/
         private _map: google.maps.Map;
+        private _draggable: boolean;
         private _infoWindow: google.maps.InfoWindow;
         private _markers: Array<google.maps.Marker>;
         form: IMapForm;
@@ -161,6 +162,7 @@ module components.map {
 
             //init properties
             this._map;
+            this._draggable = false;
             this.mapId = 'ma-map-' + Math.floor((Math.random() * 100) + 1);
             this._infoWindow = null;
             this._markers = [];
@@ -261,6 +263,7 @@ module components.map {
             let self = this;
             let zoom = 17;
             let center = this.mapConfig.data.position;
+            this._draggable = true;
             /********************/
 
             //Map options
@@ -323,7 +326,8 @@ module components.map {
                 id: id,
                 position: position,
                 map: this._map,
-                icon: icon
+                icon: icon,
+                draggable: this._draggable
             };
             /********************/
 
@@ -336,6 +340,18 @@ module components.map {
             //center map on last marker created on the map
             if (this._map) {
                 this._map.setCenter(position);
+            }
+
+            // If marker is draggable
+            if(this._draggable) {
+                // Get position of Marker draggable
+                google.maps.event.addListener(marker, 'dragend', function (event) {
+                    let position = {
+                        lng: this.getPosition().lng(),
+                        lat: this.getPosition().lat()
+                    };
+                    self.$scope.$emit('Position', position);
+                });
             }
 
         }

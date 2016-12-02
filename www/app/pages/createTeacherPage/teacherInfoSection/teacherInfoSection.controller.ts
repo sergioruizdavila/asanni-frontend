@@ -94,7 +94,6 @@ module app.pages.createTeacherPage {
             /*********************************/
 
             //Put title on parent scope
-            this.$scope.$parent.vm.titleSection = 'Step1: Basic Information';
             this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(1, 9);
 
             // Birthdate Select List Structure

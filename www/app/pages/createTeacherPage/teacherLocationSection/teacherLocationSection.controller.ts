@@ -59,7 +59,7 @@ module app.pages.createTeacherPage {
         listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
         countryObject: app.core.interfaces.IDataFromJsonI18n;
         STEP1_STATE: string;
-        STEP2_STATE: string;
+        STEP3_STATE: string;
         // --------------------------------
 
 
@@ -90,11 +90,10 @@ module app.pages.createTeacherPage {
             let self = this;
             //CONSTANTS
             this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
-            this.STEP2_STATE = 'page.createTeacherPage.location';
+            this.STEP3_STATE = 'page.createTeacherPage.language';
             /*********************************/
 
             //Put title on parent scope
-            this.$scope.$parent.vm.titleSection = 'Step2: Where are you located?';
             this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(2, 9);
 
             // Country Select List Structure
@@ -154,7 +153,7 @@ module app.pages.createTeacherPage {
             this.$scope.$emit('Save Data', CURRENT_STEP);
 
             // GO TO NEXT STEP
-            this.$state.go(this.STEP2_STATE, {reload: true});
+            this.$state.go(this.STEP3_STATE, {reload: true});
 
         }
 
@@ -175,9 +174,9 @@ module app.pages.createTeacherPage {
         /**
         * changeMapPosition
         * @description -
-        * @use - this._subscribeToEvents();
+        * @use - this.changeMapPosition();
         * @function
-        * @param {string} - teacher's address info
+        * @param {string} - change map position
         * @return {void}
         */
         changeMapPosition(): void {
@@ -187,7 +186,7 @@ module app.pages.createTeacherPage {
             /*********************************/
 
             this.form.countryLocation = countryCode;
-            
+
             let location = {
                 country: this.form.countryLocation,
                 city: this.form.cityLocation,

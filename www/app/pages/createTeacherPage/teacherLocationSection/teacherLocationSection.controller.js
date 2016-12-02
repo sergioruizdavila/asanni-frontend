@@ -16,8 +16,7 @@ var app;
                 TeacherLocationSectionController.prototype._init = function () {
                     var self = this;
                     this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
-                    this.STEP2_STATE = 'page.createTeacherPage.location';
-                    this.$scope.$parent.vm.titleSection = 'Step2: Where are you located?';
+                    this.STEP3_STATE = 'page.createTeacherPage.language';
                     this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(2, 9);
                     this.countryObject = { code: '', value: '' };
                     this.form = {
@@ -42,7 +41,7 @@ var app;
                     var CURRENT_STEP = 2;
                     this._setDataModelFromForm();
                     this.$scope.$emit('Save Data', CURRENT_STEP);
-                    this.$state.go(this.STEP2_STATE, { reload: true });
+                    this.$state.go(this.STEP3_STATE, { reload: true });
                 };
                 TeacherLocationSectionController.prototype.goToBack = function () {
                     this._setDataModelFromForm();

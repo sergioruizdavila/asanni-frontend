@@ -39,6 +39,7 @@ var components;
                 this.POSITION_PIN = 'assets/images/red-pin.png';
                 var self = this;
                 this._map;
+                this._draggable = false;
                 this.mapId = 'ma-map-' + Math.floor((Math.random() * 100) + 1);
                 this._infoWindow = null;
                 this._markers = [];
@@ -87,6 +88,7 @@ var components;
                 var self = this;
                 var zoom = 17;
                 var center = this.mapConfig.data.position;
+                this._draggable = true;
                 this.$scope.options = {
                     center: new google.maps.LatLng(center.lat, center.lng),
                     zoom: zoom,
@@ -115,12 +117,22 @@ var components;
                     id: id,
                     position: position,
                     map: this._map,
-                    icon: icon
+                    icon: icon,
+                    draggable: this._draggable
                 };
                 marker = new google.maps.Marker(markerOptions);
                 this._markers.push(marker);
                 if (this._map) {
                     this._map.setCenter(position);
+                }
+                if (this._draggable) {
+                    google.maps.event.addListener(marker, 'dragend', function (event) {
+                        var position = {
+                            lng: this.getPosition().lng(),
+                            lat: this.getPosition().lat()
+                        };
+                        self.$scope.$emit('Position', position);
+                    });
                 }
             };
             MapController.prototype._removeMarkers = function () {

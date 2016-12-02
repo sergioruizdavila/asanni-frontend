@@ -932,11 +932,89 @@ var app;
                     var _this;
                     console.log('Teacher Model instanced');
                     _this = _super.call(this, obj) || this;
+                    _this.languages = new Language(obj.languages);
                     return _this;
                 }
+                Object.defineProperty(Teacher.prototype, "Languages", {
+                    get: function () {
+                        return this.languages;
+                    },
+                    set: function (languages) {
+                        if (languages === undefined) {
+                            throw 'Please supply languages';
+                        }
+                        this.languages = languages;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 return Teacher;
             }(app.models.user.User));
             teacher.Teacher = Teacher;
+            var Language = (function () {
+                function Language(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('Languages Model instanced');
+                    this.id = obj.id;
+                    this.native = obj.native || [];
+                    this.learn = obj.learn || [];
+                    this.teach = obj.teach || [];
+                }
+                Object.defineProperty(Language.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Language.prototype, "Native", {
+                    get: function () {
+                        return this.native;
+                    },
+                    set: function (native) {
+                        if (native === undefined) {
+                            throw 'Please supply native languages';
+                        }
+                        this.native = native;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Language.prototype, "Learn", {
+                    get: function () {
+                        return this.learn;
+                    },
+                    set: function (learn) {
+                        if (learn === undefined) {
+                            throw 'Please supply learn languages';
+                        }
+                        this.learn = learn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Language.prototype, "Teach", {
+                    get: function () {
+                        return this.teach;
+                    },
+                    set: function (teach) {
+                        if (teach === undefined) {
+                            throw 'Please supply teach languages';
+                        }
+                        this.teach = teach;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Language;
+            }());
+            teacher.Language = Language;
         })(teacher = models.teacher || (models.teacher = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
@@ -1238,6 +1316,7 @@ var components;
                 this.POSITION_PIN = 'assets/images/red-pin.png';
                 var self = this;
                 this._map;
+                this._draggable = false;
                 this.mapId = 'ma-map-' + Math.floor((Math.random() * 100) + 1);
                 this._infoWindow = null;
                 this._markers = [];
@@ -1286,6 +1365,7 @@ var components;
                 var self = this;
                 var zoom = 17;
                 var center = this.mapConfig.data.position;
+                this._draggable = true;
                 this.$scope.options = {
                     center: new google.maps.LatLng(center.lat, center.lng),
                     zoom: zoom,
@@ -1314,12 +1394,22 @@ var components;
                     id: id,
                     position: position,
                     map: this._map,
-                    icon: icon
+                    icon: icon,
+                    draggable: this._draggable
                 };
                 marker = new google.maps.Marker(markerOptions);
                 this._markers.push(marker);
                 if (this._map) {
                     this._map.setCenter(position);
+                }
+                if (this._draggable) {
+                    google.maps.event.addListener(marker, 'dragend', function (event) {
+                        var position = {
+                            lng: this.getPosition().lng(),
+                            lat: this.getPosition().lat()
+                        };
+                        self.$scope.$emit('Position', position);
+                    });
                 }
             };
             MapController.prototype._removeMarkers = function () {
@@ -2677,7 +2767,6 @@ var app;
                     this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
                     this.STEP2_STATE = 'page.createTeacherPage.location';
                     this.STEP3_STATE = 'page.createTeacherPage.map';
-                    this.$scope.$parent.vm.titleSection = 'Step1: Basic Information';
                     this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(1, 9);
                     this.dateObject = { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } };
                     this.form = {
@@ -2790,8 +2879,7 @@ var app;
                 TeacherLocationSectionController.prototype._init = function () {
                     var self = this;
                     this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
-                    this.STEP2_STATE = 'page.createTeacherPage.location';
-                    this.$scope.$parent.vm.titleSection = 'Step2: Where are you located?';
+                    this.STEP3_STATE = 'page.createTeacherPage.language';
                     this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(2, 9);
                     this.countryObject = { code: '', value: '' };
                     this.form = {
@@ -2816,7 +2904,7 @@ var app;
                     var CURRENT_STEP = 2;
                     this._setDataModelFromForm();
                     this.$scope.$emit('Save Data', CURRENT_STEP);
-                    this.$state.go(this.STEP2_STATE, { reload: true });
+                    this.$state.go(this.STEP3_STATE, { reload: true });
                 };
                 TeacherLocationSectionController.prototype.goToBack = function () {
                     this._setDataModelFromForm();
@@ -2890,21 +2978,3 @@ var app;
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
 //# sourceMappingURL=teacherLocationSection.controller.js.map
-(function () {
-    'use strict';
-    angular
-        .module('mainApp.pages.createTeacherPage')
-        .config(config);
-    function config($stateProvider) {
-        $stateProvider
-            .state('page.createTeacherPage.map', {
-            url: '/map',
-            views: {
-                'step': {
-                    templateUrl: 'app/pages/createTeacherPage/locationOnMapSection/locationOnMapSection.html'
-                }
-            }
-        });
-    }
-})();
-//# sourceMappingURL=locationOnMapSection.config.js.map

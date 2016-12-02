@@ -16,7 +16,6 @@ var app;
                     this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
                     this.STEP2_STATE = 'page.createTeacherPage.location';
                     this.STEP3_STATE = 'page.createTeacherPage.map';
-                    this.$scope.$parent.vm.titleSection = 'Step1: Basic Information';
                     this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(1, 9);
                     this.dateObject = { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } };
                     this.form = {
