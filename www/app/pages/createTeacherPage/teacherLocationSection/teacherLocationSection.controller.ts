@@ -112,14 +112,10 @@ module app.pages.createTeacherPage {
             //Build Countries select lists
             this.listCountries = this.getDataFromJson.getCountryi18n();
 
-            //Init map config
-            this.mapConfig = this.functionsUtilService.buildMapConfig(
-                [{id:1, location: {position: {lat: 6.175434, lng: -75.583329}}}], //TODO: Cambiar esta guachada
-                'drag-maker-map',
-                {lat: 6.175434, lng: -75.583329}
+            // Init Map
+            this.mapConfig = self.functionsUtilService.buildMapConfig(
+                null, 'drag-maker-map', null
             );
-
-            this.changeMapPosition();
 
             this.error = {
                 message: ''
@@ -187,10 +183,15 @@ module app.pages.createTeacherPage {
         changeMapPosition(): void {
             //VARIABLES
             let self = this;
+            let countryCode = this.countryObject.code;
+            /*********************************/
+
+            this.form.countryLocation = countryCode;
+            
             let location = {
-                country: this.form.countryLocation || 'Colombia',
-                city: this.form.cityLocation || 'Envigado',
-                address: this.form.addressLocation || 'Carrera 31 No 41Sur - 64'
+                country: this.form.countryLocation,
+                city: this.form.cityLocation,
+                address: this.form.addressLocation
             };
             /************************************/
 
@@ -220,6 +221,8 @@ module app.pages.createTeacherPage {
             this.$scope.$parent.vm.teacherData.Location.City = this.form.cityLocation;
             this.$scope.$parent.vm.teacherData.Location.State = this.form.stateLocation;
             this.$scope.$parent.vm.teacherData.Location.ZipCode = this.form.zipCodeLocation;
+            //get position on Map
+            this.changeMapPosition();
         }
 
 
@@ -250,6 +253,31 @@ module app.pages.createTeacherPage {
                 self.form.zipCodeLocation = args.Location.ZipCode;
                 //Charge Country on select List
                 self.countryObject.code = args.Location.Country;
+                //Current Map Position
+                let position = args.Location.Position;
+
+                self.mapConfig = self.functionsUtilService.buildMapConfig(
+                    [
+                        {
+                            id: position.Id,
+                            location: {
+                                position: {
+                                    lat: parseFloat(position.Lat),
+                                    lng: parseFloat(position.Lng)
+                                }
+                            }
+                        }
+                    ],
+                    'drag-maker-map',
+                    {lat: parseFloat(position.Lat), lng: parseFloat(position.Lng)}
+                );
+
+                /*
+                * Send event to child (MapController) in order to It draws
+                * each Marker on the Map
+                */
+                self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+
             });
 
             /**

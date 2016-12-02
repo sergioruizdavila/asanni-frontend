@@ -119,6 +119,9 @@ var components;
                 };
                 marker = new google.maps.Marker(markerOptions);
                 this._markers.push(marker);
+                if (this._map) {
+                    this._map.setCenter(position);
+                }
             };
             MapController.prototype._removeMarkers = function () {
                 for (var i = 0; i < this._markers.length; i++) {
@@ -204,22 +207,7 @@ var components;
                     element.style.backgroundColor = background_color_active;
                     element.style.borderBottom = border_bottom_active;
                     child.style.color = color_active;
-                    self._removeMarkers();
                     self.$scope.$emit(type);
-                });
-            };
-            MapController.prototype._subscribeToEvents = function () {
-                var self = this;
-                this.$scope.$on('BuildMarkers', function (event, args) {
-                    self.mapConfig = args;
-                    for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
-                        var marker = self.mapConfig.data.markers[i];
-                        self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), 'assets/images/red-pin.png');
-                    }
-                });
-                this.$scope.$on('CodeAddress', function (event, args) {
-                    var geocoder = new google.maps.Geocoder();
-                    self._codeAddress(geocoder, args.country, args.address, args.city);
                 });
             };
             MapController.prototype._codeAddress = function (geocoder, country, address, city) {
@@ -229,14 +217,32 @@ var components;
                     address: location
                 }, function (results, status) {
                     if (status == 'OK') {
-                        self._map.setCenter(results[0].geometry.location);
                         self._removeMarkers();
                         self._setMarker('1', results[0].geometry.location, 'assets/images/red-pin.png');
-                        self.$scope.$emit('Position', results[0].geometry.location);
+                        var position = {
+                            lng: results[0].geometry.location.lng(),
+                            lat: results[0].geometry.location.lat()
+                        };
+                        self.$scope.$emit('Position', position);
                     }
                     else {
                         console.log(status);
                     }
+                });
+            };
+            MapController.prototype._subscribeToEvents = function () {
+                var self = this;
+                this.$scope.$on('BuildMarkers', function (event, args) {
+                    self.mapConfig = args;
+                    self._removeMarkers();
+                    for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
+                        var marker = self.mapConfig.data.markers[i];
+                        self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), 'assets/images/red-pin.png');
+                    }
+                });
+                this.$scope.$on('CodeAddress', function (event, args) {
+                    var geocoder = new google.maps.Geocoder();
+                    self._codeAddress(geocoder, args.country, args.address, args.city);
                 });
             };
             return MapController;

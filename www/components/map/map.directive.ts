@@ -294,6 +294,7 @@ module components.map {
                                         new google.maps.LatLng(marker.position.lat, marker.position.lng),
                                         self.POSITION_PIN);
                     }
+
                 });
             }
 
@@ -331,6 +332,11 @@ module components.map {
 
             // add marker to markers array
             this._markers.push(marker);
+
+            //center map on last marker created on the map
+            if (this._map) {
+                this._map.setCenter(position);
+            }
 
         }
 
@@ -469,58 +475,11 @@ module components.map {
                 element.style.borderBottom = border_bottom_active;
                 child.style.color = color_active;
 
-                //Remove all markers
-                self._removeMarkers();
-
                 self.$scope.$emit(type);
             });
 
         }
 
-
-
-        /**
-        * _subscribeToEvents
-        * @description - this method subscribes Map Component to Parent Events
-        * @use - this._subscribeToEvents();
-        * @function
-        * @return {void}
-        */
-
-        private _subscribeToEvents(): void {
-            //VARIABLES
-            let self = this;
-
-            /**
-            * BuildMarkers event
-            * @parent - SearchPageController
-            * @description - Parent send markers list in order to Child draws them on map
-            * @event
-            */
-            this.$scope.$on('BuildMarkers', function(event, args) {
-                self.mapConfig = args;
-                //set markers
-                for (let i = 0; i < self.mapConfig.data.markers.length; i++) {
-                    let marker = self.mapConfig.data.markers[i];
-                    self._setMarker(marker.id,
-                                    new google.maps.LatLng(marker.position.lat, marker.position.lng),
-                                    'assets/images/red-pin.png');
-                }
-            });
-
-            /**
-            * CodeAddress event
-            * @parent - TeacherLocationSectionController
-            * @description - Parent send country, address, zipCode to child
-            * in order to get position (lng, lat) on the map.
-            * @event
-            */
-            this.$scope.$on('CodeAddress', function(event, args) {
-                //Init geoCode google map in order to get lat & lng base on teacher street
-                let geocoder = new google.maps.Geocoder();
-                self._codeAddress(geocoder, args.country, args.address, args.city);
-            });
-        }
 
 
         /**
@@ -549,17 +508,72 @@ module components.map {
             geocoder.geocode({
               address: location
           }, function(results, status: any) {
+
               if (status == 'OK') {
-                  self._map.setCenter(results[0].geometry.location);
+
+                  //self._map.setCenter(results[0].geometry.location);
                   self._removeMarkers();
                   self._setMarker('1',
                                   results[0].geometry.location,
                                   'assets/images/red-pin.png');
-                  self.$scope.$emit('Position', results[0].geometry.location);
+                  let position = {
+                      lng: results[0].geometry.location.lng(),
+                      lat: results[0].geometry.location.lat()
+                  };
+                  self.$scope.$emit('Position', position);
+
               } else {
-                  //TODO: Hacer algo cuando no se consigue la posicion exacta
+
                   console.log(status);
+
               }
+            });
+        }
+
+
+
+        /**
+        * _subscribeToEvents
+        * @description - this method subscribes Map Component to Parent Events
+        * @use - this._subscribeToEvents();
+        * @function
+        * @return {void}
+        */
+
+        private _subscribeToEvents(): void {
+            //VARIABLES
+            let self = this;
+
+            /**
+            * BuildMarkers event
+            * @parent - SearchPageController
+            * @description - Parent send markers list in order to Child draws them on map
+            * @event
+            */
+            this.$scope.$on('BuildMarkers', function(event, args) {
+                self.mapConfig = args;
+                //remove last markers
+                self._removeMarkers();
+                //set markers
+                for (let i = 0; i < self.mapConfig.data.markers.length; i++) {
+                    let marker = self.mapConfig.data.markers[i];
+                    self._setMarker(marker.id,
+                                    new google.maps.LatLng(marker.position.lat, marker.position.lng),
+                                    'assets/images/red-pin.png');
+                }
+            });
+
+            /**
+            * CodeAddress event
+            * @parent - TeacherLocationSectionController
+            * @description - Parent send country, address, zipCode to child
+            * in order to get position (lng, lat) on the map.
+            * @event
+            */
+            this.$scope.$on('CodeAddress', function(event, args) {
+                //Init geoCode google map in order to get lat & lng base on teacher street
+                let geocoder = new google.maps.Geocoder();
+                self._codeAddress(geocoder, args.country, args.address, args.city);
             });
         }
 

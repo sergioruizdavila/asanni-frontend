@@ -176,15 +176,17 @@ var app;
                         var mapConfig = {
                             type: mapType,
                             data: {
-                                position: position,
+                                position: position || { lng: 36.75, lat: 54.93 },
                                 markers: []
                             }
                         };
-                        for (var i = 0; i < dataSet.length; i++) {
-                            mapConfig.data.markers.push({
-                                id: dataSet[i].id,
-                                position: dataSet[i].location.position
-                            });
+                        if (dataSet) {
+                            for (var i = 0; i < dataSet.length; i++) {
+                                mapConfig.data.markers.push({
+                                    id: dataSet[i].id,
+                                    position: dataSet[i].location.position
+                                });
+                            }
                         }
                         return mapConfig;
                     };
@@ -1316,6 +1318,9 @@ var components;
                 };
                 marker = new google.maps.Marker(markerOptions);
                 this._markers.push(marker);
+                if (this._map) {
+                    this._map.setCenter(position);
+                }
             };
             MapController.prototype._removeMarkers = function () {
                 for (var i = 0; i < this._markers.length; i++) {
@@ -1401,22 +1406,7 @@ var components;
                     element.style.backgroundColor = background_color_active;
                     element.style.borderBottom = border_bottom_active;
                     child.style.color = color_active;
-                    self._removeMarkers();
                     self.$scope.$emit(type);
-                });
-            };
-            MapController.prototype._subscribeToEvents = function () {
-                var self = this;
-                this.$scope.$on('BuildMarkers', function (event, args) {
-                    self.mapConfig = args;
-                    for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
-                        var marker = self.mapConfig.data.markers[i];
-                        self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), 'assets/images/red-pin.png');
-                    }
-                });
-                this.$scope.$on('CodeAddress', function (event, args) {
-                    var geocoder = new google.maps.Geocoder();
-                    self._codeAddress(geocoder, args.country, args.address, args.city);
                 });
             };
             MapController.prototype._codeAddress = function (geocoder, country, address, city) {
@@ -1426,14 +1416,32 @@ var components;
                     address: location
                 }, function (results, status) {
                     if (status == 'OK') {
-                        self._map.setCenter(results[0].geometry.location);
                         self._removeMarkers();
                         self._setMarker('1', results[0].geometry.location, 'assets/images/red-pin.png');
-                        self.$scope.$emit('Position', results[0].geometry.location);
+                        var position = {
+                            lng: results[0].geometry.location.lng(),
+                            lat: results[0].geometry.location.lat()
+                        };
+                        self.$scope.$emit('Position', position);
                     }
                     else {
                         console.log(status);
                     }
+                });
+            };
+            MapController.prototype._subscribeToEvents = function () {
+                var self = this;
+                this.$scope.$on('BuildMarkers', function (event, args) {
+                    self.mapConfig = args;
+                    self._removeMarkers();
+                    for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
+                        var marker = self.mapConfig.data.markers[i];
+                        self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), 'assets/images/red-pin.png');
+                    }
+                });
+                this.$scope.$on('CodeAddress', function (event, args) {
+                    var geocoder = new google.maps.Geocoder();
+                    self._codeAddress(geocoder, args.country, args.address, args.city);
                 });
             };
             return MapController;
@@ -2794,8 +2802,7 @@ var app;
                         zipCodeLocation: ''
                     };
                     this.listCountries = this.getDataFromJson.getCountryi18n();
-                    this.mapConfig = this.functionsUtilService.buildMapConfig([{ id: 1, location: { position: { lat: 6.175434, lng: -75.583329 } } }], 'drag-maker-map', { lat: 6.175434, lng: -75.583329 });
-                    this.changeMapPosition();
+                    this.mapConfig = self.functionsUtilService.buildMapConfig(null, 'drag-maker-map', null);
                     this.error = {
                         message: ''
                     };
@@ -2818,10 +2825,12 @@ var app;
                 };
                 TeacherLocationSectionController.prototype.changeMapPosition = function () {
                     var self = this;
+                    var countryCode = this.countryObject.code;
+                    this.form.countryLocation = countryCode;
                     var location = {
-                        country: this.form.countryLocation || 'Colombia',
-                        city: this.form.cityLocation || 'Envigado',
-                        address: this.form.addressLocation || 'Carrera 31 No 41Sur - 64'
+                        country: this.form.countryLocation,
+                        city: this.form.cityLocation,
+                        address: this.form.addressLocation
                     };
                     this.$timeout(function () {
                         self.$scope.$broadcast('CodeAddress', location);
@@ -2835,6 +2844,7 @@ var app;
                     this.$scope.$parent.vm.teacherData.Location.City = this.form.cityLocation;
                     this.$scope.$parent.vm.teacherData.Location.State = this.form.stateLocation;
                     this.$scope.$parent.vm.teacherData.Location.ZipCode = this.form.zipCodeLocation;
+                    this.changeMapPosition();
                 };
                 TeacherLocationSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
@@ -2844,6 +2854,19 @@ var app;
                         self.form.stateLocation = args.Location.State;
                         self.form.zipCodeLocation = args.Location.ZipCode;
                         self.countryObject.code = args.Location.Country;
+                        var position = args.Location.Position;
+                        self.mapConfig = self.functionsUtilService.buildMapConfig([
+                            {
+                                id: position.Id,
+                                location: {
+                                    position: {
+                                        lat: parseFloat(position.Lat),
+                                        lng: parseFloat(position.Lng)
+                                    }
+                                }
+                            }
+                        ], 'drag-maker-map', { lat: parseFloat(position.Lat), lng: parseFloat(position.Lng) });
+                        self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                     });
                     this.$scope.$on('Position', function (event, args) {
                         self.$scope.$parent.vm.teacherData.Location.Position = args;

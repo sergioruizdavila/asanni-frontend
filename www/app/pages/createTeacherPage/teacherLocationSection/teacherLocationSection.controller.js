@@ -28,8 +28,7 @@ var app;
                         zipCodeLocation: ''
                     };
                     this.listCountries = this.getDataFromJson.getCountryi18n();
-                    this.mapConfig = this.functionsUtilService.buildMapConfig([{ id: 1, location: { position: { lat: 6.175434, lng: -75.583329 } } }], 'drag-maker-map', { lat: 6.175434, lng: -75.583329 });
-                    this.changeMapPosition();
+                    this.mapConfig = self.functionsUtilService.buildMapConfig(null, 'drag-maker-map', null);
                     this.error = {
                         message: ''
                     };
@@ -52,10 +51,12 @@ var app;
                 };
                 TeacherLocationSectionController.prototype.changeMapPosition = function () {
                     var self = this;
+                    var countryCode = this.countryObject.code;
+                    this.form.countryLocation = countryCode;
                     var location = {
-                        country: this.form.countryLocation || 'Colombia',
-                        city: this.form.cityLocation || 'Envigado',
-                        address: this.form.addressLocation || 'Carrera 31 No 41Sur - 64'
+                        country: this.form.countryLocation,
+                        city: this.form.cityLocation,
+                        address: this.form.addressLocation
                     };
                     this.$timeout(function () {
                         self.$scope.$broadcast('CodeAddress', location);
@@ -69,6 +70,7 @@ var app;
                     this.$scope.$parent.vm.teacherData.Location.City = this.form.cityLocation;
                     this.$scope.$parent.vm.teacherData.Location.State = this.form.stateLocation;
                     this.$scope.$parent.vm.teacherData.Location.ZipCode = this.form.zipCodeLocation;
+                    this.changeMapPosition();
                 };
                 TeacherLocationSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
@@ -78,6 +80,19 @@ var app;
                         self.form.stateLocation = args.Location.State;
                         self.form.zipCodeLocation = args.Location.ZipCode;
                         self.countryObject.code = args.Location.Country;
+                        var position = args.Location.Position;
+                        self.mapConfig = self.functionsUtilService.buildMapConfig([
+                            {
+                                id: position.Id,
+                                location: {
+                                    position: {
+                                        lat: parseFloat(position.Lat),
+                                        lng: parseFloat(position.Lng)
+                                    }
+                                }
+                            }
+                        ], 'drag-maker-map', { lat: parseFloat(position.Lat), lng: parseFloat(position.Lng) });
+                        self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                     });
                     this.$scope.$on('Position', function (event, args) {
                         self.$scope.$parent.vm.teacherData.Location.Position = args;

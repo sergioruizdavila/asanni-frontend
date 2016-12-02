@@ -135,16 +135,18 @@ module app.core.util.functionsUtil {
             let mapConfig: components.map.IMapConfig = {
                 type: mapType,
                 data: {
-                    position: position,
+                    position: position || {lng: 36.75, lat: 54.93},
                     markers: []
                 }
             };
 
-            for (let i = 0; i < dataSet.length; i++) {
-                mapConfig.data.markers.push({
-                    id: dataSet[i].id,
-                    position: dataSet[i].location.position
-                });
+            if(dataSet) {
+                for (let i = 0; i < dataSet.length; i++) {
+                    mapConfig.data.markers.push({
+                        id: dataSet[i].id,
+                        position: dataSet[i].location.position
+                    });
+                }
             }
 
             return mapConfig;
