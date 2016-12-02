@@ -119,15 +119,7 @@ module app.pages.createTeacherPage {
                 {lat: 6.175434, lng: -75.583329}
             );
 
-            let location = {
-                country: 'Colombia',
-                city: 'Envigado',
-                address: 'Carrera 31 No 41Sur - 64'
-            };
-
-            this.$timeout(function(){
-                self.$scope.$broadcast('CodeAddress', location);
-            });
+            this.changeMapPosition();
 
             this.error = {
                 message: ''
@@ -160,17 +152,8 @@ module app.pages.createTeacherPage {
             //CONSTANTS
             const CURRENT_STEP = 2;
             /*********************************/
-            //VARIABLES
-            let countryCode = this.countryObject.code;
-            /*********************************/
 
-            this.form.countryLocation = countryCode;
-            // Send data to parent (createTeacherPage)
-            this.$scope.$parent.vm.teacherData.Location.Country = this.form.countryLocation;
-            this.$scope.$parent.vm.teacherData.Location.Address = this.form.addressLocation;
-            this.$scope.$parent.vm.teacherData.Location.City = this.form.cityLocation;
-            this.$scope.$parent.vm.teacherData.Location.State = this.form.stateLocation;
-            this.$scope.$parent.vm.teacherData.Location.ZipCode = this.form.zipCodeLocation;
+            this._setDataModelFromForm();
 
             this.$scope.$emit('Save Data', CURRENT_STEP);
 
@@ -187,18 +170,7 @@ module app.pages.createTeacherPage {
         * @return void
         */
         goToBack(): void {
-            //VARIABLES
-            let countryCode = this.countryObject.code;
-            /*********************************/
-
-            this.form.countryLocation = countryCode;
-            // Send data to parent (createTeacherPage)
-            this.$scope.$parent.vm.teacherData.Location.Country = this.form.countryLocation;
-            this.$scope.$parent.vm.teacherData.Location.Address = this.form.addressLocation;
-            this.$scope.$parent.vm.teacherData.Location.City = this.form.cityLocation;
-            this.$scope.$parent.vm.teacherData.Location.State = this.form.stateLocation;
-            this.$scope.$parent.vm.teacherData.Location.ZipCode = this.form.zipCodeLocation;
-            
+            this._setDataModelFromForm();
             this.$scope.$emit('Save Data');
             this.$state.go(this.STEP1_STATE, {reload: true});
         }
@@ -213,13 +185,41 @@ module app.pages.createTeacherPage {
         * @return {void}
         */
         changeMapPosition(): void {
+            //VARIABLES
+            let self = this;
             let location = {
-                country: this.form.countryLocation,
-                city: this.form.cityLocation,
-                address: this.form.addressLocation
+                country: this.form.countryLocation || 'Colombia',
+                city: this.form.cityLocation || 'Envigado',
+                address: this.form.addressLocation || 'Carrera 31 No 41Sur - 64'
             };
+            /************************************/
 
-            this.$scope.$broadcast('CodeAddress', location);
+            this.$timeout(function(){
+                self.$scope.$broadcast('CodeAddress', location);
+            });
+
+        }
+
+
+        /**
+        * _setDataModelFromForm
+        * @description - get data from form's input in order to put it on $parent.teacherData
+        * @use - this._getDataFromForm();
+        * @function
+        * @return {void}
+        */
+        private _setDataModelFromForm(): void {
+            //VARIABLES
+            let countryCode = this.countryObject.code;
+            /*********************************/
+
+            this.form.countryLocation = countryCode;
+            // Send data to parent (createTeacherPage)
+            this.$scope.$parent.vm.teacherData.Location.Country = this.form.countryLocation;
+            this.$scope.$parent.vm.teacherData.Location.Address = this.form.addressLocation;
+            this.$scope.$parent.vm.teacherData.Location.City = this.form.cityLocation;
+            this.$scope.$parent.vm.teacherData.Location.State = this.form.stateLocation;
+            this.$scope.$parent.vm.teacherData.Location.ZipCode = this.form.zipCodeLocation;
         }
 
 

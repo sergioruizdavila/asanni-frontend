@@ -29,14 +29,7 @@ var app;
                     };
                     this.listCountries = this.getDataFromJson.getCountryi18n();
                     this.mapConfig = this.functionsUtilService.buildMapConfig([{ id: 1, location: { position: { lat: 6.175434, lng: -75.583329 } } }], 'drag-maker-map', { lat: 6.175434, lng: -75.583329 });
-                    var location = {
-                        country: 'Colombia',
-                        city: 'Envigado',
-                        address: 'Carrera 31 No 41Sur - 64'
-                    };
-                    this.$timeout(function () {
-                        self.$scope.$broadcast('CodeAddress', location);
-                    });
+                    this.changeMapPosition();
                     this.error = {
                         message: ''
                     };
@@ -48,17 +41,27 @@ var app;
                 };
                 TeacherLocationSectionController.prototype.goToNext = function () {
                     var CURRENT_STEP = 2;
-                    var countryCode = this.countryObject.code;
-                    this.form.countryLocation = countryCode;
-                    this.$scope.$parent.vm.teacherData.Location.Country = this.form.countryLocation;
-                    this.$scope.$parent.vm.teacherData.Location.Address = this.form.addressLocation;
-                    this.$scope.$parent.vm.teacherData.Location.City = this.form.cityLocation;
-                    this.$scope.$parent.vm.teacherData.Location.State = this.form.stateLocation;
-                    this.$scope.$parent.vm.teacherData.Location.ZipCode = this.form.zipCodeLocation;
+                    this._setDataModelFromForm();
                     this.$scope.$emit('Save Data', CURRENT_STEP);
                     this.$state.go(this.STEP2_STATE, { reload: true });
                 };
                 TeacherLocationSectionController.prototype.goToBack = function () {
+                    this._setDataModelFromForm();
+                    this.$scope.$emit('Save Data');
+                    this.$state.go(this.STEP1_STATE, { reload: true });
+                };
+                TeacherLocationSectionController.prototype.changeMapPosition = function () {
+                    var self = this;
+                    var location = {
+                        country: this.form.countryLocation || 'Colombia',
+                        city: this.form.cityLocation || 'Envigado',
+                        address: this.form.addressLocation || 'Carrera 31 No 41Sur - 64'
+                    };
+                    this.$timeout(function () {
+                        self.$scope.$broadcast('CodeAddress', location);
+                    });
+                };
+                TeacherLocationSectionController.prototype._setDataModelFromForm = function () {
                     var countryCode = this.countryObject.code;
                     this.form.countryLocation = countryCode;
                     this.$scope.$parent.vm.teacherData.Location.Country = this.form.countryLocation;
@@ -66,16 +69,6 @@ var app;
                     this.$scope.$parent.vm.teacherData.Location.City = this.form.cityLocation;
                     this.$scope.$parent.vm.teacherData.Location.State = this.form.stateLocation;
                     this.$scope.$parent.vm.teacherData.Location.ZipCode = this.form.zipCodeLocation;
-                    this.$scope.$emit('Save Data');
-                    this.$state.go(this.STEP1_STATE, { reload: true });
-                };
-                TeacherLocationSectionController.prototype.changeMapPosition = function () {
-                    var location = {
-                        country: this.form.countryLocation,
-                        city: this.form.cityLocation,
-                        address: this.form.addressLocation
-                    };
-                    this.$scope.$broadcast('CodeAddress', location);
                 };
                 TeacherLocationSectionController.prototype._subscribeToEvents = function () {
                     var self = this;

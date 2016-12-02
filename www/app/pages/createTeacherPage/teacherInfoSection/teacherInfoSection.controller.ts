@@ -145,6 +145,23 @@ module app.pages.createTeacherPage {
         * @return void
         */
         goToNext(): void {
+            this._setDataModelFromForm();
+            this.$scope.$emit('Save Data');
+            // GO TO NEXT STEP
+            this.$state.go(this.STEP2_STATE, {reload: true});
+
+        }
+
+
+
+        /**
+        * _setDataModelFromForm
+        * @description - get data from form's input in order to put it on $parent.teacherData
+        * @use - this._getDataFromForm();
+        * @function
+        * @return {void}
+        */
+        private _setDataModelFromForm(): void {
             //VARIABLES
             let dateFormatted = this.functionsUtilService.joinDate(
                                     this.dateObject.day.value,
@@ -161,12 +178,6 @@ module app.pages.createTeacherPage {
             this.$scope.$parent.vm.teacherData.BirthDate = dateFormatted;
             this.$scope.$parent.vm.teacherData.Born = this.form.born;
             this.$scope.$parent.vm.teacherData.About = this.form.about;
-
-            this.$scope.$emit('Save Data');
-
-            // GO TO NEXT STEP
-            this.$state.go(this.STEP2_STATE, {reload: true});
-
         }
 
 

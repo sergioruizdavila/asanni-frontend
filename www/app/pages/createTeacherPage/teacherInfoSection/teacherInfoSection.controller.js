@@ -42,6 +42,11 @@ var app;
                     this._subscribeToEvents();
                 };
                 TeacherInfoSectionController.prototype.goToNext = function () {
+                    this._setDataModelFromForm();
+                    this.$scope.$emit('Save Data');
+                    this.$state.go(this.STEP2_STATE, { reload: true });
+                };
+                TeacherInfoSectionController.prototype._setDataModelFromForm = function () {
                     var dateFormatted = this.functionsUtilService.joinDate(this.dateObject.day.value, this.dateObject.month.code, this.dateObject.year.value);
                     this.$scope.$parent.vm.teacherData.FirstName = this.form.firstName;
                     this.$scope.$parent.vm.teacherData.LastName = this.form.lastName;
@@ -51,8 +56,6 @@ var app;
                     this.$scope.$parent.vm.teacherData.BirthDate = dateFormatted;
                     this.$scope.$parent.vm.teacherData.Born = this.form.born;
                     this.$scope.$parent.vm.teacherData.About = this.form.about;
-                    this.$scope.$emit('Save Data');
-                    this.$state.go(this.STEP2_STATE, { reload: true });
                 };
                 TeacherInfoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
