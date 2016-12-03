@@ -24,6 +24,7 @@
         'mainApp.pages.meetingConfirmationPage',
         'mainApp.components.header',
         'mainApp.components.map',
+        'mainApp.components.modal',
         'mainApp.components.footer'
     ])
         .config(config);
@@ -58,6 +59,7 @@
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
+        modalLanguagesTmpl: 'components/modal/modalLanguages/modalLanguages.html',
         userId: ''
     };
     angular

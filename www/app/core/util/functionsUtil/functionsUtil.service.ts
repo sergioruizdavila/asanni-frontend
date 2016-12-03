@@ -232,6 +232,7 @@ module app.core.util.functionsUtil {
             return percent + '%';
         }
 
+
     }
 
     /*-- MODULE DEFINITION --*/

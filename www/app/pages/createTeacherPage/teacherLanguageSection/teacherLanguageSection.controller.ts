@@ -59,20 +59,24 @@ module app.pages.createTeacherPage {
 
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = [
+            'dataConfig',
             'mainApp.core.util.FunctionsUtilService',
             '$state',
             '$scope',
-            '$timeout'
+            '$timeout',
+            '$uibModal'
         ];
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
+            private dataConfig: IDataConfig,
             private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
             private $state: ng.ui.IStateService,
             private $scope: ITeacherLanguageScope,
-            private $timeout) {
+            private $timeout,
+            private $uibModal: ng.ui.bootstrap.IModalService) {
                 this._init();
         }
 
@@ -152,6 +156,66 @@ module app.pages.createTeacherPage {
 
 
         /**
+        * _addNewLanguages
+        * @description - open Modal in order to add a New Languages on Box
+        * @use - this._addNewLanguages();
+        * @function
+        * @return {void}
+        */
+        private _addNewLanguages(type): void {
+            let self = this;
+            // modal default options
+            let options: ng.ui.bootstrap.IModalSettings = {
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                templateUrl: this.dataConfig.modalLanguagesTmpl,
+                controller: 'mainApp.components.modal.ModalLanguageController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            type: type,
+                            list: self.form[type]
+                        }
+                    }
+                }
+            };
+
+            var modalInstance = this.$uibModal.open(options);
+
+            //When Modal closed, return the languages options list
+            modalInstance.result.then(function (newLanguagesList) {
+                self.form[type] = newLanguagesList;
+            }, function () {
+                console.info('Modal dismissed at: ' + new Date());
+            });
+
+            event.preventDefault();
+        }
+
+
+
+        /**
+        * _removeLanguage
+        * @description - remove a language element of options array
+        * @use - this._removeLanguage(3);
+        * @function
+        * @param {string} key - languages deselected by user
+        * @param {string} type - type of languages list (native, learn, teach)
+        * @return {void}
+        */
+        private _removeLanguage(key, type): void {
+             let newArray = this.form[type].filter(function(el) {
+                 return el.key !== key;
+             });
+
+             this.form[type] = newArray;
+        }
+
+
+
+        /**
         * _setDataModelFromForm
         * @description - get data from form's input in order to put it on $parent.teacherData
         * @use - this._getDataFromForm();
@@ -175,7 +239,6 @@ module app.pages.createTeacherPage {
         * @function
         * @return {void}
         */
-
         private _subscribeToEvents(): void {
             //VARIABLES
             let self = this;

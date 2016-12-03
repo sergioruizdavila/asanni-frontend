@@ -1,0 +1,299 @@
+<!----------------------------------------------------->
+<!--               LANGUAGES LIST MODAL              -->
+<!----------------------------------------------------->
+
+<div class="ma-box modalLanguages">
+
+    <!--                               TITLE                                 -->
+    <!------------------------------------------------------------------------->
+    <h4 class="ma-box__title margin-reset">Add New Languages
+        <div class="ma-box__title__right-block pull-right">
+            <i class="material-icons
+                      md-18
+                      md-dark md-dark--clicked"
+                      ng-click="vm.close()">close</i>
+        </div>
+    </h4>
+
+
+    <!--                              CONTENT                                -->
+    <!------------------------------------------------------------------------->
+    <div class="ma-box__content modalLanguages__content">
+
+        <p class="ma-p ma-p--default">
+            Selecciona uno o más idiomas que estas aprendiendo o que hablas.
+        </p>
+
+        <!--                 START: ADD LANGUAGES LIST BLOCK                 -->
+        <!--------------------------------------------------------------------->
+        <div class="row space-top-3">
+            <div class="col-md-12 text-center">
+                <div id="language-1"
+                     class="ma-label
+                            ma-label--box
+                            ma-label--box--secondary
+                            ma-label--box--default
+                            ma-label--box--check
+                            ma-label--box--space5"
+                     data-checked="false"
+                     ng-click="vm.addLanguages(1, 'Bahasa Indonesia')">Bahasa Indonesia</div>
+                <div id="language-2"
+                     class="ma-label
+                            ma-label--box
+                            ma-label--box--secondary
+                            ma-label--box--default
+                            ma-label--box--check
+                            ma-label--box--space5"
+                     data-checked="false"
+                     ng-click="vm.addLanguages(2, 'Bahasa Malaysia')">Bahasa Malaysia</div>
+                <div id="language-3"
+                     class="ma-label
+                             ma-label--box
+                             ma-label--box--secondary
+                             ma-label--box--default
+                             ma-label--box--check
+                             ma-label--box--space5"
+                      data-checked="false"
+                      ng-click="vm.addLanguages(3, 'Bengali')">Bengali</div>
+                <div id="language-4" class="ma-label
+                             ma-label--box
+                             ma-label--box--secondary
+                             ma-label--box--default
+                             ma-label--box--check
+                             ma-label--box--space5"
+                             data-checked="false"
+                      ng-click="vm.addLanguages(4)">Dansk</div>
+                <div id="language-5" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(5)">Deutsch</div>
+                <div id="language-6" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(6)">English</div>
+                <div id="language-7" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(7)">Español</div>
+                <div id="language-8" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(8)">Français</div>
+                <div id="language-9" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(9)">Hindi</div>
+                <div id="language-10" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(10)">Italiano</div>
+                <div id="language-11" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(11)">Magyar</div>
+                <div id="language-12" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(12)">Nederlands</div>
+                <div id="language-13" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(13)">Norsk</div>
+                <div id="language-14" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(14)">Polski</div>
+                <div id="language-15" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(15)">Português</div>
+                <div id="language-16" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(16)">Punjabi</div>
+                <div id="language-17" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(17)">Sign Language</div>
+                <div id="language-18" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(18)">Suomi</div>
+                <div id="language-19" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(19)">Svenska</div>
+                <div id="language-20" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(20)">Tagalog</div>
+                <div id="language-21" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(21)">Türkçe</div>
+                <div id="language-22" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(22)">Čeština</div>
+                <div id="language-23" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(23)">Ελληνικά</div>
+                <div id="language-24" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(24)">Русский</div>
+                <div id="language-25" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(25)">українська</div>
+                <div id="language-26" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(26)">עברית</div>
+                <div id="language-27" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(27)">العربية</div>
+                <div id="language-28" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(28)">ภาษาไทย</div>
+                <div id="language-29" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(29)">中文</div>
+                <div id="language-30" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(30)">日本語</div>
+                <div id="language-31" class="ma-label
+                           ma-label--box
+                           ma-label--box--secondary
+                           ma-label--box--default
+                           ma-label--box--check
+                           ma-label--box--space5"
+                           data-checked="false"
+                    ng-click="vm.addLanguages(31)">한국어</div>
+
+            </div>
+
+        </div>
+        <!--                  END: ADD LANGUAGES FORM BLOCK                  -->
+
+
+    </div>
+
+
+    <!--                              FOOTER                                 -->
+    <!------------------------------------------------------------------------->
+    <div class="ma-box__footer text-center">
+        <button class="ma-btn ma-btn--primary ma-btn--large"
+                ng-click="vm._save()">Guardar</button>
+    </div>
+
+</div>

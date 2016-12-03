@@ -40,6 +40,14 @@ module app.core.interfaces {
         code: string;
     }
 
+    /********************************************/
+    /*      KEY - VALUE OBJECT INTERFACE        */
+    /********************************************/
+    export interface IKeyValue {
+        key: any;
+        value: any;
+    }
+
     /****************************************/
     /*    SELECT LIST ELEMENT INTERFACES    */
     /****************************************/

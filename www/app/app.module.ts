@@ -33,6 +33,7 @@
             'mainApp.pages.meetingConfirmationPage',
             'mainApp.components.header',
             'mainApp.components.map',
+            'mainApp.components.modal',
             'mainApp.components.footer'
         ])
         .config(config);

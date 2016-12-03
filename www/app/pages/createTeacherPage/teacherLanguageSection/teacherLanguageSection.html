@@ -31,24 +31,17 @@
     margin-bottom: 10px;">Your native languages</label>
                             <div id="teacher-native-languages"
                                  class="text-left ma-labels-box ma-labels-box--dashed">
-                                <div class="ma-label ma-label--box
-                                            ma-label--box--secondary
-                                            ma-label--box--default
-                                            ma-label--box--default--with-icon
-                                            ma-label--box--space2">
-                                    Item1
-                                    <i class="ma-label--box--default--with-icon__icon
-                                                  material-icons">clear</i>
-                                </div>
-                                <div class="ma-label ma-label--box
-                                            ma-label--box--secondary
-                                            ma-label--box--default
-                                            ma-label--box--default--with-icon
-                                            ma-label--box--space2">
-                                    Item2
-                                    <i class="ma-label--box--default--with-icon__icon
-                                              material-icons">clear</i>
-                                </div>
+                                 <div class="ma-label ma-label--box
+                                             ma-label--box--secondary
+                                             ma-label--box--default
+                                             ma-label--box--default--with-icon
+                                             ma-label--box--space2"
+                                      ng-repeat="language in vm.form.native">
+                                     {{language.value}}
+                                     <i class="ma-label--box--default--with-icon__icon
+                                                   material-icons"
+                                        ng-click="vm._removeLanguage(language.key, 'native')">clear</i>
+                                 </div>
                             </div>
                             <div class="row margin-reset">
                                 <div class="col-sm-8 padding-reset"></div>
@@ -56,7 +49,8 @@
                                     <a class="ma-link ma-link--box
                                               ma-link--box--primary
                                               space-top-1 pull-right"
-                                       href="#">
+                                       href="#"
+                                       ng-click="vm._addNewLanguages('native')">
                                         + Add More
                                     </a>
                                 </div>
@@ -77,19 +71,12 @@
                                             ma-label--box--secondary
                                             ma-label--box--default
                                             ma-label--box--default--with-icon
-                                            ma-label--box--space2">
-                                    Item1
+                                            ma-label--box--space2"
+                                     ng-repeat="language in vm.form.teach">
+                                    {{language.value}}
                                     <i class="ma-label--box--default--with-icon__icon
-                                                  material-icons">clear</i>
-                                </div>
-                                <div class="ma-label ma-label--box
-                                            ma-label--box--secondary
-                                            ma-label--box--default
-                                            ma-label--box--default--with-icon
-                                            ma-label--box--space2">
-                                    Item2
-                                    <i class="ma-label--box--default--with-icon__icon
-                                              material-icons">clear</i>
+                                                  material-icons"
+                                       ng-click="vm._removeLanguage(language.key, 'teach')">clear</i>
                                 </div>
                             </div>
                             <div class="row margin-reset">
@@ -98,7 +85,8 @@
                                     <a class="ma-link ma-link--box
                                               ma-link--box--primary
                                               space-top-1 pull-right"
-                                       href="#">
+                                       href="#"
+                                       ng-click="vm._addNewLanguages('teach')">
                                         + Add More
                                     </a>
                                 </div>
@@ -119,19 +107,12 @@
                                             ma-label--box--secondary
                                             ma-label--box--default
                                             ma-label--box--default--with-icon
-                                            ma-label--box--space2">
-                                    Item1
+                                            ma-label--box--space2"
+                                     ng-repeat="language in vm.form.learn">
+                                    {{language.value}}
                                     <i class="ma-label--box--default--with-icon__icon
-                                                  material-icons">clear</i>
-                                </div>
-                                <div class="ma-label ma-label--box
-                                            ma-label--box--secondary
-                                            ma-label--box--default
-                                            ma-label--box--default--with-icon
-                                            ma-label--box--space2">
-                                    Item2
-                                    <i class="ma-label--box--default--with-icon__icon
-                                              material-icons">clear</i>
+                                                  material-icons"
+                                       ng-click="vm._removeLanguage(language.key, 'learn')">clear</i>
                                 </div>
                             </div>
                             <div class="row margin-reset">
@@ -140,7 +121,8 @@
                                     <a class="ma-link ma-link--box
                                               ma-link--box--primary
                                               space-top-1 pull-right"
-                                       href="#">
+                                       href="#"
+                                       ng-click="vm._addNewLanguages('learn')">
                                         + Add More
                                     </a>
                                 </div>
