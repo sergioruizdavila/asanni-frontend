@@ -3221,45 +3221,51 @@ var app;
                     this.$scope.$on('Fill Form', function (event, args) {
                         var languageArray = self.getDataFromJson.getLanguagei18n();
                         for (var i = 0; i < languageArray.length; i++) {
-                            for (var j = 0; j < args.Languages.Native.length; j++) {
-                                if (args.Languages.Native[j] == languageArray[i].code) {
-                                    var obj = { key: null, value: '' };
-                                    obj.key = parseInt(languageArray[i].code);
-                                    obj.value = languageArray[i].value;
-                                    if (self.form.native == null) {
-                                        self.form.native = [];
-                                        self.form.native.push(obj);
-                                    }
-                                    else {
-                                        self.form.native.push(obj);
-                                    }
-                                }
-                            }
-                            for (var j = 0; j < args.Languages.Learn.length; j++) {
-                                if (args.Languages.Learn[j] == languageArray[i].code) {
-                                    var obj = { key: null, value: '' };
-                                    obj.key = parseInt(languageArray[i].code);
-                                    obj.value = languageArray[i].value;
-                                    if (self.form.learn == null) {
-                                        self.form.learn = [];
-                                        self.form.learn.push(obj);
-                                    }
-                                    else {
-                                        self.form.learn.push(obj);
+                            if (args.Languages.Native) {
+                                for (var j = 0; j < args.Languages.Native.length; j++) {
+                                    if (args.Languages.Native[j] == languageArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = parseInt(languageArray[i].code);
+                                        obj.value = languageArray[i].value;
+                                        if (self.form.native == null) {
+                                            self.form.native = [];
+                                            self.form.native.push(obj);
+                                        }
+                                        else {
+                                            self.form.native.push(obj);
+                                        }
                                     }
                                 }
                             }
-                            for (var j = 0; j < args.Languages.Teach.length; j++) {
-                                if (args.Languages.Teach[j] == languageArray[i].code) {
-                                    var obj = { key: null, value: '' };
-                                    obj.key = parseInt(languageArray[i].code);
-                                    obj.value = languageArray[i].value;
-                                    if (self.form.teach == null) {
-                                        self.form.teach = [];
-                                        self.form.teach.push(obj);
+                            if (args.Languages.Learn) {
+                                for (var j = 0; j < args.Languages.Learn.length; j++) {
+                                    if (args.Languages.Learn[j] == languageArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = parseInt(languageArray[i].code);
+                                        obj.value = languageArray[i].value;
+                                        if (self.form.learn == null) {
+                                            self.form.learn = [];
+                                            self.form.learn.push(obj);
+                                        }
+                                        else {
+                                            self.form.learn.push(obj);
+                                        }
                                     }
-                                    else {
-                                        self.form.teach.push(obj);
+                                }
+                            }
+                            if (args.Languages.Teach) {
+                                for (var j = 0; j < args.Languages.Teach.length; j++) {
+                                    if (args.Languages.Teach[j] == languageArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = parseInt(languageArray[i].code);
+                                        obj.value = languageArray[i].value;
+                                        if (self.form.teach == null) {
+                                            self.form.teach = [];
+                                            self.form.teach.push(obj);
+                                        }
+                                        else {
+                                            self.form.teach.push(obj);
+                                        }
                                     }
                                 }
                             }

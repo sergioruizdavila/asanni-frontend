@@ -276,53 +276,62 @@ module app.pages.createTeacherPage {
 
                 let languageArray = self.getDataFromJson.getLanguagei18n();
                 for (let i = 0; i < languageArray.length; i++) {
-                    // Build user native language list
-                    for (let j = 0; j < args.Languages.Native.length; j++) {
 
-                        if(args.Languages.Native[j] == languageArray[i].code) {
-                            let obj = {key:null, value:''};
-                            obj.key = parseInt(languageArray[i].code);
-                            obj.value = languageArray[i].value;
-                            if(self.form.native == null) {
-                                self.form.native = [];
-                                self.form.native.push(obj);
-                            } else {
-                                self.form.native.push(obj);
+                    if(args.Languages.Native) {
+                        // Build user native language list
+                        for (let j = 0; j < args.Languages.Native.length; j++) {
+
+                            if(args.Languages.Native[j] == languageArray[i].code) {
+                                let obj = {key:null, value:''};
+                                obj.key = parseInt(languageArray[i].code);
+                                obj.value = languageArray[i].value;
+                                if(self.form.native == null) {
+                                    self.form.native = [];
+                                    self.form.native.push(obj);
+                                } else {
+                                    self.form.native.push(obj);
+                                }
                             }
-                        }
 
+                        }
                     }
-                    // Build user learn language list
-                    for (let j = 0; j < args.Languages.Learn.length; j++) {
 
-                        if(args.Languages.Learn[j] == languageArray[i].code) {
-                            let obj = {key:null, value:''};
-                            obj.key = parseInt(languageArray[i].code);
-                            obj.value = languageArray[i].value;
-                            if(self.form.learn == null) {
-                                self.form.learn = [];
-                                self.form.learn.push(obj);
-                            } else {
-                                self.form.learn.push(obj);
+                    if(args.Languages.Learn) {
+                        // Build user learn language list
+                        for (let j = 0; j < args.Languages.Learn.length; j++) {
+
+                            if(args.Languages.Learn[j] == languageArray[i].code) {
+                                let obj = {key:null, value:''};
+                                obj.key = parseInt(languageArray[i].code);
+                                obj.value = languageArray[i].value;
+                                if(self.form.learn == null) {
+                                    self.form.learn = [];
+                                    self.form.learn.push(obj);
+                                } else {
+                                    self.form.learn.push(obj);
+                                }
                             }
-                        }
 
+                        }
                     }
-                    // Build user teach language list
-                    for (let j = 0; j < args.Languages.Teach.length; j++) {
 
-                        if(args.Languages.Teach[j] == languageArray[i].code) {
-                            let obj = {key:null, value:''};
-                            obj.key = parseInt(languageArray[i].code);
-                            obj.value = languageArray[i].value;
-                            if(self.form.teach == null) {
-                                self.form.teach = [];
-                                self.form.teach.push(obj);
-                            } else {
-                                self.form.teach.push(obj);
+                    if(args.Languages.Teach) {
+                        // Build user teach language list
+                        for (let j = 0; j < args.Languages.Teach.length; j++) {
+
+                            if(args.Languages.Teach[j] == languageArray[i].code) {
+                                let obj = {key:null, value:''};
+                                obj.key = parseInt(languageArray[i].code);
+                                obj.value = languageArray[i].value;
+                                if(self.form.teach == null) {
+                                    self.form.teach = [];
+                                    self.form.teach.push(obj);
+                                } else {
+                                    self.form.teach.push(obj);
+                                }
                             }
-                        }
 
+                        }
                     }
 
                 }
