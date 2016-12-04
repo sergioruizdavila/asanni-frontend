@@ -34,6 +34,18 @@ var app;
                         }
                         return array;
                     };
+                    GetDataStaticJsonService.prototype.getLanguagei18n = function () {
+                        var jsonDoc = this.$translate.getTranslationTable();
+                        var array = [];
+                        for (var element in jsonDoc) {
+                            if (element.indexOf("language") >= 0) {
+                                var code = element.replace(/%language./g, '');
+                                var value = jsonDoc[element];
+                                array.push({ value: value, code: code });
+                            }
+                        }
+                        return array;
+                    };
                     return GetDataStaticJsonService;
                 }());
                 GetDataStaticJsonService.serviceId = 'mainApp.core.util.GetDataStaticJsonService';

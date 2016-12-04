@@ -13,6 +13,7 @@ module app.core.util.getDataStaticJson {
     export interface IGetDataStaticJsonService {
         getMonthi18n: () => Array<app.core.interfaces.IDataFromJsonI18n>;
         getCountryi18n: () => Array<app.core.interfaces.IDataFromJsonI18n>;
+        getLanguagei18n: () => Array<app.core.interfaces.IDataFromJsonI18n>;
     }
 
     export interface IAppTranslate extends angular.translate.ITranslateService {
@@ -95,6 +96,32 @@ module app.core.util.getDataStaticJson {
 
             return array;
 
+        }
+
+
+
+        /**
+        * getLanguagei18n
+        * @description - get languages texts & codes from i18n json files
+        * @use - this.FunctionsUtilService.getLanguagei18n();
+        * @function
+        * @return {Array<app.core.interfaces.IDataFromJsonI18n>} languages object array
+        */
+        getLanguagei18n(): Array<app.core.interfaces.IDataFromJsonI18n> {
+            //VARIABLES
+            let jsonDoc = this.$translate.getTranslationTable();
+            let array = [];
+
+            for (var element in jsonDoc) {
+                if (element.indexOf("language") >= 0) {
+
+                    let code = element.replace(/%language./g,'');
+                    let value = jsonDoc[element];
+                    array.push({value: value, code: code});
+                }
+            }
+
+            return array;
         }
 
     }

@@ -270,6 +270,18 @@ var app;
                         }
                         return array;
                     };
+                    GetDataStaticJsonService.prototype.getLanguagei18n = function () {
+                        var jsonDoc = this.$translate.getTranslationTable();
+                        var array = [];
+                        for (var element in jsonDoc) {
+                            if (element.indexOf("language") >= 0) {
+                                var code = element.replace(/%language./g, '');
+                                var value = jsonDoc[element];
+                                array.push({ value: value, code: code });
+                            }
+                        }
+                        return array;
+                    };
                     return GetDataStaticJsonService;
                 }());
                 GetDataStaticJsonService.serviceId = 'mainApp.core.util.GetDataStaticJsonService';
@@ -958,9 +970,24 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('Languages Model instanced');
                     this.id = obj.id;
-                    this.native = obj.native || [];
-                    this.learn = obj.learn || [];
-                    this.teach = obj.teach || [];
+                    if (typeof obj.native === 'string') {
+                        this.native = JSON.parse(obj.native);
+                    }
+                    else {
+                        this.native = obj.native || null;
+                    }
+                    if (typeof obj.learn === 'string') {
+                        this.learn = JSON.parse(obj.learn);
+                    }
+                    else {
+                        this.learn = obj.learn || null;
+                    }
+                    if (typeof obj.teach === 'string') {
+                        this.teach = JSON.parse(obj.teach);
+                    }
+                    else {
+                        this.teach = obj.teach || null;
+                    }
                 }
                 Object.defineProperty(Language.prototype, "Id", {
                     get: function () {

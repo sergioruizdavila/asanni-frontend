@@ -5,9 +5,10 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherLanguageSectionController = (function () {
-                function TeacherLanguageSectionController(dataConfig, functionsUtilService, $state, $scope, $timeout, $uibModal) {
+                function TeacherLanguageSectionController(dataConfig, functionsUtilService, getDataFromJson, $state, $scope, $timeout, $uibModal) {
                     this.dataConfig = dataConfig;
                     this.functionsUtilService = functionsUtilService;
+                    this.getDataFromJson = getDataFromJson;
                     this.$state = $state;
                     this.$scope = $scope;
                     this.$timeout = $timeout;
@@ -20,9 +21,9 @@ var app;
                     this.STEP4_STATE = 'page.createTeacherPage.experience';
                     this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(3, 9);
                     this.form = {
-                        native: [],
-                        learn: [],
-                        teach: []
+                        native: null,
+                        learn: null,
+                        teach: null
                     };
                     this.error = {
                         message: ''
@@ -76,16 +77,76 @@ var app;
                     this.form[type] = newArray;
                 };
                 TeacherLanguageSectionController.prototype._setDataModelFromForm = function () {
-                    this.$scope.$parent.vm.teacherData.Languages.Native = this.form.native;
-                    this.$scope.$parent.vm.teacherData.Languages.Learn = this.form.learn;
-                    this.$scope.$parent.vm.teacherData.Languages.Teach = this.form.teach;
+                    if (this.form.native !== null) {
+                        var native = [];
+                        for (var i = 0; i < this.form.native.length; i++) {
+                            native.push(this.form.native[i].key);
+                        }
+                        this.$scope.$parent.vm.teacherData.Languages.Native = native;
+                    }
+                    if (this.form.learn !== null) {
+                        var learn = [];
+                        for (var i = 0; i < this.form.learn.length; i++) {
+                            learn.push(this.form.learn[i].key);
+                        }
+                        this.$scope.$parent.vm.teacherData.Languages.Learn = learn;
+                    }
+                    if (this.form.teach !== null) {
+                        var teach = [];
+                        for (var i = 0; i < this.form.teach.length; i++) {
+                            teach.push(this.form.teach[i].key);
+                        }
+                        this.$scope.$parent.vm.teacherData.Languages.Teach = teach;
+                    }
                 };
                 TeacherLanguageSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self.form.native = args.Languages.Native;
-                        self.form.learn = args.Languages.Learn;
-                        self.form.teach = args.Languages.Teach;
+                        var languageArray = self.getDataFromJson.getLanguagei18n();
+                        for (var i = 0; i < languageArray.length; i++) {
+                            for (var j = 0; j < args.Languages.Native.length; j++) {
+                                if (args.Languages.Native[j] == languageArray[i].code) {
+                                    var obj = { key: null, value: '' };
+                                    obj.key = parseInt(languageArray[i].code);
+                                    obj.value = languageArray[i].value;
+                                    if (self.form.native == null) {
+                                        self.form.native = [];
+                                        self.form.native.push(obj);
+                                    }
+                                    else {
+                                        self.form.native.push(obj);
+                                    }
+                                }
+                            }
+                            for (var j = 0; j < args.Languages.Learn.length; j++) {
+                                if (args.Languages.Learn[j] == languageArray[i].code) {
+                                    var obj = { key: null, value: '' };
+                                    obj.key = parseInt(languageArray[i].code);
+                                    obj.value = languageArray[i].value;
+                                    if (self.form.learn == null) {
+                                        self.form.learn = [];
+                                        self.form.learn.push(obj);
+                                    }
+                                    else {
+                                        self.form.learn.push(obj);
+                                    }
+                                }
+                            }
+                            for (var j = 0; j < args.Languages.Teach.length; j++) {
+                                if (args.Languages.Teach[j] == languageArray[i].code) {
+                                    var obj = { key: null, value: '' };
+                                    obj.key = parseInt(languageArray[i].code);
+                                    obj.value = languageArray[i].value;
+                                    if (self.form.teach == null) {
+                                        self.form.teach = [];
+                                        self.form.teach.push(obj);
+                                    }
+                                    else {
+                                        self.form.teach.push(obj);
+                                    }
+                                }
+                            }
+                        }
                     });
                 };
                 return TeacherLanguageSectionController;
@@ -94,6 +155,7 @@ var app;
             TeacherLanguageSectionController.$inject = [
                 'dataConfig',
                 'mainApp.core.util.FunctionsUtilService',
+                'mainApp.core.util.GetDataStaticJsonService',
                 '$state',
                 '$scope',
                 '$timeout',

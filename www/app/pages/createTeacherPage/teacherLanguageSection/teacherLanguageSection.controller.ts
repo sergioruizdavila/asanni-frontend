@@ -30,9 +30,9 @@ module app.pages.createTeacherPage {
     }
 
     export interface ITeacherLanguageForm {
-        native: Array<string>;
-        learn: Array<string>;
-        teach: Array<string>;
+        native: Array<app.core.interfaces.IKeyValue>;
+        learn: Array<app.core.interfaces.IKeyValue>;
+        teach: Array<app.core.interfaces.IKeyValue>;
     }
 
 
@@ -61,6 +61,7 @@ module app.pages.createTeacherPage {
         public static $inject = [
             'dataConfig',
             'mainApp.core.util.FunctionsUtilService',
+            'mainApp.core.util.GetDataStaticJsonService',
             '$state',
             '$scope',
             '$timeout',
@@ -73,6 +74,7 @@ module app.pages.createTeacherPage {
         constructor(
             private dataConfig: IDataConfig,
             private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
+            private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
             private $state: ng.ui.IStateService,
             private $scope: ITeacherLanguageScope,
             private $timeout,
@@ -93,10 +95,11 @@ module app.pages.createTeacherPage {
             this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(3, 9);
 
             //Init form
+            //Is required use null here because en DB save: "[]"
             this.form = {
-                native: [],
-                learn: [],
-                teach: []
+                native: null,
+                learn: null,
+                teach: null
             };
 
             this.error = {
@@ -224,10 +227,29 @@ module app.pages.createTeacherPage {
         */
         private _setDataModelFromForm(): void {
 
-            // Send data to parent (createTeacherPage)
-            this.$scope.$parent.vm.teacherData.Languages.Native = this.form.native;
-            this.$scope.$parent.vm.teacherData.Languages.Learn = this.form.learn;
-            this.$scope.$parent.vm.teacherData.Languages.Teach = this.form.teach;
+            if(this.form.native !== null) {
+                let native = [];
+                for (let i = 0; i < this.form.native.length; i++) {
+                    native.push(this.form.native[i].key);
+                }
+                this.$scope.$parent.vm.teacherData.Languages.Native = native;
+            }
+
+            if(this.form.learn !== null){
+                let learn = [];
+                for (let i = 0; i < this.form.learn.length; i++) {
+                    learn.push(this.form.learn[i].key);
+                }
+                this.$scope.$parent.vm.teacherData.Languages.Learn = learn;
+            }
+
+            if(this.form.teach !== null){
+                let teach = [];
+                for (let i = 0; i < this.form.teach.length; i++) {
+                    teach.push(this.form.teach[i].key);
+                }
+                this.$scope.$parent.vm.teacherData.Languages.Teach = teach;
+            }
         }
 
 
@@ -252,9 +274,58 @@ module app.pages.createTeacherPage {
             */
             this.$scope.$on('Fill Form', function(event, args: app.models.teacher.Teacher) {
 
-                self.form.native = args.Languages.Native;
-                self.form.learn = args.Languages.Learn;
-                self.form.teach = args.Languages.Teach;
+                let languageArray = self.getDataFromJson.getLanguagei18n();
+                for (let i = 0; i < languageArray.length; i++) {
+                    // Build user native language list
+                    for (let j = 0; j < args.Languages.Native.length; j++) {
+
+                        if(args.Languages.Native[j] == languageArray[i].code) {
+                            let obj = {key:null, value:''};
+                            obj.key = parseInt(languageArray[i].code);
+                            obj.value = languageArray[i].value;
+                            if(self.form.native == null) {
+                                self.form.native = [];
+                                self.form.native.push(obj);
+                            } else {
+                                self.form.native.push(obj);
+                            }
+                        }
+
+                    }
+                    // Build user learn language list
+                    for (let j = 0; j < args.Languages.Learn.length; j++) {
+
+                        if(args.Languages.Learn[j] == languageArray[i].code) {
+                            let obj = {key:null, value:''};
+                            obj.key = parseInt(languageArray[i].code);
+                            obj.value = languageArray[i].value;
+                            if(self.form.learn == null) {
+                                self.form.learn = [];
+                                self.form.learn.push(obj);
+                            } else {
+                                self.form.learn.push(obj);
+                            }
+                        }
+
+                    }
+                    // Build user teach language list
+                    for (let j = 0; j < args.Languages.Teach.length; j++) {
+
+                        if(args.Languages.Teach[j] == languageArray[i].code) {
+                            let obj = {key:null, value:''};
+                            obj.key = parseInt(languageArray[i].code);
+                            obj.value = languageArray[i].value;
+                            if(self.form.teach == null) {
+                                self.form.teach = [];
+                                self.form.teach.push(obj);
+                            } else {
+                                self.form.teach.push(obj);
+                            }
+                        }
+
+                    }
+
+                }
 
             });
 
