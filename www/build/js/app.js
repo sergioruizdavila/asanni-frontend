@@ -55,7 +55,7 @@
 (function () {
     'use strict';
     var dataConfig = {
-        baseUrl: 'http://127.0.0.1:8000/api/v1/',
+        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -1624,6 +1624,93 @@ var components;
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
 //# sourceMappingURL=modalMeetingPoint.controller.js.map
+var components;
+(function (components) {
+    var modal;
+    (function (modal) {
+        var modalLanguages;
+        (function (modalLanguages) {
+            var ModalLanguagesController = (function () {
+                function ModalLanguagesController($uibModalInstance, dataSetModal, $timeout) {
+                    this.$uibModalInstance = $uibModalInstance;
+                    this.dataSetModal = dataSetModal;
+                    this.$timeout = $timeout;
+                    this._init();
+                }
+                ModalLanguagesController.prototype._init = function () {
+                    var self = this;
+                    console.log('Title');
+                    this.form = {
+                        options: this.dataSetModal.list || []
+                    };
+                    this.$timeout(function () {
+                        self._buildLanguagesChecked();
+                    });
+                    this.error = {
+                        message: ''
+                    };
+                    this.activate();
+                };
+                ModalLanguagesController.prototype.activate = function () {
+                    console.log('modalLanguages controller actived');
+                };
+                ModalLanguagesController.prototype.addLanguages = function (key) {
+                    var check = document.getElementById('language-' + key);
+                    var checkClasses = check.classList;
+                    var checked = check.getAttribute('data-checked');
+                    var value = check.innerText;
+                    if (checked == 'true') {
+                        this._removeLanguage(key);
+                        checkClasses.remove('ma-label--box--check--active');
+                        check.setAttribute('data-checked', 'false');
+                    }
+                    else {
+                        var option = {
+                            key: key,
+                            value: value
+                        };
+                        this.form.options.push(option);
+                        checkClasses.add('ma-label--box--check--active');
+                        check.setAttribute('data-checked', 'true');
+                    }
+                };
+                ModalLanguagesController.prototype._removeLanguage = function (key) {
+                    this.form.options = this.form.options.filter(function (el) {
+                        return el.key !== key;
+                    });
+                };
+                ModalLanguagesController.prototype._buildLanguagesChecked = function () {
+                    if (this.form.options.length > 0) {
+                        for (var i = 0; i < this.form.options.length; i++) {
+                            var language = this.form.options[i];
+                            var check = document.getElementById('language-' + language.key);
+                            var checkClasses = check.classList;
+                            checkClasses.add('ma-label--box--check--active');
+                            check.setAttribute('data-checked', 'true');
+                        }
+                    }
+                };
+                ModalLanguagesController.prototype._save = function () {
+                    this.$uibModalInstance.close(this.form.options);
+                };
+                ModalLanguagesController.prototype.close = function () {
+                    this.$uibModalInstance.close();
+                    event.preventDefault();
+                };
+                return ModalLanguagesController;
+            }());
+            ModalLanguagesController.controllerId = 'mainApp.components.modal.ModalLanguageController';
+            ModalLanguagesController.$inject = [
+                '$uibModalInstance',
+                'dataSetModal',
+                '$timeout'
+            ];
+            angular.module('mainApp.components.modal')
+                .controller(ModalLanguagesController.controllerId, ModalLanguagesController);
+        })(modalLanguages = modal.modalLanguages || (modal.modalLanguages = {}));
+    })(modal = components.modal || (components.modal = {}));
+})(components || (components = {}));
+//# sourceMappingURL=modalLanguages.controller.js.map
 (function () {
     'use strict';
     angular
@@ -3007,3 +3094,195 @@ var app;
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
 //# sourceMappingURL=teacherLocationSection.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.createTeacherPage')
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.createTeacherPage.language', {
+            url: '/language',
+            views: {
+                'step': {
+                    templateUrl: 'app/pages/createTeacherPage/teacherLanguageSection/teacherLanguageSection.html',
+                    controller: 'mainApp.pages.createTeacherPage.TeacherLanguageSectionController',
+                    controllerAs: 'vm'
+                }
+            },
+            cache: false
+        });
+    }
+})();
+//# sourceMappingURL=teacherLanguageSection.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var createTeacherPage;
+        (function (createTeacherPage) {
+            var TeacherLanguageSectionController = (function () {
+                function TeacherLanguageSectionController(dataConfig, functionsUtilService, getDataFromJson, $state, $scope, $timeout, $uibModal) {
+                    this.dataConfig = dataConfig;
+                    this.functionsUtilService = functionsUtilService;
+                    this.getDataFromJson = getDataFromJson;
+                    this.$state = $state;
+                    this.$scope = $scope;
+                    this.$timeout = $timeout;
+                    this.$uibModal = $uibModal;
+                    this._init();
+                }
+                TeacherLanguageSectionController.prototype._init = function () {
+                    var self = this;
+                    this.STEP2_STATE = 'page.createTeacherPage.location';
+                    this.STEP4_STATE = 'page.createTeacherPage.experience';
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(3, 9);
+                    this.form = {
+                        native: null,
+                        learn: null,
+                        teach: null
+                    };
+                    this.error = {
+                        message: ''
+                    };
+                    this.activate();
+                };
+                TeacherLanguageSectionController.prototype.activate = function () {
+                    console.log('TeacherLanguageSectionController controller actived');
+                    this._subscribeToEvents();
+                };
+                TeacherLanguageSectionController.prototype.goToNext = function () {
+                    var CURRENT_STEP = 3;
+                    this._setDataModelFromForm();
+                    this.$scope.$emit('Save Data', CURRENT_STEP);
+                    this.$state.go(this.STEP4_STATE, { reload: true });
+                };
+                TeacherLanguageSectionController.prototype.goToBack = function () {
+                    this._setDataModelFromForm();
+                    this.$scope.$emit('Save Data');
+                    this.$state.go(this.STEP2_STATE, { reload: true });
+                };
+                TeacherLanguageSectionController.prototype._addNewLanguages = function (type) {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalLanguagesTmpl,
+                        controller: 'mainApp.components.modal.ModalLanguageController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    type: type,
+                                    list: self.form[type]
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function (newLanguagesList) {
+                        self.form[type] = newLanguagesList;
+                    }, function () {
+                        console.info('Modal dismissed at: ' + new Date());
+                    });
+                    event.preventDefault();
+                };
+                TeacherLanguageSectionController.prototype._removeLanguage = function (key, type) {
+                    var newArray = this.form[type].filter(function (el) {
+                        return el.key !== key;
+                    });
+                    this.form[type] = newArray;
+                };
+                TeacherLanguageSectionController.prototype._setDataModelFromForm = function () {
+                    if (this.form.native !== null) {
+                        var native = [];
+                        for (var i = 0; i < this.form.native.length; i++) {
+                            native.push(this.form.native[i].key);
+                        }
+                        this.$scope.$parent.vm.teacherData.Languages.Native = native;
+                    }
+                    if (this.form.learn !== null) {
+                        var learn = [];
+                        for (var i = 0; i < this.form.learn.length; i++) {
+                            learn.push(this.form.learn[i].key);
+                        }
+                        this.$scope.$parent.vm.teacherData.Languages.Learn = learn;
+                    }
+                    if (this.form.teach !== null) {
+                        var teach = [];
+                        for (var i = 0; i < this.form.teach.length; i++) {
+                            teach.push(this.form.teach[i].key);
+                        }
+                        this.$scope.$parent.vm.teacherData.Languages.Teach = teach;
+                    }
+                };
+                TeacherLanguageSectionController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Fill Form', function (event, args) {
+                        var languageArray = self.getDataFromJson.getLanguagei18n();
+                        for (var i = 0; i < languageArray.length; i++) {
+                            for (var j = 0; j < args.Languages.Native.length; j++) {
+                                if (args.Languages.Native[j] == languageArray[i].code) {
+                                    var obj = { key: null, value: '' };
+                                    obj.key = parseInt(languageArray[i].code);
+                                    obj.value = languageArray[i].value;
+                                    if (self.form.native == null) {
+                                        self.form.native = [];
+                                        self.form.native.push(obj);
+                                    }
+                                    else {
+                                        self.form.native.push(obj);
+                                    }
+                                }
+                            }
+                            for (var j = 0; j < args.Languages.Learn.length; j++) {
+                                if (args.Languages.Learn[j] == languageArray[i].code) {
+                                    var obj = { key: null, value: '' };
+                                    obj.key = parseInt(languageArray[i].code);
+                                    obj.value = languageArray[i].value;
+                                    if (self.form.learn == null) {
+                                        self.form.learn = [];
+                                        self.form.learn.push(obj);
+                                    }
+                                    else {
+                                        self.form.learn.push(obj);
+                                    }
+                                }
+                            }
+                            for (var j = 0; j < args.Languages.Teach.length; j++) {
+                                if (args.Languages.Teach[j] == languageArray[i].code) {
+                                    var obj = { key: null, value: '' };
+                                    obj.key = parseInt(languageArray[i].code);
+                                    obj.value = languageArray[i].value;
+                                    if (self.form.teach == null) {
+                                        self.form.teach = [];
+                                        self.form.teach.push(obj);
+                                    }
+                                    else {
+                                        self.form.teach.push(obj);
+                                    }
+                                }
+                            }
+                        }
+                    });
+                };
+                return TeacherLanguageSectionController;
+            }());
+            TeacherLanguageSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherLanguageSectionController';
+            TeacherLanguageSectionController.$inject = [
+                'dataConfig',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.core.util.GetDataStaticJsonService',
+                '$state',
+                '$scope',
+                '$timeout',
+                '$uibModal'
+            ];
+            createTeacherPage.TeacherLanguageSectionController = TeacherLanguageSectionController;
+            angular
+                .module('mainApp.pages.createTeacherPage')
+                .controller(TeacherLanguageSectionController.controllerId, TeacherLanguageSectionController);
+        })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=teacherLanguageSection.controller.js.map
