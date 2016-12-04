@@ -36,11 +36,11 @@ var app;
                 .factory('customHttpInterceptor', customHttpInterceptor)
                 .config(configApi);
             configApi.$inject = ['$httpProvider'];
-            customHttpInterceptor.$inject = ['$q'];
+            customHttpInterceptor.$inject = ['$q', 'mainApp.core.util.messageUtilService'];
             function configApi($httpProvider) {
                 $httpProvider.interceptors.push('customHttpInterceptor');
             }
-            function customHttpInterceptor($q) {
+            function customHttpInterceptor($q, messageUtil) {
                 return {
                     request: function (req) {
                         req.url = decodeURIComponent(req.url);
@@ -53,6 +53,7 @@ var app;
                         return res;
                     },
                     responseError: function (rejection) {
+                        messageUtil.error(rejection.data.Message);
                         return rejection;
                     }
                 };

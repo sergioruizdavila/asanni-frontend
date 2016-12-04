@@ -342,11 +342,11 @@ var app;
                 .factory('customHttpInterceptor', customHttpInterceptor)
                 .config(configApi);
             configApi.$inject = ['$httpProvider'];
-            customHttpInterceptor.$inject = ['$q'];
+            customHttpInterceptor.$inject = ['$q', 'mainApp.core.util.messageUtilService'];
             function configApi($httpProvider) {
                 $httpProvider.interceptors.push('customHttpInterceptor');
             }
-            function customHttpInterceptor($q) {
+            function customHttpInterceptor($q, messageUtil) {
                 return {
                     request: function (req) {
                         req.url = decodeURIComponent(req.url);
@@ -359,6 +359,7 @@ var app;
                         return res;
                     },
                     responseError: function (rejection) {
+                        messageUtil.error(rejection.data.Message);
                         return rejection;
                     }
                 };
@@ -2747,10 +2748,11 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var CreateTeacherPageController = (function () {
-                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, localStorage, dataConfig, $state, $filter, $scope, $rootScope, $uibModal) {
+                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, messageUtil, localStorage, dataConfig, $state, $filter, $scope, $rootScope, $uibModal) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.teacherService = teacherService;
+                    this.messageUtil = messageUtil;
                     this.localStorage = localStorage;
                     this.dataConfig = dataConfig;
                     this.$state = $state;
@@ -2792,11 +2794,14 @@ var app;
                 CreateTeacherPageController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Save Data', function (event, args) {
+                        var SUCCESS_MESSAGE = 'Successfully saved!';
                         var numStep = args;
                         if (self.teacherData.Id) {
                             self.teacherService.updateTeacher(self.teacherData)
                                 .then(function (response) {
                                 if (response.id) {
+                                    window.scrollTo(0, 0);
+                                    self.messageUtil.success(SUCCESS_MESSAGE);
                                     self.$rootScope.teacher_id = response.id;
                                     self.localStorage.setItem('waysily.teacher_id', response.id);
                                     self.teacherData = new app.models.teacher.Teacher(response);
@@ -2810,6 +2815,8 @@ var app;
                             self.teacherService.createTeacher(self.teacherData)
                                 .then(function (response) {
                                 if (response.id) {
+                                    window.scrollTo(0, 0);
+                                    self.messageUtil.success(SUCCESS_MESSAGE);
                                     self.$rootScope.teacher_id = response.id;
                                     self.localStorage.setItem('waysily.teacher_id', response.id);
                                     self.teacherData = new app.models.teacher.Teacher(response);
@@ -2828,6 +2835,7 @@ var app;
                 'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.models.teacher.TeacherService',
+                'mainApp.core.util.messageUtilService',
                 'mainApp.localStorageService',
                 'dataConfig',
                 '$state',
