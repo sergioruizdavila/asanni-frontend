@@ -182,8 +182,7 @@ module app.pages.createTeacherPage {
                                 //Go top pages
                                 window.scrollTo(0, 0);
                                 //Show message
-                                //self.messageUtil.success(SUCCESS_MESSAGE);
-                                self.messageUtil.error(null);
+                                self.messageUtil.success(SUCCESS_MESSAGE);
                                 //Save teacher id
                                 self.$rootScope.teacher_id = response.id;
                                 self.localStorage.setItem('waysily.teacher_id', response.id);
