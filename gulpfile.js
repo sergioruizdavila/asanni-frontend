@@ -83,7 +83,8 @@ var paths = {
         'www/bower_components/animate.css/animate.min.css',
         'www/bower_components/flexboxgrid/dist/flexboxgrid.min.css',
         'www/bower_components/bootstrap/dist/css/bootstrap.min.css',
-        'www/bower_components/fullcalendar/dist/fullcalendar.min.css'
+        'www/bower_components/fullcalendar/dist/fullcalendar.min.css',
+        'www/bower_components/toastr/toastr.min.css'
     ],
     appSass: ['www/**/**/*.scss'],
     inputSass: 'www/app/core/theme/**/*.scss',

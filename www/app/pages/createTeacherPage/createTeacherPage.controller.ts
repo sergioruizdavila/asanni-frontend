@@ -51,6 +51,7 @@ module app.pages.createTeacherPage {
             'mainApp.core.util.GetDataStaticJsonService',
             'mainApp.core.util.FunctionsUtilService',
             'mainApp.models.teacher.TeacherService',
+            'mainApp.core.util.messageUtilService',
             'mainApp.localStorageService',
             'dataConfig',
             '$state',
@@ -66,6 +67,7 @@ module app.pages.createTeacherPage {
             private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
             private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
             private teacherService: app.models.teacher.ITeacherService,
+            private messageUtil: app.core.util.messageUtil.IMessageUtilService,
             private localStorage,
             private dataConfig: IDataConfig,
             private $state: ng.ui.IStateService,
@@ -165,6 +167,8 @@ module app.pages.createTeacherPage {
             * @event
             */
             this.$scope.$on('Save Data', function(event, args) {
+                //CONSTANTS
+                let SUCCESS_MESSAGE = 'Successfully saved!';
                 //VARIABLES
                 let numStep = args;
                 /******************************/
@@ -175,6 +179,8 @@ module app.pages.createTeacherPage {
                     .then(
                         function(response) {
                             if(response.id) {
+                                //Show message
+                                self.messageUtil.success(SUCCESS_MESSAGE);
                                 //Save teacher id
                                 self.$rootScope.teacher_id = response.id;
                                 self.localStorage.setItem('waysily.teacher_id', response.id);
@@ -194,6 +200,8 @@ module app.pages.createTeacherPage {
                     .then(
                         function(response) {
                             if(response.id) {
+                                //Show message
+                                self.messageUtil.success(SUCCESS_MESSAGE);
                                 //Save teacher id
                                 self.$rootScope.teacher_id = response.id;
                                 self.localStorage.setItem('waysily.teacher_id', response.id);
