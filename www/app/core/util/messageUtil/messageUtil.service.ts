@@ -23,9 +23,9 @@ module app.core.util.messageUtil {
         static serviceId = 'mainApp.core.util.messageUtilService';
 
         //inject dependencies
-        static $inject = [''];
+        static $inject = ['$filter'];
 
-        constructor() {
+        constructor(private $filter: angular.IFilterService) {
             toastr.options.positionClass = "toast-top-right";
             toastr.options.showDuration = 300;
             toastr.options.hideDuration = 300;
@@ -38,11 +38,14 @@ module app.core.util.messageUtil {
         }
 
         error(message: string): void {
+            //CONSTANTS
+            const ERROR_SERVER_MESSAGE = this.$filter('translate')('%notification.error.server.text');
+            /***************************************/
             //default config
             toastr.options.closeButton = true;
-            toastr.options.timeOut = 100000;
+            toastr.options.timeOut = 10000;
             if (!message) {
-                message = 'Server error occurred, try again';
+                message = ERROR_SERVER_MESSAGE;
             }
             toastr.error(message);
         }
@@ -52,8 +55,8 @@ module app.core.util.messageUtil {
         }
 
 
-        static instance(): IMessageUtilService {
-            return new messageUtilService();
+        static instance($filter: angular.IFilterService): IMessageUtilService {
+            return new messageUtilService($filter);
         }
 
     }

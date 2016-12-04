@@ -6,6 +6,10 @@
     "%header.lang.options.en.text": "English",
     "%header.lang.options.es.text": "Spanish",
 
+    "__NOTIFICATION__": "",
+    "%notification.success.text": "Successfully saved!",
+    "%notification.error.server.text": "Server error occurred, try again please",
+
     "__STUDENT LANDING PAGE__": "",
     "%landing.student.puv": "Immerse yourself in another culture",
     "%landing.student.puv.description": "When you learn a language with real people, you will learn more than just a language. You'll be exposed to a different culture and a new way of seeing the world.",

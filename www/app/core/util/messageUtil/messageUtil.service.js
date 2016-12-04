@@ -8,7 +8,8 @@ var app;
             (function (messageUtil) {
                 'use strict';
                 var messageUtilService = (function () {
-                    function messageUtilService() {
+                    function messageUtilService($filter) {
+                        this.$filter = $filter;
                         toastr.options.positionClass = "toast-top-right";
                         toastr.options.showDuration = 300;
                         toastr.options.hideDuration = 300;
@@ -18,23 +19,24 @@ var app;
                         toastr.success(message);
                     };
                     messageUtilService.prototype.error = function (message) {
+                        var ERROR_SERVER_MESSAGE = this.$filter('translate')('%notification.error.server.text');
                         toastr.options.closeButton = true;
-                        toastr.options.timeOut = 100000;
+                        toastr.options.timeOut = 10000;
                         if (!message) {
-                            message = 'Server error occurred, try again';
+                            message = ERROR_SERVER_MESSAGE;
                         }
                         toastr.error(message);
                     };
                     messageUtilService.prototype.info = function (message) {
                         toastr.info(message);
                     };
-                    messageUtilService.instance = function () {
-                        return new messageUtilService();
+                    messageUtilService.instance = function ($filter) {
+                        return new messageUtilService($filter);
                     };
                     return messageUtilService;
                 }());
                 messageUtilService.serviceId = 'mainApp.core.util.messageUtilService';
-                messageUtilService.$inject = [''];
+                messageUtilService.$inject = ['$filter'];
                 angular
                     .module('mainApp.core.util')
                     .factory(messageUtilService.serviceId, messageUtilService.instance);

@@ -6,6 +6,10 @@
     "%header.lang.options.en.text": "Inglés",
     "%header.lang.options.es.text": "Español",
 
+    "__NOTIFICATION__": "",
+    "%notification.success.text": "Guardado Exitoso!",
+    "%notification.error.server.text": "Estamos teniendo un problema, por favor intentelo nuevamente",
+
     "__STUDENT LANDING PAGE__":"",
     "%landing.student.puv": "Sumérgete en otra cultura",
     "%landing.student.puv.description": "Cuando aprendes un idioma con gente de verdad, aprendes más que un idioma. Estarás expuesto a una cultura diferente y verás el mundo de otra forma.",

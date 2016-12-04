@@ -51,14 +51,14 @@ var app;
                 CreateTeacherPageController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Save Data', function (event, args) {
-                        var SUCCESS_MESSAGE = 'Successfully saved!';
+                        var SUCCESS_MESSAGE = self.$filter('translate')('%notification.success.text');
                         var numStep = args;
                         if (self.teacherData.Id) {
                             self.teacherService.updateTeacher(self.teacherData)
                                 .then(function (response) {
                                 if (response.id) {
                                     window.scrollTo(0, 0);
-                                    self.messageUtil.success(SUCCESS_MESSAGE);
+                                    self.messageUtil.error(null);
                                     self.$rootScope.teacher_id = response.id;
                                     self.localStorage.setItem('waysily.teacher_id', response.id);
                                     self.teacherData = new app.models.teacher.Teacher(response);

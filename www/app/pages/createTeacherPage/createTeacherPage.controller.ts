@@ -168,7 +168,7 @@ module app.pages.createTeacherPage {
             */
             this.$scope.$on('Save Data', function(event, args) {
                 //CONSTANTS
-                let SUCCESS_MESSAGE = 'Successfully saved!';
+                const SUCCESS_MESSAGE = self.$filter('translate')('%notification.success.text');
                 //VARIABLES
                 let numStep = args;
                 /******************************/
@@ -182,7 +182,8 @@ module app.pages.createTeacherPage {
                                 //Go top pages
                                 window.scrollTo(0, 0);
                                 //Show message
-                                self.messageUtil.success(SUCCESS_MESSAGE);
+                                //self.messageUtil.success(SUCCESS_MESSAGE);
+                                self.messageUtil.error(null);
                                 //Save teacher id
                                 self.$rootScope.teacher_id = response.id;
                                 self.localStorage.setItem('waysily.teacher_id', response.id);
