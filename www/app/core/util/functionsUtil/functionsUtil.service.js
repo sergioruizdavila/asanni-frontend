@@ -11,6 +11,24 @@ var app;
                     function FunctionsUtilService() {
                         console.log('functionsUtil service called');
                     }
+                    FunctionsUtilService.prototype.dateFormat = function (date) {
+                        var dateFormatted = moment(date).format('YYYY-MM-DD');
+                        return dateFormatted;
+                    };
+                    FunctionsUtilService.prototype.joinDate = function (day, month, year) {
+                        var newDate = year + '-' + month + '-' + day;
+                        var dateFormatted = moment(newDate).format('YYYY-MM-DD');
+                        return dateFormatted;
+                    };
+                    FunctionsUtilService.prototype.splitDate = function (date) {
+                        var dateString = moment(date).format('YYYY-MM-DD').split('-');
+                        var dateFormatted = {
+                            day: dateString[2],
+                            month: dateString[1],
+                            year: dateString[0]
+                        };
+                        return dateFormatted;
+                    };
                     FunctionsUtilService.prototype.splitToColumns = function (arr, size) {
                         var newArr = [];
                         for (var i = 0; i < arr.length; i += size) {
@@ -18,21 +36,53 @@ var app;
                         }
                         return newArr;
                     };
-                    FunctionsUtilService.prototype.buildMarkersOnMap = function (dataSet, mapType, position) {
+                    FunctionsUtilService.prototype.buildMapConfig = function (dataSet, mapType, position) {
                         var mapConfig = {
                             type: mapType,
                             data: {
-                                position: position,
+                                position: position || { lng: 36.75, lat: 54.93 },
                                 markers: []
                             }
                         };
-                        for (var i = 0; i < dataSet.length; i++) {
-                            mapConfig.data.markers.push({
-                                id: dataSet[i].id,
-                                position: dataSet[i].location.position
-                            });
+                        if (dataSet) {
+                            for (var i = 0; i < dataSet.length; i++) {
+                                mapConfig.data.markers.push({
+                                    id: dataSet[i].id,
+                                    position: dataSet[i].location.position
+                                });
+                            }
                         }
                         return mapConfig;
+                    };
+                    FunctionsUtilService.extractCountriesFromHtml = function () {
+                        var countries_json = {};
+                        var language = 'EN';
+                        var html = document.getElementById("countriesList." + language);
+                        for (var i = 0; i < html.length; i++) {
+                            var countryText = html[i].innerText;
+                            var countryCode = html[i].attributes[0].nodeValue;
+                            countries_json["%country." + countryCode] = countryText;
+                        }
+                        console.log(JSON.stringify(countries_json));
+                    };
+                    FunctionsUtilService.prototype.generateRangesOfNumbers = function (from, to) {
+                        var array = [];
+                        for (var i = from; i <= to; i++) {
+                            array.push(i);
+                        }
+                        return array;
+                    };
+                    FunctionsUtilService.prototype.buildNumberSelectList = function (from, to) {
+                        var dayRange = this.generateRangesOfNumbers(from, to);
+                        var list = [];
+                        for (var i = 0; i < dayRange.length; i++) {
+                            list.push({ value: dayRange[i] });
+                        }
+                        return list;
+                    };
+                    FunctionsUtilService.prototype.progress = function (currentStep, totalSteps) {
+                        var percent = (100 / totalSteps) * (currentStep);
+                        return percent + '%';
                     };
                     return FunctionsUtilService;
                 }());

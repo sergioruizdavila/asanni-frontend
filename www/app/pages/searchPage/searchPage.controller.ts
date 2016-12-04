@@ -90,7 +90,7 @@ module app.pages.searchPage {
             this.StudentService.getAllStudents().then(
                 function(response: Array<app.models.student.Student>) {
                     self.type = 'student';
-                    self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(
+                    self.mapConfig = self.FunctionsUtilService.buildMapConfig(
                         response,
                         'search-map',
                         {lat: 6.175434,lng: -75.583329}
@@ -158,7 +158,7 @@ module app.pages.searchPage {
                     function(response: Array<app.models.student.Student>) {
 
                         self.type = 'student';
-                        self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(
+                        self.mapConfig = self.FunctionsUtilService.buildMapConfig(
                             response,
                             'search-map',
                             {lat: 6.175434,lng: -75.583329}
@@ -190,7 +190,7 @@ module app.pages.searchPage {
                     function(response: Array<app.models.teacher.Teacher>) {
 
                         self.type = 'teacher';
-                        self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(
+                        self.mapConfig = self.FunctionsUtilService.buildMapConfig(
                             response,
                             'search-map',
                             {lat: 6.175434,lng: -75.583329}
@@ -222,7 +222,7 @@ module app.pages.searchPage {
                     function(response: Array<app.models.school.School>) {
 
                         self.type = 'school';
-                        self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(
+                        self.mapConfig = self.FunctionsUtilService.buildMapConfig(
                             response,
                             'search-map',
                             {lat: 6.175434,lng: -75.583329}

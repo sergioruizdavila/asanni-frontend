@@ -29,7 +29,7 @@ var app;
                     this._subscribeToEvents();
                     this.StudentService.getAllStudents().then(function (response) {
                         self.type = 'student';
-                        self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                        self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
                         self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                     });
                 };
@@ -51,7 +51,7 @@ var app;
                     this.$scope.$on('Students', function (event, args) {
                         self.StudentService.getAllStudents().then(function (response) {
                             self.type = 'student';
-                            self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                             self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                         });
@@ -59,7 +59,7 @@ var app;
                     this.$scope.$on('Teachers', function (event, args) {
                         self.TeacherService.getAllTeachers().then(function (response) {
                             self.type = 'teacher';
-                            self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                             self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                         });
@@ -67,7 +67,7 @@ var app;
                     this.$scope.$on('Schools', function (event, args) {
                         self.SchoolService.getAllSchools().then(function (response) {
                             self.type = 'school';
-                            self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                             self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                         });

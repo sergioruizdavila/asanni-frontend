@@ -105,6 +105,16 @@
             color: $label-box-secondary-font-color;
         }
 
+        ///CHECK BOX
+        &--check {
+            cursor: pointer;
+            &--active {
+                background: 0 0;
+                background-color: $label-box-primary-background;
+                color: $label-box-primary-font-color;
+            }
+        }
+
         ///SPACE BETWEEN LABELS
 
         &--space2 {

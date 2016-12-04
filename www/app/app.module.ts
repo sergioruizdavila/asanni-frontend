@@ -23,8 +23,17 @@
             'mainApp.pages.main',
             'mainApp.pages.studentLandingPage',
             'mainApp.pages.searchPage',
+            'mainApp.pages.createTeacherPage',
+            'mainApp.pages.userProfilePage',
+            'mainApp.pages.userEditProfilePage',
+            'mainApp.pages.userEditAgendaPage',
+            'mainApp.pages.userEditMediaPage',
+            'mainApp.pages.userInboxPage',
+            'mainApp.pages.userInboxDetailsPage',
+            'mainApp.pages.meetingConfirmationPage',
             'mainApp.components.header',
             'mainApp.components.map',
+            'mainApp.components.modal',
             'mainApp.components.footer'
         ])
         .config(config);
@@ -36,8 +45,8 @@
         /*$locationProvider.html5Mode(true);
         $locationProvider.hashPrefix('!');*/
 
-        //$urlRouterProvider.otherwise('/page');
-        $urlRouterProvider.otherwise('/page/landing/student');
+        $urlRouterProvider.otherwise('/page');
+        //$urlRouterProvider.otherwise('/page/landing/student');
 
         /* Translate Provider */
         let prefix = 'assets/i18n/';
@@ -48,7 +57,7 @@
             suffix: suffix
         });
 
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.preferredLanguage('es');
 
     }
 

@@ -22,6 +22,7 @@ var paths = {
         "www/app/app.run.js",
         "www/app/auth/auth.service.js",
         "www/app/core/util/functionsUtil/functionsUtil.service.js",
+        "www/app/core/util/getDataStaticJson/getDataStaticJson.service.js",
         "www/app/core/restApi/restApi.config.js",
         "www/app/core/restApi/restApi.service.js",
         "www/app/models/user/user.model.js",
@@ -40,6 +41,7 @@ var paths = {
         "www/components/map/map.directive.js",
         "www/components/modal/modal.config.js",
         "www/components/modal/modalMeetingPoint/modalMeetingPoint.controller.js",
+        "www/components/modal/modalLanguages/modalLanguages.controller.js",
         "www/app/pages/main/main.config.js",
         "www/app/pages/main/main.controller.js",
         "www/app/pages/studentLandingPage/studentLandingPage.config.js",
@@ -62,7 +64,15 @@ var paths = {
         "www/app/pages/userInboxPage/userInboxPage.config.js",
         "www/app/pages/userInboxPage/userInboxPage.controller.js",
         "www/app/pages/userInboxDetailsPage/userInboxDetailsPage.config.js",
-        "www/app/pages/userInboxDetailsPage/userInboxDetailsPage.controller.js"
+        "www/app/pages/userInboxDetailsPage/userInboxDetailsPage.controller.js",
+        "www/app/pages/createTeacherPage/createTeacherPage.config.js",
+        "www/app/pages/createTeacherPage/createTeacherPage.controller.js",
+        "www/app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.config.js",
+        "www/app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.controller.js",
+        "www/app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.config.js",
+        "www/app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.controller.js",
+        "www/app/pages/createTeacherPage/teacherLanguageSection/teacherLanguageSection.config.js",
+        "www/app/pages/createTeacherPage/teacherLanguageSection/teacherLanguageSection.controller.js"
     ],
     appLibsJs: [
         'www/libs/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',

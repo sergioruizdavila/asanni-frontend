@@ -1,0 +1,30 @@
+/*************************/
+/*       VARIABLES       */
+/*************************/
+$createTeacher-padding: 20px;
+$createTeacher-block-margin: 20px;
+$createTeacher-block-sayHello-label-font-size: 17px;
+$createTeacher-mapBlock-height: 300px;
+
+/**********************************************************/
+/*                   CREATE TEACHER PAGE                  */
+/**********************************************************/
+
+.createTeacherPage {
+    padding-top: $createTeacher-padding;
+
+    &__block {
+        margin-bottom: $createTeacher-block-margin;
+    }
+
+    &__sayHello {
+        label {
+            font-size: $createTeacher-block-sayHello-label-font-size;
+            font-weight: normal;
+        }
+    }
+
+    &__map-block {
+        height: $createTeacher-mapBlock-height;
+    }
+}

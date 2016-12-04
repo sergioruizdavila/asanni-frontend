@@ -1,0 +1,67 @@
+<!----------------------------------------------------->
+<!--               CREATE TEACHER PAGE               -->
+<!----------------------------------------------------->
+
+<div class="createTeacherPage container">
+
+    <!--                   START: HEADER (MD AND LG SCREEN)                  -->
+    <!------------------------------------------------------------------------->
+    <header class="hidden-xs clearfix">
+
+        <div class="row middle-xs">
+
+            <div class="col-md-3">
+                <!--------------- START: LOGO (MD AND LG SCREEN) ---- --------->
+                <div class="ma-header__block ma-header--transparent__block">
+                    <a ui-sref="page.searchPage"
+                       class="ma-header__block__btn
+                       ma-header__block__logo-wrapper
+                       link-reset" aria-label="Waysily">
+                        <i class="ma-logo
+                                  ma-logo--primary
+                                  ma-header__block__btn__ma-logo"></i>
+                    </a>
+                </div>
+                <!--                END: LOGO (MD AND LG SCREEN)             -->
+            </div>
+
+            <div class="col-md-9">
+                <div class="ma-progressBar">
+                    <div ng-style="{width: vm.progressWidth}"
+                         class="ma-progressBar__progressLine
+                                ma-progressBar__progressLine--20Percent"></div>
+                    <div class="ma-progressBar__innerLine"></div>
+                    <div class="ma-progressBar__circle"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </header>
+    <!--                    END: HEADER (MD AND LG SCREEN)                   -->
+
+
+
+    <div class="row">
+
+        <!--                   START: CREATE TEACHER BLOCK                   -->
+        <!--------------------------------------------------------------------->
+        <div id="createTeacher-main-block" class="col-md-12">
+
+            <div class="ma-box space-5">
+
+                <div class="ma-box__content row">
+
+                    <div ui-view="step"></div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+        <!--                    END: CREATE TEACHER BLOCK                    -->
+
+    </div>
+
+</div>

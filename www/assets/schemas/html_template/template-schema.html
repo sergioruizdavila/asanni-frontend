@@ -757,6 +757,54 @@
 
     <hr>
 
+    <button class="ma-btn ma-btn--transparent ma-btn--small">
+        btn sm transparent
+    </button>
+
+    <button class="ma-btn ma-btn--transparent ma-btn--default">
+        btn df transparent
+    </button>
+
+    <button class="ma-btn ma-btn--transparent ma-btn--medium">
+        btn md transparent
+    </button>
+
+    <button class="ma-btn ma-btn--transparent ma-btn--large">
+        btn lg transparent
+    </button>
+
+    <hr>
+
+    <button class="ma-btn ma-btn--transparent ma-btn--small ma-btn--withIcon">
+        <i class="material-icons md-12 md-dark">
+            keyboard_backspace
+        </i>
+        btn sm trans withIcon
+    </button>
+
+    <button class="ma-btn ma-btn--transparent ma-btn--default ma-btn--withIcon">
+        <i class="material-icons md-18 md-dark">
+            keyboard_backspace
+        </i>
+        btn df trans withIcon
+    </button>
+
+    <button class="ma-btn ma-btn--transparent ma-btn--medium ma-btn--withIcon">
+        <i class="material-icons md-18 md-dark">
+            keyboard_backspace
+        </i>
+        btn md trans withIcon
+    </button>
+
+    <button class="ma-btn ma-btn--transparent ma-btn--large ma-btn--withIcon">
+        <i class="material-icons md-24 md-dark">
+            keyboard_backspace
+        </i>
+        btn lg trans withIcon
+    </button>
+
+    <hr>
+
     <a class="ma-link ma-link--box ma-link--box--small ma-link--box--primary" href="#">See more small link...</a>
     <a class="ma-link ma-link--box ma-link--box--default ma-link--box--primary" href="#">See more default link...</a>
     <a class="ma-link ma-link--box ma-link--box--large ma-link--box--primary" href="#">See more large link...</a>
@@ -1238,5 +1286,135 @@
         </div>
 
     </div>
+
+    <hr>
+
+
+    <!------------------------------>
+    <!--          METER           -->
+    <!------------------------------>
+    <style media="screen">
+        .ma-meter {
+            border-radius: 4px;
+            border: 1px solid #e5e5e5;
+            padding: 4px 10px;
+            display: inline-block;
+        }
+
+        .ma-meter ol li {
+            display: inline-block;
+            background-color: #d8d8d8;
+            border-radius: 50%;
+            height: 8px;
+            width: 8px;
+            margin: 0 2px;
+        }
+
+        .ma-meter--1-selected ol li:first-child,
+        .ma-meter--2-selected ol li:nth-child(-n+2) {
+            background-color: #ff5a5f;
+        }
+
+        .ma-meter--3-selected ol li:nth-child(-n+3) {
+            background-color: #e89947;
+        }
+
+        .ma-meter--4-selected ol li:nth-child(-n+4) {
+            background-color: #e8ce47;
+        }
+
+        .ma-meter--5-selected ol li {
+            background-color: #82B541;
+        }
+        .u-visually-hidden {
+            border: 0!important;
+            clip: rect(1px 1px 1px 1px);
+            clip: rect(1px,1px,1px,1px);
+            height: 1px!important;
+            overflow: hidden;
+            padding: 0!important;
+            position: absolute!important;
+            width: 1px!important;
+        }
+    </style>
+    <div class="ma-meter ma-meter--2-selected">
+		<p class="ma-p ma-p--default" style="margin: 0 30px 0 0;display:inline-block;">
+            Skill level
+        </p>
+		<ol style="display: inline-block;list-style: none;padding: 0;margin: 0">
+			<li><span class="u-visually-hidden">1</span>
+			</li>
+			<li><span class="u-visually-hidden">2</span>
+			</li>
+			<li><span class="u-visually-hidden">3</span>
+			</li>
+			<li><span class="u-visually-hidden">4</span>
+			</li>
+			<li><span class="u-visually-hidden">5</span>
+			</li>
+		</ol>
+	</div>
+
+    <hr>
+
+    <div class="ma-meter ma-meter--3-selected">
+		<p class="ma-p ma-p--default" style="margin: 0 30px 0 0;display:inline-block;">
+            Skill level
+        </p>
+		<ol style="display: inline-block;list-style: none;padding: 0;margin: 0">
+			<li><span class="u-visually-hidden">1</span>
+			</li>
+			<li><span class="u-visually-hidden">2</span>
+			</li>
+			<li><span class="u-visually-hidden">3</span>
+			</li>
+			<li><span class="u-visually-hidden">4</span>
+			</li>
+			<li><span class="u-visually-hidden">5</span>
+			</li>
+		</ol>
+	</div>
+
+    <hr>
+
+    <div class="ma-meter ma-meter--4-selected">
+		<p class="ma-p ma-p--default" style="margin: 0 30px 0 0;display:inline-block;">
+            Skill level
+        </p>
+		<ol style="display: inline-block;list-style: none;padding: 0;margin: 0">
+			<li><span class="u-visually-hidden">1</span>
+			</li>
+			<li><span class="u-visually-hidden">2</span>
+			</li>
+			<li><span class="u-visually-hidden">3</span>
+			</li>
+			<li><span class="u-visually-hidden">4</span>
+			</li>
+			<li><span class="u-visually-hidden">5</span>
+			</li>
+		</ol>
+	</div>
+
+    <hr>
+
+    <div class="ma-meter ma-meter--5-selected">
+		<p class="ma-p ma-p--default" style="margin: 0 30px 0 0;display:inline-block;">
+            Skill level
+        </p>
+		<ol style="display: inline-block;list-style: none;padding: 0;margin: 0">
+			<li><span class="u-visually-hidden">1</span>
+			</li>
+			<li><span class="u-visually-hidden">2</span>
+			</li>
+			<li><span class="u-visually-hidden">3</span>
+			</li>
+			<li><span class="u-visually-hidden">4</span>
+			</li>
+			<li><span class="u-visually-hidden">5</span>
+			</li>
+		</ol>
+	</div>
+
+    <hr>
 
 </div>

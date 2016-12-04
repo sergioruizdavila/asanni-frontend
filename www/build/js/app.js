@@ -14,20 +14,29 @@
         'mainApp.pages.main',
         'mainApp.pages.studentLandingPage',
         'mainApp.pages.searchPage',
+        'mainApp.pages.createTeacherPage',
+        'mainApp.pages.userProfilePage',
+        'mainApp.pages.userEditProfilePage',
+        'mainApp.pages.userEditAgendaPage',
+        'mainApp.pages.userEditMediaPage',
+        'mainApp.pages.userInboxPage',
+        'mainApp.pages.userInboxDetailsPage',
+        'mainApp.pages.meetingConfirmationPage',
         'mainApp.components.header',
         'mainApp.components.map',
+        'mainApp.components.modal',
         'mainApp.components.footer'
     ])
         .config(config);
     function config($locationProvider, $urlRouterProvider, $translateProvider) {
-        $urlRouterProvider.otherwise('/page/landing/student');
+        $urlRouterProvider.otherwise('/page');
         var prefix = 'assets/i18n/';
         var suffix = '.json';
         $translateProvider.useStaticFilesLoader({
             prefix: prefix,
             suffix: suffix
         });
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.preferredLanguage('es');
     }
 })();
 //# sourceMappingURL=app.module.js.map
@@ -46,10 +55,11 @@
 (function () {
     'use strict';
     var dataConfig = {
-        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
+        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
+        modalLanguagesTmpl: 'components/modal/modalLanguages/modalLanguages.html',
         userId: ''
     };
     angular
@@ -75,8 +85,6 @@
             }
         });
         dataConfig.userId = 'id1234';
-        $http.defaults.xsrfHeaderName = 'X-CSRFToken';
-        $http.defaults.xsrfCookieName = 'csrftoken';
     }
 })();
 (function (angular) {
@@ -141,6 +149,24 @@ var app;
                     function FunctionsUtilService() {
                         console.log('functionsUtil service called');
                     }
+                    FunctionsUtilService.prototype.dateFormat = function (date) {
+                        var dateFormatted = moment(date).format('YYYY-MM-DD');
+                        return dateFormatted;
+                    };
+                    FunctionsUtilService.prototype.joinDate = function (day, month, year) {
+                        var newDate = year + '-' + month + '-' + day;
+                        var dateFormatted = moment(newDate).format('YYYY-MM-DD');
+                        return dateFormatted;
+                    };
+                    FunctionsUtilService.prototype.splitDate = function (date) {
+                        var dateString = moment(date).format('YYYY-MM-DD').split('-');
+                        var dateFormatted = {
+                            day: dateString[2],
+                            month: dateString[1],
+                            year: dateString[0]
+                        };
+                        return dateFormatted;
+                    };
                     FunctionsUtilService.prototype.splitToColumns = function (arr, size) {
                         var newArr = [];
                         for (var i = 0; i < arr.length; i += size) {
@@ -148,21 +174,53 @@ var app;
                         }
                         return newArr;
                     };
-                    FunctionsUtilService.prototype.buildMarkersOnMap = function (dataSet, mapType, position) {
+                    FunctionsUtilService.prototype.buildMapConfig = function (dataSet, mapType, position) {
                         var mapConfig = {
                             type: mapType,
                             data: {
-                                position: position,
+                                position: position || { lng: 36.75, lat: 54.93 },
                                 markers: []
                             }
                         };
-                        for (var i = 0; i < dataSet.length; i++) {
-                            mapConfig.data.markers.push({
-                                id: dataSet[i].id,
-                                position: dataSet[i].location.position
-                            });
+                        if (dataSet) {
+                            for (var i = 0; i < dataSet.length; i++) {
+                                mapConfig.data.markers.push({
+                                    id: dataSet[i].id,
+                                    position: dataSet[i].location.position
+                                });
+                            }
                         }
                         return mapConfig;
+                    };
+                    FunctionsUtilService.extractCountriesFromHtml = function () {
+                        var countries_json = {};
+                        var language = 'EN';
+                        var html = document.getElementById("countriesList." + language);
+                        for (var i = 0; i < html.length; i++) {
+                            var countryText = html[i].innerText;
+                            var countryCode = html[i].attributes[0].nodeValue;
+                            countries_json["%country." + countryCode] = countryText;
+                        }
+                        console.log(JSON.stringify(countries_json));
+                    };
+                    FunctionsUtilService.prototype.generateRangesOfNumbers = function (from, to) {
+                        var array = [];
+                        for (var i = from; i <= to; i++) {
+                            array.push(i);
+                        }
+                        return array;
+                    };
+                    FunctionsUtilService.prototype.buildNumberSelectList = function (from, to) {
+                        var dayRange = this.generateRangesOfNumbers(from, to);
+                        var list = [];
+                        for (var i = 0; i < dayRange.length; i++) {
+                            list.push({ value: dayRange[i] });
+                        }
+                        return list;
+                    };
+                    FunctionsUtilService.prototype.progress = function (currentStep, totalSteps) {
+                        var percent = (100 / totalSteps) * (currentStep);
+                        return percent + '%';
                     };
                     return FunctionsUtilService;
                 }());
@@ -176,6 +234,67 @@ var app;
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
 //# sourceMappingURL=functionsUtil.service.js.map
+var app;
+(function (app) {
+    var core;
+    (function (core) {
+        var util;
+        (function (util) {
+            var getDataStaticJson;
+            (function (getDataStaticJson) {
+                'use strict';
+                var GetDataStaticJsonService = (function () {
+                    function GetDataStaticJsonService($translate) {
+                        this.$translate = $translate;
+                        console.log('getDataStaticJsonService service called');
+                    }
+                    GetDataStaticJsonService.prototype.getMonthi18n = function () {
+                        var jsonDoc = this.$translate.getTranslationTable();
+                        var array = [];
+                        for (var element in jsonDoc) {
+                            if (element.indexOf("month") >= 0) {
+                                var code = element.replace(/%month./g, '');
+                                array.push({ value: element, code: code });
+                            }
+                        }
+                        return array;
+                    };
+                    GetDataStaticJsonService.prototype.getCountryi18n = function () {
+                        var jsonDoc = this.$translate.getTranslationTable();
+                        var array = [];
+                        for (var element in jsonDoc) {
+                            if (element.indexOf("country") >= 0) {
+                                var code = element.replace(/%country./g, '');
+                                array.push({ value: element, code: code });
+                            }
+                        }
+                        return array;
+                    };
+                    GetDataStaticJsonService.prototype.getLanguagei18n = function () {
+                        var jsonDoc = this.$translate.getTranslationTable();
+                        var array = [];
+                        for (var element in jsonDoc) {
+                            if (element.indexOf("language") >= 0) {
+                                var code = element.replace(/%language./g, '');
+                                var value = jsonDoc[element];
+                                array.push({ value: value, code: code });
+                            }
+                        }
+                        return array;
+                    };
+                    return GetDataStaticJsonService;
+                }());
+                GetDataStaticJsonService.serviceId = 'mainApp.core.util.GetDataStaticJsonService';
+                GetDataStaticJsonService.$inject = ['$translate'];
+                getDataStaticJson.GetDataStaticJsonService = GetDataStaticJsonService;
+                angular
+                    .module('mainApp.core.util')
+                    .service(GetDataStaticJsonService.serviceId, GetDataStaticJsonService);
+            })(getDataStaticJson = util.getDataStaticJson || (util.getDataStaticJson = {}));
+        })(util = core.util || (core.util = {}));
+    })(core = app.core || (app.core = {}));
+})(app || (app = {}));
+//# sourceMappingURL=getDataStaticJson.service.js.map
 (function () {
     'use strict';
     angular
@@ -262,13 +381,14 @@ var app;
                     this.avatar = obj.avatar;
                     this.username = obj.username || '';
                     this.email = obj.email || '';
-                    this.first_name = obj.first_name || '';
-                    this.last_name = obj.last_name || '';
+                    this.phoneNumber = obj.phoneNumber || '';
+                    this.firstName = obj.firstName || '';
+                    this.lastName = obj.lastName || '';
                     this.sex = obj.sex || '';
-                    this.birth_date = obj.birth_date || '';
+                    this.birthDate = obj.birthDate || '';
                     this.born = obj.born || '';
                     this.about = obj.about || '';
-                    this.location = obj.location || '';
+                    this.location = new Location(obj.location);
                 }
                 Object.defineProperty(User.prototype, "Id", {
                     get: function () {
@@ -322,28 +442,41 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "First_name", {
+                Object.defineProperty(User.prototype, "PhoneNumber", {
                     get: function () {
-                        return this.first_name;
+                        return this.phoneNumber;
                     },
-                    set: function (first_name) {
-                        if (first_name === undefined) {
-                            throw 'Please supply first name';
+                    set: function (phoneNumber) {
+                        if (phoneNumber === undefined) {
+                            throw 'Please supply phone number';
                         }
-                        this.first_name = first_name;
+                        this.phoneNumber = phoneNumber;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Last_name", {
+                Object.defineProperty(User.prototype, "FirstName", {
                     get: function () {
-                        return this.last_name;
+                        return this.firstName;
                     },
-                    set: function (last_name) {
-                        if (last_name === undefined) {
+                    set: function (firstName) {
+                        if (firstName === undefined) {
+                            throw 'Please supply first name';
+                        }
+                        this.firstName = firstName;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(User.prototype, "LastName", {
+                    get: function () {
+                        return this.lastName;
+                    },
+                    set: function (lastName) {
+                        if (lastName === undefined) {
                             throw 'Please supply last name';
                         }
-                        this.last_name = last_name;
+                        this.lastName = lastName;
                     },
                     enumerable: true,
                     configurable: true
@@ -361,15 +494,15 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Birth_date", {
+                Object.defineProperty(User.prototype, "BirthDate", {
                     get: function () {
-                        return this.birth_date;
+                        return this.birthDate;
                     },
-                    set: function (birth_date) {
-                        if (birth_date === undefined) {
-                            throw 'Please supply sex';
+                    set: function (birthDate) {
+                        if (birthDate === undefined) {
+                            throw 'Please supply birth date';
                         }
-                        this.birth_date = birth_date;
+                        this.birthDate = birthDate;
                     },
                     enumerable: true,
                     configurable: true
@@ -393,7 +526,7 @@ var app;
                     },
                     set: function (about) {
                         if (about === undefined) {
-                            throw 'Please supply about';
+                            throw 'Please supply location';
                         }
                         this.about = about;
                     },
@@ -416,6 +549,162 @@ var app;
                 return User;
             }());
             user.User = User;
+            var Location = (function () {
+                function Location(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('User Model instanced');
+                    this.id = obj.id;
+                    this.country = obj.country || '';
+                    this.address = obj.address || '';
+                    this.position = new Position(obj.position);
+                    this.city = obj.city || '';
+                    this.state = obj.state || '';
+                    this.zipCode = obj.zipCode || '';
+                }
+                Object.defineProperty(Location.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Location.prototype, "Country", {
+                    get: function () {
+                        return this.country;
+                    },
+                    set: function (country) {
+                        if (country === undefined) {
+                            throw 'Please supply country location';
+                        }
+                        this.country = country;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Location.prototype, "Address", {
+                    get: function () {
+                        return this.address;
+                    },
+                    set: function (address) {
+                        if (address === undefined) {
+                            throw 'Please supply address location';
+                        }
+                        this.address = address;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Location.prototype, "Position", {
+                    get: function () {
+                        return this.position;
+                    },
+                    set: function (position) {
+                        if (position === undefined) {
+                            throw 'Please supply address location';
+                        }
+                        this.position = position;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Location.prototype, "City", {
+                    get: function () {
+                        return this.city;
+                    },
+                    set: function (city) {
+                        if (city === undefined) {
+                            throw 'Please supply city location';
+                        }
+                        this.city = city;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Location.prototype, "State", {
+                    get: function () {
+                        return this.state;
+                    },
+                    set: function (state) {
+                        if (state === undefined) {
+                            throw 'Please supply state location';
+                        }
+                        this.state = state;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Location.prototype, "ZipCode", {
+                    get: function () {
+                        return this.zipCode;
+                    },
+                    set: function (zipCode) {
+                        if (zipCode === undefined) {
+                            throw 'Please supply zip code location';
+                        }
+                        this.zipCode = zipCode;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Location;
+            }());
+            user.Location = Location;
+            var Position = (function () {
+                function Position(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('User Model instanced');
+                    this.id = obj.id;
+                    this.lng = obj.lng || '';
+                    this.lat = obj.lat || '';
+                }
+                Object.defineProperty(Position.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Position.prototype, "Lng", {
+                    get: function () {
+                        return this.lng;
+                    },
+                    set: function (lng) {
+                        if (lng === undefined) {
+                            throw 'Please supply lng position';
+                        }
+                        this.lng = lng;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Position.prototype, "Lat", {
+                    get: function () {
+                        return this.lat;
+                    },
+                    set: function (lat) {
+                        if (lat === undefined) {
+                            throw 'Please supply lat position';
+                        }
+                        this.lat = lat;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Position;
+            }());
+            user.Position = Position;
         })(user = models.user || (models.user = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
@@ -657,11 +946,104 @@ var app;
                     var _this;
                     console.log('Teacher Model instanced');
                     _this = _super.call(this, obj) || this;
+                    _this.languages = new Language(obj.languages);
                     return _this;
                 }
+                Object.defineProperty(Teacher.prototype, "Languages", {
+                    get: function () {
+                        return this.languages;
+                    },
+                    set: function (languages) {
+                        if (languages === undefined) {
+                            throw 'Please supply languages';
+                        }
+                        this.languages = languages;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 return Teacher;
             }(app.models.user.User));
             teacher.Teacher = Teacher;
+            var Language = (function () {
+                function Language(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('Languages Model instanced');
+                    this.id = obj.id;
+                    if (typeof obj.native === 'string') {
+                        this.native = JSON.parse(obj.native);
+                    }
+                    else {
+                        this.native = obj.native || null;
+                    }
+                    if (typeof obj.learn === 'string') {
+                        this.learn = JSON.parse(obj.learn);
+                    }
+                    else {
+                        this.learn = obj.learn || null;
+                    }
+                    if (typeof obj.teach === 'string') {
+                        this.teach = JSON.parse(obj.teach);
+                    }
+                    else {
+                        this.teach = obj.teach || null;
+                    }
+                }
+                Object.defineProperty(Language.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Language.prototype, "Native", {
+                    get: function () {
+                        return this.native;
+                    },
+                    set: function (native) {
+                        if (native === undefined) {
+                            throw 'Please supply native languages';
+                        }
+                        this.native = native;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Language.prototype, "Learn", {
+                    get: function () {
+                        return this.learn;
+                    },
+                    set: function (learn) {
+                        if (learn === undefined) {
+                            throw 'Please supply learn languages';
+                        }
+                        this.learn = learn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Language.prototype, "Teach", {
+                    get: function () {
+                        return this.teach;
+                    },
+                    set: function (teach) {
+                        if (teach === undefined) {
+                            throw 'Please supply teach languages';
+                        }
+                        this.teach = teach;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Language;
+            }());
+            teacher.Language = Language;
         })(teacher = models.teacher || (models.teacher = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
@@ -671,7 +1053,7 @@ var app;
     var models;
     (function (models) {
         var teacher;
-        (function (teacher) {
+        (function (teacher_1) {
             'use strict';
             var TeacherService = (function () {
                 function TeacherService(restApi) {
@@ -679,7 +1061,7 @@ var app;
                     console.log('teacher service instanced');
                 }
                 TeacherService.prototype.getTeacherById = function (id) {
-                    var url = 'teachers/';
+                    var url = 'teachers';
                     return this.restApi.show({ url: url, id: id }).$promise
                         .then(function (data) {
                         return data;
@@ -689,7 +1071,7 @@ var app;
                     });
                 };
                 TeacherService.prototype.getAllTeachers = function () {
-                    var url = 'teachers/';
+                    var url = 'teachers';
                     return this.restApi.query({ url: url }).$promise
                         .then(function (data) {
                         return data;
@@ -698,13 +1080,41 @@ var app;
                         return err;
                     });
                 };
+                TeacherService.prototype.createTeacher = function (teacher) {
+                    var promise;
+                    var url = 'teachers';
+                    promise = this.restApi.create({ url: url }, teacher)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
+                TeacherService.prototype.updateTeacher = function (teacher) {
+                    var promise;
+                    var url = 'teachers';
+                    promise = this.restApi.update({ url: url, id: teacher.Id }, teacher)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
                 return TeacherService;
             }());
             TeacherService.serviceId = 'mainApp.models.teacher.TeacherService';
             TeacherService.$inject = [
                 'mainApp.core.restApi.restApiService'
             ];
-            teacher.TeacherService = TeacherService;
+            teacher_1.TeacherService = TeacherService;
             angular
                 .module('mainApp.models.teacher', [])
                 .service(TeacherService.serviceId, TeacherService);
@@ -931,21 +1341,21 @@ var components;
                 this.init();
             }
             MapController.prototype.init = function () {
+                this.RED_PIN = 'assets/images/red-pin.png';
+                this.POSITION_PIN = 'assets/images/red-pin.png';
                 var self = this;
                 this._map;
+                this._draggable = false;
                 this.mapId = 'ma-map-' + Math.floor((Math.random() * 100) + 1);
                 this._infoWindow = null;
                 this._markers = [];
                 this.$scope.options = null;
-                this.form = {
-                    position: {
-                        lat: null,
-                        lng: null
-                    }
-                };
                 switch (this.mapConfig.type) {
                     case 'search-map':
                         this._searchMapBuilder();
+                        break;
+                    case 'drag-maker-map':
+                        this._dragMarkerMapBuilder();
                         break;
                 }
                 this.activate();
@@ -975,7 +1385,33 @@ var components;
                         self._createFilterButtons();
                         for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                             var marker = self.mapConfig.data.markers[i];
-                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), 'assets/images/meeting-point.png');
+                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.RED_PIN);
+                        }
+                    });
+                }
+            };
+            MapController.prototype._dragMarkerMapBuilder = function () {
+                var self = this;
+                var zoom = 17;
+                var center = this.mapConfig.data.position;
+                this._draggable = true;
+                this.$scope.options = {
+                    center: new google.maps.LatLng(center.lat, center.lng),
+                    zoom: zoom,
+                    mapTypeControl: false,
+                    zoomControl: true,
+                    streetViewControl: false,
+                    scrollwheel: false,
+                    zoomControlOptions: {
+                        position: google.maps.ControlPosition.TOP_LEFT
+                    }
+                };
+                if (this._map === void 0) {
+                    this.$timeout(function () {
+                        self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
+                        for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
+                            var marker = self.mapConfig.data.markers[i];
+                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.POSITION_PIN);
                         }
                     });
                 }
@@ -987,10 +1423,36 @@ var components;
                     id: id,
                     position: position,
                     map: this._map,
-                    icon: icon
+                    icon: icon,
+                    draggable: this._draggable
                 };
                 marker = new google.maps.Marker(markerOptions);
                 this._markers.push(marker);
+                if (this._map) {
+                    this._map.setCenter(position);
+                }
+                if (this._draggable) {
+                    google.maps.event.addListener(marker, 'dragend', function (event) {
+                        var position = {
+                            lng: this.getPosition().lng(),
+                            lat: this.getPosition().lat()
+                        };
+                        self.$scope.$emit('Position', position);
+                    });
+                }
+            };
+            MapController.prototype._removeMarkers = function () {
+                for (var i = 0; i < this._markers.length; i++) {
+                    this._markers[i].setMap(null);
+                }
+            };
+            MapController.prototype._createFilterButtons = function () {
+                var buttons = ['Students', 'Teachers', 'Schools'];
+                for (var i = 0; i < buttons.length; i++) {
+                    var controlDiv = document.createElement('div');
+                    var control = this._filterControl(controlDiv, buttons[i]);
+                    this._map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
+                }
             };
             MapController.prototype._filterControl = function (controlDiv, type) {
                 var self = this;
@@ -1063,31 +1525,42 @@ var components;
                     element.style.backgroundColor = background_color_active;
                     element.style.borderBottom = border_bottom_active;
                     child.style.color = color_active;
-                    self._removeMarkers();
                     self.$scope.$emit(type);
                 });
             };
-            MapController.prototype._removeMarkers = function () {
-                for (var i = 0; i < this._markers.length; i++) {
-                    this._markers[i].setMap(null);
-                }
-            };
-            MapController.prototype._createFilterButtons = function () {
-                var buttons = ['Students', 'Teachers', 'Schools'];
-                for (var i = 0; i < buttons.length; i++) {
-                    var controlDiv = document.createElement('div');
-                    var control = this._filterControl(controlDiv, buttons[i]);
-                    this._map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
-                }
+            MapController.prototype._codeAddress = function (geocoder, country, address, city) {
+                var self = this;
+                var location = country + ',' + city + ',' + address;
+                geocoder.geocode({
+                    address: location
+                }, function (results, status) {
+                    if (status == 'OK') {
+                        self._removeMarkers();
+                        self._setMarker('1', results[0].geometry.location, 'assets/images/red-pin.png');
+                        var position = {
+                            lng: results[0].geometry.location.lng(),
+                            lat: results[0].geometry.location.lat()
+                        };
+                        self.$scope.$emit('Position', position);
+                    }
+                    else {
+                        console.log(status);
+                    }
+                });
             };
             MapController.prototype._subscribeToEvents = function () {
                 var self = this;
                 this.$scope.$on('BuildMarkers', function (event, args) {
                     self.mapConfig = args;
+                    self._removeMarkers();
                     for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                         var marker = self.mapConfig.data.markers[i];
-                        self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), 'assets/images/meeting-point.png');
+                        self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), 'assets/images/red-pin.png');
                     }
+                });
+                this.$scope.$on('CodeAddress', function (event, args) {
+                    var geocoder = new google.maps.Geocoder();
+                    self._codeAddress(geocoder, args.country, args.address, args.city);
                 });
             };
             return MapController;
@@ -1151,6 +1624,93 @@ var components;
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
 //# sourceMappingURL=modalMeetingPoint.controller.js.map
+var components;
+(function (components) {
+    var modal;
+    (function (modal) {
+        var modalLanguages;
+        (function (modalLanguages) {
+            var ModalLanguagesController = (function () {
+                function ModalLanguagesController($uibModalInstance, dataSetModal, $timeout) {
+                    this.$uibModalInstance = $uibModalInstance;
+                    this.dataSetModal = dataSetModal;
+                    this.$timeout = $timeout;
+                    this._init();
+                }
+                ModalLanguagesController.prototype._init = function () {
+                    var self = this;
+                    console.log('Title');
+                    this.form = {
+                        options: this.dataSetModal.list || []
+                    };
+                    this.$timeout(function () {
+                        self._buildLanguagesChecked();
+                    });
+                    this.error = {
+                        message: ''
+                    };
+                    this.activate();
+                };
+                ModalLanguagesController.prototype.activate = function () {
+                    console.log('modalLanguages controller actived');
+                };
+                ModalLanguagesController.prototype.addLanguages = function (key) {
+                    var check = document.getElementById('language-' + key);
+                    var checkClasses = check.classList;
+                    var checked = check.getAttribute('data-checked');
+                    var value = check.innerText;
+                    if (checked == 'true') {
+                        this._removeLanguage(key);
+                        checkClasses.remove('ma-label--box--check--active');
+                        check.setAttribute('data-checked', 'false');
+                    }
+                    else {
+                        var option = {
+                            key: key,
+                            value: value
+                        };
+                        this.form.options.push(option);
+                        checkClasses.add('ma-label--box--check--active');
+                        check.setAttribute('data-checked', 'true');
+                    }
+                };
+                ModalLanguagesController.prototype._removeLanguage = function (key) {
+                    this.form.options = this.form.options.filter(function (el) {
+                        return el.key !== key;
+                    });
+                };
+                ModalLanguagesController.prototype._buildLanguagesChecked = function () {
+                    if (this.form.options.length > 0) {
+                        for (var i = 0; i < this.form.options.length; i++) {
+                            var language = this.form.options[i];
+                            var check = document.getElementById('language-' + language.key);
+                            var checkClasses = check.classList;
+                            checkClasses.add('ma-label--box--check--active');
+                            check.setAttribute('data-checked', 'true');
+                        }
+                    }
+                };
+                ModalLanguagesController.prototype._save = function () {
+                    this.$uibModalInstance.close(this.form.options);
+                };
+                ModalLanguagesController.prototype.close = function () {
+                    this.$uibModalInstance.close();
+                    event.preventDefault();
+                };
+                return ModalLanguagesController;
+            }());
+            ModalLanguagesController.controllerId = 'mainApp.components.modal.ModalLanguageController';
+            ModalLanguagesController.$inject = [
+                '$uibModalInstance',
+                'dataSetModal',
+                '$timeout'
+            ];
+            angular.module('mainApp.components.modal')
+                .controller(ModalLanguagesController.controllerId, ModalLanguagesController);
+        })(modalLanguages = modal.modalLanguages || (modal.modalLanguages = {}));
+    })(modal = components.modal || (components.modal = {}));
+})(components || (components = {}));
+//# sourceMappingURL=modalLanguages.controller.js.map
 (function () {
     'use strict';
     angular
@@ -1480,7 +2040,7 @@ var app;
                     this._subscribeToEvents();
                     this.StudentService.getAllStudents().then(function (response) {
                         self.type = 'student';
-                        self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                        self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
                         self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                     });
                 };
@@ -1502,7 +2062,7 @@ var app;
                     this.$scope.$on('Students', function (event, args) {
                         self.StudentService.getAllStudents().then(function (response) {
                             self.type = 'student';
-                            self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                             self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                         });
@@ -1510,7 +2070,7 @@ var app;
                     this.$scope.$on('Teachers', function (event, args) {
                         self.TeacherService.getAllTeachers().then(function (response) {
                             self.type = 'teacher';
-                            self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                             self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                         });
@@ -1518,7 +2078,7 @@ var app;
                     this.$scope.$on('Schools', function (event, args) {
                         self.SchoolService.getAllSchools().then(function (response) {
                             self.type = 'school';
-                            self.mapConfig = self.FunctionsUtilService.buildMarkersOnMap(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                             self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                         });
@@ -1594,7 +2154,8 @@ var app;
                         message: ''
                     };
                     this.mapConfig = {
-                        type: 'location-map'
+                        type: 'location-map',
+                        data: null
                     };
                     this.$scope.date;
                     this.$scope.datetimepickerConfig = {
@@ -1607,7 +2168,7 @@ var app;
                     var self = this;
                     console.log('userProfilePage controller actived');
                     this.UserService.getUserById(this.$stateParams.id).then(function (response) {
-                        self.data = new app.models.user.Student(response);
+                        self.data = new app.models.user.User(response);
                     });
                 };
                 UserProfilePageController.prototype.onTimeSet = function (newDate, oldDate) {
@@ -2154,3 +2715,574 @@ var app;
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
 //# sourceMappingURL=userInboxDetailsPage.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.createTeacherPage', [])
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.createTeacherPage', {
+            url: '/create/teacher',
+            views: {
+                'container': {
+                    templateUrl: 'app/pages/createTeacherPage/createTeacherPage.html',
+                    controller: 'mainApp.pages.createTeacherPage.CreateTeacherPageController',
+                    controllerAs: 'vm'
+                }
+            },
+            cache: false,
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = false;
+                    $rootScope.activeFooter = false;
+                }]
+        });
+    }
+})();
+//# sourceMappingURL=createTeacherPage.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var createTeacherPage;
+        (function (createTeacherPage) {
+            var CreateTeacherPageController = (function () {
+                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, localStorage, dataConfig, $state, $filter, $scope, $rootScope, $uibModal) {
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
+                    this.teacherService = teacherService;
+                    this.localStorage = localStorage;
+                    this.dataConfig = dataConfig;
+                    this.$state = $state;
+                    this.$filter = $filter;
+                    this.$scope = $scope;
+                    this.$rootScope = $rootScope;
+                    this.$uibModal = $uibModal;
+                    this._init();
+                }
+                CreateTeacherPageController.prototype._init = function () {
+                    var currentState = this.$state.current.name;
+                    this.teacherData = new app.models.teacher.Teacher();
+                    this.error = {
+                        message: ''
+                    };
+                    this.activate();
+                };
+                CreateTeacherPageController.prototype.activate = function () {
+                    var self = this;
+                    console.log('createTeacherPage controller actived');
+                    this._subscribeToEvents();
+                    this.fillFormWithTeacherData();
+                };
+                CreateTeacherPageController.prototype.fillFormWithTeacherData = function () {
+                    var self = this;
+                    this.$rootScope.teacher_id = this.localStorage.getItem('waysily.teacher_id');
+                    if (this.$rootScope.teacher_id) {
+                        this.teacherService.getTeacherById(this.$rootScope.teacher_id)
+                            .then(function (response) {
+                            if (response.id) {
+                                self.teacherData = new app.models.teacher.Teacher(response);
+                                self.$scope.$broadcast('Fill Form', self.teacherData);
+                            }
+                            else {
+                            }
+                        });
+                    }
+                };
+                CreateTeacherPageController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Save Data', function (event, args) {
+                        var numStep = args;
+                        if (self.teacherData.Id) {
+                            self.teacherService.updateTeacher(self.teacherData)
+                                .then(function (response) {
+                                if (response.id) {
+                                    self.$rootScope.teacher_id = response.id;
+                                    self.localStorage.setItem('waysily.teacher_id', response.id);
+                                    self.teacherData = new app.models.teacher.Teacher(response);
+                                    self.$scope.$broadcast('Fill Form', self.teacherData);
+                                }
+                                else {
+                                }
+                            });
+                        }
+                        else {
+                            self.teacherService.createTeacher(self.teacherData)
+                                .then(function (response) {
+                                if (response.id) {
+                                    self.$rootScope.teacher_id = response.id;
+                                    self.localStorage.setItem('waysily.teacher_id', response.id);
+                                    self.teacherData = new app.models.teacher.Teacher(response);
+                                    self.$scope.$broadcast('Fill Form', self.teacherData);
+                                }
+                                else {
+                                }
+                            });
+                        }
+                    });
+                };
+                return CreateTeacherPageController;
+            }());
+            CreateTeacherPageController.controllerId = 'mainApp.pages.createTeacherPage.CreateTeacherPageController';
+            CreateTeacherPageController.$inject = [
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.models.teacher.TeacherService',
+                'mainApp.localStorageService',
+                'dataConfig',
+                '$state',
+                '$filter',
+                '$scope',
+                '$rootScope',
+                '$uibModal'
+            ];
+            createTeacherPage.CreateTeacherPageController = CreateTeacherPageController;
+            angular
+                .module('mainApp.pages.createTeacherPage')
+                .controller(CreateTeacherPageController.controllerId, CreateTeacherPageController);
+        })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=createTeacherPage.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.createTeacherPage')
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.createTeacherPage.basicInfo', {
+            url: '/basicInfo',
+            views: {
+                'step': {
+                    templateUrl: 'app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.html',
+                    controller: 'mainApp.pages.createTeacherPage.TeacherInfoSectionController',
+                    controllerAs: 'vm'
+                }
+            },
+            cache: false
+        });
+    }
+})();
+//# sourceMappingURL=teacherInfoSection.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var createTeacherPage;
+        (function (createTeacherPage) {
+            var TeacherInfoSectionController = (function () {
+                function TeacherInfoSectionController(getDataFromJson, functionsUtilService, $state, $scope) {
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
+                    this.$state = $state;
+                    this.$scope = $scope;
+                    this._init();
+                }
+                TeacherInfoSectionController.prototype._init = function () {
+                    this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
+                    this.STEP2_STATE = 'page.createTeacherPage.location';
+                    this.STEP3_STATE = 'page.createTeacherPage.map';
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(1, 9);
+                    this.dateObject = { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } };
+                    this.form = {
+                        firstName: '',
+                        lastName: '',
+                        email: '',
+                        phoneNumber: '',
+                        sex: '',
+                        birthDate: '',
+                        born: '',
+                        about: ''
+                    };
+                    this.listMonths = this.getDataFromJson.getMonthi18n();
+                    this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
+                    this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
+                    this.error = {
+                        message: ''
+                    };
+                    this.activate();
+                };
+                TeacherInfoSectionController.prototype.activate = function () {
+                    console.log('TeacherInfoSectionController controller actived');
+                    this._subscribeToEvents();
+                };
+                TeacherInfoSectionController.prototype.goToNext = function () {
+                    this._setDataModelFromForm();
+                    this.$scope.$emit('Save Data');
+                    this.$state.go(this.STEP2_STATE, { reload: true });
+                };
+                TeacherInfoSectionController.prototype._setDataModelFromForm = function () {
+                    var dateFormatted = this.functionsUtilService.joinDate(this.dateObject.day.value, this.dateObject.month.code, this.dateObject.year.value);
+                    this.$scope.$parent.vm.teacherData.FirstName = this.form.firstName;
+                    this.$scope.$parent.vm.teacherData.LastName = this.form.lastName;
+                    this.$scope.$parent.vm.teacherData.Email = this.form.email;
+                    this.$scope.$parent.vm.teacherData.PhoneNumber = this.form.phoneNumber;
+                    this.$scope.$parent.vm.teacherData.Sex = this.form.sex;
+                    this.$scope.$parent.vm.teacherData.BirthDate = dateFormatted;
+                    this.$scope.$parent.vm.teacherData.Born = this.form.born;
+                    this.$scope.$parent.vm.teacherData.About = this.form.about;
+                };
+                TeacherInfoSectionController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Fill Form', function (event, args) {
+                        self.form.firstName = args.FirstName;
+                        self.form.lastName = args.LastName;
+                        self.form.email = args.Email;
+                        self.form.phoneNumber = args.PhoneNumber;
+                        self.form.sex = args.Sex;
+                        var date = self.functionsUtilService.splitDate(args.BirthDate);
+                        self.dateObject.day.value = parseInt(date.day);
+                        self.dateObject.month.code = date.month;
+                        self.dateObject.year.value = parseInt(date.year);
+                        self.form.born = args.Born;
+                        self.form.about = args.About;
+                    });
+                };
+                return TeacherInfoSectionController;
+            }());
+            TeacherInfoSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherInfoSectionController';
+            TeacherInfoSectionController.$inject = [
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                '$state',
+                '$scope'
+            ];
+            createTeacherPage.TeacherInfoSectionController = TeacherInfoSectionController;
+            angular
+                .module('mainApp.pages.createTeacherPage')
+                .controller(TeacherInfoSectionController.controllerId, TeacherInfoSectionController);
+        })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=teacherInfoSection.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.createTeacherPage')
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.createTeacherPage.location', {
+            url: '/location',
+            views: {
+                'step': {
+                    templateUrl: 'app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.html',
+                    controller: 'mainApp.pages.createTeacherPage.TeacherLocationSectionController',
+                    controllerAs: 'vm'
+                }
+            },
+            cache: false
+        });
+    }
+})();
+//# sourceMappingURL=teacherLocationSection.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var createTeacherPage;
+        (function (createTeacherPage) {
+            var TeacherLocationSectionController = (function () {
+                function TeacherLocationSectionController(getDataFromJson, functionsUtilService, $state, $scope, $timeout) {
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
+                    this.$state = $state;
+                    this.$scope = $scope;
+                    this.$timeout = $timeout;
+                    this._init();
+                }
+                TeacherLocationSectionController.prototype._init = function () {
+                    var self = this;
+                    this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
+                    this.STEP3_STATE = 'page.createTeacherPage.language';
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(2, 9);
+                    this.countryObject = { code: '', value: '' };
+                    this.form = {
+                        countryLocation: '',
+                        cityLocation: '',
+                        stateLocation: '',
+                        addressLocation: '',
+                        zipCodeLocation: ''
+                    };
+                    this.listCountries = this.getDataFromJson.getCountryi18n();
+                    this.mapConfig = self.functionsUtilService.buildMapConfig(null, 'drag-maker-map', null);
+                    this.error = {
+                        message: ''
+                    };
+                    this.activate();
+                };
+                TeacherLocationSectionController.prototype.activate = function () {
+                    console.log('TeacherLocationSectionController controller actived');
+                    this._subscribeToEvents();
+                };
+                TeacherLocationSectionController.prototype.goToNext = function () {
+                    var CURRENT_STEP = 2;
+                    this._setDataModelFromForm();
+                    this.$scope.$emit('Save Data', CURRENT_STEP);
+                    this.$state.go(this.STEP3_STATE, { reload: true });
+                };
+                TeacherLocationSectionController.prototype.goToBack = function () {
+                    this._setDataModelFromForm();
+                    this.$scope.$emit('Save Data');
+                    this.$state.go(this.STEP1_STATE, { reload: true });
+                };
+                TeacherLocationSectionController.prototype.changeMapPosition = function () {
+                    var self = this;
+                    var countryCode = this.countryObject.code;
+                    this.form.countryLocation = countryCode;
+                    var location = {
+                        country: this.form.countryLocation,
+                        city: this.form.cityLocation,
+                        address: this.form.addressLocation
+                    };
+                    this.$timeout(function () {
+                        self.$scope.$broadcast('CodeAddress', location);
+                    });
+                };
+                TeacherLocationSectionController.prototype._setDataModelFromForm = function () {
+                    var countryCode = this.countryObject.code;
+                    this.form.countryLocation = countryCode;
+                    this.$scope.$parent.vm.teacherData.Location.Country = this.form.countryLocation;
+                    this.$scope.$parent.vm.teacherData.Location.Address = this.form.addressLocation;
+                    this.$scope.$parent.vm.teacherData.Location.City = this.form.cityLocation;
+                    this.$scope.$parent.vm.teacherData.Location.State = this.form.stateLocation;
+                    this.$scope.$parent.vm.teacherData.Location.ZipCode = this.form.zipCodeLocation;
+                    this.changeMapPosition();
+                };
+                TeacherLocationSectionController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Fill Form', function (event, args) {
+                        self.form.addressLocation = args.Location.Address;
+                        self.form.cityLocation = args.Location.City;
+                        self.form.stateLocation = args.Location.State;
+                        self.form.zipCodeLocation = args.Location.ZipCode;
+                        self.countryObject.code = args.Location.Country;
+                        var position = args.Location.Position;
+                        self.mapConfig = self.functionsUtilService.buildMapConfig([
+                            {
+                                id: position.Id,
+                                location: {
+                                    position: {
+                                        lat: parseFloat(position.Lat),
+                                        lng: parseFloat(position.Lng)
+                                    }
+                                }
+                            }
+                        ], 'drag-maker-map', { lat: parseFloat(position.Lat), lng: parseFloat(position.Lng) });
+                        self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                    });
+                    this.$scope.$on('Position', function (event, args) {
+                        self.$scope.$parent.vm.teacherData.Location.Position = args;
+                    });
+                };
+                return TeacherLocationSectionController;
+            }());
+            TeacherLocationSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherLocationSectionController';
+            TeacherLocationSectionController.$inject = [
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                '$state',
+                '$scope',
+                '$timeout'
+            ];
+            createTeacherPage.TeacherLocationSectionController = TeacherLocationSectionController;
+            angular
+                .module('mainApp.pages.createTeacherPage')
+                .controller(TeacherLocationSectionController.controllerId, TeacherLocationSectionController);
+        })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=teacherLocationSection.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.createTeacherPage')
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.createTeacherPage.language', {
+            url: '/language',
+            views: {
+                'step': {
+                    templateUrl: 'app/pages/createTeacherPage/teacherLanguageSection/teacherLanguageSection.html',
+                    controller: 'mainApp.pages.createTeacherPage.TeacherLanguageSectionController',
+                    controllerAs: 'vm'
+                }
+            },
+            cache: false
+        });
+    }
+})();
+//# sourceMappingURL=teacherLanguageSection.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var createTeacherPage;
+        (function (createTeacherPage) {
+            var TeacherLanguageSectionController = (function () {
+                function TeacherLanguageSectionController(dataConfig, functionsUtilService, getDataFromJson, $state, $scope, $timeout, $uibModal) {
+                    this.dataConfig = dataConfig;
+                    this.functionsUtilService = functionsUtilService;
+                    this.getDataFromJson = getDataFromJson;
+                    this.$state = $state;
+                    this.$scope = $scope;
+                    this.$timeout = $timeout;
+                    this.$uibModal = $uibModal;
+                    this._init();
+                }
+                TeacherLanguageSectionController.prototype._init = function () {
+                    var self = this;
+                    this.STEP2_STATE = 'page.createTeacherPage.location';
+                    this.STEP4_STATE = 'page.createTeacherPage.experience';
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(3, 9);
+                    this.form = {
+                        native: null,
+                        learn: null,
+                        teach: null
+                    };
+                    this.error = {
+                        message: ''
+                    };
+                    this.activate();
+                };
+                TeacherLanguageSectionController.prototype.activate = function () {
+                    console.log('TeacherLanguageSectionController controller actived');
+                    this._subscribeToEvents();
+                };
+                TeacherLanguageSectionController.prototype.goToNext = function () {
+                    var CURRENT_STEP = 3;
+                    this._setDataModelFromForm();
+                    this.$scope.$emit('Save Data', CURRENT_STEP);
+                    this.$state.go(this.STEP4_STATE, { reload: true });
+                };
+                TeacherLanguageSectionController.prototype.goToBack = function () {
+                    this._setDataModelFromForm();
+                    this.$scope.$emit('Save Data');
+                    this.$state.go(this.STEP2_STATE, { reload: true });
+                };
+                TeacherLanguageSectionController.prototype._addNewLanguages = function (type) {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalLanguagesTmpl,
+                        controller: 'mainApp.components.modal.ModalLanguageController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    type: type,
+                                    list: self.form[type]
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function (newLanguagesList) {
+                        self.form[type] = newLanguagesList;
+                    }, function () {
+                        console.info('Modal dismissed at: ' + new Date());
+                    });
+                    event.preventDefault();
+                };
+                TeacherLanguageSectionController.prototype._removeLanguage = function (key, type) {
+                    var newArray = this.form[type].filter(function (el) {
+                        return el.key !== key;
+                    });
+                    this.form[type] = newArray;
+                };
+                TeacherLanguageSectionController.prototype._setDataModelFromForm = function () {
+                    if (this.form.native !== null) {
+                        var native = [];
+                        for (var i = 0; i < this.form.native.length; i++) {
+                            native.push(this.form.native[i].key);
+                        }
+                        this.$scope.$parent.vm.teacherData.Languages.Native = native;
+                    }
+                    if (this.form.learn !== null) {
+                        var learn = [];
+                        for (var i = 0; i < this.form.learn.length; i++) {
+                            learn.push(this.form.learn[i].key);
+                        }
+                        this.$scope.$parent.vm.teacherData.Languages.Learn = learn;
+                    }
+                    if (this.form.teach !== null) {
+                        var teach = [];
+                        for (var i = 0; i < this.form.teach.length; i++) {
+                            teach.push(this.form.teach[i].key);
+                        }
+                        this.$scope.$parent.vm.teacherData.Languages.Teach = teach;
+                    }
+                };
+                TeacherLanguageSectionController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Fill Form', function (event, args) {
+                        var languageArray = self.getDataFromJson.getLanguagei18n();
+                        for (var i = 0; i < languageArray.length; i++) {
+                            for (var j = 0; j < args.Languages.Native.length; j++) {
+                                if (args.Languages.Native[j] == languageArray[i].code) {
+                                    var obj = { key: null, value: '' };
+                                    obj.key = parseInt(languageArray[i].code);
+                                    obj.value = languageArray[i].value;
+                                    if (self.form.native == null) {
+                                        self.form.native = [];
+                                        self.form.native.push(obj);
+                                    }
+                                    else {
+                                        self.form.native.push(obj);
+                                    }
+                                }
+                            }
+                            for (var j = 0; j < args.Languages.Learn.length; j++) {
+                                if (args.Languages.Learn[j] == languageArray[i].code) {
+                                    var obj = { key: null, value: '' };
+                                    obj.key = parseInt(languageArray[i].code);
+                                    obj.value = languageArray[i].value;
+                                    if (self.form.learn == null) {
+                                        self.form.learn = [];
+                                        self.form.learn.push(obj);
+                                    }
+                                    else {
+                                        self.form.learn.push(obj);
+                                    }
+                                }
+                            }
+                            for (var j = 0; j < args.Languages.Teach.length; j++) {
+                                if (args.Languages.Teach[j] == languageArray[i].code) {
+                                    var obj = { key: null, value: '' };
+                                    obj.key = parseInt(languageArray[i].code);
+                                    obj.value = languageArray[i].value;
+                                    if (self.form.teach == null) {
+                                        self.form.teach = [];
+                                        self.form.teach.push(obj);
+                                    }
+                                    else {
+                                        self.form.teach.push(obj);
+                                    }
+                                }
+                            }
+                        }
+                    });
+                };
+                return TeacherLanguageSectionController;
+            }());
+            TeacherLanguageSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherLanguageSectionController';
+            TeacherLanguageSectionController.$inject = [
+                'dataConfig',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.core.util.GetDataStaticJsonService',
+                '$state',
+                '$scope',
+                '$timeout',
+                '$uibModal'
+            ];
+            createTeacherPage.TeacherLanguageSectionController = TeacherLanguageSectionController;
+            angular
+                .module('mainApp.pages.createTeacherPage')
+                .controller(TeacherLanguageSectionController.controllerId, TeacherLanguageSectionController);
+        })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=teacherLanguageSection.controller.js.map

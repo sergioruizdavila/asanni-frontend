@@ -105,8 +105,75 @@ mixpanel.init("86a48c88274599c662ad64edb74b12da");</script>
     <script src="build/js/vendor.min.js"></script>
     <!-- libs (node modules libraries) -->
     <script src="build/js/vendor-libs.min.js"></script>
-    <!-- main App -->
+    <!-- main App: PRD -->
     <script src="build/js/app.js"></script>
+
+    <!-- TODO: EL sourcemap no esta funcionando si en DEV solo coloco la etiqueta
+        de arriba (build/js/app.js), asi que es necesario crear una tarea en gulp
+        cuando yo coloque: gulp dev, me deje el ambiente preparado para trabajar
+        en DEV (genere los vendors, coloque las etiquetas de abajo, comente o
+        elimine la etiqueta de arriba, etc.) y cuando yo corra: gulp prd, deje
+        todo listo para deployar (cree los vendors, elimine las etiquetas de abajo,
+        y cree la etiqueta de arriba.) -->
+
+    <!-- main App: DEV -->
+    <!--script src="app/app.module.js"></script>
+    <script src="app/app.core.module.js"></script>
+    <script src="app/app.values.js"></script>
+    <script src="app/app.run.js"></script>
+    <script src="app/auth/auth.service.js"></script>
+    <script src="app/core/util/functionsUtil/functionsUtil.service.js"></script>
+    <script src="app/core/util/getDataStaticJson/getDataStaticJson.service.js"></script>
+    <script src="app/core/restApi/restApi.config.js"></script>
+    <script src="app/core/restApi/restApi.service.js"></script>
+    <script src="app/models/user/user.model.js"></script>
+    <script src="app/models/user/user.service.js"></script>
+    <script src="app/models/student/student.model.js"></script>
+    <script src="app/models/student/student.service.js"></script>
+    <script src="app/models/teacher/teacher.model.js"></script>
+    <script src="app/models/teacher/teacher.service.js"></script>
+    <script src="app/models/school/school.model.js"></script>
+    <script src="app/models/school/school.service.js"></script>
+    <script src="components/header/header.config.js"></script>
+    <script src="components/header/header.directive.js"></script>
+    <script src="components/footer/footer.config.js"></script>
+    <script src="components/footer/footer.directive.js"></script>
+    <script src="components/map/map.config.js"></script>
+    <script src="components/map/map.directive.js"></script>
+    <script src="components/modal/modal.config.js"></script>
+    <script src="components/modal/modalMeetingPoint/modalMeetingPoint.controller.js"></script>
+    <script src="components/modal/modalLanguages/modalLanguages.controller.js"></script>
+    <script src="app/pages/main/main.config.js"></script>
+    <script src="app/pages/main/main.controller.js"></script>
+    <script src="app/pages/studentLandingPage/studentLandingPage.config.js"></script>
+    <script src="app/pages/studentLandingPage/studentLandingPage.controller.js"></script>
+    <script src="app/pages/studentLandingPage/studentLandingPage.service.js"></script>
+    <script src="app/pages/signUpPage/signUpPage.config.js"></script>
+    <script src="app/pages/signUpPage/signUpPage.controller.js"></script>
+    <script src="app/pages/searchPage/searchPage.config.js"></script>
+    <script src="app/pages/searchPage/searchPage.controller.js"></script>
+    <script src="app/pages/userProfilePage/userProfilePage.config.js"></script>
+    <script src="app/pages/userProfilePage/userProfilePage.controller.js"></script>
+    <script src="app/pages/userEditProfilePage/userEditProfilePage.config.js"></script>
+    <script src="app/pages/userEditProfilePage/userEditProfilePage.controller.js"></script>
+    <script src="app/pages/userEditMediaPage/userEditMediaPage.config.js"></script>
+    <script src="app/pages/userEditMediaPage/userEditMediaPage.controller.js"></script>
+    <script src="app/pages/userEditAgendaPage/userEditAgendaPage.config.js"></script>
+    <script src="app/pages/userEditAgendaPage/userEditAgendaPage.controller.js"></script>
+    <script src="app/pages/meetingConfirmationPage/meetingConfirmationPage.config.js"></script>
+    <script src="app/pages/meetingConfirmationPage/meetingConfirmationPage.controller.js"></script>
+    <script src="app/pages/userInboxPage/userInboxPage.config.js"></script>
+    <script src="app/pages/userInboxPage/userInboxPage.controller.js"></script>
+    <script src="app/pages/userInboxDetailsPage/userInboxDetailsPage.config.js"></script>
+    <script src="app/pages/userInboxDetailsPage/userInboxDetailsPage.controller.js"></script>
+    <script src="app/pages/createTeacherPage/createTeacherPage.config.js"></script>
+    <script src="app/pages/createTeacherPage/createTeacherPage.controller.js"></script>
+    <script src="app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.config.js"></script>
+    <script src="app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.controller.js"></script>
+    <script src="app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.config.js"></script>
+    <script src="app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.controller.js"></script>
+    <script src="app/pages/createTeacherPage/teacherLanguageSection/teacherLanguageSection.config.js"></script>
+    <script src="app/pages/createTeacherPage/teacherLanguageSection/teacherLanguageSection.controller.js"></script-->
 
     <!-- TODO: Buscar una forma mas segura de incluir google map API ya que esta expuesto el KEY-->
     <script async defer

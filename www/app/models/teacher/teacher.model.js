@@ -16,11 +16,104 @@ var app;
                     var _this;
                     console.log('Teacher Model instanced');
                     _this = _super.call(this, obj) || this;
+                    _this.languages = new Language(obj.languages);
                     return _this;
                 }
+                Object.defineProperty(Teacher.prototype, "Languages", {
+                    get: function () {
+                        return this.languages;
+                    },
+                    set: function (languages) {
+                        if (languages === undefined) {
+                            throw 'Please supply languages';
+                        }
+                        this.languages = languages;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 return Teacher;
             }(app.models.user.User));
             teacher.Teacher = Teacher;
+            var Language = (function () {
+                function Language(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('Languages Model instanced');
+                    this.id = obj.id;
+                    if (typeof obj.native === 'string') {
+                        this.native = JSON.parse(obj.native);
+                    }
+                    else {
+                        this.native = obj.native || null;
+                    }
+                    if (typeof obj.learn === 'string') {
+                        this.learn = JSON.parse(obj.learn);
+                    }
+                    else {
+                        this.learn = obj.learn || null;
+                    }
+                    if (typeof obj.teach === 'string') {
+                        this.teach = JSON.parse(obj.teach);
+                    }
+                    else {
+                        this.teach = obj.teach || null;
+                    }
+                }
+                Object.defineProperty(Language.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Language.prototype, "Native", {
+                    get: function () {
+                        return this.native;
+                    },
+                    set: function (native) {
+                        if (native === undefined) {
+                            throw 'Please supply native languages';
+                        }
+                        this.native = native;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Language.prototype, "Learn", {
+                    get: function () {
+                        return this.learn;
+                    },
+                    set: function (learn) {
+                        if (learn === undefined) {
+                            throw 'Please supply learn languages';
+                        }
+                        this.learn = learn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Language.prototype, "Teach", {
+                    get: function () {
+                        return this.teach;
+                    },
+                    set: function (teach) {
+                        if (teach === undefined) {
+                            throw 'Please supply teach languages';
+                        }
+                        this.teach = teach;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Language;
+            }());
+            teacher.Language = Language;
         })(teacher = models.teacher || (models.teacher = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
