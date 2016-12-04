@@ -2800,6 +2800,7 @@ var app;
                             self.teacherService.updateTeacher(self.teacherData)
                                 .then(function (response) {
                                 if (response.id) {
+                                    window.scrollTo(0, 0);
                                     self.messageUtil.success(SUCCESS_MESSAGE);
                                     self.$rootScope.teacher_id = response.id;
                                     self.localStorage.setItem('waysily.teacher_id', response.id);
@@ -2814,6 +2815,7 @@ var app;
                             self.teacherService.createTeacher(self.teacherData)
                                 .then(function (response) {
                                 if (response.id) {
+                                    window.scrollTo(0, 0);
                                     self.messageUtil.success(SUCCESS_MESSAGE);
                                     self.$rootScope.teacher_id = response.id;
                                     self.localStorage.setItem('waysily.teacher_id', response.id);

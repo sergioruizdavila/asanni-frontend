@@ -179,6 +179,8 @@ module app.pages.createTeacherPage {
                     .then(
                         function(response) {
                             if(response.id) {
+                                //Go top pages
+                                window.scrollTo(0, 0);
                                 //Show message
                                 self.messageUtil.success(SUCCESS_MESSAGE);
                                 //Save teacher id
@@ -200,6 +202,8 @@ module app.pages.createTeacherPage {
                     .then(
                         function(response) {
                             if(response.id) {
+                                //Go top pages
+                                window.scrollTo(0, 0);
                                 //Show message
                                 self.messageUtil.success(SUCCESS_MESSAGE);
                                 //Save teacher id
