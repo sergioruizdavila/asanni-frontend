@@ -1,6 +1,7 @@
 {
     "__GLOBAL__": "",
     "%global.zone": "en-US",
+    "%global.next.button.text": "Next",
 
     "__HEADER__": "",
     "%header.lang.options.en.text": "English",
@@ -50,8 +51,30 @@
     "%landing.student.input_name.placeholder.text": "Your name",
     "%landing.student.notify_block.success_msg.text": "You’re all set. We’ll be in touch.",
 
+    "__CREATE TEACHER PAGE__": "",
+    "__1. TEACHER INFO SECTION__": "",
+    "%create.teacher.basic_info.title.text": "Step 1 -  Basic Information",
+    "%create.teacher.basic_info.form.first_name.text": "First Name",
+    "%create.teacher.basic_info.form.last_name.text": "Last Name",
+    "%create.teacher.basic_info.form.email.text": "Email",
+    "%create.teacher.basic_info.form.phone_number.text": "Phone Number",
+    "%create.teacher.basic_info.form.i_am.text": "I am",
+    "%create.teacher.basic_info.form.gender.text": "Sex",
+    "%create.teacher.basic_info.form.birthdate.text": "Birth Date",
+    "%create.teacher.basic_info.form.mth_birthdate.text": "Month",
+    "%create.teacher.basic_info.form.born.text": "Where you born?",
+    "%create.teacher.basic_info.form.about.text": "Describe Yourself",
+    "%create.teacher.basic_info.form.about.input.text": "e.g. I enjoy traveling around the world, and I feel good cooking on my free time",
+    "%create.teacher.basic_info.help_text.title.text": "Show the world who you are",
+    "%create.teacher.basic_info.help_text.description.text": "Waysily focuses on creating real connections. Describe in detail helps other users to know you much better. Share with them your tastes, trips, anecdotes or hobbies. Tell them what it would be like to have you as their teacher, you can even go into more personal aspects: Is there any particular phrase that defines your way of teaching?",
+
     "__FOOTER__": "",
     "%footer.contact_us.title.text": "Contact us",
+
+    "__SEX__": "",
+    "%sex.M": "Male",
+    "%sex.F": "Female",
+    "%sex.O": "Other",
 
     "__MONTHS__": "",
     "%month.01": "January",

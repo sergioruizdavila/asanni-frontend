@@ -12,8 +12,8 @@
 
             <div class="ma-box">
 
-                <h4 class="ma-box__title margin-reset">
-                    Step 1 -  Basic Information
+                <h4 class="ma-box__title margin-reset" translate>
+                    %create.teacher.basic_info.title.text
                 </h4>
 
                 <div class="ma-box__content">
@@ -28,7 +28,9 @@
                                     ma-form-group
                                     ma-form-group--large">
                             <label class="text-right col-xs-3 col-sm-3"
-                                    for="teacher-first-name">First Name</label>
+                                    for="teacher-first-name" translate>
+                                    %create.teacher.basic_info.form.first_name.text
+                            </label>
                             <div class="col-xs-9 col-sm-9">
                                 <input id="teacher-first-name"
                                         class="ma-input ma-input--large"
@@ -42,8 +44,8 @@
                                     ma-form-group
                                     ma-form-group--large">
                             <label class="text-right col-xs-3 col-sm-3"
-                                   for="teacher-last-name">
-                                Last Name
+                                   for="teacher-last-name" translate>
+                                %create.teacher.basic_info.form.last_name.text
                             </label>
                             <div class="col-xs-9 col-sm-9">
                                 <input id="teacher-last-name"
@@ -58,8 +60,8 @@
                                     ma-form-group
                                     ma-form-group--large">
                             <label class="text-right col-xs-3 col-sm-3"
-                                   for="teacher-email">
-                                Email
+                                   for="teacher-email" translate>
+                                %create.teacher.basic_info.form.email.text
                             </label>
                             <div class="col-xs-9 col-sm-9">
                                 <input id="teacher-email"
@@ -74,8 +76,8 @@
                                     ma-form-group
                                     ma-form-group--large">
                             <label class="text-right col-xs-3 col-sm-3"
-                                   for="teacher-phone-number">
-                                Phone Number
+                                   for="teacher-phone-number" translate>
+                                %create.teacher.basic_info.form.phone_number.text
                             </label>
                             <div class="col-xs-9 col-sm-9">
                                 <input id="teacher-phone-number"
@@ -91,7 +93,9 @@
                                     ma-form-group
                                     ma-form-group--large">
                             <label class="text-right col-xs-3 col-sm-3"
-                                    for="teacher-sex">I am</label>
+                                    for="teacher-sex" translate>
+                                    %create.teacher.basic_info.form.i_am.text
+                            </label>
                             <div class="col-xs-9 col-sm-9">
                                 <div class="ma-select-container
                                             ma-select-container--large">
@@ -99,10 +103,11 @@
                                             class="ma-input ma-select
                                                    ma-select--large"
                                             name="teacher[sex]"
-                                            ng-model="vm.form.sex">
-                                        <option value="M" selected="selected">Male</option>
-                                        <option value="F">Female</option>
-                                        <option value="O">Other</option>
+                                            ng-model="vm.sexObject.sex"
+                                            ng-options="sex.value | translate for sex in vm.listSexs track by sex.code">
+                                            <option value="" disabled selected translate>
+                                                %create.teacher.basic_info.form.gender.text
+                                            </option>
                                     </select>
                                 </div>
                             </div>
@@ -112,7 +117,9 @@
                         <div class="form-group
                                     ma-form-group
                                     ma-form-group--large">
-                            <label class="text-right col-xs-3 col-sm-3">Birth Date</label>
+                            <label class="text-right col-xs-3 col-sm-3" translate>
+                                %create.teacher.basic_info.form.birthdate.text
+                            </label>
                             <div class="col-xs-9 col-sm-9">
 
                                 <!-- Month -->
@@ -124,8 +131,8 @@
                                             ng-model="vm.dateObject.month"
                                             ng-options="month.value | translate for month in vm.listMonths track by month.code"
                                             name="teacher[month]" class="form-control">
-                                            <option value="" disabled selected>
-                                                month
+                                            <option value="" disabled selected translate>
+                                                %create.teacher.basic_info.form.mth_birthdate.text
                                             </option>
                                     </select>
                                 </div>
@@ -167,13 +174,15 @@
                                     ma-form-group
                                     ma-form-group--large">
                             <label class="text-right col-xs-3 col-sm-3"
-                                   for="teacher-born">Where you born?</label>
+                                   for="teacher-born" translate>
+                                   %create.teacher.basic_info.form.born.text
+                            </label>
                             <div class="col-xs-9 col-sm-9">
                                 <input id="teacher-born"
                                        type="text"
                                        class="ma-input ma-input--large"
                                        ng-model="vm.form.born"
-                                       placeholder="e.g. Miami, Florida / Lisboa, Portugal">
+                                       placeholder="e.g. Medellin, Antioquia / Lisboa, Portugal">
                             </div>
                         </div>
 
@@ -182,12 +191,16 @@
                                     ma-form-group
                                     ma-form-group--large">
                             <label class="text-right col-xs-3 col-sm-3"
-                                   for="teacher-about">Describe Yourself</label>
+                                   for="teacher-about" translate>
+                                   %create.teacher.basic_info.form.about.text
+                            </label>
                             <div class="col-xs-9 col-sm-9">
                                 <textarea id="teacher-about"
                                           name="teacher[about]"
                                           class="ma-input ma-input--large ma-textarea"
-                                          placeholder="e.g. I enjoy traveling around the world, and I feel good cooking on my free time"
+                                          placeholder=""
+                                          translate
+                                          translate-attr-placeholder="%create.teacher.basic_info.form.about.input.text"
                                           ng-model="vm.form.about"
                                           rows="5" cols="40"></textarea>
                             </div>
@@ -212,8 +225,9 @@
                             <button class="ma-btn
                                       ma-btn--primary
                                       ma-btn--large"
-                                ng-click="vm.goToNext()">
-                               Next
+                                ng-click="vm.goToNext()"
+                                translate>
+                               %global.next.button.text
                            </button>
 
                         </div>
@@ -252,27 +266,19 @@
                     <!-- Help Title Block -->
                     <div class="row">
                         <div class="col-md-12 text-left">
-                            <h4 class="hidden">Muestrale al mundo quien eres</h4>
-                            <h4>Show the world who you are</h4>
+                            <h4 translate>
+                                %create.teacher.basic_info.help_text.title.text
+                            </h4>
                         </div>
                     </div>
                     <!-- Help Text Block -->
                     <div class="row">
                         <div class="col-md-12 text-left">
-                            <p id="teacher-about-me-EN-text" class="ma-p ma-p--default">
-                                Waysily focuses on creating real connections.
-                                Describe in detail helps other users to know you much better.
-                                Share with them your tastes, trips, anecdotes or hobbies.
-                                Tell them what it would be like to have you as their teacher,
-                                you can even go into more personal aspects: Is there any
-                                particular phrase that defines your way of teaching?
+                            <p class="ma-p ma-p--default" translate>
+                                %create.teacher.basic_info.help_text.description.text
                             </p>
                             <p id="teacher-about-me-ES-text" class="ma-p ma-p--default hidden">
-                                Waysily se centra en crear conexiones reales. Describirte en
-                                detalle ayuda los demás usuarios a conocerte mucho mejor.
-                                Comparte con ellos tus gustos, viajes, anecdotas o pasatiempos.
-                                Cuéntales cómo sería tenerte como su profesor, incluso puedes
-                                entrar en aspectos más personales: ¿Hay alguna frase en especial que defina tu forma de enseñar?
+
                             </p>
                         </div>
                     </div>

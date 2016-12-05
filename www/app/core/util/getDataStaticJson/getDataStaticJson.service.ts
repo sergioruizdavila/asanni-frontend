@@ -12,6 +12,7 @@ module app.core.util.getDataStaticJson {
     /**********************************/
     export interface IGetDataStaticJsonService {
         getMonthi18n: () => Array<app.core.interfaces.IDataFromJsonI18n>;
+        getSexi18n: () => Array<app.core.interfaces.IDataFromJsonI18n>;
         getCountryi18n: () => Array<app.core.interfaces.IDataFromJsonI18n>;
         getLanguagei18n: () => Array<app.core.interfaces.IDataFromJsonI18n>;
     }
@@ -64,6 +65,32 @@ module app.core.util.getDataStaticJson {
                 if (element.indexOf("month") >= 0) {
 
                     let code = element.replace(/%month./g,'');
+                    array.push({value: element, code: code});
+                }
+            }
+
+            return array;
+
+        }
+
+
+
+        /**
+        * getSexi18n
+        * @description - get user's sex texts & codes from i18n json files
+        * @use - this.FunctionsUtilService.getSexi18n();
+        * @function
+        * @return {Array<app.core.interfaces.IDataFromJsonI18n>} sexs object array
+        */
+        getSexi18n(): Array<app.core.interfaces.IDataFromJsonI18n> {
+            //VARIABLES
+            let jsonDoc = this.$translate.getTranslationTable();
+            let array = [];
+
+            for (var element in jsonDoc) {
+                if (element.indexOf("sex") >= 0) {
+
+                    let code = element.replace(/%sex./g,'');
                     array.push({value: element, code: code});
                 }
             }

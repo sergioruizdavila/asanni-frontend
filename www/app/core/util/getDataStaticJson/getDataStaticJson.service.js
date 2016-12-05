@@ -23,6 +23,17 @@ var app;
                         }
                         return array;
                     };
+                    GetDataStaticJsonService.prototype.getSexi18n = function () {
+                        var jsonDoc = this.$translate.getTranslationTable();
+                        var array = [];
+                        for (var element in jsonDoc) {
+                            if (element.indexOf("sex") >= 0) {
+                                var code = element.replace(/%sex./g, '');
+                                array.push({ value: element, code: code });
+                            }
+                        }
+                        return array;
+                    };
                     GetDataStaticJsonService.prototype.getCountryi18n = function () {
                         var jsonDoc = this.$translate.getTranslationTable();
                         var array = [];

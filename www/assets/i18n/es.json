@@ -1,6 +1,7 @@
 {
     "__GLOBAL__":"",
     "%global.zone": "es-ES",
+    "%global.next.button.text": "Siguiente",
 
     "__HEADER__": "",
     "%header.lang.options.en.text": "Inglés",
@@ -50,8 +51,30 @@
     "%landing.student.input_name.placeholder.text": "Tu nombre",
     "%landing.student.notify_block.success_msg.text": "Ya está todo listo. Estaremos en contacto.",
 
+    "__CREATE TEACHER PAGE__": "",
+    "__1. TEACHER INFO SECTION__": "",
+    "%create.teacher.basic_info.title.text": "Paso 1 -  Información Basica",
+    "%create.teacher.basic_info.form.first_name.text": "Nombre",
+    "%create.teacher.basic_info.form.last_name.text": "Apellidos",
+    "%create.teacher.basic_info.form.email.text": "Email",
+    "%create.teacher.basic_info.form.phone_number.text": "Celular",
+    "%create.teacher.basic_info.form.i_am.text": "Yo soy",
+    "%create.teacher.basic_info.form.gender.text": "Sexo",
+    "%create.teacher.basic_info.form.birthdate.text": "Fecha de cumpleaños",
+    "%create.teacher.basic_info.form.mth_birthdate.text": "Mes",
+    "%create.teacher.basic_info.form.born.text": "¿Donde naciste?",
+    "%create.teacher.basic_info.form.about.text": "Describete a ti mismo",
+    "%create.teacher.basic_info.form.about.input.text": "e.g. Disfruto viajar alrededor del mundo, y me siento muy bien cocinando en mi tiempo libre.",
+    "%create.teacher.basic_info.help_text.title.text": "Muestrale al mundo quien eres",
+    "%create.teacher.basic_info.help_text.description.text": "Waysily se centra en crear conexiones reales. Describirte en detalle ayuda los demás usuarios a conocerte mucho mejor. Comparte con ellos tus gustos, viajes, anecdotas o pasatiempos. Cuéntales cómo sería tenerte como su profesor, incluso puedes entrar en aspectos más personales: ¿Hay alguna frase en especial que defina tu forma de enseñar?",
+
     "__FOOTER__": "",
     "%footer.contact_us.title.text": "Contáctanos",
+
+    "__SEX__": "",
+    "%sex.M": "Hombre",
+    "%sex.F": "Mujer",
+    "%sex.O": "Otro",
 
     "__MONTHS__": "",
     "%month.01": "Enero",

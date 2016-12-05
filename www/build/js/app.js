@@ -259,6 +259,17 @@ var app;
                         }
                         return array;
                     };
+                    GetDataStaticJsonService.prototype.getSexi18n = function () {
+                        var jsonDoc = this.$translate.getTranslationTable();
+                        var array = [];
+                        for (var element in jsonDoc) {
+                            if (element.indexOf("sex") >= 0) {
+                                var code = element.replace(/%sex./g, '');
+                                array.push({ value: element, code: code });
+                            }
+                        }
+                        return array;
+                    };
                     GetDataStaticJsonService.prototype.getCountryi18n = function () {
                         var jsonDoc = this.$translate.getTranslationTable();
                         var array = [];
@@ -2939,6 +2950,7 @@ var app;
                     this.STEP2_STATE = 'page.createTeacherPage.location';
                     this.STEP3_STATE = 'page.createTeacherPage.map';
                     this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(1, 9);
+                    this.sexObject = { sex: { code: '', value: '' } };
                     this.dateObject = { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } };
                     this.form = {
                         firstName: '',
@@ -2951,6 +2963,7 @@ var app;
                         about: ''
                     };
                     this.listMonths = this.getDataFromJson.getMonthi18n();
+                    this.listSexs = this.getDataFromJson.getSexi18n();
                     this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
                     this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
                     this.error = {
@@ -2969,11 +2982,12 @@ var app;
                 };
                 TeacherInfoSectionController.prototype._setDataModelFromForm = function () {
                     var dateFormatted = this.functionsUtilService.joinDate(this.dateObject.day.value, this.dateObject.month.code, this.dateObject.year.value);
+                    var sexCode = this.sexObject.sex.code;
                     this.$scope.$parent.vm.teacherData.FirstName = this.form.firstName;
                     this.$scope.$parent.vm.teacherData.LastName = this.form.lastName;
                     this.$scope.$parent.vm.teacherData.Email = this.form.email;
                     this.$scope.$parent.vm.teacherData.PhoneNumber = this.form.phoneNumber;
-                    this.$scope.$parent.vm.teacherData.Sex = this.form.sex;
+                    this.$scope.$parent.vm.teacherData.Sex = sexCode;
                     this.$scope.$parent.vm.teacherData.BirthDate = dateFormatted;
                     this.$scope.$parent.vm.teacherData.Born = this.form.born;
                     this.$scope.$parent.vm.teacherData.About = this.form.about;
@@ -2985,7 +2999,7 @@ var app;
                         self.form.lastName = args.LastName;
                         self.form.email = args.Email;
                         self.form.phoneNumber = args.PhoneNumber;
-                        self.form.sex = args.Sex;
+                        self.sexObject.sex.code = args.Sex;
                         var date = self.functionsUtilService.splitDate(args.BirthDate);
                         self.dateObject.day.value = parseInt(date.day);
                         self.dateObject.month.code = date.month;

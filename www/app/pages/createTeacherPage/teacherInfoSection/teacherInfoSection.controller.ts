@@ -22,6 +22,10 @@ module app.pages.createTeacherPage {
         vm: ICreateTeacherPageController;
     }
 
+    interface ISexForm {
+        sex: app.core.interfaces.IDataFromJsonI18n;
+    }
+
     interface IBirthdateForm {
         day: app.core.interfaces.ISelectListElement;
         month: app.core.interfaces.IDataFromJsonI18n;
@@ -57,9 +61,11 @@ module app.pages.createTeacherPage {
         form: ITeacherInfoForm;
         error: ITeacherInfoError;
         listMonths: Array<app.core.interfaces.IDataFromJsonI18n>;
+        listSexs: Array<app.core.interfaces.IDataFromJsonI18n>;
         listDays: Array<app.core.interfaces.ISelectListElement>;
         listYears: Array<app.core.interfaces.ISelectListElement>;
         dateObject: IBirthdateForm;
+        sexObject: ISexForm;
         STEP1_STATE: string;
         STEP2_STATE: string;
         STEP3_STATE: string;
@@ -96,6 +102,9 @@ module app.pages.createTeacherPage {
             //Put title on parent scope
             this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(1, 9);
 
+            // Sex Select List Structure
+            this.sexObject = {sex: {code:'', value:''}};
+
             // Birthdate Select List Structure
             this.dateObject = {day:{value:''}, month: {code:'', value:''}, year: {value:''}};
 
@@ -113,6 +122,9 @@ module app.pages.createTeacherPage {
 
             // Build Months, Days and Years select lists
             this.listMonths = this.getDataFromJson.getMonthi18n();
+            //TODO: podemos optimizar esto ya que en listMonth ya traigo el json,
+            // no es necesario volverlo a traer aqui.
+            this.listSexs = this.getDataFromJson.getSexi18n();
             this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
             this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
 
@@ -166,6 +178,7 @@ module app.pages.createTeacherPage {
                                     this.dateObject.day.value,
                                     this.dateObject.month.code,
                                     this.dateObject.year.value);
+            let sexCode = this.sexObject.sex.code;
             /*********************************/
 
             // Send data to parent (createTeacherPage)
@@ -173,7 +186,7 @@ module app.pages.createTeacherPage {
             this.$scope.$parent.vm.teacherData.LastName = this.form.lastName;
             this.$scope.$parent.vm.teacherData.Email = this.form.email;
             this.$scope.$parent.vm.teacherData.PhoneNumber = this.form.phoneNumber;
-            this.$scope.$parent.vm.teacherData.Sex = this.form.sex;
+            this.$scope.$parent.vm.teacherData.Sex = sexCode;
             this.$scope.$parent.vm.teacherData.BirthDate = dateFormatted;
             this.$scope.$parent.vm.teacherData.Born = this.form.born;
             this.$scope.$parent.vm.teacherData.About = this.form.about;
@@ -205,7 +218,8 @@ module app.pages.createTeacherPage {
                 self.form.lastName = args.LastName;
                 self.form.email = args.Email;
                 self.form.phoneNumber = args.PhoneNumber;
-                self.form.sex = args.Sex;
+                //Charge Sex on select List
+                self.sexObject.sex.code = args.Sex;
 
                 //Build birthdate (Charge on select List)
                 let date = self.functionsUtilService.splitDate(args.BirthDate);
