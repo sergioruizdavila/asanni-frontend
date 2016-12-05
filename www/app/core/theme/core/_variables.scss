@@ -432,6 +432,9 @@ $input-font-size-large: 18px;
 $input-primary-border-focus: map-get($main-palette, primary);
 $input-outline-focus: 0;
 
+$input-invalid-background: #fff2ef;
+$input-invalid-border: #ffd1c4;
+
 // 6. Labels
 // ---------
 $label-radius: 4px;
@@ -580,6 +583,8 @@ $paragraph-lines-to-show: 3;
 
 $paragraph-font-color: $dark-gray;
 $paragraph-bold-font-color: $black;
+
+$paragraph-alert-font-color: map-get($main-palette, alert);
 
 
 // 10. Progress Bar
