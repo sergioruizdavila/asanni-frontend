@@ -3314,8 +3314,11 @@ var app;
                     if (formValid) {
                         this._setDataModelFromForm();
                         this.$scope.$emit('Save Data');
+                        this.$state.go(this.STEP1_STATE, { reload: true });
                     }
-                    this.$state.go(this.STEP1_STATE, { reload: true });
+                    else {
+                        window.scrollTo(0, 0);
+                    }
                 };
                 TeacherLocationSectionController.prototype._validateForm = function () {
                     var NULL_ENUM = 3;
