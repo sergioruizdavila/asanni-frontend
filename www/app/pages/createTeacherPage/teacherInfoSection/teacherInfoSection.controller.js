@@ -14,9 +14,7 @@ var app;
                     this._init();
                 }
                 TeacherInfoSectionController.prototype._init = function () {
-                    this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
                     this.STEP2_STATE = 'page.createTeacherPage.location';
-                    this.STEP3_STATE = 'page.createTeacherPage.map';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.basic_info.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.basic_info.help_text.description.text');
                     this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(1, 9);

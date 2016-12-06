@@ -81,9 +81,7 @@ module app.pages.createTeacherPage {
         listYears: Array<app.core.interfaces.ISelectListElement>;
         dateObject: IBirthdateForm;
         sexObject: ISexForm;
-        STEP1_STATE: string;
         STEP2_STATE: string;
-        STEP3_STATE: string;
         HELP_TEXT_TITLE: string;
         HELP_TEXT_DESCRIPTION: string;
         // --------------------------------
@@ -113,9 +111,7 @@ module app.pages.createTeacherPage {
         /*-- INITIALIZE METHOD --*/
         private _init() {
             //CONSTANTS
-            this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
             this.STEP2_STATE = 'page.createTeacherPage.location';
-            this.STEP3_STATE = 'page.createTeacherPage.map';
             this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.basic_info.help_text.title.text');
             this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.basic_info.help_text.description.text');
             /*********************************/

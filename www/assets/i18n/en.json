@@ -131,6 +131,25 @@
     "%create.teacher.lang.help_text.learn.title.text": "Title of Learn",
     "%create.teacher.lang.help_text.learn.description.text": "Description of Learn",
 
+    "__4. TEACHER EXPERIENCE SECTION__": "",
+    "%create.teacher.experience.title.text": "Step 4 -  What is you experience as a teacher?",
+    "%create.teacher.experience.form.type.text": "Teacher type",
+    "%create.teacher.experience.form.type.hobby_option.text": "Community Tutor",
+    "%create.teacher.experience.form.type.professional_option.text": "Professional Teacher",
+    "%create.teacher.experience.form.since.text": "Teacher since",
+    "%create.teacher.experience.form.experience.text": "Experiences as a teacher",
+    "%create.teacher.experience.form.experience.add_button.text": "+ Add experience",
+    "%create.teacher.experience.form.inline_help_text.experience.text":"Texto de ayuda explicando algo importante en esta sección.",
+
+    "%create.teacher.experience.help_text.title.text": "Show the world who you are",
+    "%create.teacher.experience.help_text.description.text": "Waysily focuses on creating real connections. Describe in detail helps other users to know you much better. Share with them your tastes, trips, anecdotes or hobbies. Tell them what it would be like to have you as their teacher, you can even go into more personal aspects: Is there any particular phrase that defines your way of teaching?",
+    "%create.teacher.experience.help_text.type.title.text": "Title of Type",
+    "%create.teacher.experience.help_text.type.description.text": "Description of Type",
+    "%create.teacher.experience.help_text.since.title.text": "Title of Since",
+    "%create.teacher.experience.help_text.since.description.text": "Description of Since",
+    "%create.teacher.experience.help_text.experience.title.text": "Title of Experience",
+    "%create.teacher.experience.help_text.experience.description.text": "Description of Experience",
+
     "__FOOTER__": "",
     "%footer.contact_us.title.text": "Contact us",
 

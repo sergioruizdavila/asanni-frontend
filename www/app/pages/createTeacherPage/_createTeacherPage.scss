@@ -11,17 +11,20 @@ $createTeacher-mapBlock-height: 300px;
 /**********************************************************/
 
 .createTeacherPage {
-    padding-top: $createTeacher-padding;
-
     &__block {
-        margin-bottom: $createTeacher-block-margin;
-    }
 
-    &__sayHello {
-        label {
-            font-size: $createTeacher-block-sayHello-label-font-size;
-            font-weight: normal;
+        .teacher-experience-box {
+
+            &__item-block {
+                cursor: pointer;
+                padding-bottom: 20px;
+                &:hover {
+                    background-color: #f5f5f5;
+                    cursor: pointer;
+                }
+            }
         }
+
     }
 
     &__map-block {
