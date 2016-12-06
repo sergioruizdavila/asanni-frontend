@@ -267,7 +267,7 @@ module app.pages.createTeacherPage {
                 formValid = this.validate.zipCodeLocation.valid;
             }*/
 
-            //Validate Position field (lng)
+            //Validate Position on Map
             let position_rules = [NULL_ENUM, EMPTY_ENUM];
             let latValidate= this.functionsUtilService.validator(this.form.positionLocation.Lat, position_rules);
             let lngValidate = this.functionsUtilService.validator(this.form.positionLocation.Lng, position_rules);
