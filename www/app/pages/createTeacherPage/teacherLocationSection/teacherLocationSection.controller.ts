@@ -10,7 +10,7 @@ module app.pages.createTeacherPage {
     /**********************************/
     export interface ITeacherLocationSectionController {
         form: ITeacherLocationForm;
-        error: ITeacherLocationError;
+        validate: ITeacherLocationValidate;
         activate: () => void;
     }
 
@@ -35,11 +35,16 @@ module app.pages.createTeacherPage {
         cityLocation: string;
         stateLocation: string;
         zipCodeLocation: string;
+        positionLocation: app.models.user.Position;
     }
 
-
-    export interface ITeacherLocationError {
-        message: string;
+    interface ITeacherLocationValidate {
+        countryLocation: app.core.util.functionsUtil.IValid;
+        addressLocation: app.core.util.functionsUtil.IValid;
+        cityLocation: app.core.util.functionsUtil.IValid;
+        stateLocation: app.core.util.functionsUtil.IValid;
+        zipCodeLocation: app.core.util.functionsUtil.IValid;
+        positionLocation: app.core.util.functionsUtil.IValid;
     }
 
     /****************************************/
@@ -53,13 +58,16 @@ module app.pages.createTeacherPage {
         /*           PROPERTIES           */
         /**********************************/
         form: ITeacherLocationForm;
-        error: ITeacherLocationError;
+        validate: ITeacherLocationValidate;
+        helpText: app.core.interfaces.IHelpTextStep;
         geocoder: google.maps.Geocoder;
         mapConfig: components.map.IMapConfig;
         listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
         countryObject: app.core.interfaces.IDataFromJsonI18n;
         STEP1_STATE: string;
         STEP3_STATE: string;
+        HELP_TEXT_TITLE: string;
+        HELP_TEXT_DESCRIPTION: string;
         // --------------------------------
 
 
@@ -68,6 +76,7 @@ module app.pages.createTeacherPage {
             'mainApp.core.util.GetDataStaticJsonService',
             'mainApp.core.util.FunctionsUtilService',
             '$state',
+            '$filter',
             '$scope',
             '$timeout'
         ];
@@ -79,6 +88,7 @@ module app.pages.createTeacherPage {
             private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
             private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
             private $state: ng.ui.IStateService,
+            private $filter: angular.IFilterService,
             private $scope: ITeacherLocationScope,
             private $timeout) {
                 this._init();
@@ -91,10 +101,18 @@ module app.pages.createTeacherPage {
             //CONSTANTS
             this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
             this.STEP3_STATE = 'page.createTeacherPage.language';
+            this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.location.help_text.title.text');
+            this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.description.text');
             /*********************************/
 
             //Put title on parent scope
             this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(2, 9);
+
+            //Put Help Text Default
+            this.helpText = {
+                title: this.HELP_TEXT_TITLE,
+                description: this.HELP_TEXT_DESCRIPTION
+            };
 
             // Country Select List Structure
             this.countryObject = {code: '', value: ''};
@@ -105,7 +123,8 @@ module app.pages.createTeacherPage {
                 cityLocation: '',
                 stateLocation: '',
                 addressLocation: '',
-                zipCodeLocation: ''
+                zipCodeLocation: '',
+                positionLocation: new app.models.user.Position()
             };
 
             //Build Countries select lists
@@ -116,8 +135,14 @@ module app.pages.createTeacherPage {
                 null, 'drag-maker-map', null
             );
 
-            this.error = {
-                message: ''
+            // Build validate object fields
+            this.validate = {
+                countryLocation: {valid: true, message: ''},
+                cityLocation: {valid: true, message: ''},
+                stateLocation: {valid: true, message: ''},
+                addressLocation: {valid: true, message: ''},
+                zipCodeLocation: {valid: true, message: ''},
+                positionLocation: {valid: true, message: ''}
             };
 
             this.activate();
@@ -148,14 +173,21 @@ module app.pages.createTeacherPage {
             const CURRENT_STEP = 2;
             /*********************************/
 
-            this._setDataModelFromForm();
+            //Validate data form
+            let formValid = this._validateForm();
 
-            this.$scope.$emit('Save Data', CURRENT_STEP);
-
-            // GO TO NEXT STEP
-            this.$state.go(this.STEP3_STATE, {reload: true});
+            if(formValid){
+                this._setDataModelFromForm();
+                this.$scope.$emit('Save Data', CURRENT_STEP);
+                // GO TO NEXT STEP
+                this.$state.go(this.STEP3_STATE, {reload: true});
+            } else {
+                //Go top pages
+                window.scrollTo(0, 0);
+            }
 
         }
+
 
 
         /**
@@ -165,10 +197,155 @@ module app.pages.createTeacherPage {
         * @return void
         */
         goToBack(): void {
-            this._setDataModelFromForm();
-            this.$scope.$emit('Save Data');
+            //Validate data form
+            let formValid = this._validateForm();
+            //If form is valid, save data model
+            if(formValid) {
+                this._setDataModelFromForm();
+                this.$scope.$emit('Save Data');
+            }
+            //Anyway go to back step, not stop process
             this.$state.go(this.STEP1_STATE, {reload: true});
         }
+
+
+
+        /**
+        * _validateForm
+        * @description - Validate each field on form
+        * @use - this._validateForm();
+        * @function
+        * @return {boolean} formValid - return If the complete form is valid or not.
+        */
+        _validateForm(): boolean {
+            //CONSTANTS
+            const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
+            const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
+            const NUMBER_ENUM = app.core.util.functionsUtil.Validation.Number;
+            /***************************************************/
+            //VARIABLES
+            let formValid = true;
+
+            //Validate Country field
+            let country_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.countryLocation = this.functionsUtilService.validator(this.countryObject.code, country_rules);
+            if(!this.validate.countryLocation.valid) {
+                formValid = this.validate.countryLocation.valid;
+            }
+
+            //Validate City field
+            let city_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.cityLocation = this.functionsUtilService.validator(this.form.cityLocation, city_rules);
+            if(!this.validate.cityLocation.valid) {
+                formValid = this.validate.cityLocation.valid;
+            }
+
+            //Validate State field
+            let state_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.stateLocation = this.functionsUtilService.validator(this.form.stateLocation, state_rules);
+            if(!this.validate.stateLocation.valid) {
+                formValid = this.validate.stateLocation.valid;
+            }
+
+            //Validate Address field
+            let address_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.addressLocation = this.functionsUtilService.validator(this.form.addressLocation, address_rules);
+            if(!this.validate.addressLocation.valid) {
+                formValid = this.validate.addressLocation.valid;
+            }
+
+            //Validate Zip Code field
+            //TODO por ahora no es importante validar el Zip Code, pero si el
+            // usuario no escribe nada, me sale el error como si fuera requerido,
+            // y este campo no es requerido, solucionar eso.
+            /*let zipCode_rules = [NUMBER_ENUM];
+            this.validate.zipCodeLocation = this.functionsUtilService.validator(this.form.zipCodeLocation, zipCode_rules);
+            if(!this.validate.zipCodeLocation.valid) {
+                formValid = this.validate.zipCodeLocation.valid;
+            }*/
+
+            //Validate Position field (lng)
+            let position_rules = [NULL_ENUM, EMPTY_ENUM];
+            let latValidate= this.functionsUtilService.validator(this.form.positionLocation.Lat, position_rules);
+            let lngValidate = this.functionsUtilService.validator(this.form.positionLocation.Lng, position_rules);
+            if(!latValidate.valid || !lngValidate.valid) {
+                if(!latValidate.valid) {
+                    this.validate.positionLocation = latValidate;
+                    formValid = this.validate.positionLocation.valid;
+                } else if(!lngValidate.valid) {
+                    this.validate.positionLocation = lngValidate;
+                    formValid = this.validate.positionLocation.valid;
+                }
+            }
+
+            return formValid;
+        }
+
+
+
+        /**
+        * changeHelpText
+        * @description - change help block text (titles and descriptions) dynamically
+        *  based on specific field (firstName, lastName, email, etc)
+        * @use - this.changeHelpText('firstName');
+        * @function
+        * @return {void}
+        */
+        changeHelpText(type): void {
+            //CONSTANTS
+            const COUNTRY_TITLE = this.$filter('translate')('%create.teacher.location.help_text.cntry.title.text');
+            const COUNTRY_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.cntry.description.text');
+            const CITY_TITLE = this.$filter('translate')('%create.teacher.location.help_text.city.title.text');
+            const CITY_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.city.description.text');
+            const STATE_TITLE = this.$filter('translate')('%create.teacher.location.help_text.state.title.text');
+            const STATE_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.state.description.text');
+            const ADDRESS_TITLE = this.$filter('translate')('%create.teacher.location.help_text.address.title.text');
+            const ADDRESS_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.address.description.text');
+            const ZIP_CODE_TITLE = this.$filter('translate')('%create.teacher.location.help_text.zip_code.title.text');
+            const ZIP_CODE_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.zip_code.description.text');
+            const POSITION_TITLE = this.$filter('translate')('%create.teacher.location.help_text.position.title.text');
+            const POSITION_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.position.description.text');
+            /*****************************************************/
+
+            switch(type) {
+                case 'default':
+                    this.helpText.title = this.HELP_TEXT_TITLE;
+                    this.helpText.description = this.HELP_TEXT_DESCRIPTION;
+                break;
+
+                case 'country':
+                    this.helpText.title = COUNTRY_TITLE;
+                    this.helpText.description = COUNTRY_DESCRIPTION;
+                break;
+
+                case 'city':
+                    this.helpText.title = CITY_TITLE;
+                    this.helpText.description = CITY_DESCRIPTION;
+                break;
+
+                case 'state':
+                    this.helpText.title = STATE_TITLE;
+                    this.helpText.description = STATE_DESCRIPTION;
+                break;
+
+                case 'address':
+                    this.helpText.title = ADDRESS_TITLE;
+                    this.helpText.description = ADDRESS_DESCRIPTION;
+                break;
+
+                case 'zipCode':
+                    this.helpText.title = ZIP_CODE_TITLE;
+                    this.helpText.description = ZIP_CODE_DESCRIPTION;
+                break;
+
+                case 'position':
+                    this.helpText.title = POSITION_TITLE;
+                    this.helpText.description = POSITION_DESCRIPTION;
+                break;
+            }
+
+        }
+
 
 
         /**
@@ -220,6 +397,7 @@ module app.pages.createTeacherPage {
             this.$scope.$parent.vm.teacherData.Location.City = this.form.cityLocation;
             this.$scope.$parent.vm.teacherData.Location.State = this.form.stateLocation;
             this.$scope.$parent.vm.teacherData.Location.ZipCode = this.form.zipCodeLocation;
+            this.$scope.$parent.vm.teacherData.Location.Position = this.form.positionLocation;
             //get position on Map
             this.changeMapPosition();
         }
@@ -253,22 +431,22 @@ module app.pages.createTeacherPage {
                 //Charge Country on select List
                 self.countryObject.code = args.Location.Country;
                 //Current Map Position
-                let position = args.Location.Position;
+                self.form.positionLocation = new app.models.user.Position(args.Location.Position);
 
                 self.mapConfig = self.functionsUtilService.buildMapConfig(
                     [
                         {
-                            id: position.Id,
+                            id: self.form.positionLocation.Id,
                             location: {
                                 position: {
-                                    lat: parseFloat(position.Lat),
-                                    lng: parseFloat(position.Lng)
+                                    lat: parseFloat(self.form.positionLocation.Lat),
+                                    lng: parseFloat(self.form.positionLocation.Lng)
                                 }
                             }
                         }
                     ],
                     'drag-maker-map',
-                    {lat: parseFloat(position.Lat), lng: parseFloat(position.Lng)}
+                    {lat: parseFloat(self.form.positionLocation.Lat), lng: parseFloat(self.form.positionLocation.Lng)}
                 );
 
                 /*
@@ -288,7 +466,9 @@ module app.pages.createTeacherPage {
             * @event
             */
             this.$scope.$on('Position', function(event, args) {
-                self.$scope.$parent.vm.teacherData.Location.Position = args;
+                self.form.positionLocation.Lng = args.lng;
+                self.form.positionLocation.Lat = args.lat;
+                //self.$scope.$parent.vm.teacherData.Location.Position = args;
             });
         }
 

@@ -5,10 +5,11 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherLocationSectionController = (function () {
-                function TeacherLocationSectionController(getDataFromJson, functionsUtilService, $state, $scope, $timeout) {
+                function TeacherLocationSectionController(getDataFromJson, functionsUtilService, $state, $filter, $scope, $timeout) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.$state = $state;
+                    this.$filter = $filter;
                     this.$scope = $scope;
                     this.$timeout = $timeout;
                     this._init();
@@ -17,19 +18,31 @@ var app;
                     var self = this;
                     this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
                     this.STEP3_STATE = 'page.createTeacherPage.language';
+                    this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.location.help_text.title.text');
+                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.description.text');
                     this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(2, 9);
+                    this.helpText = {
+                        title: this.HELP_TEXT_TITLE,
+                        description: this.HELP_TEXT_DESCRIPTION
+                    };
                     this.countryObject = { code: '', value: '' };
                     this.form = {
                         countryLocation: '',
                         cityLocation: '',
                         stateLocation: '',
                         addressLocation: '',
-                        zipCodeLocation: ''
+                        zipCodeLocation: '',
+                        positionLocation: new app.models.user.Position()
                     };
                     this.listCountries = this.getDataFromJson.getCountryi18n();
                     this.mapConfig = self.functionsUtilService.buildMapConfig(null, 'drag-maker-map', null);
-                    this.error = {
-                        message: ''
+                    this.validate = {
+                        countryLocation: { valid: true, message: '' },
+                        cityLocation: { valid: true, message: '' },
+                        stateLocation: { valid: true, message: '' },
+                        addressLocation: { valid: true, message: '' },
+                        zipCodeLocation: { valid: true, message: '' },
+                        positionLocation: { valid: true, message: '' }
                     };
                     this.activate();
                 };
@@ -39,14 +52,107 @@ var app;
                 };
                 TeacherLocationSectionController.prototype.goToNext = function () {
                     var CURRENT_STEP = 2;
-                    this._setDataModelFromForm();
-                    this.$scope.$emit('Save Data', CURRENT_STEP);
-                    this.$state.go(this.STEP3_STATE, { reload: true });
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this._setDataModelFromForm();
+                        this.$scope.$emit('Save Data', CURRENT_STEP);
+                        this.$state.go(this.STEP3_STATE, { reload: true });
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
                 };
                 TeacherLocationSectionController.prototype.goToBack = function () {
-                    this._setDataModelFromForm();
-                    this.$scope.$emit('Save Data');
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this._setDataModelFromForm();
+                        this.$scope.$emit('Save Data');
+                    }
                     this.$state.go(this.STEP1_STATE, { reload: true });
+                };
+                TeacherLocationSectionController.prototype._validateForm = function () {
+                    var NULL_ENUM = 3;
+                    var EMPTY_ENUM = 4;
+                    var NUMBER_ENUM = 2;
+                    var formValid = true;
+                    var country_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.countryLocation = this.functionsUtilService.validator(this.countryObject.code, country_rules);
+                    if (!this.validate.countryLocation.valid) {
+                        formValid = this.validate.countryLocation.valid;
+                    }
+                    var city_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.cityLocation = this.functionsUtilService.validator(this.form.cityLocation, city_rules);
+                    if (!this.validate.cityLocation.valid) {
+                        formValid = this.validate.cityLocation.valid;
+                    }
+                    var state_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.stateLocation = this.functionsUtilService.validator(this.form.stateLocation, state_rules);
+                    if (!this.validate.stateLocation.valid) {
+                        formValid = this.validate.stateLocation.valid;
+                    }
+                    var address_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.addressLocation = this.functionsUtilService.validator(this.form.addressLocation, address_rules);
+                    if (!this.validate.addressLocation.valid) {
+                        formValid = this.validate.addressLocation.valid;
+                    }
+                    var position_rules = [NULL_ENUM, EMPTY_ENUM];
+                    var latValidate = this.functionsUtilService.validator(this.form.positionLocation.Lat, position_rules);
+                    var lngValidate = this.functionsUtilService.validator(this.form.positionLocation.Lng, position_rules);
+                    if (!latValidate.valid || !lngValidate.valid) {
+                        if (!latValidate.valid) {
+                            this.validate.positionLocation = latValidate;
+                            formValid = this.validate.positionLocation.valid;
+                        }
+                        else if (!lngValidate.valid) {
+                            this.validate.positionLocation = lngValidate;
+                            formValid = this.validate.positionLocation.valid;
+                        }
+                    }
+                    return formValid;
+                };
+                TeacherLocationSectionController.prototype.changeHelpText = function (type) {
+                    var COUNTRY_TITLE = this.$filter('translate')('%create.teacher.location.help_text.cntry.title.text');
+                    var COUNTRY_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.cntry.description.text');
+                    var CITY_TITLE = this.$filter('translate')('%create.teacher.location.help_text.city.title.text');
+                    var CITY_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.city.description.text');
+                    var STATE_TITLE = this.$filter('translate')('%create.teacher.location.help_text.state.title.text');
+                    var STATE_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.state.description.text');
+                    var ADDRESS_TITLE = this.$filter('translate')('%create.teacher.location.help_text.address.title.text');
+                    var ADDRESS_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.address.description.text');
+                    var ZIP_CODE_TITLE = this.$filter('translate')('%create.teacher.location.help_text.zip_code.title.text');
+                    var ZIP_CODE_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.zip_code.description.text');
+                    var POSITION_TITLE = this.$filter('translate')('%create.teacher.location.help_text.position.title.text');
+                    var POSITION_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.position.description.text');
+                    switch (type) {
+                        case 'default':
+                            this.helpText.title = this.HELP_TEXT_TITLE;
+                            this.helpText.description = this.HELP_TEXT_DESCRIPTION;
+                            break;
+                        case 'country':
+                            this.helpText.title = COUNTRY_TITLE;
+                            this.helpText.description = COUNTRY_DESCRIPTION;
+                            break;
+                        case 'city':
+                            this.helpText.title = CITY_TITLE;
+                            this.helpText.description = CITY_DESCRIPTION;
+                            break;
+                        case 'state':
+                            this.helpText.title = STATE_TITLE;
+                            this.helpText.description = STATE_DESCRIPTION;
+                            break;
+                        case 'address':
+                            this.helpText.title = ADDRESS_TITLE;
+                            this.helpText.description = ADDRESS_DESCRIPTION;
+                            break;
+                        case 'zipCode':
+                            this.helpText.title = ZIP_CODE_TITLE;
+                            this.helpText.description = ZIP_CODE_DESCRIPTION;
+                            break;
+                        case 'position':
+                            this.helpText.title = POSITION_TITLE;
+                            this.helpText.description = POSITION_DESCRIPTION;
+                            break;
+                    }
                 };
                 TeacherLocationSectionController.prototype.changeMapPosition = function () {
                     var self = this;
@@ -69,6 +175,7 @@ var app;
                     this.$scope.$parent.vm.teacherData.Location.City = this.form.cityLocation;
                     this.$scope.$parent.vm.teacherData.Location.State = this.form.stateLocation;
                     this.$scope.$parent.vm.teacherData.Location.ZipCode = this.form.zipCodeLocation;
+                    this.$scope.$parent.vm.teacherData.Location.Position = this.form.positionLocation;
                     this.changeMapPosition();
                 };
                 TeacherLocationSectionController.prototype._subscribeToEvents = function () {
@@ -79,22 +186,23 @@ var app;
                         self.form.stateLocation = args.Location.State;
                         self.form.zipCodeLocation = args.Location.ZipCode;
                         self.countryObject.code = args.Location.Country;
-                        var position = args.Location.Position;
+                        self.form.positionLocation = new app.models.user.Position(args.Location.Position);
                         self.mapConfig = self.functionsUtilService.buildMapConfig([
                             {
-                                id: position.Id,
+                                id: self.form.positionLocation.Id,
                                 location: {
                                     position: {
-                                        lat: parseFloat(position.Lat),
-                                        lng: parseFloat(position.Lng)
+                                        lat: parseFloat(self.form.positionLocation.Lat),
+                                        lng: parseFloat(self.form.positionLocation.Lng)
                                     }
                                 }
                             }
-                        ], 'drag-maker-map', { lat: parseFloat(position.Lat), lng: parseFloat(position.Lng) });
+                        ], 'drag-maker-map', { lat: parseFloat(self.form.positionLocation.Lat), lng: parseFloat(self.form.positionLocation.Lng) });
                         self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                     });
                     this.$scope.$on('Position', function (event, args) {
-                        self.$scope.$parent.vm.teacherData.Location.Position = args;
+                        self.form.positionLocation.Lng = args.lng;
+                        self.form.positionLocation.Lat = args.lat;
                     });
                 };
                 return TeacherLocationSectionController;
@@ -104,6 +212,7 @@ var app;
                 'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
                 '$state',
+                '$filter',
                 '$scope',
                 '$timeout'
             ];
