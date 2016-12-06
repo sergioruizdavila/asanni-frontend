@@ -3,6 +3,7 @@
     "%global.zone": "en-US",
     "%global.next.button.text": "Next",
     "%global.back.button.text": "Back",
+    "%global.add_more.button.text": "+ Add More",
 
     "%global.validation.null.message.text": "Required",
     "%global.validation.empty.message.text": "Required",
@@ -114,6 +115,21 @@
     "%create.teacher.location.help_text.address.description.text": "Description of Address",
     "%create.teacher.location.help_text.position.title.text": "Title of Position",
     "%create.teacher.location.help_text.position.description.text": "Description of Position",
+
+    "__3. TEACHER LANG SECTION__": "",
+    "%create.teacher.lang.title.text": "Step 3 -  What languages do you dominate?",
+    "%create.teacher.lang.form.native.text": "Your native languages",
+    "%create.teacher.lang.form.teach.text": "Languages you teach",
+    "%create.teacher.lang.form.learn.text": "Languages you speak or learn",
+
+    "%create.teacher.lang.help_text.title.text": "Show the world who you are",
+    "%create.teacher.lang.help_text.description.text": "Waysily focuses on creating real connections. Describe in detail helps other users to know you much better. Share with them your tastes, trips, anecdotes or hobbies. Tell them what it would be like to have you as their teacher, you can even go into more personal aspects: Is there any particular phrase that defines your way of teaching?",
+    "%create.teacher.lang.help_text.native.title.text": "Title of Native",
+    "%create.teacher.lang.help_text.native.description.text": "Description of Native",
+    "%create.teacher.lang.help_text.teach.title.text": "Title of Teach",
+    "%create.teacher.lang.help_text.teach.description.text": "Description of Teach",
+    "%create.teacher.lang.help_text.learn.title.text": "Title of Learn",
+    "%create.teacher.lang.help_text.learn.description.text": "Description of Learn",
 
     "__FOOTER__": "",
     "%footer.contact_us.title.text": "Contact us",

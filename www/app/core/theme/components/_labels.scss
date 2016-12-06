@@ -173,5 +173,8 @@
         border: $labelsBox-dashed-border;
         min-height: $labelsBox-dashed-height;
         padding: $labelsBox-dashed-padding;
+        &--invalid {
+            border: $labelsBox-dashed-invalid-border;
+        }
     }
 }
