@@ -5,11 +5,12 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherLanguageSectionController = (function () {
-                function TeacherLanguageSectionController(dataConfig, functionsUtilService, getDataFromJson, $state, $scope, $timeout, $uibModal) {
+                function TeacherLanguageSectionController(dataConfig, functionsUtilService, getDataFromJson, $state, $filter, $scope, $timeout, $uibModal) {
                     this.dataConfig = dataConfig;
                     this.functionsUtilService = functionsUtilService;
                     this.getDataFromJson = getDataFromJson;
                     this.$state = $state;
+                    this.$filter = $filter;
                     this.$scope = $scope;
                     this.$timeout = $timeout;
                     this.$uibModal = $uibModal;
@@ -19,14 +20,22 @@ var app;
                     var self = this;
                     this.STEP2_STATE = 'page.createTeacherPage.location';
                     this.STEP4_STATE = 'page.createTeacherPage.experience';
+                    this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.lang.help_text.title.text');
+                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.lang.help_text.description.text');
                     this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(3, 9);
+                    this.helpText = {
+                        title: this.HELP_TEXT_TITLE,
+                        description: this.HELP_TEXT_DESCRIPTION
+                    };
                     this.form = {
                         native: null,
                         learn: null,
                         teach: null
                     };
-                    this.error = {
-                        message: ''
+                    this.validate = {
+                        native: { valid: true, message: '' },
+                        teach: { valid: true, message: '' },
+                        learn: { valid: true, message: '' }
                     };
                     this.activate();
                 };
@@ -36,14 +45,73 @@ var app;
                 };
                 TeacherLanguageSectionController.prototype.goToNext = function () {
                     var CURRENT_STEP = 3;
-                    this._setDataModelFromForm();
-                    this.$scope.$emit('Save Data', CURRENT_STEP);
-                    this.$state.go(this.STEP4_STATE, { reload: true });
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this._setDataModelFromForm();
+                        this.$scope.$emit('Save Data', CURRENT_STEP);
+                        this.$state.go(this.STEP4_STATE, { reload: true });
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
                 };
                 TeacherLanguageSectionController.prototype.goToBack = function () {
-                    this._setDataModelFromForm();
-                    this.$scope.$emit('Save Data');
-                    this.$state.go(this.STEP2_STATE, { reload: true });
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this._setDataModelFromForm();
+                        this.$scope.$emit('Save Data');
+                        this.$state.go(this.STEP2_STATE, { reload: true });
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                TeacherLanguageSectionController.prototype._validateForm = function () {
+                    var NULL_ENUM = 3;
+                    var EMPTY_ENUM = 4;
+                    var formValid = true;
+                    var native_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.native = this.functionsUtilService.validator(this.form.native, native_rules);
+                    if (!this.validate.native.valid) {
+                        formValid = this.validate.native.valid;
+                    }
+                    var learn_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.learn = this.functionsUtilService.validator(this.form.learn, learn_rules);
+                    if (!this.validate.learn.valid) {
+                        formValid = this.validate.learn.valid;
+                    }
+                    var teach_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.teach = this.functionsUtilService.validator(this.form.teach, teach_rules);
+                    if (!this.validate.teach.valid) {
+                        formValid = this.validate.teach.valid;
+                    }
+                    return formValid;
+                };
+                TeacherLanguageSectionController.prototype.changeHelpText = function (type) {
+                    var NATIVE_TITLE = this.$filter('translate')('%create.teacher.lang.help_text.native.title.text');
+                    var NATIVE_DESCRIPTION = this.$filter('translate')('%create.teacher.lang.help_text.native.description.text');
+                    var LEARN_TITLE = this.$filter('translate')('%create.teacher.lang.help_text.learn.title.text');
+                    var LEARN_DESCRIPTION = this.$filter('translate')('%create.teacher.lang.help_text.learn.description.text');
+                    var TEACH_TITLE = this.$filter('translate')('%create.teacher.lang.help_text.teach.title.text');
+                    var TEACH_DESCRIPTION = this.$filter('translate')('%create.teacher.lang.help_text.teach.description.text');
+                    switch (type) {
+                        case 'default':
+                            this.helpText.title = this.HELP_TEXT_TITLE;
+                            this.helpText.description = this.HELP_TEXT_DESCRIPTION;
+                            break;
+                        case 'native':
+                            this.helpText.title = NATIVE_TITLE;
+                            this.helpText.description = NATIVE_TITLE;
+                            break;
+                        case 'learn':
+                            this.helpText.title = LEARN_TITLE;
+                            this.helpText.description = LEARN_TITLE;
+                            break;
+                        case 'teach':
+                            this.helpText.title = TEACH_TITLE;
+                            this.helpText.description = TEACH_DESCRIPTION;
+                            break;
+                    }
                 };
                 TeacherLanguageSectionController.prototype._addNewLanguages = function (type) {
                     var self = this;
@@ -163,6 +231,7 @@ var app;
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.util.GetDataStaticJsonService',
                 '$state',
+                '$filter',
                 '$scope',
                 '$timeout',
                 '$uibModal'

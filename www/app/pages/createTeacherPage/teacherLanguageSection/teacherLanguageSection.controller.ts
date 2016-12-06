@@ -10,7 +10,7 @@ module app.pages.createTeacherPage {
     /**********************************/
     export interface ITeacherLanguageSectionController {
         form: ITeacherLanguageForm;
-        error: ITeacherLanguageError;
+        validate: ITeacherLanguageValidate;
         activate: () => void;
     }
 
@@ -35,9 +35,10 @@ module app.pages.createTeacherPage {
         teach: Array<app.core.interfaces.IKeyValue>;
     }
 
-
-    export interface ITeacherLanguageError {
-        message: string;
+    interface ITeacherLanguageValidate {
+        native: app.core.util.functionsUtil.IValid;
+        learn: app.core.util.functionsUtil.IValid;
+        teach: app.core.util.functionsUtil.IValid;
     }
 
     /****************************************/
@@ -51,9 +52,12 @@ module app.pages.createTeacherPage {
         /*           PROPERTIES           */
         /**********************************/
         form: ITeacherLanguageForm;
-        error: ITeacherLanguageError;
+        validate: ITeacherLanguageValidate;
+        helpText: app.core.interfaces.IHelpTextStep;
         STEP2_STATE: string;
         STEP4_STATE: string;
+        HELP_TEXT_TITLE: string;
+        HELP_TEXT_DESCRIPTION: string;
         // --------------------------------
 
 
@@ -63,6 +67,7 @@ module app.pages.createTeacherPage {
             'mainApp.core.util.FunctionsUtilService',
             'mainApp.core.util.GetDataStaticJsonService',
             '$state',
+            '$filter',
             '$scope',
             '$timeout',
             '$uibModal'
@@ -76,6 +81,7 @@ module app.pages.createTeacherPage {
             private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
             private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
             private $state: ng.ui.IStateService,
+            private $filter: angular.IFilterService,
             private $scope: ITeacherLanguageScope,
             private $timeout,
             private $uibModal: ng.ui.bootstrap.IModalService) {
@@ -89,10 +95,18 @@ module app.pages.createTeacherPage {
             //CONSTANTS
             this.STEP2_STATE = 'page.createTeacherPage.location';
             this.STEP4_STATE = 'page.createTeacherPage.experience';
+            this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.lang.help_text.title.text');
+            this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.lang.help_text.description.text');
             /*********************************/
 
             //Put title on parent scope
             this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(3, 9);
+
+            //Put Help Text Default
+            this.helpText = {
+                title: this.HELP_TEXT_TITLE,
+                description: this.HELP_TEXT_DESCRIPTION
+            };
 
             //Init form
             //Is required use null here because en DB save: "[]"
@@ -102,8 +116,11 @@ module app.pages.createTeacherPage {
                 teach: null
             };
 
-            this.error = {
-                message: ''
+            // Build validate object fields
+            this.validate = {
+                native: {valid: true, message: ''},
+                teach: {valid: true, message: ''},
+                learn: {valid: true, message: ''}
             };
 
             this.activate();
@@ -134,14 +151,22 @@ module app.pages.createTeacherPage {
             const CURRENT_STEP = 3;
             /*********************************/
 
-            this._setDataModelFromForm();
+            //Validate data form
+            let formValid = this._validateForm();
 
-            this.$scope.$emit('Save Data', CURRENT_STEP);
+            if(formValid) {
+                this._setDataModelFromForm();
+                this.$scope.$emit('Save Data', CURRENT_STEP);
+                // GO TO NEXT STEP
+                this.$state.go(this.STEP4_STATE, {reload: true});
+            } else {
+                //Go top pages
+                window.scrollTo(0, 0);
+            }
 
-            // GO TO NEXT STEP
-            this.$state.go(this.STEP4_STATE, {reload: true});
 
         }
+
 
 
         /**
@@ -151,9 +176,102 @@ module app.pages.createTeacherPage {
         * @return void
         */
         goToBack(): void {
-            this._setDataModelFromForm();
-            this.$scope.$emit('Save Data');
-            this.$state.go(this.STEP2_STATE, {reload: true});
+            //Validate data form
+            let formValid = this._validateForm();
+            //If form is valid, save data model
+            if(formValid) {
+                this._setDataModelFromForm();
+                this.$scope.$emit('Save Data');
+                this.$state.go(this.STEP2_STATE, {reload: true});
+            } else {
+                //Go top pages
+                window.scrollTo(0, 0);
+            }
+        }
+
+
+
+        /**
+        * _validateForm
+        * @description - Validate each field on form
+        * @use - this._validateForm();
+        * @function
+        * @return {boolean} formValid - return If the complete form is valid or not.
+        */
+        _validateForm(): boolean {
+            //CONSTANTS
+            const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
+            const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
+            /***************************************************/
+            //VARIABLES
+            let formValid = true;
+
+            //Validate Native Languages List
+            let native_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.native = this.functionsUtilService.validator(this.form.native, native_rules);
+            if(!this.validate.native.valid) {
+                formValid = this.validate.native.valid;
+            }
+
+            //Validate Learn Languages List
+            let learn_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.learn = this.functionsUtilService.validator(this.form.learn, learn_rules);
+            if(!this.validate.learn.valid) {
+                formValid = this.validate.learn.valid;
+            }
+
+            //Validate Teach Languages List
+            let teach_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.teach = this.functionsUtilService.validator(this.form.teach, teach_rules);
+            if(!this.validate.teach.valid) {
+                formValid = this.validate.teach.valid;
+            }
+
+            return formValid;
+        }
+
+
+
+        /**
+        * changeHelpText
+        * @description - change help block text (titles and descriptions) dynamically
+        *  based on specific field (firstName, lastName, email, etc)
+        * @use - this.changeHelpText('firstName');
+        * @function
+        * @return {void}
+        */
+        changeHelpText(type): void {
+            //CONSTANTS
+            const NATIVE_TITLE = this.$filter('translate')('%create.teacher.lang.help_text.native.title.text');
+            const NATIVE_DESCRIPTION = this.$filter('translate')('%create.teacher.lang.help_text.native.description.text');
+            const LEARN_TITLE = this.$filter('translate')('%create.teacher.lang.help_text.learn.title.text');
+            const LEARN_DESCRIPTION = this.$filter('translate')('%create.teacher.lang.help_text.learn.description.text');
+            const TEACH_TITLE = this.$filter('translate')('%create.teacher.lang.help_text.teach.title.text');
+            const TEACH_DESCRIPTION = this.$filter('translate')('%create.teacher.lang.help_text.teach.description.text');
+            /*****************************************************/
+
+            switch(type) {
+                case 'default':
+                    this.helpText.title = this.HELP_TEXT_TITLE;
+                    this.helpText.description = this.HELP_TEXT_DESCRIPTION;
+                break;
+
+                case 'native':
+                    this.helpText.title = NATIVE_TITLE;
+                    this.helpText.description = NATIVE_TITLE;
+                break;
+
+                case 'learn':
+                    this.helpText.title = LEARN_TITLE;
+                    this.helpText.description = LEARN_TITLE;
+                break;
+
+                case 'teach':
+                    this.helpText.title = TEACH_TITLE;
+                    this.helpText.description = TEACH_DESCRIPTION;
+                break;
+            }
+
         }
 
 

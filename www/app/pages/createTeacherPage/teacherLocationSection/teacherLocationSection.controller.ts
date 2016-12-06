@@ -203,7 +203,6 @@ module app.pages.createTeacherPage {
             if(formValid) {
                 this._setDataModelFromForm();
                 this.$scope.$emit('Save Data');
-                //Anyway go to back step, not stop process
                 this.$state.go(this.STEP1_STATE, {reload: true});
             } else {
                 //Go top pages
