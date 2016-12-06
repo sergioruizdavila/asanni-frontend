@@ -21,12 +21,31 @@ module app.core.util.functionsUtil {
         joinDate: (day:string, month:string, year:string) => string;
         splitDate: (date:string) => app.core.interfaces.IDateSplitted;
         progress: (currentStep: number, totalSteps: number) => string;
+        validator: (value: any, validations: Array<Validation>) => IValid;
+    }
+
+    export interface IValid {
+        valid: boolean;
+        message: string;
     }
 
 
     /****************************************/
+    /*      ENUM VALIDATION DEFINITION      */
+    /****************************************/
+
+    export const enum Validation {
+        Email,
+        String,
+        Number,
+        Null,
+        Empty
+    }
+
+    /****************************************/
     /*           CLASS DEFINITION           */
     /****************************************/
+
     export class FunctionsUtilService implements IFunctionsUtilService {
 
         static serviceId = 'mainApp.core.util.FunctionsUtilService';
@@ -37,12 +56,16 @@ module app.core.util.functionsUtil {
 
         // --------------------------------
 
+        /*-- INJECT DEPENDENCIES --*/
+        public static $inject = ['$filter'];
+
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        constructor() {
+        constructor(private $filter: angular.IFilterService) {
             console.log('functionsUtil service called');
         }
+        
 
         /**********************************/
         /*            METHODS             */
@@ -61,6 +84,8 @@ module app.core.util.functionsUtil {
             return dateFormatted;
         }
 
+
+
         /**
         * joinDate
         * @description - join separate values (day, month and year) and formatting
@@ -77,6 +102,7 @@ module app.core.util.functionsUtil {
             let dateFormatted = moment(newDate).format('YYYY-MM-DD');
             return dateFormatted;
         }
+
 
 
         /**
@@ -100,6 +126,8 @@ module app.core.util.functionsUtil {
             return dateFormatted;
         }
 
+
+
         /**
         * splitToColumns
         * @description - split an array on one parent array with X arrays
@@ -116,6 +144,8 @@ module app.core.util.functionsUtil {
             }
             return newArr;
         }
+
+
 
         /**
         * buildMapConfig
@@ -152,30 +182,6 @@ module app.core.util.functionsUtil {
             return mapConfig;
         }
 
-        /**
-        * External Function: extractCountriesFromHtml
-        * @external
-        * @description Get Countries and Codes from HTML (assets/schemas/countries/countries.html)
-        * @use 1. You have to paste countries html in one app template (i.e. studentPage.html)
-               2. On Dev Console Chrome put:
-        * var countriesList = app.core.util.functionsUtil.FunctionsUtilService.extractCountriesFromHtml()
-        * return on console: countries list Object formatted to i18n json
-        */
-        public static extractCountriesFromHtml(): any {
-            // VARIABLES
-            let countries_json = {};
-            let language = 'EN'; //Change to specific language (ES, EN, etc)
-            let html:any = document.getElementById("countriesList." + language);
-
-
-            for (let i = 0; i < html.length; i++) {
-                let countryText = html[i].innerText;
-                let countryCode = html[i].attributes[0].nodeValue;
-                countries_json["%country." + countryCode] = countryText;
-            }
-
-            console.log(JSON.stringify(countries_json));
-        }
 
 
         /**
@@ -230,6 +236,111 @@ module app.core.util.functionsUtil {
         progress(currentStep, totalSteps): string {
             let percent = (100 / totalSteps) * (currentStep);
             return percent + '%';
+        }
+
+
+
+        /**
+        * validator
+        * @description - All form's field validate rules
+        * @use - this.FunctionsUtilService.validator('sergioruizdavila@gmail.com',
+                                                     [Validation.Null, Validation.Email]);
+        * @function
+        * @param {any} value - value to validate (string, number, object, etc)
+        * @param {Array<Validation>} validations - list of validations required:
+        * (e.g. Null, String, Email, Number, Empty, etc)
+        * @return {IValid} obj - object with validation result: valid and message
+        */
+        validator(value, validations = []): IValid {
+            //CONSTANTS
+            const NULL_MESSAGE = this.$filter('translate')('%global.validation.null.message.text');
+            const EMPTY_MESSAGE = this.$filter('translate')('%global.validation.empty.message.text');
+            const STRING_MESSAGE = this.$filter('translate')('%global.validation.string.message.text');
+            const NUMBER_MESSAGE = this.$filter('translate')('%global.validation.number.message.text');
+            const EMAIL_MESSAGE = this.$filter('translate')('%global.validation.email.message.text');
+            /*******************************/
+            //VARIABLES
+            let obj = {valid: true, message: 'ok'};
+            /*******************************/
+
+            for (let i = 0; i < validations.length; i++) {
+
+                switch (validations[i]) {
+
+                    case Validation.Null: {
+                        if(value == null) {
+                            obj.message = NULL_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+                    }
+
+                    case Validation.Empty: {
+                        if(value == '') {
+                            obj.message = EMPTY_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+                    }
+
+                    case Validation.String: {
+                        if(typeof value !== 'string') {
+                            obj.message = STRING_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+                    }
+
+                    case Validation.Number: {
+                        if(typeof value !== 'number') {
+                            obj.message = NUMBER_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+                    }
+
+                    case Validation.Email: {
+                        let pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+                        obj.valid = pattern.test(value);
+                        if(obj.valid == false) {
+                            obj.message = EMAIL_MESSAGE;
+                        }
+                        break;
+                    }
+
+                }
+
+            }
+
+            return obj;
+
+        }
+
+
+
+        /**
+        * External Function: extractCountriesFromHtml
+        * @external
+        * @description Get Countries and Codes from HTML (assets/schemas/countries/countries.html)
+        * @use 1. You have to paste countries html in one app template (i.e. studentPage.html)
+               2. On Dev Console Chrome put:
+        * var countriesList = app.core.util.functionsUtil.FunctionsUtilService.extractCountriesFromHtml()
+        * return on console: countries list Object formatted to i18n json
+        */
+        public static extractCountriesFromHtml(): any {
+            // VARIABLES
+            let countries_json = {};
+            let language = 'EN'; //Change to specific language (ES, EN, etc)
+            let html:any = document.getElementById("countriesList." + language);
+
+
+            for (let i = 0; i < html.length; i++) {
+                let countryText = html[i].innerText;
+                let countryCode = html[i].attributes[0].nodeValue;
+                countries_json["%country." + countryCode] = countryText;
+            }
+
+            console.log(JSON.stringify(countries_json));
         }
 
 

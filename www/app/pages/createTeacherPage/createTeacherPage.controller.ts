@@ -155,7 +155,6 @@ module app.pages.createTeacherPage {
         * @function
         * @return {void}
         */
-
         private _subscribeToEvents(): void {
             // VARIABLES
             let self = this;

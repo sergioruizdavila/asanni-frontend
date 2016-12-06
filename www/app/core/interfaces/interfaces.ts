@@ -55,6 +55,13 @@ module app.core.interfaces {
         value: any;
     }
 
+    /*******************************************/
+    /*    HELP TEXT OF EACH STEP INTERFACES    */
+    /*******************************************/
+    export interface IHelpTextStep {
+        title: string;
+        description: string;
+    }
     /////////////////////////////////
 
 

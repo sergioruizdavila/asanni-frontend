@@ -4,7 +4,7 @@
 
 
 <!---------------------------- START: LEFT COLUMN ----------------------------->
-<div id="createTeacher-basicInfo-left-column" class="col-md-8">
+<div id="createTeacher-basicInfo-left-column" class="col-md-8 col-lg-8">
 
     <div id="createTeacher-block" class="createTeacherPage__block row">
 
@@ -12,7 +12,8 @@
 
             <div class="ma-box">
 
-                <h4 class="ma-box__title margin-reset" translate>
+                <h4 class="ma-box__title margin-reset"
+                    ng-mouseover="vm.changeHelpText('default')" translate>
                     %create.teacher.basic_info.title.text
                 </h4>
 
@@ -26,19 +27,22 @@
                         <!-- First Name Input -->
                         <div class="form-group
                                     ma-form-group
-                                    ma-form-group--large">
+                                    ma-form-group--large"
+                             ng-mouseover="vm.changeHelpText('firstName')">
                             <label class="text-right col-xs-3 col-sm-3"
                                     for="teacher-first-name" translate>
                                     %create.teacher.basic_info.form.first_name.text
                             </label>
                             <div class="col-xs-9 col-sm-9">
                                 <input id="teacher-first-name"
-                                        class="ma-input ma-input--large ma-input--invalid"
+                                        class="ma-input ma-input--large"
+                                        ng-class="{'ma-input--invalid': !vm.validate.firstName.valid}"
                                         type="text"
-                                        ng-model="vm.form.firstName">
+                                        ng-model="vm.form.firstName"
+                                        autofocus>
                                 <p class="ma-p ma-p--small ma-p--alert pull-right"
-                                   ng-show="vm.form.firstName.$invalid && !vm.form.firstName.$pristine">
-                                    <span>Required </span><strong>*</strong>
+                                   ng-show="!vm.validate.firstName.valid">
+                                    <span>{{vm.validate.firstName.message}}</span>
                                 </p>
                             </div>
                         </div>
@@ -46,7 +50,8 @@
                         <!-- Last Name Input -->
                         <div class="form-group
                                     ma-form-group
-                                    ma-form-group--large">
+                                    ma-form-group--large"
+                             ng-mouseover="vm.changeHelpText('lastName')">
                             <label class="text-right col-xs-3 col-sm-3"
                                    for="teacher-last-name" translate>
                                 %create.teacher.basic_info.form.last_name.text
@@ -55,9 +60,11 @@
                                 <input id="teacher-last-name"
                                        type="text"
                                        ng-model="vm.form.lastName"
-                                       class="ma-input ma-input--large">
-                                <p class="ma-p ma-p--small ma-p--alert pull-right">
-                                    <span>Required </span><strong>*</strong>
+                                       class="ma-input ma-input--large"
+                                       ng-class="{'ma-input--invalid': !vm.validate.lastName.valid}">
+                                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                  ng-show="!vm.validate.lastName.valid">
+                                   <span>{{vm.validate.lastName.message}}</span>
                                 </p>
                             </div>
                         </div>
@@ -65,7 +72,8 @@
                         <!-- Email Input -->
                         <div class="form-group
                                     ma-form-group
-                                    ma-form-group--large">
+                                    ma-form-group--large"
+                             ng-mouseover="vm.changeHelpText('email')">
                             <label class="text-right col-xs-3 col-sm-3"
                                    for="teacher-email" translate>
                                 %create.teacher.basic_info.form.email.text
@@ -74,9 +82,11 @@
                                 <input id="teacher-email"
                                        type="email"
                                        ng-model="vm.form.email"
-                                       class="ma-input ma-input--large">
-                                <p class="ma-p ma-p--small ma-p--alert pull-right">
-                                   <span>Required </span><strong>*</strong>
+                                       class="ma-input ma-input--large"
+                                       ng-class="{'ma-input--invalid': !vm.validate.email.valid}">
+                                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                    ng-show="!vm.validate.email.valid">
+                                   <span>{{vm.validate.email.message}}</span>
                                 </p>
                             </div>
                         </div>
@@ -84,7 +94,8 @@
                         <!-- Phone Number Input -->
                         <div class="form-group
                                     ma-form-group
-                                    ma-form-group--large">
+                                    ma-form-group--large"
+                             ng-mouseover="vm.changeHelpText('phoneNumber')">
                             <label class="text-right col-xs-3 col-sm-3"
                                    for="teacher-phone-number" translate>
                                 %create.teacher.basic_info.form.phone_number.text
@@ -93,10 +104,12 @@
                                 <input id="teacher-phone-number"
                                        type="text"
                                        ng-model="vm.form.phoneNumber"
-                                       placeholder="e.g. +57 3052345678"
-                                       class="ma-input ma-input--large">
-                                <p class="ma-p ma-p--small ma-p--alert pull-right">
-                                   <span>Required </span><strong>*</strong>
+                                       placeholder="e.g. 3052345678"
+                                       class="ma-input ma-input--large"
+                                       ng-class="{'ma-input--invalid': !vm.validate.phoneNumber.valid}">
+                                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                    ng-show="!vm.validate.phoneNumber.valid">
+                                   <span>{{vm.validate.phoneNumber.message}}</span>
                                 </p>
                             </div>
                         </div>
@@ -104,7 +117,8 @@
                         <!-- I am Select Input -->
                         <div class="form-group
                                     ma-form-group
-                                    ma-form-group--large">
+                                    ma-form-group--large"
+                             ng-mouseover="vm.changeHelpText('sex')">
                             <label class="text-right col-xs-3 col-sm-3"
                                     for="teacher-sex" translate>
                                     %create.teacher.basic_info.form.i_am.text
@@ -114,7 +128,8 @@
                                             ma-select-container--large">
                                     <select id="teacher-sex"
                                             class="ma-input ma-select
-                                                   ma-select--large ma-select--invalid"
+                                                   ma-select--large"
+                                            ng-class="{'ma-input--invalid': !vm.validate.sex.valid}"
                                             name="teacher[sex]"
                                             ng-model="vm.sexObject.sex"
                                             ng-options="sex.value | translate for sex in vm.listSexs track by sex.code">
@@ -122,8 +137,9 @@
                                                 %create.teacher.basic_info.form.gender.text
                                             </option>
                                     </select>
-                                    <p class="ma-p ma-p--small ma-p--alert pull-right">
-                                        <span>Required </span><strong>*</strong>
+                                    <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                        ng-show="!vm.validate.sex.valid">
+                                        <span>{{vm.validate.sex.message}}</span>
                                     </p>
                                 </div>
                             </div>
@@ -132,7 +148,8 @@
                         <!-- Birthday Select Input with Help Text -->
                         <div class="form-group
                                     ma-form-group
-                                    ma-form-group--large">
+                                    ma-form-group--large"
+                             ng-mouseover="vm.changeHelpText('birthDate')">
                             <label class="text-right col-xs-3 col-sm-3" translate>
                                 %create.teacher.basic_info.form.birthdate.text
                             </label>
@@ -146,6 +163,7 @@
                                                    ma-select--large"
                                             ng-model="vm.dateObject.month"
                                             ng-options="month.value | translate for month in vm.listMonths track by month.code"
+                                            ng-class="{'ma-input--invalid': !vm.validate.birthDate.month.valid}"
                                             name="teacher[month]" class="form-control">
                                             <option value="" disabled selected translate>
                                                 %create.teacher.basic_info.form.mth_birthdate.text
@@ -161,6 +179,7 @@
                                                    ma-select--large"
                                             ng-model="vm.dateObject.day"
                                             ng-options="day.value for day in vm.listDays track by day.value"
+                                            ng-class="{'ma-input--invalid': !vm.validate.birthDate.day.valid}"
                                             name="teacher[day]" class="form-control">
                                             <option value="" disabled selected>
                                                 dd
@@ -176,6 +195,7 @@
                                                    ma-select--large"
                                             ng-model="vm.dateObject.year"
                                             ng-options="year.value for year in vm.listYears track by year.value"
+                                            ng-class="{'ma-input--invalid': !vm.validate.birthDate.year.valid}"
                                             name="teacher[year]" class="form-control">
                                             <option value="" disabled selected>
                                                 yyyy
@@ -183,8 +203,9 @@
                                     </select>
                                 </div>
 
-                                <p class="ma-p ma-p--small ma-p--alert pull-right">
-                                    <span>Required </span><strong>*</strong>
+                                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                    ng-show="!vm.validate.birthDate.valid">
+                                    <span>{{vm.validate.birthDate.message}}</span>
                                 </p>
 
                             </div>
@@ -193,7 +214,8 @@
                         <!-- Where you born Input -->
                         <div class="form-group
                                     ma-form-group
-                                    ma-form-group--large">
+                                    ma-form-group--large"
+                             ng-mouseover="vm.changeHelpText('born')">
                             <label class="text-right col-xs-3 col-sm-3"
                                    for="teacher-born" translate>
                                    %create.teacher.basic_info.form.born.text
@@ -202,10 +224,12 @@
                                 <input id="teacher-born"
                                        type="text"
                                        class="ma-input ma-input--large"
+                                       ng-class="{'ma-input--invalid': !vm.validate.born.valid}"
                                        ng-model="vm.form.born"
                                        placeholder="e.g. Medellin, Colombia / Lisboa, Portugal">
-                                <p class="ma-p ma-p--small ma-p--alert pull-right">
-                                   <span>Required</span><strong>*</strong>
+                                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                    ng-show="!vm.validate.born.valid">
+                                   <span>{{vm.validate.born.message}}</span>
                                 </p>
                             </div>
                         </div>
@@ -213,7 +237,8 @@
                         <!-- About me -->
                         <div class="form-group
                                     ma-form-group
-                                    ma-form-group--large">
+                                    ma-form-group--large"
+                             ng-mouseover="vm.changeHelpText('about')">
                             <label class="text-right col-xs-3 col-sm-3"
                                    for="teacher-about" translate>
                                    %create.teacher.basic_info.form.about.text
@@ -269,7 +294,7 @@
 
 
 <!--------------------------- START: RIGHT COLUMN ----------------------------->
-<div id="createTeacher-right-column" class="col-md-4">
+<div id="createTeacher-right-column" class="col-md-4 col-lg-4">
 
     <div class="ma-box space-5">
 
@@ -290,19 +315,16 @@
                     <!-- Help Title Block -->
                     <div class="row">
                         <div class="col-md-12 text-left">
-                            <h4 translate>
-                                %create.teacher.basic_info.help_text.title.text
+                            <h4>
+                                {{vm.helpText.title}}
                             </h4>
                         </div>
                     </div>
                     <!-- Help Text Block -->
                     <div class="row">
                         <div class="col-md-12 text-left">
-                            <p class="ma-p ma-p--default" translate>
-                                %create.teacher.basic_info.help_text.description.text
-                            </p>
-                            <p id="teacher-about-me-ES-text" class="ma-p ma-p--default hidden">
-
+                            <p class="ma-p ma-p--default">
+                                {{vm.helpText.description}}
                             </p>
                         </div>
                     </div>
