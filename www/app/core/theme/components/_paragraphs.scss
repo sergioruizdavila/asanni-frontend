@@ -25,4 +25,13 @@
     &--large {
         font-size: 20px;
     }
+
+    /// COLOR
+    &--alert {
+        color: $paragraph-alert-font-color;
+
+        strong {
+            font-size: map-get($global-font-sizes, large);
+        }
+    }
 }

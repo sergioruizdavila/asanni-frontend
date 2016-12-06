@@ -33,6 +33,11 @@
         padding: map-get($input-paddings, large);
         font-size: $input-font-size-large;
     }
+
+    &--invalid {
+        background-color: #fff2ef;
+        border-color: #ffd1c4;
+    }
 }
 
 /* SELECT INPUT */
@@ -114,6 +119,11 @@
             padding: map-get($input-paddings, large);
             padding-right: $select-padding;
             font-size: $input-font-size-large;
+        }
+
+        &--invalid {
+            background-color: $input-invalid-background;
+            border-color: $input-invalid-border;
         }
 
         /// SELECT COLOR

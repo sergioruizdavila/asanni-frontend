@@ -145,8 +145,17 @@ var app;
             var functionsUtil;
             (function (functionsUtil) {
                 'use strict';
+                (function (Validation) {
+                    Validation[Validation["Email"] = 0] = "Email";
+                    Validation[Validation["String"] = 1] = "String";
+                    Validation[Validation["Number"] = 2] = "Number";
+                    Validation[Validation["Null"] = 3] = "Null";
+                    Validation[Validation["Empty"] = 4] = "Empty";
+                })(functionsUtil.Validation || (functionsUtil.Validation = {}));
+                var Validation = functionsUtil.Validation;
                 var FunctionsUtilService = (function () {
-                    function FunctionsUtilService() {
+                    function FunctionsUtilService($filter) {
+                        this.$filter = $filter;
                         console.log('functionsUtil service called');
                     }
                     FunctionsUtilService.prototype.dateFormat = function (date) {
@@ -192,17 +201,6 @@ var app;
                         }
                         return mapConfig;
                     };
-                    FunctionsUtilService.extractCountriesFromHtml = function () {
-                        var countries_json = {};
-                        var language = 'EN';
-                        var html = document.getElementById("countriesList." + language);
-                        for (var i = 0; i < html.length; i++) {
-                            var countryText = html[i].innerText;
-                            var countryCode = html[i].attributes[0].nodeValue;
-                            countries_json["%country." + countryCode] = countryText;
-                        }
-                        console.log(JSON.stringify(countries_json));
-                    };
                     FunctionsUtilService.prototype.generateRangesOfNumbers = function (from, to) {
                         var array = [];
                         for (var i = from; i <= to; i++) {
@@ -222,9 +220,71 @@ var app;
                         var percent = (100 / totalSteps) * (currentStep);
                         return percent + '%';
                     };
+                    FunctionsUtilService.prototype.validator = function (value, validations) {
+                        if (validations === void 0) { validations = []; }
+                        var NULL_MESSAGE = this.$filter('translate')('%global.validation.null.message.text');
+                        var EMPTY_MESSAGE = this.$filter('translate')('%global.validation.empty.message.text');
+                        var STRING_MESSAGE = this.$filter('translate')('%global.validation.string.message.text');
+                        var NUMBER_MESSAGE = this.$filter('translate')('%global.validation.number.message.text');
+                        var EMAIL_MESSAGE = this.$filter('translate')('%global.validation.email.message.text');
+                        var obj = { valid: true, message: 'ok' };
+                        for (var i = 0; i < validations.length; i++) {
+                            switch (validations[i]) {
+                                case 3: {
+                                    if (value == null) {
+                                        obj.message = NULL_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                }
+                                case 4: {
+                                    if (value == '') {
+                                        obj.message = EMPTY_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                }
+                                case 1: {
+                                    if (typeof value !== 'string') {
+                                        obj.message = STRING_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                }
+                                case 2: {
+                                    if (typeof value !== 'number') {
+                                        obj.message = NUMBER_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                }
+                                case 0: {
+                                    var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+                                    obj.valid = pattern.test(value);
+                                    if (obj.valid == false) {
+                                        obj.message = EMAIL_MESSAGE;
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                        return obj;
+                    };
+                    FunctionsUtilService.extractCountriesFromHtml = function () {
+                        var countries_json = {};
+                        var language = 'EN';
+                        var html = document.getElementById("countriesList." + language);
+                        for (var i = 0; i < html.length; i++) {
+                            var countryText = html[i].innerText;
+                            var countryCode = html[i].attributes[0].nodeValue;
+                            countries_json["%country." + countryCode] = countryText;
+                        }
+                        console.log(JSON.stringify(countries_json));
+                    };
                     return FunctionsUtilService;
                 }());
                 FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
+                FunctionsUtilService.$inject = ['$filter'];
                 functionsUtil.FunctionsUtilService = FunctionsUtilService;
                 angular
                     .module('mainApp.core.util', [])
@@ -254,6 +314,17 @@ var app;
                         for (var element in jsonDoc) {
                             if (element.indexOf("month") >= 0) {
                                 var code = element.replace(/%month./g, '');
+                                array.push({ value: element, code: code });
+                            }
+                        }
+                        return array;
+                    };
+                    GetDataStaticJsonService.prototype.getSexi18n = function () {
+                        var jsonDoc = this.$translate.getTranslationTable();
+                        var array = [];
+                        for (var element in jsonDoc) {
+                            if (element.indexOf("sex") >= 0) {
+                                var code = element.replace(/%sex./g, '');
                                 array.push({ value: element, code: code });
                             }
                         }
@@ -2927,10 +2998,11 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherInfoSectionController = (function () {
-                function TeacherInfoSectionController(getDataFromJson, functionsUtilService, $state, $scope) {
+                function TeacherInfoSectionController(getDataFromJson, functionsUtilService, $state, $filter, $scope) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.$state = $state;
+                    this.$filter = $filter;
                     this.$scope = $scope;
                     this._init();
                 }
@@ -2938,7 +3010,14 @@ var app;
                     this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
                     this.STEP2_STATE = 'page.createTeacherPage.location';
                     this.STEP3_STATE = 'page.createTeacherPage.map';
+                    this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.basic_info.help_text.title.text');
+                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.basic_info.help_text.description.text');
                     this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(1, 9);
+                    this.helpText = {
+                        title: this.HELP_TEXT_TITLE,
+                        description: this.HELP_TEXT_DESCRIPTION
+                    };
+                    this.sexObject = { sex: { code: '', value: '' } };
                     this.dateObject = { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } };
                     this.form = {
                         firstName: '',
@@ -2951,10 +3030,24 @@ var app;
                         about: ''
                     };
                     this.listMonths = this.getDataFromJson.getMonthi18n();
+                    this.listSexs = this.getDataFromJson.getSexi18n();
                     this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
                     this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
-                    this.error = {
-                        message: ''
+                    this.validate = {
+                        firstName: { valid: true, message: '' },
+                        lastName: { valid: true, message: '' },
+                        email: { valid: true, message: '' },
+                        phoneNumber: { valid: true, message: '' },
+                        sex: { valid: true, message: '' },
+                        birthDate: {
+                            day: { valid: true, message: '' },
+                            month: { valid: true, message: '' },
+                            year: { valid: true, message: '' },
+                            valid: true,
+                            message: ''
+                        },
+                        born: { valid: true, message: '' },
+                        about: { valid: true, message: '' }
                     };
                     this.activate();
                 };
@@ -2963,17 +3056,136 @@ var app;
                     this._subscribeToEvents();
                 };
                 TeacherInfoSectionController.prototype.goToNext = function () {
-                    this._setDataModelFromForm();
-                    this.$scope.$emit('Save Data');
-                    this.$state.go(this.STEP2_STATE, { reload: true });
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this._setDataModelFromForm();
+                        this.$scope.$emit('Save Data');
+                        this.$state.go(this.STEP2_STATE, { reload: true });
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                TeacherInfoSectionController.prototype._validateForm = function () {
+                    var NULL_ENUM = 3;
+                    var EMPTY_ENUM = 4;
+                    var EMAIL_ENUM = 0;
+                    var NUMBER_ENUM = 2;
+                    var formValid = true;
+                    var firstName_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.firstName = this.functionsUtilService.validator(this.form.firstName, firstName_rules);
+                    if (!this.validate.firstName.valid) {
+                        formValid = this.validate.firstName.valid;
+                    }
+                    var lastName_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.lastName = this.functionsUtilService.validator(this.form.lastName, lastName_rules);
+                    if (!this.validate.lastName.valid) {
+                        formValid = this.validate.lastName.valid;
+                    }
+                    var email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
+                    this.validate.email = this.functionsUtilService.validator(this.form.email, email_rules);
+                    if (!this.validate.email.valid) {
+                        formValid = this.validate.email.valid;
+                    }
+                    var phoneNumber_rules = [NULL_ENUM, EMPTY_ENUM, NUMBER_ENUM];
+                    var onlyNum = this.form.phoneNumber.replace(/\D+/g, "");
+                    onlyNum = parseInt(onlyNum) || '';
+                    this.validate.phoneNumber = this.functionsUtilService.validator(onlyNum, phoneNumber_rules);
+                    if (!this.validate.phoneNumber.valid) {
+                        formValid = this.validate.phoneNumber.valid;
+                    }
+                    var sex_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.sex = this.functionsUtilService.validator(this.sexObject.sex.code, sex_rules);
+                    if (!this.validate.sex.valid) {
+                        formValid = this.validate.sex.valid;
+                    }
+                    var day_birthdate_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.birthDate.day = this.functionsUtilService.validator(this.dateObject.day.value, day_birthdate_rules);
+                    if (!this.validate.birthDate.day.valid) {
+                        formValid = this.validate.birthDate.day.valid;
+                        this.validate.birthDate.valid = this.validate.birthDate.day.valid;
+                        this.validate.birthDate.message = this.validate.birthDate.day.message;
+                    }
+                    var month_birthdate_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.birthDate.month = this.functionsUtilService.validator(this.dateObject.month.code, month_birthdate_rules);
+                    if (!this.validate.birthDate.month.valid) {
+                        formValid = this.validate.birthDate.month.valid;
+                        this.validate.birthDate.valid = this.validate.birthDate.month.valid;
+                        this.validate.birthDate.message = this.validate.birthDate.month.message;
+                    }
+                    var year_birthdate_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.birthDate.year = this.functionsUtilService.validator(this.dateObject.year.value, year_birthdate_rules);
+                    if (!this.validate.birthDate.year.valid) {
+                        formValid = this.validate.birthDate.year.valid;
+                        this.validate.birthDate.valid = this.validate.birthDate.year.valid;
+                        this.validate.birthDate.message = this.validate.birthDate.year.message;
+                    }
+                    var born_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.born = this.functionsUtilService.validator(this.form.born, born_rules);
+                    if (!this.validate.born.valid) {
+                        formValid = this.validate.born.valid;
+                    }
+                    return formValid;
+                };
+                TeacherInfoSectionController.prototype.changeHelpText = function (type) {
+                    var NAME_TITLE = this.$filter('translate')('%create.teacher.basic_info.help_text.name.title.text');
+                    var NAME_DESCRIPTION = this.$filter('translate')('%create.teacher.basic_info.help_text.name.description.text');
+                    var EMAIL_TITLE = this.$filter('translate')('%create.teacher.basic_info.help_text.email.title.text');
+                    var EMAIL_DESCRIPTION = this.$filter('translate')('%create.teacher.basic_info.help_text.email.description.text');
+                    var PHONE_NUMBER_TITLE = this.$filter('translate')('%create.teacher.basic_info.help_text.phone_number.title.text');
+                    var PHONE_NUMBER_DESCRIPTION = this.$filter('translate')('%create.teacher.basic_info.help_text.phone_number.description.text');
+                    var SEX_TITLE = this.$filter('translate')('%create.teacher.basic_info.help_text.gender.title.text');
+                    var SEX_DESCRIPTION = this.$filter('translate')('%create.teacher.basic_info.help_text.gender.description.text');
+                    var BIRTHDATE_TITLE = this.$filter('translate')('%create.teacher.basic_info.help_text.birthdate.title.text');
+                    var BIRTHDATE_DESCRIPTION = this.$filter('translate')('%create.teacher.basic_info.help_text.birthdate.description.text');
+                    var BORN_TITLE = this.$filter('translate')('%create.teacher.basic_info.help_text.born.title.text');
+                    var BORN_DESCRIPTION = this.$filter('translate')('%create.teacher.basic_info.help_text.born.description.text');
+                    var ABOUT_TITLE = this.$filter('translate')('%create.teacher.basic_info.help_text.about.title.text');
+                    var ABOUT_DESCRIPTION = this.$filter('translate')('%create.teacher.basic_info.help_text.about.description.text');
+                    switch (type) {
+                        case 'default':
+                            this.helpText.title = this.HELP_TEXT_TITLE;
+                            this.helpText.description = this.HELP_TEXT_DESCRIPTION;
+                            break;
+                        case 'firstName':
+                        case 'lastName':
+                            this.helpText.title = NAME_TITLE;
+                            this.helpText.description = NAME_DESCRIPTION;
+                            break;
+                        case 'email':
+                            this.helpText.title = EMAIL_TITLE;
+                            this.helpText.description = EMAIL_DESCRIPTION;
+                            break;
+                        case 'phoneNumber':
+                            this.helpText.title = PHONE_NUMBER_TITLE;
+                            this.helpText.description = PHONE_NUMBER_DESCRIPTION;
+                            break;
+                        case 'sex':
+                            this.helpText.title = SEX_TITLE;
+                            this.helpText.description = SEX_DESCRIPTION;
+                            break;
+                        case 'birthDate':
+                            this.helpText.title = BIRTHDATE_DESCRIPTION;
+                            this.helpText.description = BIRTHDATE_DESCRIPTION;
+                            break;
+                        case 'born':
+                            this.helpText.title = BORN_TITLE;
+                            this.helpText.description = BORN_DESCRIPTION;
+                            break;
+                        case 'about':
+                            this.helpText.title = ABOUT_TITLE;
+                            this.helpText.description = ABOUT_DESCRIPTION;
+                            break;
+                    }
                 };
                 TeacherInfoSectionController.prototype._setDataModelFromForm = function () {
                     var dateFormatted = this.functionsUtilService.joinDate(this.dateObject.day.value, this.dateObject.month.code, this.dateObject.year.value);
+                    var sexCode = this.sexObject.sex.code;
                     this.$scope.$parent.vm.teacherData.FirstName = this.form.firstName;
                     this.$scope.$parent.vm.teacherData.LastName = this.form.lastName;
                     this.$scope.$parent.vm.teacherData.Email = this.form.email;
                     this.$scope.$parent.vm.teacherData.PhoneNumber = this.form.phoneNumber;
-                    this.$scope.$parent.vm.teacherData.Sex = this.form.sex;
+                    this.$scope.$parent.vm.teacherData.Sex = sexCode;
                     this.$scope.$parent.vm.teacherData.BirthDate = dateFormatted;
                     this.$scope.$parent.vm.teacherData.Born = this.form.born;
                     this.$scope.$parent.vm.teacherData.About = this.form.about;
@@ -2985,7 +3197,7 @@ var app;
                         self.form.lastName = args.LastName;
                         self.form.email = args.Email;
                         self.form.phoneNumber = args.PhoneNumber;
-                        self.form.sex = args.Sex;
+                        self.sexObject.sex.code = args.Sex;
                         var date = self.functionsUtilService.splitDate(args.BirthDate);
                         self.dateObject.day.value = parseInt(date.day);
                         self.dateObject.month.code = date.month;
@@ -3001,6 +3213,7 @@ var app;
                 'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
                 '$state',
+                '$filter',
                 '$scope'
             ];
             createTeacherPage.TeacherInfoSectionController = TeacherInfoSectionController;
