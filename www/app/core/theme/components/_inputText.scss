@@ -111,12 +111,16 @@
         }
 
         &--default {
-            padding: map-get($input-paddings, default);
+            //padding: map-get($input-paddings, default);
+            //Testing
+            padding: 12px;
             padding-right: $select-padding;
         }
 
         &--large {
-            padding: map-get($input-paddings, large);
+            //padding: map-get($input-paddings, large);
+            //Testing
+            padding: 15px;
             padding-right: $select-padding;
             font-size: $input-font-size-large;
         }

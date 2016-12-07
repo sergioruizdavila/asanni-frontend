@@ -1,6 +1,7 @@
 {
     "__GLOBAL__":"",
     "%global.zone": "es-ES",
+    "%global.save.button.text": "Save",
     "%global.next.button.text": "Siguiente",
     "%global.back.button.text": "Volver",
     "%global.add_more.button.text": "+ Agregar más",
@@ -18,6 +19,17 @@
     "__NOTIFICATION__": "",
     "%notification.success.text": "Guardado Exitoso!",
     "%notification.error.server.text": "Estamos teniendo un problema, por favor intentelo nuevamente",
+
+    "__MODALS__": "",
+    "%modal.experience.title.text": "Agregar/Editar una experiencia",
+    "%modal.experience.form.position.text": "Cargo",
+    "%modal.experience.form.company.text": "Empresa/Lugar de trabajo",
+    "%modal.experience.form.country.text": "Pais",
+    "%modal.experience.form.city.text": "Ciudad",
+    "%modal.experience.form.date_start.text": "Fecha de inicio",
+    "%modal.experience.form.date_finish.text": "Fecha de final",
+    "%modal.experience.form.description.text": "Cuentanos de tu experiencia",
+    "%modal.experience.form.description.placeholder.text": "e.g. Yo enseñaba a personas de todo el mundo, nos reunimos en los parques y museos para tener una immersion completa.",
 
     "__STUDENT LANDING PAGE__":"",
     "%landing.student.puv": "Sumérgete en otra cultura",

@@ -1,6 +1,7 @@
 {
     "__GLOBAL__": "",
     "%global.zone": "en-US",
+    "%global.save.button.text": "Save",
     "%global.next.button.text": "Next",
     "%global.back.button.text": "Back",
     "%global.add_more.button.text": "+ Add More",
@@ -18,6 +19,17 @@
     "__NOTIFICATION__": "",
     "%notification.success.text": "Successfully saved!",
     "%notification.error.server.text": "Server error occurred, try again please",
+
+    "__MODALS__": "",
+    "%modal.experience.title.text": "Add/Edit Experience",
+    "%modal.experience.form.position.text": "Position",
+    "%modal.experience.form.company.text": "Company/Workspace",
+    "%modal.experience.form.country.text": "Country",
+    "%modal.experience.form.city.text": "City",
+    "%modal.experience.form.date_start.text": "Date Start",
+    "%modal.experience.form.date_finish.text": "Date Finish",
+    "%modal.experience.form.description.text": "Tell us about your experience",
+    "%modal.experience.form.description.placeholder.text": "e.g. I taught people from all over the world, we met in parks and museums to have a complete immersion.",
 
     "__STUDENT LANDING PAGE__": "",
     "%landing.student.puv": "Immerse yourself in another culture",

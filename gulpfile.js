@@ -43,6 +43,7 @@ var paths = {
         "www/components/modal/modal.config.js",
         "www/components/modal/modalMeetingPoint/modalMeetingPoint.controller.js",
         "www/components/modal/modalLanguages/modalLanguages.controller.js",
+        "www/components/modal/modalExperience/modalExperience.controller.js",
         "www/app/pages/main/main.config.js",
         "www/app/pages/main/main.controller.js",
         "www/app/pages/studentLandingPage/studentLandingPage.config.js",

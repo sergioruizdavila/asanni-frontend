@@ -60,22 +60,26 @@ module app.pages.createTeacherPage {
 
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = [
+            'dataConfig',
             'mainApp.core.util.GetDataStaticJsonService',
             'mainApp.core.util.FunctionsUtilService',
             '$state',
             '$filter',
-            '$scope'
+            '$scope',
+            '$uibModal'
         ];
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
+            private dataConfig: IDataConfig,
             private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
             private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
-            private $scope: ITeacherExperienceScope) {
+            private $scope: ITeacherExperienceScope,
+            private $uibModal: ng.ui.bootstrap.IModalService) {
                 this._init();
         }
 
@@ -243,6 +247,46 @@ module app.pages.createTeacherPage {
                 break;
             }
 
+        }
+
+
+
+        /**
+        * _addNewExperience
+        * @description - open Modal in order to add a New Languages on Box
+        * @use - this._addNewLanguages();
+        * @function
+        * @return {void}
+        */
+        private _addNewExperience(index): void {
+            let self = this;
+            // modal default options
+            let options: ng.ui.bootstrap.IModalSettings = {
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                templateUrl: this.dataConfig.modalExperienceTmpl,
+                controller: 'mainApp.components.modal.ModalExperienceController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            experience: self.form.experiences[index]
+                        }
+                    }
+                }
+            };
+
+            var modalInstance = this.$uibModal.open(options);
+
+            //When Modal closed, return the new experience data
+            modalInstance.result.then(function (newExperience) {
+                self.form.experiences.push(newExperience);
+            }, function () {
+                console.info('Modal dismissed at: ' + new Date());
+            });
+
+            event.preventDefault();
         }
 
 

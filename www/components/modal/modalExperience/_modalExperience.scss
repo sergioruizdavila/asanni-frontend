@@ -1,0 +1,24 @@
+/*************************/
+/*       VARIABLES       */
+/*************************/
+$modalExperience-map-height: 200px;
+
+
+/**********************************************************/
+/*             ADD NEW TEACHER EXPERIENCE  MODAL          */
+/**********************************************************/
+
+.modalExperience {
+
+    &__content {
+
+        &__map-block {
+
+            .location-map {
+                height: $modalExperience-map-height;
+            }
+
+        }
+
+    }
+}

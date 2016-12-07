@@ -5,12 +5,14 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherExperienceSectionController = (function () {
-                function TeacherExperienceSectionController(getDataFromJson, functionsUtilService, $state, $filter, $scope) {
+                function TeacherExperienceSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope, $uibModal) {
+                    this.dataConfig = dataConfig;
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$uibModal = $uibModal;
                     this._init();
                 }
                 TeacherExperienceSectionController.prototype._init = function () {
@@ -97,6 +99,30 @@ var app;
                             break;
                     }
                 };
+                TeacherExperienceSectionController.prototype._addNewExperience = function (index) {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalExperienceTmpl,
+                        controller: 'mainApp.components.modal.ModalExperienceController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    experience: self.form.experiences[index]
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function (newExperience) {
+                        self.form.experiences.push(newExperience);
+                    }, function () {
+                        console.info('Modal dismissed at: ' + new Date());
+                    });
+                    event.preventDefault();
+                };
                 TeacherExperienceSectionController.prototype._setDataModelFromForm = function () {
                     this.$scope.$parent.vm.teacherData.Type = this.form.type;
                     this.$scope.$parent.vm.teacherData.TeacherSince = this.form.teacherSince;
@@ -113,11 +139,13 @@ var app;
             }());
             TeacherExperienceSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherExperienceSectionController';
             TeacherExperienceSectionController.$inject = [
+                'dataConfig',
                 'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
                 '$state',
                 '$filter',
-                '$scope'
+                '$scope',
+                '$uibModal'
             ];
             createTeacherPage.TeacherExperienceSectionController = TeacherExperienceSectionController;
             angular

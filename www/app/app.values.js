@@ -6,6 +6,7 @@
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
         modalLanguagesTmpl: 'components/modal/modalLanguages/modalLanguages.html',
+        modalExperienceTmpl: 'components/modal/modalExperience/modalExperience.html',
         userId: ''
     };
     angular

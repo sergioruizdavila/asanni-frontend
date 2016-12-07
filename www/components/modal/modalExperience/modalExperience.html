@@ -1,0 +1,161 @@
+<!----------------------------------------------------->
+<!--       ADD NEW TEACHER EXPERIENCE POINT MODAL    -->
+<!----------------------------------------------------->
+
+<div class="ma-box modalExperience">
+
+    <!--                               TITLE                                 -->
+    <!------------------------------------------------------------------------->
+    <h4 class="ma-box__title margin-reset">
+        <span translate>%modal.experience.title.text</span>
+        <div class="ma-box__title__right-block pull-right">
+            <i class="material-icons
+                      md-18
+                      md-dark md-dark--clicked"
+                      ng-click="vm.close()">close</i>
+        </div>
+    </h4>
+
+
+    <!--                              CONTENT                                -->
+    <!------------------------------------------------------------------------->
+    <div class="ma-box__content modalExperience__content">
+
+        <!--                 START: ADD EXPERIENCE FORM BLOCK                -->
+        <!--------------------------------------------------------------------->
+        <form  id="modalExperience-form-block" class="ma-form
+                                                      ma-form--basic">
+
+            <!-- Position Input Text -->
+            <div class="form-group ma-form-group">
+                <label for="position-experience-input" translate>
+                    %modal.experience.form.position.text
+                </label>
+                <input id="position-experience-input" type="text"
+                        class="ma-input
+                                ma-input--large" placeholder="e.g. English Teacher">
+            </div>
+
+            <!-- Company/Workplace Input Text -->
+            <div class="form-group ma-form-group">
+                <label for="company-experience-input" translate>
+                    %modal.experience.form.company.text
+                </label>
+                <input id="company-experience-input" type="text"
+                        class="ma-input
+                                ma-input--large"
+                        placeholder="e.g. Early Birds Institute / Velvet Cafe">
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-8">
+                    <!-- Country Select List -->
+                    <div class="form-group ma-form-group">
+                        <label for="country-experience-input" translate>
+                            %modal.experience.form.country.text
+                        </label>
+                        <div class="ma-select-container
+                                    ma-select-container--large">
+                            <select id="country-experience-input"
+                                    class="ma-input ma-select
+                                           ma-select--large"
+                                    name="experience[country]">
+                                <option value="">Islas Georgia del Sur y Sandwich del Sur</option>
+                                <option value="Male" selected="selected">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <!-- City Input Text -->
+                    <div class="form-group ma-form-group">
+                        <label for="city-experience-input" translate>
+                            %modal.experience.form.city.text
+                        </label>
+                        <input id="city-experience-input" type="text"
+                                class="ma-input
+                                        ma-input--large">
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                    <!-- Date Start Select List -->
+                    <div class="form-group ma-form-group">
+                        <label for="dateStart-experience-input" translate>
+                            %modal.experience.form.date_start.text
+                        </label>
+                        <div class="ma-select-container
+                                    ma-select-container--large">
+                            <select id="dateStart-experience-input"
+                                    class="ma-input ma-select
+                                           ma-select--large"
+                                    name="experience[dateStart]">
+                                <option value="">2017</option>
+                                <option value="Male" selected="selected">2016</option>
+                                <option value="Female">2015</option>
+                                <option value="Other">2014</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 text-left">
+                    <!-- Date Finish Select List -->
+                    <div class="form-group ma-form-group">
+                        <label for="dateFinish-experience-input" translate>
+                            %modal.experience.form.date_finish.text
+                        </label>
+                        <div class="ma-select-container
+                                    ma-select-container--large">
+                            <select id="dateFinish-experience-input"
+                                    class="ma-input ma-select
+                                           ma-select--large"
+                                    name="experience[dateFinish]">
+                                <option value="">2017</option>
+                                <option value="Male" selected="selected">2016</option>
+                                <option value="Female">2015</option>
+                                <option value="Other">2014</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        <!--                END: ADD MEETING POINT FORM BLOCK                -->
+
+        <hr>
+
+        <div id="modalExperience-description-block">
+            <!-- Description Input -->
+            <div class="form-group ma-form-group">
+                <label class="space-top-4 space-2" translate>
+                    %modal.experience.form.description.text
+                </label>
+                <textarea id="description-experience-input"
+                          name="user_profile_info[about]"
+                          class="ma-input ma-input--large ma-textarea"
+                          translate
+                          translate-attr-placeholder="%modal.experience.form.description.placeholder.text"
+                          rows="4" cols="20"></textarea>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!--                              FOOTER                                 -->
+    <!------------------------------------------------------------------------->
+    <div class="ma-box__footer text-center">
+        <button class="ma-btn ma-btn--primary ma-btn--large" translate>
+            %global.save.button.text
+        </button>
+    </div>
+
+</div>
