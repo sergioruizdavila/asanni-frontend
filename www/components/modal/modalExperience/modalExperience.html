@@ -33,7 +33,15 @@
                 </label>
                 <input id="position-experience-input" type="text"
                         class="ma-input
-                                ma-input--large" placeholder="e.g. English Teacher">
+                                ma-input--large"
+                        ng-class="{'ma-input--invalid': !vm.validate.position.valid}"
+                        ng-model="vm.form.position"
+                        autofocus
+                        placeholder="e.g. English Teacher">
+                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                   ng-show="!vm.validate.position.valid">
+                    <span>{{vm.validate.position.message}}</span>
+                </p>
             </div>
 
             <!-- Company/Workplace Input Text -->
@@ -44,7 +52,13 @@
                 <input id="company-experience-input" type="text"
                         class="ma-input
                                 ma-input--large"
+                        ng-class="{'ma-input--invalid': !vm.validate.company.valid}"
+                        ng-model="vm.form.company"
                         placeholder="e.g. Early Birds Institute / Velvet Cafe">
+                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                   ng-show="!vm.validate.company.valid">
+                    <span>{{vm.validate.company.message}}</span>
+                </p>
             </div>
 
             <div class="row">
@@ -59,12 +73,18 @@
                             <select id="country-experience-input"
                                     class="ma-input ma-select
                                            ma-select--large"
-                                    name="experience[country]">
-                                <option value="">Islas Georgia del Sur y Sandwich del Sur</option>
-                                <option value="Male" selected="selected">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
+                                    ng-model="vm.countryObject"
+                                    ng-options="country.value | translate for country in vm.listCountries track by country.code"
+                                    ng-class="{'ma-input--invalid': !vm.validate.country.valid}"
+                                    name="experience[country]" class="form-control">
+                                    <option value="" disabled selected translate>
+                                        %create.teacher.location.form.cntry.option_list.text
+                                    </option>
                             </select>
+                            <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                ng-show="!vm.validate.country.valid">
+                                <span>{{vm.validate.country.message}}</span>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -75,8 +95,14 @@
                             %modal.experience.form.city.text
                         </label>
                         <input id="city-experience-input" type="text"
+                                ng-model="vm.form.city"
                                 class="ma-input
-                                        ma-input--large">
+                                ma-input--large"
+                                ng-class="{'ma-input--invalid': !vm.validate.city.valid}">
+                        <p class="ma-p ma-p--small ma-p--alert pull-right"
+                           ng-show="!vm.validate.city.valid">
+                            <span>{{vm.validate.city.message}}</span>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -95,12 +121,19 @@
                             <select id="dateStart-experience-input"
                                     class="ma-input ma-select
                                            ma-select--large"
-                                    name="experience[dateStart]">
-                                <option value="">2017</option>
-                                <option value="Male" selected="selected">2016</option>
-                                <option value="Female">2015</option>
-                                <option value="Other">2014</option>
+                                    ng-model="vm.startYearObject"
+                                    ng-class="{'ma-input--invalid': !vm.validate.dateStart.valid}"
+                                    ng-options="year.value for year in vm.listStartYears track by year.value"
+                                    name="experience[dateStart]"
+                                    class="form-control">
+                                    <option value="" disabled selected>
+                                        yyyy
+                                    </option>
                             </select>
+                            <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                ng-show="!vm.validate.dateStart.valid">
+                                <span>{{vm.validate.dateStart.message}}</span>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -115,12 +148,19 @@
                             <select id="dateFinish-experience-input"
                                     class="ma-input ma-select
                                            ma-select--large"
-                                    name="experience[dateFinish]">
-                                <option value="">2017</option>
-                                <option value="Male" selected="selected">2016</option>
-                                <option value="Female">2015</option>
-                                <option value="Other">2014</option>
+                                    ng-model="vm.finishYearObject"
+                                    ng-class="{'ma-input--invalid': !vm.validate.dateFinish.valid}"
+                                    ng-options="year.value for year in vm.listFinishYears track by year.value"
+                                    name="experience[dateFinish]"
+                                    class="form-control">
+                                    <option value="" disabled selected>
+                                        yyyy
+                                    </option>
                             </select>
+                            <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                ng-show="!vm.validate.dateFinish.valid">
+                                <span>{{vm.validate.dateFinish.message}}</span>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -138,7 +178,8 @@
                     %modal.experience.form.description.text
                 </label>
                 <textarea id="description-experience-input"
-                          name="user_profile_info[about]"
+                          name="teacher_experience[description]"
+                          ng-model="vm.form.description"
                           class="ma-input ma-input--large ma-textarea"
                           translate
                           translate-attr-placeholder="%modal.experience.form.description.placeholder.text"
@@ -153,7 +194,8 @@
     <!--                              FOOTER                                 -->
     <!------------------------------------------------------------------------->
     <div class="ma-box__footer text-center">
-        <button class="ma-btn ma-btn--primary ma-btn--large" translate>
+        <button class="ma-btn ma-btn--primary ma-btn--large"
+                ng-click="vm.save()" translate>
             %global.save.button.text
         </button>
     </div>

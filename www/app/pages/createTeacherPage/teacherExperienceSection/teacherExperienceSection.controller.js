@@ -28,10 +28,10 @@ var app;
                     };
                     this.form = {
                         type: 'H',
-                        teacherSince: '',
                         experiences: []
                     };
                     this.listYears = this.functionsUtilService.buildNumberSelectList(1957, 2017);
+                    this.yearObject = { value: '' };
                     this._hobbyChecked = { type: 'H', checked: true };
                     this._professionalChecked = { type: 'P', checked: false };
                     this.validate = {
@@ -56,21 +56,39 @@ var app;
                         window.scrollTo(0, 0);
                     }
                 };
+                TeacherExperienceSectionController.prototype.goToBack = function () {
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this._setDataModelFromForm();
+                        this.$scope.$emit('Save Data');
+                        this.$state.go(this.STEP3_STATE, { reload: true });
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
                 TeacherExperienceSectionController.prototype._checkType = function (key) {
                     var type = key.type;
                     if (type === 'H') {
                         this._professionalChecked.checked = false;
                         this._hobbyChecked.checked = true;
+                        this.form.type = this._hobbyChecked.type;
                     }
                     else {
                         this._professionalChecked.checked = true;
                         this._hobbyChecked.checked = false;
+                        this.form.type = this._professionalChecked.type;
                     }
                 };
                 TeacherExperienceSectionController.prototype._validateForm = function () {
                     var NULL_ENUM = 3;
                     var EMPTY_ENUM = 4;
                     var formValid = true;
+                    var teacher_since_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.teacherSince = this.functionsUtilService.validator(this.yearObject.value, teacher_since_rules);
+                    if (!this.validate.teacherSince.valid) {
+                        formValid = this.validate.teacherSince.valid;
+                    }
                     return formValid;
                 };
                 TeacherExperienceSectionController.prototype.changeHelpText = function (type) {
@@ -110,7 +128,8 @@ var app;
                         resolve: {
                             dataSetModal: function () {
                                 return {
-                                    experience: self.form.experiences[index]
+                                    experience: self.form.experiences[index],
+                                    teacherId: self.$scope.$parent.vm.teacherData.Id
                                 };
                             }
                         }
@@ -125,13 +144,21 @@ var app;
                 };
                 TeacherExperienceSectionController.prototype._setDataModelFromForm = function () {
                     this.$scope.$parent.vm.teacherData.Type = this.form.type;
-                    this.$scope.$parent.vm.teacherData.TeacherSince = this.form.teacherSince;
+                    this.$scope.$parent.vm.teacherData.TeacherSince = this.yearObject.value;
                 };
                 TeacherExperienceSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self.form.type = args.Type;
-                        self.form.teacherSince = args.TeacherSince;
+                        self.form.type = args.Type || 'H';
+                        if (self.form.type === 'H') {
+                            self._professionalChecked.checked = false;
+                            self._hobbyChecked.checked = true;
+                        }
+                        else {
+                            self._professionalChecked.checked = true;
+                            self._hobbyChecked.checked = false;
+                        }
+                        self.yearObject.value = args.TeacherSince;
                         self.form.experiences = args.Experiences;
                     });
                 };

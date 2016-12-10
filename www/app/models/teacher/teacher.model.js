@@ -240,6 +240,19 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
+                Object.defineProperty(Experience.prototype, "City", {
+                    get: function () {
+                        return this.city;
+                    },
+                    set: function (city) {
+                        if (city === undefined) {
+                            throw 'Please supply city experience';
+                        }
+                        this.city = city;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 Object.defineProperty(Experience.prototype, "DateStart", {
                     get: function () {
                         return this.dateStart;

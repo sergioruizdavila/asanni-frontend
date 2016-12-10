@@ -264,6 +264,15 @@ module app.models.teacher {
             this.country = country;
         }
 
+        get City() {
+            return this.city;
+        }
+
+        set City(city: string) {
+            if (city === undefined) { throw 'Please supply city experience'; }
+            this.city = city;
+        }
+
         get DateStart() {
             return this.dateStart;
         }

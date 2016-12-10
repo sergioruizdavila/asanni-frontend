@@ -24,7 +24,6 @@ module app.pages.createTeacherPage {
 
     export interface ITeacherExperienceForm {
         type: string;
-        teacherSince: string;
         experiences: Array<app.models.teacher.Experience>;
     }
 
@@ -48,6 +47,7 @@ module app.pages.createTeacherPage {
         validate: ITeacherExperienceValidate;
         helpText: app.core.interfaces.IHelpTextStep;
         listYears: Array<app.core.interfaces.ISelectListElement>;
+        yearObject: app.core.interfaces.ISelectListElement;
         private _hobbyChecked: any;
         private _professionalChecked: any;
         STEP3_STATE: string;
@@ -105,12 +105,14 @@ module app.pages.createTeacherPage {
             //Init form
             this.form = {
                 type: 'H',
-                teacherSince: '',
                 experiences: []
             };
 
             // Build Years select lists
             this.listYears = this.functionsUtilService.buildNumberSelectList(1957, 2017);
+
+            //
+            this.yearObject = {value: ''};
 
             // Init type of teacher checks
             this._hobbyChecked = {type:'H', checked: true};
@@ -167,6 +169,28 @@ module app.pages.createTeacherPage {
 
 
         /**
+        * goToBack
+        * @description - go to back step
+        * @function
+        * @return void
+        */
+        goToBack(): void {
+            //Validate data form
+            let formValid = this._validateForm();
+            //If form is valid, save data model
+            if(formValid) {
+                this._setDataModelFromForm();
+                this.$scope.$emit('Save Data');
+                this.$state.go(this.STEP3_STATE, {reload: true});
+            } else {
+                //Go top pages
+                window.scrollTo(0, 0);
+            }
+        }
+
+
+
+        /**
         * _checkType
         * @description - select a type of teacher
         * @use - this._checkType();
@@ -176,12 +200,14 @@ module app.pages.createTeacherPage {
         */
         private _checkType(key): void {
             let type = key.type;
-            if(type === 'H'){
+            if(type === 'H') {
                 this._professionalChecked.checked = false;
                 this._hobbyChecked.checked = true;
+                this.form.type = this._hobbyChecked.type;
             } else {
                 this._professionalChecked.checked = true;
                 this._hobbyChecked.checked = false;
+                this.form.type = this._professionalChecked.type;
             }
         }
 
@@ -201,6 +227,13 @@ module app.pages.createTeacherPage {
             /***************************************************/
             //VARIABLES
             let formValid = true;
+
+            //Validate 'Year' Teacher Since fields
+            let teacher_since_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.teacherSince = this.functionsUtilService.validator(this.yearObject.value, teacher_since_rules);
+            if(!this.validate.teacherSince.valid) {
+                formValid = this.validate.teacherSince.valid;
+            }
 
             return formValid;
         }
@@ -271,7 +304,8 @@ module app.pages.createTeacherPage {
                     //one way to send data from this scope to modal
                     dataSetModal: function () {
                         return {
-                            experience: self.form.experiences[index]
+                            experience: self.form.experiences[index],
+                            teacherId: self.$scope.$parent.vm.teacherData.Id
                         }
                     }
                 }
@@ -305,7 +339,7 @@ module app.pages.createTeacherPage {
 
             // Send data to parent (createTeacherPage)
             this.$scope.$parent.vm.teacherData.Type = this.form.type;
-            this.$scope.$parent.vm.teacherData.TeacherSince = this.form.teacherSince;
+            this.$scope.$parent.vm.teacherData.TeacherSince = this.yearObject.value;
             //this.$scope.$parent.vm.teacherData.Experiences = this.form.experiences;
         }
 
@@ -330,8 +364,17 @@ module app.pages.createTeacherPage {
             * @event
             */
             this.$scope.$on('Fill Form', function(event, args: app.models.teacher.Teacher) {
-                self.form.type = args.Type;
-                self.form.teacherSince = args.TeacherSince;
+                self.form.type = args.Type || 'H';
+                if(self.form.type === 'H') {
+                    self._professionalChecked.checked = false;
+                    self._hobbyChecked.checked = true;
+                } else {
+                    self._professionalChecked.checked = true;
+                    self._hobbyChecked.checked = false;
+                }
+
+                self.yearObject.value = args.TeacherSince;
+                
                 self.form.experiences = args.Experiences;
             });
         }

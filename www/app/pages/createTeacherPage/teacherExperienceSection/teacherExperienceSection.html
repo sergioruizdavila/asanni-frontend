@@ -69,7 +69,11 @@
                     <hr>
 
                     <form class="form-inline">
-                        <div class="row">
+
+                        <!-- Teacher Since Input -->
+                        <div id="teacher-since-experience"
+                             ng-mouseover="vm.changeHelpText('teacherSince')"
+                             class="row">
                             <div class="col-md-3"></div>
 
                             <div class="col-md-6">
@@ -86,7 +90,8 @@
                                             <select id="teacher-year-since"
                                                     class="ma-input ma-select
                                                            ma-select--large"
-                                                    ng-model="vm.dateObject.year"
+                                                    ng-model="vm.yearObject"
+                                                    ng-class="{'ma-input--invalid': !vm.validate.teacherSince.valid}"
                                                     ng-options="year.value for year in vm.listYears track by year.value"
                                                     name="teacher[teacher_since]"
                                                     class="form-control">
@@ -94,6 +99,10 @@
                                                         yyyy
                                                     </option>
                                             </select>
+                                            <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                                ng-show="!vm.validate.teacherSince.valid">
+                                                <span>{{vm.validate.teacherSince.message}}</span>
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -106,7 +115,9 @@
                     <hr>
 
                     <!-- Experiences List -->
-                    <div class="row space-top-5">
+                    <div id="teacher-experiencesList-experience"
+                         ng-mouseover="vm.changeHelpText('experiences')"
+                         class="row space-top-5">
                         <div class="col-md-12">
                             <!-- Experience Box -->
                             <div class="form-group ma-form-group">
@@ -127,15 +138,18 @@
                                             ma-labels-box--dashed">
 
                                     <div id="teacher-experience"
-                                         class="row margin-reset teacher-experience-box__item-block">
+                                         class="row margin-reset teacher-experience-box__item-block"
+                                         ng-repeat="experience in vm.form.experiences">
                                         <div class="col-md-12 padding-reset">
                                             <div class="row margin-reset space-top-2">
                                                 <div class="col-md-12 padding-reset">
                                                     <div class="row margin-reset">
                                                         <div class="col-md-12">
-                                                            <h4 class="margin-reset pull-left">English Teacher</h4>
+                                                            <h4 class="margin-reset pull-left">
+                                                                {{experience.position}}
+                                                            </h4>
                                                             <p class="ma-p ma-p--small pull-right">
-                                                                2010 - 2012
+                                                                {{experience.dateStart}} - {{experience.dateFinish}}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -147,7 +161,7 @@
                                                     <div class="row margin-reset">
                                                         <div class="col-md-12">
                                                             <h5 class="margin-reset text-left">
-                                                                Colombia Immersion
+                                                                {{experience.company}}
                                                             </h5>
                                                         </div>
                                                     </div>
@@ -159,7 +173,7 @@
                                                     <div class="row margin-reset">
                                                         <div class="col-md-12">
                                                             <p class="ma-p ma-p--small margin-reset text-left">
-                                                                Envigado, Colombia
+                                                                {{experience.city}}, {{experience.country}}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -171,7 +185,7 @@
                                                     <div class="row margin-reset">
                                                         <div class="col-md-12">
                                                             <p class="ma-p ma-p--default margin-reset text-left">
-                                                                Di clases intensivas para jovenes extranjeros, donde aplicabamos metodologias muy dinamicas, como juego de cartas, immersion en las noche para conocer a los lugareños de la ciudad...
+                                                                {{experience.description}}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -181,116 +195,6 @@
                                     </div>
 
                                     <hr class="margin-reset">
-
-                                    <div id="teacher-experience"
-                                         class="row margin-reset teacher-experience-box__item-block">
-                                        <div class="col-md-12 padding-reset">
-                                            <div class="row margin-reset space-top-2">
-                                                <div class="col-md-12 padding-reset">
-                                                    <div class="row margin-reset">
-                                                        <div class="col-md-12">
-                                                            <h4 class="margin-reset pull-left">English Teacher</h4>
-                                                            <p class="ma-p ma-p--small pull-right">
-                                                                2010 - 2012
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row margin-reset">
-                                                <div class="col-md-12 padding-reset">
-                                                    <div class="row margin-reset">
-                                                        <div class="col-md-12">
-                                                            <h5 class="margin-reset text-left">
-                                                                Colombia Immersion
-                                                            </h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row margin-reset">
-                                                <div class="col-md-12 padding-reset">
-                                                    <div class="row margin-reset">
-                                                        <div class="col-md-12">
-                                                            <p class="ma-p ma-p--small margin-reset text-left">
-                                                                Envigado, Colombia
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row margin-reset space-top-2">
-                                                <div class="col-md-12 padding-reset">
-                                                    <div class="row margin-reset">
-                                                        <div class="col-md-12">
-                                                            <p class="ma-p ma-p--default margin-reset text-left">
-                                                                Di clases intensivas para jovenes extranjeros, donde aplicabamos metodologias muy dinamicas, como juego de cartas, immersion en las noche para conocer a los lugareños de la ciudad...
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <hr class="margin-reset">
-
-                                    <div id="teacher-experience"
-                                         class="row margin-reset teacher-experience-box__item-block">
-                                        <div class="col-md-12 padding-reset">
-                                            <div class="row margin-reset space-top-2">
-                                                <div class="col-md-12 padding-reset">
-                                                    <div class="row margin-reset">
-                                                        <div class="col-md-12">
-                                                            <h4 class="margin-reset pull-left">English Teacher</h4>
-                                                            <p class="ma-p ma-p--small pull-right">
-                                                                2010 - 2012
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row margin-reset">
-                                                <div class="col-md-12 padding-reset">
-                                                    <div class="row margin-reset">
-                                                        <div class="col-md-12">
-                                                            <h5 class="margin-reset text-left">
-                                                                Colombia Immersion
-                                                            </h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row margin-reset">
-                                                <div class="col-md-12 padding-reset">
-                                                    <div class="row margin-reset">
-                                                        <div class="col-md-12">
-                                                            <p class="ma-p ma-p--small margin-reset text-left">
-                                                                Envigado, Colombia
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row margin-reset space-top-2">
-                                                <div class="col-md-12 padding-reset">
-                                                    <div class="row margin-reset">
-                                                        <div class="col-md-12">
-                                                            <p class="ma-p ma-p--default margin-reset text-left">
-                                                                Di clases intensivas para jovenes extranjeros, donde aplicabamos metodologias muy dinamicas, como juego de cartas, immersion en las noche para conocer a los lugareños de la ciudad...
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
                                 </div>
                                 <div class="row margin-reset">
@@ -314,17 +218,29 @@
 
                     <div class="row middle-xs">
 
-                        <div class="col-md-4"></div>
+                        <div class="col-md-4 text-left">
+
+                            <button class="ma-btn
+                                           ma-btn--transparent
+                                           ma-btn--medium
+                                           ma-btn--withIcon"
+                                      ng-click="vm.goToBack()">
+                                <i class="material-icons md-18 md-dark">
+                                    keyboard_backspace
+                                </i>
+                                <span translate>%global.back.button.text</span>
+                            </button>
+
+                        </div>
 
                         <div class="col-md-4"></div>
 
                         <div class="col-md-4 text-right">
 
                             <button class="ma-btn
-                                      ma-btn--primary
-                                      ma-btn--large"
-                                ng-click="vm.goToNext()"
-                                translate>
+                                           ma-btn--primary
+                                           ma-btn--large"
+                                    ng-click="vm.goToNext()" translate>
                                %global.next.button.text
                            </button>
 
