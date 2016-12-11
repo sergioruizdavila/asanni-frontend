@@ -43,6 +43,7 @@ var paths = {
         "www/components/modal/modal.config.js",
         "www/components/modal/modalMeetingPoint/modalMeetingPoint.controller.js",
         "www/components/modal/modalLanguages/modalLanguages.controller.js",
+        "www/components/modal/modalExperience/modalExperience.controller.js",
         "www/app/pages/main/main.config.js",
         "www/app/pages/main/main.controller.js",
         "www/app/pages/studentLandingPage/studentLandingPage.config.js",
@@ -73,7 +74,9 @@ var paths = {
         "www/app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.config.js",
         "www/app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.controller.js",
         "www/app/pages/createTeacherPage/teacherLanguageSection/teacherLanguageSection.config.js",
-        "www/app/pages/createTeacherPage/teacherLanguageSection/teacherLanguageSection.controller.js"
+        "www/app/pages/createTeacherPage/teacherLanguageSection/teacherLanguageSection.controller.js",
+        "www/app/pages/createTeacherPage/teacherExperienceSection/teacherExperienceSection.config.js",
+        "www/app/pages/createTeacherPage/teacherExperienceSection/teacherExperienceSection.controller.js"
     ],
     appLibsJs: [
         'www/libs/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',

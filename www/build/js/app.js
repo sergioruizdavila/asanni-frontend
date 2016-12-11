@@ -36,7 +36,7 @@
             prefix: prefix,
             suffix: suffix
         });
-        $translateProvider.preferredLanguage('es');
+        $translateProvider.preferredLanguage('en');
     }
 })();
 //# sourceMappingURL=app.module.js.map
@@ -60,6 +60,7 @@
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
         modalLanguagesTmpl: 'components/modal/modalLanguages/modalLanguages.html',
+        modalExperienceTmpl: 'components/modal/modalExperience/modalExperience.html',
         userId: ''
     };
     angular
@@ -477,7 +478,12 @@ var app;
                         return res;
                     },
                     responseError: function (rejection) {
-                        messageUtil.error(rejection.data.Message);
+                        if (rejection.data) {
+                            messageUtil.error(rejection.data.Message);
+                        }
+                        else {
+                            messageUtil.error('');
+                        }
                         return rejection;
                     }
                 };
@@ -1066,6 +1072,18 @@ var app;
                     console.log('Teacher Model instanced');
                     _this = _super.call(this, obj) || this;
                     _this.languages = new Language(obj.languages);
+                    _this.type = obj.type || '';
+                    _this.teacherSince = obj.teacherSince || '';
+                    if (obj != {}) {
+                        _this.experiences = [];
+                        for (var key in obj.experiences) {
+                            var experienceInstance = new Experience(obj.experiences[key]);
+                            _this.addExperience(experienceInstance);
+                        }
+                    }
+                    else {
+                        _this.experiences = [];
+                    }
                     return _this;
                 }
                 Object.defineProperty(Teacher.prototype, "Languages", {
@@ -1081,6 +1099,55 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
+                Object.defineProperty(Teacher.prototype, "Type", {
+                    get: function () {
+                        return this.type;
+                    },
+                    set: function (type) {
+                        if (type === undefined) {
+                            throw 'Please supply type of teacher';
+                        }
+                        this.type = type;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Teacher.prototype, "TeacherSince", {
+                    get: function () {
+                        return this.teacherSince;
+                    },
+                    set: function (teacherSince) {
+                        if (teacherSince === undefined) {
+                            throw 'Please supply teacher since';
+                        }
+                        this.teacherSince = teacherSince;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Teacher.prototype, "Experiences", {
+                    get: function () {
+                        return this.experiences;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Teacher.prototype.addExperience = function (experience) {
+                    if (experience === undefined) {
+                        throw 'Please supply experience value (Add)';
+                    }
+                    this.experiences.push(experience);
+                };
+                Teacher.prototype.editExperience = function (experience) {
+                    if (experience === undefined) {
+                        throw 'Please supply experience value (Edit)';
+                    }
+                    this.experiences.forEach(function (element, index, array) {
+                        if (experience.Id === element.Id) {
+                            array[index] = experience;
+                        }
+                    });
+                };
                 return Teacher;
             }(app.models.user.User));
             teacher.Teacher = Teacher;
@@ -1163,6 +1230,126 @@ var app;
                 return Language;
             }());
             teacher.Language = Language;
+            var Experience = (function () {
+                function Experience(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('Experience Model instanced');
+                    this.id = obj.id;
+                    this.position = obj.position || '';
+                    this.company = obj.company || '';
+                    this.country = obj.country || '';
+                    this.city = obj.city || '';
+                    this.dateStart = obj.dateStart || '';
+                    this.dateFinish = obj.dateFinish || '';
+                    this.description = obj.description || '';
+                }
+                Object.defineProperty(Experience.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply experience id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Experience.prototype, "Position", {
+                    get: function () {
+                        return this.position;
+                    },
+                    set: function (position) {
+                        if (position === undefined) {
+                            throw 'Please supply position on company';
+                        }
+                        this.position = position;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Experience.prototype, "Company", {
+                    get: function () {
+                        return this.company;
+                    },
+                    set: function (company) {
+                        if (company === undefined) {
+                            throw 'Please supply company experience';
+                        }
+                        this.company = company;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Experience.prototype, "Country", {
+                    get: function () {
+                        return this.country;
+                    },
+                    set: function (country) {
+                        if (country === undefined) {
+                            throw 'Please supply country experience';
+                        }
+                        this.country = country;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Experience.prototype, "City", {
+                    get: function () {
+                        return this.city;
+                    },
+                    set: function (city) {
+                        if (city === undefined) {
+                            throw 'Please supply city experience';
+                        }
+                        this.city = city;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Experience.prototype, "DateStart", {
+                    get: function () {
+                        return this.dateStart;
+                    },
+                    set: function (dateStart) {
+                        if (dateStart === undefined) {
+                            throw 'Please supply dateStart experience';
+                        }
+                        this.dateStart = dateStart;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Experience.prototype, "DateFinish", {
+                    get: function () {
+                        return this.dateFinish;
+                    },
+                    set: function (dateFinish) {
+                        if (dateFinish === undefined) {
+                            throw 'Please supply dateFinish experience';
+                        }
+                        this.dateFinish = dateFinish;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Experience.prototype, "Description", {
+                    get: function () {
+                        return this.description;
+                    },
+                    set: function (description) {
+                        if (description === undefined) {
+                            throw 'Please supply description experience';
+                        }
+                        this.description = description;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Experience;
+            }());
+            teacher.Experience = Experience;
         })(teacher = models.teacher || (models.teacher = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
@@ -1217,6 +1404,34 @@ var app;
                     var promise;
                     var url = 'teachers';
                     promise = this.restApi.update({ url: url, id: teacher.Id }, teacher)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
+                TeacherService.prototype.createExperience = function (teacherId, experience) {
+                    var promise;
+                    var url = 'teachers/' + teacherId + '/experiences';
+                    promise = this.restApi.create({ url: url }, experience)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
+                TeacherService.prototype.updateExperience = function (teacherId, experience) {
+                    var promise;
+                    var url = 'teachers/' + teacherId + '/experiences';
+                    promise = this.restApi.update({ url: url, id: experience.Id }, experience)
                         .$promise.then(function (response) {
                         return response;
                     }, function (error) {
@@ -1830,6 +2045,157 @@ var components;
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
 //# sourceMappingURL=modalLanguages.controller.js.map
+var components;
+(function (components) {
+    var modal;
+    (function (modal) {
+        var modalExperience;
+        (function (modalExperience) {
+            var ModalExperienceController = (function () {
+                function ModalExperienceController($uibModalInstance, dataSetModal, getDataFromJson, functionsUtilService, teacherService, $timeout, $filter) {
+                    this.$uibModalInstance = $uibModalInstance;
+                    this.dataSetModal = dataSetModal;
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
+                    this.teacherService = teacherService;
+                    this.$timeout = $timeout;
+                    this.$filter = $filter;
+                    this._init();
+                }
+                ModalExperienceController.prototype._init = function () {
+                    var self = this;
+                    this.experience = this.dataSetModal.experience || new app.models.teacher.Experience();
+                    this.countryObject = { code: this.experience.Country || '', value: '' };
+                    this.startYearObject = { value: this.experience.DateStart || '' };
+                    this.finishYearObject = { value: this.experience.DateFinish || '' };
+                    this.form = {
+                        position: this.experience.Position || '',
+                        company: this.experience.Company || '',
+                        country: this.experience.Country || '',
+                        city: this.experience.City || '',
+                        dateStart: this.experience.DateStart || '',
+                        dateFinish: this.experience.DateFinish || '',
+                        description: this.experience.Description || ''
+                    };
+                    this.listStartYears = this.functionsUtilService.buildNumberSelectList(1957, 2017);
+                    this.listFinishYears = this.functionsUtilService.buildNumberSelectList(1957, 2017);
+                    this.listCountries = this.getDataFromJson.getCountryi18n();
+                    this.validate = {
+                        position: { valid: true, message: '' },
+                        company: { valid: true, message: '' },
+                        country: { valid: true, message: '' },
+                        city: { valid: true, message: '' },
+                        dateStart: { valid: true, message: '' },
+                        dateFinish: { valid: true, message: '' },
+                        description: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                ModalExperienceController.prototype.activate = function () {
+                    console.log('modalExperience controller actived');
+                };
+                ModalExperienceController.prototype._validateForm = function () {
+                    var NULL_ENUM = 3;
+                    var EMPTY_ENUM = 4;
+                    var EMAIL_ENUM = 0;
+                    var formValid = true;
+                    var position_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.position = this.functionsUtilService.validator(this.form.position, position_rules);
+                    if (!this.validate.position.valid) {
+                        formValid = this.validate.position.valid;
+                    }
+                    var company_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.company = this.functionsUtilService.validator(this.form.company, company_rules);
+                    if (!this.validate.company.valid) {
+                        formValid = this.validate.company.valid;
+                    }
+                    var country_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.country = this.functionsUtilService.validator(this.countryObject.code, country_rules);
+                    if (!this.validate.country.valid) {
+                        formValid = this.validate.country.valid;
+                    }
+                    var city_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.city = this.functionsUtilService.validator(this.form.city, city_rules);
+                    if (!this.validate.city.valid) {
+                        formValid = this.validate.city.valid;
+                    }
+                    var start_year_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.dateStart = this.functionsUtilService.validator(this.startYearObject.value, start_year_rules);
+                    if (!this.validate.dateStart.valid) {
+                        formValid = this.validate.dateStart.valid;
+                    }
+                    var finish_year_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.dateFinish = this.functionsUtilService.validator(this.finishYearObject.value, finish_year_rules);
+                    if (!this.validate.dateFinish.valid) {
+                        formValid = this.validate.dateFinish.valid;
+                    }
+                    return formValid;
+                };
+                ModalExperienceController.prototype.save = function () {
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        var self_1 = this;
+                        var countryCode = this.countryObject.code;
+                        var startYear = this.startYearObject.value;
+                        var finishYear = this.finishYearObject.value;
+                        this.form.country = countryCode;
+                        this.form.dateStart = startYear;
+                        this.form.dateFinish = finishYear;
+                        this.experience.Position = this.form.position;
+                        this.experience.Country = this.form.country;
+                        this.experience.City = this.form.city;
+                        this.experience.Company = this.form.company;
+                        this.experience.DateStart = this.form.dateStart;
+                        this.experience.DateFinish = this.form.dateFinish;
+                        this.experience.Description = this.form.description;
+                        if (this.experience.Id) {
+                            this.teacherService.updateExperience(this.dataSetModal.teacherId, this.experience)
+                                .then(function (response) {
+                                if (response.id) {
+                                    self_1.$uibModalInstance.close();
+                                }
+                                else {
+                                }
+                            });
+                        }
+                        else {
+                            this.teacherService.createExperience(this.dataSetModal.teacherId, this.experience)
+                                .then(function (response) {
+                                if (response.id) {
+                                    self_1.experience.Id = response.id;
+                                    self_1.$uibModalInstance.close(self_1.experience);
+                                }
+                                else {
+                                }
+                            });
+                        }
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                ModalExperienceController.prototype.close = function () {
+                    this.$uibModalInstance.close();
+                    event.preventDefault();
+                };
+                return ModalExperienceController;
+            }());
+            ModalExperienceController.controllerId = 'mainApp.components.modal.ModalExperienceController';
+            ModalExperienceController.$inject = [
+                '$uibModalInstance',
+                'dataSetModal',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.models.teacher.TeacherService',
+                '$timeout',
+                '$filter'
+            ];
+            angular.module('mainApp.components.modal')
+                .controller(ModalExperienceController.controllerId, ModalExperienceController);
+        })(modalExperience = modal.modalExperience || (modal.modalExperience = {}));
+    })(modal = components.modal || (components.modal = {}));
+})(components || (components = {}));
+//# sourceMappingURL=modalExperience.controller.js.map
 (function () {
     'use strict';
     angular
@@ -3007,9 +3373,7 @@ var app;
                     this._init();
                 }
                 TeacherInfoSectionController.prototype._init = function () {
-                    this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
                     this.STEP2_STATE = 'page.createTeacherPage.location';
-                    this.STEP3_STATE = 'page.createTeacherPage.map';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.basic_info.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.basic_info.help_text.description.text');
                     this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(1, 9);
@@ -3741,3 +4105,210 @@ var app;
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
 //# sourceMappingURL=teacherLanguageSection.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.createTeacherPage')
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.createTeacherPage.experience', {
+            url: '/experience',
+            views: {
+                'step': {
+                    templateUrl: 'app/pages/createTeacherPage/teacherExperienceSection/teacherExperienceSection.html',
+                    controller: 'mainApp.pages.createTeacherPage.TeacherExperienceSectionController',
+                    controllerAs: 'vm'
+                }
+            },
+            cache: false
+        });
+    }
+})();
+//# sourceMappingURL=teacherExperienceSection.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var createTeacherPage;
+        (function (createTeacherPage) {
+            var TeacherExperienceSectionController = (function () {
+                function TeacherExperienceSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope, $uibModal) {
+                    this.dataConfig = dataConfig;
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
+                    this.$state = $state;
+                    this.$filter = $filter;
+                    this.$scope = $scope;
+                    this.$uibModal = $uibModal;
+                    this._init();
+                }
+                TeacherExperienceSectionController.prototype._init = function () {
+                    this.STEP3_STATE = 'page.createTeacherPage.language';
+                    this.STEP5_STATE = 'page.createTeacherPage.method';
+                    this.STEP_ALTER_STATE = 'page.createTeacherPage.education';
+                    this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.title.text');
+                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.description.text');
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(4, 9);
+                    this.helpText = {
+                        title: this.HELP_TEXT_TITLE,
+                        description: this.HELP_TEXT_DESCRIPTION
+                    };
+                    this.form = {
+                        type: 'H',
+                        experiences: []
+                    };
+                    this.listYears = this.functionsUtilService.buildNumberSelectList(1957, 2017);
+                    this.yearObject = { value: '' };
+                    this._hobbyChecked = { type: 'H', checked: true };
+                    this._professionalChecked = { type: 'P', checked: false };
+                    this.validate = {
+                        type: { valid: true, message: '' },
+                        teacherSince: { valid: true, message: '' },
+                        experiences: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                TeacherExperienceSectionController.prototype.activate = function () {
+                    console.log('TeacherExperienceSectionController controller actived');
+                    this._subscribeToEvents();
+                };
+                TeacherExperienceSectionController.prototype.goToNext = function () {
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this._setDataModelFromForm();
+                        this.$scope.$emit('Save Data');
+                        this.$state.go(this.STEP5_STATE, { reload: true });
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                TeacherExperienceSectionController.prototype.goToBack = function () {
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this._setDataModelFromForm();
+                        this.$scope.$emit('Save Data');
+                        this.$state.go(this.STEP3_STATE, { reload: true });
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                TeacherExperienceSectionController.prototype._checkType = function (key) {
+                    var type = key.type;
+                    if (type === 'H') {
+                        this._professionalChecked.checked = false;
+                        this._hobbyChecked.checked = true;
+                        this.form.type = this._hobbyChecked.type;
+                    }
+                    else {
+                        this._professionalChecked.checked = true;
+                        this._hobbyChecked.checked = false;
+                        this.form.type = this._professionalChecked.type;
+                    }
+                };
+                TeacherExperienceSectionController.prototype._validateForm = function () {
+                    var NULL_ENUM = 3;
+                    var EMPTY_ENUM = 4;
+                    var formValid = true;
+                    var teacher_since_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.teacherSince = this.functionsUtilService.validator(this.yearObject.value, teacher_since_rules);
+                    if (!this.validate.teacherSince.valid) {
+                        formValid = this.validate.teacherSince.valid;
+                    }
+                    return formValid;
+                };
+                TeacherExperienceSectionController.prototype.changeHelpText = function (type) {
+                    var TYPE_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.type.title.text');
+                    var TYPE_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.type.description.text');
+                    var SINCE_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.teacher_since.title.text');
+                    var SINCE_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.teacher_since.description.text');
+                    var EXPERIENCES_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.experiences.title.text');
+                    var EXPERIENCES_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.experiences.description.text');
+                    switch (type) {
+                        case 'default':
+                            this.helpText.title = this.HELP_TEXT_TITLE;
+                            this.helpText.description = this.HELP_TEXT_DESCRIPTION;
+                            break;
+                        case 'type':
+                            this.helpText.title = TYPE_TITLE;
+                            this.helpText.description = TYPE_DESCRIPTION;
+                            break;
+                        case 'teacherSince':
+                            this.helpText.title = SINCE_TITLE;
+                            this.helpText.description = SINCE_DESCRIPTION;
+                            break;
+                        case 'experiences':
+                            this.helpText.title = EXPERIENCES_TITLE;
+                            this.helpText.description = EXPERIENCES_DESCRIPTION;
+                            break;
+                    }
+                };
+                TeacherExperienceSectionController.prototype._addNewExperience = function (index) {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalExperienceTmpl,
+                        controller: 'mainApp.components.modal.ModalExperienceController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    experience: self.form.experiences[index],
+                                    teacherId: self.$scope.$parent.vm.teacherData.Id
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function (newExperience) {
+                        if (newExperience) {
+                            self.form.experiences.push(newExperience);
+                        }
+                    }, function () {
+                        console.info('Modal dismissed at: ' + new Date());
+                    });
+                    event.preventDefault();
+                };
+                TeacherExperienceSectionController.prototype._setDataModelFromForm = function () {
+                    this.$scope.$parent.vm.teacherData.Type = this.form.type;
+                    this.$scope.$parent.vm.teacherData.TeacherSince = this.yearObject.value;
+                };
+                TeacherExperienceSectionController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Fill Form', function (event, args) {
+                        self.form.type = args.Type || 'H';
+                        if (self.form.type === 'H') {
+                            self._professionalChecked.checked = false;
+                            self._hobbyChecked.checked = true;
+                        }
+                        else {
+                            self._professionalChecked.checked = true;
+                            self._hobbyChecked.checked = false;
+                        }
+                        self.yearObject.value = args.TeacherSince;
+                        self.form.experiences = args.Experiences;
+                    });
+                };
+                return TeacherExperienceSectionController;
+            }());
+            TeacherExperienceSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherExperienceSectionController';
+            TeacherExperienceSectionController.$inject = [
+                'dataConfig',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                '$state',
+                '$filter',
+                '$scope',
+                '$uibModal'
+            ];
+            createTeacherPage.TeacherExperienceSectionController = TeacherExperienceSectionController;
+            angular
+                .module('mainApp.pages.createTeacherPage')
+                .controller(TeacherExperienceSectionController.controllerId, TeacherExperienceSectionController);
+        })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=teacherExperienceSection.controller.js.map

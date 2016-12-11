@@ -58,6 +58,34 @@ var app;
                     });
                     return promise;
                 };
+                TeacherService.prototype.createExperience = function (teacherId, experience) {
+                    var promise;
+                    var url = 'teachers/' + teacherId + '/experiences';
+                    promise = this.restApi.create({ url: url }, experience)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
+                TeacherService.prototype.updateExperience = function (teacherId, experience) {
+                    var promise;
+                    var url = 'teachers/' + teacherId + '/experiences';
+                    promise = this.restApi.update({ url: url, id: experience.Id }, experience)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
                 return TeacherService;
             }());
             TeacherService.serviceId = 'mainApp.models.teacher.TeacherService';

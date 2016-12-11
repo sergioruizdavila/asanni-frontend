@@ -105,6 +105,15 @@
             color: $label-box-secondary-font-color;
         }
 
+        ///OPACITY BOX
+        &--opacity {
+            cursor: pointer;
+            opacity: 0.3;
+            &:hover {
+                opacity: 1;
+            }
+        }
+
         ///CHECK BOX
         &--check {
             cursor: pointer;
@@ -112,6 +121,7 @@
                 background: 0 0;
                 background-color: $label-box-primary-background;
                 color: $label-box-primary-font-color;
+                opacity: 1;
             }
         }
 

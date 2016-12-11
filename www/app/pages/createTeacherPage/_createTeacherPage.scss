@@ -11,17 +11,27 @@ $createTeacher-mapBlock-height: 300px;
 /**********************************************************/
 
 .createTeacherPage {
-    padding-top: $createTeacher-padding;
-
     &__block {
-        margin-bottom: $createTeacher-block-margin;
-    }
 
-    &__sayHello {
-        label {
-            font-size: $createTeacher-block-sayHello-label-font-size;
-            font-weight: normal;
+        .teacher-experience-box {
+
+            &__item-block {
+                cursor: pointer;
+                padding-top: 20px;
+                &:hover {
+                    background-color: #f9f9f9;
+                    cursor: pointer;
+                }
+
+                &__description {
+                    @include text-truncate-multiline($font-size: 17px,
+                                                     $line-height: $paragraph-lineHeight,
+                                                     $lines-to-show: $paragraph-lines-to-show,
+                                                     $excerpt-bg: transparent);
+                }
+            }
         }
+
     }
 
     &__map-block {

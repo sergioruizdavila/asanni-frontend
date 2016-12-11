@@ -17,6 +17,8 @@ module app.models.teacher {
         getAllTeachers: () => angular.IPromise<any>;
         createTeacher: (teacher: app.models.teacher.Teacher) => angular.IPromise<any>;
         updateTeacher: (teacher: app.models.teacher.Teacher) => angular.IPromise<any>;
+        createExperience: (teacherId: string, experience: app.models.teacher.Experience) => angular.IPromise<any>;
+        updateExperience: (teacherId: string, experience: app.models.teacher.Experience) => angular.IPromise<any>;
     }
 
 
@@ -144,6 +146,68 @@ module app.models.teacher {
             var promise;
             let url = 'teachers';
             promise = this.restApi.update({ url: url, id: teacher.Id }, teacher)
+                .$promise.then(
+                    function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }
+                ).catch(
+                    function(err) {
+                        console.log(err);
+                        return err;
+                    }
+                );
+
+            return promise;
+        }
+
+
+
+        /**
+        * createExperience
+        * @description - create Teacher's experience entity on DB
+        * @function
+        * @params {string} teacherId - teacher Object
+        * @params {app.models.teacher.Experience} experience - experience Object
+        * @return {promise} promise - Return a promise of "Add Teacher's Experience Request".
+        * @return {object} response - Returns response about If request was success or error.
+        */
+        createExperience(teacherId, experience): angular.IPromise<any> {
+            var promise;
+            let url = 'teachers/' + teacherId + '/experiences';
+            promise = this.restApi.create({ url: url }, experience)
+                .$promise.then(
+                    function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }
+                ).catch(
+                    function(err) {
+                        console.log(err);
+                        return err;
+                    }
+                );
+
+            return promise;
+        }
+
+
+
+        /**
+        * updateExperience
+        * @description - update Teacher's Experience entity on DB
+        * @function
+        * @params {string} teacherId - teacher Object
+        * @params {app.models.teacher.Experience} experience - experience Object
+        * @return {promise} promise - Return a promise of "Update Teacher's Experience Request".
+        * @return {object} response - Returns response about If request was success or error.
+        */
+        updateExperience(teacherId, experience): ng.IPromise<any> {
+            var promise;
+            let url = 'teachers/' + teacherId + '/experiences';
+            promise = this.restApi.update({ url: url, id: experience.Id }, experience)
                 .$promise.then(
                     function (response) {
                         return response;
