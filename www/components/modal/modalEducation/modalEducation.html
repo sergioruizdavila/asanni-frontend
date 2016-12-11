@@ -1,0 +1,181 @@
+<!----------------------------------------------------->
+<!--         ADD NEW TEACHER EDUCATION MODAL         -->
+<!----------------------------------------------------->
+
+<div class="ma-box modalEducation">
+
+    <!--                               TITLE                                 -->
+    <!------------------------------------------------------------------------->
+    <h4 class="ma-box__title margin-reset">
+        <span translate>%modal.education.title.text</span>
+        <div class="ma-box__title__right-block pull-right">
+            <i class="material-icons
+                      md-18
+                      md-dark md-dark--clicked"
+                      ng-click="vm.close()">close</i>
+        </div>
+    </h4>
+
+
+    <!--                              CONTENT                                -->
+    <!------------------------------------------------------------------------->
+    <div class="ma-box__content modalEducation__content">
+
+        <!--                  START: ADD EDUCATION FORM BLOCK                -->
+        <!--------------------------------------------------------------------->
+        <form  id="modalEducation-form-block" class="ma-form
+                                                      ma-form--basic">
+
+            <!-- Degree Select List -->
+            <div class="form-group ma-form-group">
+              <label for="degree-education-input" translate>
+                  %modal.education.form.dg.text
+              </label>
+              <div class="ma-select-container
+                          ma-select-container--large">
+                  <select id="degree-education-input"
+                          class="ma-input ma-select
+                                 ma-select--large"
+                          ng-model="vm.degreeObject"
+                          ng-options="degree.value | translate for degree in vm.listDegrees track by degree.code"
+                          ng-class="{'ma-input--invalid': !vm.validate.degree.valid}"
+                          name="education[degree]" class="form-control">
+                          <option value="" disabled selected translate>
+                              %modal.education.form.dg.option_list.text
+                          </option>
+                  </select>
+                  <p class="ma-p ma-p--small ma-p--alert pull-right"
+                      ng-show="!vm.validate.degree.valid">
+                      <span>{{vm.validate.degree.message}}</span>
+                  </p>
+              </div>
+            </div>
+
+
+            <!-- Field of Study Input Text -->
+            <div class="form-group ma-form-group">
+                <label for="fieldStudy-education-input" translate>
+                    %modal.education.form.field_study.text
+                </label>
+                <input id="fieldStudy-education-input" type="text"
+                        class="ma-input
+                                ma-input--large"
+                        ng-class="{'ma-input--invalid': !vm.validate.fieldStudy.valid}"
+                        ng-model="vm.form.fieldStudy"
+                        translate
+                        translate-attr-placeholder="%modal.education.form.field_study.placeholder.text">
+                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                   ng-show="!vm.validate.fieldStudy.valid">
+                    <span>{{vm.validate.fieldStudy.message}}</span>
+                </p>
+            </div>
+
+            <!-- School/Institution Input Text -->
+            <div class="form-group ma-form-group">
+                <label for="school-education-input" translate>
+                    %modal.education.form.school.text
+                </label>
+                <input id="school-education-input" type="text"
+                        class="ma-input
+                                ma-input--large"
+                        ng-class="{'ma-input--invalid': !vm.validate.school.valid}"
+                        ng-model="vm.form.school"
+                        placeholder="e.g. University of Cambridge / University of Toronto">
+                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                   ng-show="!vm.validate.school.valid">
+                    <span>{{vm.validate.school.message}}</span>
+                </p>
+            </div>
+
+
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                    <!-- Date Start Select List -->
+                    <div class="form-group ma-form-group">
+                        <label for="dateStart-education-input" translate>
+                            %modal.experience.form.date_start.text
+                        </label>
+                        <div class="ma-select-container
+                                    ma-select-container--large">
+                            <select id="dateStart-education-input"
+                                    class="ma-input ma-select
+                                           ma-select--large"
+                                    ng-model="vm.startYearObject"
+                                    ng-class="{'ma-input--invalid': !vm.validate.dateStart.valid}"
+                                    ng-options="year.value for year in vm.listStartYears | orderBy:'value':true track by year.value"
+                                    name="education[dateStart]"
+                                    class="form-control">
+                                    <option value="" disabled selected>
+                                        yyyy
+                                    </option>
+                            </select>
+                            <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                ng-show="!vm.validate.dateStart.valid">
+                                <span>{{vm.validate.dateStart.message}}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 text-left">
+                    <!-- Date Finish Select List -->
+                    <div class="form-group ma-form-group">
+                        <label for="dateFinish-education-input" translate>
+                            %modal.experience.form.date_finish.text
+                        </label>
+                        <div class="ma-select-container
+                                    ma-select-container--large">
+                            <select id="dateFinish-education-input"
+                                    class="ma-input ma-select
+                                           ma-select--large"
+                                    ng-model="vm.finishYearObject"
+                                    ng-class="{'ma-input--invalid': !vm.validate.dateFinish.valid}"
+                                    ng-options="year.value for year in vm.listFinishYears | orderBy:'value':true track by year.value"
+                                    name="education[dateFinish]"
+                                    class="form-control">
+                                    <option value="" disabled selected>
+                                        yyyy
+                                    </option>
+                            </select>
+                            <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                ng-show="!vm.validate.dateFinish.valid">
+                                <span>{{vm.validate.dateFinish.message}}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="modalEducation-description-block">
+                <!-- Description Input -->
+                <div class="form-group ma-form-group">
+                    <label class="space-top-4 space-2" translate>
+                        %modal.education.form.description.text
+                    </label>
+                    <textarea id="description-education-input"
+                              name="teacher_education[description]"
+                              ng-model="vm.form.description"
+                              class="ma-input ma-input--large ma-textarea"
+                              translate
+                              translate-attr-placeholder="%modal.education.form.description.placeholder.text"
+                              rows="4" cols="20"></textarea>
+                </div>
+
+            </div>
+
+        </form>
+        <!--                  END: ADD EDUCATION FORM BLOCK                  -->
+
+    </div>
+
+
+    <!--                              FOOTER                                 -->
+    <!------------------------------------------------------------------------->
+    <div class="ma-box__footer text-center">
+        <button class="ma-btn ma-btn--primary ma-btn--large"
+                ng-click="vm.save()" translate>
+            %global.save.button.text
+        </button>
+    </div>
+
+</div>

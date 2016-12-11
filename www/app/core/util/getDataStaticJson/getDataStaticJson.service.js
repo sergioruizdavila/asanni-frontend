@@ -57,6 +57,17 @@ var app;
                         }
                         return array;
                     };
+                    GetDataStaticJsonService.prototype.getDegreei18n = function () {
+                        var jsonDoc = this.$translate.getTranslationTable();
+                        var array = [];
+                        for (var element in jsonDoc) {
+                            if (element.indexOf("degree") >= 0) {
+                                var code = element.replace(/%degree./g, '');
+                                array.push({ value: element, code: code });
+                            }
+                        }
+                        return array;
+                    };
                     return GetDataStaticJsonService;
                 }());
                 GetDataStaticJsonService.serviceId = 'mainApp.core.util.GetDataStaticJsonService';

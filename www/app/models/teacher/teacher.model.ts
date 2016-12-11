@@ -20,6 +20,8 @@ module app.models.teacher {
         private type: string;
         private teacherSince: string;
         private experiences: Array<Experience>;
+        private educations: Array<Education>;
+        private certificates: Array<Certificate>;
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -42,8 +44,22 @@ module app.models.teacher {
                     this.addExperience(experienceInstance);
                 }
 
+                this.educations = [];
+                for (let key in obj.educations) {
+                    let educationInstance = new Education(obj.educations[key]);
+                    this.addEducation(educationInstance);
+                }
+
+                this.certificates = [];
+                for (let key in obj.certificates) {
+                    let certificateInstance = new Certificate(obj.certificates[key]);
+                    this.addCertificate(certificateInstance);
+                }
+
             } else {
                 this.experiences = [];
+                this.educations = [];
+                this.certificates = [];
             }
 
         }
@@ -94,6 +110,44 @@ module app.models.teacher {
             this.experiences.forEach(function (element, index, array) {
                 if (experience.Id === element.Id) {
                     array[index] = experience;
+                }
+            });
+        }
+
+        get Educations() {
+            return this.educations;
+        }
+
+        addEducation(education: Education): void {
+            if(education === undefined) { throw 'Please supply education value (Add)'; }
+            this.educations.push(education);
+        }
+
+        editEducation(education: Education): void {
+            if(education === undefined) { throw 'Please supply education value (Edit)'; }
+            //Edit existing Education
+            this.educations.forEach(function (element, index, array) {
+                if (education.Id === element.Id) {
+                    array[index] = education;
+                }
+            });
+        }
+
+        get Certificates() {
+            return this.certificates;
+        }
+
+        addCertificate(certificate: Certificate): void {
+            if(certificate === undefined) { throw 'Please supply certificate value (Add)'; }
+            this.certificates.push(certificate);
+        }
+
+        editCertificate(certificate: Certificate): void {
+            if(certificate === undefined) { throw 'Please supply certificate value (Edit)'; }
+            //Edit existing Certificate
+            this.certificates.forEach(function (element, index, array) {
+                if (certificate.Id === element.Id) {
+                    array[index] = certificate;
                 }
             });
         }
@@ -297,6 +351,194 @@ module app.models.teacher {
 
         set Description(description: string) {
             if (description === undefined) { throw 'Please supply description experience'; }
+            this.description = description;
+        }
+
+
+    }
+
+
+
+    /************************************************/
+    /*           EDUCATION CLASS DEFINITION         */
+    /************************************************/
+
+    export class Education {
+
+        /*-- PROPERTIES --*/
+        private id: number;
+        private school: string;
+        private degree: string;
+        private fieldStudy: string;
+        private dateStart: string;
+        private dateFinish: string;
+        private description: string;
+
+        /**********************************/
+        /*           CONSTRUCTOR          */
+        /**********************************/
+        constructor(obj: any = {}) {
+            //LOG
+            console.log('Education Model instanced');
+
+            //init properties
+            this.id = obj.id;
+            this.school = obj.school || '';
+            this.degree = obj.degree || '';
+            this.fieldStudy = obj.fieldStudy || '';
+            this.dateStart = obj.dateStart || '';
+            this.dateFinish = obj.dateFinish || '';
+            this.description = obj.description || '';
+
+        }
+
+        /**********************************/
+        /*             METHODS            */
+        /**********************************/
+
+        get Id() {
+            return this.id;
+        }
+
+        set Id(id: number) {
+            if (id === undefined) { throw 'Please supply experience id'; }
+            this.id = id;
+        }
+
+        get School() {
+            return this.school;
+        }
+
+        set School(school: string) {
+            if (school === undefined) { throw 'Please supply school value (teacher education)'; }
+            this.school = school;
+        }
+
+        get Degree() {
+            return this.degree;
+        }
+
+        set Degree(degree: string) {
+            if (degree === undefined) { throw 'Please supply degree value (teacher education)'; }
+            this.degree = degree;
+        }
+
+        get FieldStudy() {
+            return this.fieldStudy;
+        }
+
+        set FieldStudy(fieldStudy: string) {
+            if (fieldStudy === undefined) { throw 'Please supply field of study value (teacher education)'; }
+            this.fieldStudy = fieldStudy;
+        }
+
+        get DateStart() {
+            return this.dateStart;
+        }
+
+        set DateStart(dateStart: string) {
+            if (dateStart === undefined) { throw 'Please supply dateStart experience'; }
+            this.dateStart = dateStart;
+        }
+
+        get DateFinish() {
+            return this.dateFinish;
+        }
+
+        set DateFinish(dateFinish: string) {
+            if (dateFinish === undefined) { throw 'Please supply dateFinish experience'; }
+            this.dateFinish = dateFinish;
+        }
+
+        get Description() {
+            return this.description;
+        }
+
+        set Description(description: string) {
+            if (description === undefined) { throw 'Please supply description experience'; }
+            this.description = description;
+        }
+
+
+    }
+
+
+
+    /************************************************/
+    /*          CERTIFICATE CLASS DEFINITION        */
+    /************************************************/
+
+    export class Certificate {
+
+        /*-- PROPERTIES --*/
+        private id: number;
+        private name: string;
+        private institution: string;
+        private dateReceived: string;
+        private description: string;
+
+        /**********************************/
+        /*           CONSTRUCTOR          */
+        /**********************************/
+        constructor(obj: any = {}) {
+            //LOG
+            console.log('Certificate Model instanced');
+
+            //init properties
+            this.id = obj.id;
+            this.name = obj.name || '';
+            this.institution = obj.institution || '';
+            this.dateReceived = obj.dateReceived || '';
+            this.description = obj.description || '';
+
+        }
+
+        /**********************************/
+        /*             METHODS            */
+        /**********************************/
+
+        get Id() {
+            return this.id;
+        }
+
+        set Id(id: number) {
+            if (id === undefined) { throw 'Please supply experience id'; }
+            this.id = id;
+        }
+
+        get Name() {
+            return this.name;
+        }
+
+        set Name(name: string) {
+            if (name === undefined) { throw 'Please supply name of certificate'; }
+            this.name = name;
+        }
+
+        get Institution() {
+            return this.institution;
+        }
+
+        set Institution(institution: string) {
+            if (institution === undefined) { throw 'Please supply institution of certificate'; }
+            this.institution = institution;
+        }
+
+        get DateReceived() {
+            return this.dateReceived;
+        }
+
+        set DateReceived(dateReceived: string) {
+            if (dateReceived === undefined) { throw 'Please supply dateReceived of certificate'; }
+            this.dateReceived = dateReceived;
+        }
+
+        get Description() {
+            return this.description;
+        }
+
+        set Description(description: string) {
+            if (description === undefined) { throw 'Please supply description of certificate'; }
             this.description = description;
         }
 

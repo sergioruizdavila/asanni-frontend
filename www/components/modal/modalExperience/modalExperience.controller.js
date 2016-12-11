@@ -50,7 +50,6 @@ var components;
                 ModalExperienceController.prototype._validateForm = function () {
                     var NULL_ENUM = 3;
                     var EMPTY_ENUM = 4;
-                    var EMAIL_ENUM = 0;
                     var formValid = true;
                     var position_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.position = this.functionsUtilService.validator(this.form.position, position_rules);

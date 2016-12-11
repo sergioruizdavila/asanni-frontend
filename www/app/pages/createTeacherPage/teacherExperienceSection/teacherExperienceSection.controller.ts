@@ -156,9 +156,13 @@ module app.pages.createTeacherPage {
             if(formValid) {
                 this._setDataModelFromForm();
                 this.$scope.$emit('Save Data');
-                // GO TO NEXT STEP
-                //TODO: Si escogio Profesional, deberia ir a this.STEP_ALTER_STATE
-                this.$state.go(this.STEP5_STATE, {reload: true});
+                // GO TO ALTERNATIVE STEP IF IS PROFESSIONAL TEACHER, IF NOT GO
+                // TO NEXT STEP
+                if(this.form.type === 'P'){
+                    this.$state.go(this.STEP_ALTER_STATE, {reload: true});
+                } else {
+                    this.$state.go(this.STEP5_STATE, {reload: true});
+                }
             } else {
                 //Go top pages
                 window.scrollTo(0, 0);
@@ -285,13 +289,13 @@ module app.pages.createTeacherPage {
 
 
         /**
-        * _addNewExperience
-        * @description - open Modal in order to add a New Languages on Box
-        * @use - this._addNewLanguages();
+        * _addEditExperience
+        * @description - open Modal in order to add a New Teacher's Experience on Box
+        * @use - this._addEditExperience();
         * @function
         * @return {void}
         */
-        private _addNewExperience(index): void {
+        private _addEditExperience(index): void {
             let self = this;
             // modal default options
             let options: ng.ui.bootstrap.IModalSettings = {

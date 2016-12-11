@@ -1,5 +1,5 @@
 <!----------------------------------------------------------------------------->
-<!--                         STEP 4 SECTION TEMPLATE                         -->
+<!--                         STEP 5 SECTION TEMPLATE                         -->
 <!----------------------------------------------------------------------------->
 
 
@@ -14,133 +14,40 @@
 
                 <h4 class="ma-box__title margin-reset"
                     ng-mouseover="vm.changeHelpText('default')" translate>
-                    %create.teacher.experience.title.text
+                    %create.teacher.education.title.text
                 </h4>
 
                 <div class="ma-box__content">
 
-                    <!-------------- START: EXPERIENCE INFO BLOCK ------------->
+                    <!--------------- START: EDUCATION INFO BLOCK ------------->
 
-                    <form class="ma-form ma-form--basic space-6" novalidate>
-
-                        <!-- Type of Teacher Input -->
-                        <div id="teacher-type-experience"
-                             ng-mouseover="vm.changeHelpText('type')"
-                             class="row">
-                             <div class="col-md-3"></div>
-                            <div class="col-md-6">
-                                <label for="teacher-type-experience"
-                                       class="space-2"
-                                       translate>
-                                    %create.teacher.experience.form.type.text
-                                </label>
-                                <div class="ma-label
-                                            ma-label--box
-                                            ma-label--box--secondary
-                                            ma-label--box--large
-                                            ma-label--box--block
-                                            ma-label--box--check
-                                            ma-label--box--opacity
-                                            ma-label--box--space5"
-                                     ng-class="{'ma-label--box--check--active' : vm._hobbyChecked.checked}"
-                                     ng-click="vm._checkType(vm._hobbyChecked)"
-                                     translate>
-                                    %create.teacher.experience.form.type.hobby_option.text
-                                </div>
-                                <div class="ma-label
-                                         ma-label--box
-                                         ma-label--box--secondary
-                                         ma-label--box--large
-                                         ma-label--box--block
-                                         ma-label--box--check
-                                         ma-label--box--opacity
-                                         ma-label--box--space5"
-                                     ng-class="{'ma-label--box--check--active' : vm._professionalChecked.checked}"
-                                     ng-click="vm._checkType(vm._professionalChecked)"
-                                     translate>
-                                    %create.teacher.experience.form.type.professional_option.text
-                                </div>
-                            </div>
-                            <div class="col-md-3"></div>
-                        </div>
-
-                    </form>
-
-                    <hr>
-
-                    <form class="form-inline">
-
-                        <!-- Teacher Since Input -->
-                        <div id="teacher-since-experience"
-                             ng-mouseover="vm.changeHelpText('teacherSince')"
-                             class="row">
-                            <div class="col-md-3"></div>
-
-                            <div class="col-md-6">
-                                <div class="row center-xs middle-xs">
-                                    <div class="col-md-6 text-right">
-                                        <label for="teacher-year-since" translate>
-                                            %create.teacher.experience.form.since.text
-                                        </label>
-                                    </div>
-                                    <div class="col-md-6 text-left">
-                                        <!-- Year -->
-                                        <div class="ma-select-container
-                                                    ma-select-container--large">
-                                            <select id="teacher-year-since"
-                                                    class="ma-input ma-select
-                                                           ma-select--large"
-                                                    ng-model="vm.yearObject"
-                                                    ng-class="{'ma-input--invalid': !vm.validate.teacherSince.valid}"
-                                                    ng-options="year.value for year in vm.listYears | orderBy:'value':true track by year.value"
-                                                    name="teacher[teacher_since]"
-                                                    class="form-control">
-                                                    <option value="" disabled selected>
-                                                        yyyy
-                                                    </option>
-                                            </select>
-                                            <p class="ma-p ma-p--small ma-p--alert pull-right"
-                                                ng-show="!vm.validate.teacherSince.valid">
-                                                <span>{{vm.validate.teacherSince.message}}</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3"></div>
-                        </div>
-                    </form>
-
-                    <hr>
-
-                    <!-- Experiences List -->
-                    <div id="teacher-experiencesList-experience"
-                         ng-mouseover="vm.changeHelpText('experiences')"
+                    <!-- Educations List -->
+                    <div id="teacher-educationsList-education"
+                         ng-mouseover="vm.changeHelpText('educations')"
                          class="row space-top-5">
                         <div class="col-md-12">
-                            <!-- Experience Box -->
+                            <!-- Education Box -->
                             <div class="form-group ma-form-group">
                                 <label class="text-left space-2">
-                                    <span translate>%create.teacher.experience.form.experience.text</span>
+                                    <span translate>%create.teacher.education.form.education.text</span>
                                     <a class="ma-link ma-link--box
                                               ma-link--box--primary
                                               pull-right"
                                        href="#"
-                                       ng-click="vm._addEditExperience()"
+                                       ng-click="vm._addEditEducation()"
                                        translate>
-                                        %create.teacher.experience.form.experience.add_button.text
+                                        %create.teacher.education.form.education.add_button.text
                                     </a>
                                 </label>
                                 <div class="text-left
-                                            teacher-experience-box
+                                            teacher-education-box
                                             ma-labels-box
                                             ma-labels-box--dashed">
 
-                                    <div id="teacher-experience"
-                                         class="row margin-reset teacher-experience-box__item-block"
-                                         ng-repeat="experience in vm.form.experiences track by $index"
-                                         ng-click="vm._addEditExperience($index)">
+                                    <div id="teacher-education"
+                                         class="row margin-reset teacher-education-box__item-block"
+                                         ng-repeat="education in vm.form.educations track by $index"
+                                         ng-click="vm._addEditEducation($index)">
 
                                         <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
                                             <div class="row margin-reset">
@@ -214,7 +121,7 @@
                                         <p class="ma-p ma-p--small
                                                   space-top-1 margin-reset"
                                            translate>
-                                            %create.teacher.experience.form.inline_help_text.experience.text
+                                            %create.teacher.education.form.inline_help_text.education.text
                                         </p>
                                     </div>
                                 </div>
@@ -222,7 +129,109 @@
                         </div>
                     </div>
 
-                    <!--              END: EXPERIENCE INFO BLOCK             -->
+                    <!--               END: EDUCATION INFO BLOCK             -->
+
+                    <hr>
+
+                    <!------------- START: CERTIFICATE INFO BLOCK ------------->
+
+                    <!-- Certificates List -->
+                    <div id="teacher-certificatesList-education"
+                         ng-mouseover="vm.changeHelpText('certificates')"
+                         class="row space-top-5">
+                        <div class="col-md-12">
+                            <!-- Certificate Box -->
+                            <div class="form-group ma-form-group">
+                                <label class="text-left space-2">
+                                    <span translate>%create.teacher.education.form.certificate.text</span>
+                                    <a class="ma-link ma-link--box
+                                              ma-link--box--primary
+                                              pull-right"
+                                       href="#"
+                                       ng-click="vm._addEditCertificate()"
+                                       translate>
+                                        %create.teacher.education.form.certificate.add_button.text
+                                    </a>
+                                </label>
+                                <div class="text-left
+                                            teacher-certificate-box
+                                            ma-labels-box
+                                            ma-labels-box--dashed">
+
+                                    <div id="teacher-certificate"
+                                         class="row margin-reset teacher-certificate-box__item-block"
+                                         ng-repeat="certificate in vm.form.certificates track by $index"
+                                         ng-click="vm._addEditCertificate($index)">
+
+                                        <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
+                                            <div class="row margin-reset">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
+                                                    <div class="row margin-reset">
+                                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                                            <h4 class="margin-reset pull-left">
+                                                                {{certificate.name}}
+                                                            </h4>
+                                                            <p class="ma-p ma-p--small pull-right">
+                                                                {{certificate.dateReceived}}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row margin-reset">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
+                                                    <div class="row margin-reset">
+                                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                                            <h5 class="margin-reset text-left">
+                                                                {{certificate.institution}}
+                                                            </h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row margin-reset space-top-2 space-2">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
+                                                    <div class="row margin-reset">
+                                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                                            <p class="ma-p
+                                                                      ma-p--default
+                                                                      margin-reset
+                                                                      text-left
+                                                                      teacher-certificate-box__item-block__description">
+                                                                {{certificate.description}}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <hr ng-if="$index + 1 < vm.form.certificates.length"
+                                                class="margin-reset"
+                                                style="margin: 0 10px;">
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                </div>
+                                <div class="row margin-reset">
+                                    <div class="col-sm-12 padding-reset">
+                                        <p class="ma-p ma-p--small
+                                                  space-top-1 margin-reset"
+                                           translate>
+                                            %create.teacher.education.form.inline_help_text.certificate.text
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--               END: EDUCATION INFO BLOCK             -->
 
                 </div>
 

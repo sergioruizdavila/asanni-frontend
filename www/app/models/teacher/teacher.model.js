@@ -25,9 +25,21 @@ var app;
                             var experienceInstance = new Experience(obj.experiences[key]);
                             _this.addExperience(experienceInstance);
                         }
+                        _this.educations = [];
+                        for (var key in obj.educations) {
+                            var educationInstance = new Education(obj.educations[key]);
+                            _this.addEducation(educationInstance);
+                        }
+                        _this.certificates = [];
+                        for (var key in obj.certificates) {
+                            var certificateInstance = new Certificate(obj.certificates[key]);
+                            _this.addCertificate(certificateInstance);
+                        }
                     }
                     else {
                         _this.experiences = [];
+                        _this.educations = [];
+                        _this.certificates = [];
                     }
                     return _this;
                 }
@@ -90,6 +102,52 @@ var app;
                     this.experiences.forEach(function (element, index, array) {
                         if (experience.Id === element.Id) {
                             array[index] = experience;
+                        }
+                    });
+                };
+                Object.defineProperty(Teacher.prototype, "Educations", {
+                    get: function () {
+                        return this.educations;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Teacher.prototype.addEducation = function (education) {
+                    if (education === undefined) {
+                        throw 'Please supply education value (Add)';
+                    }
+                    this.educations.push(education);
+                };
+                Teacher.prototype.editEducation = function (education) {
+                    if (education === undefined) {
+                        throw 'Please supply education value (Edit)';
+                    }
+                    this.educations.forEach(function (element, index, array) {
+                        if (education.Id === element.Id) {
+                            array[index] = education;
+                        }
+                    });
+                };
+                Object.defineProperty(Teacher.prototype, "Certificates", {
+                    get: function () {
+                        return this.certificates;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Teacher.prototype.addCertificate = function (certificate) {
+                    if (certificate === undefined) {
+                        throw 'Please supply certificate value (Add)';
+                    }
+                    this.certificates.push(certificate);
+                };
+                Teacher.prototype.editCertificate = function (certificate) {
+                    if (certificate === undefined) {
+                        throw 'Please supply certificate value (Edit)';
+                    }
+                    this.certificates.forEach(function (element, index, array) {
+                        if (certificate.Id === element.Id) {
+                            array[index] = certificate;
                         }
                     });
                 };
@@ -295,6 +353,190 @@ var app;
                 return Experience;
             }());
             teacher.Experience = Experience;
+            var Education = (function () {
+                function Education(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('Education Model instanced');
+                    this.id = obj.id;
+                    this.school = obj.school || '';
+                    this.degree = obj.degree || '';
+                    this.fieldStudy = obj.fieldStudy || '';
+                    this.dateStart = obj.dateStart || '';
+                    this.dateFinish = obj.dateFinish || '';
+                    this.description = obj.description || '';
+                }
+                Object.defineProperty(Education.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply experience id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Education.prototype, "School", {
+                    get: function () {
+                        return this.school;
+                    },
+                    set: function (school) {
+                        if (school === undefined) {
+                            throw 'Please supply school value (teacher education)';
+                        }
+                        this.school = school;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Education.prototype, "Degree", {
+                    get: function () {
+                        return this.degree;
+                    },
+                    set: function (degree) {
+                        if (degree === undefined) {
+                            throw 'Please supply degree value (teacher education)';
+                        }
+                        this.degree = degree;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Education.prototype, "FieldStudy", {
+                    get: function () {
+                        return this.fieldStudy;
+                    },
+                    set: function (fieldStudy) {
+                        if (fieldStudy === undefined) {
+                            throw 'Please supply field of study value (teacher education)';
+                        }
+                        this.fieldStudy = fieldStudy;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Education.prototype, "DateStart", {
+                    get: function () {
+                        return this.dateStart;
+                    },
+                    set: function (dateStart) {
+                        if (dateStart === undefined) {
+                            throw 'Please supply dateStart experience';
+                        }
+                        this.dateStart = dateStart;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Education.prototype, "DateFinish", {
+                    get: function () {
+                        return this.dateFinish;
+                    },
+                    set: function (dateFinish) {
+                        if (dateFinish === undefined) {
+                            throw 'Please supply dateFinish experience';
+                        }
+                        this.dateFinish = dateFinish;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Education.prototype, "Description", {
+                    get: function () {
+                        return this.description;
+                    },
+                    set: function (description) {
+                        if (description === undefined) {
+                            throw 'Please supply description experience';
+                        }
+                        this.description = description;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Education;
+            }());
+            teacher.Education = Education;
+            var Certificate = (function () {
+                function Certificate(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('Certificate Model instanced');
+                    this.id = obj.id;
+                    this.name = obj.name || '';
+                    this.institution = obj.institution || '';
+                    this.dateReceived = obj.dateReceived || '';
+                    this.description = obj.description || '';
+                }
+                Object.defineProperty(Certificate.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply experience id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Certificate.prototype, "Name", {
+                    get: function () {
+                        return this.name;
+                    },
+                    set: function (name) {
+                        if (name === undefined) {
+                            throw 'Please supply name of certificate';
+                        }
+                        this.name = name;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Certificate.prototype, "Institution", {
+                    get: function () {
+                        return this.institution;
+                    },
+                    set: function (institution) {
+                        if (institution === undefined) {
+                            throw 'Please supply institution of certificate';
+                        }
+                        this.institution = institution;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Certificate.prototype, "DateReceived", {
+                    get: function () {
+                        return this.dateReceived;
+                    },
+                    set: function (dateReceived) {
+                        if (dateReceived === undefined) {
+                            throw 'Please supply dateReceived of certificate';
+                        }
+                        this.dateReceived = dateReceived;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Certificate.prototype, "Description", {
+                    get: function () {
+                        return this.description;
+                    },
+                    set: function (description) {
+                        if (description === undefined) {
+                            throw 'Please supply description of certificate';
+                        }
+                        this.description = description;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Certificate;
+            }());
+            teacher.Certificate = Certificate;
         })(teacher = models.teacher || (models.teacher = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));

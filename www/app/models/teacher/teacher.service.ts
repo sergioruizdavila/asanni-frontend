@@ -19,6 +19,10 @@ module app.models.teacher {
         updateTeacher: (teacher: app.models.teacher.Teacher) => angular.IPromise<any>;
         createExperience: (teacherId: string, experience: app.models.teacher.Experience) => angular.IPromise<any>;
         updateExperience: (teacherId: string, experience: app.models.teacher.Experience) => angular.IPromise<any>;
+        createEducation: (teacherId: string, education: app.models.teacher.Education) => angular.IPromise<any>;
+        updateEducation: (teacherId: string, education: app.models.teacher.Education) => angular.IPromise<any>;
+        createCertificate: (teacherId: string, certificate: app.models.teacher.Certificate) => angular.IPromise<any>;
+        updateCertificate: (teacherId: string, certificate: app.models.teacher.Certificate) => angular.IPromise<any>;
     }
 
 
@@ -208,6 +212,130 @@ module app.models.teacher {
             var promise;
             let url = 'teachers/' + teacherId + '/experiences';
             promise = this.restApi.update({ url: url, id: experience.Id }, experience)
+                .$promise.then(
+                    function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }
+                ).catch(
+                    function(err) {
+                        console.log(err);
+                        return err;
+                    }
+                );
+
+            return promise;
+        }
+
+
+
+        /**
+        * createEducation
+        * @description - create Teacher's education entity on DB
+        * @function
+        * @params {string} teacherId - teacher Object
+        * @params {app.models.teacher.Education} education - education Object
+        * @return {promise} promise - Return a promise of "Add Teacher's Education Request".
+        * @return {object} response - Returns response about If request was success or error.
+        */
+        createEducation(teacherId, education): angular.IPromise<any> {
+            var promise;
+            let url = 'teachers/' + teacherId + '/educations';
+            promise = this.restApi.create({ url: url }, education)
+                .$promise.then(
+                    function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }
+                ).catch(
+                    function(err) {
+                        console.log(err);
+                        return err;
+                    }
+                );
+
+            return promise;
+        }
+
+
+
+        /**
+        * updateEducation
+        * @description - update Teacher's Education entity on DB
+        * @function
+        * @params {string} teacherId - teacher Object
+        * @params {app.models.teacher.Education} education - education Object
+        * @return {promise} promise - Return a promise of "Update Teacher's Education Request".
+        * @return {object} response - Returns response about If request was success or error.
+        */
+        updateEducation(teacherId, education): ng.IPromise<any> {
+            var promise;
+            let url = 'teachers/' + teacherId + '/educations';
+            promise = this.restApi.update({ url: url, id: education.Id }, education)
+                .$promise.then(
+                    function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }
+                ).catch(
+                    function(err) {
+                        console.log(err);
+                        return err;
+                    }
+                );
+
+            return promise;
+        }
+
+
+
+        /**
+        * createCertificate
+        * @description - create Teacher's certificate entity on DB
+        * @function
+        * @params {string} teacherId - teacher Object
+        * @params {app.models.teacher.Certificate} certificate - certificate Object
+        * @return {promise} promise - Return a promise of "Add Teacher's Certificate Request".
+        * @return {object} response - Returns response about If request was success or error.
+        */
+        createCertificate(teacherId, certificate): angular.IPromise<any> {
+            var promise;
+            let url = 'teachers/' + teacherId + '/certificates';
+            promise = this.restApi.create({ url: url }, certificate)
+                .$promise.then(
+                    function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }
+                ).catch(
+                    function(err) {
+                        console.log(err);
+                        return err;
+                    }
+                );
+
+            return promise;
+        }
+
+
+
+        /**
+        * updateCertificate
+        * @description - update Teacher's Certificate entity on DB
+        * @function
+        * @params {string} teacherId - teacher Object
+        * @params {app.models.teacher.Certificate} certificate - certificate Object
+        * @return {promise} promise - Return a promise of "Update Teacher's Certificate Request".
+        * @return {object} response - Returns response about If request was success or error.
+        */
+        updateCertificate(teacherId, certificate): ng.IPromise<any> {
+            var promise;
+            let url = 'teachers/' + teacherId + '/certificates';
+            promise = this.restApi.update({ url: url, id: certificate.Id }, certificate)
                 .$promise.then(
                     function (response) {
                         return response;

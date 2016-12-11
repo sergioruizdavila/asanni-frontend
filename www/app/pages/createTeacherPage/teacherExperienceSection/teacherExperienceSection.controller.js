@@ -50,7 +50,12 @@ var app;
                     if (formValid) {
                         this._setDataModelFromForm();
                         this.$scope.$emit('Save Data');
-                        this.$state.go(this.STEP5_STATE, { reload: true });
+                        if (this.form.type === 'P') {
+                            this.$state.go(this.STEP_ALTER_STATE, { reload: true });
+                        }
+                        else {
+                            this.$state.go(this.STEP5_STATE, { reload: true });
+                        }
                     }
                     else {
                         window.scrollTo(0, 0);
@@ -117,7 +122,7 @@ var app;
                             break;
                     }
                 };
-                TeacherExperienceSectionController.prototype._addNewExperience = function (index) {
+                TeacherExperienceSectionController.prototype._addEditExperience = function (index) {
                     var self = this;
                     var options = {
                         animation: false,

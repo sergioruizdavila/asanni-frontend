@@ -7,6 +7,8 @@
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
         modalLanguagesTmpl: 'components/modal/modalLanguages/modalLanguages.html',
         modalExperienceTmpl: 'components/modal/modalExperience/modalExperience.html',
+        modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
+        modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         userId: ''
     };
     angular
