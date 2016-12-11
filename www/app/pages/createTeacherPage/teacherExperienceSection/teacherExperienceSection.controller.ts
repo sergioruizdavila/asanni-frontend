@@ -342,7 +342,6 @@ module app.pages.createTeacherPage {
             // Send data to parent (createTeacherPage)
             this.$scope.$parent.vm.teacherData.Type = this.form.type;
             this.$scope.$parent.vm.teacherData.TeacherSince = this.yearObject.value;
-            //this.$scope.$parent.vm.teacherData.Experiences = this.form.experiences;
         }
 
 
