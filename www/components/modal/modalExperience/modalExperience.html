@@ -123,7 +123,7 @@
                                            ma-select--large"
                                     ng-model="vm.startYearObject"
                                     ng-class="{'ma-input--invalid': !vm.validate.dateStart.valid}"
-                                    ng-options="year.value for year in vm.listStartYears track by year.value"
+                                    ng-options="year.value for year in vm.listStartYears | orderBy:'value':true track by year.value"
                                     name="experience[dateStart]"
                                     class="form-control">
                                     <option value="" disabled selected>
@@ -150,7 +150,7 @@
                                            ma-select--large"
                                     ng-model="vm.finishYearObject"
                                     ng-class="{'ma-input--invalid': !vm.validate.dateFinish.valid}"
-                                    ng-options="year.value for year in vm.listFinishYears track by year.value"
+                                    ng-options="year.value for year in vm.listFinishYears | orderBy:'value':true track by year.value"
                                     name="experience[dateFinish]"
                                     class="form-control">
                                     <option value="" disabled selected>

@@ -315,7 +315,9 @@ module app.pages.createTeacherPage {
 
             //When Modal closed, return the new experience data
             modalInstance.result.then(function (newExperience) {
-                self.form.experiences.push(newExperience);
+                if(newExperience) {
+                    self.form.experiences.push(newExperience);
+                }
             }, function () {
                 console.info('Modal dismissed at: ' + new Date());
             });
@@ -374,7 +376,7 @@ module app.pages.createTeacherPage {
                 }
 
                 self.yearObject.value = args.TeacherSince;
-                
+
                 self.form.experiences = args.Experiences;
             });
         }

@@ -136,7 +136,9 @@ var app;
                     };
                     var modalInstance = this.$uibModal.open(options);
                     modalInstance.result.then(function (newExperience) {
-                        self.form.experiences.push(newExperience);
+                        if (newExperience) {
+                            self.form.experiences.push(newExperience);
+                        }
                     }, function () {
                         console.info('Modal dismissed at: ' + new Date());
                     });

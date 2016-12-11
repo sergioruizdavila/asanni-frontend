@@ -281,7 +281,7 @@ var app;
                 });
                 Object.defineProperty(Experience.prototype, "Description", {
                     get: function () {
-                        return this.dateFinish;
+                        return this.description;
                     },
                     set: function (description) {
                         if (description === undefined) {

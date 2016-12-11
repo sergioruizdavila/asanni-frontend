@@ -106,21 +106,21 @@ module components.modal.modalExperience {
             this.experience = this.dataSetModal.experience || new app.models.teacher.Experience();
 
             // Country Select List Structure
-            this.countryObject = {code: '', value: ''};
+            this.countryObject = {code: this.experience.Country || '', value: ''};
 
             // Years Select List Structure
-            this.startYearObject = {value: ''};
-            this.finishYearObject = {value: ''};
+            this.startYearObject = {value: this.experience.DateStart || ''};
+            this.finishYearObject = {value: this.experience.DateFinish || ''};
 
             //Init form
             this.form = {
-                position: '',
-                company: '',
-                country: '',
-                city: '',
-                dateStart: '',
-                dateFinish: '',
-                description: ''
+                position: this.experience.Position || '',
+                company: this.experience.Company || '',
+                country: this.experience.Country || '',
+                city: this.experience.City || '',
+                dateStart: this.experience.DateStart || '',
+                dateFinish: this.experience.DateFinish || '',
+                description: this.experience.Description || ''
             };
 
             // Build Years select lists
@@ -252,16 +252,31 @@ module components.modal.modalExperience {
                 this.experience.DateFinish = this.form.dateFinish;
                 this.experience.Description = this.form.description;
 
-                this.teacherService.createExperience(this.dataSetModal.teacherId, this.experience)
-                .then(
-                    function(response) {
-                        if(response.id) {
-                            self.$uibModalInstance.close(self.experience);
-                        } else {
-                            //error
+                if(this.experience.Id) {
+                    this.teacherService.updateExperience(this.dataSetModal.teacherId, this.experience)
+                    .then(
+                        function(response) {
+                            if(response.id) {
+                                self.$uibModalInstance.close();
+                            } else {
+                                //error
+                            }
                         }
-                    }
-                );
+                    );
+                } else {
+                    this.teacherService.createExperience(this.dataSetModal.teacherId, this.experience)
+                    .then(
+                        function(response) {
+                            if(response.id) {
+                                self.experience.Id = response.id;
+                                self.$uibModalInstance.close(self.experience);
+                            } else {
+                                //error
+                            }
+                        }
+                    );
+                }
+
             } else {
                 //Go top pages
                 window.scrollTo(0, 0);

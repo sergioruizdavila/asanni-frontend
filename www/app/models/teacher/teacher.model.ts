@@ -292,7 +292,7 @@ module app.models.teacher {
         }
 
         get Description() {
-            return this.dateFinish;
+            return this.description;
         }
 
         set Description(description: string) {

@@ -1336,7 +1336,7 @@ var app;
                 });
                 Object.defineProperty(Experience.prototype, "Description", {
                     get: function () {
-                        return this.dateFinish;
+                        return this.description;
                     },
                     set: function (description) {
                         if (description === undefined) {
@@ -2065,17 +2065,17 @@ var components;
                 ModalExperienceController.prototype._init = function () {
                     var self = this;
                     this.experience = this.dataSetModal.experience || new app.models.teacher.Experience();
-                    this.countryObject = { code: '', value: '' };
-                    this.startYearObject = { value: '' };
-                    this.finishYearObject = { value: '' };
+                    this.countryObject = { code: this.experience.Country || '', value: '' };
+                    this.startYearObject = { value: this.experience.DateStart || '' };
+                    this.finishYearObject = { value: this.experience.DateFinish || '' };
                     this.form = {
-                        position: '',
-                        company: '',
-                        country: '',
-                        city: '',
-                        dateStart: '',
-                        dateFinish: '',
-                        description: ''
+                        position: this.experience.Position || '',
+                        company: this.experience.Company || '',
+                        country: this.experience.Country || '',
+                        city: this.experience.City || '',
+                        dateStart: this.experience.DateStart || '',
+                        dateFinish: this.experience.DateFinish || '',
+                        description: this.experience.Description || ''
                     };
                     this.listStartYears = this.functionsUtilService.buildNumberSelectList(1957, 2017);
                     this.listFinishYears = this.functionsUtilService.buildNumberSelectList(1957, 2017);
@@ -2148,14 +2148,27 @@ var components;
                         this.experience.DateStart = this.form.dateStart;
                         this.experience.DateFinish = this.form.dateFinish;
                         this.experience.Description = this.form.description;
-                        this.teacherService.createExperience(this.dataSetModal.teacherId, this.experience)
-                            .then(function (response) {
-                            if (response.id) {
-                                self_1.$uibModalInstance.close(self_1.experience);
-                            }
-                            else {
-                            }
-                        });
+                        if (this.experience.Id) {
+                            this.teacherService.updateExperience(this.dataSetModal.teacherId, this.experience)
+                                .then(function (response) {
+                                if (response.id) {
+                                    self_1.$uibModalInstance.close();
+                                }
+                                else {
+                                }
+                            });
+                        }
+                        else {
+                            this.teacherService.createExperience(this.dataSetModal.teacherId, this.experience)
+                                .then(function (response) {
+                                if (response.id) {
+                                    self_1.experience.Id = response.id;
+                                    self_1.$uibModalInstance.close(self_1.experience);
+                                }
+                                else {
+                                }
+                            });
+                        }
                     }
                     else {
                         window.scrollTo(0, 0);
@@ -4251,7 +4264,9 @@ var app;
                     };
                     var modalInstance = this.$uibModal.open(options);
                     modalInstance.result.then(function (newExperience) {
-                        self.form.experiences.push(newExperience);
+                        if (newExperience) {
+                            self.form.experiences.push(newExperience);
+                        }
                     }, function () {
                         console.info('Modal dismissed at: ' + new Date());
                     });
