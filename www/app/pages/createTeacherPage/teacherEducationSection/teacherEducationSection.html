@@ -55,10 +55,10 @@
                                                     <div class="row margin-reset">
                                                         <div class="col-xs-12 col-sm-12 col-md-12">
                                                             <h4 class="margin-reset pull-left">
-                                                                {{experience.position}}
+                                                                {{education.fieldStudy}}
                                                             </h4>
                                                             <p class="ma-p ma-p--small pull-right">
-                                                                {{experience.dateStart}} - {{experience.dateFinish}}
+                                                                {{education.dateStart}} - {{education.dateFinish}}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -70,7 +70,7 @@
                                                     <div class="row margin-reset">
                                                         <div class="col-xs-12 col-sm-12 col-md-12">
                                                             <h5 class="margin-reset text-left">
-                                                                {{experience.company}}
+                                                                {{education.school}}
                                                             </h5>
                                                         </div>
                                                     </div>
@@ -82,7 +82,7 @@
                                                     <div class="row margin-reset">
                                                         <div class="col-xs-12 col-sm-12 col-md-12">
                                                             <p class="ma-p ma-p--small margin-reset text-left">
-                                                                {{experience.city}}, {{experience.country}}
+                                                                {{education.degree}}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -98,14 +98,14 @@
                                                                       margin-reset
                                                                       text-left
                                                                       teacher-experience-box__item-block__description">
-                                                                {{experience.description}}
+                                                                {{education.description}}
                                                             </p>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <hr ng-if="$index + 1 < vm.form.experiences.length"
+                                            <hr ng-if="$index + 1 < vm.form.educations.length"
                                                 class="margin-reset"
                                                 style="margin: 0 10px;">
 
