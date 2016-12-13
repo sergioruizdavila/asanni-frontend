@@ -194,7 +194,7 @@
                                             class="ma-input ma-select
                                                    ma-select--large"
                                             ng-model="vm.dateObject.year"
-                                            ng-options="year.value for year in vm.listYears track by year.value"
+                                            ng-options="year.value for year in vm.listYears | orderBy:'value':true track by year.value"
                                             ng-class="{'ma-input--invalid': !vm.validate.birthDate.year.valid}"
                                             name="teacher[year]" class="form-control">
                                             <option value="" disabled selected>

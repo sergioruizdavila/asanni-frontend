@@ -1,69 +1,67 @@
 /**
- * ModalExperienceController
- * @description - modal Teacher's Experience controller definition, generic modal
- * in order to show add new experience form
+ * ModalEducationController
+ * @description - modal Teacher's Education controller definition, generic modal
+ * in order to show add new teacher's education form
  * @constructor
  * @param {ng.ui.bootstrap.IModalServiceInstance} $uibModalInstance - modal boostrap instance
  */
 
-module components.modal.modalExperience {
+module components.modal.modalEducation {
 
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
-    interface IModalExperienceController {
-        form: IModalExperienceForm;
-        validate: IModalExperienceValidate;
+    interface IModalEducationController {
+        form: IModalEducationForm;
+        validate: IModalEducationValidate;
         close: () => void;
         activate: () => void;
     }
 
-    interface IModalExperienceScope extends ng.IScope {
+    interface IModalEducationScope extends ng.IScope {
 
     }
 
-    interface IModalExperienceForm {
-        position: string;
-        company: string;
-        country: string;
-        city: string;
+    interface IModalEducationForm {
+        school: string;
+        degree: string;
+        fieldStudy: string;
         dateStart: string;
         dateFinish: string;
         description: string;
     }
 
-    interface IModalExperienceValidate {
-        position: app.core.util.functionsUtil.IValid;
-        company: app.core.util.functionsUtil.IValid;
-        country: app.core.util.functionsUtil.IValid;
-        city: app.core.util.functionsUtil.IValid;
+    interface IModalEducationValidate {
+        school: app.core.util.functionsUtil.IValid;
+        degree: app.core.util.functionsUtil.IValid;
+        fieldStudy: app.core.util.functionsUtil.IValid;
         dateStart: app.core.util.functionsUtil.IValid;
         dateFinish: app.core.util.functionsUtil.IValid;
         description: app.core.util.functionsUtil.IValid;
     }
 
     interface IDataSet {
-        experience: app.models.teacher.Experience;
+        education: app.models.teacher.Education;
         teacherId: string;
     }
 
 
-    class ModalExperienceController implements IModalExperienceController {
+    class ModalEducationController implements IModalEducationController {
 
-        static controllerId = 'mainApp.components.modal.ModalExperienceController';
+        static controllerId = 'mainApp.components.modal.ModalEducationController';
 
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
-        form: IModalExperienceForm;
-        validate: IModalExperienceValidate;
-        experience: app.models.teacher.Experience;
+        form: IModalEducationForm;
+        validate: IModalEducationValidate;
+        education: app.models.teacher.Education;
         listStartYears: Array<app.core.interfaces.ISelectListElement>;
         listFinishYears: Array<app.core.interfaces.ISelectListElement>;
         startYearObject: app.core.interfaces.ISelectListElement;
         finishYearObject: app.core.interfaces.ISelectListElement;
-        countryObject: app.core.interfaces.IDataFromJsonI18n;
-        listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
+        degreeObject: app.core.interfaces.IDataFromJsonI18n;
+        listDegrees: Array<app.core.interfaces.IDataFromJsonI18n>;
         defaultConfig: any;
         HELP_TEXT_TITLE: string;
         HELP_TEXT_DESCRIPTION: string;
@@ -102,25 +100,24 @@ module components.modal.modalExperience {
             //VARIABLES
             let self = this;
 
-            //Create Experience object
-            this.experience = this.dataSetModal.experience || new app.models.teacher.Experience();
+            //Create Education object
+            this.education = this.dataSetModal.education || new app.models.teacher.Education();
 
             // Country Select List Structure
-            this.countryObject = {code: this.experience.Country || '', value: ''};
+            this.degreeObject = {code: this.education.Degree || '', value: ''};
 
             // Years Select List Structure
-            this.startYearObject = {value: this.experience.DateStart || ''};
-            this.finishYearObject = {value: this.experience.DateFinish || ''};
+            this.startYearObject = {value: this.education.DateStart || ''};
+            this.finishYearObject = {value: this.education.DateFinish || ''};
 
             //Init form
             this.form = {
-                position: this.experience.Position || '',
-                company: this.experience.Company || '',
-                country: this.experience.Country || '',
-                city: this.experience.City || '',
-                dateStart: this.experience.DateStart || '',
-                dateFinish: this.experience.DateFinish || '',
-                description: this.experience.Description || ''
+                school: this.education.School || '',
+                degree: this.education.Degree || '',
+                fieldStudy: this.education.FieldStudy || '',
+                dateStart: this.education.DateStart || '',
+                dateFinish: this.education.DateFinish || '',
+                description: this.education.Description || ''
             };
 
             // Build Years select lists
@@ -128,14 +125,13 @@ module components.modal.modalExperience {
             this.listFinishYears = this.functionsUtilService.buildNumberSelectList(1957, 2017);
 
             //Build Countries select lists
-            this.listCountries = this.getDataFromJson.getCountryi18n();
+            this.listDegrees = this.getDataFromJson.getDegreei18n();
 
             // Build validate object fields
             this.validate = {
-                position: {valid: true, message: ''},
-                company: {valid: true, message: ''},
-                country: {valid: true, message: ''},
-                city: {valid: true, message: ''},
+                school: {valid: true, message: ''},
+                degree: {valid: true, message: ''},
+                fieldStudy: {valid: true, message: ''},
                 dateStart: {valid: true, message: ''},
                 dateFinish: {valid: true, message: ''},
                 description: {valid: true, message: ''}
@@ -147,7 +143,7 @@ module components.modal.modalExperience {
         //active function to handle all controller logic
         activate(): void {
             //LOG
-            console.log('modalExperience controller actived');
+            console.log('modalEducation controller actived');
         }
 
         /**********************************/
@@ -171,32 +167,25 @@ module components.modal.modalExperience {
             //VARIABLES
             let formValid = true;
 
-            //Validate Position field
-            let position_rules = [NULL_ENUM, EMPTY_ENUM];
-            this.validate.position = this.functionsUtilService.validator(this.form.position, position_rules);
-            if(!this.validate.position.valid) {
-                formValid = this.validate.position.valid;
+            //Validate School field
+            let school_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.school = this.functionsUtilService.validator(this.form.school, school_rules);
+            if(!this.validate.school.valid) {
+                formValid = this.validate.school.valid;
             }
 
-            //Validate Company field
-            let company_rules = [NULL_ENUM, EMPTY_ENUM];
-            this.validate.company = this.functionsUtilService.validator(this.form.company, company_rules);
-            if(!this.validate.company.valid) {
-                formValid = this.validate.company.valid;
+            //Validate Degree field
+            let degree_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.degree = this.functionsUtilService.validator(this.degreeObject.code, degree_rules);
+            if(!this.validate.degree.valid) {
+                formValid = this.validate.degree.valid;
             }
 
-            //Validate Country field
-            let country_rules = [NULL_ENUM, EMPTY_ENUM];
-            this.validate.country = this.functionsUtilService.validator(this.countryObject.code, country_rules);
-            if(!this.validate.country.valid) {
-                formValid = this.validate.country.valid;
-            }
-
-            //Validate City field
-            let city_rules = [NULL_ENUM, EMPTY_ENUM];
-            this.validate.city = this.functionsUtilService.validator(this.form.city, city_rules);
-            if(!this.validate.city.valid) {
-                formValid = this.validate.city.valid;
+            //Validate FieldStudy field
+            let field_study_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.fieldStudy = this.functionsUtilService.validator(this.form.fieldStudy, field_study_rules);
+            if(!this.validate.fieldStudy.valid) {
+                formValid = this.validate.fieldStudy.valid;
             }
 
             //Validate 'Start Year' fields
@@ -221,7 +210,7 @@ module components.modal.modalExperience {
         /**
         * save
         * @description - when user click "Save" button, close the modal and
-        * send the new experience data
+        * send the new education data
         * @use - this.save();
         * @function
         * @return {void}
@@ -233,26 +222,25 @@ module components.modal.modalExperience {
             if(formValid) {
                 //VARIABLES
                 let self = this;
-                let countryCode = this.countryObject.code;
+                let degreeCode = this.degreeObject.code;
                 let startYear = this.startYearObject.value;
                 let finishYear = this.finishYearObject.value;
                 /*********************************/
 
-                this.form.country = countryCode;
+                this.form.degree = degreeCode;
                 this.form.dateStart = startYear;
                 this.form.dateFinish = finishYear;
 
                 //Charge new data
-                this.experience.Position = this.form.position;
-                this.experience.Country = this.form.country;
-                this.experience.City = this.form.city;
-                this.experience.Company = this.form.company;
-                this.experience.DateStart = this.form.dateStart;
-                this.experience.DateFinish = this.form.dateFinish;
-                this.experience.Description = this.form.description;
+                this.education.School = this.form.school;
+                this.education.Degree = this.form.degree;
+                this.education.FieldStudy = this.form.fieldStudy;
+                this.education.DateStart = this.form.dateStart;
+                this.education.DateFinish = this.form.dateFinish;
+                this.education.Description = this.form.description;
 
-                if(this.experience.Id) {
-                    this.teacherService.updateExperience(this.dataSetModal.teacherId, this.experience)
+                if(this.education.Id) {
+                    this.teacherService.updateEducation(this.dataSetModal.teacherId, this.education)
                     .then(
                         function(response) {
                             if(response.id) {
@@ -263,12 +251,12 @@ module components.modal.modalExperience {
                         }
                     );
                 } else {
-                    this.teacherService.createExperience(this.dataSetModal.teacherId, this.experience)
+                    this.teacherService.createEducation(this.dataSetModal.teacherId, this.education)
                     .then(
                         function(response) {
                             if(response.id) {
-                                self.experience.Id = response.id;
-                                self.$uibModalInstance.close(self.experience);
+                                self.education.Id = response.id;
+                                self.$uibModalInstance.close(self.education);
                             } else {
                                 //error
                             }
@@ -301,7 +289,7 @@ module components.modal.modalExperience {
     }
 
     angular.module('mainApp.components.modal')
-        .controller(ModalExperienceController.controllerId,
-                    ModalExperienceController);
+        .controller(ModalEducationController.controllerId,
+                    ModalEducationController);
 
 }

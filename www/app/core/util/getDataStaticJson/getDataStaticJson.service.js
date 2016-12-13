@@ -12,6 +12,20 @@ var app;
                         this.$translate = $translate;
                         console.log('getDataStaticJsonService service called');
                     }
+                    GetDataStaticJsonService.prototype.returnValuei18n = function (type, code) {
+                        var jsonDoc = this.$translate.getTranslationTable();
+                        var key = '';
+                        for (var element in jsonDoc) {
+                            if (element.indexOf(type) >= 0) {
+                                var regex = new RegExp('%' + type + '.', 'g');
+                                var codeFromJson = element.replace(regex, '');
+                                if (codeFromJson === code) {
+                                    key = element;
+                                }
+                            }
+                        }
+                        return key;
+                    };
                     GetDataStaticJsonService.prototype.getMonthi18n = function () {
                         var jsonDoc = this.$translate.getTranslationTable();
                         var array = [];
@@ -53,6 +67,17 @@ var app;
                                 var code = element.replace(/%language./g, '');
                                 var value = jsonDoc[element];
                                 array.push({ value: value, code: code });
+                            }
+                        }
+                        return array;
+                    };
+                    GetDataStaticJsonService.prototype.getDegreei18n = function () {
+                        var jsonDoc = this.$translate.getTranslationTable();
+                        var array = [];
+                        for (var element in jsonDoc) {
+                            if (element.indexOf("degree") >= 0) {
+                                var code = element.replace(/%degree./g, '');
+                                array.push({ value: element, code: code });
                             }
                         }
                         return array;

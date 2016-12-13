@@ -86,6 +86,62 @@ var app;
                     });
                     return promise;
                 };
+                TeacherService.prototype.createEducation = function (teacherId, education) {
+                    var promise;
+                    var url = 'teachers/' + teacherId + '/educations';
+                    promise = this.restApi.create({ url: url }, education)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
+                TeacherService.prototype.updateEducation = function (teacherId, education) {
+                    var promise;
+                    var url = 'teachers/' + teacherId + '/educations';
+                    promise = this.restApi.update({ url: url, id: education.Id }, education)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
+                TeacherService.prototype.createCertificate = function (teacherId, certificate) {
+                    var promise;
+                    var url = 'teachers/' + teacherId + '/certificates';
+                    promise = this.restApi.create({ url: url }, certificate)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
+                TeacherService.prototype.updateCertificate = function (teacherId, certificate) {
+                    var promise;
+                    var url = 'teachers/' + teacherId + '/certificates';
+                    promise = this.restApi.update({ url: url, id: certificate.Id }, certificate)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
                 return TeacherService;
             }());
             TeacherService.serviceId = 'mainApp.models.teacher.TeacherService';

@@ -32,6 +32,44 @@ $createTeacher-mapBlock-height: 300px;
             }
         }
 
+        .teacher-education-box {
+
+            &__item-block {
+                cursor: pointer;
+                padding-top: 20px;
+                &:hover {
+                    background-color: #f9f9f9;
+                    cursor: pointer;
+                }
+
+                &__description {
+                    @include text-truncate-multiline($font-size: 17px,
+                                                     $line-height: $paragraph-lineHeight,
+                                                     $lines-to-show: $paragraph-lines-to-show,
+                                                     $excerpt-bg: transparent);
+                }
+            }
+        }
+
+        .teacher-certificate-box {
+
+            &__item-block {
+                cursor: pointer;
+                padding-top: 20px;
+                &:hover {
+                    background-color: #f9f9f9;
+                    cursor: pointer;
+                }
+
+                &__description {
+                    @include text-truncate-multiline($font-size: 17px,
+                                                     $line-height: $paragraph-lineHeight,
+                                                     $lines-to-show: $paragraph-lines-to-show,
+                                                     $excerpt-bg: transparent);
+                }
+            }
+        }
+
     }
 
     &__map-block {

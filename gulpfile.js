@@ -24,6 +24,7 @@ var paths = {
         "www/app/core/util/functionsUtil/functionsUtil.service.js",
         "www/app/core/util/getDataStaticJson/getDataStaticJson.service.js",
         "www/app/core/util/messageUtil/messageUtil.service.js",
+        "www/app/core/util/filters/app.filter.js",
         "www/app/core/restApi/restApi.config.js",
         "www/app/core/restApi/restApi.service.js",
         "www/app/models/user/user.model.js",
@@ -44,6 +45,8 @@ var paths = {
         "www/components/modal/modalMeetingPoint/modalMeetingPoint.controller.js",
         "www/components/modal/modalLanguages/modalLanguages.controller.js",
         "www/components/modal/modalExperience/modalExperience.controller.js",
+        "www/components/modal/modalEducation/modalEducation.controller.js",
+        "www/components/modal/modalCertificate/modalCertificate.controller.js",
         "www/app/pages/main/main.config.js",
         "www/app/pages/main/main.controller.js",
         "www/app/pages/studentLandingPage/studentLandingPage.config.js",
@@ -76,7 +79,9 @@ var paths = {
         "www/app/pages/createTeacherPage/teacherLanguageSection/teacherLanguageSection.config.js",
         "www/app/pages/createTeacherPage/teacherLanguageSection/teacherLanguageSection.controller.js",
         "www/app/pages/createTeacherPage/teacherExperienceSection/teacherExperienceSection.config.js",
-        "www/app/pages/createTeacherPage/teacherExperienceSection/teacherExperienceSection.controller.js"
+        "www/app/pages/createTeacherPage/teacherExperienceSection/teacherExperienceSection.controller.js",
+        "www/app/pages/createTeacherPage/teacherEducationSection/teacherEducationSection.config.js",
+        "www/app/pages/createTeacherPage/teacherEducationSection//teacherEducationSection.controller.js"
     ],
     appLibsJs: [
         'www/libs/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',
