@@ -24,6 +24,7 @@ var paths = {
         "www/app/core/util/functionsUtil/functionsUtil.service.js",
         "www/app/core/util/getDataStaticJson/getDataStaticJson.service.js",
         "www/app/core/util/messageUtil/messageUtil.service.js",
+        "www/app/core/util/filters/app.filter.js",
         "www/app/core/restApi/restApi.config.js",
         "www/app/core/restApi/restApi.service.js",
         "www/app/models/user/user.model.js",

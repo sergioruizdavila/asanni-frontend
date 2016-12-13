@@ -175,7 +175,7 @@
                                                     <div class="row margin-reset">
                                                         <div class="col-xs-12 col-sm-12 col-md-12">
                                                             <p class="ma-p ma-p--small margin-reset text-left">
-                                                                {{experience.city}}, {{experience.country}}
+                                                                {{experience.city}}, {{ experience.country | getI18nFilter:'country' }}
                                                             </p>
                                                         </div>
                                                     </div>

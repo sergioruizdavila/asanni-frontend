@@ -311,6 +311,20 @@ var app;
                         this.$translate = $translate;
                         console.log('getDataStaticJsonService service called');
                     }
+                    GetDataStaticJsonService.prototype.returnValuei18n = function (type, code) {
+                        var jsonDoc = this.$translate.getTranslationTable();
+                        var key = '';
+                        for (var element in jsonDoc) {
+                            if (element.indexOf(type) >= 0) {
+                                var regex = new RegExp('%' + type + '.', 'g');
+                                var codeFromJson = element.replace(regex, '');
+                                if (codeFromJson === code) {
+                                    key = element;
+                                }
+                            }
+                        }
+                        return key;
+                    };
                     GetDataStaticJsonService.prototype.getMonthi18n = function () {
                         var jsonDoc = this.$translate.getTranslationTable();
                         var array = [];
@@ -4932,6 +4946,7 @@ var app;
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.education.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.education.help_text.description.text');
                     this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(5, 9);
+                    this.testText = this.getDataFromJson.returnValuei18n('country', 'CO');
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION

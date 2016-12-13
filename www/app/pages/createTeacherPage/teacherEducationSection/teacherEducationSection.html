@@ -24,7 +24,7 @@
                     <!-- Educations List -->
                     <div id="teacher-educationsList-education"
                          ng-mouseover="vm.changeHelpText('educations')"
-                         class="row space-top-5">
+                         class="row">
                         <div class="col-md-12">
                             <!-- Education Box -->
                             <div class="form-group ma-form-group">
@@ -82,7 +82,7 @@
                                                     <div class="row margin-reset">
                                                         <div class="col-xs-12 col-sm-12 col-md-12">
                                                             <p class="ma-p ma-p--small margin-reset text-left">
-                                                                {{education.degree}}
+                                                                {{ education.degree | getI18nFilter:'degree' }}
                                                             </p>
                                                         </div>
                                                     </div>

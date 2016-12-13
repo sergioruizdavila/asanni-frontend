@@ -11,6 +11,7 @@ module app.core.util.getDataStaticJson {
     /*           INTERFACES           */
     /**********************************/
     export interface IGetDataStaticJsonService {
+        returnValuei18n: (type: string, code: string) => string;
         getMonthi18n: () => Array<app.core.interfaces.IDataFromJsonI18n>;
         getSexi18n: () => Array<app.core.interfaces.IDataFromJsonI18n>;
         getCountryi18n: () => Array<app.core.interfaces.IDataFromJsonI18n>;
@@ -51,9 +52,39 @@ module app.core.util.getDataStaticJson {
         /**********************************/
 
         /**
+        * returnValuei18n
+        * @description - return value based on code from i18n json
+        * @use - this.getDataFromJson.returnValuei18n('country', 'CO');
+        * @function
+        * @return {string} object's key from json i18n (e.g. '%country.CO')
+        */
+        returnValuei18n(type, code): string {
+            //VARIABLES
+            let jsonDoc = this.$translate.getTranslationTable();
+            let key = '';
+
+            for (var element in jsonDoc) {
+                if (element.indexOf(type) >= 0) {
+
+                    let regex = new RegExp('%' + type + '.', 'g');
+                    let codeFromJson = element.replace(regex,'');
+                    if(codeFromJson === code){
+                        key = element;
+                    }
+
+                }
+            }
+
+            return key;
+
+        }
+
+
+
+        /**
         * getMonthi18n
         * @description - get months texts & codes from i18n json files
-        * @use - this.FunctionsUtilService.getMonthi18n();
+        * @use - this.getDataFromJson.getMonthi18n();
         * @function
         * @return {Array<app.core.interfaces.IDataFromJsonI18n>} months object array
         */
@@ -79,7 +110,7 @@ module app.core.util.getDataStaticJson {
         /**
         * getSexi18n
         * @description - get user's sex texts & codes from i18n json files
-        * @use - this.FunctionsUtilService.getSexi18n();
+        * @use - this.getDataFromJson.getSexi18n();
         * @function
         * @return {Array<app.core.interfaces.IDataFromJsonI18n>} sexs object array
         */
@@ -105,7 +136,7 @@ module app.core.util.getDataStaticJson {
         /**
         * getCountryi18n
         * @description - get countries texts & codes from i18n json files
-        * @use - this.FunctionsUtilService.getCountryi18n();
+        * @use - this.getDataFromJson.getCountryi18n();
         * @function
         * @return {Array<app.core.interfaces.IDataFromJsonI18n>} countries object array
         */
@@ -131,7 +162,7 @@ module app.core.util.getDataStaticJson {
         /**
         * getLanguagei18n
         * @description - get languages texts & codes from i18n json files
-        * @use - this.FunctionsUtilService.getLanguagei18n();
+        * @use - this.getDataFromJson.getLanguagei18n();
         * @function
         * @return {Array<app.core.interfaces.IDataFromJsonI18n>} languages object array
         */
@@ -157,7 +188,7 @@ module app.core.util.getDataStaticJson {
         /**
         * getDegreei18n
         * @description - get degree texts & codes from i18n json files
-        * @use - this.FunctionsUtilService.getDegreei18n();
+        * @use - this.getDataFromJson.getDegreei18n();
         * @function
         * @return {Array<app.core.interfaces.IDataFromJsonI18n>} degree object array
         */
