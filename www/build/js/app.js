@@ -55,7 +55,7 @@
 (function () {
     'use strict';
     var dataConfig = {
-        baseUrl: 'http://127.0.0.1:8000/api/v1/',
+        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -441,6 +441,31 @@ var app;
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
 //# sourceMappingURL=messageUtil.service.js.map
+var app;
+(function (app) {
+    var core;
+    (function (core) {
+        var util;
+        (function (util) {
+            var filters;
+            (function (filters) {
+                GetI18nFilter.$inject = ['$filter', 'mainApp.core.util.GetDataStaticJsonService'];
+                function GetI18nFilter($filter, getDataFromJson) {
+                    return function (value, type) {
+                        var valueI18n = getDataFromJson.returnValuei18n(type, value);
+                        var translated = $filter('translate')(valueI18n);
+                        return translated;
+                    };
+                }
+                filters.GetI18nFilter = GetI18nFilter;
+                angular
+                    .module('mainApp.core.util')
+                    .filter('getI18nFilter', GetI18nFilter);
+            })(filters = util.filters || (util.filters = {}));
+        })(util = core.util || (core.util = {}));
+    })(core = app.core || (app.core = {}));
+})(app || (app = {}));
+//# sourceMappingURL=app.filter.js.map
 (function () {
     'use strict';
     angular
