@@ -46,7 +46,6 @@ module app.pages.createTeacherPage {
         form: ITeacherMethodForm;
         validate: ITeacherMethodValidate;
         helpText: app.core.interfaces.IHelpTextStep;
-        checked: boolean;
         typeOfImmersionList: Array<app.core.interfaces.ISelectListElement>;
         STEP5_STATE: string;
         STEP7_STATE: string;
@@ -102,9 +101,6 @@ module app.pages.createTeacherPage {
                 immersion: new app.models.teacher.Immersion
             };
 
-            // Init Immersion Switch
-            this.checked = false;
-
             // Build Type of Immersion select lists
             this.typeOfImmersionList = this.getDataFromJson.getTypeOfImmersioni18n();
 
@@ -139,10 +135,10 @@ module app.pages.createTeacherPage {
         * @return void
         */
         changeStatus(): void {
-            this.checked = !this.checked;
+            this.form.immersion.Active = !this.form.immersion.Active;
         }
 
-        
+
 
         /**
         * goToNext

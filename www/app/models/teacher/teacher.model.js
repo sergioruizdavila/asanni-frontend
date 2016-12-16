@@ -570,7 +570,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('Certificate Model instanced');
                     this.id = obj.id;
-                    this.active = obj.active || '';
+                    this.active = obj.active || false;
                     this.userType = obj.userType || '';
                     if (obj != {}) {
                         this.types = [];

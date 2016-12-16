@@ -590,7 +590,7 @@ module app.models.teacher {
 
             //init properties
             this.id = obj.id;
-            this.active = obj.active || '';
+            this.active = obj.active || false;
             this.userType = obj.userType || '';
 
             if(obj != {}) {

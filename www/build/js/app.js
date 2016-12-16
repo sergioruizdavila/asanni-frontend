@@ -1688,7 +1688,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('Certificate Model instanced');
                     this.id = obj.id;
-                    this.active = obj.active || '';
+                    this.active = obj.active || false;
                     this.userType = obj.userType || '';
                     if (obj != {}) {
                         this.types = [];
@@ -5330,7 +5330,6 @@ var app;
                         methodology: '',
                         immersion: new app.models.teacher.Immersion
                     };
-                    this.checked = false;
                     this.typeOfImmersionList = this.getDataFromJson.getTypeOfImmersioni18n();
                     this.validate = {
                         methodology: { valid: true, message: '' },
@@ -5344,7 +5343,7 @@ var app;
                     this._subscribeToEvents();
                 };
                 TeacherMethodSectionController.prototype.changeStatus = function () {
-                    this.checked = !this.checked;
+                    this.form.immersion.Active = !this.form.immersion.Active;
                 };
                 TeacherMethodSectionController.prototype.goToNext = function () {
                     var formValid = this._validateForm();

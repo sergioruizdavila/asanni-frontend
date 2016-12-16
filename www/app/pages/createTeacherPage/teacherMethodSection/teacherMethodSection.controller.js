@@ -28,7 +28,6 @@ var app;
                         methodology: '',
                         immersion: new app.models.teacher.Immersion
                     };
-                    this.checked = false;
                     this.typeOfImmersionList = this.getDataFromJson.getTypeOfImmersioni18n();
                     this.validate = {
                         methodology: { valid: true, message: '' },
@@ -42,7 +41,7 @@ var app;
                     this._subscribeToEvents();
                 };
                 TeacherMethodSectionController.prototype.changeStatus = function () {
-                    this.checked = !this.checked;
+                    this.form.immersion.Active = !this.form.immersion.Active;
                 };
                 TeacherMethodSectionController.prototype.goToNext = function () {
                     var formValid = this._validateForm();
