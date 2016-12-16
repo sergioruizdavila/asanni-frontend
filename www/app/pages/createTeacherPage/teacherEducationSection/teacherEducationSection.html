@@ -42,7 +42,8 @@
                                 <div class="text-left
                                             teacher-education-box
                                             ma-labels-box
-                                            ma-labels-box--dashed">
+                                            ma-labels-box--dashed"
+                                     ng-class="{'ma-labels-box--dashed--invalid': !vm.validate.educations.valid}">
 
                                     <div id="teacher-education"
                                          class="row margin-reset teacher-education-box__item-block"
@@ -118,10 +119,9 @@
                                 </div>
                                 <div class="row margin-reset">
                                     <div class="col-sm-12 padding-reset">
-                                        <p class="ma-p ma-p--small
-                                                  space-top-1 margin-reset"
-                                           translate>
-                                            %create.teacher.education.form.inline_help_text.education.text
+                                        <p class="ma-p ma-p--default ma-p--alert pull-left"
+                                           ng-show="!vm.validate.educations.valid">
+                                            <span>{{vm.validate.educations.message}}</span>
                                         </p>
                                     </div>
                                 </div>

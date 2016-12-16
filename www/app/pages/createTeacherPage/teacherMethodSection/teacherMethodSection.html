@@ -64,11 +64,15 @@
                                 <div class="col-md-6 text-left">
                                     <div class="ma-switch">
                                         <button class="ma-btn ma-btn--default ma-switch__btn"
-                                                value="1" translate>
+                                                ng-disabled="vm.checked == true"
+                                                translate
+                                                ng-click="vm.changeStatus()">
                                             %global.yes.button.text
                                         </button>
                                         <button class="ma-btn ma-btn--default ma-switch__btn"
-                                                disabled="disabled" value="0" translate>
+                                                ng-disabled="vm.checked == false"
+                                                ng-disabled="vm.checked" translate
+                                                ng-click="vm.changeStatus()">
                                             %global.no.button.text
                                         </button>
                                     </div>
@@ -80,106 +84,110 @@
                     </div>
 
 
-                    <hr>
+                    <hr ng-if="vm.checked == true">
 
 
-                    <!-- Type of Immersion Select List-->
-                    <div class="row bottom-xs">
-                        <div class="col-xs-8 col-sm-8 col-md-9 col-lg-9">
-                            <div class="form-group ma-form-group margin-reset">
-                                <label for="teacher-typeOfImmersion-input" translate>
-                                    %create.teacher.method.form.imm.type.text
-                                </label>
-                                <div class="ma-select-container
-                                            ma-select-container--large" style="width:100%;">
-                                    <select id="teacher-typeOfImmersion-input"
-                                            class="ma-input ma-select
-                                                   ma-select--large"
-                                            ng-model="vm.typeObject"
-                                            ng-options="type.value | translate for type in vm.typeOfImmersionList track by type.code"
-                                            ng-class="{'ma-input--invalid': !vm.validate.typeOfImmersionList.valid}"
-                                            name="teacher[type]" class="form-control">
-                                            <option value="" disabled selected translate>
-                                                %create.teacher.method.form.imm.type.option_list.text
-                                            </option>
-                                    </select>
-                                    <p class="ma-p ma-p--small ma-p--alert pull-right"
-                                        ng-show="!vm.validate.typeOfImmersionList.valid">
-                                        <span>{{vm.validate.typeOfImmersionList.message}}</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-4 col-sm-4 col-md-3 text-right">
-                            <!-- Add Button -->
-                            <button class="ma-btn ma-btn--primary ma-btn--large"
-                                    ng-click="vm._addNewImmersion()"
-                                    translate>
-                                %global.add.button.text
-                            </button>
-                        </div>
-                    </div>
+                    <div class="immersion-block" ng-if="vm.checked == true">
 
-
-
-                    <!-- Type of Immersion List Box -->
-                    <div class="row space-top-3">
-                        <div class="col-md-12">
-
-                            <div class="form-group ma-form-group"
-                                 ng-mouseover="vm.changeHelpText('immersion')">
-                                <div id="teacher-immersion-list"
-                                     class="text-left ma-labels-box ma-labels-box--dashed"
-                                     ng-class="{'ma-labels-box--dashed--invalid': !vm.validate.typeOfImmersionList.valid}">
-                                     <div class="ma-label ma-label--box
-                                                 ma-label--box--secondary
-                                                 ma-label--box--default
-                                                 ma-label--box--default--with-icon
-                                                 ma-label--box--space2"
-                                          ng-repeat="immersion in vm.form.immersion.types">
-                                         {{immersion.category}}
-                                         <i class="ma-label--box--default--with-icon__icon
-                                                       material-icons"
-                                            ng-click="vm._removeImmersion(immersion.category)">clear</i>
-                                     </div>
-                                </div>
-                                <div class="row margin-reset">
-                                    <div class="col-sm-12 padding-reset">
-                                        <p class="ma-p ma-p--small ma-p--alert pull-left"
-                                           ng-show="!vm.validate.typeOfImmersionList.valid">
+                        <!-- Type of Immersion Select List-->
+                        <div class="row bottom-xs">
+                            <div class="col-xs-8 col-sm-8 col-md-9 col-lg-9">
+                                <div class="form-group ma-form-group margin-reset">
+                                    <label for="teacher-typeOfImmersion-input" translate>
+                                        %create.teacher.method.form.imm.type.text
+                                    </label>
+                                    <div class="ma-select-container
+                                                ma-select-container--large" style="width:100%;">
+                                        <select id="teacher-typeOfImmersion-input"
+                                                class="ma-input ma-select
+                                                       ma-select--large"
+                                                ng-model="vm.typeObject"
+                                                ng-options="type.value | translate for type in vm.typeOfImmersionList track by type.code"
+                                                ng-class="{'ma-input--invalid': !vm.validate.typeOfImmersionList.valid}"
+                                                name="teacher[type]" class="form-control">
+                                                <option value="" disabled selected translate>
+                                                    %create.teacher.method.form.imm.type.option_list.text
+                                                </option>
+                                        </select>
+                                        <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                            ng-show="!vm.validate.typeOfImmersionList.valid">
                                             <span>{{vm.validate.typeOfImmersionList.message}}</span>
                                         </p>
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="col-xs-4 col-sm-4 col-md-3 text-right">
+                                <!-- Add Button -->
+                                <button class="ma-btn ma-btn--primary ma-btn--large"
+                                        ng-click="vm._addNewImmersion()"
+                                        translate>
+                                    %global.add.button.text
+                                </button>
+                            </div>
                         </div>
-                    </div>
 
 
 
-                    <!-- Other type of Immersion Input -->
-                    <form class="ma-form ma-form--basic space-top-2"
-                          ng-mouseover="vm.changeHelpText('immersion')"
-                          novalidate>
+                        <!-- Type of Immersion List Box -->
+                        <div class="row space-top-3">
+                            <div class="col-md-12">
 
-                        <div id="teacher-otherType-methodology-block">
-                            <div class="form-group ma-form-group">
-                                <label class="space-top-2 space-2" translate>
-                                    %create.teacher.method.form.imm.type.other.text
-                                </label>
-                                <textarea id="otherType-immersion-input"
-                                          name="teacher_immersion[otherType]"
-                                          ng-model="vm.form.immersion.UserType"
-                                          class="ma-input ma-input--large ma-textarea"
-                                          translate
-                                          translate-attr-placeholder="%create.teacher.method.form.imm.type.other.placeholder.text"
-                                          rows="4" cols="20"></textarea>
+                                <div class="form-group ma-form-group"
+                                     ng-mouseover="vm.changeHelpText('immersion')">
+                                    <div id="teacher-immersion-list"
+                                         class="text-left ma-labels-box ma-labels-box--dashed"
+                                         ng-class="{'ma-labels-box--dashed--invalid': !vm.validate.typeOfImmersionList.valid}">
+                                         <div class="ma-label ma-label--box
+                                                     ma-label--box--secondary
+                                                     ma-label--box--default
+                                                     ma-label--box--default--with-icon
+                                                     ma-label--box--space2"
+                                              ng-repeat="immersion in vm.form.immersion.types">
+                                             {{immersion.category}}
+                                             <i class="ma-label--box--default--with-icon__icon
+                                                           material-icons"
+                                                ng-click="vm._removeImmersion(immersion.category)">clear</i>
+                                         </div>
+                                    </div>
+                                    <div class="row margin-reset">
+                                        <div class="col-sm-12 padding-reset">
+                                            <p class="ma-p ma-p--small ma-p--alert pull-left"
+                                               ng-show="!vm.validate.typeOfImmersionList.valid">
+                                                <span>{{vm.validate.typeOfImmersionList.message}}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                        <!-- Other type of Immersion Input -->
+                        <form class="ma-form ma-form--basic space-top-2"
+                              ng-mouseover="vm.changeHelpText('immersion')"
+                              novalidate>
+
+                            <div id="teacher-otherType-methodology-block">
+                                <div class="form-group ma-form-group">
+                                    <label class="space-top-2 space-2" translate>
+                                        %create.teacher.method.form.imm.type.other.text
+                                    </label>
+                                    <textarea id="otherType-immersion-input"
+                                              name="teacher_immersion[otherType]"
+                                              ng-model="vm.form.immersion.UserType"
+                                              class="ma-input ma-input--large ma-textarea"
+                                              translate
+                                              translate-attr-placeholder="%create.teacher.method.form.imm.type.other.placeholder.text"
+                                              rows="4" cols="20"></textarea>
+                                </div>
+
                             </div>
 
-                        </div>
+                        </form>
 
-                    </form>
+                    </div>
 
                     <!--              END: METHODOLOGY INFO BLOCK             -->
 

@@ -46,6 +46,7 @@ module app.pages.createTeacherPage {
         form: ITeacherMethodForm;
         validate: ITeacherMethodValidate;
         helpText: app.core.interfaces.IHelpTextStep;
+        checked: boolean;
         typeOfImmersionList: Array<app.core.interfaces.ISelectListElement>;
         STEP5_STATE: string;
         STEP7_STATE: string;
@@ -95,11 +96,14 @@ module app.pages.createTeacherPage {
                 description: this.HELP_TEXT_DESCRIPTION
             };
 
-            //Init form
+            // Init form
             this.form = {
                 methodology: '',
                 immersion: new app.models.teacher.Immersion
             };
+
+            // Init Immersion Switch
+            this.checked = false;
 
             // Build Type of Immersion select lists
             this.typeOfImmersionList = this.getDataFromJson.getTypeOfImmersioni18n();
@@ -127,6 +131,18 @@ module app.pages.createTeacherPage {
         /**********************************/
         /*            METHODS             */
         /**********************************/
+
+        /**
+        * changeStatus
+        * @description - change 'Immersion Switch' Status
+        * @function
+        * @return void
+        */
+        changeStatus(): void {
+            this.checked = !this.checked;
+        }
+
+        
 
         /**
         * goToNext
@@ -193,13 +209,6 @@ module app.pages.createTeacherPage {
             //Validate 'Methodology' fields
             let methodology_rules = [NULL_ENUM, EMPTY_ENUM];
             this.validate.methodology = this.functionsUtilService.validator(this.form.methodology, methodology_rules);
-            if(!this.validate.methodology.valid) {
-                formValid = this.validate.methodology.valid;
-            }
-
-            //Validate 'Methodology' fields
-            let active_rules = [NULL_ENUM, EMPTY_ENUM];
-            this.validate.immersionActive = this.functionsUtilService.validator(this.form.immersion.Active, active_rules);
             if(!this.validate.methodology.valid) {
                 formValid = this.validate.methodology.valid;
             }
