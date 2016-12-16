@@ -22,6 +22,8 @@ module app.models.teacher {
         private experiences: Array<Experience>;
         private educations: Array<Education>;
         private certificates: Array<Certificate>;
+        private methodology: string;
+        private immersion: Immersion;
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -35,6 +37,8 @@ module app.models.teacher {
             this.languages = new Language(obj.languages);
             this.type = obj.type || '';
             this.teacherSince = obj.teacherSince || '';
+            this.methodology = obj.methodology || '';
+            this.immersion = new Immersion(obj.immersion);
 
             if(obj != {}) {
 
@@ -150,6 +154,24 @@ module app.models.teacher {
                     array[index] = certificate;
                 }
             });
+        }
+
+        get Methodology() {
+            return this.methodology;
+        }
+
+        set Methodology(methodology: string) {
+            if (methodology === undefined) { throw 'Please supply methodology'; }
+            this.methodology = methodology;
+        }
+
+        get Immersion() {
+            return this.immersion;
+        }
+
+        set Immersion(immersion: Immersion) {
+            if (immersion === undefined) { throw 'Please supply immersion'; }
+            this.immersion = immersion;
         }
 
     }
@@ -542,6 +564,147 @@ module app.models.teacher {
             this.description = description;
         }
 
+
+    }
+
+
+
+    /************************************************/
+    /*          IMMERSION CLASS DEFINITION          */
+    /************************************************/
+
+    export class Immersion {
+
+        /*-- PROPERTIES --*/
+        private id: number;
+        private active: boolean;
+        private types: Array<TypeOfImmersion>;
+        private userType: string;
+
+        /**********************************/
+        /*           CONSTRUCTOR          */
+        /**********************************/
+        constructor(obj: any = {}) {
+            //LOG
+            console.log('Certificate Model instanced');
+
+            //init properties
+            this.id = obj.id;
+            this.active = obj.active || '';
+            this.userType = obj.userType || '';
+
+            if(obj != {}) {
+
+                this.types = [];
+                for (let key in obj.types) {
+                    let typeInstance = new TypeOfImmersion(obj.types[key]);
+                    this.addType(typeInstance);
+                }
+
+            } else {
+                this.types = [];
+            }
+
+        }
+
+        /**********************************/
+        /*             METHODS            */
+        /**********************************/
+
+        get Id() {
+            return this.id;
+        }
+
+        set Id(id: number) {
+            if (id === undefined) { throw 'Please supply experience id'; }
+            this.id = id;
+        }
+
+        get Active() {
+            return this.active;
+        }
+
+        set Active(active: boolean) {
+            if (active === undefined) { throw 'Please supply active value of immersion'; }
+            this.active = active;
+        }
+
+        get Types() {
+            return this.types;
+        }
+
+        addType(type: TypeOfImmersion): void {
+            if(type === undefined) { throw 'Please supply type of immersion value (Add)'; }
+            this.types.push(type);
+        }
+
+        editType(type: TypeOfImmersion): void {
+            if(type === undefined) { throw 'Please supply type value (Edit)'; }
+            //Edit existing Type of Immersion
+            this.types.forEach(function (element, index, array) {
+                if (type.Id === element.Id) {
+                    array[index] = type;
+                }
+            });
+        }
+
+        get UserType() {
+            return this.userType;
+        }
+
+        set UserType(userType: string) {
+            if (userType === undefined) { throw 'Please supply user type value of immersion'; }
+            this.userType = userType;
+        }
+
+    }
+
+
+
+    /************************************************/
+    /*      TYPE OF IMMERSION CLASS DEFINITION      */
+    /************************************************/
+
+    export class TypeOfImmersion {
+
+        /*-- PROPERTIES --*/
+        private id: number;
+        private category: string;
+
+        /**********************************/
+        /*           CONSTRUCTOR          */
+        /**********************************/
+        constructor(obj: any = {}) {
+            //LOG
+            console.log('TypeOfImmersion Model instanced');
+
+            //init properties
+            this.id = obj.id;
+            this.category = obj.category || '';
+
+        }
+
+        /**********************************/
+        /*             METHODS            */
+        /**********************************/
+
+        get Id() {
+            return this.id;
+        }
+
+        set Id(id: number) {
+            if (id === undefined) { throw 'Please supply experience id'; }
+            this.id = id;
+        }
+
+        get Category() {
+            return this.category;
+        }
+
+        set Category(category: string) {
+            if (category === undefined) { throw 'Please supply category of immersion'; }
+            this.category = category;
+        }
 
     }
 
