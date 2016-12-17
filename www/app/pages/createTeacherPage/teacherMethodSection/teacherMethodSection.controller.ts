@@ -319,6 +319,12 @@ module app.pages.createTeacherPage {
             });
 
              this.typeOfImmersionOptionBox = newArray;
+
+             //Create new immersion type list on form object
+             this.form.immersion.Category = [];
+             for (let i = 0; i < this.typeOfImmersionOptionBox.length; i++) {
+                 this.form.immersion.Category.push(this.typeOfImmersionOptionBox[i].key);
+             }
         }
 
 

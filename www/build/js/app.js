@@ -5408,6 +5408,10 @@ var app;
                         return el.key !== key;
                     });
                     this.typeOfImmersionOptionBox = newArray;
+                    this.form.immersion.Category = [];
+                    for (var i = 0; i < this.typeOfImmersionOptionBox.length; i++) {
+                        this.form.immersion.Category.push(this.typeOfImmersionOptionBox[i].key);
+                    }
                 };
                 TeacherMethodSectionController.prototype._setDataModelFromForm = function () {
                     var immersionOptions = this.typeOfImmersionOptionBox;
