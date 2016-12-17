@@ -578,7 +578,7 @@ module app.models.teacher {
         /*-- PROPERTIES --*/
         private id: number;
         private active: boolean;
-        private types: Array<TypeOfImmersion>;
+        private category: Array<string>;
         private userType: string;
 
         /**********************************/
@@ -592,18 +592,7 @@ module app.models.teacher {
             this.id = obj.id;
             this.active = obj.active || false;
             this.userType = obj.userType || '';
-
-            if(obj != {}) {
-
-                this.types = [];
-                for (let key in obj.types) {
-                    let typeInstance = new TypeOfImmersion(obj.types[key]);
-                    this.addType(typeInstance);
-                }
-
-            } else {
-                this.types = [];
-            }
+            this.category = obj.category || [];
 
         }
 
@@ -629,23 +618,13 @@ module app.models.teacher {
             this.active = active;
         }
 
-        get Types() {
-            return this.types;
+        get Category() {
+            return this.category;
         }
 
-        addType(type: TypeOfImmersion): void {
-            if(type === undefined) { throw 'Please supply type of immersion value (Add)'; }
-            this.types.push(type);
-        }
-
-        editType(type: TypeOfImmersion): void {
-            if(type === undefined) { throw 'Please supply type value (Edit)'; }
-            //Edit existing Type of Immersion
-            this.types.forEach(function (element, index, array) {
-                if (type.Id === element.Id) {
-                    array[index] = type;
-                }
-            });
+        set Category(category: Array<string>) {
+            if (category === undefined) { throw 'Please supply category of immersion'; }
+            this.category = category;
         }
 
         get UserType() {
@@ -669,7 +648,7 @@ module app.models.teacher {
 
         /*-- PROPERTIES --*/
         private id: number;
-        private category: string;
+        private category: Array<string>;
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -701,7 +680,7 @@ module app.models.teacher {
             return this.category;
         }
 
-        set Category(category: string) {
+        set Category(category: Array<string>) {
             if (category === undefined) { throw 'Please supply category of immersion'; }
             this.category = category;
         }

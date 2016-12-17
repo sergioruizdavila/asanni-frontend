@@ -211,8 +211,8 @@
     "%create.teacher.method.help_text.description.text": "Waysily se centra en crear conexiones reales. Describirte en detalle ayuda los demás usuarios a conocerte mucho mejor. Comparte con ellos tus gustos, viajes, anecdotas o pasatiempos. Cuéntales cómo sería tenerte como su profesor, incluso puedes entrar en aspectos más personales: ¿Hay alguna frase en especial que defina tu forma de enseñar?",
     "%create.teacher.method.help_text.methodology.title.text": "Title of Methodology",
     "%create.teacher.method.help_text.methodology.description.text": "Description of Methodology",
-    "%create.teacher.method.help_text.immersion.title.text": "Title of Immersion",
-    "%create.teacher.method.help_text.immersion.description.text": "Description of Immersion",
+    "%create.teacher.method.help_text.imm.title.text": "Title of Immersion",
+    "%create.teacher.method.help_text.imm.description.text": "Description of Immersion",
 
     "__FOOTER__": "",
     "%footer.contact_us.title.text": "Contáctanos",

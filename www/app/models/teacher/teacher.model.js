@@ -572,16 +572,7 @@ var app;
                     this.id = obj.id;
                     this.active = obj.active || false;
                     this.userType = obj.userType || '';
-                    if (obj != {}) {
-                        this.types = [];
-                        for (var key in obj.types) {
-                            var typeInstance = new TypeOfImmersion(obj.types[key]);
-                            this.addType(typeInstance);
-                        }
-                    }
-                    else {
-                        this.types = [];
-                    }
+                    this.category = obj.category || [];
                 }
                 Object.defineProperty(Immersion.prototype, "Id", {
                     get: function () {
@@ -609,29 +600,19 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(Immersion.prototype, "Types", {
+                Object.defineProperty(Immersion.prototype, "Category", {
                     get: function () {
-                        return this.types;
+                        return this.category;
+                    },
+                    set: function (category) {
+                        if (category === undefined) {
+                            throw 'Please supply category of immersion';
+                        }
+                        this.category = category;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Immersion.prototype.addType = function (type) {
-                    if (type === undefined) {
-                        throw 'Please supply type of immersion value (Add)';
-                    }
-                    this.types.push(type);
-                };
-                Immersion.prototype.editType = function (type) {
-                    if (type === undefined) {
-                        throw 'Please supply type value (Edit)';
-                    }
-                    this.types.forEach(function (element, index, array) {
-                        if (type.Id === element.Id) {
-                            array[index] = type;
-                        }
-                    });
-                };
                 Object.defineProperty(Immersion.prototype, "UserType", {
                     get: function () {
                         return this.userType;

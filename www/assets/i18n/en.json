@@ -212,8 +212,8 @@
     "%create.teacher.method.help_text.description.text": "Waysily focuses on creating real connections. Describe in detail helps other users to know you much better. Share with them your tastes, trips, anecdotes or hobbies. Tell them what it would be like to have you as their teacher, you can even go into more personal aspects: Is there any particular phrase that defines your way of teaching?",
     "%create.teacher.method.help_text.methodology.title.text": "Title of Methodology",
     "%create.teacher.method.help_text.methodology.description.text": "Description of Methodology",
-    "%create.teacher.method.help_text.immersion.title.text": "Title of Immersion",
-    "%create.teacher.method.help_text.immersion.description.text": "Description of Immersion",
+    "%create.teacher.method.help_text.imm.title.text": "Title of Immersion",
+    "%create.teacher.method.help_text.imm.description.text": "Description of Immersion",
 
     "__FOOTER__": "",
     "%footer.contact_us.title.text": "Contact us",

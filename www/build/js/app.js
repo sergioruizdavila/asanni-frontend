@@ -55,7 +55,7 @@
 (function () {
     'use strict';
     var dataConfig = {
-        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
+        baseUrl: 'http://127.0.0.1:8000/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -1690,16 +1690,7 @@ var app;
                     this.id = obj.id;
                     this.active = obj.active || false;
                     this.userType = obj.userType || '';
-                    if (obj != {}) {
-                        this.types = [];
-                        for (var key in obj.types) {
-                            var typeInstance = new TypeOfImmersion(obj.types[key]);
-                            this.addType(typeInstance);
-                        }
-                    }
-                    else {
-                        this.types = [];
-                    }
+                    this.category = obj.category || [];
                 }
                 Object.defineProperty(Immersion.prototype, "Id", {
                     get: function () {
@@ -1727,29 +1718,19 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(Immersion.prototype, "Types", {
+                Object.defineProperty(Immersion.prototype, "Category", {
                     get: function () {
-                        return this.types;
+                        return this.category;
+                    },
+                    set: function (category) {
+                        if (category === undefined) {
+                            throw 'Please supply category of immersion';
+                        }
+                        this.category = category;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Immersion.prototype.addType = function (type) {
-                    if (type === undefined) {
-                        throw 'Please supply type of immersion value (Add)';
-                    }
-                    this.types.push(type);
-                };
-                Immersion.prototype.editType = function (type) {
-                    if (type === undefined) {
-                        throw 'Please supply type value (Edit)';
-                    }
-                    this.types.forEach(function (element, index, array) {
-                        if (type.Id === element.Id) {
-                            array[index] = type;
-                        }
-                    });
-                };
                 Object.defineProperty(Immersion.prototype, "UserType", {
                     get: function () {
                         return this.userType;
@@ -5317,7 +5298,12 @@ var app;
                     this._init();
                 }
                 TeacherMethodSectionController.prototype._init = function () {
-                    this.STEP5_STATE = 'page.createTeacherPage.education';
+                    if (this.$scope.$parent.vm.teacherData.Type === 'P') {
+                        this.STEP5_STATE = 'page.createTeacherPage.education';
+                    }
+                    else {
+                        this.STEP5_STATE = 'page.createTeacherPage.experience';
+                    }
                     this.STEP7_STATE = 'page.createTeacherPage.price';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.method.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.method.help_text.description.text');
@@ -5331,6 +5317,7 @@ var app;
                         immersion: new app.models.teacher.Immersion
                     };
                     this.typeOfImmersionList = this.getDataFromJson.getTypeOfImmersioni18n();
+                    this.typeOfImmersionOptionBox = [];
                     this.validate = {
                         methodology: { valid: true, message: '' },
                         immersionActive: { valid: true, message: '' },
@@ -5378,7 +5365,7 @@ var app;
                     }
                     if (this.form.immersion.Active) {
                         var typeOfImmersion_rules = [NULL_ENUM, EMPTY_ENUM];
-                        this.validate.typeOfImmersionList = this.functionsUtilService.validator(this.form.immersion.Types, typeOfImmersion_rules);
+                        this.validate.typeOfImmersionList = this.functionsUtilService.validator(this.form.immersion.Category, typeOfImmersion_rules);
                         if (!this.validate.typeOfImmersionList.valid) {
                             formValid = this.validate.typeOfImmersionList.valid;
                         }
@@ -5388,8 +5375,8 @@ var app;
                 TeacherMethodSectionController.prototype.changeHelpText = function (type) {
                     var METHODOLOGY_TITLE = this.$filter('translate')('%create.teacher.method.help_text.methodology.title.text');
                     var METHODOLOGY_DESCRIPTION = this.$filter('translate')('%create.teacher.method.help_text.methodology.description.text');
-                    var IMMERSION_TITLE = this.$filter('translate')('%create.teacher.method.help_text.immersion.title.text');
-                    var IMMERSION_DESCRIPTION = this.$filter('translate')('%create.teacher.method.help_text.immersion.description.text');
+                    var IMMERSION_TITLE = this.$filter('translate')('%create.teacher.method.help_text.imm.title.text');
+                    var IMMERSION_DESCRIPTION = this.$filter('translate')('%create.teacher.method.help_text.imm.description.text');
                     switch (type) {
                         case 'default':
                             this.helpText.title = this.HELP_TEXT_TITLE;
@@ -5405,19 +5392,56 @@ var app;
                             break;
                     }
                 };
-                TeacherMethodSectionController.prototype._addEditMethod = function (index) {
+                TeacherMethodSectionController.prototype._addNewImmersion = function () {
                     var self = this;
+                    this._disableEnableOption(true, this.typeObject.code);
+                    this.typeOfImmersionOptionBox.push({ key: this.typeObject.code, value: this.typeObject.value });
+                    this.form.immersion.Category = [];
+                    for (var i = 0; i < this.typeOfImmersionOptionBox.length; i++) {
+                        this.form.immersion.Category.push(this.typeOfImmersionOptionBox[i].key);
+                    }
                     event.preventDefault();
                 };
+                TeacherMethodSectionController.prototype._removeImmersion = function (key) {
+                    this._disableEnableOption(false, key);
+                    var newArray = this.typeOfImmersionOptionBox.filter(function (el) {
+                        return el.key !== key;
+                    });
+                    this.typeOfImmersionOptionBox = newArray;
+                };
                 TeacherMethodSectionController.prototype._setDataModelFromForm = function () {
+                    var immersionOptions = this.typeOfImmersionOptionBox;
                     this.$scope.$parent.vm.teacherData.Methodology = this.form.methodology;
                     this.$scope.$parent.vm.teacherData.Immersion = this.form.immersion;
+                    this.$scope.$parent.vm.teacherData.Immersion.Category = this.form.immersion.Category;
+                };
+                TeacherMethodSectionController.prototype._disableEnableOption = function (action, key) {
+                    for (var i = 0; i < this.typeOfImmersionList.length; i++) {
+                        if (this.typeOfImmersionList[i].code === key) {
+                            this.typeOfImmersionList[i].disabled = action;
+                        }
+                    }
                 };
                 TeacherMethodSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
                         self.form.methodology = args.Methodology;
                         self.form.immersion = args.Immersion;
+                        if (self.form.immersion.Active) {
+                            var immersionArray = self.getDataFromJson.getTypeOfImmersioni18n();
+                            var newArray = [];
+                            for (var i = 0; i < immersionArray.length; i++) {
+                                for (var j = 0; j < self.form.immersion.Category.length; j++) {
+                                    if (self.form.immersion.Category[j] === immersionArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = immersionArray[i].code;
+                                        obj.value = immersionArray[i].value;
+                                        self._disableEnableOption(true, obj.key);
+                                        self.typeOfImmersionOptionBox.push(obj);
+                                    }
+                                }
+                            }
+                        }
                     });
                 };
                 return TeacherMethodSectionController;

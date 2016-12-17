@@ -107,7 +107,7 @@
                                                 class="ma-input ma-select
                                                        ma-select--large"
                                                 ng-model="vm.typeObject"
-                                                ng-options="type.value | translate for type in vm.typeOfImmersionList track by type.code"
+                                                ng-options="type.value | translate disable when type.disabled for type in vm.typeOfImmersionList track by type.code"
                                                 name="teacher[type]" class="form-control">
                                                 <option value="" disabled selected translate>
                                                     %create.teacher.method.form.imm.type.option_list.text
@@ -142,16 +142,16 @@
                                                      ma-label--box--default
                                                      ma-label--box--default--with-icon
                                                      ma-label--box--space2"
-                                              ng-repeat="immersion in vm.form.immersion.types">
-                                             {{immersion.category}}
+                                              ng-repeat="immersion in vm.typeOfImmersionOptionBox">
+                                             {{immersion.value | translate}}
                                              <i class="ma-label--box--default--with-icon__icon
                                                            material-icons"
-                                                ng-click="vm._removeImmersion(immersion.category)">clear</i>
+                                                ng-click="vm._removeImmersion(immersion.key)">clear</i>
                                          </div>
                                     </div>
                                     <div class="row margin-reset">
                                         <div class="col-sm-12 padding-reset">
-                                            <p class="ma-p ma-p--small ma-p--alert pull-left"
+                                            <p class="ma-p ma-p--default ma-p--alert pull-left"
                                                ng-show="!vm.validate.typeOfImmersionList.valid">
                                                 <span>{{vm.validate.typeOfImmersionList.message}}</span>
                                             </p>
