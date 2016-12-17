@@ -22,6 +22,8 @@ module app.models.teacher {
         private experiences: Array<Experience>;
         private educations: Array<Education>;
         private certificates: Array<Certificate>;
+        private methodology: string;
+        private immersion: Immersion;
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -35,6 +37,8 @@ module app.models.teacher {
             this.languages = new Language(obj.languages);
             this.type = obj.type || '';
             this.teacherSince = obj.teacherSince || '';
+            this.methodology = obj.methodology || '';
+            this.immersion = new Immersion(obj.immersion);
 
             if(obj != {}) {
 
@@ -150,6 +154,24 @@ module app.models.teacher {
                     array[index] = certificate;
                 }
             });
+        }
+
+        get Methodology() {
+            return this.methodology;
+        }
+
+        set Methodology(methodology: string) {
+            if (methodology === undefined) { throw 'Please supply methodology'; }
+            this.methodology = methodology;
+        }
+
+        get Immersion() {
+            return this.immersion;
+        }
+
+        set Immersion(immersion: Immersion) {
+            if (immersion === undefined) { throw 'Please supply immersion'; }
+            this.immersion = immersion;
         }
 
     }
@@ -542,6 +564,126 @@ module app.models.teacher {
             this.description = description;
         }
 
+
+    }
+
+
+
+    /************************************************/
+    /*          IMMERSION CLASS DEFINITION          */
+    /************************************************/
+
+    export class Immersion {
+
+        /*-- PROPERTIES --*/
+        private id: number;
+        private active: boolean;
+        private category: Array<string>;
+        private userType: string;
+
+        /**********************************/
+        /*           CONSTRUCTOR          */
+        /**********************************/
+        constructor(obj: any = {}) {
+            //LOG
+            console.log('Certificate Model instanced');
+
+            //init properties
+            this.id = obj.id;
+            this.active = obj.active || false;
+            this.userType = obj.userType || '';
+            this.category = obj.category || [];
+
+        }
+
+        /**********************************/
+        /*             METHODS            */
+        /**********************************/
+
+        get Id() {
+            return this.id;
+        }
+
+        set Id(id: number) {
+            if (id === undefined) { throw 'Please supply experience id'; }
+            this.id = id;
+        }
+
+        get Active() {
+            return this.active;
+        }
+
+        set Active(active: boolean) {
+            if (active === undefined) { throw 'Please supply active value of immersion'; }
+            this.active = active;
+        }
+
+        get Category() {
+            return this.category;
+        }
+
+        set Category(category: Array<string>) {
+            if (category === undefined) { throw 'Please supply category of immersion'; }
+            this.category = category;
+        }
+
+        get UserType() {
+            return this.userType;
+        }
+
+        set UserType(userType: string) {
+            if (userType === undefined) { throw 'Please supply user type value of immersion'; }
+            this.userType = userType;
+        }
+
+    }
+
+
+
+    /************************************************/
+    /*      TYPE OF IMMERSION CLASS DEFINITION      */
+    /************************************************/
+
+    export class TypeOfImmersion {
+
+        /*-- PROPERTIES --*/
+        private id: number;
+        private category: Array<string>;
+
+        /**********************************/
+        /*           CONSTRUCTOR          */
+        /**********************************/
+        constructor(obj: any = {}) {
+            //LOG
+            console.log('TypeOfImmersion Model instanced');
+
+            //init properties
+            this.id = obj.id;
+            this.category = obj.category || '';
+
+        }
+
+        /**********************************/
+        /*             METHODS            */
+        /**********************************/
+
+        get Id() {
+            return this.id;
+        }
+
+        set Id(id: number) {
+            if (id === undefined) { throw 'Please supply experience id'; }
+            this.id = id;
+        }
+
+        get Category() {
+            return this.category;
+        }
+
+        set Category(category: Array<string>) {
+            if (category === undefined) { throw 'Please supply category of immersion'; }
+            this.category = category;
+        }
 
     }
 

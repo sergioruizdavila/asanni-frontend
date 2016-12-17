@@ -63,6 +63,11 @@ var app;
                     var NULL_ENUM = 3;
                     var EMPTY_ENUM = 4;
                     var formValid = true;
+                    var education_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.educations = this.functionsUtilService.validator(this.form.educations, education_rules);
+                    if (!this.validate.educations.valid) {
+                        formValid = this.validate.educations.valid;
+                    }
                     return formValid;
                 };
                 TeacherEducationSectionController.prototype.changeHelpText = function (type) {

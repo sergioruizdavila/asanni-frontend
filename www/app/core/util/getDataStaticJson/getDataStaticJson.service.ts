@@ -17,6 +17,7 @@ module app.core.util.getDataStaticJson {
         getCountryi18n: () => Array<app.core.interfaces.IDataFromJsonI18n>;
         getLanguagei18n: () => Array<app.core.interfaces.IDataFromJsonI18n>;
         getDegreei18n: () => Array<app.core.interfaces.IDataFromJsonI18n>;
+        getTypeOfImmersioni18n: () => Array<app.core.interfaces.IDataFromJsonI18n>;
     }
 
     export interface IAppTranslate extends angular.translate.ITranslateService {
@@ -201,6 +202,32 @@ module app.core.util.getDataStaticJson {
                 if (element.indexOf("degree") >= 0) {
 
                     let code = element.replace(/%degree./g,'');
+                    array.push({value: element, code: code});
+                }
+            }
+
+            return array;
+
+        }
+
+
+
+        /**
+        * getTypeOfImmersioni18n
+        * @description - get type of immersion texts & codes from i18n json files
+        * @use - this.getDataFromJson.getTypeOfImmersioni18n();
+        * @function
+        * @return {Array<app.core.interfaces.IDataFromJsonI18n>} typeOfImmersion object array
+        */
+        getTypeOfImmersioni18n(): Array<app.core.interfaces.IDataFromJsonI18n> {
+            //VARIABLES
+            let jsonDoc = this.$translate.getTranslationTable();
+            let array = [];
+
+            for (var element in jsonDoc) {
+                if (element.indexOf("immersion") >= 0) {
+
+                    let code = element.replace(/%immersion./g,'');
                     array.push({value: element, code: code});
                 }
             }

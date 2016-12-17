@@ -82,6 +82,17 @@ var app;
                         }
                         return array;
                     };
+                    GetDataStaticJsonService.prototype.getTypeOfImmersioni18n = function () {
+                        var jsonDoc = this.$translate.getTranslationTable();
+                        var array = [];
+                        for (var element in jsonDoc) {
+                            if (element.indexOf("immersion") >= 0) {
+                                var code = element.replace(/%immersion./g, '');
+                                array.push({ value: element, code: code });
+                            }
+                        }
+                        return array;
+                    };
                     return GetDataStaticJsonService;
                 }());
                 GetDataStaticJsonService.serviceId = 'mainApp.core.util.GetDataStaticJsonService';

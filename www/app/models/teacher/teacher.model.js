@@ -19,6 +19,8 @@ var app;
                     _this.languages = new Language(obj.languages);
                     _this.type = obj.type || '';
                     _this.teacherSince = obj.teacherSince || '';
+                    _this.methodology = obj.methodology || '';
+                    _this.immersion = new Immersion(obj.immersion);
                     if (obj != {}) {
                         _this.experiences = [];
                         for (var key in obj.experiences) {
@@ -151,6 +153,32 @@ var app;
                         }
                     });
                 };
+                Object.defineProperty(Teacher.prototype, "Methodology", {
+                    get: function () {
+                        return this.methodology;
+                    },
+                    set: function (methodology) {
+                        if (methodology === undefined) {
+                            throw 'Please supply methodology';
+                        }
+                        this.methodology = methodology;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Teacher.prototype, "Immersion", {
+                    get: function () {
+                        return this.immersion;
+                    },
+                    set: function (immersion) {
+                        if (immersion === undefined) {
+                            throw 'Please supply immersion';
+                        }
+                        this.immersion = immersion;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 return Teacher;
             }(app.models.user.User));
             teacher.Teacher = Teacher;
@@ -537,6 +565,106 @@ var app;
                 return Certificate;
             }());
             teacher.Certificate = Certificate;
+            var Immersion = (function () {
+                function Immersion(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('Certificate Model instanced');
+                    this.id = obj.id;
+                    this.active = obj.active || false;
+                    this.userType = obj.userType || '';
+                    this.category = obj.category || [];
+                }
+                Object.defineProperty(Immersion.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply experience id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Immersion.prototype, "Active", {
+                    get: function () {
+                        return this.active;
+                    },
+                    set: function (active) {
+                        if (active === undefined) {
+                            throw 'Please supply active value of immersion';
+                        }
+                        this.active = active;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Immersion.prototype, "Category", {
+                    get: function () {
+                        return this.category;
+                    },
+                    set: function (category) {
+                        if (category === undefined) {
+                            throw 'Please supply category of immersion';
+                        }
+                        this.category = category;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Immersion.prototype, "UserType", {
+                    get: function () {
+                        return this.userType;
+                    },
+                    set: function (userType) {
+                        if (userType === undefined) {
+                            throw 'Please supply user type value of immersion';
+                        }
+                        this.userType = userType;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Immersion;
+            }());
+            teacher.Immersion = Immersion;
+            var TypeOfImmersion = (function () {
+                function TypeOfImmersion(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('TypeOfImmersion Model instanced');
+                    this.id = obj.id;
+                    this.category = obj.category || '';
+                }
+                Object.defineProperty(TypeOfImmersion.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply experience id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(TypeOfImmersion.prototype, "Category", {
+                    get: function () {
+                        return this.category;
+                    },
+                    set: function (category) {
+                        if (category === undefined) {
+                            throw 'Please supply category of immersion';
+                        }
+                        this.category = category;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return TypeOfImmersion;
+            }());
+            teacher.TypeOfImmersion = TypeOfImmersion;
         })(teacher = models.teacher || (models.teacher = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));

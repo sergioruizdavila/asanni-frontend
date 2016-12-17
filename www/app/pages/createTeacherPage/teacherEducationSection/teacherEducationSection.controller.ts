@@ -184,6 +184,13 @@ module app.pages.createTeacherPage {
             //VARIABLES
             let formValid = true;
 
+            //Validate Educations list
+            let education_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.educations = this.functionsUtilService.validator(this.form.educations, education_rules);
+            if(!this.validate.educations.valid) {
+                formValid = this.validate.educations.valid;
+            }
+
             return formValid;
         }
 
