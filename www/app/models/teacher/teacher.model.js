@@ -571,7 +571,7 @@ var app;
                     console.log('Certificate Model instanced');
                     this.id = obj.id;
                     this.active = obj.active || false;
-                    this.userType = obj.userType || '';
+                    this.otherCategory = obj.otherCategory || '';
                     this.category = obj.category || [];
                 }
                 Object.defineProperty(Immersion.prototype, "Id", {
@@ -613,15 +613,15 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(Immersion.prototype, "UserType", {
+                Object.defineProperty(Immersion.prototype, "OtherCategory", {
                     get: function () {
-                        return this.userType;
+                        return this.otherCategory;
                     },
-                    set: function (userType) {
-                        if (userType === undefined) {
-                            throw 'Please supply user type value of immersion';
+                    set: function (otherCategory) {
+                        if (otherCategory === undefined) {
+                            throw 'Please supply other immersion category';
                         }
-                        this.userType = userType;
+                        this.otherCategory = otherCategory;
                     },
                     enumerable: true,
                     configurable: true

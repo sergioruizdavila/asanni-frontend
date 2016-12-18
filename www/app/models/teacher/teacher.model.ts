@@ -579,7 +579,7 @@ module app.models.teacher {
         private id: number;
         private active: boolean;
         private category: Array<string>;
-        private userType: string;
+        private otherCategory: string;
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -591,7 +591,7 @@ module app.models.teacher {
             //init properties
             this.id = obj.id;
             this.active = obj.active || false;
-            this.userType = obj.userType || '';
+            this.otherCategory = obj.otherCategory || '';
             this.category = obj.category || [];
 
         }
@@ -627,13 +627,13 @@ module app.models.teacher {
             this.category = category;
         }
 
-        get UserType() {
-            return this.userType;
+        get OtherCategory() {
+            return this.otherCategory;
         }
 
-        set UserType(userType: string) {
-            if (userType === undefined) { throw 'Please supply user type value of immersion'; }
-            this.userType = userType;
+        set OtherCategory(otherCategory: string) {
+            if (otherCategory === undefined) { throw 'Please supply other immersion category'; }
+            this.otherCategory = otherCategory;
         }
 
     }
