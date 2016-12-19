@@ -24,6 +24,7 @@ module app.models.teacher {
         private certificates: Array<Certificate>;
         private methodology: string;
         private immersion: Immersion;
+        private price: Price;
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -39,6 +40,7 @@ module app.models.teacher {
             this.teacherSince = obj.teacherSince || '';
             this.methodology = obj.methodology || '';
             this.immersion = new Immersion(obj.immersion);
+            this.price = new Price(obj.price);
 
             if(obj != {}) {
 
@@ -172,6 +174,15 @@ module app.models.teacher {
         set Immersion(immersion: Immersion) {
             if (immersion === undefined) { throw 'Please supply immersion'; }
             this.immersion = immersion;
+        }
+
+        get Price() {
+            return this.price;
+        }
+
+        set Price(price: Price) {
+            if (price === undefined) { throw 'Please supply price'; }
+            this.price = price;
         }
 
     }
@@ -685,6 +696,125 @@ module app.models.teacher {
             this.category = category;
         }
 
+    }
+
+
+
+    /************************************************/
+    /*            PRICE CLASS DEFINITION            */
+    /************************************************/
+
+    export class Price {
+
+        /*-- PROPERTIES --*/
+        private id: number;
+        private privateClass: TypeOfPrice;
+        private groupClass: TypeOfPrice;
+
+        /**********************************/
+        /*           CONSTRUCTOR          */
+        /**********************************/
+        constructor(obj: any = {}) {
+            //LOG
+            console.log('Price of Teacher Class Model instanced');
+
+            //init properties
+            this.id = obj.id;
+            this.privateClass = new TypeOfPrice(obj.privateClass);
+            this.groupClass = new TypeOfPrice(obj.groupClass);
+
+        }
+
+        /**********************************/
+        /*             METHODS            */
+        /**********************************/
+
+        get Id() {
+            return this.id;
+        }
+
+        set Id(id: number) {
+            if (id === undefined) { throw 'Please supply experience id'; }
+            this.id = id;
+        }
+
+        get PrivateClass() {
+            return this.privateClass;
+        }
+
+        set PrivateClass(privateClass: TypeOfPrice) {
+            if (privateClass === undefined) { throw 'Please supply privateClass'; }
+            this.privateClass = privateClass;
+        }
+
+        get GroupClass() {
+            return this.groupClass;
+        }
+
+        set GroupClass(groupClass: TypeOfPrice) {
+            if (groupClass === undefined) { throw 'Please supply groupClass'; }
+            this.groupClass = groupClass;
+        }
+
+    }
+
+
+
+    /************************************************/
+    /*         TYPE OF PRICE CLASS DEFINITION       */
+    /************************************************/
+
+    export class TypeOfPrice {
+
+        /*-- PROPERTIES --*/
+        private id: number;
+        private active: boolean;
+        private hourPrice: number;
+
+        /**********************************/
+        /*           CONSTRUCTOR          */
+        /**********************************/
+        constructor(obj: any = {}) {
+            //LOG
+            console.log('TypeOfPrice Model instanced');
+
+            //init properties
+            this.id = obj.id;
+            this.active = obj.active || false;
+            this.hourPrice = obj.hourPrice || 0;
+
+        }
+
+        /**********************************/
+        /*             METHODS            */
+        /**********************************/
+
+        get Id() {
+            return this.id;
+        }
+
+        set Id(id: number) {
+            if (id === undefined) { throw 'Please supply experience id'; }
+            this.id = id;
+        }
+
+        get Active() {
+            return this.active;
+        }
+
+        set Active(active: boolean) {
+            if (active === undefined) { throw 'Please supply active value of price'; }
+            this.active = active;
+        }
+
+        get HourPrice() {
+            return this.hourPrice;
+        }
+
+        set HourPrice(hourPrice: number) {
+            if (hourPrice === undefined) { throw 'Please supply hour price value'; }
+            this.hourPrice = hourPrice;
+        }
     }
 
 }

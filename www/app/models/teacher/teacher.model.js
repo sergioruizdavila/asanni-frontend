@@ -21,6 +21,7 @@ var app;
                     _this.teacherSince = obj.teacherSince || '';
                     _this.methodology = obj.methodology || '';
                     _this.immersion = new Immersion(obj.immersion);
+                    _this.price = new Price(obj.price);
                     if (obj != {}) {
                         _this.experiences = [];
                         for (var key in obj.experiences) {
@@ -175,6 +176,19 @@ var app;
                             throw 'Please supply immersion';
                         }
                         this.immersion = immersion;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Teacher.prototype, "Price", {
+                    get: function () {
+                        return this.price;
+                    },
+                    set: function (price) {
+                        if (price === undefined) {
+                            throw 'Please supply price';
+                        }
+                        this.price = price;
                     },
                     enumerable: true,
                     configurable: true
@@ -665,6 +679,106 @@ var app;
                 return TypeOfImmersion;
             }());
             teacher.TypeOfImmersion = TypeOfImmersion;
+            var Price = (function () {
+                function Price(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('Price of Teacher Class Model instanced');
+                    this.id = obj.id;
+                    this.privateClass = new TypeOfPrice(obj.privateClass);
+                    this.groupClass = new TypeOfPrice(obj.groupClass);
+                }
+                Object.defineProperty(Price.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply experience id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Price.prototype, "PrivateClass", {
+                    get: function () {
+                        return this.privateClass;
+                    },
+                    set: function (privateClass) {
+                        if (privateClass === undefined) {
+                            throw 'Please supply privateClass';
+                        }
+                        this.privateClass = privateClass;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Price.prototype, "GroupClass", {
+                    get: function () {
+                        return this.groupClass;
+                    },
+                    set: function (groupClass) {
+                        if (groupClass === undefined) {
+                            throw 'Please supply groupClass';
+                        }
+                        this.groupClass = groupClass;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Price;
+            }());
+            teacher.Price = Price;
+            var TypeOfPrice = (function () {
+                function TypeOfPrice(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('TypeOfPrice Model instanced');
+                    this.id = obj.id;
+                    this.active = obj.active || false;
+                    this.hourPrice = obj.hourPrice || 0;
+                }
+                Object.defineProperty(TypeOfPrice.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply experience id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(TypeOfPrice.prototype, "Active", {
+                    get: function () {
+                        return this.active;
+                    },
+                    set: function (active) {
+                        if (active === undefined) {
+                            throw 'Please supply active value of price';
+                        }
+                        this.active = active;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(TypeOfPrice.prototype, "HourPrice", {
+                    get: function () {
+                        return this.hourPrice;
+                    },
+                    set: function (hourPrice) {
+                        if (hourPrice === undefined) {
+                            throw 'Please supply hour price value';
+                        }
+                        this.hourPrice = hourPrice;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return TypeOfPrice;
+            }());
+            teacher.TypeOfPrice = TypeOfPrice;
         })(teacher = models.teacher || (models.teacher = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));

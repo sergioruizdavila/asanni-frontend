@@ -55,7 +55,7 @@
 (function () {
     'use strict';
     var dataConfig = {
-        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
+        baseUrl: 'http://127.0.0.1:8000/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -148,14 +148,15 @@ var app;
             var functionsUtil;
             (function (functionsUtil) {
                 'use strict';
+                var Validation;
                 (function (Validation) {
                     Validation[Validation["Email"] = 0] = "Email";
                     Validation[Validation["String"] = 1] = "String";
                     Validation[Validation["Number"] = 2] = "Number";
                     Validation[Validation["Null"] = 3] = "Null";
                     Validation[Validation["Empty"] = 4] = "Empty";
-                })(functionsUtil.Validation || (functionsUtil.Validation = {}));
-                var Validation = functionsUtil.Validation;
+                    Validation[Validation["IsTrue"] = 5] = "IsTrue";
+                })(Validation = functionsUtil.Validation || (functionsUtil.Validation = {}));
                 var FunctionsUtilService = (function () {
                     function FunctionsUtilService($filter) {
                         this.$filter = $filter;
@@ -230,6 +231,7 @@ var app;
                         var STRING_MESSAGE = this.$filter('translate')('%global.validation.string.message.text');
                         var NUMBER_MESSAGE = this.$filter('translate')('%global.validation.number.message.text');
                         var EMAIL_MESSAGE = this.$filter('translate')('%global.validation.email.message.text');
+                        var TRUE_MESSAGE = this.$filter('translate')('%global.validation.true.message.text');
                         var obj = { valid: true, message: 'ok' };
                         for (var i = 0; i < validations.length; i++) {
                             switch (validations[i]) {
@@ -266,6 +268,13 @@ var app;
                                     obj.valid = pattern.test(value);
                                     if (obj.valid == false) {
                                         obj.message = EMAIL_MESSAGE;
+                                    }
+                                    break;
+                                }
+                                case 5: {
+                                    if (value !== true) {
+                                        obj.message = TRUE_MESSAGE;
+                                        obj.valid = false;
                                     }
                                     break;
                                 }
@@ -1139,6 +1148,7 @@ var app;
                     _this.teacherSince = obj.teacherSince || '';
                     _this.methodology = obj.methodology || '';
                     _this.immersion = new Immersion(obj.immersion);
+                    _this.price = new Price(obj.price);
                     if (obj != {}) {
                         _this.experiences = [];
                         for (var key in obj.experiences) {
@@ -1293,6 +1303,19 @@ var app;
                             throw 'Please supply immersion';
                         }
                         this.immersion = immersion;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Teacher.prototype, "Price", {
+                    get: function () {
+                        return this.price;
+                    },
+                    set: function (price) {
+                        if (price === undefined) {
+                            throw 'Please supply price';
+                        }
+                        this.price = price;
                     },
                     enumerable: true,
                     configurable: true
@@ -1689,7 +1712,7 @@ var app;
                     console.log('Certificate Model instanced');
                     this.id = obj.id;
                     this.active = obj.active || false;
-                    this.userType = obj.userType || '';
+                    this.otherCategory = obj.otherCategory || '';
                     this.category = obj.category || [];
                 }
                 Object.defineProperty(Immersion.prototype, "Id", {
@@ -1731,15 +1754,15 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(Immersion.prototype, "UserType", {
+                Object.defineProperty(Immersion.prototype, "OtherCategory", {
                     get: function () {
-                        return this.userType;
+                        return this.otherCategory;
                     },
-                    set: function (userType) {
-                        if (userType === undefined) {
-                            throw 'Please supply user type value of immersion';
+                    set: function (otherCategory) {
+                        if (otherCategory === undefined) {
+                            throw 'Please supply other immersion category';
                         }
-                        this.userType = userType;
+                        this.otherCategory = otherCategory;
                     },
                     enumerable: true,
                     configurable: true
@@ -1783,6 +1806,106 @@ var app;
                 return TypeOfImmersion;
             }());
             teacher.TypeOfImmersion = TypeOfImmersion;
+            var Price = (function () {
+                function Price(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('Price of Teacher Class Model instanced');
+                    this.id = obj.id;
+                    this.privateClass = new TypeOfPrice(obj.privateClass);
+                    this.groupClass = new TypeOfPrice(obj.groupClass);
+                }
+                Object.defineProperty(Price.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply experience id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Price.prototype, "PrivateClass", {
+                    get: function () {
+                        return this.privateClass;
+                    },
+                    set: function (privateClass) {
+                        if (privateClass === undefined) {
+                            throw 'Please supply privateClass';
+                        }
+                        this.privateClass = privateClass;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Price.prototype, "GroupClass", {
+                    get: function () {
+                        return this.groupClass;
+                    },
+                    set: function (groupClass) {
+                        if (groupClass === undefined) {
+                            throw 'Please supply groupClass';
+                        }
+                        this.groupClass = groupClass;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Price;
+            }());
+            teacher.Price = Price;
+            var TypeOfPrice = (function () {
+                function TypeOfPrice(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('TypeOfPrice Model instanced');
+                    this.id = obj.id;
+                    this.active = obj.active || false;
+                    this.hourPrice = obj.hourPrice || 0;
+                }
+                Object.defineProperty(TypeOfPrice.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply experience id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(TypeOfPrice.prototype, "Active", {
+                    get: function () {
+                        return this.active;
+                    },
+                    set: function (active) {
+                        if (active === undefined) {
+                            throw 'Please supply active value of price';
+                        }
+                        this.active = active;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(TypeOfPrice.prototype, "HourPrice", {
+                    get: function () {
+                        return this.hourPrice;
+                    },
+                    set: function (hourPrice) {
+                        if (hourPrice === undefined) {
+                            throw 'Please supply hour price value';
+                        }
+                        this.hourPrice = hourPrice;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return TypeOfPrice;
+            }());
+            teacher.TypeOfPrice = TypeOfPrice;
         })(teacher = models.teacher || (models.teacher = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));

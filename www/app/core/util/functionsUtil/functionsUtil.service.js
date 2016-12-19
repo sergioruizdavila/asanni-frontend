@@ -7,14 +7,15 @@ var app;
             var functionsUtil;
             (function (functionsUtil) {
                 'use strict';
+                var Validation;
                 (function (Validation) {
                     Validation[Validation["Email"] = 0] = "Email";
                     Validation[Validation["String"] = 1] = "String";
                     Validation[Validation["Number"] = 2] = "Number";
                     Validation[Validation["Null"] = 3] = "Null";
                     Validation[Validation["Empty"] = 4] = "Empty";
-                })(functionsUtil.Validation || (functionsUtil.Validation = {}));
-                var Validation = functionsUtil.Validation;
+                    Validation[Validation["IsTrue"] = 5] = "IsTrue";
+                })(Validation = functionsUtil.Validation || (functionsUtil.Validation = {}));
                 var FunctionsUtilService = (function () {
                     function FunctionsUtilService($filter) {
                         this.$filter = $filter;
@@ -89,6 +90,7 @@ var app;
                         var STRING_MESSAGE = this.$filter('translate')('%global.validation.string.message.text');
                         var NUMBER_MESSAGE = this.$filter('translate')('%global.validation.number.message.text');
                         var EMAIL_MESSAGE = this.$filter('translate')('%global.validation.email.message.text');
+                        var TRUE_MESSAGE = this.$filter('translate')('%global.validation.true.message.text');
                         var obj = { valid: true, message: 'ok' };
                         for (var i = 0; i < validations.length; i++) {
                             switch (validations[i]) {
@@ -125,6 +127,13 @@ var app;
                                     obj.valid = pattern.test(value);
                                     if (obj.valid == false) {
                                         obj.message = EMAIL_MESSAGE;
+                                    }
+                                    break;
+                                }
+                                case 5: {
+                                    if (value !== true) {
+                                        obj.message = TRUE_MESSAGE;
+                                        obj.valid = false;
                                     }
                                     break;
                                 }
