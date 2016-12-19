@@ -427,6 +427,7 @@ $input-paddings: (
   default: 10px,
   large: 13px,
 );
+$input-font-size-default: 16px;
 $input-font-size-large: 18px;
 
 $input-primary-border-focus: map-get($main-palette, primary);
@@ -434,6 +435,22 @@ $input-outline-focus: 0;
 
 $input-invalid-background: #fff2ef;
 $input-invalid-border: #ffd1c4;
+
+$input-group-addon-primary-background: map-get($main-palette, primary);
+$input-group-addon-primary-border: 1px solid map-get($main-palette, primary);
+$input-group-addon-primary-font-color: $white;
+
+$input-group-addon-secondary-background: $white;
+$input-group-addon-secondary-border: 1px solid map-get($main-palette, primary);
+$input-group-addon-secondary-font-color: map-get($main-palette, primary);
+
+$input-group-addon-alert-background: map-get($main-palette, alert);
+$input-group-addon-alert-border: 1px solid map-get($main-palette, alert);
+$input-group-addon-alert-font-color: $white;
+
+$input-group-addon-primary-alert-background: $white;
+$input-group-addon-primary-alert-border: 1px solid map-get($main-palette, alert);
+$input-group-addon-primary-alert-font-color: map-get($main-palette, alert);
 
 // 6. Labels
 // ---------
@@ -586,6 +603,8 @@ $paragraph-font-color: $dark-gray;
 $paragraph-bold-font-color: $black;
 
 $paragraph-alert-font-color: map-get($main-palette, alert);
+$paragraph-success-font-color: map-get($main-palette, primary);
+$paragraph-info-font-color: map-get($main-palette, secondary);
 
 
 // 10. Progress Bar

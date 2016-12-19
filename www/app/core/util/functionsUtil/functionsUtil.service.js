@@ -12,9 +12,10 @@ var app;
                     Validation[Validation["Email"] = 0] = "Email";
                     Validation[Validation["String"] = 1] = "String";
                     Validation[Validation["Number"] = 2] = "Number";
-                    Validation[Validation["Null"] = 3] = "Null";
-                    Validation[Validation["Empty"] = 4] = "Empty";
-                    Validation[Validation["IsTrue"] = 5] = "IsTrue";
+                    Validation[Validation["IsNotZero"] = 3] = "IsNotZero";
+                    Validation[Validation["Null"] = 4] = "Null";
+                    Validation[Validation["Empty"] = 5] = "Empty";
+                    Validation[Validation["IsTrue"] = 6] = "IsTrue";
                 })(Validation = functionsUtil.Validation || (functionsUtil.Validation = {}));
                 var FunctionsUtilService = (function () {
                     function FunctionsUtilService($filter) {
@@ -87,6 +88,7 @@ var app;
                         if (validations === void 0) { validations = []; }
                         var NULL_MESSAGE = this.$filter('translate')('%global.validation.null.message.text');
                         var EMPTY_MESSAGE = this.$filter('translate')('%global.validation.empty.message.text');
+                        var IS_NOT_ZERO_MESSAGE = this.$filter('translate')('%global.validation.is_not_zero.message.text');
                         var STRING_MESSAGE = this.$filter('translate')('%global.validation.string.message.text');
                         var NUMBER_MESSAGE = this.$filter('translate')('%global.validation.number.message.text');
                         var EMAIL_MESSAGE = this.$filter('translate')('%global.validation.email.message.text');
@@ -94,14 +96,14 @@ var app;
                         var obj = { valid: true, message: 'ok' };
                         for (var i = 0; i < validations.length; i++) {
                             switch (validations[i]) {
-                                case 3: {
+                                case 4: {
                                     if (value == null) {
                                         obj.message = NULL_MESSAGE;
                                         obj.valid = false;
                                     }
                                     break;
                                 }
-                                case 4: {
+                                case 5: {
                                     if (value == '') {
                                         obj.message = EMPTY_MESSAGE;
                                         obj.valid = false;
@@ -122,6 +124,13 @@ var app;
                                     }
                                     break;
                                 }
+                                case 3: {
+                                    if (parseInt(value) == 0) {
+                                        obj.message = IS_NOT_ZERO_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                }
                                 case 0: {
                                     var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
                                     obj.valid = pattern.test(value);
@@ -130,7 +139,7 @@ var app;
                                     }
                                     break;
                                 }
-                                case 5: {
+                                case 6: {
                                     if (value !== true) {
                                         obj.message = TRUE_MESSAGE;
                                         obj.valid = false;

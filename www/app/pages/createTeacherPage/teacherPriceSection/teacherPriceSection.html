@@ -1,5 +1,5 @@
 <!----------------------------------------------------------------------------->
-<!--                         STEP 6 SECTION TEMPLATE                         -->
+<!--                         STEP 7 SECTION TEMPLATE                         -->
 <!----------------------------------------------------------------------------->
 
 
@@ -14,70 +14,49 @@
 
                 <h4 class="ma-box__title margin-reset"
                     ng-mouseover="vm.changeHelpText('default')" translate>
-                    %create.teacher.method.title.text
+                    %create.teacher.price.title.text
                 </h4>
 
                 <div class="ma-box__content">
 
+                    <!-- Global Validate Error Message -->
+                    <div class="row ma-large-message
+                                ma-large-message--alert space-5"
+                         ng-show="!vm.validate.globalValidate.valid">
+                        <div class="col-md-12 text-center">
+                            <p class="ma-p ma-p--default ma-p--alert margin-reset">
+                                <span>{{vm.validate.globalValidate.message}}</span>
+                            </p>
+                        </div>
+                    </div>
+
                     <!------------- START: METHODOLOGY INFO BLOCK ------------->
 
-                    <!-- Methodology TextArea Input -->
-                    <form class="ma-form ma-form--basic space-6" novalidate>
-
-                        <div id="teacher-type-methodology-block"
-                             ng-mouseover="vm.changeHelpText('methodology')">
-                            <div class="form-group ma-form-group">
-                                <label for="type-methodology-input"
-                                       class="space-top-2 space-2" translate>
-                                    %create.teacher.method.form.methodology.text
-                                </label>
-                                <textarea id="type-methodology-input"
-                                          name="teacher[methodology]"
-                                          ng-model="vm.form.methodology"
-                                          class="ma-input ma-input--large ma-textarea"
-                                          ng-class="{'ma-input--invalid': !vm.validate.methodology.valid}"
-                                          translate
-                                          translate-attr-placeholder="%create.teacher.method.form.methodology.placeholder.text"
-                                          rows="4" cols="20"></textarea>
-                                <p class="ma-p ma-p--small ma-p--alert pull-right"
-                                  ng-show="!vm.validate.methodology.valid">
-                                  <span>{{vm.validate.methodology.message}}</span>
-                                </p>
-                            </div>
-
-                        </div>
-
-                    </form>
-
-
-                    <hr>
-
-
-                    <!-- Immersion Switch -->
-                    <div id="teacher-immersion-block"
-                         ng-mouseover="vm.changeHelpText('immersion')"
+                    <!-- Private Classes Switch -->
+                    <div id="teacher-private-class-block"
+                         ng-mouseover="vm.changeHelpText('privateClass')"
                          class="row">
                         <div class="col-xs-3 col-sm-3 col-md-3"></div>
 
                         <div class="col-xs-6 col-sm-6 col-md-6">
                             <div class="row center-xs middle-xs">
                                 <div class="col-md-6 text-right">
-                                    <label for="teacher-immersion-input" translate>
-                                        %create.teacher.method.form.imm.text
+                                    <label for="teacher-private-class-input" translate>
+                                        %create.teacher.price.form.private_class.text
                                     </label>
                                 </div>
                                 <div class="col-md-6 text-left">
                                     <div class="ma-switch">
                                         <button class="ma-btn ma-btn--default ma-switch__btn"
-                                                ng-disabled="vm.form.immersion.Active == true"
+                                                ng-disabled="vm.form.privateClass.Active == true"
                                                 translate
-                                                ng-click="vm.changeStatus()">
+                                                ng-click="vm.changeStatus('privateClass')">
                                             %global.yes.button.text
                                         </button>
                                         <button class="ma-btn ma-btn--default ma-switch__btn"
-                                                ng-disabled="vm.form.immersion.Active == false"
-                                                ng-disabled="vm.form.immersion.Active" translate
-                                                ng-click="vm.changeStatus()">
+                                                ng-disabled="vm.form.privateClass.Active == false"
+                                                ng-disabled="vm.form.privateClass.Active" translate
+                                                ng-click="vm.changeStatus('privateClass')">
                                             %global.no.button.text
                                         </button>
                                     </div>
@@ -89,105 +68,124 @@
                     </div>
 
 
-                    <hr ng-if="vm.form.immersion.Active == true">
+                    <div class="classes-type-block space-top-5"
+                         ng-if="vm.form.privateClass.Active == true"
+                         ng-mouseover="vm.changeHelpText('privateClass')">
 
+                        <!-- Private Classes Price per hour -->
+                        <div class="row">
+                            <div class="col-xs-1 col-sm-3 col-md-4"></div>
 
-                    <div class="immersion-block" ng-if="vm.form.immersion.Active == true">
-
-                        <!-- Type of Immersion Select List-->
-                        <div class="row bottom-xs">
-                            <div class="col-xs-8 col-sm-8 col-md-9 col-lg-9">
-                                <div class="form-group ma-form-group margin-reset">
-                                    <label for="teacher-typeOfImmersion-input" translate>
-                                        %create.teacher.method.form.imm.type.text
-                                    </label>
-                                    <div class="ma-select-container
-                                                ma-select-container--large" style="width:100%;">
-                                        <select id="teacher-typeOfImmersion-input"
-                                                class="ma-input ma-select
-                                                       ma-select--large"
-                                                ng-model="vm.typeObject"
-                                                ng-options="type.value | translate disable when type.disabled for type in vm.typeOfImmersionList track by type.code"
-                                                name="teacher[type]" class="form-control">
-                                                <option value="" disabled selected translate>
-                                                    %create.teacher.method.form.imm.type.option_list.text
-                                                </option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-4 col-sm-4 col-md-3 text-right">
-                                <!-- Add Button -->
-                                <button class="ma-btn ma-btn--primary ma-btn--large"
-                                        ng-click="vm._addNewImmersion()"
-                                        translate>
-                                    %global.add.button.text
-                                </button>
-                            </div>
-                        </div>
-
-
-
-                        <!-- Type of Immersion List Box -->
-                        <div class="row space-top-3">
-                            <div class="col-md-12">
-
-                                <div class="form-group ma-form-group"
-                                     ng-mouseover="vm.changeHelpText('immersion')">
-                                    <div id="teacher-immersion-list"
-                                         class="text-left ma-labels-box ma-labels-box--dashed"
-                                         ng-class="{'ma-labels-box--dashed--invalid': !vm.validate.typeOfImmersionList.valid}">
-                                         <div class="ma-label ma-label--box
-                                                     ma-label--box--secondary
-                                                     ma-label--box--default
-                                                     ma-label--box--default--with-icon
-                                                     ma-label--box--space2"
-                                              ng-repeat="immersion in vm.typeOfImmersionOptionBox">
-                                             {{immersion.value | translate}}
-                                             <i class="ma-label--box--default--with-icon__icon
-                                                           material-icons"
-                                                ng-click="vm._removeImmersion(immersion.key)">clear</i>
-                                         </div>
-                                    </div>
-                                    <div class="row margin-reset">
-                                        <div class="col-sm-12 padding-reset">
-                                            <p class="ma-p ma-p--default ma-p--alert pull-left"
-                                               ng-show="!vm.validate.typeOfImmersionList.valid">
-                                                <span>{{vm.validate.typeOfImmersionList.message}}</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-
-
-                        <!-- Other type of Immersion Input -->
-                        <form class="ma-form ma-form--basic space-top-2"
-                              ng-mouseover="vm.changeHelpText('immersion')"
-                              novalidate>
-
-                            <div id="teacher-otherType-methodology-block">
+                            <div class="col-xs-10 col-sm-6 col-md-4 col-lg-4">
                                 <div class="form-group ma-form-group">
-                                    <label class="space-top-2 space-2" translate>
-                                        %create.teacher.method.form.imm.type.other.text
+                                    <label for="teacher-private-class-price-input"
+                                            translate>
+                                        %create.teacher.price.form.price.text
                                     </label>
-                                    <textarea id="otherType-immersion-input"
-                                              name="teacher_immersion[otherType]"
-                                              ng-model="vm.form.immersion.OtherCategory"
-                                              class="ma-input ma-input--large ma-textarea"
-                                              translate
-                                              translate-attr-placeholder="%create.teacher.method.form.imm.type.other.placeholder.text"
-                                              rows="4" cols="20"></textarea>
+                                    <div class="input-group ma-input-group">
+                                        <div class="input-group-addon
+                                                    ma-input-group-addon
+                                                    ma-input-group-addon--large
+                                                    ma-input-group-addon--alert-secondary">US$</div>
+                                        <input id="teacher-private-class-price-input" type="text"
+                                               class="ma-input
+                                                      ma-input--large
+                                                      ma-input--left-addon"
+                                               name="teacher[private_classes.price]"
+                                               ng-model="vm.form.privateClass.HourPrice"
+                                               ng-class="{'ma-input--invalid': !vm.validate.privateClassPrice.valid}"
+                                               placeholder="20">
+                                    </div>
+                                    <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                       ng-show="!vm.validate.privateClassPrice.valid">
+                                        <span>{{vm.validate.privateClassPrice.message}}</span>
+                                    </p>
                                 </div>
-
                             </div>
 
-                        </form>
+                            <div class="col-xs-1 col-sm-3 col-md-4"></div>
+                        </div>
 
                     </div>
+
+                    <hr>
+
+                    <!-- Groups Classes Switch -->
+                    <div id="teacher-group-class-block"
+                         ng-mouseover="vm.changeHelpText('groupClass')"
+                         class="row">
+                        <div class="col-xs-3 col-sm-3 col-md-3"></div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="row center-xs middle-xs">
+                                <div class="col-md-6 text-right">
+                                    <label for="teacher-group-class-input" translate>
+                                        %create.teacher.price.form.group_class.text
+                                    </label>
+                                </div>
+                                <div class="col-md-6 text-left">
+                                    <div class="ma-switch">
+                                        <button class="ma-btn ma-btn--default ma-switch__btn"
+                                                ng-disabled="vm.form.groupClass.Active == true"
+                                                translate
+                                                ng-click="vm.changeStatus('groupClass')">
+                                            %global.yes.button.text
+                                        </button>
+                                        <button class="ma-btn ma-btn--default ma-switch__btn"
+                                                ng-disabled="vm.form.groupClass.Active == false"
+                                                ng-disabled="vm.form.groupClass.Active" translate
+                                                ng-click="vm.changeStatus('groupClass')">
+                                            %global.no.button.text
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-3 col-sm-3 col-md-3"></div>
+                    </div>
+
+
+                    <div class="classes-type-block space-top-5"
+                         ng-if="vm.form.groupClass.Active == true"
+                         ng-mouseover="vm.changeHelpText('groupClass')">
+
+                        <!-- Group Classes Price per hour -->
+                        <div class="row">
+                            <div class="col-xs-1 col-sm-3 col-md-4"></div>
+
+                            <div class="col-xs-10 col-sm-6 col-md-4 col-lg-4">
+                                <div class="form-group ma-form-group">
+                                    <label for="teacher-group-class-price-input"
+                                            translate>
+                                        %create.teacher.price.form.price.text
+                                    </label>
+                                    <div class="input-group ma-input-group">
+                                        <div class="input-group-addon
+                                                    ma-input-group-addon
+                                                    ma-input-group-addon--large
+                                                    ma-input-group-addon--alert-secondary">US$</div>
+                                        <input id="teacher-group-class-price-input" type="text"
+                                               class="ma-input
+                                                      ma-input--large
+                                                      ma-input--left-addon"
+                                               name="teacher[group_classes.price]"
+                                               ng-model="vm.form.groupClass.HourPrice"
+                                               ng-class="{'ma-input--invalid': !vm.validate.groupClassPrice.valid}"
+                                               placeholder="15">
+                                    </div>
+                                    <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                       ng-show="!vm.validate.groupClassPrice.valid">
+                                       <span>{{vm.validate.groupClassPrice.message}}</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-1 col-sm-3 col-md-4"></div>
+                        </div>
+
+                    </div>
+
 
                     <!--              END: METHODOLOGY INFO BLOCK             -->
 

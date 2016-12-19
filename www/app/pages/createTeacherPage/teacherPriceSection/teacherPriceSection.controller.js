@@ -32,7 +32,8 @@ var app;
                         privateClassPrice: { valid: true, message: '' },
                         privateClassActive: { valid: true, message: '' },
                         groupClassPrice: { valid: true, message: '' },
-                        groupClassActive: { valid: true, message: '' }
+                        groupClassActive: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
                     };
                     this.activate();
                 };
@@ -66,33 +67,38 @@ var app;
                     }
                 };
                 TeacherPriceSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 3;
-                    var EMPTY_ENUM = 4;
-                    var TRUE_ENUM = 5;
+                    var NULL_ENUM = 4;
+                    var IS_NOT_ZERO_ENUM = 3;
+                    var EMPTY_ENUM = 5;
+                    var TRUE_ENUM = 6;
+                    var GLOBAL_MESSAGE = this.$filter('translate')('%create.teacher.price.validation.message.text');
                     var formValid = true;
                     if (this.form.privateClass.Active) {
-                        var privateClassPrice_rules = [NULL_ENUM, EMPTY_ENUM];
+                        var privateClassPrice_rules = [NULL_ENUM, EMPTY_ENUM, IS_NOT_ZERO_ENUM];
                         this.validate.privateClassPrice = this.functionsUtilService.validator(this.form.privateClass.HourPrice, privateClassPrice_rules);
                         if (!this.validate.privateClassPrice.valid) {
                             formValid = this.validate.privateClassPrice.valid;
                         }
                     }
                     if (this.form.groupClass.Active) {
-                        var groupClassPrice_rules = [NULL_ENUM, EMPTY_ENUM];
+                        var groupClassPrice_rules = [NULL_ENUM, EMPTY_ENUM, IS_NOT_ZERO_ENUM];
                         this.validate.groupClassPrice = this.functionsUtilService.validator(this.form.groupClass.HourPrice, groupClassPrice_rules);
                         if (!this.validate.groupClassPrice.valid) {
                             formValid = this.validate.groupClassPrice.valid;
                         }
                     }
                     var privateClassActive_rules = [TRUE_ENUM];
-                    this.validate.privateClassPrice = this.functionsUtilService.validator(this.form.groupClass.Active, privateClassActive_rules);
-                    if (!this.validate.privateClassPrice.valid) {
-                        formValid = this.validate.privateClassPrice.valid;
-                    }
+                    this.validate.privateClassActive = this.functionsUtilService.validator(this.form.privateClass.Active, privateClassActive_rules);
                     var groupClassActive_rules = [TRUE_ENUM];
                     this.validate.groupClassActive = this.functionsUtilService.validator(this.form.groupClass.Active, groupClassActive_rules);
-                    if (!this.validate.groupClassActive.valid) {
-                        formValid = this.validate.groupClassActive.valid;
+                    if (!this.validate.privateClassActive.valid && !this.validate.groupClassActive.valid) {
+                        this.validate.globalValidate.valid = false;
+                        this.validate.globalValidate.message = GLOBAL_MESSAGE;
+                        formValid = this.validate.globalValidate.valid;
+                    }
+                    else {
+                        this.validate.globalValidate.valid = true;
+                        this.validate.globalValidate.message = '';
                     }
                     return formValid;
                 };
@@ -106,11 +112,11 @@ var app;
                             this.helpText.title = this.HELP_TEXT_TITLE;
                             this.helpText.description = this.HELP_TEXT_DESCRIPTION;
                             break;
-                        case 'private_class':
+                        case 'privateClass':
                             this.helpText.title = PRIVATE_CLASS_TITLE;
                             this.helpText.description = PRIVATE_CLASS_DESCRIPTION;
                             break;
-                        case 'group_class':
+                        case 'groupClass':
                             this.helpText.title = GROUP_CLASS_TITLE;
                             this.helpText.description = GROUP_CLASS_DESCRIPTION;
                             break;

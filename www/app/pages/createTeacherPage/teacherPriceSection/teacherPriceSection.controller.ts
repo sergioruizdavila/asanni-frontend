@@ -32,6 +32,7 @@ module app.pages.createTeacherPage {
         privateClassPrice: app.core.util.functionsUtil.IValid;
         groupClassActive: app.core.util.functionsUtil.IValid;
         groupClassPrice: app.core.util.functionsUtil.IValid;
+        globalValidate: app.core.util.functionsUtil.IValid;
     }
 
     /****************************************/
@@ -106,7 +107,8 @@ module app.pages.createTeacherPage {
                 privateClassPrice: {valid: true, message: ''},
                 privateClassActive: {valid: true, message: ''},
                 groupClassPrice: {valid: true, message: ''},
-                groupClassActive: {valid: true, message: ''}
+                groupClassActive: {valid: true, message: ''},
+                globalValidate: {valid: true, message: ''}
             };
 
             this.activate();
@@ -195,8 +197,10 @@ module app.pages.createTeacherPage {
         _validateForm(): boolean {
             //CONSTANTS
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
+            const IS_NOT_ZERO_ENUM = app.core.util.functionsUtil.Validation.IsNotZero;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
             const TRUE_ENUM = app.core.util.functionsUtil.Validation.IsTrue;
+            const GLOBAL_MESSAGE = this.$filter('translate')('%create.teacher.price.validation.message.text');
             /***************************************************/
             //VARIABLES
             let formValid = true;
@@ -204,7 +208,7 @@ module app.pages.createTeacherPage {
             //Validate price per hour If user select 'YES' private class option
             if(this.form.privateClass.Active) {
 
-                let privateClassPrice_rules = [NULL_ENUM, EMPTY_ENUM];
+                let privateClassPrice_rules = [NULL_ENUM, EMPTY_ENUM, IS_NOT_ZERO_ENUM];
                 this.validate.privateClassPrice = this.functionsUtilService.validator(this.form.privateClass.HourPrice, privateClassPrice_rules);
                 if(!this.validate.privateClassPrice.valid) {
                     formValid = this.validate.privateClassPrice.valid;
@@ -215,7 +219,7 @@ module app.pages.createTeacherPage {
             //Validate price per hour If user select 'YES' group class option
             if(this.form.groupClass.Active) {
 
-                let groupClassPrice_rules = [NULL_ENUM, EMPTY_ENUM];
+                let groupClassPrice_rules = [NULL_ENUM, EMPTY_ENUM, IS_NOT_ZERO_ENUM];
                 this.validate.groupClassPrice = this.functionsUtilService.validator(this.form.groupClass.HourPrice, groupClassPrice_rules);
                 if(!this.validate.groupClassPrice.valid) {
                     formValid = this.validate.groupClassPrice.valid;
@@ -225,16 +229,20 @@ module app.pages.createTeacherPage {
 
             //Validate If user selected one Type of Class (private classes)
             let privateClassActive_rules = [TRUE_ENUM];
-            this.validate.privateClassPrice = this.functionsUtilService.validator(this.form.groupClass.Active, privateClassActive_rules);
-            if(!this.validate.privateClassPrice.valid) {
-                formValid = this.validate.privateClassPrice.valid;
-            }
+            this.validate.privateClassActive = this.functionsUtilService.validator(this.form.privateClass.Active, privateClassActive_rules);
 
             //Validate If user selected one Type of Class (group classes)
             let groupClassActive_rules = [TRUE_ENUM];
             this.validate.groupClassActive = this.functionsUtilService.validator(this.form.groupClass.Active, groupClassActive_rules);
-            if(!this.validate.groupClassActive.valid) {
-                formValid = this.validate.groupClassActive.valid;
+
+            //Charge a global error message if bith switches are FALSE
+            if(!this.validate.privateClassActive.valid && !this.validate.groupClassActive.valid) {
+                this.validate.globalValidate.valid = false;
+                this.validate.globalValidate.message = GLOBAL_MESSAGE;
+                formValid = this.validate.globalValidate.valid;
+            } else {
+                this.validate.globalValidate.valid = true;
+                this.validate.globalValidate.message = '';
             }
 
             return formValid;
@@ -264,12 +272,12 @@ module app.pages.createTeacherPage {
                     this.helpText.description = this.HELP_TEXT_DESCRIPTION;
                 break;
 
-                case 'private_class':
+                case 'privateClass':
                     this.helpText.title = PRIVATE_CLASS_TITLE;
                     this.helpText.description = PRIVATE_CLASS_DESCRIPTION;
                 break;
 
-                case 'group_class':
+                case 'groupClass':
                     this.helpText.title = GROUP_CLASS_TITLE;
                     this.helpText.description = GROUP_CLASS_DESCRIPTION;
                 break;

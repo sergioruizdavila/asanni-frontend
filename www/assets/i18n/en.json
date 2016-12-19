@@ -14,6 +14,8 @@
     "%global.validation.string.message.text": "should be a string",
     "%global.validation.number.message.text": "should be a number",
     "%global.validation.email.message.text": "please write a valid email",
+    "%global.validation.true.message.text": "Required",
+    "%global.validation.is_not_zero.message.text": "Give a value different to 0",
 
     "__HEADER__": "",
     "%header.lang.options.en.text": "English",
@@ -214,6 +216,19 @@
     "%create.teacher.method.help_text.methodology.description.text": "Description of Methodology",
     "%create.teacher.method.help_text.imm.title.text": "Title of Immersion",
     "%create.teacher.method.help_text.imm.description.text": "Description of Immersion",
+
+    "__7. TEACHER PRICE SECTION__": "",
+    "%create.teacher.price.title.text": "Step 7 -  Price of your classes",
+    "%create.teacher.price.form.price.text": "Price per hour (dollars)",
+    "%create.teacher.price.form.private_class.text": "Private Classes",
+    "%create.teacher.price.form.group_class.text": "Group Classes",
+    "%create.teacher.price.help_text.title.text": "Show the world who you are",
+    "%create.teacher.price.help_text.description.text": "Waysily focuses on creating real connections. Describe in detail helps other users to know you much better. Share with them your tastes, trips, anecdotes or hobbies. Tell them what it would be like to have you as their teacher, you can even go into more personal aspects: Is there any particular phrase that defines your way of teaching?",
+    "%create.teacher.price.help_text.private_class.title.text": "Title of Private Classes",
+    "%create.teacher.price.help_text.private_class.description.text": "Description of Private Classes",
+    "%create.teacher.price.help_text.group_class.title.text": "Title of Group Classes",
+    "%create.teacher.price.help_text.group_class.description.text": "Description of Group Classes",
+    "%create.teacher.price.validation.message.text": "Is Required to choose a type of Classes",
 
     "__FOOTER__": "",
     "%footer.contact_us.title.text": "Contact us",

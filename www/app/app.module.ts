@@ -57,7 +57,7 @@
             suffix: suffix
         });
 
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.preferredLanguage('es');
 
     }
 
