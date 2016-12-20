@@ -34,4 +34,20 @@
             font-size: map-get($global-font-sizes, large);
         }
     }
+
+    &--success {
+        color: $paragraph-success-font-color;
+
+        strong {
+            font-size: map-get($global-font-sizes, large);
+        }
+    }
+
+    &--info {
+        color: $paragraph-info-font-color;
+
+        strong {
+            font-size: map-get($global-font-sizes, large);
+        }
+    }
 }

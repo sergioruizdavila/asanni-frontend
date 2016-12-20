@@ -36,7 +36,7 @@
             prefix: prefix,
             suffix: suffix
         });
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.preferredLanguage('es');
     }
 })();
 //# sourceMappingURL=app.module.js.map
@@ -148,14 +148,16 @@ var app;
             var functionsUtil;
             (function (functionsUtil) {
                 'use strict';
+                var Validation;
                 (function (Validation) {
                     Validation[Validation["Email"] = 0] = "Email";
                     Validation[Validation["String"] = 1] = "String";
                     Validation[Validation["Number"] = 2] = "Number";
-                    Validation[Validation["Null"] = 3] = "Null";
-                    Validation[Validation["Empty"] = 4] = "Empty";
-                })(functionsUtil.Validation || (functionsUtil.Validation = {}));
-                var Validation = functionsUtil.Validation;
+                    Validation[Validation["IsNotZero"] = 3] = "IsNotZero";
+                    Validation[Validation["Null"] = 4] = "Null";
+                    Validation[Validation["Empty"] = 5] = "Empty";
+                    Validation[Validation["IsTrue"] = 6] = "IsTrue";
+                })(Validation = functionsUtil.Validation || (functionsUtil.Validation = {}));
                 var FunctionsUtilService = (function () {
                     function FunctionsUtilService($filter) {
                         this.$filter = $filter;
@@ -227,20 +229,22 @@ var app;
                         if (validations === void 0) { validations = []; }
                         var NULL_MESSAGE = this.$filter('translate')('%global.validation.null.message.text');
                         var EMPTY_MESSAGE = this.$filter('translate')('%global.validation.empty.message.text');
+                        var IS_NOT_ZERO_MESSAGE = this.$filter('translate')('%global.validation.is_not_zero.message.text');
                         var STRING_MESSAGE = this.$filter('translate')('%global.validation.string.message.text');
                         var NUMBER_MESSAGE = this.$filter('translate')('%global.validation.number.message.text');
                         var EMAIL_MESSAGE = this.$filter('translate')('%global.validation.email.message.text');
+                        var TRUE_MESSAGE = this.$filter('translate')('%global.validation.true.message.text');
                         var obj = { valid: true, message: 'ok' };
                         for (var i = 0; i < validations.length; i++) {
                             switch (validations[i]) {
-                                case 3: {
+                                case 4: {
                                     if (value == null) {
                                         obj.message = NULL_MESSAGE;
                                         obj.valid = false;
                                     }
                                     break;
                                 }
-                                case 4: {
+                                case 5: {
                                     if (value == '') {
                                         obj.message = EMPTY_MESSAGE;
                                         obj.valid = false;
@@ -261,11 +265,25 @@ var app;
                                     }
                                     break;
                                 }
+                                case 3: {
+                                    if (parseInt(value) == 0) {
+                                        obj.message = IS_NOT_ZERO_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                }
                                 case 0: {
                                     var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
                                     obj.valid = pattern.test(value);
                                     if (obj.valid == false) {
                                         obj.message = EMAIL_MESSAGE;
+                                    }
+                                    break;
+                                }
+                                case 6: {
+                                    if (value !== true) {
+                                        obj.message = TRUE_MESSAGE;
+                                        obj.valid = false;
                                     }
                                     break;
                                 }
@@ -1139,6 +1157,7 @@ var app;
                     _this.teacherSince = obj.teacherSince || '';
                     _this.methodology = obj.methodology || '';
                     _this.immersion = new Immersion(obj.immersion);
+                    _this.price = new Price(obj.price);
                     if (obj != {}) {
                         _this.experiences = [];
                         for (var key in obj.experiences) {
@@ -1293,6 +1312,19 @@ var app;
                             throw 'Please supply immersion';
                         }
                         this.immersion = immersion;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Teacher.prototype, "Price", {
+                    get: function () {
+                        return this.price;
+                    },
+                    set: function (price) {
+                        if (price === undefined) {
+                            throw 'Please supply price';
+                        }
+                        this.price = price;
                     },
                     enumerable: true,
                     configurable: true
@@ -1689,7 +1721,7 @@ var app;
                     console.log('Certificate Model instanced');
                     this.id = obj.id;
                     this.active = obj.active || false;
-                    this.userType = obj.userType || '';
+                    this.otherCategory = obj.otherCategory || '';
                     this.category = obj.category || [];
                 }
                 Object.defineProperty(Immersion.prototype, "Id", {
@@ -1731,15 +1763,15 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(Immersion.prototype, "UserType", {
+                Object.defineProperty(Immersion.prototype, "OtherCategory", {
                     get: function () {
-                        return this.userType;
+                        return this.otherCategory;
                     },
-                    set: function (userType) {
-                        if (userType === undefined) {
-                            throw 'Please supply user type value of immersion';
+                    set: function (otherCategory) {
+                        if (otherCategory === undefined) {
+                            throw 'Please supply other immersion category';
                         }
-                        this.userType = userType;
+                        this.otherCategory = otherCategory;
                     },
                     enumerable: true,
                     configurable: true
@@ -1783,6 +1815,106 @@ var app;
                 return TypeOfImmersion;
             }());
             teacher.TypeOfImmersion = TypeOfImmersion;
+            var Price = (function () {
+                function Price(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('Price of Teacher Class Model instanced');
+                    this.id = obj.id;
+                    this.privateClass = new TypeOfPrice(obj.privateClass);
+                    this.groupClass = new TypeOfPrice(obj.groupClass);
+                }
+                Object.defineProperty(Price.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply experience id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Price.prototype, "PrivateClass", {
+                    get: function () {
+                        return this.privateClass;
+                    },
+                    set: function (privateClass) {
+                        if (privateClass === undefined) {
+                            throw 'Please supply privateClass';
+                        }
+                        this.privateClass = privateClass;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Price.prototype, "GroupClass", {
+                    get: function () {
+                        return this.groupClass;
+                    },
+                    set: function (groupClass) {
+                        if (groupClass === undefined) {
+                            throw 'Please supply groupClass';
+                        }
+                        this.groupClass = groupClass;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Price;
+            }());
+            teacher.Price = Price;
+            var TypeOfPrice = (function () {
+                function TypeOfPrice(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('TypeOfPrice Model instanced');
+                    this.id = obj.id;
+                    this.active = obj.active || false;
+                    this.hourPrice = obj.hourPrice || 0;
+                }
+                Object.defineProperty(TypeOfPrice.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply experience id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(TypeOfPrice.prototype, "Active", {
+                    get: function () {
+                        return this.active;
+                    },
+                    set: function (active) {
+                        if (active === undefined) {
+                            throw 'Please supply active value of price';
+                        }
+                        this.active = active;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(TypeOfPrice.prototype, "HourPrice", {
+                    get: function () {
+                        return this.hourPrice;
+                    },
+                    set: function (hourPrice) {
+                        if (hourPrice === undefined) {
+                            throw 'Please supply hour price value';
+                        }
+                        this.hourPrice = hourPrice;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return TypeOfPrice;
+            }());
+            teacher.TypeOfPrice = TypeOfPrice;
         })(teacher = models.teacher || (models.teacher = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
@@ -4125,7 +4257,7 @@ var app;
                     this.STEP2_STATE = 'page.createTeacherPage.location';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.basic_info.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.basic_info.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(1, 9);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(1, 8);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -4180,8 +4312,8 @@ var app;
                     }
                 };
                 TeacherInfoSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 3;
-                    var EMPTY_ENUM = 4;
+                    var NULL_ENUM = 4;
+                    var EMPTY_ENUM = 5;
                     var EMAIL_ENUM = 0;
                     var NUMBER_ENUM = 2;
                     var formValid = true;
@@ -4380,7 +4512,7 @@ var app;
                     this.STEP3_STATE = 'page.createTeacherPage.language';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.location.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(2, 9);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(2, 8);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -4434,8 +4566,8 @@ var app;
                     }
                 };
                 TeacherLocationSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 3;
-                    var EMPTY_ENUM = 4;
+                    var NULL_ENUM = 4;
+                    var EMPTY_ENUM = 5;
                     var NUMBER_ENUM = 2;
                     var formValid = true;
                     var country_rules = [NULL_ENUM, EMPTY_ENUM];
@@ -4632,7 +4764,7 @@ var app;
                     this.STEP4_STATE = 'page.createTeacherPage.experience';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.lang.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.lang.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(3, 9);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(3, 8);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -4677,8 +4809,8 @@ var app;
                     }
                 };
                 TeacherLanguageSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 3;
-                    var EMPTY_ENUM = 4;
+                    var NULL_ENUM = 4;
+                    var EMPTY_ENUM = 5;
                     var formValid = true;
                     var native_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.native = this.functionsUtilService.validator(this.form.native, native_rules);
@@ -4898,7 +5030,7 @@ var app;
                     this.STEP_ALTER_STATE = 'page.createTeacherPage.education';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(4, 9);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(4, 8);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -4963,8 +5095,8 @@ var app;
                     }
                 };
                 TeacherExperienceSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 3;
-                    var EMPTY_ENUM = 4;
+                    var NULL_ENUM = 4;
+                    var EMPTY_ENUM = 5;
                     var formValid = true;
                     var teacher_since_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.teacherSince = this.functionsUtilService.validator(this.yearObject.value, teacher_since_rules);
@@ -5109,7 +5241,7 @@ var app;
                     this.STEP6_STATE = 'page.createTeacherPage.method';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.education.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.education.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(5, 9);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(5, 8);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -5149,8 +5281,8 @@ var app;
                     }
                 };
                 TeacherEducationSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 3;
-                    var EMPTY_ENUM = 4;
+                    var NULL_ENUM = 4;
+                    var EMPTY_ENUM = 5;
                     var formValid = true;
                     var education_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.educations = this.functionsUtilService.validator(this.form.educations, education_rules);
@@ -5307,7 +5439,7 @@ var app;
                     this.STEP7_STATE = 'page.createTeacherPage.price';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.method.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.method.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(6, 9);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(6, 8);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -5355,8 +5487,8 @@ var app;
                     }
                 };
                 TeacherMethodSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 3;
-                    var EMPTY_ENUM = 4;
+                    var NULL_ENUM = 4;
+                    var EMPTY_ENUM = 5;
                     var formValid = true;
                     var methodology_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.methodology = this.functionsUtilService.validator(this.form.methodology, methodology_rules);
@@ -5467,3 +5599,178 @@ var app;
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
 //# sourceMappingURL=teacherMethodSection.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.createTeacherPage')
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.createTeacherPage.price', {
+            url: '/price',
+            views: {
+                'step': {
+                    templateUrl: 'app/pages/createTeacherPage/teacherPriceSection/teacherPriceSection.html',
+                    controller: 'mainApp.pages.createTeacherPage.TeacherPriceSectionController',
+                    controllerAs: 'vm'
+                }
+            },
+            cache: false
+        });
+    }
+})();
+//# sourceMappingURL=teacherPriceSection.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var createTeacherPage;
+        (function (createTeacherPage) {
+            var TeacherPriceSectionController = (function () {
+                function TeacherPriceSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope) {
+                    this.dataConfig = dataConfig;
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
+                    this.$state = $state;
+                    this.$filter = $filter;
+                    this.$scope = $scope;
+                    this._init();
+                }
+                TeacherPriceSectionController.prototype._init = function () {
+                    this.STEP6_STATE = 'page.createTeacherPage.method';
+                    this.FINAL_STEP_STATE = 'page.createTeacherPage.final';
+                    this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.price.help_text.title.text');
+                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.price.help_text.description.text');
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(7, 8);
+                    this.helpText = {
+                        title: this.HELP_TEXT_TITLE,
+                        description: this.HELP_TEXT_DESCRIPTION
+                    };
+                    this.form = {
+                        privateClass: new app.models.teacher.TypeOfPrice,
+                        groupClass: new app.models.teacher.TypeOfPrice
+                    };
+                    this.validate = {
+                        privateClassPrice: { valid: true, message: '' },
+                        privateClassActive: { valid: true, message: '' },
+                        groupClassPrice: { valid: true, message: '' },
+                        groupClassActive: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                TeacherPriceSectionController.prototype.activate = function () {
+                    console.log('TeacherPriceSectionController controller actived');
+                    this._subscribeToEvents();
+                };
+                TeacherPriceSectionController.prototype.changeStatus = function (type) {
+                    this.form[type].Active = !this.form[type].Active;
+                };
+                TeacherPriceSectionController.prototype.goToNext = function () {
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this._setDataModelFromForm();
+                        this.$scope.$emit('Save Data');
+                        this.$state.go(this.FINAL_STEP_STATE, { reload: true });
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                TeacherPriceSectionController.prototype.goToBack = function () {
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this._setDataModelFromForm();
+                        this.$scope.$emit('Save Data');
+                        this.$state.go(this.STEP6_STATE, { reload: true });
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                TeacherPriceSectionController.prototype._validateForm = function () {
+                    var NULL_ENUM = 4;
+                    var IS_NOT_ZERO_ENUM = 3;
+                    var EMPTY_ENUM = 5;
+                    var TRUE_ENUM = 6;
+                    var GLOBAL_MESSAGE = this.$filter('translate')('%create.teacher.price.validation.message.text');
+                    var formValid = true;
+                    if (this.form.privateClass.Active) {
+                        var privateClassPrice_rules = [NULL_ENUM, EMPTY_ENUM, IS_NOT_ZERO_ENUM];
+                        this.validate.privateClassPrice = this.functionsUtilService.validator(this.form.privateClass.HourPrice, privateClassPrice_rules);
+                        if (!this.validate.privateClassPrice.valid) {
+                            formValid = this.validate.privateClassPrice.valid;
+                        }
+                    }
+                    if (this.form.groupClass.Active) {
+                        var groupClassPrice_rules = [NULL_ENUM, EMPTY_ENUM, IS_NOT_ZERO_ENUM];
+                        this.validate.groupClassPrice = this.functionsUtilService.validator(this.form.groupClass.HourPrice, groupClassPrice_rules);
+                        if (!this.validate.groupClassPrice.valid) {
+                            formValid = this.validate.groupClassPrice.valid;
+                        }
+                    }
+                    var privateClassActive_rules = [TRUE_ENUM];
+                    this.validate.privateClassActive = this.functionsUtilService.validator(this.form.privateClass.Active, privateClassActive_rules);
+                    var groupClassActive_rules = [TRUE_ENUM];
+                    this.validate.groupClassActive = this.functionsUtilService.validator(this.form.groupClass.Active, groupClassActive_rules);
+                    if (!this.validate.privateClassActive.valid && !this.validate.groupClassActive.valid) {
+                        this.validate.globalValidate.valid = false;
+                        this.validate.globalValidate.message = GLOBAL_MESSAGE;
+                        formValid = this.validate.globalValidate.valid;
+                    }
+                    else {
+                        this.validate.globalValidate.valid = true;
+                        this.validate.globalValidate.message = '';
+                    }
+                    return formValid;
+                };
+                TeacherPriceSectionController.prototype.changeHelpText = function (type) {
+                    var PRIVATE_CLASS_TITLE = this.$filter('translate')('%create.teacher.price.help_text.private_class.title.text');
+                    var PRIVATE_CLASS_DESCRIPTION = this.$filter('translate')('%create.teacher.price.help_text.private_class.description.text');
+                    var GROUP_CLASS_TITLE = this.$filter('translate')('%create.teacher.price.help_text.group_class.title.text');
+                    var GROUP_CLASS_DESCRIPTION = this.$filter('translate')('%create.teacher.price.help_text.group_class.description.text');
+                    switch (type) {
+                        case 'default':
+                            this.helpText.title = this.HELP_TEXT_TITLE;
+                            this.helpText.description = this.HELP_TEXT_DESCRIPTION;
+                            break;
+                        case 'privateClass':
+                            this.helpText.title = PRIVATE_CLASS_TITLE;
+                            this.helpText.description = PRIVATE_CLASS_DESCRIPTION;
+                            break;
+                        case 'groupClass':
+                            this.helpText.title = GROUP_CLASS_TITLE;
+                            this.helpText.description = GROUP_CLASS_DESCRIPTION;
+                            break;
+                    }
+                };
+                TeacherPriceSectionController.prototype._setDataModelFromForm = function () {
+                    this.$scope.$parent.vm.teacherData.Price.PrivateClass = this.form.privateClass;
+                    this.$scope.$parent.vm.teacherData.Price.GroupClass = this.form.groupClass;
+                };
+                TeacherPriceSectionController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Fill Form', function (event, args) {
+                        self.form.privateClass = args.Price.PrivateClass;
+                        self.form.groupClass = args.Price.GroupClass;
+                    });
+                };
+                return TeacherPriceSectionController;
+            }());
+            TeacherPriceSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherPriceSectionController';
+            TeacherPriceSectionController.$inject = [
+                'dataConfig',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                '$state',
+                '$filter',
+                '$scope'
+            ];
+            createTeacherPage.TeacherPriceSectionController = TeacherPriceSectionController;
+            angular
+                .module('mainApp.pages.createTeacherPage')
+                .controller(TeacherPriceSectionController.controllerId, TeacherPriceSectionController);
+        })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=teacherPriceSection.controller.js.map

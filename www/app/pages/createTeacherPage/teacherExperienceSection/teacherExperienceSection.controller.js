@@ -21,7 +21,7 @@ var app;
                     this.STEP_ALTER_STATE = 'page.createTeacherPage.education';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(4, 9);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(4, 8);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -86,8 +86,8 @@ var app;
                     }
                 };
                 TeacherExperienceSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 3;
-                    var EMPTY_ENUM = 4;
+                    var NULL_ENUM = 4;
+                    var EMPTY_ENUM = 5;
                     var formValid = true;
                     var teacher_since_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.teacherSince = this.functionsUtilService.validator(this.yearObject.value, teacher_since_rules);

@@ -38,8 +38,10 @@ module app.core.util.functionsUtil {
         Email,
         String,
         Number,
+        IsNotZero,
         Null,
-        Empty
+        Empty,
+        IsTrue
     }
 
     /****************************************/
@@ -65,7 +67,7 @@ module app.core.util.functionsUtil {
         constructor(private $filter: angular.IFilterService) {
             console.log('functionsUtil service called');
         }
-        
+
 
         /**********************************/
         /*            METHODS             */
@@ -255,9 +257,11 @@ module app.core.util.functionsUtil {
             //CONSTANTS
             const NULL_MESSAGE = this.$filter('translate')('%global.validation.null.message.text');
             const EMPTY_MESSAGE = this.$filter('translate')('%global.validation.empty.message.text');
+            const IS_NOT_ZERO_MESSAGE = this.$filter('translate')('%global.validation.is_not_zero.message.text');
             const STRING_MESSAGE = this.$filter('translate')('%global.validation.string.message.text');
             const NUMBER_MESSAGE = this.$filter('translate')('%global.validation.number.message.text');
             const EMAIL_MESSAGE = this.$filter('translate')('%global.validation.email.message.text');
+            const TRUE_MESSAGE = this.$filter('translate')('%global.validation.true.message.text');
             /*******************************/
             //VARIABLES
             let obj = {valid: true, message: 'ok'};
@@ -299,11 +303,27 @@ module app.core.util.functionsUtil {
                         break;
                     }
 
+                    case Validation.IsNotZero: {
+                        if(parseInt(value) == 0) {
+                            obj.message = IS_NOT_ZERO_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+                    }
+
                     case Validation.Email: {
                         let pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
                         obj.valid = pattern.test(value);
                         if(obj.valid == false) {
                             obj.message = EMAIL_MESSAGE;
+                        }
+                        break;
+                    }
+
+                    case Validation.IsTrue: {
+                        if(value !== true){
+                            obj.message = TRUE_MESSAGE;
+                            obj.valid = false;
                         }
                         break;
                     }

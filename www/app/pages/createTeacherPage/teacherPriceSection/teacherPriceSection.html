@@ -1,0 +1,283 @@
+<!----------------------------------------------------------------------------->
+<!--                         STEP 7 SECTION TEMPLATE                         -->
+<!----------------------------------------------------------------------------->
+
+
+<!---------------------------- START: LEFT COLUMN ----------------------------->
+<div id="createTeacher-method-left-column" class="col-md-8 col-lg-8">
+
+    <div id="createTeacher-block" class="createTeacherPage__block row">
+
+        <div class="col-md-12">
+
+            <div class="ma-box">
+
+                <h4 class="ma-box__title margin-reset"
+                    ng-mouseover="vm.changeHelpText('default')" translate>
+                    %create.teacher.price.title.text
+                </h4>
+
+                <div class="ma-box__content">
+
+                    <!-- Global Validate Error Message -->
+                    <div class="row ma-large-message
+                                ma-large-message--alert space-5"
+                         ng-show="!vm.validate.globalValidate.valid">
+                        <div class="col-md-12 text-center">
+                            <p class="ma-p ma-p--default ma-p--alert margin-reset">
+                                <span>{{vm.validate.globalValidate.message}}</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!------------- START: METHODOLOGY INFO BLOCK ------------->
+
+                    <!-- Private Classes Switch -->
+                    <div id="teacher-private-class-block"
+                         ng-mouseover="vm.changeHelpText('privateClass')"
+                         class="row">
+                        <div class="col-xs-3 col-sm-3 col-md-3"></div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="row center-xs middle-xs">
+                                <div class="col-md-6 text-right">
+                                    <label for="teacher-private-class-input" translate>
+                                        %create.teacher.price.form.private_class.text
+                                    </label>
+                                </div>
+                                <div class="col-md-6 text-left">
+                                    <div class="ma-switch">
+                                        <button class="ma-btn ma-btn--default ma-switch__btn"
+                                                ng-disabled="vm.form.privateClass.Active == true"
+                                                translate
+                                                ng-click="vm.changeStatus('privateClass')">
+                                            %global.yes.button.text
+                                        </button>
+                                        <button class="ma-btn ma-btn--default ma-switch__btn"
+                                                ng-disabled="vm.form.privateClass.Active == false"
+                                                ng-disabled="vm.form.privateClass.Active" translate
+                                                ng-click="vm.changeStatus('privateClass')">
+                                            %global.no.button.text
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-3 col-sm-3 col-md-3"></div>
+                    </div>
+
+
+                    <div class="classes-type-block space-top-5"
+                         ng-if="vm.form.privateClass.Active == true"
+                         ng-mouseover="vm.changeHelpText('privateClass')">
+
+                        <!-- Private Classes Price per hour -->
+                        <div class="row">
+                            <div class="col-xs-1 col-sm-3 col-md-4"></div>
+
+                            <div class="col-xs-10 col-sm-6 col-md-4 col-lg-4">
+                                <div class="form-group ma-form-group">
+                                    <label for="teacher-private-class-price-input"
+                                            translate>
+                                        %create.teacher.price.form.price.text
+                                    </label>
+                                    <div class="input-group ma-input-group">
+                                        <div class="input-group-addon
+                                                    ma-input-group-addon
+                                                    ma-input-group-addon--large
+                                                    ma-input-group-addon--alert-secondary">US$</div>
+                                        <input id="teacher-private-class-price-input" type="text"
+                                               class="ma-input
+                                                      ma-input--large
+                                                      ma-input--left-addon"
+                                               name="teacher[private_classes.price]"
+                                               ng-model="vm.form.privateClass.HourPrice"
+                                               ng-class="{'ma-input--invalid': !vm.validate.privateClassPrice.valid}"
+                                               placeholder="20">
+                                    </div>
+                                    <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                       ng-show="!vm.validate.privateClassPrice.valid">
+                                        <span>{{vm.validate.privateClassPrice.message}}</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-1 col-sm-3 col-md-4"></div>
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <!-- Groups Classes Switch -->
+                    <div id="teacher-group-class-block"
+                         ng-mouseover="vm.changeHelpText('groupClass')"
+                         class="row">
+                        <div class="col-xs-3 col-sm-3 col-md-3"></div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="row center-xs middle-xs">
+                                <div class="col-md-6 text-right">
+                                    <label for="teacher-group-class-input" translate>
+                                        %create.teacher.price.form.group_class.text
+                                    </label>
+                                </div>
+                                <div class="col-md-6 text-left">
+                                    <div class="ma-switch">
+                                        <button class="ma-btn ma-btn--default ma-switch__btn"
+                                                ng-disabled="vm.form.groupClass.Active == true"
+                                                translate
+                                                ng-click="vm.changeStatus('groupClass')">
+                                            %global.yes.button.text
+                                        </button>
+                                        <button class="ma-btn ma-btn--default ma-switch__btn"
+                                                ng-disabled="vm.form.groupClass.Active == false"
+                                                ng-disabled="vm.form.groupClass.Active" translate
+                                                ng-click="vm.changeStatus('groupClass')">
+                                            %global.no.button.text
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-3 col-sm-3 col-md-3"></div>
+                    </div>
+
+
+                    <div class="classes-type-block space-top-5"
+                         ng-if="vm.form.groupClass.Active == true"
+                         ng-mouseover="vm.changeHelpText('groupClass')">
+
+                        <!-- Group Classes Price per hour -->
+                        <div class="row">
+                            <div class="col-xs-1 col-sm-3 col-md-4"></div>
+
+                            <div class="col-xs-10 col-sm-6 col-md-4 col-lg-4">
+                                <div class="form-group ma-form-group">
+                                    <label for="teacher-group-class-price-input"
+                                            translate>
+                                        %create.teacher.price.form.price.text
+                                    </label>
+                                    <div class="input-group ma-input-group">
+                                        <div class="input-group-addon
+                                                    ma-input-group-addon
+                                                    ma-input-group-addon--large
+                                                    ma-input-group-addon--alert-secondary">US$</div>
+                                        <input id="teacher-group-class-price-input" type="text"
+                                               class="ma-input
+                                                      ma-input--large
+                                                      ma-input--left-addon"
+                                               name="teacher[group_classes.price]"
+                                               ng-model="vm.form.groupClass.HourPrice"
+                                               ng-class="{'ma-input--invalid': !vm.validate.groupClassPrice.valid}"
+                                               placeholder="15">
+                                    </div>
+                                    <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                       ng-show="!vm.validate.groupClassPrice.valid">
+                                       <span>{{vm.validate.groupClassPrice.message}}</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-1 col-sm-3 col-md-4"></div>
+                        </div>
+
+                    </div>
+
+
+                    <!--              END: METHODOLOGY INFO BLOCK             -->
+
+                </div>
+
+                <div class="ma-box__footer">
+
+                    <div class="row middle-xs">
+
+                        <div class="col-md-4 text-left">
+
+                            <button class="ma-btn
+                                           ma-btn--transparent
+                                           ma-btn--medium
+                                           ma-btn--withIcon"
+                                      ng-click="vm.goToBack()">
+                                <i class="material-icons md-18 md-dark">
+                                    keyboard_backspace
+                                </i>
+                                <span translate>%global.back.button.text</span>
+                            </button>
+
+                        </div>
+
+                        <div class="col-md-4"></div>
+
+                        <div class="col-md-4 text-right">
+
+                            <button class="ma-btn
+                                           ma-btn--primary
+                                           ma-btn--large"
+                                    ng-click="vm.goToNext()" translate>
+                               %global.next.button.text
+                           </button>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<!--                           END: LEFT COLUMN                              -->
+
+
+<!--------------------------- START: RIGHT COLUMN ----------------------------->
+<div id="createTeacher-right-column" class="col-md-4 col-lg-4">
+
+    <div class="ma-box space-5">
+
+        <div class="ma-box__content">
+
+            <!----------------- START: HELP AND INFO BLOCK -------------------->
+            <div id="createTeacher-info-block" class="row margin-reset text-center">
+
+                <div class="col-md-12">
+                    <!-- Help Icon Block -->
+                    <div class="row">
+                        <div class="col-md-12 text-right padding-reset">
+                            <i class="material-icons md-36 md-primary">
+                                 lightbulb_outline
+                             </i>
+                        </div>
+                    </div>
+                    <!-- Help Title Block -->
+                    <div class="row">
+                        <div class="col-md-12 text-left">
+                            <h4>
+                                {{vm.helpText.title}}
+                            </h4>
+                        </div>
+                    </div>
+                    <!-- Help Text Block -->
+                    <div class="row">
+                        <div class="col-md-12 text-left">
+                            <p class="ma-p ma-p--default">
+                                {{vm.helpText.description}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!--                END: HELP AND INFO BLOCK                     -->
+
+        </div>
+
+    </div>
+
+</div>
+<!--                          END: RIGHT COLUMN                              -->

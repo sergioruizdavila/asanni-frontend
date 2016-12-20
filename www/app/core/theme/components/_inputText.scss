@@ -27,6 +27,7 @@
 
     &--default {
         padding: map-get($input-paddings, default);
+        font-size: $input-font-size-default;
     }
 
     &--large {
@@ -37,6 +38,60 @@
     &--invalid {
         background-color: #fff2ef;
         border-color: #ffd1c4;
+    }
+
+    &--left-addon {
+        border-left: 0 hidden transparent;
+    }
+
+    &--right-addon {
+        border-right: 0 hidden transparent;
+    }
+}
+
+/* INPUT-GROUP */
+.ma-input-group {
+
+    /* INPUT ADDON */
+    .ma-input-group-addon {
+
+        /// ADDON SIZE
+        &--small {
+
+        }
+
+        &--default {
+            font-size: $input-font-size-default;
+        }
+
+        &--large {
+            font-size: $input-font-size-large;
+        }
+
+        /// ADDON COLOR
+        &--primary {
+            background-color: $input-group-addon-primary-background;
+            border: $input-group-addon-primary-border;
+            color: $input-group-addon-primary-font-color;
+        }
+
+        &--secondary {
+            background-color: $input-group-addon-secondary-background;
+            border: $input-group-addon-secondary-border;
+            color: $input-group-addon-secondary-font-color;
+        }
+
+        &--alert {
+            background-color: $input-group-addon-alert-background;
+            border: $input-group-addon-alert-border;
+            color: $input-group-addon-alert-font-color;
+        }
+
+        &--alert-secondary {
+            background-color: $input-group-addon-primary-alert-background;
+            border: $input-group-addon-primary-alert-border;
+            color: $input-group-addon-primary-alert-font-color;
+        }
     }
 }
 
