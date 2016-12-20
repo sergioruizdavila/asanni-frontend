@@ -4257,7 +4257,7 @@ var app;
                     this.STEP2_STATE = 'page.createTeacherPage.location';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.basic_info.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.basic_info.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(1, 9);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(1, 8);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -4312,8 +4312,8 @@ var app;
                     }
                 };
                 TeacherInfoSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 3;
-                    var EMPTY_ENUM = 4;
+                    var NULL_ENUM = 4;
+                    var EMPTY_ENUM = 5;
                     var EMAIL_ENUM = 0;
                     var NUMBER_ENUM = 2;
                     var formValid = true;
@@ -4512,7 +4512,7 @@ var app;
                     this.STEP3_STATE = 'page.createTeacherPage.language';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.location.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(2, 9);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(2, 8);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -4566,8 +4566,8 @@ var app;
                     }
                 };
                 TeacherLocationSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 3;
-                    var EMPTY_ENUM = 4;
+                    var NULL_ENUM = 4;
+                    var EMPTY_ENUM = 5;
                     var NUMBER_ENUM = 2;
                     var formValid = true;
                     var country_rules = [NULL_ENUM, EMPTY_ENUM];
@@ -4764,7 +4764,7 @@ var app;
                     this.STEP4_STATE = 'page.createTeacherPage.experience';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.lang.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.lang.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(3, 9);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(3, 8);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -4809,8 +4809,8 @@ var app;
                     }
                 };
                 TeacherLanguageSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 3;
-                    var EMPTY_ENUM = 4;
+                    var NULL_ENUM = 4;
+                    var EMPTY_ENUM = 5;
                     var formValid = true;
                     var native_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.native = this.functionsUtilService.validator(this.form.native, native_rules);
@@ -5030,7 +5030,7 @@ var app;
                     this.STEP_ALTER_STATE = 'page.createTeacherPage.education';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(4, 9);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(4, 8);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -5095,8 +5095,8 @@ var app;
                     }
                 };
                 TeacherExperienceSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 3;
-                    var EMPTY_ENUM = 4;
+                    var NULL_ENUM = 4;
+                    var EMPTY_ENUM = 5;
                     var formValid = true;
                     var teacher_since_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.teacherSince = this.functionsUtilService.validator(this.yearObject.value, teacher_since_rules);
@@ -5241,7 +5241,7 @@ var app;
                     this.STEP6_STATE = 'page.createTeacherPage.method';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.education.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.education.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(5, 9);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(5, 8);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -5281,8 +5281,8 @@ var app;
                     }
                 };
                 TeacherEducationSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 3;
-                    var EMPTY_ENUM = 4;
+                    var NULL_ENUM = 4;
+                    var EMPTY_ENUM = 5;
                     var formValid = true;
                     var education_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.educations = this.functionsUtilService.validator(this.form.educations, education_rules);
@@ -5439,7 +5439,7 @@ var app;
                     this.STEP7_STATE = 'page.createTeacherPage.price';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.method.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.method.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(6, 9);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(6, 8);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -5487,8 +5487,8 @@ var app;
                     }
                 };
                 TeacherMethodSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 3;
-                    var EMPTY_ENUM = 4;
+                    var NULL_ENUM = 4;
+                    var EMPTY_ENUM = 5;
                     var formValid = true;
                     var methodology_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.methodology = this.functionsUtilService.validator(this.form.methodology, methodology_rules);
