@@ -41,6 +41,7 @@ module app.core.util.functionsUtil {
         IsNotZero,
         Null,
         Empty,
+        Defined,
         IsTrue
     }
 
@@ -257,6 +258,7 @@ module app.core.util.functionsUtil {
             //CONSTANTS
             const NULL_MESSAGE = this.$filter('translate')('%global.validation.null.message.text');
             const EMPTY_MESSAGE = this.$filter('translate')('%global.validation.empty.message.text');
+            const DEFINED_MESSAGE = this.$filter('translate')('%global.validation.null.message.text');
             const IS_NOT_ZERO_MESSAGE = this.$filter('translate')('%global.validation.is_not_zero.message.text');
             const STRING_MESSAGE = this.$filter('translate')('%global.validation.string.message.text');
             const NUMBER_MESSAGE = this.$filter('translate')('%global.validation.number.message.text');
@@ -282,6 +284,14 @@ module app.core.util.functionsUtil {
                     case Validation.Empty: {
                         if(value == '') {
                             obj.message = EMPTY_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+                    }
+
+                    case Validation.Defined: {
+                        if(value === undefined) {
+                            obj.message = DEFINED_MESSAGE;
                             obj.valid = false;
                         }
                         break;

@@ -85,7 +85,9 @@ var paths = {
         "www/app/pages/createTeacherPage/teacherMethodSection/teacherMethodSection.config.js",
         "www/app/pages/createTeacherPage/teacherMethodSection/teacherMethodSection.controller.js",
         "www/app/pages/createTeacherPage/teacherPriceSection/teacherPriceSection.config.js",
-        "www/app/pages/createTeacherPage/teacherPriceSection/teacherPriceSection.controller.js"
+        "www/app/pages/createTeacherPage/teacherPriceSection/teacherPriceSection.controller.js",
+        "www/app/pages/createTeacherPage/teacherPhotoSection/teacherPhotoSection.config.js",
+        "www/app/pages/createTeacherPage/teacherPhotoSection/teacherPhotoSection.controller.js"
     ],
     appLibsJs: [
         'www/libs/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',
@@ -97,7 +99,8 @@ var paths = {
         'www/bower_components/flexboxgrid/dist/flexboxgrid.min.css',
         'www/bower_components/bootstrap/dist/css/bootstrap.min.css',
         'www/bower_components/fullcalendar/dist/fullcalendar.min.css',
-        'www/bower_components/toastr/toastr.min.css'
+        'www/bower_components/toastr/toastr.min.css',
+        'www/bower_components/ng-img-crop/compile/minified/ng-img-crop.css'
     ],
     appSass: ['www/**/**/*.scss'],
     inputSass: 'www/app/core/theme/**/*.scss',

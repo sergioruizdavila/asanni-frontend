@@ -16,7 +16,7 @@ var app;
                 }
                 TeacherPriceSectionController.prototype._init = function () {
                     this.STEP6_STATE = 'page.createTeacherPage.method';
-                    this.FINAL_STEP_STATE = 'page.createTeacherPage.final';
+                    this.STEP8_STATE = 'page.createTeacherPage.photo';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.price.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.price.help_text.description.text');
                     this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(7, 8);
@@ -49,7 +49,7 @@ var app;
                     if (formValid) {
                         this._setDataModelFromForm();
                         this.$scope.$emit('Save Data');
-                        this.$state.go(this.FINAL_STEP_STATE, { reload: true });
+                        this.$state.go(this.STEP8_STATE, { reload: true });
                     }
                     else {
                         window.scrollTo(0, 0);

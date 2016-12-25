@@ -49,7 +49,7 @@ module app.pages.createTeacherPage {
         validate: ITeacherPriceValidate;
         helpText: app.core.interfaces.IHelpTextStep;
         STEP6_STATE: string;
-        FINAL_STEP_STATE: string;
+        STEP8_STATE: string;
         HELP_TEXT_TITLE: string;
         HELP_TEXT_DESCRIPTION: string;
         // --------------------------------
@@ -82,7 +82,7 @@ module app.pages.createTeacherPage {
         private _init() {
             //CONSTANTS
             this.STEP6_STATE = 'page.createTeacherPage.method';
-            this.FINAL_STEP_STATE = 'page.createTeacherPage.final';
+            this.STEP8_STATE = 'page.createTeacherPage.photo';
             this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.price.help_text.title.text');
             this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.price.help_text.description.text');
             /*********************************/
@@ -155,7 +155,7 @@ module app.pages.createTeacherPage {
                 this._setDataModelFromForm();
                 this.$scope.$emit('Save Data');
                 // GO TO NEXT STEP
-                this.$state.go(this.FINAL_STEP_STATE, {reload: true});
+                this.$state.go(this.STEP8_STATE, {reload: true});
             } else {
                 //Go top pages
                 window.scrollTo(0, 0);
