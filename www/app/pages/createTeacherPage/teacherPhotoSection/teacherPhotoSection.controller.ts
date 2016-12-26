@@ -151,10 +151,10 @@ module app.pages.createTeacherPage {
             let formValid = this._validateForm();
             /****************************************************/
 
-            this.uploading = true;
-
             //If form is valid, save data model
             if(formValid) {
+
+                this.uploading = true;
 
                 // If this.form.avatar exists, resize and upload image
                 if(this.form.avatar) {
@@ -203,10 +203,10 @@ module app.pages.createTeacherPage {
             //Validate data form
             let formValid = this._validateForm();
 
-            this.uploading = true;
-
             //If form is valid, save data model
             if(formValid) {
+
+                this.uploading = true;
 
                 // If this.form.avatar exists, resize and upload image
                 if(this.form.avatar) {
