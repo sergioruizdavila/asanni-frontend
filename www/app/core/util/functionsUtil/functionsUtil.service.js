@@ -23,6 +23,14 @@ var app;
                         this.$filter = $filter;
                         console.log('functionsUtil service called');
                     }
+                    FunctionsUtilService.prototype.generateGuid = function () {
+                        var fmt = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+                        var guid = fmt.replace(/[xy]/g, function (c) {
+                            var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                            return v.toString(16);
+                        });
+                        return guid;
+                    };
                     FunctionsUtilService.prototype.dateFormat = function (date) {
                         var dateFormatted = moment(date).format('YYYY-MM-DD');
                         return dateFormatted;

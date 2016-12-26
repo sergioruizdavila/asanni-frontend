@@ -11,6 +11,7 @@ module app.core.util.functionsUtil {
     /*           INTERFACES           */
     /**********************************/
     export interface IFunctionsUtilService {
+        generateGuid: () => string;
         splitToColumns: (arr: Array<any>, size: number) => Array<any>;
         buildMapConfig: (dataSet: Array<any>,
                         mapType: string,
@@ -73,6 +74,21 @@ module app.core.util.functionsUtil {
         /**********************************/
         /*            METHODS             */
         /**********************************/
+
+        /**
+        * generateGuid
+        * @description - generate Guid id string
+        * @function
+        * @return {string} guid - Returns an Guid Id string.
+        */
+        generateGuid(): string {
+            var fmt = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+            var guid = fmt.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+            return guid;
+        }
 
         /**
         * dateFormat

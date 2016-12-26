@@ -7,6 +7,7 @@
         'mainApp.core.util',
         'mainApp.localStorage',
         'mainApp.core.restApi',
+        'mainApp.core.s3Upload',
         'mainApp.models.user',
         'mainApp.models.student',
         'mainApp.models.teacher',
@@ -57,7 +58,7 @@
 (function () {
     'use strict';
     var dataConfig = {
-        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
+        baseUrl: 'http://127.0.0.1:8000/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -166,6 +167,14 @@ var app;
                         this.$filter = $filter;
                         console.log('functionsUtil service called');
                     }
+                    FunctionsUtilService.prototype.generateGuid = function () {
+                        var fmt = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+                        var guid = fmt.replace(/[xy]/g, function (c) {
+                            var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                            return v.toString(16);
+                        });
+                        return guid;
+                    };
                     FunctionsUtilService.prototype.dateFormat = function (date) {
                         var dateFormatted = moment(date).format('YYYY-MM-DD');
                         return dateFormatted;
@@ -506,6 +515,67 @@ var app;
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
 //# sourceMappingURL=app.filter.js.map
+var app;
+(function (app) {
+    var core;
+    (function (core) {
+        var s3Upload;
+        (function (s3Upload) {
+            'use strict';
+            var S3UploadService = (function () {
+                function S3UploadService($q) {
+                    this.$q = $q;
+                    console.log('S3Upload service instanced');
+                    this.REGION = 'us-east-1';
+                    this.ACCESS_KEY_ID = 'AKIAIHKBYIUQD4KBIRLQ';
+                    this.SECRET_ACCESS_KEY = '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';
+                    this.BUCKET = 'waysily-img';
+                    AWS.config.region = this.REGION;
+                    AWS.config.update({
+                        accessKeyId: this.ACCESS_KEY_ID,
+                        secretAccessKey: this.SECRET_ACCESS_KEY
+                    });
+                    this.bucket = new AWS.S3({
+                        params: { Bucket: this.BUCKET, maxRetries: 10 },
+                        httpOptions: { timeout: 360000 }
+                    });
+                }
+                S3UploadService.prototype.upload = function (file) {
+                    var deferred = this.$q.defer();
+                    var params = {
+                        Bucket: this.BUCKET,
+                        Key: file.name,
+                        ContentType: file.type,
+                        Body: file
+                    };
+                    var options = {
+                        partSize: 10 * 1024 * 1024,
+                        queueSize: 1,
+                        ACL: 'bucket-owner-full-control'
+                    };
+                    var uploader = this.bucket.upload(params, options, function (err, data) {
+                        if (err) {
+                            deferred.reject(err);
+                        }
+                        deferred.resolve(data);
+                    });
+                    uploader.on('httpUploadProgress', function (event) {
+                        deferred.notify(event);
+                    });
+                    return deferred.promise;
+                };
+                return S3UploadService;
+            }());
+            S3UploadService.serviceId = 'mainApp.core.s3Upload.S3UploadService';
+            S3UploadService.$inject = ['$q'];
+            s3Upload.S3UploadService = S3UploadService;
+            angular
+                .module('mainApp.core.s3Upload', [])
+                .service(S3UploadService.serviceId, S3UploadService);
+        })(s3Upload = core.s3Upload || (core.s3Upload = {}));
+    })(core = app.core || (app.core = {}));
+})(app || (app = {}));
+//# sourceMappingURL=s3Upload.service.js.map
 (function () {
     'use strict';
     angular
@@ -5813,10 +5883,12 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherPhotoSectionController = (function () {
-                function TeacherPhotoSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope) {
+                function TeacherPhotoSectionController(dataConfig, getDataFromJson, functionsUtilService, S3UploadService, Upload, $state, $filter, $scope) {
                     this.dataConfig = dataConfig;
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
+                    this.S3UploadService = S3UploadService;
+                    this.Upload = Upload;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
@@ -5833,7 +5905,7 @@ var app;
                         description: this.HELP_TEXT_DESCRIPTION
                     };
                     this.form = {
-                        avatar: '',
+                        avatar: null,
                         croppedDataUrl: ''
                     };
                     this.validate = {
@@ -5846,11 +5918,10 @@ var app;
                     this._subscribeToEvents();
                 };
                 TeacherPhotoSectionController.prototype.goToNext = function () {
+                    var self = this;
                     var formValid = this._validateForm();
                     if (formValid) {
-                        this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data');
-                        this.$state.go(this.FINAL_STEP_STATE, { reload: true });
+                        this._resizeImage();
                     }
                     else {
                         window.scrollTo(0, 0);
@@ -5893,13 +5964,32 @@ var app;
                             break;
                     }
                 };
+                TeacherPhotoSectionController.prototype._resizeImage = function () {
+                    var self = this;
+                    var newName = this.functionsUtilService.generateGuid() + '.jpeg';
+                    var options = { width: 250, height: 250, quality: 1.0, type: 'image/jpeg', pattern: '.jpg', restoreExif: false };
+                    var file = this.Upload.dataUrltoBlob(this.form.croppedDataUrl, newName);
+                    this.Upload.resize(file, options).then(function (resizedFile) {
+                        self._uploadImage(resizedFile);
+                    });
+                };
+                TeacherPhotoSectionController.prototype._uploadImage = function (resizedFile) {
+                    var self = this;
+                    this.S3UploadService.upload(resizedFile).then(function (result) {
+                        self._setDataModelFromForm();
+                        self.$scope.$emit('Save Data');
+                        self.$state.go(this.FINAL_STEP_STATE, { reload: true });
+                    }, function (error) {
+                        console.log('error', error);
+                    }, function (progress) {
+                        console.log('progress test:', progress);
+                    });
+                };
                 TeacherPhotoSectionController.prototype._setDataModelFromForm = function () {
-                    this.$scope.$parent.vm.teacherData.Avatar = this.form.avatar;
                 };
                 TeacherPhotoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self.form.avatar = args.Avatar;
                     });
                 };
                 return TeacherPhotoSectionController;
@@ -5909,6 +5999,8 @@ var app;
                 'dataConfig',
                 'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
+                'mainApp.core.s3Upload.S3UploadService',
+                'Upload',
                 '$state',
                 '$filter',
                 '$scope'

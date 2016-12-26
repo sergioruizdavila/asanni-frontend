@@ -7,6 +7,7 @@
         'mainApp.core.util',
         'mainApp.localStorage',
         'mainApp.core.restApi',
+        'mainApp.core.s3Upload',
         'mainApp.models.user',
         'mainApp.models.student',
         'mainApp.models.teacher',

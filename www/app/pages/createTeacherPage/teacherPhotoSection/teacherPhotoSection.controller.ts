@@ -23,8 +23,12 @@ module app.pages.createTeacherPage {
     }
 
     export interface ITeacherPhotoForm {
-        avatar: string;
+        avatar: File;
         croppedDataUrl: string;
+    }
+
+    export interface IUpload extends angular.angularFileUpload.IUploadService {
+        dataUrltoBlob: (dataUrl: string, name: string) => File;
     }
 
     interface ITeacherPhotoValidate {
@@ -56,6 +60,8 @@ module app.pages.createTeacherPage {
             'dataConfig',
             'mainApp.core.util.GetDataStaticJsonService',
             'mainApp.core.util.FunctionsUtilService',
+            'mainApp.core.s3Upload.S3UploadService',
+            'Upload',
             '$state',
             '$filter',
             '$scope'
@@ -68,6 +74,8 @@ module app.pages.createTeacherPage {
             private dataConfig: IDataConfig,
             private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
             private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
+            private S3UploadService: app.core.s3Upload.IS3UploadService,
+            private Upload: IUpload,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
             private $scope: ITeacherPhotoScope) {
@@ -83,10 +91,10 @@ module app.pages.createTeacherPage {
             this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.description.text');
             /*********************************/
 
-            //Put title on parent scope
+            // Put title on parent scope
             this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(8, 9);
 
-            //Put Help Text Default
+            // Put Help Text Default
             this.helpText = {
                 title: this.HELP_TEXT_TITLE,
                 description: this.HELP_TEXT_DESCRIPTION
@@ -94,7 +102,7 @@ module app.pages.createTeacherPage {
 
             // Init form
             this.form = {
-                avatar: '',
+                avatar: null,
                 croppedDataUrl: ''
             };
 
@@ -128,19 +136,16 @@ module app.pages.createTeacherPage {
         * @return void
         */
         goToNext(): void {
-
+            //VARIABLES
+            let self = this;
             //Validate data form
             let formValid = this._validateForm();
+            /****************************************************/
 
             if(formValid) {
-                this._setDataModelFromForm();
-                //TODO: Aqui deberia tomar: vm.form.croppedDataUrl y llamar al
-                // servicio que se encarga de subir los archivos a Amazon S3.
-                // Si sube el archivo exitosamente, deberia ahi si emitir el
-                // evento: 'Save Data' para que guarde la url del usuario.
-                this.$scope.$emit('Save Data');
-                // GO TO NEXT STEP
-                this.$state.go(this.FINAL_STEP_STATE, {reload: true});
+
+                this._resizeImage();
+
             } else {
                 //Go top pages
                 window.scrollTo(0, 0);
@@ -231,6 +236,72 @@ module app.pages.createTeacherPage {
 
 
         /**
+        * _resizeImage
+        * @description - resize image base on defaults parameters
+        * @use - this._resizeImage();
+        * @function
+        * @return {void}
+        */
+        private _resizeImage(): void {
+            //VARIABLES
+            let self = this;
+            //New file name
+            let newName = this.functionsUtilService.generateGuid() + '.jpeg';
+            // Image Options
+            let options= {width: 250, height: 250, quality: 1.0, type: 'image/jpeg', pattern:'.jpg', restoreExif: false};
+            // Build file base on cropped data image
+            let file = this.Upload.dataUrltoBlob(this.form.croppedDataUrl, newName);
+            /****************************************************/
+
+            // Resize image (change extension to jpeg, resize and quality)
+            this.Upload.resize(file, options).then(function(resizedFile) {
+
+                // Upload resized file to Amazon S3
+                self._uploadImage(resizedFile);
+
+            });
+
+        }
+
+
+
+        /**
+        * _uploadImage
+        * @description - upload resize image to Amazon S3
+        * @use - this._uploadImage(resizedFile);
+        * @function
+        * @param {File} resizedFile file object
+        * @return {void}
+        */
+        private _uploadImage(resizedFile): void {
+            //VARIABLES
+            let self = this;
+
+            this.S3UploadService.upload(resizedFile).then(function (result) {
+
+                // Save teacher model on DB
+                self._setDataModelFromForm();
+                self.$scope.$emit('Save Data');
+
+                // GO TO NEXT STEP
+                self.$state.go(this.FINAL_STEP_STATE, {reload: true});
+
+            }, function (error) {
+
+                // Mark the error
+                console.log('error', error);
+
+            }, function (progress) {
+
+                console.log('progress test:', progress);
+
+            });
+
+        }
+
+
+
+        /**
         * _setDataModelFromForm
         * @description - get data from form's input in order to put it on $parent.teacherData
         * @use - this._getDataFromForm();
@@ -240,7 +311,7 @@ module app.pages.createTeacherPage {
         private _setDataModelFromForm(): void {
 
             // Send data to parent (createTeacherPage)
-            this.$scope.$parent.vm.teacherData.Avatar = this.form.avatar;
+            //this.$scope.$parent.vm.teacherData.Avatar = this.form.avatar;
 
         }
 
@@ -266,7 +337,8 @@ module app.pages.createTeacherPage {
             */
             this.$scope.$on('Fill Form', function(event, args: app.models.teacher.Teacher) {
 
-                self.form.avatar = args.Avatar;
+                //self.form.avatar = args.Avatar;
+                //TODO: Aqui cargamos la imagen en el cuadro
 
             });
         }

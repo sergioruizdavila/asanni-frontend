@@ -5,10 +5,12 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherPhotoSectionController = (function () {
-                function TeacherPhotoSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope) {
+                function TeacherPhotoSectionController(dataConfig, getDataFromJson, functionsUtilService, S3UploadService, Upload, $state, $filter, $scope) {
                     this.dataConfig = dataConfig;
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
+                    this.S3UploadService = S3UploadService;
+                    this.Upload = Upload;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
@@ -25,7 +27,7 @@ var app;
                         description: this.HELP_TEXT_DESCRIPTION
                     };
                     this.form = {
-                        avatar: '',
+                        avatar: null,
                         croppedDataUrl: ''
                     };
                     this.validate = {
@@ -38,11 +40,10 @@ var app;
                     this._subscribeToEvents();
                 };
                 TeacherPhotoSectionController.prototype.goToNext = function () {
+                    var self = this;
                     var formValid = this._validateForm();
                     if (formValid) {
-                        this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data');
-                        this.$state.go(this.FINAL_STEP_STATE, { reload: true });
+                        this._resizeImage();
                     }
                     else {
                         window.scrollTo(0, 0);
@@ -85,13 +86,32 @@ var app;
                             break;
                     }
                 };
+                TeacherPhotoSectionController.prototype._resizeImage = function () {
+                    var self = this;
+                    var newName = this.functionsUtilService.generateGuid() + '.jpeg';
+                    var options = { width: 250, height: 250, quality: 1.0, type: 'image/jpeg', pattern: '.jpg', restoreExif: false };
+                    var file = this.Upload.dataUrltoBlob(this.form.croppedDataUrl, newName);
+                    this.Upload.resize(file, options).then(function (resizedFile) {
+                        self._uploadImage(resizedFile);
+                    });
+                };
+                TeacherPhotoSectionController.prototype._uploadImage = function (resizedFile) {
+                    var self = this;
+                    this.S3UploadService.upload(resizedFile).then(function (result) {
+                        self._setDataModelFromForm();
+                        self.$scope.$emit('Save Data');
+                        self.$state.go(this.FINAL_STEP_STATE, { reload: true });
+                    }, function (error) {
+                        console.log('error', error);
+                    }, function (progress) {
+                        console.log('progress test:', progress);
+                    });
+                };
                 TeacherPhotoSectionController.prototype._setDataModelFromForm = function () {
-                    this.$scope.$parent.vm.teacherData.Avatar = this.form.avatar;
                 };
                 TeacherPhotoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self.form.avatar = args.Avatar;
                     });
                 };
                 return TeacherPhotoSectionController;
@@ -101,6 +121,8 @@ var app;
                 'dataConfig',
                 'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
+                'mainApp.core.s3Upload.S3UploadService',
+                'Upload',
                 '$state',
                 '$filter',
                 '$scope'
