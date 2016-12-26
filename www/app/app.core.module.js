@@ -6,7 +6,9 @@
         'pascalprecht.translate',
         'ui.bootstrap',
         'ui.calendar',
-        'ui.bootstrap.datetimepicker'
+        'ui.bootstrap.datetimepicker',
+        'ngFileUpload',
+        'ngImgCrop'
     ]);
 })();
 //# sourceMappingURL=app.core.module.js.map

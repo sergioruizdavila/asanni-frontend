@@ -117,7 +117,7 @@ module app.pages.createTeacherPage {
             /*********************************/
 
             //Put title on parent scope
-            this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(1, 8);
+            this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(1, 9);
 
             //Put Help Text Default
             this.helpText = {

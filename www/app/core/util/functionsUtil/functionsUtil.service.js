@@ -15,13 +15,22 @@ var app;
                     Validation[Validation["IsNotZero"] = 3] = "IsNotZero";
                     Validation[Validation["Null"] = 4] = "Null";
                     Validation[Validation["Empty"] = 5] = "Empty";
-                    Validation[Validation["IsTrue"] = 6] = "IsTrue";
+                    Validation[Validation["Defined"] = 6] = "Defined";
+                    Validation[Validation["IsTrue"] = 7] = "IsTrue";
                 })(Validation = functionsUtil.Validation || (functionsUtil.Validation = {}));
                 var FunctionsUtilService = (function () {
                     function FunctionsUtilService($filter) {
                         this.$filter = $filter;
                         console.log('functionsUtil service called');
                     }
+                    FunctionsUtilService.prototype.generateGuid = function () {
+                        var fmt = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+                        var guid = fmt.replace(/[xy]/g, function (c) {
+                            var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                            return v.toString(16);
+                        });
+                        return guid;
+                    };
                     FunctionsUtilService.prototype.dateFormat = function (date) {
                         var dateFormatted = moment(date).format('YYYY-MM-DD');
                         return dateFormatted;
@@ -88,6 +97,7 @@ var app;
                         if (validations === void 0) { validations = []; }
                         var NULL_MESSAGE = this.$filter('translate')('%global.validation.null.message.text');
                         var EMPTY_MESSAGE = this.$filter('translate')('%global.validation.empty.message.text');
+                        var DEFINED_MESSAGE = this.$filter('translate')('%global.validation.null.message.text');
                         var IS_NOT_ZERO_MESSAGE = this.$filter('translate')('%global.validation.is_not_zero.message.text');
                         var STRING_MESSAGE = this.$filter('translate')('%global.validation.string.message.text');
                         var NUMBER_MESSAGE = this.$filter('translate')('%global.validation.number.message.text');
@@ -106,6 +116,13 @@ var app;
                                 case 5: {
                                     if (value == '') {
                                         obj.message = EMPTY_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                }
+                                case 6: {
+                                    if (value === undefined) {
+                                        obj.message = DEFINED_MESSAGE;
                                         obj.valid = false;
                                     }
                                     break;
@@ -139,7 +156,7 @@ var app;
                                     }
                                     break;
                                 }
-                                case 6: {
+                                case 7: {
                                     if (value !== true) {
                                         obj.message = TRUE_MESSAGE;
                                         obj.valid = false;

@@ -7,6 +7,7 @@
         'mainApp.core.util',
         'mainApp.localStorage',
         'mainApp.core.restApi',
+        'mainApp.core.s3Upload',
         'mainApp.models.user',
         'mainApp.models.student',
         'mainApp.models.teacher',
@@ -36,7 +37,7 @@
             prefix: prefix,
             suffix: suffix
         });
-        $translateProvider.preferredLanguage('es');
+        $translateProvider.preferredLanguage('en');
     }
 })();
 //# sourceMappingURL=app.module.js.map
@@ -48,7 +49,9 @@
         'pascalprecht.translate',
         'ui.bootstrap',
         'ui.calendar',
-        'ui.bootstrap.datetimepicker'
+        'ui.bootstrap.datetimepicker',
+        'ngFileUpload',
+        'ngImgCrop'
     ]);
 })();
 //# sourceMappingURL=app.core.module.js.map
@@ -156,13 +159,22 @@ var app;
                     Validation[Validation["IsNotZero"] = 3] = "IsNotZero";
                     Validation[Validation["Null"] = 4] = "Null";
                     Validation[Validation["Empty"] = 5] = "Empty";
-                    Validation[Validation["IsTrue"] = 6] = "IsTrue";
+                    Validation[Validation["Defined"] = 6] = "Defined";
+                    Validation[Validation["IsTrue"] = 7] = "IsTrue";
                 })(Validation = functionsUtil.Validation || (functionsUtil.Validation = {}));
                 var FunctionsUtilService = (function () {
                     function FunctionsUtilService($filter) {
                         this.$filter = $filter;
                         console.log('functionsUtil service called');
                     }
+                    FunctionsUtilService.prototype.generateGuid = function () {
+                        var fmt = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+                        var guid = fmt.replace(/[xy]/g, function (c) {
+                            var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                            return v.toString(16);
+                        });
+                        return guid;
+                    };
                     FunctionsUtilService.prototype.dateFormat = function (date) {
                         var dateFormatted = moment(date).format('YYYY-MM-DD');
                         return dateFormatted;
@@ -229,6 +241,7 @@ var app;
                         if (validations === void 0) { validations = []; }
                         var NULL_MESSAGE = this.$filter('translate')('%global.validation.null.message.text');
                         var EMPTY_MESSAGE = this.$filter('translate')('%global.validation.empty.message.text');
+                        var DEFINED_MESSAGE = this.$filter('translate')('%global.validation.null.message.text');
                         var IS_NOT_ZERO_MESSAGE = this.$filter('translate')('%global.validation.is_not_zero.message.text');
                         var STRING_MESSAGE = this.$filter('translate')('%global.validation.string.message.text');
                         var NUMBER_MESSAGE = this.$filter('translate')('%global.validation.number.message.text');
@@ -247,6 +260,13 @@ var app;
                                 case 5: {
                                     if (value == '') {
                                         obj.message = EMPTY_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                }
+                                case 6: {
+                                    if (value === undefined) {
+                                        obj.message = DEFINED_MESSAGE;
                                         obj.valid = false;
                                     }
                                     break;
@@ -280,7 +300,7 @@ var app;
                                     }
                                     break;
                                 }
-                                case 6: {
+                                case 7: {
                                     if (value !== true) {
                                         obj.message = TRUE_MESSAGE;
                                         obj.valid = false;
@@ -495,6 +515,64 @@ var app;
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
 //# sourceMappingURL=app.filter.js.map
+var app;
+(function (app) {
+    var core;
+    (function (core) {
+        var s3Upload;
+        (function (s3Upload) {
+            'use strict';
+            var S3UploadService = (function () {
+                function S3UploadService($q) {
+                    this.$q = $q;
+                    console.log('S3Upload service instanced');
+                    this.REGION = 'us-east-1';
+                    this.ACCESS_KEY_ID = 'AKIAIHKBYIUQD4KBIRLQ';
+                    this.SECRET_ACCESS_KEY = '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';
+                    this.BUCKET = 'waysily-img';
+                    AWS.config.region = this.REGION;
+                    AWS.config.update({
+                        accessKeyId: this.ACCESS_KEY_ID,
+                        secretAccessKey: this.SECRET_ACCESS_KEY
+                    });
+                    this.bucket = new AWS.S3({
+                        params: { Bucket: this.BUCKET, maxRetries: 10 },
+                        httpOptions: { timeout: 360000 }
+                    });
+                }
+                S3UploadService.prototype.upload = function (file) {
+                    var deferred = this.$q.defer();
+                    var params = {
+                        Bucket: this.BUCKET,
+                        Key: file.name,
+                        ContentType: file.type,
+                        Body: file
+                    };
+                    var options = {
+                        partSize: 10 * 1024 * 1024,
+                        queueSize: 1,
+                        ACL: 'bucket-owner-full-control'
+                    };
+                    var uploader = this.bucket.upload(params, options, function (err, data) {
+                        if (err) {
+                            deferred.reject(err);
+                        }
+                        deferred.resolve(data);
+                    });
+                    return deferred.promise;
+                };
+                return S3UploadService;
+            }());
+            S3UploadService.serviceId = 'mainApp.core.s3Upload.S3UploadService';
+            S3UploadService.$inject = ['$q'];
+            s3Upload.S3UploadService = S3UploadService;
+            angular
+                .module('mainApp.core.s3Upload', [])
+                .service(S3UploadService.serviceId, S3UploadService);
+        })(s3Upload = core.s3Upload || (core.s3Upload = {}));
+    })(core = app.core || (app.core = {}));
+})(app || (app = {}));
+//# sourceMappingURL=s3Upload.service.js.map
 (function () {
     'use strict';
     angular
@@ -4257,7 +4335,7 @@ var app;
                     this.STEP2_STATE = 'page.createTeacherPage.location';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.basic_info.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.basic_info.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(1, 8);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(1, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -4512,7 +4590,7 @@ var app;
                     this.STEP3_STATE = 'page.createTeacherPage.language';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.location.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(2, 8);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(2, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -4764,7 +4842,7 @@ var app;
                     this.STEP4_STATE = 'page.createTeacherPage.experience';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.lang.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.lang.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(3, 8);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(3, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -5030,7 +5108,7 @@ var app;
                     this.STEP_ALTER_STATE = 'page.createTeacherPage.education';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(4, 8);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(4, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -5241,7 +5319,7 @@ var app;
                     this.STEP6_STATE = 'page.createTeacherPage.method';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.education.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.education.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(5, 8);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(5, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -5439,7 +5517,7 @@ var app;
                     this.STEP7_STATE = 'page.createTeacherPage.price';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.method.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.method.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(6, 8);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(6, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -5638,10 +5716,10 @@ var app;
                 }
                 TeacherPriceSectionController.prototype._init = function () {
                     this.STEP6_STATE = 'page.createTeacherPage.method';
-                    this.FINAL_STEP_STATE = 'page.createTeacherPage.final';
+                    this.STEP8_STATE = 'page.createTeacherPage.photo';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.price.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.price.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(7, 8);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(7, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -5671,7 +5749,7 @@ var app;
                     if (formValid) {
                         this._setDataModelFromForm();
                         this.$scope.$emit('Save Data');
-                        this.$state.go(this.FINAL_STEP_STATE, { reload: true });
+                        this.$state.go(this.STEP8_STATE, { reload: true });
                     }
                     else {
                         window.scrollTo(0, 0);
@@ -5692,7 +5770,7 @@ var app;
                     var NULL_ENUM = 4;
                     var IS_NOT_ZERO_ENUM = 3;
                     var EMPTY_ENUM = 5;
-                    var TRUE_ENUM = 6;
+                    var TRUE_ENUM = 7;
                     var GLOBAL_MESSAGE = this.$filter('translate')('%create.teacher.price.validation.message.text');
                     var formValid = true;
                     if (this.form.privateClass.Active) {
@@ -5774,3 +5852,393 @@ var app;
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
 //# sourceMappingURL=teacherPriceSection.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.createTeacherPage')
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.createTeacherPage.photo', {
+            url: '/photo',
+            views: {
+                'step': {
+                    templateUrl: 'app/pages/createTeacherPage/teacherPhotoSection/teacherPhotoSection.html',
+                    controller: 'mainApp.pages.createTeacherPage.TeacherPhotoSectionController',
+                    controllerAs: 'vm'
+                }
+            },
+            cache: false
+        });
+    }
+})();
+//# sourceMappingURL=teacherPhotoSection.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var createTeacherPage;
+        (function (createTeacherPage) {
+            var TeacherPhotoSectionController = (function () {
+                function TeacherPhotoSectionController(dataConfig, getDataFromJson, functionsUtilService, S3UploadService, messageUtil, Upload, $state, $filter, $scope) {
+                    this.dataConfig = dataConfig;
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
+                    this.S3UploadService = S3UploadService;
+                    this.messageUtil = messageUtil;
+                    this.Upload = Upload;
+                    this.$state = $state;
+                    this.$filter = $filter;
+                    this.$scope = $scope;
+                    this._init();
+                }
+                TeacherPhotoSectionController.prototype._init = function () {
+                    this.STEP7_STATE = 'page.createTeacherPage.price';
+                    this.FINAL_STEP_STATE = 'page.createTeacherPage.finish';
+                    this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.title.text');
+                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.description.text');
+                    this.uploading = false;
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(8, 9);
+                    this.helpText = {
+                        title: this.HELP_TEXT_TITLE,
+                        description: this.HELP_TEXT_DESCRIPTION
+                    };
+                    this.form = {
+                        avatar: null,
+                        croppedDataUrl: '',
+                        thumbnail: ''
+                    };
+                    this.validate = {
+                        avatar: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                TeacherPhotoSectionController.prototype.activate = function () {
+                    console.log('TeacherPhotoSectionController controller actived');
+                    this._subscribeToEvents();
+                };
+                TeacherPhotoSectionController.prototype.goToNext = function () {
+                    var self = this;
+                    var formValid = this._validateForm();
+                    this.uploading = true;
+                    if (formValid) {
+                        if (this.form.avatar) {
+                            this._resizeImage().then(function (result) {
+                                self.uploading = false;
+                                if (result.Location) {
+                                    self._setDataModelFromForm(result.Location);
+                                    self.$scope.$emit('Save Data');
+                                    self.$state.go(self.FINAL_STEP_STATE, { reload: true });
+                                }
+                                else {
+                                    self.messageUtil.error('');
+                                }
+                            });
+                        }
+                        else {
+                            this.$scope.$emit('Save Data');
+                            this.$state.go(this.FINAL_STEP_STATE, { reload: true });
+                        }
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                TeacherPhotoSectionController.prototype.goToBack = function () {
+                    var self = this;
+                    var formValid = this._validateForm();
+                    this.uploading = true;
+                    if (formValid) {
+                        if (this.form.avatar) {
+                            this._resizeImage().then(function (result) {
+                                self.uploading = false;
+                                if (result.Location) {
+                                    self._setDataModelFromForm(result.Location);
+                                    self.$scope.$emit('Save Data');
+                                    self.$state.go(self.STEP7_STATE, { reload: true });
+                                }
+                                else {
+                                    self.messageUtil.error('');
+                                }
+                            });
+                        }
+                        else {
+                            this.$scope.$emit('Save Data');
+                            this.$state.go(this.STEP7_STATE, { reload: true });
+                        }
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                TeacherPhotoSectionController.prototype._validateForm = function () {
+                    var NULL_ENUM = 4;
+                    var EMPTY_ENUM = 5;
+                    var DEFINED_ENUM = 6;
+                    var PHOTO_MESSAGE = this.$filter('translate')('%create.teacher.photo.validation.message.text');
+                    var formValid = true;
+                    var avatar_rules = [NULL_ENUM, EMPTY_ENUM, DEFINED_ENUM];
+                    this.validate.avatar = this.functionsUtilService.validator(this.form.avatar, avatar_rules);
+                    this.validate.avatar = this.functionsUtilService.validator(this.form.thumbnail, avatar_rules);
+                    if (!this.validate.avatar.valid) {
+                        this.validate.avatar.message = PHOTO_MESSAGE;
+                        formValid = this.validate.avatar.valid;
+                    }
+                    return formValid;
+                };
+                TeacherPhotoSectionController.prototype.changeHelpText = function (type) {
+                    var AVATAR_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.avatar.title.text');
+                    var AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.avatar.description.text');
+                    switch (type) {
+                        case 'default':
+                            this.helpText.title = this.HELP_TEXT_TITLE;
+                            this.helpText.description = this.HELP_TEXT_DESCRIPTION;
+                            break;
+                        case 'avatar':
+                            this.helpText.title = AVATAR_TITLE;
+                            this.helpText.description = AVATAR_DESCRIPTION;
+                            break;
+                    }
+                };
+                TeacherPhotoSectionController.prototype._resizeImage = function () {
+                    var self = this;
+                    var newName = this.functionsUtilService.generateGuid() + '.jpeg';
+                    var options = {
+                        width: 250,
+                        height: 250,
+                        quality: 1.0,
+                        type: 'image/jpeg',
+                        pattern: '.jpg',
+                        restoreExif: false
+                    };
+                    var file = this.Upload.dataUrltoBlob(this.form.croppedDataUrl, newName);
+                    return this.Upload.resize(file, options).then(function (resizedFile) {
+                        return self._uploadImage(resizedFile).then(function (result) {
+                            return result;
+                        });
+                    });
+                };
+                TeacherPhotoSectionController.prototype._uploadImage = function (resizedFile) {
+                    var self = this;
+                    return this.S3UploadService.upload(resizedFile).then(function (result) {
+                        return result;
+                    }, function (error) {
+                        console.log('error', error);
+                        return error;
+                    });
+                };
+                TeacherPhotoSectionController.prototype._setDataModelFromForm = function (avatar) {
+                    this.$scope.$parent.vm.teacherData.Avatar = avatar;
+                };
+                TeacherPhotoSectionController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Fill Form', function (event, args) {
+                        self.form.thumbnail = args.Avatar;
+                    });
+                };
+                return TeacherPhotoSectionController;
+            }());
+            TeacherPhotoSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherPhotoSectionController';
+            TeacherPhotoSectionController.$inject = [
+                'dataConfig',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.core.s3Upload.S3UploadService',
+                'mainApp.core.util.messageUtilService',
+                'Upload',
+                '$state',
+                '$filter',
+                '$scope'
+            ];
+            createTeacherPage.TeacherPhotoSectionController = TeacherPhotoSectionController;
+            angular
+                .module('mainApp.pages.createTeacherPage')
+                .controller(TeacherPhotoSectionController.controllerId, TeacherPhotoSectionController);
+        })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=teacherPhotoSection.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.createTeacherPage')
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.createTeacherPage.finish', {
+            url: '/finish',
+            views: {
+                'step': {
+                    templateUrl: 'app/pages/createTeacherPage/teacherFinishSection/teacherFinishSection.html',
+                    controller: 'mainApp.pages.createTeacherPage.TeacherFinishSectionController',
+                    controllerAs: 'vm'
+                }
+            },
+            cache: false
+        });
+    }
+})();
+//# sourceMappingURL=teacherFinishSection.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var createTeacherPage;
+        (function (createTeacherPage) {
+            var TeacherFinishSectionController = (function () {
+                function TeacherFinishSectionController(dataConfig, getDataFromJson, functionsUtilService, S3UploadService, messageUtil, Upload, $state, $filter, $scope) {
+                    this.dataConfig = dataConfig;
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
+                    this.S3UploadService = S3UploadService;
+                    this.messageUtil = messageUtil;
+                    this.Upload = Upload;
+                    this.$state = $state;
+                    this.$filter = $filter;
+                    this.$scope = $scope;
+                    this._init();
+                }
+                TeacherFinishSectionController.prototype._init = function () {
+                    this.STEP7_STATE = 'page.createTeacherPage.price';
+                    this.FINAL_STEP_STATE = 'page.createTeacherPage.final';
+                    this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.finish.help_text.title.text');
+                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.finish.help_text.description.text');
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(9, 9);
+                    this.helpText = {
+                        title: this.HELP_TEXT_TITLE,
+                        description: this.HELP_TEXT_DESCRIPTION
+                    };
+                    this.form = {
+                        avatar: null,
+                        croppedDataUrl: ''
+                    };
+                    this.validate = {
+                        avatar: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                TeacherFinishSectionController.prototype.activate = function () {
+                    console.log('TeacherFinishSectionController controller actived');
+                    this._subscribeToEvents();
+                };
+                TeacherFinishSectionController.prototype.goToNext = function () {
+                    var self = this;
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this._resizeImage().then(function (result) {
+                            if (result.Location) {
+                                self._setDataModelFromForm(result.Location);
+                                self.$scope.$emit('Save Data');
+                                self.$state.go(this.FINAL_STEP_STATE, { reload: true });
+                            }
+                            else {
+                                self.messageUtil.error('');
+                            }
+                        });
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                TeacherFinishSectionController.prototype.goToBack = function () {
+                    var self = this;
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this._resizeImage().then(function (result) {
+                            if (result.Location) {
+                                self._setDataModelFromForm(result.Location);
+                                self.$scope.$emit('Save Data');
+                                self.$state.go(this.STEP7_STATE, { reload: true });
+                            }
+                            else {
+                                self.messageUtil.error('');
+                            }
+                        });
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                TeacherFinishSectionController.prototype._validateForm = function () {
+                    var NULL_ENUM = 4;
+                    var EMPTY_ENUM = 5;
+                    var DEFINED_ENUM = 6;
+                    var formValid = true;
+                    var avatar_rules = [NULL_ENUM, EMPTY_ENUM, DEFINED_ENUM];
+                    this.validate.avatar = this.functionsUtilService.validator(this.form.avatar, avatar_rules);
+                    if (!this.validate.avatar.valid) {
+                        formValid = this.validate.avatar.valid;
+                    }
+                    return formValid;
+                };
+                TeacherFinishSectionController.prototype.changeHelpText = function (type) {
+                    var AVATAR_TITLE = this.$filter('translate')('%create.teacher.finish.help_text.avatar.title.text');
+                    var AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.finish.help_text.avatar.description.text');
+                    switch (type) {
+                        case 'default':
+                            this.helpText.title = this.HELP_TEXT_TITLE;
+                            this.helpText.description = this.HELP_TEXT_DESCRIPTION;
+                            break;
+                        case 'avatar':
+                            this.helpText.title = AVATAR_TITLE;
+                            this.helpText.description = AVATAR_DESCRIPTION;
+                            break;
+                    }
+                };
+                TeacherFinishSectionController.prototype._resizeImage = function () {
+                    var self = this;
+                    var newName = this.functionsUtilService.generateGuid() + '.jpeg';
+                    var options = {
+                        width: 250,
+                        height: 250,
+                        quality: 1.0,
+                        type: 'image/jpeg',
+                        pattern: '.jpg',
+                        restoreExif: false
+                    };
+                    var file = this.Upload.dataUrltoBlob(this.form.croppedDataUrl, newName);
+                    return this.Upload.resize(file, options).then(function (resizedFile) {
+                        return self._uploadImage(resizedFile).then(function (result) {
+                            return result;
+                        });
+                    });
+                };
+                TeacherFinishSectionController.prototype._uploadImage = function (resizedFile) {
+                    var self = this;
+                    return this.S3UploadService.upload(resizedFile).then(function (result) {
+                        return result;
+                    }, function (error) {
+                        console.log('error', error);
+                        return error;
+                    });
+                };
+                TeacherFinishSectionController.prototype._setDataModelFromForm = function (avatar) {
+                    this.$scope.$parent.vm.teacherData.Avatar = avatar;
+                };
+                TeacherFinishSectionController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Fill Form', function (event, args) {
+                    });
+                };
+                return TeacherFinishSectionController;
+            }());
+            TeacherFinishSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherFinishSectionController';
+            TeacherFinishSectionController.$inject = [
+                'dataConfig',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.core.s3Upload.S3UploadService',
+                'mainApp.core.util.messageUtilService',
+                'Upload',
+                '$state',
+                '$filter',
+                '$scope'
+            ];
+            createTeacherPage.TeacherFinishSectionController = TeacherFinishSectionController;
+            angular
+                .module('mainApp.pages.createTeacherPage')
+                .controller(TeacherFinishSectionController.controllerId, TeacherFinishSectionController);
+        })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=teacherFinishSection.controller.js.map

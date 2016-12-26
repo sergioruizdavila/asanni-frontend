@@ -16,10 +16,10 @@ var app;
                 }
                 TeacherPriceSectionController.prototype._init = function () {
                     this.STEP6_STATE = 'page.createTeacherPage.method';
-                    this.FINAL_STEP_STATE = 'page.createTeacherPage.final';
+                    this.STEP8_STATE = 'page.createTeacherPage.photo';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.price.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.price.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(7, 8);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(7, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -49,7 +49,7 @@ var app;
                     if (formValid) {
                         this._setDataModelFromForm();
                         this.$scope.$emit('Save Data');
-                        this.$state.go(this.FINAL_STEP_STATE, { reload: true });
+                        this.$state.go(this.STEP8_STATE, { reload: true });
                     }
                     else {
                         window.scrollTo(0, 0);
@@ -70,7 +70,7 @@ var app;
                     var NULL_ENUM = 4;
                     var IS_NOT_ZERO_ENUM = 3;
                     var EMPTY_ENUM = 5;
-                    var TRUE_ENUM = 6;
+                    var TRUE_ENUM = 7;
                     var GLOBAL_MESSAGE = this.$filter('translate')('%create.teacher.price.validation.message.text');
                     var formValid = true;
                     if (this.form.privateClass.Active) {

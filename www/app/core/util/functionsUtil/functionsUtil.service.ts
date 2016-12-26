@@ -11,6 +11,7 @@ module app.core.util.functionsUtil {
     /*           INTERFACES           */
     /**********************************/
     export interface IFunctionsUtilService {
+        generateGuid: () => string;
         splitToColumns: (arr: Array<any>, size: number) => Array<any>;
         buildMapConfig: (dataSet: Array<any>,
                         mapType: string,
@@ -41,6 +42,7 @@ module app.core.util.functionsUtil {
         IsNotZero,
         Null,
         Empty,
+        Defined,
         IsTrue
     }
 
@@ -72,6 +74,21 @@ module app.core.util.functionsUtil {
         /**********************************/
         /*            METHODS             */
         /**********************************/
+
+        /**
+        * generateGuid
+        * @description - generate Guid id string
+        * @function
+        * @return {string} guid - Returns an Guid Id string.
+        */
+        generateGuid(): string {
+            var fmt = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+            var guid = fmt.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+            return guid;
+        }
 
         /**
         * dateFormat
@@ -257,6 +274,7 @@ module app.core.util.functionsUtil {
             //CONSTANTS
             const NULL_MESSAGE = this.$filter('translate')('%global.validation.null.message.text');
             const EMPTY_MESSAGE = this.$filter('translate')('%global.validation.empty.message.text');
+            const DEFINED_MESSAGE = this.$filter('translate')('%global.validation.null.message.text');
             const IS_NOT_ZERO_MESSAGE = this.$filter('translate')('%global.validation.is_not_zero.message.text');
             const STRING_MESSAGE = this.$filter('translate')('%global.validation.string.message.text');
             const NUMBER_MESSAGE = this.$filter('translate')('%global.validation.number.message.text');
@@ -282,6 +300,14 @@ module app.core.util.functionsUtil {
                     case Validation.Empty: {
                         if(value == '') {
                             obj.message = EMPTY_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+                    }
+
+                    case Validation.Defined: {
+                        if(value === undefined) {
+                            obj.message = DEFINED_MESSAGE;
                             obj.valid = false;
                         }
                         break;

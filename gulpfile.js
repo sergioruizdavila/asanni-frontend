@@ -25,6 +25,7 @@ var paths = {
         "www/app/core/util/getDataStaticJson/getDataStaticJson.service.js",
         "www/app/core/util/messageUtil/messageUtil.service.js",
         "www/app/core/util/filters/app.filter.js",
+        "www/app/core/s3Upload/s3Upload.service.js",
         "www/app/core/restApi/restApi.config.js",
         "www/app/core/restApi/restApi.service.js",
         "www/app/models/user/user.model.js",
@@ -85,7 +86,11 @@ var paths = {
         "www/app/pages/createTeacherPage/teacherMethodSection/teacherMethodSection.config.js",
         "www/app/pages/createTeacherPage/teacherMethodSection/teacherMethodSection.controller.js",
         "www/app/pages/createTeacherPage/teacherPriceSection/teacherPriceSection.config.js",
-        "www/app/pages/createTeacherPage/teacherPriceSection/teacherPriceSection.controller.js"
+        "www/app/pages/createTeacherPage/teacherPriceSection/teacherPriceSection.controller.js",
+        "www/app/pages/createTeacherPage/teacherPhotoSection/teacherPhotoSection.config.js",
+        "www/app/pages/createTeacherPage/teacherPhotoSection/teacherPhotoSection.controller.js",
+        "www/app/pages/createTeacherPage/teacherFinishSection/teacherFinishSection.config.js",
+        "www/app/pages/createTeacherPage/teacherFinishSection/teacherFinishSection.controller.js"
     ],
     appLibsJs: [
         'www/libs/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',
@@ -97,7 +102,8 @@ var paths = {
         'www/bower_components/flexboxgrid/dist/flexboxgrid.min.css',
         'www/bower_components/bootstrap/dist/css/bootstrap.min.css',
         'www/bower_components/fullcalendar/dist/fullcalendar.min.css',
-        'www/bower_components/toastr/toastr.min.css'
+        'www/bower_components/toastr/toastr.min.css',
+        'www/bower_components/ng-img-crop/compile/minified/ng-img-crop.css'
     ],
     appSass: ['www/**/**/*.scss'],
     inputSass: 'www/app/core/theme/**/*.scss',

@@ -7,6 +7,7 @@
         'mainApp.core.util',
         'mainApp.localStorage',
         'mainApp.core.restApi',
+        'mainApp.core.s3Upload',
         'mainApp.models.user',
         'mainApp.models.student',
         'mainApp.models.teacher',
@@ -36,7 +37,7 @@
             prefix: prefix,
             suffix: suffix
         });
-        $translateProvider.preferredLanguage('es');
+        $translateProvider.preferredLanguage('en');
     }
 })();
 //# sourceMappingURL=app.module.js.map
