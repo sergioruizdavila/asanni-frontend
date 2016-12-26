@@ -42,9 +42,6 @@ var app;
                         }
                         deferred.resolve(data);
                     });
-                    uploader.on('httpUploadProgress', function (event) {
-                        deferred.notify(event);
-                    });
                     return deferred.promise;
                 };
                 return S3UploadService;

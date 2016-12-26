@@ -1,5 +1,5 @@
 <!----------------------------------------------------------------------------->
-<!--                         STEP 7 SECTION TEMPLATE                         -->
+<!--                        FINAL STEP SECTION TEMPLATE                      -->
 <!----------------------------------------------------------------------------->
 
 
@@ -18,17 +18,6 @@
                 </h4>
 
                 <div class="ma-box__content">
-
-                    <!-- Global Validate Error Message -->
-                    <div class="row ma-large-message
-                                ma-large-message--alert space-5"
-                         ng-show="!vm.validate.avatar.valid">
-                        <div class="col-md-12 text-center">
-                            <p class="ma-p ma-p--default ma-p--alert margin-reset">
-                                <span>{{vm.validate.avatar.message}}</span>
-                            </p>
-                        </div>
-                    </div>
 
                     <!--------------- START: AVATAR IMAGE BLOCK --------------->
                     <div id="teacher-avatar-block"
@@ -49,18 +38,9 @@
                                           ng-init="vm.form.croppedDataUrl=''">
                                 </img-crop>
                             </div>
-
                         </div>
                         <div class="teacher-avatar-box__upload-image-block__right-block
                                     col-xs-12 col-sm-12 col-md-12 col-lg-7">
-                            <div class="row">
-                                <div class="col-md-12 text-left">
-                                    <img class="teacher-avatar-box__upload-image-block__left-block__thumbnail"
-                                         width="50" height="50" style="border-radius:3px;"
-                                         ng-if="vm.form.thumbnail"
-                                         ng-src="{{vm.form.thumbnail}}" />
-                                </div>
-                            </div>
                             <h4 translate>
                                 %create.teacher.photo.form.avatar.description.text
                             </h4>

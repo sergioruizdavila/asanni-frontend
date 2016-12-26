@@ -107,9 +107,9 @@ module app.core.s3Upload {
             });
 
             // Notify Upload process in order to show a loading bar or loading gif
-            uploader.on('httpUploadProgress', function (event) {
+            /*uploader.on('httpUploadProgress', function (event) {
                 deferred.notify(event);
-            });
+            });*/
 
             return deferred.promise;
         }

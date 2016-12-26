@@ -245,6 +245,7 @@
     "%create.teacher.photo.help_text.avatar.description.text": "Clear frontal face photos are an important way for hosts and guests to learn about each other. It’s not much fun to host a landscape! Please upload a photo that clearly shows your face.",
     "%create.teacher.photo.help_text.avatar.uploaded.title.text": "Preview of your photo",
     "%create.teacher.photo.help_text.avatar.uploaded.description.text": "We will validate your photograph so that you are sure that it satisfies the minimum criteria. This will help you get students quickly.",
+    "%create.teacher.photo.validation.message.text": "Please provide a profile photo",
 
     "__FOOTER__": "",
     "%footer.contact_us.title.text": "Contact us",

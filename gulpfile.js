@@ -88,7 +88,9 @@ var paths = {
         "www/app/pages/createTeacherPage/teacherPriceSection/teacherPriceSection.config.js",
         "www/app/pages/createTeacherPage/teacherPriceSection/teacherPriceSection.controller.js",
         "www/app/pages/createTeacherPage/teacherPhotoSection/teacherPhotoSection.config.js",
-        "www/app/pages/createTeacherPage/teacherPhotoSection/teacherPhotoSection.controller.js"
+        "www/app/pages/createTeacherPage/teacherPhotoSection/teacherPhotoSection.controller.js",
+        "www/app/pages/createTeacherPage/teacherFinishSection/teacherFinishSection.config.js",
+        "www/app/pages/createTeacherPage/teacherFinishSection/teacherFinishSection.controller.js"
     ],
     appLibsJs: [
         'www/libs/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',

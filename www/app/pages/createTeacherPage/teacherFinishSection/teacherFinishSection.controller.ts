@@ -1,6 +1,6 @@
 /**
- * TeacherPhotoSectionController
- * @description - Teacher Photo Section Controller (create teacher)
+ * TeacherFinishSectionController
+ * @description - Teacher Finish Section Controller (create teacher)
  */
 
 module app.pages.createTeacherPage {
@@ -8,13 +8,13 @@ module app.pages.createTeacherPage {
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
-    export interface ITeacherPhotoSectionController {
-        form: ITeacherPhotoForm;
-        validate: ITeacherPhotoValidate;
+    export interface ITeacherFinishSectionController {
+        form: ITeacherFinishForm;
+        validate: ITeacherFinishValidate;
         activate: () => void;
     }
 
-    export interface ITeacherPhotoScope extends angular.IScope {
+    export interface ITeacherFinishScope extends angular.IScope {
         $parent: IParentScope;
     }
 
@@ -22,33 +22,31 @@ module app.pages.createTeacherPage {
         vm: ICreateTeacherPageController;
     }
 
-    export interface ITeacherPhotoForm {
+    export interface ITeacherFinishForm {
         avatar: File;
         croppedDataUrl: string;
-        thumbnail: string;
     }
 
     export interface IUpload extends angular.angularFileUpload.IUploadService {
         dataUrltoBlob: (dataUrl: string, name: string) => File;
-        urlToBlob: (url: string) => angular.IPromise<any>;
     }
 
-    interface ITeacherPhotoValidate {
+    interface ITeacherFinishValidate {
         avatar: app.core.util.functionsUtil.IValid;
     }
 
     /****************************************/
     /*           CLASS DEFINITION           */
     /****************************************/
-    export class TeacherPhotoSectionController implements ITeacherPhotoSectionController {
+    export class TeacherFinishSectionController implements ITeacherFinishSectionController {
 
-        static controllerId = 'mainApp.pages.createTeacherPage.TeacherPhotoSectionController';
+        static controllerId = 'mainApp.pages.createTeacherPage.TeacherFinishSectionController';
 
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
-        form: ITeacherPhotoForm;
-        validate: ITeacherPhotoValidate;
+        form: ITeacherFinishForm;
+        validate: ITeacherFinishValidate;
         helpText: app.core.interfaces.IHelpTextStep;
         STEP7_STATE: string;
         FINAL_STEP_STATE: string;
@@ -82,7 +80,7 @@ module app.pages.createTeacherPage {
             private Upload: IUpload,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
-            private $scope: ITeacherPhotoScope) {
+            private $scope: ITeacherFinishScope) {
                 this._init();
         }
 
@@ -90,13 +88,13 @@ module app.pages.createTeacherPage {
         private _init() {
             //CONSTANTS
             this.STEP7_STATE = 'page.createTeacherPage.price';
-            this.FINAL_STEP_STATE = 'page.createTeacherPage.finish';
-            this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.title.text');
-            this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.description.text');
+            this.FINAL_STEP_STATE = 'page.createTeacherPage.final';
+            this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.finish.help_text.title.text');
+            this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.finish.help_text.description.text');
             /*********************************/
 
             // Put title on parent scope
-            this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(8, 9);
+            this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(9, 9);
 
             // Put Help Text Default
             this.helpText = {
@@ -107,8 +105,7 @@ module app.pages.createTeacherPage {
             // Init form
             this.form = {
                 avatar: null,
-                croppedDataUrl: '',
-                thumbnail: ''
+                croppedDataUrl: ''
             };
 
             // Build validate object fields
@@ -122,7 +119,7 @@ module app.pages.createTeacherPage {
         /*-- ACTIVATE METHOD --*/
         activate(): void {
             //LOG
-            console.log('TeacherPhotoSectionController controller actived');
+            console.log('TeacherFinishSectionController controller actived');
 
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
@@ -157,7 +154,7 @@ module app.pages.createTeacherPage {
                         self.$scope.$emit('Save Data');
 
                         // GO TO NEXT STEP
-                        self.$state.go(self.FINAL_STEP_STATE, {reload: true});
+                        self.$state.go(this.FINAL_STEP_STATE, {reload: true});
                     } else {
                         self.messageUtil.error('');
                     }
@@ -194,7 +191,7 @@ module app.pages.createTeacherPage {
                         self.$scope.$emit('Save Data');
 
                         // GO TO BACK STEP
-                        self.$state.go(self.STEP7_STATE, {reload: true});
+                        self.$state.go(this.STEP7_STATE, {reload: true});
                     } else {
                         self.messageUtil.error('');
                     }
@@ -220,16 +217,14 @@ module app.pages.createTeacherPage {
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
             const DEFINED_ENUM = app.core.util.functionsUtil.Validation.Defined;
-            const PHOTO_MESSAGE = this.$filter('translate')('%create.teacher.photo.validation.message.text');
             /***************************************************/
             //VARIABLES
             let formValid = true;
 
-            //Validate photo
+            //Validate finish
             let avatar_rules = [NULL_ENUM, EMPTY_ENUM, DEFINED_ENUM];
             this.validate.avatar = this.functionsUtilService.validator(this.form.avatar, avatar_rules);
             if(!this.validate.avatar.valid) {
-                this.validate.avatar.message = PHOTO_MESSAGE;
                 formValid = this.validate.avatar.valid;
             }
 
@@ -241,15 +236,15 @@ module app.pages.createTeacherPage {
         /**
         * changeHelpText
         * @description - change help block text (titles and descriptions) dynamically
-        *  based on specific field (photo, immerison)
+        *  based on specific field (finish, immerison)
         * @use - this.changeHelpText('firstName');
         * @function
         * @return {void}
         */
         changeHelpText(type): void {
             //CONSTANTS
-            const AVATAR_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.avatar.title.text');
-            const AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.avatar.description.text');
+            const AVATAR_TITLE = this.$filter('translate')('%create.teacher.finish.help_text.avatar.title.text');
+            const AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.finish.help_text.avatar.description.text');
             /*****************************************************/
 
             switch(type) {
@@ -353,7 +348,7 @@ module app.pages.createTeacherPage {
 
         /**
         * _subscribeToEvents
-        * @description - this photo subscribes Teacher Location Section to Parent Events
+        * @description - this finish subscribes Teacher Location Section to Parent Events
         * @use - this._subscribeToEvents();
         * @function
         * @return {void}
@@ -371,7 +366,8 @@ module app.pages.createTeacherPage {
             */
             this.$scope.$on('Fill Form', function(event, args: app.models.teacher.Teacher) {
 
-                self.form.thumbnail = args.Avatar;
+                //self.form.avatar = args.Avatar;
+                //TODO: Aqui cargamos la imagen en el cuadro
 
             });
         }
@@ -381,7 +377,7 @@ module app.pages.createTeacherPage {
     /*-- MODULE DEFINITION --*/
     angular
         .module('mainApp.pages.createTeacherPage')
-        .controller(TeacherPhotoSectionController.controllerId,
-                    TeacherPhotoSectionController);
+        .controller(TeacherFinishSectionController.controllerId,
+                    TeacherFinishSectionController);
 
 }

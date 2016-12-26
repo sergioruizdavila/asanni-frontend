@@ -21,7 +21,7 @@ var app;
                     this.STEP_ALTER_STATE = 'page.createTeacherPage.education';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(4, 8);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(4, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION

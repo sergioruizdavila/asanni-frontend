@@ -559,9 +559,6 @@ var app;
                         }
                         deferred.resolve(data);
                     });
-                    uploader.on('httpUploadProgress', function (event) {
-                        deferred.notify(event);
-                    });
                     return deferred.promise;
                 };
                 return S3UploadService;
@@ -4338,7 +4335,7 @@ var app;
                     this.STEP2_STATE = 'page.createTeacherPage.location';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.basic_info.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.basic_info.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(1, 8);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(1, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -4593,7 +4590,7 @@ var app;
                     this.STEP3_STATE = 'page.createTeacherPage.language';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.location.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(2, 8);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(2, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -4845,7 +4842,7 @@ var app;
                     this.STEP4_STATE = 'page.createTeacherPage.experience';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.lang.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.lang.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(3, 8);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(3, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -5111,7 +5108,7 @@ var app;
                     this.STEP_ALTER_STATE = 'page.createTeacherPage.education';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(4, 8);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(4, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -5322,7 +5319,7 @@ var app;
                     this.STEP6_STATE = 'page.createTeacherPage.method';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.education.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.education.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(5, 8);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(5, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -5520,7 +5517,7 @@ var app;
                     this.STEP7_STATE = 'page.createTeacherPage.price';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.method.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.method.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(6, 8);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(6, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -5722,7 +5719,7 @@ var app;
                     this.STEP8_STATE = 'page.createTeacherPage.photo';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.price.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.price.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(7, 8);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(7, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -5773,7 +5770,7 @@ var app;
                     var NULL_ENUM = 4;
                     var IS_NOT_ZERO_ENUM = 3;
                     var EMPTY_ENUM = 5;
-                    var TRUE_ENUM = 6;
+                    var TRUE_ENUM = 7;
                     var GLOBAL_MESSAGE = this.$filter('translate')('%create.teacher.price.validation.message.text');
                     var formValid = true;
                     if (this.form.privateClass.Active) {
@@ -5883,11 +5880,12 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherPhotoSectionController = (function () {
-                function TeacherPhotoSectionController(dataConfig, getDataFromJson, functionsUtilService, S3UploadService, Upload, $state, $filter, $scope) {
+                function TeacherPhotoSectionController(dataConfig, getDataFromJson, functionsUtilService, S3UploadService, messageUtil, Upload, $state, $filter, $scope) {
                     this.dataConfig = dataConfig;
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.S3UploadService = S3UploadService;
+                    this.messageUtil = messageUtil;
                     this.Upload = Upload;
                     this.$state = $state;
                     this.$filter = $filter;
@@ -5896,7 +5894,7 @@ var app;
                 }
                 TeacherPhotoSectionController.prototype._init = function () {
                     this.STEP7_STATE = 'page.createTeacherPage.price';
-                    this.FINAL_STEP_STATE = 'page.createTeacherPage.final';
+                    this.FINAL_STEP_STATE = 'page.createTeacherPage.finish';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.description.text');
                     this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(8, 9);
@@ -5906,7 +5904,8 @@ var app;
                     };
                     this.form = {
                         avatar: null,
-                        croppedDataUrl: ''
+                        croppedDataUrl: '',
+                        thumbnail: ''
                     };
                     this.validate = {
                         avatar: { valid: true, message: '' }
@@ -5921,18 +5920,35 @@ var app;
                     var self = this;
                     var formValid = this._validateForm();
                     if (formValid) {
-                        this._resizeImage();
+                        this._resizeImage().then(function (result) {
+                            if (result.Location) {
+                                self._setDataModelFromForm(result.Location);
+                                self.$scope.$emit('Save Data');
+                                self.$state.go(self.FINAL_STEP_STATE, { reload: true });
+                            }
+                            else {
+                                self.messageUtil.error('');
+                            }
+                        });
                     }
                     else {
                         window.scrollTo(0, 0);
                     }
                 };
                 TeacherPhotoSectionController.prototype.goToBack = function () {
+                    var self = this;
                     var formValid = this._validateForm();
                     if (formValid) {
-                        this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data');
-                        this.$state.go(this.STEP7_STATE, { reload: true });
+                        this._resizeImage().then(function (result) {
+                            if (result.Location) {
+                                self._setDataModelFromForm(result.Location);
+                                self.$scope.$emit('Save Data');
+                                self.$state.go(self.STEP7_STATE, { reload: true });
+                            }
+                            else {
+                                self.messageUtil.error('');
+                            }
+                        });
                     }
                     else {
                         window.scrollTo(0, 0);
@@ -5942,10 +5958,12 @@ var app;
                     var NULL_ENUM = 4;
                     var EMPTY_ENUM = 5;
                     var DEFINED_ENUM = 6;
+                    var PHOTO_MESSAGE = this.$filter('translate')('%create.teacher.photo.validation.message.text');
                     var formValid = true;
                     var avatar_rules = [NULL_ENUM, EMPTY_ENUM, DEFINED_ENUM];
                     this.validate.avatar = this.functionsUtilService.validator(this.form.avatar, avatar_rules);
                     if (!this.validate.avatar.valid) {
+                        this.validate.avatar.message = PHOTO_MESSAGE;
                         formValid = this.validate.avatar.valid;
                     }
                     return formValid;
@@ -5967,29 +5985,37 @@ var app;
                 TeacherPhotoSectionController.prototype._resizeImage = function () {
                     var self = this;
                     var newName = this.functionsUtilService.generateGuid() + '.jpeg';
-                    var options = { width: 250, height: 250, quality: 1.0, type: 'image/jpeg', pattern: '.jpg', restoreExif: false };
+                    var options = {
+                        width: 250,
+                        height: 250,
+                        quality: 1.0,
+                        type: 'image/jpeg',
+                        pattern: '.jpg',
+                        restoreExif: false
+                    };
                     var file = this.Upload.dataUrltoBlob(this.form.croppedDataUrl, newName);
-                    this.Upload.resize(file, options).then(function (resizedFile) {
-                        self._uploadImage(resizedFile);
+                    return this.Upload.resize(file, options).then(function (resizedFile) {
+                        return self._uploadImage(resizedFile).then(function (result) {
+                            return result;
+                        });
                     });
                 };
                 TeacherPhotoSectionController.prototype._uploadImage = function (resizedFile) {
                     var self = this;
-                    this.S3UploadService.upload(resizedFile).then(function (result) {
-                        self._setDataModelFromForm();
-                        self.$scope.$emit('Save Data');
-                        self.$state.go(this.FINAL_STEP_STATE, { reload: true });
+                    return this.S3UploadService.upload(resizedFile).then(function (result) {
+                        return result;
                     }, function (error) {
                         console.log('error', error);
-                    }, function (progress) {
-                        console.log('progress test:', progress);
+                        return error;
                     });
                 };
-                TeacherPhotoSectionController.prototype._setDataModelFromForm = function () {
+                TeacherPhotoSectionController.prototype._setDataModelFromForm = function (avatar) {
+                    this.$scope.$parent.vm.teacherData.Avatar = avatar;
                 };
                 TeacherPhotoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
+                        self.form.thumbnail = args.Avatar;
                     });
                 };
                 return TeacherPhotoSectionController;
@@ -6000,6 +6026,7 @@ var app;
                 'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.s3Upload.S3UploadService',
+                'mainApp.core.util.messageUtilService',
                 'Upload',
                 '$state',
                 '$filter',

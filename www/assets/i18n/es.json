@@ -246,6 +246,7 @@
     "%create.teacher.photo.help_text.avatar.description.text": "Las fotos frontales claras son una forma importante para que los profesores y estudiantes se conozcan. Carga una foto que muestre claramente tu cara.",
     "%create.teacher.photo.help_text.avatar.uploaded.title.text": "Vista previa de tu foto",
     "%create.teacher.photo.help_text.avatar.uploaded.description.text": "Validaremos tu fotografía con el fin de que estes seguro que cumple los criterios mínimos. Esto te ayudará a conseguir estudiantes rápidamente.",
+    "%create.teacher.photo.validation.message.text": "Es necesaria una foto de perfil",
 
     "__FOOTER__": "",
     "%footer.contact_us.title.text": "Contáctanos",
