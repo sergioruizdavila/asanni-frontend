@@ -22,6 +22,7 @@ var app;
                     this.FINAL_STEP_STATE = 'page.createTeacherPage.finish';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.description.text');
+                    this.uploading = false;
                     this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(8, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
@@ -44,17 +45,25 @@ var app;
                 TeacherPhotoSectionController.prototype.goToNext = function () {
                     var self = this;
                     var formValid = this._validateForm();
+                    this.uploading = true;
                     if (formValid) {
-                        this._resizeImage().then(function (result) {
-                            if (result.Location) {
-                                self._setDataModelFromForm(result.Location);
-                                self.$scope.$emit('Save Data');
-                                self.$state.go(self.FINAL_STEP_STATE, { reload: true });
-                            }
-                            else {
-                                self.messageUtil.error('');
-                            }
-                        });
+                        if (this.form.avatar) {
+                            this._resizeImage().then(function (result) {
+                                self.uploading = false;
+                                if (result.Location) {
+                                    self._setDataModelFromForm(result.Location);
+                                    self.$scope.$emit('Save Data');
+                                    self.$state.go(self.FINAL_STEP_STATE, { reload: true });
+                                }
+                                else {
+                                    self.messageUtil.error('');
+                                }
+                            });
+                        }
+                        else {
+                            this.$scope.$emit('Save Data');
+                            this.$state.go(this.FINAL_STEP_STATE, { reload: true });
+                        }
                     }
                     else {
                         window.scrollTo(0, 0);
@@ -63,17 +72,25 @@ var app;
                 TeacherPhotoSectionController.prototype.goToBack = function () {
                     var self = this;
                     var formValid = this._validateForm();
+                    this.uploading = true;
                     if (formValid) {
-                        this._resizeImage().then(function (result) {
-                            if (result.Location) {
-                                self._setDataModelFromForm(result.Location);
-                                self.$scope.$emit('Save Data');
-                                self.$state.go(self.STEP7_STATE, { reload: true });
-                            }
-                            else {
-                                self.messageUtil.error('');
-                            }
-                        });
+                        if (this.form.avatar) {
+                            this._resizeImage().then(function (result) {
+                                self.uploading = false;
+                                if (result.Location) {
+                                    self._setDataModelFromForm(result.Location);
+                                    self.$scope.$emit('Save Data');
+                                    self.$state.go(self.STEP7_STATE, { reload: true });
+                                }
+                                else {
+                                    self.messageUtil.error('');
+                                }
+                            });
+                        }
+                        else {
+                            this.$scope.$emit('Save Data');
+                            this.$state.go(this.STEP7_STATE, { reload: true });
+                        }
                     }
                     else {
                         window.scrollTo(0, 0);
@@ -87,6 +104,7 @@ var app;
                     var formValid = true;
                     var avatar_rules = [NULL_ENUM, EMPTY_ENUM, DEFINED_ENUM];
                     this.validate.avatar = this.functionsUtilService.validator(this.form.avatar, avatar_rules);
+                    this.validate.avatar = this.functionsUtilService.validator(this.form.thumbnail, avatar_rules);
                     if (!this.validate.avatar.valid) {
                         this.validate.avatar.message = PHOTO_MESSAGE;
                         formValid = this.validate.avatar.valid;

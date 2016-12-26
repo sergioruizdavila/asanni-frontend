@@ -50,6 +50,7 @@ module app.pages.createTeacherPage {
         form: ITeacherPhotoForm;
         validate: ITeacherPhotoValidate;
         helpText: app.core.interfaces.IHelpTextStep;
+        uploading: boolean;
         STEP7_STATE: string;
         FINAL_STEP_STATE: string;
         HELP_TEXT_TITLE: string;
@@ -94,6 +95,9 @@ module app.pages.createTeacherPage {
             this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.title.text');
             this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.description.text');
             /*********************************/
+
+            // Init upload loading button
+            this.uploading = false;
 
             // Put title on parent scope
             this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(8, 9);
@@ -147,22 +151,36 @@ module app.pages.createTeacherPage {
             let formValid = this._validateForm();
             /****************************************************/
 
+            this.uploading = true;
+
+            //If form is valid, save data model
             if(formValid) {
 
-                this._resizeImage().then(function(result) {
+                // If this.form.avatar exists, resize and upload image
+                if(this.form.avatar) {
+                    this._resizeImage().then(function(result) {
 
-                    if(result.Location) {
-                        // Save teacher model on DB
-                        self._setDataModelFromForm(result.Location);
-                        self.$scope.$emit('Save Data');
+                        self.uploading = false;
 
-                        // GO TO NEXT STEP
-                        self.$state.go(self.FINAL_STEP_STATE, {reload: true});
-                    } else {
-                        self.messageUtil.error('');
-                    }
+                        if(result.Location) {
+                            // Save teacher model on DB
+                            self._setDataModelFromForm(result.Location);
+                            self.$scope.$emit('Save Data');
 
-                });
+                            // GO TO NEXT STEP
+                            self.$state.go(self.FINAL_STEP_STATE, {reload: true});
+                        } else {
+                            self.messageUtil.error('');
+                        }
+
+                    });
+
+                // If this.form.avatar not exists, only go to next step
+                } else {
+                    this.$scope.$emit('Save Data');
+                    // GO TO NEXT STEP
+                    this.$state.go(this.FINAL_STEP_STATE, {reload: true});
+                }
 
             } else {
                 //Go top pages
@@ -184,22 +202,38 @@ module app.pages.createTeacherPage {
             let self = this;
             //Validate data form
             let formValid = this._validateForm();
+
+            this.uploading = true;
+
             //If form is valid, save data model
             if(formValid) {
-                this._resizeImage().then(function(result) {
 
-                    if(result.Location) {
-                        // Save teacher model on DB
-                        self._setDataModelFromForm(result.Location);
-                        self.$scope.$emit('Save Data');
+                // If this.form.avatar exists, resize and upload image
+                if(this.form.avatar) {
+                    this._resizeImage().then(function(result) {
 
-                        // GO TO BACK STEP
-                        self.$state.go(self.STEP7_STATE, {reload: true});
-                    } else {
-                        self.messageUtil.error('');
-                    }
+                        self.uploading = false;
 
-                });
+                        if(result.Location) {
+                            // Save teacher model on DB
+                            self._setDataModelFromForm(result.Location);
+                            self.$scope.$emit('Save Data');
+
+                            // GO TO BACK STEP
+                            self.$state.go(self.STEP7_STATE, {reload: true});
+                        } else {
+                            self.messageUtil.error('');
+                        }
+
+                    });
+
+                // If this.form.avatar not exists, only go to back step
+                } else {
+                    this.$scope.$emit('Save Data');
+                    // GO TO BACK STEP
+                    this.$state.go(this.STEP7_STATE, {reload: true});
+                }
+
             } else {
                 //Go top pages
                 window.scrollTo(0, 0);
@@ -228,6 +262,8 @@ module app.pages.createTeacherPage {
             //Validate photo
             let avatar_rules = [NULL_ENUM, EMPTY_ENUM, DEFINED_ENUM];
             this.validate.avatar = this.functionsUtilService.validator(this.form.avatar, avatar_rules);
+            this.validate.avatar = this.functionsUtilService.validator(this.form.thumbnail, avatar_rules);
+
             if(!this.validate.avatar.valid) {
                 this.validate.avatar.message = PHOTO_MESSAGE;
                 formValid = this.validate.avatar.valid;

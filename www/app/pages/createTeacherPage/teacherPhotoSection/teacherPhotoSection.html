@@ -121,11 +121,20 @@
                                            ma-btn--transparent
                                            ma-btn--medium
                                            ma-btn--withIcon"
-                                      ng-click="vm.goToBack()">
-                                <i class="material-icons md-18 md-dark">
+                                      ng-click="vm.goToBack()"
+                                      ng-disabled="vm.uploading">
+                                <i ng-class="{'hidden' : vm.uploading}"
+                                   class="material-icons md-18 md-dark">
                                     keyboard_backspace
                                 </i>
-                                <span translate>%global.back.button.text</span>
+                                <span ng-class="{'hidden' : vm.uploading}"
+                                      translate>
+                                    %global.back.button.text
+                                </span>
+                                <span ng-class="{'hidden' : !vm.uploading}"
+                                      translate>
+                                    Subiendo...
+                                </span>
                             </button>
 
                         </div>
@@ -134,11 +143,19 @@
 
                         <div class="col-md-4 text-right">
 
-                            <button class="ma-btn
-                                           ma-btn--primary
-                                           ma-btn--large"
-                                    ng-click="vm.goToNext()" translate>
-                               %global.next.button.text
+                           <button class="ma-btn
+                                          ma-btn--primary
+                                          ma-btn--large"
+                                   ng-click="vm.goToNext()"
+                                   ng-disabled="vm.uploading">
+                                   <span ng-class="{'hidden' : vm.uploading}"
+                                         translate>
+                                       %global.next.button.text
+                                   </span>
+                                   <span ng-class="{'hidden' : !vm.uploading}"
+                                         translate>
+                                       Subiendo...
+                                   </span>
                            </button>
 
                         </div>
