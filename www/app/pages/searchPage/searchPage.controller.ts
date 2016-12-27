@@ -29,7 +29,9 @@ module app.pages.searchPage {
         /**********************************/
         error: ISearchPageError;
         mapConfig: components.map.IMapConfig;
-        data: Array<app.models.student.Student>;
+        //data: Array<app.models.student.Student>;
+        //TEST - remover esta linea y descomentar la de arriba cuando se termine de testear
+        data: any;
         type: string;
         // --------------------------------
 
@@ -64,10 +66,12 @@ module app.pages.searchPage {
         private _init() {
 
             //Init users list
-            this.data = [];
+            this.data = [{firstName:'Sergio', lastName:'Ruiz'}, {firstName:'Sergio', lastName:'Ruiz'}, {firstName:'Sergio', lastName:'Ruiz'}];
 
             //Type of results (student, teacher, school)
-            this.type = null;
+            //this.type = null;
+            //TEST - remover esta linea despues de testear y descomentar la de arriba
+            this.type = 'teacher';
 
             this.error = {
                 message: ''
@@ -87,7 +91,7 @@ module app.pages.searchPage {
             this._subscribeToEvents();
 
             //Get All Students of this zone (Default results)
-            this.StudentService.getAllStudents().then(
+            /*this.StudentService.getAllStudents().then(
                 function(response: Array<app.models.student.Student>) {
                     self.type = 'student';
                     self.mapConfig = self.FunctionsUtilService.buildMapConfig(
@@ -97,7 +101,7 @@ module app.pages.searchPage {
                     );
                     self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                 }
-            );
+            );*/
 
         }
 

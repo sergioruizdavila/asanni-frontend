@@ -1,201 +1,331 @@
 <!----------------------------------------------------------------------------->
-<!--                          SCHOOLS RESULT TEMPLATE                        -->
+<!--                         TEACHERS RESULT TEMPLATE                        -->
 <!----------------------------------------------------------------------------->
 
 
-<!-------------------- START: INFO BLOCK ---------------------->
-<div id="search-result-info-block"
-     class="search-result__info__block">
+<!------------------------ START: TEACHER INFO BLOCK -------------------------->
+<div id="search-result-teacher-block"
+     class="search-result__teacher__block ma-box space-5" style="cursor: pointer"
+     ng-mouseover="vm.hoverDetail[$index] = true" ng-mouseleave="vm.hoverDetail[$index] = false">
 
-    <!----------------- START: BASIC INFO BLOCK --------------->
-    <div class="search-result__info__block__basic-info
-                row margin-reset">
 
-        <div class="col-xs-9 col-md-9">
+    <!------------------- START: TEACHER INFO BLOCK (MAIN FACE) --------------->
+    <div class="ma-box__content" ng-hide="vm.hoverDetail[$index]">
 
-            <!-- Name -->
-            <div id="search-result-basicInfo-name"
-                 class="search-result__info__block__basic-info__name
-                        row margin-reset">
-                <h3 class="text-truncate">
-                    <a class="ma-link
-                              ma-link--simple
-                              ma-link--simple--default
-                              margin-reset"
-                              ui-sref="page.userProfilePage({id: item.id})"
-                              href="#" aria-label="Go to the profile of {{item.first_name}}">
-                        {{item.first_name}}
-                    </a>
+        <!--------------------- START: TEACHER AVATAR BLOCK ------------------->
+        <div class="search-result__teacher__block__avatar
+                    row text-center space-2">
+
+            <div class="col-xs-12 col-md-12">
+
+                <div class="search-result__teacher__block__avatar__container">
+
+                    <div class="ma-photo-profile
+                                    ma-photo-profile--medium
+                                    round">
+                        <img width="170"
+                             height="170"
+                             src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg"
+                             alt="Sergio Ruiz">
+                             <div class="ma-icon-container
+                                         ma-icon-container--white
+                                         ma-icon-container--medium round">
+                                 <i class="ma-icon-container--medium__icon
+                                           material-icons">
+                                    done_all
+                                </i>
+                             </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        <!--                 END: TEACHER AVATAR BLOCK               -->
+
+
+
+        <!--------------------- START: TEACHER NAME BLOCK --------------------->
+        <div class="row text-center space-1">
+
+            <div class="col-xs-12 col-md-12">
+
+                <h3 class="margin-reset">
+                    Sergio
                 </h3>
+
             </div>
 
-            <!-- From -->
-            <div id="search-result-basicInfo-from"
-                 class="search-result__info__block__basic-info__from
-                        row margin-reset">
-                <div class="ma-label
-                            ma-label--simple
-                            ma-label--simple--default
-                            ma-label--simple--primary
-                            margin-reset
-                            text-truncate">
-                    {{item.born.city}}, {{item.born.country}}
-                </div>
+        </div>
+        <!--                    END: TEACHER AVATAR BLOCK                    -->
+
+
+
+        <!----------------- START: TEACHER CITY - COUNTRY BLOCK --------------->
+        <div class="row text-center space-1">
+
+            <div class="col-xs-12 col-md-12">
+
+                <p class="ma-p ma-p--default margin-reset">
+                    Envigado, Colombia
+                </p>
+
             </div>
 
-            <!-- Reviews -->
-            <div id="search-result-basicInfo-reviews"
-                 class="search-result__info__block__basic-info__reviews
-                        row
-                        margin-reset">
+        </div>
+        <!--                 END: TEACHER CITY - COUNTRY BLOCK               -->
 
-                <div class="ma-stars-withLabel">
-                    <div class="ma-stars">
-                        <i class="material-icons ma-stars__icon
-                                  ma-stars__icon--tiny">star</i>
-                        <i class="material-icons ma-stars__icon
-                                  ma-stars__icon--tiny">star</i>
-                        <i class="material-icons ma-stars__icon
-                                  ma-stars__icon--tiny">star</i>
-                        <i class="material-icons ma-stars__icon
-                                  ma-stars__icon--tiny">star_half</i>
-                        <i class="material-icons ma-stars__icon
-                                  ma-stars__icon--tiny">star_border</i>
+
+
+        <!------------------- START: TEACHER REVIEWS BLOCK -------------------->
+        <div class="row text-center">
+
+            <div class="col-xs-12 col-md-12">
+
+                <i class="material-icons ma-stars__icon ma-stars__icon--default">star</i>
+                <i class="material-icons ma-stars__icon ma-stars__icon--default">star</i>
+                <i class="material-icons ma-stars__icon ma-stars__icon--default">star</i>
+                <i class="material-icons ma-stars__icon ma-stars__icon--default">star_half</i>
+                <i class="material-icons ma-stars__icon ma-stars__icon--default">star_border</i>
+
+            </div>
+
+        </div>
+
+        <div class="row text-center space-3">
+            <div class="col-xs-12 col-md-12">
+                <p class="ma-p ma-p--small margin-reset">
+                    32 reviews
+                </p>
+            </div>
+        </div>
+
+        <!--                    END: TEACHER REVIEWS BLOCK                   -->
+
+
+
+        <!------------------- START: TEACHER LANGUAGES BLOCK ------------------>
+        <div class="search-result__teacher__block__languages
+                    row text-center space-1">
+
+            <div class="search-result__teacher__block__languages__container
+                        search-result__teacher__block__languages__container--left
+                        col-xs-6 col-md-6">
+
+                <div class="row space-2">
+                    <div class="col-xs-12 col-md-12">
+                        <h4 class="margin-reset">Teach</h4>
                     </div>
-                    <div class="ma-stars-withLabel__label-container">
-                        <div class="ma-label
-                                    ma-label--simple
-                                    ma-label--simple--small
-                                    ma-label--simple--gray
-                                    margin-reset">(33 reviews)</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <p class="ma-p ma-p--default margin-reset">English</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="search-result__teacher__block__languages__container
+                        col-xs-6 col-md-6">
+
+                <div class="row space-2">
+                    <div class="col-xs-12 col-md-12">
+                        <h4 class="margin-reset">Speak</h4>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <p class="ma-p ma-p--default margin-reset">Aleman</p>
                     </div>
                 </div>
 
             </div>
 
         </div>
+        <!--                  END: TEACHER LANGUAGES BLOCK                   -->
 
-        <div class="col-xs-3 col-md-3">
+    </div>
+    <!--                  END: TEACHER INFO BLOCK (MAIN FACE)                -->
 
-            <!------------ START: PROFILE IMAGE BLOCK --------->
-            <div id="search-result-image-block"
-                 class="ma-user-photo-review-block pull-right">
 
-                <div class="ma-photo-profile
-                            ma-photo-profile--default
-                            round
-                            ma-user-photo-review-block__photo">
-                    <img width="100" height="100"
-                         src="{{item.avatar}}"
-                         alt="Sergio Ruiz">
-                </div>
+    <!------------------- START: TEACHER INFO BLOCK (FLIP FACE) --------------->
+    <div class="ma-box__content" ng-show="vm.hoverDetail[$index]">
+
+
+        <!---------------------- START: NATIVE INFO BLOCK --------------------->
+        <div class="row text-center space-1">
+
+            <div class="col-xs-12 col-md-12">
+
+                <h4 class="margin-reset" style="padding: 10px 10px;
+    background-color: #fff;
+    border: 2px solid #00B592;
+    border-radius: 3px;
+    color: #00B592;">
+                    Teacher Native
+                </h4>
+
+                <h4 class="margin-reset hidden" style="    padding: 10px 10px;
+    background-color: #dce0e0;
+    border-radius: 3px;
+    color: #555;
+    text-decoration: line-through;">
+                    Teacher Native
+                </h4>
 
             </div>
-            <!--           END: PROFILE IMAGE BLOCK          -->
 
         </div>
-
-    </div>
-    <!--                 END: BASIC INFO BLOCK               -->
+        <!--                     END: NATIVE INFO BLOCK                      -->
 
 
 
-    <!------------------- START: FLUENT BLOCK ----------------->
-    <div id="search-result-fluenIn-block"
-         class="search-result__info__block__fluent
-                row margin-reset">
+        <!------------------- START: TYPE OF TEACHER INFO BLOCK --------------->
+        <div class="row text-center space-1">
 
-        <div class="col-xs-12 col-md-12">
-            <h4 class="search-result__info__block__fluent__title">
-                Fluent in
-            </h4>
-            <div class="search-result__info__block__fluent__options">
+            <div class="col-xs-12 col-md-12">
+
                 <div class="ma-label
-                            ma-label--simple
-                            ma-label--simple--medium
-                            ma-label--simple--primary
-                            margin-reset">Spanish</div> ·
-                <div class="ma-label
-                            ma-label--simple
-                            ma-label--simple--medium
-                            ma-label--simple--primary
-                            margin-reset">English</div> ·
-                <div class="ma-label
-                            ma-label--simple
-                            ma-label--simple--medium
-                            ma-label--simple--primary
-                            margin-reset">Italian</div>
-            </div>
-        </div>
-
-    </div>
-    <!--                   END: FLUENT BLOCK                 -->
-
-
-
-    <!------------------- START: LEARNING BLOCK --------------->
-    <div id="search-result-learning-block"
-         class="search-result__info__block__learning
-                row margin-reset">
-
-        <div class="col-xs-12 col-md-12">
-            <h4 class="search-result__info__block__learning__title">
-                Learning
-            </h4>
-            <div class="search-result__info__block__learning__options">
-                <div class="ma-label
-                            ma-label--simple
-                            ma-label--simple--medium
-                            ma-label--simple--primary
-                            margin-reset">Arabic</div>
-            </div>
-        </div>
-
-    </div>
-    <!--                  END: LEARNING BLOCK                -->
-
-
-
-    <!------------------- START: ABOUT ME BLOCK --------------->
-    <div id="search-result-aboutMe-block"
-         class="search-result__info__block__about
-                row margin-reset">
-
-        <div class="col-xs-12 col-md-12">
-            <h4 class="search-result__info__block__about__title">
-                About me
-            </h4>
-            <p class="ma-p margin-reset">
-                {{item.about}}
-            </p>
-        </div>
-
-    </div>
-    <!--                  END: ABOUT ME BLOCK                -->
-
-    <hr>
-
-    <!------------------- START: INTEREST BLOCK --------------->
-    <div id="search-result-interests-block"
-         class="search-result__info__block__interests
-                row margin-reset">
-
-        <div class="col-xs-12 col-md-12">
-            <h4 class="search-result__info__block__interests__title">
-                Interests
-            </h4>
-            <div class="search-result__info__block__interests__options">
-                <div ng-repeat="interest in item.interests"
-                     class="ma-label
                             ma-label--box
-                            ma-label--box--secondary
-                            ma-label--box--space2
-                            ma-label--box--small">{{interest}}</div>
+                            ma-label--box--primary
+                            ma-label--box--default" style="width: 100%;">
+                    Profesor Profesional
+                </div>
+
+            </div>
+
+        </div>
+        <!--                     END: NATIVE INFO BLOCK                      -->
+
+
+
+        <!------------------- START: TEACHER SINCE INFO BLOCK ----------------->
+        <div class="row text-center space-2">
+
+            <div class="col-xs-12 col-md-12">
+
+                <h4>Teacher since 2012</h4>
+
+            </div>
+
+        </div>
+        <!--                   END: TEACHER SINCE INFO BLOCK                 -->
+
+
+
+        <!------------------- START: TEACHER SINCE INFO BLOCK ----------------->
+        <div class="row text-center space-1">
+            <div class="col-md-1"></div>
+
+            <div class="col-md-10">
+                <div class="row center-xs middle-xs">
+                    <div class="col-md-8 text-left">
+                        <h3 class="margin-reset" style="    color: #CCC;
+    text-decoration: line-through;">Immersion</h3>
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <i class="material-icons md-36 md-primary"
+                            style="color: #CCC;
+                                    vertical-align: text-top;">
+                            sentiment_dissatisfied
+                        </i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-1"></div>
+        </div>
+        <!--                   END: TEACHER SINCE INFO BLOCK                 -->
+
+        <hr>
+
+        <!------------------- START: CLASSES PRICE INFO BLOCK ----------------->
+        <div class="row text-center space-2">
+
+            <div class="col-xs-12 col-md-12">
+
+                <h3 class="margin-reset">Precios</h3>
+
+            </div>
+
+        </div>
+
+        <div class="row text-center space-1">
+            <div class="col-xs-6 col-md-6">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <p class="ma-p ma-p--large margin-reset">Private</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-md-6">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <p class="ma-p ma-p--info ma-p--large margin-reset">
+                            <strong>$30 / hr</strong>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
 
+        <div class="row text-center space-2">
+            <div class="col-xs-6 col-md-6">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <p class="ma-p ma-p--large margin-reset"
+                            style="text-decoration: line-through; color: #ccc;">
+                            Group
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-md-6">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <i class="material-icons md-30 md-primary"
+                            style="vertical-align: text-top; color: #ddd;">
+                            event_busy
+                        </i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--                   END: CLASSES PRICE INFO BLOCK                 -->
+
+
     </div>
-    <!--                 END: INTEREST ME BLOCK              -->
+    <!--                  END: TEACHER INFO BLOCK (FLIP FACE)                -->
+
+    <div class="ma-box__footer" style="padding: 15px 20px;" ng-show="vm.hoverDetail[$index]">
+        <!-------------------- START: METHODOLOGY INFO BLOCK ------------------>
+        <div class="row text-center">
+
+            <div class="col-xs-12 col-md-12 space-1">
+
+                <h3 class="margin-reset">Methodology</h3>
+
+            </div>
+
+        </div>
+
+        <div class="row text-left">
+
+            <div class="col-xs-12 col-md-12">
+
+                <p class="ma-p ma-p--small margin-reset">
+                    Es un hecho establecido hace demasiado tiempo que un lector se distraerá con el contenido del texto de un sitio mientras que mira su diseño.
+                </p>
+
+            </div>
+
+        </div>
+        <!--                    END: METHODOLOGY INFO BLOCK                  -->
+    </div>
+
 
 </div>
 <!--                    END: INFO BLOCK                      -->

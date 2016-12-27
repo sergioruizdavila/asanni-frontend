@@ -179,6 +179,42 @@ $search-map-padding: 0;
         }
     }
 
+    &__teacher {
+
+        &__block {
+
+            &__avatar {
+
+                &__container {
+
+                    .ma-icon-container {
+                        position: absolute;
+                        right: 0;
+                        bottom: 0;
+                    }
+                }
+            }
+
+            &__languages {
+
+                &__container {
+
+                    &--left {
+                        border-right: 2px dashed #00B592;
+                        height: 136px;
+                    }
+
+                    h4 {
+                        background-color: #00b592;
+                        color: #FFF;
+                        padding: 3px;
+                        border-radius: 3px;
+                    }
+                }
+            }
+        }
+    }
+
     //MAP SIDE
     &__map {
         background-color: $search-map-background;

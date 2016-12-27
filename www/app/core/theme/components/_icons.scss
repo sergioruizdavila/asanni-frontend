@@ -92,12 +92,88 @@
 
 
 /**********************************************************/
-/*                    ICONS WITH COUNTER                  */
+/*                     ICONS CONTAINER                    */
 /**********************************************************/
 //TODO: Pasar a variables
 .ma-icon-container {
     position: relative;
 
+    /// WRAP COLOR
+    &--primary {
+        background-color: #00b592;
+        color: $white;
+        border: 0 hidden transparent;
+        position: absolute;
+        right: 13px;
+        bottom: 10px;
+    }
+
+    &--secondary {
+        border: 2px solid #00b592;
+        color: #00b592;
+        background-color: $white;
+    }
+
+    &--alert {
+        background-color: map-get($main-palette, alert);
+        border: 0 hidden transparent;
+        color: $white;
+    }
+
+    &--alert-secondary {
+        background-color: $white;
+        border: 2px solid map-get($main-palette, alert);
+        color: map-get($main-palette, alert);
+    }
+
+    &--white {
+        background-color: $white;
+        border: 0 hidden transparent;
+        color: map-get($main-palette, primary);
+    }
+
+    /// WRAP SIZE
+    &--small {
+        width: 25px;
+        height: 25px;
+
+        &__icon {
+            line-height: 22px;
+            font-size: 16px;
+        }
+    }
+
+    &--default {
+        width: 35px;
+        height: 35px;
+
+        &__icon {
+            line-height: 31px;
+            font-size: 22px;
+        }
+    }
+
+    &--medium {
+        width: 45px;
+        height: 45px;
+
+        &__icon {
+            line-height: 45px;
+            font-size: 30px;
+        }
+    }
+
+    &--large {
+        width: 55px;
+        height: 55px;
+
+        &__icon {
+            line-height: 52px;
+            font-size: 35px;
+        }
+    }
+
+    // ICONS WITH COUNTER
     &__count {
         display:inline-block;
         top: $icon-container-count-top;
@@ -153,6 +229,7 @@
         }
 
     }
+
 }
 
 
