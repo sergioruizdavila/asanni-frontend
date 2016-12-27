@@ -34,7 +34,9 @@ var app;
                         thumbnail: ''
                     };
                     this.validate = {
-                        avatar: { valid: true, message: '' }
+                        avatar: { valid: true, message: '' },
+                        thumbnail: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
                     };
                     this.activate();
                 };
@@ -104,10 +106,18 @@ var app;
                     var formValid = true;
                     var avatar_rules = [NULL_ENUM, EMPTY_ENUM, DEFINED_ENUM];
                     this.validate.avatar = this.functionsUtilService.validator(this.form.avatar, avatar_rules);
-                    this.validate.avatar = this.functionsUtilService.validator(this.form.thumbnail, avatar_rules);
+                    var thumbnail_rules = [NULL_ENUM, EMPTY_ENUM, DEFINED_ENUM];
+                    this.validate.thumbnail = this.functionsUtilService.validator(this.form.thumbnail, thumbnail_rules);
                     if (!this.validate.avatar.valid) {
-                        this.validate.avatar.message = PHOTO_MESSAGE;
-                        formValid = this.validate.avatar.valid;
+                        if (!this.validate.thumbnail.valid) {
+                            this.validate.globalValidate.valid = false;
+                            this.validate.globalValidate.message = PHOTO_MESSAGE;
+                            formValid = this.validate.globalValidate.valid;
+                        }
+                        else {
+                            this.validate.globalValidate.valid = true;
+                            this.validate.globalValidate.message = '';
+                        }
                     }
                     return formValid;
                 };

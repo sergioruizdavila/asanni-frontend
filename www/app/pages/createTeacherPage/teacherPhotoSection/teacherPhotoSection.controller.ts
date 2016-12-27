@@ -35,6 +35,8 @@ module app.pages.createTeacherPage {
 
     interface ITeacherPhotoValidate {
         avatar: app.core.util.functionsUtil.IValid;
+        thumbnail: app.core.util.functionsUtil.IValid;
+        globalValidate: app.core.util.functionsUtil.IValid;
     }
 
     /****************************************/
@@ -117,7 +119,9 @@ module app.pages.createTeacherPage {
 
             // Build validate object fields
             this.validate = {
-                avatar: {valid: true, message: ''}
+                avatar: {valid: true, message: ''},
+                thumbnail: {valid: true, message: ''},
+                globalValidate: {valid: true, message: ''}
             };
 
             this.activate();
@@ -262,11 +266,22 @@ module app.pages.createTeacherPage {
             //Validate photo
             let avatar_rules = [NULL_ENUM, EMPTY_ENUM, DEFINED_ENUM];
             this.validate.avatar = this.functionsUtilService.validator(this.form.avatar, avatar_rules);
-            this.validate.avatar = this.functionsUtilService.validator(this.form.thumbnail, avatar_rules);
 
+            //Validate thumbnail
+            let thumbnail_rules = [NULL_ENUM, EMPTY_ENUM, DEFINED_ENUM];
+            this.validate.thumbnail = this.functionsUtilService.validator(this.form.thumbnail, thumbnail_rules);
+
+            //If avatar image is not valid
             if(!this.validate.avatar.valid) {
-                this.validate.avatar.message = PHOTO_MESSAGE;
-                formValid = this.validate.avatar.valid;
+                //If thumbnail image is not valid
+                if(!this.validate.thumbnail.valid) {
+                    this.validate.globalValidate.valid = false;
+                    this.validate.globalValidate.message = PHOTO_MESSAGE;
+                    formValid = this.validate.globalValidate.valid;
+                } else {
+                    this.validate.globalValidate.valid = true;
+                    this.validate.globalValidate.message = '';
+                }
             }
 
             return formValid;
