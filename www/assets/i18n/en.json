@@ -3,6 +3,7 @@
     "%global.zone": "en-US",
     "%global.save.button.text": "Save",
     "%global.next.button.text": "Next",
+    "%global.finish.button.text": "Finish",
     "%global.back.button.text": "Back",
     "%global.yes.button.text": "YES",
     "%global.no.button.text": "NO",
@@ -246,6 +247,10 @@
     "%create.teacher.photo.help_text.avatar.uploaded.title.text": "Preview of your photo",
     "%create.teacher.photo.help_text.avatar.uploaded.description.text": "We will validate your photograph so that you are sure that it satisfies the minimum criteria. This will help you get students quickly.",
     "%create.teacher.photo.validation.message.text": "Please provide a profile photo",
+
+    "__9. TEACHER FINISH SECTION__": "",
+    "%create.teacher.finish.title.text": "Your registration was successful!",
+    "%create.teacher.finish.description.text": "We'll check your information and we'll notify you when you are already visible on the map of Waysily.",
 
     "__FOOTER__": "",
     "%footer.contact_us.title.text": "Contact us",
