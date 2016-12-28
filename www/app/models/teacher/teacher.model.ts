@@ -209,25 +209,9 @@ module app.models.teacher {
 
             //init properties
             this.id = obj.id;
-
-            //Is required use null here because en DB save: "[]"
-            if(typeof obj.native === 'string') {
-                this.native = JSON.parse(obj.native);
-            } else {
-                this.native = obj.native || null;
-            }
-
-            if(typeof obj.learn === 'string') {
-                this.learn = JSON.parse(obj.learn);
-            } else {
-                this.learn = obj.learn || null;
-            }
-
-            if(typeof obj.teach === 'string') {
-                this.teach = JSON.parse(obj.teach);
-            } else {
-                this.teach = obj.teach || null;
-            }
+            this.native = obj.native || [];
+            this.learn = obj.learn || [];
+            this.teach = obj.teach || [];
 
         }
 

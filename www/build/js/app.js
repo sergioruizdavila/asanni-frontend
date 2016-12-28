@@ -58,7 +58,7 @@
 (function () {
     'use strict';
     var dataConfig = {
-        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
+        baseUrl: 'http://127.0.0.1:8000/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -507,9 +507,24 @@ var app;
                     };
                 }
                 filters.GetI18nFilter = GetI18nFilter;
+                GetTypeOfTeacherFilter.$inject = ['$filter'];
+                function GetTypeOfTeacherFilter($filter) {
+                    return function (value) {
+                        var translated = '';
+                        if (value === 'H') {
+                            translated = $filter('translate')('%create.teacher.experience.form.type.hobby_option.text');
+                        }
+                        else if (value === 'P') {
+                            translated = $filter('translate')('%create.teacher.experience.form.type.professional_option.text');
+                        }
+                        return translated;
+                    };
+                }
+                filters.GetTypeOfTeacherFilter = GetTypeOfTeacherFilter;
                 angular
                     .module('mainApp.core.util')
-                    .filter('getI18nFilter', GetI18nFilter);
+                    .filter('getI18nFilter', GetI18nFilter)
+                    .filter('getTypeOfTeacherFilter', GetTypeOfTeacherFilter);
             })(filters = util.filters || (util.filters = {}));
         })(util = core.util || (core.util = {}));
     })(core = app.core || (app.core = {}));
@@ -1415,24 +1430,9 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('Languages Model instanced');
                     this.id = obj.id;
-                    if (typeof obj.native === 'string') {
-                        this.native = JSON.parse(obj.native);
-                    }
-                    else {
-                        this.native = obj.native || null;
-                    }
-                    if (typeof obj.learn === 'string') {
-                        this.learn = JSON.parse(obj.learn);
-                    }
-                    else {
-                        this.learn = obj.learn || null;
-                    }
-                    if (typeof obj.teach === 'string') {
-                        this.teach = JSON.parse(obj.teach);
-                    }
-                    else {
-                        this.teach = obj.teach || null;
-                    }
+                    this.native = obj.native || [];
+                    this.learn = obj.learn || [];
+                    this.teach = obj.teach || [];
                 }
                 Object.defineProperty(Language.prototype, "Id", {
                     get: function () {
@@ -2021,7 +2021,7 @@ var app;
                 };
                 TeacherService.prototype.getAllTeachers = function () {
                     var url = 'teachers';
-                    return this.restApi.query({ url: url }).$promise
+                    return this.restApi.queryObject({ url: url }).$promise
                         .then(function (data) {
                         return data;
                     }).catch(function (err) {
@@ -3501,6 +3501,19 @@ var app;
                             return 'app/pages/searchPage/schoolResult/schoolResult.html';
                     }
                 };
+                SearchPageController.prototype._assignNativeClass = function (languages) {
+                    var native = languages.native;
+                    var teach = languages.teach;
+                    var isNative = false;
+                    for (var i = 0; i < native.length; i++) {
+                        for (var j = 0; j < teach.length; j++) {
+                            if (teach[j] === native[i]) {
+                                isNative = true;
+                            }
+                        }
+                    }
+                    return isNative;
+                };
                 SearchPageController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Students', function (event, args) {
@@ -3514,9 +3527,9 @@ var app;
                     this.$scope.$on('Teachers', function (event, args) {
                         self.TeacherService.getAllTeachers().then(function (response) {
                             self.type = 'teacher';
-                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', { lat: 6.175434, lng: -75.583329 });
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);
-                            self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                            self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         });
                     });
                     this.$scope.$on('Schools', function (event, args) {
@@ -4848,9 +4861,9 @@ var app;
                         description: this.HELP_TEXT_DESCRIPTION
                     };
                     this.form = {
-                        native: null,
-                        learn: null,
-                        teach: null
+                        native: [],
+                        learn: [],
+                        teach: []
                     };
                     this.validate = {
                         native: { valid: true, message: '' },

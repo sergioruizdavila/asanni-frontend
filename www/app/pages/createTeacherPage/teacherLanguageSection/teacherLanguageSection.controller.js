@@ -28,9 +28,9 @@ var app;
                         description: this.HELP_TEXT_DESCRIPTION
                     };
                     this.form = {
-                        native: null,
-                        learn: null,
-                        teach: null
+                        native: [],
+                        learn: [],
+                        teach: []
                     };
                     this.validate = {
                         native: { valid: true, message: '' },

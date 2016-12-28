@@ -58,6 +58,8 @@ $search-map-bottom: 0;
 $search-map-top: 61px;
 $search-map-padding: 0;
 
+$search-teacher-block-height: 500px;
+
 
 /**********************************************************/
 /*                      SEARCH PAGE                       */
@@ -179,10 +181,13 @@ $search-map-padding: 0;
         }
     }
 
+    //TEACHER INFO SIDE
     &__teacher {
 
         &__block {
             cursor: pointer;
+            height: $search-teacher-block-height;
+            overflow: hidden;
 
             &__avatar {
 
@@ -243,13 +248,20 @@ $search-map-padding: 0;
             }
 
             &__immersion {
-                h3 {
-                    color: #CCC;
-                    text-decoration: line-through;
+
+                &--NoImmersion {
+                    h3 {
+                        color: #CCC;
+                        text-decoration: line-through;
+                    }
+
+                    .material-icons {
+                        color: #CCC;
+                        vertical-align: text-top;
+                    }
                 }
 
                 .material-icons {
-                    color: #CCC;
                     vertical-align: text-top;
                 }
             }
@@ -261,8 +273,14 @@ $search-map-padding: 0;
                 }
             }
 
-            .ma-box__footer {
+            &__methodology {
                 padding: 15px 20px;
+                .ma-p {
+                    @include text-truncate-multiline($font-size: 14px,
+                                                     $line-height: $paragraph-lineHeight,
+                                                     $lines-to-show: $paragraph-lines-to-show,
+                                                     $excerpt-bg: transparent);
+                }
             }
         }
     }

@@ -15,9 +15,24 @@ var app;
                     };
                 }
                 filters.GetI18nFilter = GetI18nFilter;
+                GetTypeOfTeacherFilter.$inject = ['$filter'];
+                function GetTypeOfTeacherFilter($filter) {
+                    return function (value) {
+                        var translated = '';
+                        if (value === 'H') {
+                            translated = $filter('translate')('%create.teacher.experience.form.type.hobby_option.text');
+                        }
+                        else if (value === 'P') {
+                            translated = $filter('translate')('%create.teacher.experience.form.type.professional_option.text');
+                        }
+                        return translated;
+                    };
+                }
+                filters.GetTypeOfTeacherFilter = GetTypeOfTeacherFilter;
                 angular
                     .module('mainApp.core.util')
-                    .filter('getI18nFilter', GetI18nFilter);
+                    .filter('getI18nFilter', GetI18nFilter)
+                    .filter('getTypeOfTeacherFilter', GetTypeOfTeacherFilter);
             })(filters = util.filters || (util.filters = {}));
         })(util = core.util || (core.util = {}));
     })(core = app.core || (app.core = {}));

@@ -46,6 +46,19 @@ var app;
                             return 'app/pages/searchPage/schoolResult/schoolResult.html';
                     }
                 };
+                SearchPageController.prototype._assignNativeClass = function (languages) {
+                    var native = languages.native;
+                    var teach = languages.teach;
+                    var isNative = false;
+                    for (var i = 0; i < native.length; i++) {
+                        for (var j = 0; j < teach.length; j++) {
+                            if (teach[j] === native[i]) {
+                                isNative = true;
+                            }
+                        }
+                    }
+                    return isNative;
+                };
                 SearchPageController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Students', function (event, args) {
@@ -59,9 +72,9 @@ var app;
                     this.$scope.$on('Teachers', function (event, args) {
                         self.TeacherService.getAllTeachers().then(function (response) {
                             self.type = 'teacher';
-                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', { lat: 6.175434, lng: -75.583329 });
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);
-                            self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                            self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         });
                     });
                     this.$scope.$on('Schools', function (event, args) {

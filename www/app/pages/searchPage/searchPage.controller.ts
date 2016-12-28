@@ -133,6 +133,35 @@ module app.pages.searchPage {
         }
 
         /**
+        * _assignNativeClass
+        * @description - this method return if teacher is native or not
+        * result (students, teachers, schools, etc)
+        * @use - this._assignNativeClass(languages);
+        * @function
+        * @param {native Array, learn Array and teach Array} languages
+        * teacher languages (native, teach and learn)
+        * @return {boolean} isNative
+        */
+
+        private _assignNativeClass(languages): boolean {
+            let native = languages.native;
+            let teach = languages.teach;
+            let isNative = false;
+
+            for (let i = 0; i < native.length; i++) {
+                for (let j = 0; j < teach.length; j++) {
+                    if(teach[j] === native[i]) {
+                        isNative = true;
+                    }
+                }
+            }
+
+            return isNative;
+        }
+
+
+
+        /**
         * _subscribeToEvents
         * @description - this method subscribes Search Page to Child's Events
         * @use - this._subscribeToEvents();
@@ -187,11 +216,11 @@ module app.pages.searchPage {
             this.$scope.$on('Teachers', function(event, args) {
                 //Get All Teachers of this zone
                 self.TeacherService.getAllTeachers().then(
-                    function(response: Array<app.models.teacher.Teacher>) {
+                    function(response: app.models.teacher.ITeacherQueryObject) {
 
                         self.type = 'teacher';
                         self.mapConfig = self.FunctionsUtilService.buildMapConfig(
-                            response,
+                            response.results,
                             'search-map',
                             {lat: 6.175434,lng: -75.583329}
                         );
@@ -202,7 +231,7 @@ module app.pages.searchPage {
                         */
                         self.$scope.$broadcast('BuildMarkers', self.mapConfig);
 
-                        self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                        self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                     }
                 );
             });
