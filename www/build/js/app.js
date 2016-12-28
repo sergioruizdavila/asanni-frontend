@@ -3471,8 +3471,8 @@ var app;
                     this._init();
                 }
                 SearchPageController.prototype._init = function () {
-                    this.data = [{ firstName: 'Sergio', lastName: 'Ruiz' }, { firstName: 'Sergio', lastName: 'Ruiz' }, { firstName: 'Sergio', lastName: 'Ruiz' }];
-                    this.type = 'teacher';
+                    this.data = [];
+                    this.type = null;
                     this.error = {
                         message: ''
                     };
@@ -3482,6 +3482,11 @@ var app;
                     var self = this;
                     console.log('searchPage controller actived');
                     this._subscribeToEvents();
+                    this.StudentService.getAllStudents().then(function (response) {
+                        self.type = 'student';
+                        self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                        self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                    });
                 };
                 SearchPageController.prototype._getResultTemplate = function (type) {
                     var STUDENT_TYPE = 'student';
