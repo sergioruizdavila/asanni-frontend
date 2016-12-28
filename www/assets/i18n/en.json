@@ -96,6 +96,17 @@
     "%landing.student.input_name.placeholder.text": "Your name",
     "%landing.student.notify_block.success_msg.text": "You’re all set. We’ll be in touch.",
 
+    "__SEARCH PAGE__": "",
+    "%search.container.teacher.lang.teach.title.text": "Teach",
+    "%search.container.teacher.lang.learn.title.text": "Speak",
+    "%search.container.teacher.native.title.text": "Teacher Native",
+    "%search.container.teacher.since.title.text": "Teacher since",
+    "%search.container.teacher.immersion.title.text": "Immersion",
+    "%search.container.teacher.price.title.text": "Prices",
+    "%search.container.teacher.price.private.title.text": "Private",
+    "%search.container.teacher.price.group.title.text": "Group",
+    "%search.container.teacher.methodology.title.text": "Methodology",
+
     "__CREATE TEACHER PAGE__": "",
     "__1. TEACHER INFO SECTION__": "",
     "%create.teacher.basic_info.title.text": "Step 1 -  Basic Information",

@@ -22,7 +22,7 @@ var app;
                 };
                 TeacherService.prototype.getAllTeachers = function () {
                     var url = 'teachers';
-                    return this.restApi.query({ url: url }).$promise
+                    return this.restApi.queryObject({ url: url }).$promise
                         .then(function (data) {
                         return data;
                     }).catch(function (err) {

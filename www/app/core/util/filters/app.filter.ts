@@ -31,9 +31,37 @@ module app.core.util.filters {
     }
 
 
+
+    /*-- INJECT DEPENDENCIES --*/
+    GetTypeOfTeacherFilter.$inject = ['$filter'];
+
+    /**
+    * GetTypeOfTeacherFilter
+    * @description - return the type of teacher text based on teacher type on DB ('H' or 'P')
+    * @use - {{ 'H' | getTypeOfTeacherFilter }}
+    * @function
+    * @return {string} type of teacher text translated
+    */
+    export function GetTypeOfTeacherFilter($filter: angular.IFilterService) {
+        return function (value: string): string {
+            //VARIABLES
+            let translated = '';
+
+            if(value === 'H') {
+                translated = $filter('translate')('%create.teacher.experience.form.type.hobby_option.text');
+            } else if (value === 'P') {
+                translated = $filter('translate')('%create.teacher.experience.form.type.professional_option.text');
+            }
+
+            return translated;
+        }
+    }
+
+
     /*-- MODULE DEFINITION --*/
     angular
         .module('mainApp.core.util')
-        .filter('getI18nFilter', GetI18nFilter);
+        .filter('getI18nFilter', GetI18nFilter)
+        .filter('getTypeOfTeacherFilter', GetTypeOfTeacherFilter);
 
 }

@@ -37,6 +37,7 @@ var components;
             MapController.prototype.init = function () {
                 this.RED_PIN = 'assets/images/red-pin.png';
                 this.POSITION_PIN = 'assets/images/red-pin.png';
+                this.GREEN_PIN = 'assets/images/green-pin.png';
                 var self = this;
                 this._map;
                 this._draggable = false;
@@ -79,7 +80,7 @@ var components;
                         self._createFilterButtons();
                         for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                             var marker = self.mapConfig.data.markers[i];
-                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.RED_PIN);
+                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.GREEN_PIN);
                         }
                     });
                 }
@@ -132,6 +133,19 @@ var components;
                             lat: this.getPosition().lat()
                         };
                         self.$scope.$emit('Position', position);
+                    });
+                }
+                if (this.mapConfig.type === 'search-map') {
+                    google.maps.event.addListener(marker, 'click', function (event) {
+                        for (var i = 0; i < self._markers.length; i++) {
+                            if (self._markers[i].id === marker.id) {
+                                self._markers[i].setIcon(self.GREEN_PIN);
+                            }
+                            else {
+                                self._markers[i].setIcon(self.RED_PIN);
+                            }
+                        }
+                        self.$scope.$emit('SelectContainer', marker.id);
                     });
                 }
             };
@@ -230,7 +244,7 @@ var components;
                 }, function (results, status) {
                     if (status == 'OK') {
                         self._removeMarkers();
-                        self._setMarker('1', results[0].geometry.location, 'assets/images/red-pin.png');
+                        self._setMarker('1', results[0].geometry.location, self.RED_PIN);
                         var position = {
                             lng: results[0].geometry.location.lng(),
                             lat: results[0].geometry.location.lat()
@@ -249,7 +263,21 @@ var components;
                     self._removeMarkers();
                     for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                         var marker = self.mapConfig.data.markers[i];
-                        self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), 'assets/images/red-pin.png');
+                        self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.RED_PIN);
+                    }
+                });
+                this.$scope.$on('ChangeMarker', function (event, args) {
+                    var markerId = args.id;
+                    var status = args.status;
+                    for (var i = 0; i < self._markers.length; i++) {
+                        if (self._markers[i].id === markerId) {
+                            if (status === true) {
+                                self._markers[i].setIcon(self.GREEN_PIN);
+                            }
+                            else {
+                                self._markers[i].setIcon(self.RED_PIN);
+                            }
+                        }
                     }
                 });
                 this.$scope.$on('CodeAddress', function (event, args) {

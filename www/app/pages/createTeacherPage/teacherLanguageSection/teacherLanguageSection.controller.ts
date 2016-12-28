@@ -111,9 +111,9 @@ module app.pages.createTeacherPage {
             //Init form
             //Is required use null here because en DB save: "[]"
             this.form = {
-                native: null,
-                learn: null,
-                teach: null
+                native: [],
+                learn: [],
+                teach: []
             };
 
             // Build validate object fields

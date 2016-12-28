@@ -25,6 +25,13 @@ module app.models.teacher {
         updateCertificate: (teacherId: string, certificate: app.models.teacher.Certificate) => angular.IPromise<any>;
     }
 
+    export interface ITeacherQueryObject {
+        next: string;
+        previous: string;
+        count: number;
+        results: Array<app.models.teacher.Teacher>;
+    }
+
 
     /****************************************/
     /*           CLASS DEFINITION           */
@@ -93,7 +100,7 @@ module app.models.teacher {
             //VARIABLES
             let url = 'teachers';
 
-            return this.restApi.query({url: url}).$promise
+            return this.restApi.queryObject({url: url}).$promise
                 .then(
                     function(data) {
                         return data;

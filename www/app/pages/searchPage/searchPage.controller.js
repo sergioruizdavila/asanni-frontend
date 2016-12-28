@@ -5,7 +5,7 @@ var app;
         var searchPage;
         (function (searchPage) {
             var SearchPageController = (function () {
-                function SearchPageController(StudentService, TeacherService, SchoolService, FunctionsUtilService, $state, $filter, $scope) {
+                function SearchPageController(StudentService, TeacherService, SchoolService, FunctionsUtilService, $state, $filter, $scope, $rootScope) {
                     this.StudentService = StudentService;
                     this.TeacherService = TeacherService;
                     this.SchoolService = SchoolService;
@@ -13,11 +13,14 @@ var app;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this._init();
                 }
                 SearchPageController.prototype._init = function () {
                     this.data = [];
                     this.type = null;
+                    this._hoverDetail = [];
+                    this._containerSelected = [];
                     this.error = {
                         message: ''
                     };
@@ -46,6 +49,24 @@ var app;
                             return 'app/pages/searchPage/schoolResult/schoolResult.html';
                     }
                 };
+                SearchPageController.prototype._assignNativeClass = function (languages) {
+                    var native = languages.native;
+                    var teach = languages.teach;
+                    var isNative = false;
+                    for (var i = 0; i < native.length; i++) {
+                        for (var j = 0; j < teach.length; j++) {
+                            if (teach[j] === native[i]) {
+                                isNative = true;
+                            }
+                        }
+                    }
+                    return isNative;
+                };
+                SearchPageController.prototype._hoverEvent = function (id, status) {
+                    var args = { id: id, status: status };
+                    this._hoverDetail[id] = status;
+                    this.$rootScope.$broadcast('ChangeMarker', args);
+                };
                 SearchPageController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Students', function (event, args) {
@@ -59,9 +80,9 @@ var app;
                     this.$scope.$on('Teachers', function (event, args) {
                         self.TeacherService.getAllTeachers().then(function (response) {
                             self.type = 'teacher';
-                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null);
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);
-                            self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                            self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         });
                     });
                     this.$scope.$on('Schools', function (event, args) {
@@ -71,6 +92,11 @@ var app;
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                             self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                         });
+                    });
+                    this.$scope.$on('SelectContainer', function (event, args) {
+                        var containerId = args;
+                        document.querySelector('#container-' + containerId).scrollIntoView({ behavior: 'smooth' });
+                        self._containerSelected[containerId] = true;
                     });
                 };
                 return SearchPageController;
@@ -83,7 +109,8 @@ var app;
                 'mainApp.core.util.FunctionsUtilService',
                 '$state',
                 '$filter',
-                '$scope'
+                '$scope',
+                '$rootScope'
             ];
             searchPage.SearchPageController = SearchPageController;
             angular

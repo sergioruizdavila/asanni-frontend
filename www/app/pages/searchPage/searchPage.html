@@ -13,8 +13,24 @@
 
             <div class="col-sm-12 col-md-6"
                  ng-repeat="item in rows"
-                 ng-include="vm._getResultTemplate(vm.type)">
+                 ng-if="vm.type === 'student'">
                 <!-- Dynamic section template: users, teachers or schools results -->
+                <!--div ng-include="vm._getResultTemplate(vm.type)"></div-->
+            </div>
+
+            <div class="col-sm-12 col-md-6"
+                 ng-repeat="item in rows"
+                 ng-if="vm.type === 'school'">
+                <!-- Dynamic section template: users, teachers or schools results -->
+                <!--div ng-include="vm._getResultTemplate(vm.type)"></div-->
+            </div>
+
+            <div class="col-sm-12 col-md-6"
+                 ng-repeat="item in rows"
+                 ng-if="vm.type === 'teacher'">
+
+                <ma-teacher-result></ma-teacher-result>
+
             </div>
 
         </div>

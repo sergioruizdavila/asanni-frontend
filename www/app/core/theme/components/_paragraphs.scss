@@ -50,4 +50,9 @@
             font-size: map-get($global-font-sizes, large);
         }
     }
+
+    &--disable-line-through {
+        text-decoration: line-through;
+        color: #ccc;
+    }
 }
