@@ -182,6 +182,7 @@ $search-map-padding: 0;
     &__teacher {
 
         &__block {
+            cursor: pointer;
 
             &__avatar {
 
@@ -211,6 +212,57 @@ $search-map-padding: 0;
                         border-radius: 3px;
                     }
                 }
+            }
+
+            &__native {
+
+                h4 {
+                    padding: 10px;
+                    border-radius: 3px;
+                    background-color: #fff;
+                    border: 2px solid #00B592;
+                    color: #00B592;
+                }
+
+                &--noNative {
+                    h4 {
+                        padding: 10px;
+                        border-radius: 3px;
+                        background-color: #dce0e0;
+                        color: #555;
+                        border: 0 hidden transparent;
+                        text-decoration: line-through;
+                    }
+                }
+            }
+
+            &__type-teacher {
+                .ma-label {
+                    width: 100%;
+                }
+            }
+
+            &__immersion {
+                h3 {
+                    color: #CCC;
+                    text-decoration: line-through;
+                }
+
+                .material-icons {
+                    color: #CCC;
+                    vertical-align: text-top;
+                }
+            }
+
+            &__price {
+                .material-icons {
+                    vertical-align: text-top;
+                    color: #ddd;
+                }
+            }
+
+            .ma-box__footer {
+                padding: 15px 20px;
             }
         }
     }
