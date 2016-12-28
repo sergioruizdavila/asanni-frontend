@@ -111,7 +111,7 @@ module components.map {
         markers: Array<IMapMarkers>;
     }
 
-    export interface IMapMarkers {
+    export interface IMapMarkers extends google.maps.Marker{
         id: string;
         position: IPosition;
     }
@@ -129,12 +129,13 @@ module components.map {
         private _map: google.maps.Map;
         private _draggable: boolean;
         private _infoWindow: google.maps.InfoWindow;
-        private _markers: Array<google.maps.Marker>;
+        private _markers: Array<IMapMarkers>;
         form: IMapForm;
         mapId: string;
         mapConfig: IMapConfig;
         RED_PIN: string;
         POSITION_PIN: string;
+        GREEN_PIN: string;
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/
@@ -155,6 +156,7 @@ module components.map {
             //CONSTANTS
             this.RED_PIN = 'assets/images/red-pin.png';
             this.POSITION_PIN = 'assets/images/red-pin.png';
+            this.GREEN_PIN = 'assets/images/green-pin.png';
             /*********************************/
             //VARIABLES
             let self = this;
@@ -241,7 +243,7 @@ module components.map {
                         let marker = self.mapConfig.data.markers[i];
                         self._setMarker(marker.id,
                                         new google.maps.LatLng(marker.position.lat, marker.position.lng),
-                                        self.RED_PIN);
+                                        self.GREEN_PIN);
                     }
 
                 });
@@ -352,6 +354,25 @@ module components.map {
                     };
                     self.$scope.$emit('Position', position);
                 });
+            }
+
+            // If the map is 'search-map' type
+            if(this.mapConfig.type === 'search-map') {
+
+                // Add click event
+                google.maps.event.addListener(marker, 'click', function (event) {
+                    //Change marker
+                    for (let i = 0; i < self._markers.length; i++) {
+                        if(self._markers[i].id === marker.id) {
+                            self._markers[i].setIcon(self.GREEN_PIN);
+                        } else {
+                            self._markers[i].setIcon(self.RED_PIN);
+                        }
+                    }
+                    //Emit event to parent in order to selected result container
+                    self.$scope.$emit('SelectContainer', marker.id);
+                });
+
             }
 
         }
@@ -531,7 +552,7 @@ module components.map {
                   self._removeMarkers();
                   self._setMarker('1',
                                   results[0].geometry.location,
-                                  'assets/images/red-pin.png');
+                                  self.RED_PIN);
                   let position = {
                       lng: results[0].geometry.location.lng(),
                       lat: results[0].geometry.location.lat()
@@ -575,9 +596,38 @@ module components.map {
                     let marker = self.mapConfig.data.markers[i];
                     self._setMarker(marker.id,
                                     new google.maps.LatLng(marker.position.lat, marker.position.lng),
-                                    'assets/images/red-pin.png');
+                                    self.RED_PIN);
                 }
             });
+
+
+            /**
+            * ChangeMarker event
+            * @parent - SearchPageController
+            * @description - Parent send markers list in order to Child changes
+            * specific marker
+            * @event
+            */
+            this.$scope.$on('ChangeMarker', function(event, args) {
+                //VARIABLES
+                let markerId = args.id;
+                let status = args.status;
+
+                //Change marker
+                for (let i = 0; i < self._markers.length; i++) {
+                    if(self._markers[i].id === markerId) {
+                        if(status === true){
+                            self._markers[i].setIcon(self.GREEN_PIN);
+                        } else {
+                            self._markers[i].setIcon(self.RED_PIN);
+                        }
+
+                    }
+                }
+
+
+            });
+
 
             /**
             * CodeAddress event
@@ -591,6 +641,7 @@ module components.map {
                 let geocoder = new google.maps.Geocoder();
                 self._codeAddress(geocoder, args.country, args.address, args.city);
             });
+
         }
 
     }

@@ -57,6 +57,7 @@ var paths = {
         "www/app/pages/signUpPage/signUpPage.controller.js",
         "www/app/pages/searchPage/searchPage.config.js",
         "www/app/pages/searchPage/searchPage.controller.js",
+        "www/app/pages/searchPage/teacherResult/teacherResult.directive.js",
         "www/app/pages/userProfilePage/userProfilePage.config.js",
         "www/app/pages/userProfilePage/userProfilePage.controller.js",
         "www/app/pages/userEditProfilePage/userEditProfilePage.config.js",

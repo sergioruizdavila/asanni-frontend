@@ -184,7 +184,7 @@ module app.core.util.functionsUtil {
             let mapConfig: components.map.IMapConfig = {
                 type: mapType,
                 data: {
-                    position: position || {lng: 36.75, lat: 54.93},
+                    position: position || {lat: 6.175434,lng: -75.583329},
                     markers: []
                 }
             };

@@ -30,6 +30,8 @@ module app.pages.searchPage {
         error: ISearchPageError;
         mapConfig: components.map.IMapConfig;
         data: Array<app.models.student.Student>;
+        _hoverDetail: Array<boolean>;
+        _containerSelected: Array<boolean>;
         type: string;
         // --------------------------------
 
@@ -42,7 +44,8 @@ module app.pages.searchPage {
             'mainApp.core.util.FunctionsUtilService',
             '$state',
             '$filter',
-            '$scope'];
+            '$scope',
+            '$rootScope'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -54,7 +57,8 @@ module app.pages.searchPage {
             private FunctionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
-            private $scope: angular.IScope) {
+            private $scope: angular.IScope,
+            private $rootScope: angular.IRootScopeService) {
 
             this._init();
 
@@ -68,6 +72,12 @@ module app.pages.searchPage {
 
             //Type of results (student, teacher, school)
             this.type = null;
+
+            //Init hoverDetail array
+            this._hoverDetail = [];
+
+            //Init container selected
+            this._containerSelected = [];
 
             this.error = {
                 message: ''
@@ -132,6 +142,8 @@ module app.pages.searchPage {
             }
         }
 
+
+
         /**
         * _assignNativeClass
         * @description - this method return if teacher is native or not
@@ -157,6 +169,29 @@ module app.pages.searchPage {
             }
 
             return isNative;
+        }
+
+
+
+        /**
+        * _hoverEvent
+        * @description - this method is launched  when user launchs
+        * mouseover/mouseleave event on result container
+        * @use - this._hoverEvent('10', true);
+        * @function
+        * @param {string} id - container result id
+        * @param {boolean} status - mouseover = true / mouseleave = false
+        */
+
+        private _hoverEvent(id: string, status: boolean): void {
+            //VARIABLES
+            let args = {id: id, status: status};
+            this._hoverDetail[id] = status;
+            /*
+            * Send event to child (MapController) in order to It changes icon in
+            * specific Marker on the Map
+            */
+            this.$rootScope.$broadcast('ChangeMarker', args);
         }
 
 
@@ -222,7 +257,7 @@ module app.pages.searchPage {
                         self.mapConfig = self.FunctionsUtilService.buildMapConfig(
                             response.results,
                             'search-map',
-                            {lat: 6.175434,lng: -75.583329}
+                            null
                         );
 
                         /*
@@ -266,6 +301,23 @@ module app.pages.searchPage {
                         self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                     }
                 );
+            });
+
+
+
+            /**
+            * SelectContainer event
+            * @child - MapController
+            * @description - Parent (SearchPageController) receive Child's
+                             event (MapController) in order to selected
+                             specific result container
+            * @event
+            */
+            this.$scope.$on('SelectContainer', function(event, args) {
+                //VARIABLES
+                let containerId = args;
+                document.querySelector('#container-' + containerId).scrollIntoView({ behavior: 'smooth' });
+                self._containerSelected[containerId] = true;
             });
         }
 

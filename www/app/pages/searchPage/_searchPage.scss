@@ -189,6 +189,10 @@ $search-teacher-block-height: 500px;
             height: $search-teacher-block-height;
             overflow: hidden;
 
+            &--selected {
+                border: 1px solid #ff5a5f;
+            }
+
             &__avatar {
 
                 &__container {

@@ -204,7 +204,7 @@ var app;
                         var mapConfig = {
                             type: mapType,
                             data: {
-                                position: position || { lng: 36.75, lat: 54.93 },
+                                position: position || { lat: 6.175434, lng: -75.583329 },
                                 markers: []
                             }
                         };
@@ -2376,6 +2376,7 @@ var components;
             MapController.prototype.init = function () {
                 this.RED_PIN = 'assets/images/red-pin.png';
                 this.POSITION_PIN = 'assets/images/red-pin.png';
+                this.GREEN_PIN = 'assets/images/green-pin.png';
                 var self = this;
                 this._map;
                 this._draggable = false;
@@ -2418,7 +2419,7 @@ var components;
                         self._createFilterButtons();
                         for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                             var marker = self.mapConfig.data.markers[i];
-                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.RED_PIN);
+                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.GREEN_PIN);
                         }
                     });
                 }
@@ -2471,6 +2472,19 @@ var components;
                             lat: this.getPosition().lat()
                         };
                         self.$scope.$emit('Position', position);
+                    });
+                }
+                if (this.mapConfig.type === 'search-map') {
+                    google.maps.event.addListener(marker, 'click', function (event) {
+                        for (var i = 0; i < self._markers.length; i++) {
+                            if (self._markers[i].id === marker.id) {
+                                self._markers[i].setIcon(self.GREEN_PIN);
+                            }
+                            else {
+                                self._markers[i].setIcon(self.RED_PIN);
+                            }
+                        }
+                        self.$scope.$emit('SelectContainer', marker.id);
                     });
                 }
             };
@@ -2569,7 +2583,7 @@ var components;
                 }, function (results, status) {
                     if (status == 'OK') {
                         self._removeMarkers();
-                        self._setMarker('1', results[0].geometry.location, 'assets/images/red-pin.png');
+                        self._setMarker('1', results[0].geometry.location, self.RED_PIN);
                         var position = {
                             lng: results[0].geometry.location.lng(),
                             lat: results[0].geometry.location.lat()
@@ -2588,7 +2602,21 @@ var components;
                     self._removeMarkers();
                     for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                         var marker = self.mapConfig.data.markers[i];
-                        self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), 'assets/images/red-pin.png');
+                        self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.RED_PIN);
+                    }
+                });
+                this.$scope.$on('ChangeMarker', function (event, args) {
+                    var markerId = args.id;
+                    var status = args.status;
+                    for (var i = 0; i < self._markers.length; i++) {
+                        if (self._markers[i].id === markerId) {
+                            if (status === true) {
+                                self._markers[i].setIcon(self.GREEN_PIN);
+                            }
+                            else {
+                                self._markers[i].setIcon(self.RED_PIN);
+                            }
+                        }
                     }
                 });
                 this.$scope.$on('CodeAddress', function (event, args) {
@@ -3460,7 +3488,7 @@ var app;
         var searchPage;
         (function (searchPage) {
             var SearchPageController = (function () {
-                function SearchPageController(StudentService, TeacherService, SchoolService, FunctionsUtilService, $state, $filter, $scope) {
+                function SearchPageController(StudentService, TeacherService, SchoolService, FunctionsUtilService, $state, $filter, $scope, $rootScope) {
                     this.StudentService = StudentService;
                     this.TeacherService = TeacherService;
                     this.SchoolService = SchoolService;
@@ -3468,11 +3496,14 @@ var app;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this._init();
                 }
                 SearchPageController.prototype._init = function () {
                     this.data = [];
                     this.type = null;
+                    this._hoverDetail = [];
+                    this._containerSelected = [];
                     this.error = {
                         message: ''
                     };
@@ -3514,6 +3545,11 @@ var app;
                     }
                     return isNative;
                 };
+                SearchPageController.prototype._hoverEvent = function (id, status) {
+                    var args = { id: id, status: status };
+                    this._hoverDetail[id] = status;
+                    this.$rootScope.$broadcast('ChangeMarker', args);
+                };
                 SearchPageController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Students', function (event, args) {
@@ -3527,7 +3563,7 @@ var app;
                     this.$scope.$on('Teachers', function (event, args) {
                         self.TeacherService.getAllTeachers().then(function (response) {
                             self.type = 'teacher';
-                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null);
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                             self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         });
@@ -3540,6 +3576,11 @@ var app;
                             self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                         });
                     });
+                    this.$scope.$on('SelectContainer', function (event, args) {
+                        var containerId = args;
+                        document.querySelector('#container-' + containerId).scrollIntoView({ behavior: 'smooth' });
+                        self._containerSelected[containerId] = true;
+                    });
                 };
                 return SearchPageController;
             }());
@@ -3551,7 +3592,8 @@ var app;
                 'mainApp.core.util.FunctionsUtilService',
                 '$state',
                 '$filter',
-                '$scope'
+                '$scope',
+                '$rootScope'
             ];
             searchPage.SearchPageController = SearchPageController;
             angular
@@ -3561,6 +3603,38 @@ var app;
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
 //# sourceMappingURL=searchPage.controller.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var searchPage;
+        (function (searchPage) {
+            'use strict';
+            var MaTeacherResult = (function () {
+                function MaTeacherResult() {
+                    this.bindToController = true;
+                    this.controller = app.pages.searchPage.SearchPageController.controllerId;
+                    this.controllerAs = 'vm';
+                    this.restrict = 'E';
+                    this.templateUrl = 'app/pages/searchPage/teacherResult/teacherResult.html';
+                    console.log('maTeacherResult directive constructor');
+                }
+                MaTeacherResult.prototype.link = function ($scope, elm, attr) {
+                    console.log('maTeacherResult link function');
+                };
+                MaTeacherResult.instance = function () {
+                    return new MaTeacherResult();
+                };
+                return MaTeacherResult;
+            }());
+            MaTeacherResult.directiveId = 'maTeacherResult';
+            angular
+                .module('mainApp.pages.searchPage')
+                .directive(MaTeacherResult.directiveId, MaTeacherResult.instance);
+        })(searchPage = pages.searchPage || (pages.searchPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=teacherResult.directive.js.map
 (function () {
     'use strict';
     angular

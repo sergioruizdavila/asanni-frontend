@@ -19,7 +19,6 @@
     "%global.validation.true.message.text": "Valor requerido",
     "%global.validation.is_not_zero.message.text": "Escribe un valor diferente a 0",
 
-
     "__HEADER__": "",
     "%header.lang.options.en.text": "Inglés",
     "%header.lang.options.es.text": "Español",
@@ -96,6 +95,17 @@
     "%landing.student.input_comment.placeholder.text": "¿Tienes dudas?, ¿Quieres saber más de Waysily?, escríbenos.",
     "%landing.student.input_name.placeholder.text": "Tu nombre",
     "%landing.student.notify_block.success_msg.text": "Ya está todo listo. Estaremos en contacto.",
+
+    "__SEARCH PAGE__": "",
+    "%search.container.teacher.lang.teach.title.text": "Enseña",
+    "%search.container.teacher.lang.learn.title.text": "Habla",
+    "%search.container.teacher.native.title.text": "Profesor Nativo",
+    "%search.container.teacher.since.title.text": "Profesor desde",
+    "%search.container.teacher.immersion.title.text": "Inmersión",
+    "%search.container.teacher.price.title.text": "Precios",
+    "%search.container.teacher.price.private.title.text": "Privado",
+    "%search.container.teacher.price.group.title.text": "Grupal",
+    "%search.container.teacher.methodology.title.text": "Metodología",
 
     "__CREATE TEACHER PAGE__": "",
     "__1. TEACHER INFO SECTION__": "",
