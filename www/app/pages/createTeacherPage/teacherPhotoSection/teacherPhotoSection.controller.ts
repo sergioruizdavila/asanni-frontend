@@ -259,6 +259,7 @@ module app.pages.createTeacherPage {
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
             const DEFINED_ENUM = app.core.util.functionsUtil.Validation.Defined;
             const PHOTO_MESSAGE = this.$filter('translate')('%create.teacher.photo.validation.message.text');
+            
             /***************************************************/
             //VARIABLES
             let formValid = true;

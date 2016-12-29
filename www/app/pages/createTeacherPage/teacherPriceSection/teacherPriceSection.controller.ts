@@ -201,6 +201,7 @@ module app.pages.createTeacherPage {
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
             const TRUE_ENUM = app.core.util.functionsUtil.Validation.IsTrue;
             const GLOBAL_MESSAGE = this.$filter('translate')('%create.teacher.price.validation.message.text');
+            
             /***************************************************/
             //VARIABLES
             let formValid = true;

@@ -72,10 +72,10 @@ var app;
                     }
                 };
                 TeacherInfoSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 4;
-                    var EMPTY_ENUM = 5;
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
                     var EMAIL_ENUM = 0;
-                    var NUMBER_ENUM = 2;
+                    var NUMBER_ENUM = 4;
                     var formValid = true;
                     var firstName_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.firstName = this.functionsUtilService.validator(this.form.firstName, firstName_rules);

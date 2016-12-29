@@ -86,8 +86,8 @@ var app;
                     }
                 };
                 TeacherExperienceSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 4;
-                    var EMPTY_ENUM = 5;
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
                     var formValid = true;
                     var teacher_since_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.teacherSince = this.functionsUtilService.validator(this.yearObject.value, teacher_since_rules);

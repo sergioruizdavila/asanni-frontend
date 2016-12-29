@@ -74,9 +74,9 @@ var app;
                     }
                 };
                 TeacherLocationSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 4;
-                    var EMPTY_ENUM = 5;
-                    var NUMBER_ENUM = 2;
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
+                    var NUMBER_ENUM = 4;
                     var formValid = true;
                     var country_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.countryLocation = this.functionsUtilService.validator(this.countryObject.code, country_rules);

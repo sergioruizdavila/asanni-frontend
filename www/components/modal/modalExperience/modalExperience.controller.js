@@ -48,8 +48,8 @@ var components;
                     console.log('modalExperience controller actived');
                 };
                 ModalExperienceController.prototype._validateForm = function () {
-                    var NULL_ENUM = 3;
-                    var EMPTY_ENUM = 4;
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
                     var formValid = true;
                     var position_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.position = this.functionsUtilService.validator(this.form.position, position_rules);
