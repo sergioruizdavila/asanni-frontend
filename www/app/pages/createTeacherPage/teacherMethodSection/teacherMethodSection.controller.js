@@ -72,8 +72,8 @@ var app;
                     }
                 };
                 TeacherMethodSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 4;
-                    var EMPTY_ENUM = 5;
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
                     var formValid = true;
                     var methodology_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.methodology = this.functionsUtilService.validator(this.form.methodology, methodology_rules);

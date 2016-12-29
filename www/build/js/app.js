@@ -155,10 +155,10 @@ var app;
                 (function (Validation) {
                     Validation[Validation["Email"] = 0] = "Email";
                     Validation[Validation["String"] = 1] = "String";
-                    Validation[Validation["Number"] = 2] = "Number";
-                    Validation[Validation["IsNotZero"] = 3] = "IsNotZero";
-                    Validation[Validation["Null"] = 4] = "Null";
-                    Validation[Validation["Empty"] = 5] = "Empty";
+                    Validation[Validation["Null"] = 2] = "Null";
+                    Validation[Validation["Empty"] = 3] = "Empty";
+                    Validation[Validation["Number"] = 4] = "Number";
+                    Validation[Validation["IsNotZero"] = 5] = "IsNotZero";
                     Validation[Validation["Defined"] = 6] = "Defined";
                     Validation[Validation["IsTrue"] = 7] = "IsTrue";
                 })(Validation = functionsUtil.Validation || (functionsUtil.Validation = {}));
@@ -250,63 +250,55 @@ var app;
                         var obj = { valid: true, message: 'ok' };
                         for (var i = 0; i < validations.length; i++) {
                             switch (validations[i]) {
-                                case 4: {
-                                    if (value == null) {
-                                        obj.message = NULL_MESSAGE;
-                                        obj.valid = false;
-                                    }
-                                    break;
-                                }
-                                case 5: {
-                                    if (value == '') {
-                                        obj.message = EMPTY_MESSAGE;
-                                        obj.valid = false;
-                                    }
-                                    break;
-                                }
-                                case 6: {
-                                    if (value === undefined) {
-                                        obj.message = DEFINED_MESSAGE;
-                                        obj.valid = false;
-                                    }
-                                    break;
-                                }
-                                case 1: {
-                                    if (typeof value !== 'string') {
-                                        obj.message = STRING_MESSAGE;
-                                        obj.valid = false;
-                                    }
-                                    break;
-                                }
-                                case 2: {
-                                    if (typeof value !== 'number') {
-                                        obj.message = NUMBER_MESSAGE;
-                                        obj.valid = false;
-                                    }
-                                    break;
-                                }
-                                case 3: {
-                                    if (parseInt(value) == 0) {
-                                        obj.message = IS_NOT_ZERO_MESSAGE;
-                                        obj.valid = false;
-                                    }
-                                    break;
-                                }
-                                case 0: {
+                                case 0:
                                     var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
                                     obj.valid = pattern.test(value);
                                     if (obj.valid == false) {
                                         obj.message = EMAIL_MESSAGE;
                                     }
                                     break;
-                                }
-                                case 7: {
+                                case 1:
+                                    if (typeof value !== 'string') {
+                                        obj.message = STRING_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                case 2:
+                                    if (value == null) {
+                                        obj.message = NULL_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                case 3:
+                                    if (value == '') {
+                                        obj.message = EMPTY_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                case 4:
+                                    if (typeof value !== 'number') {
+                                        obj.message = NUMBER_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                case 5:
+                                    if (parseInt(value) == 0) {
+                                        obj.message = IS_NOT_ZERO_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                case 6:
+                                    if (value === undefined) {
+                                        obj.message = DEFINED_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                case 7:
                                     if (value !== true) {
                                         obj.message = TRUE_MESSAGE;
                                         obj.valid = false;
                                     }
                                     break;
-                                }
                             }
                         }
                         return obj;
@@ -2822,8 +2814,8 @@ var components;
                     console.log('modalExperience controller actived');
                 };
                 ModalExperienceController.prototype._validateForm = function () {
-                    var NULL_ENUM = 3;
-                    var EMPTY_ENUM = 4;
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
                     var formValid = true;
                     var position_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.position = this.functionsUtilService.validator(this.form.position, position_rules);
@@ -2970,8 +2962,8 @@ var components;
                     console.log('modalEducation controller actived');
                 };
                 ModalEducationController.prototype._validateForm = function () {
-                    var NULL_ENUM = 3;
-                    var EMPTY_ENUM = 4;
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
                     var formValid = true;
                     var school_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.school = this.functionsUtilService.validator(this.form.school, school_rules);
@@ -3104,8 +3096,8 @@ var components;
                     console.log('modalCertificate controller actived');
                 };
                 ModalCertificateController.prototype._validateForm = function () {
-                    var NULL_ENUM = 3;
-                    var EMPTY_ENUM = 4;
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
                     var EMAIL_ENUM = 0;
                     var formValid = true;
                     var name_rules = [NULL_ENUM, EMPTY_ENUM];
@@ -4477,10 +4469,10 @@ var app;
                     }
                 };
                 TeacherInfoSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 4;
-                    var EMPTY_ENUM = 5;
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
                     var EMAIL_ENUM = 0;
-                    var NUMBER_ENUM = 2;
+                    var NUMBER_ENUM = 4;
                     var formValid = true;
                     var firstName_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.firstName = this.functionsUtilService.validator(this.form.firstName, firstName_rules);
@@ -4731,9 +4723,9 @@ var app;
                     }
                 };
                 TeacherLocationSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 4;
-                    var EMPTY_ENUM = 5;
-                    var NUMBER_ENUM = 2;
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
+                    var NUMBER_ENUM = 4;
                     var formValid = true;
                     var country_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.countryLocation = this.functionsUtilService.validator(this.countryObject.code, country_rules);
@@ -4974,8 +4966,8 @@ var app;
                     }
                 };
                 TeacherLanguageSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 4;
-                    var EMPTY_ENUM = 5;
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
                     var formValid = true;
                     var native_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.native = this.functionsUtilService.validator(this.form.native, native_rules);
@@ -5260,8 +5252,8 @@ var app;
                     }
                 };
                 TeacherExperienceSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 4;
-                    var EMPTY_ENUM = 5;
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
                     var formValid = true;
                     var teacher_since_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.teacherSince = this.functionsUtilService.validator(this.yearObject.value, teacher_since_rules);
@@ -5446,8 +5438,8 @@ var app;
                     }
                 };
                 TeacherEducationSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 4;
-                    var EMPTY_ENUM = 5;
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
                     var formValid = true;
                     var education_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.educations = this.functionsUtilService.validator(this.form.educations, education_rules);
@@ -5652,8 +5644,8 @@ var app;
                     }
                 };
                 TeacherMethodSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 4;
-                    var EMPTY_ENUM = 5;
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
                     var formValid = true;
                     var methodology_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.methodology = this.functionsUtilService.validator(this.form.methodology, methodology_rules);
@@ -5854,9 +5846,9 @@ var app;
                     }
                 };
                 TeacherPriceSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 4;
-                    var IS_NOT_ZERO_ENUM = 3;
-                    var EMPTY_ENUM = 5;
+                    var NULL_ENUM = 2;
+                    var IS_NOT_ZERO_ENUM = 5;
+                    var EMPTY_ENUM = 3;
                     var TRUE_ENUM = 7;
                     var GLOBAL_MESSAGE = this.$filter('translate')('%create.teacher.price.validation.message.text');
                     var formValid = true;
@@ -6061,8 +6053,8 @@ var app;
                     }
                 };
                 TeacherPhotoSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 4;
-                    var EMPTY_ENUM = 5;
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
                     var DEFINED_ENUM = 6;
                     var PHOTO_MESSAGE = this.$filter('translate')('%create.teacher.photo.validation.message.text');
                     var formValid = true;

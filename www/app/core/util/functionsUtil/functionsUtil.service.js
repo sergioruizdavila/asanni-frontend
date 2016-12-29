@@ -11,10 +11,10 @@ var app;
                 (function (Validation) {
                     Validation[Validation["Email"] = 0] = "Email";
                     Validation[Validation["String"] = 1] = "String";
-                    Validation[Validation["Number"] = 2] = "Number";
-                    Validation[Validation["IsNotZero"] = 3] = "IsNotZero";
-                    Validation[Validation["Null"] = 4] = "Null";
-                    Validation[Validation["Empty"] = 5] = "Empty";
+                    Validation[Validation["Null"] = 2] = "Null";
+                    Validation[Validation["Empty"] = 3] = "Empty";
+                    Validation[Validation["Number"] = 4] = "Number";
+                    Validation[Validation["IsNotZero"] = 5] = "IsNotZero";
                     Validation[Validation["Defined"] = 6] = "Defined";
                     Validation[Validation["IsTrue"] = 7] = "IsTrue";
                 })(Validation = functionsUtil.Validation || (functionsUtil.Validation = {}));
@@ -106,63 +106,55 @@ var app;
                         var obj = { valid: true, message: 'ok' };
                         for (var i = 0; i < validations.length; i++) {
                             switch (validations[i]) {
-                                case 4: {
-                                    if (value == null) {
-                                        obj.message = NULL_MESSAGE;
-                                        obj.valid = false;
-                                    }
-                                    break;
-                                }
-                                case 5: {
-                                    if (value == '') {
-                                        obj.message = EMPTY_MESSAGE;
-                                        obj.valid = false;
-                                    }
-                                    break;
-                                }
-                                case 6: {
-                                    if (value === undefined) {
-                                        obj.message = DEFINED_MESSAGE;
-                                        obj.valid = false;
-                                    }
-                                    break;
-                                }
-                                case 1: {
-                                    if (typeof value !== 'string') {
-                                        obj.message = STRING_MESSAGE;
-                                        obj.valid = false;
-                                    }
-                                    break;
-                                }
-                                case 2: {
-                                    if (typeof value !== 'number') {
-                                        obj.message = NUMBER_MESSAGE;
-                                        obj.valid = false;
-                                    }
-                                    break;
-                                }
-                                case 3: {
-                                    if (parseInt(value) == 0) {
-                                        obj.message = IS_NOT_ZERO_MESSAGE;
-                                        obj.valid = false;
-                                    }
-                                    break;
-                                }
-                                case 0: {
+                                case 0:
                                     var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
                                     obj.valid = pattern.test(value);
                                     if (obj.valid == false) {
                                         obj.message = EMAIL_MESSAGE;
                                     }
                                     break;
-                                }
-                                case 7: {
+                                case 1:
+                                    if (typeof value !== 'string') {
+                                        obj.message = STRING_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                case 2:
+                                    if (value == null) {
+                                        obj.message = NULL_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                case 3:
+                                    if (value == '') {
+                                        obj.message = EMPTY_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                case 4:
+                                    if (typeof value !== 'number') {
+                                        obj.message = NUMBER_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                case 5:
+                                    if (parseInt(value) == 0) {
+                                        obj.message = IS_NOT_ZERO_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                case 6:
+                                    if (value === undefined) {
+                                        obj.message = DEFINED_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                case 7:
                                     if (value !== true) {
                                         obj.message = TRUE_MESSAGE;
                                         obj.valid = false;
                                     }
                                     break;
-                                }
                             }
                         }
                         return obj;

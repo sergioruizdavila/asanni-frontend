@@ -67,9 +67,9 @@ var app;
                     }
                 };
                 TeacherPriceSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 4;
-                    var IS_NOT_ZERO_ENUM = 3;
-                    var EMPTY_ENUM = 5;
+                    var NULL_ENUM = 2;
+                    var IS_NOT_ZERO_ENUM = 5;
+                    var EMPTY_ENUM = 3;
                     var TRUE_ENUM = 7;
                     var GLOBAL_MESSAGE = this.$filter('translate')('%create.teacher.price.validation.message.text');
                     var formValid = true;

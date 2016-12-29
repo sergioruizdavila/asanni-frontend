@@ -36,14 +36,14 @@ module app.core.util.functionsUtil {
     /****************************************/
 
     export const enum Validation {
-        Email,
-        String,
-        Number,
-        IsNotZero,
-        Null,
-        Empty,
-        Defined,
-        IsTrue
+        Email = 0,
+        String = 1,
+        Null = 2,
+        Empty = 3,
+        Number = 4,
+        IsNotZero = 5,
+        Defined = 6,
+        IsTrue = 7
     }
 
     /****************************************/
@@ -181,7 +181,7 @@ module app.core.util.functionsUtil {
         */
         buildMapConfig(dataSet, mapType, position): components.map.IMapConfig {
             //VARIABLES
-            let mapConfig: components.map.IMapConfig = {
+            let mapConfig = {
                 type: mapType,
                 data: {
                     position: position || {lat: 6.175434,lng: -75.583329},
@@ -289,70 +289,62 @@ module app.core.util.functionsUtil {
 
                 switch (validations[i]) {
 
-                    case Validation.Null: {
-                        if(value == null) {
-                            obj.message = NULL_MESSAGE;
-                            obj.valid = false;
-                        }
-                        break;
-                    }
-
-                    case Validation.Empty: {
-                        if(value == '') {
-                            obj.message = EMPTY_MESSAGE;
-                            obj.valid = false;
-                        }
-                        break;
-                    }
-
-                    case Validation.Defined: {
-                        if(value === undefined) {
-                            obj.message = DEFINED_MESSAGE;
-                            obj.valid = false;
-                        }
-                        break;
-                    }
-
-                    case Validation.String: {
-                        if(typeof value !== 'string') {
-                            obj.message = STRING_MESSAGE;
-                            obj.valid = false;
-                        }
-                        break;
-                    }
-
-                    case Validation.Number: {
-                        if(typeof value !== 'number') {
-                            obj.message = NUMBER_MESSAGE;
-                            obj.valid = false;
-                        }
-                        break;
-                    }
-
-                    case Validation.IsNotZero: {
-                        if(parseInt(value) == 0) {
-                            obj.message = IS_NOT_ZERO_MESSAGE;
-                            obj.valid = false;
-                        }
-                        break;
-                    }
-
-                    case Validation.Email: {
+                    case Validation.Email:
                         let pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
                         obj.valid = pattern.test(value);
                         if(obj.valid == false) {
                             obj.message = EMAIL_MESSAGE;
                         }
                         break;
-                    }
 
-                    case Validation.IsTrue: {
+                    case Validation.String:
+                        if(typeof value !== 'string') {
+                            obj.message = STRING_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+
+                    case Validation.Null:
+                        if(value == null) {
+                            obj.message = NULL_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+
+                    case Validation.Empty:
+                        if(value == '') {
+                            obj.message = EMPTY_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+
+                    case Validation.Number:
+                        if(typeof value !== 'number') {
+                            obj.message = NUMBER_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+
+                    case Validation.IsNotZero:
+                        if(parseInt(value) == 0) {
+                            obj.message = IS_NOT_ZERO_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+
+                    case Validation.Defined:
+                        if(value === undefined) {
+                            obj.message = DEFINED_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+
+                    case Validation.IsTrue:
                         if(value !== true){
                             obj.message = TRUE_MESSAGE;
                             obj.valid = false;
                         }
                         break;
-                    }
 
                 }
 

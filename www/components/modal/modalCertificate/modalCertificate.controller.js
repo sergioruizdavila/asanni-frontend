@@ -38,8 +38,8 @@ var components;
                     console.log('modalCertificate controller actived');
                 };
                 ModalCertificateController.prototype._validateForm = function () {
-                    var NULL_ENUM = 3;
-                    var EMPTY_ENUM = 4;
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
                     var EMAIL_ENUM = 0;
                     var formValid = true;
                     var name_rules = [NULL_ENUM, EMPTY_ENUM];

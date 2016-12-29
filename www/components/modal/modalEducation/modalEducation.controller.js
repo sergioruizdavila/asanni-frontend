@@ -46,8 +46,8 @@ var components;
                     console.log('modalEducation controller actived');
                 };
                 ModalEducationController.prototype._validateForm = function () {
-                    var NULL_ENUM = 3;
-                    var EMPTY_ENUM = 4;
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
                     var formValid = true;
                     var school_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.school = this.functionsUtilService.validator(this.form.school, school_rules);

@@ -67,8 +67,8 @@ var app;
                     }
                 };
                 TeacherLanguageSectionController.prototype._validateForm = function () {
-                    var NULL_ENUM = 4;
-                    var EMPTY_ENUM = 5;
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
                     var formValid = true;
                     var native_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.native = this.functionsUtilService.validator(this.form.native, native_rules);
