@@ -621,7 +621,8 @@ module components.map {
                         } else {
                             self._markers[i].setIcon(self.RED_PIN);
                         }
-
+                    } else {
+                        self._markers[i].setIcon(self.RED_PIN);
                     }
                 }
 

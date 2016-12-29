@@ -31,7 +31,6 @@ module app.pages.searchPage {
         mapConfig: components.map.IMapConfig;
         data: Array<app.models.student.Student>;
         _hoverDetail: Array<boolean>;
-        _containerSelected: Array<boolean>;
         type: string;
         // --------------------------------
 
@@ -75,9 +74,6 @@ module app.pages.searchPage {
 
             //Init hoverDetail array
             this._hoverDetail = [];
-
-            //Init container selected
-            this._containerSelected = [];
 
             this.error = {
                 message: ''
@@ -315,9 +311,10 @@ module app.pages.searchPage {
             */
             this.$scope.$on('SelectContainer', function(event, args) {
                 //VARIABLES
-                let containerId = args;
-                document.querySelector('#container-' + containerId).scrollIntoView({ behavior: 'smooth' });
-                self._containerSelected[containerId] = true;
+                let containerId = '#container-' + args;
+                let containerClasses = document.querySelector(containerId).classList;
+                containerClasses.add('search-result__teacher__block--selected');
+                document.querySelector(containerId).scrollIntoView({ behavior: 'smooth' });
             });
         }
 

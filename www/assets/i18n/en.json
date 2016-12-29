@@ -10,6 +10,7 @@
     "%global.add.button.text": "+ Add",
     "%global.add_more.button.text": "+ Add More",
     "%global.upload_file.button.text": "Upload a file from your computer",
+    "%global.more.label.text": "+ More",
 
     "%global.validation.null.message.text": "Required",
     "%global.validation.empty.message.text": "Required",

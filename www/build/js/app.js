@@ -37,7 +37,7 @@
             prefix: prefix,
             suffix: suffix
         });
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.preferredLanguage('es');
     }
 })();
 //# sourceMappingURL=app.module.js.map
@@ -58,7 +58,7 @@
 (function () {
     'use strict';
     var dataConfig = {
-        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
+        baseUrl: 'http://127.0.0.1:8000/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -2609,6 +2609,9 @@ var components;
                                 self._markers[i].setIcon(self.RED_PIN);
                             }
                         }
+                        else {
+                            self._markers[i].setIcon(self.RED_PIN);
+                        }
                     }
                 });
                 this.$scope.$on('CodeAddress', function (event, args) {
@@ -3495,7 +3498,6 @@ var app;
                     this.data = [];
                     this.type = null;
                     this._hoverDetail = [];
-                    this._containerSelected = [];
                     this.error = {
                         message: ''
                     };
@@ -3569,9 +3571,10 @@ var app;
                         });
                     });
                     this.$scope.$on('SelectContainer', function (event, args) {
-                        var containerId = args;
-                        document.querySelector('#container-' + containerId).scrollIntoView({ behavior: 'smooth' });
-                        self._containerSelected[containerId] = true;
+                        var containerId = '#container-' + args;
+                        var containerClasses = document.querySelector(containerId).classList;
+                        containerClasses.add('search-result__teacher__block--selected');
+                        document.querySelector(containerId).scrollIntoView({ behavior: 'smooth' });
                     });
                 };
                 return SearchPageController;

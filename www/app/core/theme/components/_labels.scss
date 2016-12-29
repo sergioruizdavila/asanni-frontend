@@ -105,6 +105,18 @@
             color: $label-box-secondary-font-color;
         }
 
+        &--alert {
+            background: 0 0;
+            background-color: $label-box-alert-background;
+            color: $label-box-alert-font-color;
+        }
+
+        &--alert-secondary {
+            background: 0 0;
+            border: $label-box-alert-secondary-border;
+            color: $label-box-alert-secondary-font-color;
+        }
+
         ///OPACITY BOX
         &--opacity {
             cursor: pointer;

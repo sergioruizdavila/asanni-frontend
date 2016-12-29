@@ -20,7 +20,6 @@ var app;
                     this.data = [];
                     this.type = null;
                     this._hoverDetail = [];
-                    this._containerSelected = [];
                     this.error = {
                         message: ''
                     };
@@ -94,9 +93,10 @@ var app;
                         });
                     });
                     this.$scope.$on('SelectContainer', function (event, args) {
-                        var containerId = args;
-                        document.querySelector('#container-' + containerId).scrollIntoView({ behavior: 'smooth' });
-                        self._containerSelected[containerId] = true;
+                        var containerId = '#container-' + args;
+                        var containerClasses = document.querySelector(containerId).classList;
+                        containerClasses.add('search-result__teacher__block--selected');
+                        document.querySelector(containerId).scrollIntoView({ behavior: 'smooth' });
                     });
                 };
                 return SearchPageController;

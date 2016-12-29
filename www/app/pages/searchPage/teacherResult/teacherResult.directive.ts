@@ -55,5 +55,5 @@ module app.pages.searchPage {
     angular
         .module('mainApp.pages.searchPage')
         .directive(MaTeacherResult.directiveId, MaTeacherResult.instance);
-        
+
 }

@@ -278,6 +278,9 @@ var components;
                                 self._markers[i].setIcon(self.RED_PIN);
                             }
                         }
+                        else {
+                            self._markers[i].setIcon(self.RED_PIN);
+                        }
                     }
                 });
                 this.$scope.$on('CodeAddress', function (event, args) {

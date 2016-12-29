@@ -500,6 +500,12 @@ $label-box-primary-background: map-get($main-palette, primary);
 $label-box-secondary-font-color: map-get($main-palette, primary);
 $label-box-secondary-border: 2px solid map-get($main-palette, primary);
 
+$label-box-alert-font-color: $white;
+$label-box-alert-background: map-get($main-palette, alert);
+
+$label-box-alert-secondary-font-color: map-get($main-palette, alert);
+$label-box-alert-secondary-border: 2px solid map-get($main-palette, alert);
+
 $labelsBox-dashed-border: 2px dashed $light-gray;
 $labelsBox-dashed-invalid-border: 2px dashed #ffd1c4;
 $labelsBox-dashed-height: 100px;
