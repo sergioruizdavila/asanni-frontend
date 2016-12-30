@@ -97,15 +97,13 @@
 //TODO: Pasar a variables
 .ma-icon-container {
     position: relative;
+    text-align: center;
 
     /// WRAP COLOR
     &--primary {
         background-color: #00b592;
         color: $white;
-        border: 0 hidden transparent;
-        position: absolute;
-        right: 13px;
-        bottom: 10px;
+        border: 2px solid #00b592;
     }
 
     &--secondary {
@@ -116,7 +114,7 @@
 
     &--alert {
         background-color: map-get($main-palette, alert);
-        border: 0 hidden transparent;
+        border: 2px solid map-get($main-palette, alert);
         color: $white;
     }
 
@@ -128,7 +126,7 @@
 
     &--white {
         background-color: $white;
-        border: 0 hidden transparent;
+        border: 2px solid $white;
         color: map-get($main-palette, primary);
     }
 

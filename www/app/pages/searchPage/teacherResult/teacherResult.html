@@ -9,7 +9,8 @@
             ma-box space-top-5"
      ng-mouseover="vm._hoverEvent(item.id, true)"
      ng-mouseleave="vm._hoverEvent(item.id, false)"
-     ng-class="{ 'search-result__teacher__block--selected': vm._hoverDetail[item.id] }">
+     ng-class="{ 'search-result__teacher__block--selected': vm._hoverDetail[item.id] }"
+     ng-click="vm.goToDetails(item.id)">
 
 
     <!------------------- START: TEACHER INFO BLOCK (MAIN FACE) --------------->

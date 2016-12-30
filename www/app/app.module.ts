@@ -25,6 +25,7 @@
             'mainApp.pages.studentLandingPage',
             'mainApp.pages.searchPage',
             'mainApp.pages.createTeacherPage',
+            'mainApp.pages.teacherProfilePage',
             'mainApp.pages.userProfilePage',
             'mainApp.pages.userEditProfilePage',
             'mainApp.pages.userEditAgendaPage',

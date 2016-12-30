@@ -29,10 +29,20 @@ var app;
                     };
                 }
                 filters.GetTypeOfTeacherFilter = GetTypeOfTeacherFilter;
+                AgeFilter.$inject = ['$filter', 'mainApp.core.util.FunctionsUtilService'];
+                function AgeFilter($filter, functionsUtil) {
+                    return function (value) {
+                        var age = functionsUtil.ageFormat(value);
+                        var translated = $filter('translate')('%global.age.text');
+                        return age + ' ' + translated;
+                    };
+                }
+                filters.AgeFilter = AgeFilter;
                 angular
                     .module('mainApp.core.util')
                     .filter('getI18nFilter', GetI18nFilter)
-                    .filter('getTypeOfTeacherFilter', GetTypeOfTeacherFilter);
+                    .filter('getTypeOfTeacherFilter', GetTypeOfTeacherFilter)
+                    .filter('ageFilter', AgeFilter);
             })(filters = util.filters || (util.filters = {}));
         })(util = core.util || (core.util = {}));
     })(core = app.core || (app.core = {}));

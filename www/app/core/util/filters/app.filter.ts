@@ -17,7 +17,7 @@ module app.core.util.filters {
     * @description - return value based on code from i18n json
     * @use - {{ 'CO' | getI18nFilter:'country' }}
     * @function
-    * @return {string} object's key from json i18n (e.g. '%country.CO')
+    * @return {string} country translated (e.g. 'Estados Unidos')
     */
     export function GetI18nFilter($filter: angular.IFilterService,
                                   getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,) {
@@ -58,10 +58,35 @@ module app.core.util.filters {
     }
 
 
+
+    /*-- INJECT DEPENDENCIES --*/
+    AgeFilter.$inject = ['$filter', 'mainApp.core.util.FunctionsUtilService'];
+
+    /**
+    * AgeFilter
+    * @description - return age translated (e.g. '35 años')
+    * @use - {{ '1982' | ageFilter }}
+    * @function
+    * @return {string} user years old
+    */
+    export function AgeFilter(
+        $filter: angular.IFilterService,
+        functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService) {
+        return function (value: string): string {
+
+            let age = functionsUtil.ageFormat(value);
+            let translated = $filter('translate')('%global.age.text');
+
+            return age + ' ' + translated;
+        }
+    }
+    
+
     /*-- MODULE DEFINITION --*/
     angular
         .module('mainApp.core.util')
         .filter('getI18nFilter', GetI18nFilter)
-        .filter('getTypeOfTeacherFilter', GetTypeOfTeacherFilter);
+        .filter('getTypeOfTeacherFilter', GetTypeOfTeacherFilter)
+        .filter('ageFilter', AgeFilter);
 
 }

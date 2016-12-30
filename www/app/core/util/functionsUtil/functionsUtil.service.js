@@ -19,11 +19,12 @@ var app;
                     Validation[Validation["IsTrue"] = 7] = "IsTrue";
                 })(Validation = functionsUtil.Validation || (functionsUtil.Validation = {}));
                 var FunctionsUtilService = (function () {
-                    function FunctionsUtilService($filter) {
+                    function FunctionsUtilService($filter, dataConfig) {
                         this.$filter = $filter;
+                        this.dataConfig = dataConfig;
                         console.log('functionsUtil service called');
                     }
-                    FunctionsUtilService.prototype.generateGuid = function () {
+                    FunctionsUtilService.generateGuid = function () {
                         var fmt = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
                         var guid = fmt.replace(/[xy]/g, function (c) {
                             var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
@@ -34,6 +35,12 @@ var app;
                     FunctionsUtilService.prototype.dateFormat = function (date) {
                         var dateFormatted = moment(date).format('YYYY-MM-DD');
                         return dateFormatted;
+                    };
+                    FunctionsUtilService.prototype.ageFormat = function (year) {
+                        var currentYear = parseInt(this.dataConfig.currentYear);
+                        var birthYear = parseInt(year);
+                        var age = currentYear - birthYear;
+                        return age.toString();
                     };
                     FunctionsUtilService.prototype.joinDate = function (day, month, year) {
                         var newDate = year + '-' + month + '-' + day;
@@ -173,7 +180,7 @@ var app;
                     return FunctionsUtilService;
                 }());
                 FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
-                FunctionsUtilService.$inject = ['$filter'];
+                FunctionsUtilService.$inject = ['$filter', 'dataConfig'];
                 functionsUtil.FunctionsUtilService = FunctionsUtilService;
                 angular
                     .module('mainApp.core.util', [])

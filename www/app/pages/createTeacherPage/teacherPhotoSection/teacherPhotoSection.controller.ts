@@ -259,7 +259,7 @@ module app.pages.createTeacherPage {
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
             const DEFINED_ENUM = app.core.util.functionsUtil.Validation.Defined;
             const PHOTO_MESSAGE = this.$filter('translate')('%create.teacher.photo.validation.message.text');
-            
+
             /***************************************************/
             //VARIABLES
             let formValid = true;
@@ -331,7 +331,7 @@ module app.pages.createTeacherPage {
             //VARIABLES
             let self = this;
             //New file name
-            let newName = this.functionsUtilService.generateGuid() + '.jpeg';
+            let newName = app.core.util.functionsUtil.FunctionsUtilService.generateGuid() + '.jpeg';
             // Image Options
             let options= {
                 width: 250,

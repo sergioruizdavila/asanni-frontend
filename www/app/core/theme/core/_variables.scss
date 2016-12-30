@@ -500,6 +500,9 @@ $label-box-primary-background: map-get($main-palette, primary);
 $label-box-secondary-font-color: map-get($main-palette, primary);
 $label-box-secondary-border: 2px solid map-get($main-palette, primary);
 
+$label-box-primary-altern-font-color: $white;
+$label-box-primary-altern-background: map-get($main-palette, secondary);
+
 $label-box-alert-font-color: $white;
 $label-box-alert-background: map-get($main-palette, alert);
 

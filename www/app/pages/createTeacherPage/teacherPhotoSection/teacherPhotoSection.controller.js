@@ -137,7 +137,7 @@ var app;
                 };
                 TeacherPhotoSectionController.prototype._resizeImage = function () {
                     var self = this;
-                    var newName = this.functionsUtilService.generateGuid() + '.jpeg';
+                    var newName = app.core.util.functionsUtil.FunctionsUtilService.generateGuid() + '.jpeg';
                     var options = {
                         width: 250,
                         height: 250,

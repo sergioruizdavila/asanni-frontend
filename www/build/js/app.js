@@ -16,6 +16,7 @@
         'mainApp.pages.studentLandingPage',
         'mainApp.pages.searchPage',
         'mainApp.pages.createTeacherPage',
+        'mainApp.pages.teacherProfilePage',
         'mainApp.pages.userProfilePage',
         'mainApp.pages.userEditProfilePage',
         'mainApp.pages.userEditAgendaPage',
@@ -58,7 +59,8 @@
 (function () {
     'use strict';
     var dataConfig = {
-        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
+        currentYear: '2017',
+        baseUrl: 'http://127.0.0.1:8000/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -163,11 +165,12 @@ var app;
                     Validation[Validation["IsTrue"] = 7] = "IsTrue";
                 })(Validation = functionsUtil.Validation || (functionsUtil.Validation = {}));
                 var FunctionsUtilService = (function () {
-                    function FunctionsUtilService($filter) {
+                    function FunctionsUtilService($filter, dataConfig) {
                         this.$filter = $filter;
+                        this.dataConfig = dataConfig;
                         console.log('functionsUtil service called');
                     }
-                    FunctionsUtilService.prototype.generateGuid = function () {
+                    FunctionsUtilService.generateGuid = function () {
                         var fmt = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
                         var guid = fmt.replace(/[xy]/g, function (c) {
                             var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
@@ -178,6 +181,12 @@ var app;
                     FunctionsUtilService.prototype.dateFormat = function (date) {
                         var dateFormatted = moment(date).format('YYYY-MM-DD');
                         return dateFormatted;
+                    };
+                    FunctionsUtilService.prototype.ageFormat = function (year) {
+                        var currentYear = parseInt(this.dataConfig.currentYear);
+                        var birthYear = parseInt(year);
+                        var age = currentYear - birthYear;
+                        return age.toString();
                     };
                     FunctionsUtilService.prototype.joinDate = function (day, month, year) {
                         var newDate = year + '-' + month + '-' + day;
@@ -317,7 +326,7 @@ var app;
                     return FunctionsUtilService;
                 }());
                 FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
-                FunctionsUtilService.$inject = ['$filter'];
+                FunctionsUtilService.$inject = ['$filter', 'dataConfig'];
                 functionsUtil.FunctionsUtilService = FunctionsUtilService;
                 angular
                     .module('mainApp.core.util', [])
@@ -513,10 +522,20 @@ var app;
                     };
                 }
                 filters.GetTypeOfTeacherFilter = GetTypeOfTeacherFilter;
+                AgeFilter.$inject = ['$filter', 'mainApp.core.util.FunctionsUtilService'];
+                function AgeFilter($filter, functionsUtil) {
+                    return function (value) {
+                        var age = functionsUtil.ageFormat(value);
+                        var translated = $filter('translate')('%global.age.text');
+                        return age + ' ' + translated;
+                    };
+                }
+                filters.AgeFilter = AgeFilter;
                 angular
                     .module('mainApp.core.util')
                     .filter('getI18nFilter', GetI18nFilter)
-                    .filter('getTypeOfTeacherFilter', GetTypeOfTeacherFilter);
+                    .filter('getTypeOfTeacherFilter', GetTypeOfTeacherFilter)
+                    .filter('ageFilter', AgeFilter);
             })(filters = util.filters || (util.filters = {}));
         })(util = core.util || (core.util = {}));
     })(core = app.core || (app.core = {}));
@@ -1790,6 +1809,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('Certificate Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.active = obj.active || false;
                     this.otherCategory = obj.otherCategory || '';
                     this.category = obj.category || [];
@@ -1803,6 +1823,19 @@ var app;
                             throw 'Please supply experience id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Immersion.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply experience uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -1890,6 +1923,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('Price of Teacher Class Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.privateClass = new TypeOfPrice(obj.privateClass);
                     this.groupClass = new TypeOfPrice(obj.groupClass);
                 }
@@ -1902,6 +1936,19 @@ var app;
                             throw 'Please supply experience id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Price.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply experience uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -1940,6 +1987,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('TypeOfPrice Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.active = obj.active || false;
                     this.hourPrice = obj.hourPrice || 0;
                 }
@@ -1952,6 +2000,19 @@ var app;
                             throw 'Please supply experience id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(TypeOfPrice.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply experience uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -3512,6 +3573,10 @@ var app;
                         self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
                         self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                     });
+                };
+                SearchPageController.prototype.goToDetails = function (containerId) {
+                    var url = this.$state.href('page.teacherProfilePage', { id: containerId });
+                    window.open(url, '_blank');
                 };
                 SearchPageController.prototype._getResultTemplate = function (type) {
                     var STUDENT_TYPE = 'student';
@@ -6094,7 +6159,7 @@ var app;
                 };
                 TeacherPhotoSectionController.prototype._resizeImage = function () {
                     var self = this;
-                    var newName = this.functionsUtilService.generateGuid() + '.jpeg';
+                    var newName = app.core.util.functionsUtil.FunctionsUtilService.generateGuid() + '.jpeg';
                     var options = {
                         width: 250,
                         height: 250,
@@ -6205,3 +6270,91 @@ var app;
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
 //# sourceMappingURL=teacherFinishSection.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.teacherProfilePage', [])
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.teacherProfilePage', {
+            url: '/teachers/show/:id',
+            views: {
+                'container': {
+                    templateUrl: 'app/pages/teacherProfilePage/teacherProfilePage.html',
+                    controller: 'mainApp.pages.teacherProfilePage.TeacherProfilePageController',
+                    controllerAs: 'vm'
+                }
+            },
+            parent: 'page',
+            params: {
+                id: null
+            },
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = true;
+                    $rootScope.activeFooter = true;
+                }]
+        });
+    }
+})();
+//# sourceMappingURL=teacherProfilePage.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var teacherProfilePage;
+        (function (teacherProfilePage) {
+            var TeacherProfilePageController = (function () {
+                function TeacherProfilePageController(TeacherService, $state, $stateParams, $filter) {
+                    this.TeacherService = TeacherService;
+                    this.$state = $state;
+                    this.$stateParams = $stateParams;
+                    this.$filter = $filter;
+                    this._init();
+                }
+                TeacherProfilePageController.prototype._init = function () {
+                    this.data = null;
+                    this.mapConfig = {
+                        type: 'location-map',
+                        data: null
+                    };
+                    this.activate();
+                };
+                TeacherProfilePageController.prototype.activate = function () {
+                    var self = this;
+                    console.log('teacherProfilePage controller actived');
+                    this.TeacherService.getTeacherById(this.$stateParams.id).then(function (response) {
+                        self.data = new app.models.teacher.Teacher(response);
+                    });
+                };
+                TeacherProfilePageController.prototype.goToConfirm = function () {
+                };
+                TeacherProfilePageController.prototype._assignNative = function (language) {
+                    var native = this.data.Languages.Native;
+                    var isNativeOfThisLanguage = false;
+                    for (var i = 0; i < native.length; i++) {
+                        if (language === native[i]) {
+                            isNativeOfThisLanguage = true;
+                            break;
+                        }
+                    }
+                    return isNativeOfThisLanguage;
+                };
+                return TeacherProfilePageController;
+            }());
+            TeacherProfilePageController.controllerId = 'mainApp.pages.teacherProfilePage.TeacherProfilePageController';
+            TeacherProfilePageController.$inject = [
+                'mainApp.models.teacher.TeacherService',
+                '$state',
+                '$stateParams',
+                '$filter',
+                '$scope'
+            ];
+            teacherProfilePage.TeacherProfilePageController = TeacherProfilePageController;
+            angular
+                .module('mainApp.pages.teacherProfilePage')
+                .controller(TeacherProfilePageController.controllerId, TeacherProfilePageController);
+        })(teacherProfilePage = pages.teacherProfilePage || (pages.teacherProfilePage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=teacherProfilePage.controller.js.map

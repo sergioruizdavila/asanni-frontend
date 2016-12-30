@@ -11,6 +11,7 @@
     "%global.add_more.button.text": "+ Agregar más",
     "%global.upload_file.button.text": "Cargar un archivo desde tu computadora",
     "%global.more.label.text": "+ Más",
+    "%global.age.text": "años",
 
     "%global.validation.null.message.text": "Valor requerido",
     "%global.validation.empty.message.text": "Valor requerido",
