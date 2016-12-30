@@ -52,6 +52,9 @@ var components;
                     case 'drag-maker-map':
                         this._dragMarkerMapBuilder();
                         break;
+                    case 'location-circle-map':
+                        this._locationCircleMapBuilder();
+                        break;
                 }
                 this.activate();
             };
@@ -63,6 +66,7 @@ var components;
                 var self = this;
                 var zoom = 16;
                 var center = this.mapConfig.data.position;
+                this._draggable = false;
                 this.$scope.options = {
                     center: new google.maps.LatLng(center.lat, center.lng),
                     zoom: zoom,
@@ -108,6 +112,48 @@ var components;
                             var marker = self.mapConfig.data.markers[i];
                             self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.POSITION_PIN);
                         }
+                    });
+                }
+            };
+            MapController.prototype._locationCircleMapBuilder = function () {
+                var self = this;
+                var zoom = 16;
+                var center = this.mapConfig.data.position;
+                var circle_strokeColor = '#ff5a5f';
+                var circle_strokeOpacity = 0.8;
+                var circle_strokeWeight = 2;
+                var circle_fillColor = '#ff5a5f';
+                var circle_fillOpacity = 0.35;
+                var circle_center = {
+                    lat: 6.1739743,
+                    lng: -75.5822414
+                };
+                var circle_radius = 140;
+                this._draggable = false;
+                this.$scope.options = {
+                    center: new google.maps.LatLng(center.lat, center.lng),
+                    zoom: zoom,
+                    mapTypeControl: false,
+                    zoomControl: true,
+                    streetViewControl: false,
+                    scrollwheel: false,
+                    zoomControlOptions: {
+                        position: google.maps.ControlPosition.TOP_RIGHT
+                    }
+                };
+                if (this._map === void 0) {
+                    this.$timeout(function () {
+                        self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
+                        var circle = new google.maps.Circle({
+                            strokeColor: circle_strokeColor,
+                            strokeOpacity: circle_strokeOpacity,
+                            strokeWeight: circle_strokeWeight,
+                            fillColor: circle_fillColor,
+                            fillOpacity: circle_fillOpacity,
+                            map: self._map,
+                            center: new google.maps.LatLng(center.lat, center.lng),
+                            radius: circle_radius
+                        });
                     });
                 }
             };

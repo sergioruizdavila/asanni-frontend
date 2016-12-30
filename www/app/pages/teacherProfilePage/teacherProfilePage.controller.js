@@ -5,8 +5,9 @@ var app;
         var teacherProfilePage;
         (function (teacherProfilePage) {
             var TeacherProfilePageController = (function () {
-                function TeacherProfilePageController(TeacherService, $state, $stateParams, $filter) {
+                function TeacherProfilePageController(TeacherService, functionsUtilService, $state, $stateParams, $filter) {
                     this.TeacherService = TeacherService;
+                    this.functionsUtilService = functionsUtilService;
                     this.$state = $state;
                     this.$stateParams = $stateParams;
                     this.$filter = $filter;
@@ -14,10 +15,6 @@ var app;
                 }
                 TeacherProfilePageController.prototype._init = function () {
                     this.data = null;
-                    this.mapConfig = {
-                        type: 'location-map',
-                        data: null
-                    };
                     this.activate();
                 };
                 TeacherProfilePageController.prototype.activate = function () {
@@ -25,6 +22,17 @@ var app;
                     console.log('teacherProfilePage controller actived');
                     this.TeacherService.getTeacherById(this.$stateParams.id).then(function (response) {
                         self.data = new app.models.teacher.Teacher(response);
+                        self.mapConfig = self.functionsUtilService.buildMapConfig([
+                            {
+                                id: self.data.Location.Position.Id,
+                                location: {
+                                    position: {
+                                        lat: parseFloat(self.data.Location.Position.Lat),
+                                        lng: parseFloat(self.data.Location.Position.Lng)
+                                    }
+                                }
+                            }
+                        ], 'location-circle-map', { lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng) });
                     });
                 };
                 TeacherProfilePageController.prototype.goToConfirm = function () {
@@ -45,10 +53,10 @@ var app;
             TeacherProfilePageController.controllerId = 'mainApp.pages.teacherProfilePage.TeacherProfilePageController';
             TeacherProfilePageController.$inject = [
                 'mainApp.models.teacher.TeacherService',
+                'mainApp.core.util.FunctionsUtilService',
                 '$state',
                 '$stateParams',
-                '$filter',
-                '$scope'
+                '$filter'
             ];
             teacherProfilePage.TeacherProfilePageController = TeacherProfilePageController;
             angular

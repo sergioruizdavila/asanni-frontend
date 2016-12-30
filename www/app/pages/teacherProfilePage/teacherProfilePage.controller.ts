@@ -38,16 +38,17 @@ module app.pages.teacherProfilePage {
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = [
             'mainApp.models.teacher.TeacherService',
+            'mainApp.core.util.FunctionsUtilService',
             '$state',
             '$stateParams',
-            '$filter',
-            '$scope'];
+            '$filter'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
             private TeacherService: app.models.teacher.ITeacherService,
+            private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
             private $state: ng.ui.IStateService,
             private $stateParams: ITeacherParams,
             private $filter: angular.IFilterService) {
@@ -62,12 +63,6 @@ module app.pages.teacherProfilePage {
             //Init teacher data
             this.data = null;
 
-            // init map config
-            this.mapConfig = {
-                type: 'location-map',
-                data: null
-            };
-
             this.activate();
         }
 
@@ -81,6 +76,21 @@ module app.pages.teacherProfilePage {
             this.TeacherService.getTeacherById(this.$stateParams.id).then(
                 function(response) {
                     self.data = new app.models.teacher.Teacher(response);
+                    self.mapConfig = self.functionsUtilService.buildMapConfig(
+                        [
+                            {
+                                id: self.data.Location.Position.Id,
+                                location: {
+                                    position: {
+                                        lat: parseFloat(self.data.Location.Position.Lat),
+                                        lng: parseFloat(self.data.Location.Position.Lng)
+                                    }
+                                }
+                            }
+                        ],
+                        'location-circle-map',
+                        {lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng)}
+                    );
                 }
             );
         }

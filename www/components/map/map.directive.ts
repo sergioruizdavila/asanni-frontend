@@ -178,6 +178,9 @@ module components.map {
                 case 'drag-maker-map':
                     this._dragMarkerMapBuilder();
                 break;
+                case 'location-circle-map':
+                    this._locationCircleMapBuilder();
+                break;
             }
 
             this.activate();
@@ -209,6 +212,7 @@ module components.map {
             let self = this;
             let zoom = 16;
             let center = this.mapConfig.data.position;
+            this._draggable = false;
             /********************/
 
             //Map options
@@ -304,6 +308,75 @@ module components.map {
             }
 
         }
+
+
+
+        /**
+        * _locationCircleMapBuilder
+        * @description - this method builds the location circle Map
+        * @use - this._locationCircleMapBuilder();
+        * @function
+        * @return {void}
+        */
+        _locationCircleMapBuilder(): void {
+            //VARIABLES
+            let self = this;
+            let zoom = 16;
+            let center = this.mapConfig.data.position;
+            let circle_strokeColor = '#ff5a5f';
+           let circle_strokeOpacity = 0.8;
+           let circle_strokeWeight = 2;
+           let circle_fillColor = '#ff5a5f';
+           let circle_fillOpacity = 0.35;
+           let circle_center = {
+               lat: 6.1739743,
+               lng: -75.5822414
+           };
+           let circle_radius = 140;
+            this._draggable = false;
+            /********************/
+
+            //Map options
+            this.$scope.options = {
+                center: new google.maps.LatLng(center.lat, center.lng),
+                zoom: zoom,
+                mapTypeControl: false,
+                zoomControl: true,
+                streetViewControl: false,
+                scrollwheel: false,
+                zoomControlOptions: {
+                    position: google.maps.ControlPosition.TOP_RIGHT
+                }
+            };
+
+            // Init map
+            if (this._map === void 0) {
+
+                this.$timeout(function() {
+
+                    //Init Map
+                    self._map = new google.maps.Map(
+                        document.getElementById(self.mapId),
+                        self.$scope.options
+                    );
+
+                    //Init Circle
+                    let circle = new google.maps.Circle ({
+                        strokeColor: circle_strokeColor,
+                        strokeOpacity: circle_strokeOpacity,
+                        strokeWeight: circle_strokeWeight,
+                        fillColor: circle_fillColor,
+                        fillOpacity: circle_fillOpacity,
+                        map: self._map,
+                        center: new google.maps.LatLng(center.lat, center.lng),
+                        radius: circle_radius
+                    });
+
+                });
+            }
+
+        }
+
 
 
         /**

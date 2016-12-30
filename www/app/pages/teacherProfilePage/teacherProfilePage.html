@@ -114,7 +114,8 @@
                                                 {{vm.data.birthDate | ageFilter}}
                                             </p>
                                         </div>
-                                        <div class="basic-info-box__orientation">
+                                        <div class="basic-info-box__orientation
+                                                    text-center">
                                             <p class="ma-p margin-reset">
                                                 {{ vm.data.sex | getI18nFilter:'sex' }}
                                             </p>
@@ -189,10 +190,10 @@
             <!--                     END: BASIC INFO BLOCK                   -->
 
 
-            <!---------------- START: FLUENT AND LEARNING BLOCK --------------->
+            <!------------------ START: TEACH AND SPEAK BLOCK ----------------->
             <div id="teacherProfile-languages-block" class="row space-3">
 
-                <!-- Fluen in -->
+                <!-- Teacher of -->
                 <div id="teacherProfile-languages-teach"
                      class="col-xs-12 col-sm-6 col-md-6">
 
@@ -215,7 +216,7 @@
 
                 </div>
 
-                <!-- Learning  -->
+                <!-- Also Speak  -->
                 <div id="teacherProfile-languages-speak"
                      class="col-xs-12 col-sm-6 col-md-6">
 
@@ -235,7 +236,7 @@
                 </div>
 
             </div>
-            <!--               END: FLUENT AND LEARNING BLOCK                -->
+            <!--                 END: TEACH AND SPEAK BLOCK                  -->
 
 
             <div class="ma-separator-dashed-image space-6 space-top-6"></div>
@@ -772,7 +773,7 @@
                                     ma-box__content--map
                                     ma-box__content--padding-reset">
                             <div class="location-map">
-                                <ma-map map-config="vm.mapConfig"></ma-map>
+                                <ma-map ng-if="vm.mapConfig" map-config="vm.mapConfig"></ma-map>
                             </div>
                         </div>
                     </div>
@@ -797,52 +798,79 @@
                 <div class="col-md-12">
 
                     <div class="ma-box">
-                        <h4 class="ma-box__title margin-reset">Exchange Language</h4>
+                        <h4 class="ma-box__title margin-reset" translate>
+                            %search.container.teacher.price.title.text
+                        </h4>
                         <div class="ma-box__content">
                             <form class="meeting-box">
 
-                                <div class="row space-2">
-                                    <div class="col-md-12">
-                                        <!-- DateTimePicker Dropdown -->
-                                        <label for="meeting-date-input">
-                                            Meeting Date
-                                        </label>
-                                        <div class="dropdown">
-
-                                            <div id="dateBlock"
-                                               class="dropdown-toggle my-toggle-select"
-                                               role="button" data-toggle="dropdown">
-
-                                               <div class="input-append">
-                                                   <input id="meeting-date-input"
-                                                          type="text"
-                                                          placeholder="dd/mm/yyyy"
-                                                          class="ma-input ma-input--default"
-                                                          data-ng-model="data.date">
-                                               </div>
-                                           </div>
-
-                                            <ul class="dropdown-menu dropdown-menu-right"
-                                                role="menu"
-                                                aria-labelledby="dateBlock">
-                                                <datetimepicker class="ma-datetimepicker"
-                                                                data-ng-model="data.date"
-                                                                data-datetimepicker-config="vm.$scope.datetimepickerConfig"
-                                                                data-on-set-time="vm.onTimeSet(newDate, oldDate)"
-                                                                data-before-render="vm.beforeRender($view, $dates, $leftDate, $upDate, $rightDate)">
-                                                </datetimepicker>
-                                            </ul>
-
+                                <!------------------- START: CLASSES PRICE INFO BLOCK ----------------->
+                                <div class="search-result__teacher__block__price
+                                            row text-center space-1">
+                                    <div class="col-xs-6 col-md-6">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-12">
+                                                <p class="ma-p ma-p--default margin-reset"
+                                                   ng-class="{'ma-p--disable-line-through': !vm.data.price.privateClass.active}"
+                                                   translate>
+                                                    %search.container.teacher.price.private.title.text
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-md-6">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-12">
+                                                <p class="ma-p ma-p--info ma-p--default margin-reset"
+                                                   ng-if="vm.data.price.privateClass.active">
+                                                    ${{vm.data.price.privateClass.hourPrice}} / hr
+                                                </p>
+                                                <i class="material-icons md-24"
+                                                   ng-if="!vm.data.price.privateClass.active">
+                                                    event_busy
+                                                </i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
+                                <div class="search-result__teacher__block__price
+                                            row text-center space-4">
+                                    <div class="col-xs-6 col-md-6">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-12">
+                                                <p class="ma-p ma-p--default
+                                                          margin-reset"
+                                                   ng-class="{'ma-p--disable-line-through': !vm.data.price.groupClass.active}"
+                                                   translate>
+                                                    %search.container.teacher.price.group.title.text
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-md-6">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-12">
+                                                <p class="ma-p ma-p--info ma-p--default margin-reset"
+                                                   ng-if="vm.data.price.groupClass.active">
+                                                    ${{vm.data.price.groupClass.hourPrice}} / hr
+                                                </p>
+                                                <i class="material-icons md-24"
+                                                   ng-if="!vm.data.price.groupClass.active">
+                                                    event_busy
+                                                </i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--                   END: CLASSES PRICE INFO BLOCK                 -->
+
                                 <div class="row">
                                     <div class="col-md-12">
                                         <button class="ma-btn ma-btn--primary
-                                                  ma-btn--medium ma-btn--block"
+                                                  ma-btn--large ma-btn--block"
                                                   ng-click="vm.goToConfirm()">
-                                            Invite to exchange
+                                            Book a class
                                         </button>
                                     </div>
                                 </div>
@@ -852,7 +880,7 @@
                                 <div class="row">
                                     <div class="col-md-12 text-center">
                                         <p class="ma-p ma-p--small margin-reset">
-                                            <strong>70</strong> successful meetings
+                                            <strong>70</strong> successful classes
                                         </p>
                                     </div>
                                 </div>
