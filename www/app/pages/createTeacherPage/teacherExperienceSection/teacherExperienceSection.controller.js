@@ -30,7 +30,8 @@ var app;
                         type: 'H',
                         experiences: []
                     };
-                    this.listYears = this.functionsUtilService.buildNumberSelectList(1957, 2017);
+                    var currentYear = parseInt(this.dataConfig.currentYear);
+                    this.listYears = this.functionsUtilService.buildNumberSelectList(1957, currentYear);
                     this.yearObject = { value: '' };
                     this._hobbyChecked = { type: 'H', checked: true };
                     this._professionalChecked = { type: 'P', checked: false };
