@@ -105,6 +105,12 @@
             color: $label-box-secondary-font-color;
         }
 
+        &--primary-altern {
+            background: 0 0;
+            background-color: $label-box-primary-altern-background;
+            color: $label-box-primary-altern-font-color;
+        }
+
         &--alert {
             background: 0 0;
             background-color: $label-box-alert-background;

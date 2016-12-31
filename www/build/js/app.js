@@ -16,6 +16,7 @@
         'mainApp.pages.studentLandingPage',
         'mainApp.pages.searchPage',
         'mainApp.pages.createTeacherPage',
+        'mainApp.pages.teacherProfilePage',
         'mainApp.pages.userProfilePage',
         'mainApp.pages.userEditProfilePage',
         'mainApp.pages.userEditAgendaPage',
@@ -58,6 +59,7 @@
 (function () {
     'use strict';
     var dataConfig = {
+        currentYear: '2017',
         baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
@@ -163,11 +165,12 @@ var app;
                     Validation[Validation["IsTrue"] = 7] = "IsTrue";
                 })(Validation = functionsUtil.Validation || (functionsUtil.Validation = {}));
                 var FunctionsUtilService = (function () {
-                    function FunctionsUtilService($filter) {
+                    function FunctionsUtilService($filter, dataConfig) {
                         this.$filter = $filter;
+                        this.dataConfig = dataConfig;
                         console.log('functionsUtil service called');
                     }
-                    FunctionsUtilService.prototype.generateGuid = function () {
+                    FunctionsUtilService.generateGuid = function () {
                         var fmt = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
                         var guid = fmt.replace(/[xy]/g, function (c) {
                             var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
@@ -178,6 +181,12 @@ var app;
                     FunctionsUtilService.prototype.dateFormat = function (date) {
                         var dateFormatted = moment(date).format('YYYY-MM-DD');
                         return dateFormatted;
+                    };
+                    FunctionsUtilService.prototype.ageFormat = function (year) {
+                        var currentYear = parseInt(this.dataConfig.currentYear);
+                        var birthYear = parseInt(year);
+                        var age = currentYear - birthYear;
+                        return age.toString();
                     };
                     FunctionsUtilService.prototype.joinDate = function (day, month, year) {
                         var newDate = year + '-' + month + '-' + day;
@@ -317,7 +326,7 @@ var app;
                     return FunctionsUtilService;
                 }());
                 FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
-                FunctionsUtilService.$inject = ['$filter'];
+                FunctionsUtilService.$inject = ['$filter', 'dataConfig'];
                 functionsUtil.FunctionsUtilService = FunctionsUtilService;
                 angular
                     .module('mainApp.core.util', [])
@@ -513,10 +522,35 @@ var app;
                     };
                 }
                 filters.GetTypeOfTeacherFilter = GetTypeOfTeacherFilter;
+                AgeFilter.$inject = ['$filter', 'mainApp.core.util.FunctionsUtilService'];
+                function AgeFilter($filter, functionsUtil) {
+                    return function (value) {
+                        var age = functionsUtil.ageFormat(value);
+                        var translated = $filter('translate')('%global.age.text');
+                        return age + ' ' + translated;
+                    };
+                }
+                filters.AgeFilter = AgeFilter;
+                YearMonthFormatFilter.$inject = ['$filter', 'mainApp.core.util.GetDataStaticJsonService'];
+                function YearMonthFormatFilter($filter, getDataFromJson) {
+                    return function (value) {
+                        var dateString = moment(value).format('YYYY/MM/DD').split('/');
+                        var valueI18n = getDataFromJson.returnValuei18n('month', dateString[1]);
+                        var translated = $filter('translate')(valueI18n);
+                        var dateFormatted = {
+                            month: translated,
+                            year: dateString[0]
+                        };
+                        return dateFormatted.month + ' ' + dateFormatted.year;
+                    };
+                }
+                filters.YearMonthFormatFilter = YearMonthFormatFilter;
                 angular
                     .module('mainApp.core.util')
                     .filter('getI18nFilter', GetI18nFilter)
-                    .filter('getTypeOfTeacherFilter', GetTypeOfTeacherFilter);
+                    .filter('getTypeOfTeacherFilter', GetTypeOfTeacherFilter)
+                    .filter('ageFilter', AgeFilter)
+                    .filter('yearMonthFormatFilter', YearMonthFormatFilter);
             })(filters = util.filters || (util.filters = {}));
         })(util = core.util || (core.util = {}));
     })(core = app.core || (app.core = {}));
@@ -1790,6 +1824,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('Certificate Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.active = obj.active || false;
                     this.otherCategory = obj.otherCategory || '';
                     this.category = obj.category || [];
@@ -1803,6 +1838,19 @@ var app;
                             throw 'Please supply experience id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Immersion.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply experience uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -1890,6 +1938,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('Price of Teacher Class Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.privateClass = new TypeOfPrice(obj.privateClass);
                     this.groupClass = new TypeOfPrice(obj.groupClass);
                 }
@@ -1902,6 +1951,19 @@ var app;
                             throw 'Please supply experience id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Price.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply experience uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -1940,6 +2002,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('TypeOfPrice Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.active = obj.active || false;
                     this.hourPrice = obj.hourPrice || 0;
                 }
@@ -1952,6 +2015,19 @@ var app;
                             throw 'Please supply experience id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(TypeOfPrice.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply experience uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -2383,6 +2459,9 @@ var components;
                     case 'drag-maker-map':
                         this._dragMarkerMapBuilder();
                         break;
+                    case 'location-circle-map':
+                        this._locationCircleMapBuilder();
+                        break;
                 }
                 this.activate();
             };
@@ -2394,6 +2473,7 @@ var components;
                 var self = this;
                 var zoom = 16;
                 var center = this.mapConfig.data.position;
+                this._draggable = false;
                 this.$scope.options = {
                     center: new google.maps.LatLng(center.lat, center.lng),
                     zoom: zoom,
@@ -2439,6 +2519,48 @@ var components;
                             var marker = self.mapConfig.data.markers[i];
                             self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.POSITION_PIN);
                         }
+                    });
+                }
+            };
+            MapController.prototype._locationCircleMapBuilder = function () {
+                var self = this;
+                var zoom = 16;
+                var center = this.mapConfig.data.position;
+                var circle_strokeColor = '#ff5a5f';
+                var circle_strokeOpacity = 0.8;
+                var circle_strokeWeight = 2;
+                var circle_fillColor = '#ff5a5f';
+                var circle_fillOpacity = 0.35;
+                var circle_center = {
+                    lat: 6.1739743,
+                    lng: -75.5822414
+                };
+                var circle_radius = 140;
+                this._draggable = false;
+                this.$scope.options = {
+                    center: new google.maps.LatLng(center.lat, center.lng),
+                    zoom: zoom,
+                    mapTypeControl: false,
+                    zoomControl: true,
+                    streetViewControl: false,
+                    scrollwheel: false,
+                    zoomControlOptions: {
+                        position: google.maps.ControlPosition.TOP_RIGHT
+                    }
+                };
+                if (this._map === void 0) {
+                    this.$timeout(function () {
+                        self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
+                        var circle = new google.maps.Circle({
+                            strokeColor: circle_strokeColor,
+                            strokeOpacity: circle_strokeOpacity,
+                            strokeWeight: circle_strokeWeight,
+                            fillColor: circle_fillColor,
+                            fillOpacity: circle_fillOpacity,
+                            map: self._map,
+                            center: new google.maps.LatLng(center.lat, center.lng),
+                            radius: circle_radius
+                        });
                     });
                 }
             };
@@ -3512,6 +3634,10 @@ var app;
                         self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
                         self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                     });
+                };
+                SearchPageController.prototype.goToDetails = function (containerId) {
+                    var url = this.$state.href('page.teacherProfilePage', { id: containerId });
+                    window.open(url, '_blank');
                 };
                 SearchPageController.prototype._getResultTemplate = function (type) {
                     var STUDENT_TYPE = 'student';
@@ -5199,7 +5325,8 @@ var app;
                         type: 'H',
                         experiences: []
                     };
-                    this.listYears = this.functionsUtilService.buildNumberSelectList(1957, 2017);
+                    var currentYear = parseInt(this.dataConfig.currentYear);
+                    this.listYears = this.functionsUtilService.buildNumberSelectList(1957, currentYear);
                     this.yearObject = { value: '' };
                     this._hobbyChecked = { type: 'H', checked: true };
                     this._professionalChecked = { type: 'P', checked: false };
@@ -6094,7 +6221,7 @@ var app;
                 };
                 TeacherPhotoSectionController.prototype._resizeImage = function () {
                     var self = this;
-                    var newName = this.functionsUtilService.generateGuid() + '.jpeg';
+                    var newName = app.core.util.functionsUtil.FunctionsUtilService.generateGuid() + '.jpeg';
                     var options = {
                         width: 250,
                         height: 250,
@@ -6205,3 +6332,101 @@ var app;
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
 //# sourceMappingURL=teacherFinishSection.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.teacherProfilePage', [])
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.teacherProfilePage', {
+            url: '/teachers/show/:id',
+            views: {
+                'container': {
+                    templateUrl: 'app/pages/teacherProfilePage/teacherProfilePage.html',
+                    controller: 'mainApp.pages.teacherProfilePage.TeacherProfilePageController',
+                    controllerAs: 'vm'
+                }
+            },
+            parent: 'page',
+            params: {
+                id: null
+            },
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = true;
+                    $rootScope.activeFooter = true;
+                }]
+        });
+    }
+})();
+//# sourceMappingURL=teacherProfilePage.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var teacherProfilePage;
+        (function (teacherProfilePage) {
+            var TeacherProfilePageController = (function () {
+                function TeacherProfilePageController(TeacherService, functionsUtilService, $state, $stateParams, $filter) {
+                    this.TeacherService = TeacherService;
+                    this.functionsUtilService = functionsUtilService;
+                    this.$state = $state;
+                    this.$stateParams = $stateParams;
+                    this.$filter = $filter;
+                    this._init();
+                }
+                TeacherProfilePageController.prototype._init = function () {
+                    this.data = null;
+                    this.loading = true;
+                    this.activate();
+                };
+                TeacherProfilePageController.prototype.activate = function () {
+                    var self = this;
+                    console.log('teacherProfilePage controller actived');
+                    this.TeacherService.getTeacherById(this.$stateParams.id).then(function (response) {
+                        self.data = new app.models.teacher.Teacher(response);
+                        self.mapConfig = self.functionsUtilService.buildMapConfig([
+                            {
+                                id: self.data.Location.Position.Id,
+                                location: {
+                                    position: {
+                                        lat: parseFloat(self.data.Location.Position.Lat),
+                                        lng: parseFloat(self.data.Location.Position.Lng)
+                                    }
+                                }
+                            }
+                        ], 'location-circle-map', { lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng) });
+                        self.loading = false;
+                    });
+                };
+                TeacherProfilePageController.prototype.goToConfirm = function () {
+                };
+                TeacherProfilePageController.prototype._assignNative = function (language) {
+                    var native = this.data.Languages.Native;
+                    var isNativeOfThisLanguage = false;
+                    for (var i = 0; i < native.length; i++) {
+                        if (language === native[i]) {
+                            isNativeOfThisLanguage = true;
+                            break;
+                        }
+                    }
+                    return isNativeOfThisLanguage;
+                };
+                return TeacherProfilePageController;
+            }());
+            TeacherProfilePageController.controllerId = 'mainApp.pages.teacherProfilePage.TeacherProfilePageController';
+            TeacherProfilePageController.$inject = [
+                'mainApp.models.teacher.TeacherService',
+                'mainApp.core.util.FunctionsUtilService',
+                '$state',
+                '$stateParams',
+                '$filter'
+            ];
+            teacherProfilePage.TeacherProfilePageController = TeacherProfilePageController;
+            angular
+                .module('mainApp.pages.teacherProfilePage')
+                .controller(TeacherProfilePageController.controllerId, TeacherProfilePageController);
+        })(teacherProfilePage = pages.teacherProfilePage || (pages.teacherProfilePage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=teacherProfilePage.controller.js.map

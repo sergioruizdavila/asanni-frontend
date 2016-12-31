@@ -108,8 +108,11 @@ module app.pages.createTeacherPage {
                 experiences: []
             };
 
+            // Current Year
+            let currentYear = parseInt(this.dataConfig.currentYear);
+
             // Build Years select lists
-            this.listYears = this.functionsUtilService.buildNumberSelectList(1957, 2017);
+            this.listYears = this.functionsUtilService.buildNumberSelectList(1957, currentYear);
 
             //
             this.yearObject = {value: ''};
@@ -228,7 +231,7 @@ module app.pages.createTeacherPage {
             //CONSTANTS
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
-            
+
             /***************************************************/
             //VARIABLES
             let formValid = true;

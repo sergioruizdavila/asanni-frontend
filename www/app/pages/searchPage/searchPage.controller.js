@@ -35,6 +35,10 @@ var app;
                         self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                     });
                 };
+                SearchPageController.prototype.goToDetails = function (containerId) {
+                    var url = this.$state.href('page.teacherProfilePage', { id: containerId });
+                    window.open(url, '_blank');
+                };
                 SearchPageController.prototype._getResultTemplate = function (type) {
                     var STUDENT_TYPE = 'student';
                     var TEACHER_TYPE = 'teacher';

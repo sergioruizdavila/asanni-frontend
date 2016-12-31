@@ -11,7 +11,6 @@ module app.core.util.functionsUtil {
     /*           INTERFACES           */
     /**********************************/
     export interface IFunctionsUtilService {
-        generateGuid: () => string;
         splitToColumns: (arr: Array<any>, size: number) => Array<any>;
         buildMapConfig: (dataSet: Array<any>,
                         mapType: string,
@@ -19,6 +18,7 @@ module app.core.util.functionsUtil {
         generateRangesOfNumbers: (from: number, to:number) => Array<number>;
         buildNumberSelectList: (from: number, to:number) => Array<app.core.interfaces.ISelectListElement>;
         dateFormat: (date: string) => string;
+        ageFormat: (date: any) => string;
         joinDate: (day:string, month:string, year:string) => string;
         splitDate: (date:string) => app.core.interfaces.IDateSplitted;
         progress: (currentStep: number, totalSteps: number) => string;
@@ -61,12 +61,13 @@ module app.core.util.functionsUtil {
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/
-        public static $inject = ['$filter'];
+        public static $inject = ['$filter', 'dataConfig'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        constructor(private $filter: angular.IFilterService) {
+        constructor(private $filter: angular.IFilterService,
+                    private dataConfig: IDataConfig) {
             console.log('functionsUtil service called');
         }
 
@@ -81,7 +82,7 @@ module app.core.util.functionsUtil {
         * @function
         * @return {string} guid - Returns an Guid Id string.
         */
-        generateGuid(): string {
+        public static generateGuid(): string {
             var fmt = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
             var guid = fmt.replace(/[xy]/g, function (c) {
                 var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
@@ -89,6 +90,7 @@ module app.core.util.functionsUtil {
             });
             return guid;
         }
+
 
         /**
         * dateFormat
@@ -101,6 +103,25 @@ module app.core.util.functionsUtil {
         dateFormat(date: string): string {
             let dateFormatted = moment(date).format('YYYY-MM-DD');
             return dateFormatted;
+        }
+
+
+
+        /**
+        * ageFormat
+        * @description - return the current age
+        * @use - this.FunctionsUtilService.ageFormat('1987');
+        * @function
+        * @params {any} year - birth year
+        * @return {string} age - age of user.
+        */
+        ageFormat(year): string {
+            //VARIABLES
+            let currentYear = parseInt(this.dataConfig.currentYear);
+            let birthYear = parseInt(year);
+            let age = currentYear - birthYear;
+
+            return age.toString();
         }
 
 

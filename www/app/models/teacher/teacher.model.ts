@@ -572,6 +572,7 @@ module app.models.teacher {
 
         /*-- PROPERTIES --*/
         private id: number;
+        private uid: string;
         private active: boolean;
         private category: Array<string>;
         private otherCategory: string;
@@ -585,6 +586,7 @@ module app.models.teacher {
 
             //init properties
             this.id = obj.id;
+            this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
             this.active = obj.active || false;
             this.otherCategory = obj.otherCategory || '';
             this.category = obj.category || [];
@@ -602,6 +604,15 @@ module app.models.teacher {
         set Id(id: number) {
             if (id === undefined) { throw 'Please supply experience id'; }
             this.id = id;
+        }
+
+        get Uid() {
+            return this.uid;
+        }
+
+        set Uid(uid: string) {
+            if (uid === undefined) { throw 'Please supply experience uid'; }
+            this.uid = uid;
         }
 
         get Active() {
@@ -692,6 +703,7 @@ module app.models.teacher {
 
         /*-- PROPERTIES --*/
         private id: number;
+        private uid: string;
         private privateClass: TypeOfPrice;
         private groupClass: TypeOfPrice;
 
@@ -704,6 +716,7 @@ module app.models.teacher {
 
             //init properties
             this.id = obj.id;
+            this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
             this.privateClass = new TypeOfPrice(obj.privateClass);
             this.groupClass = new TypeOfPrice(obj.groupClass);
 
@@ -720,6 +733,15 @@ module app.models.teacher {
         set Id(id: number) {
             if (id === undefined) { throw 'Please supply experience id'; }
             this.id = id;
+        }
+
+        get Uid() {
+            return this.uid;
+        }
+
+        set Uid(uid: string) {
+            if (uid === undefined) { throw 'Please supply experience uid'; }
+            this.uid = uid;
         }
 
         get PrivateClass() {
@@ -752,6 +774,7 @@ module app.models.teacher {
 
         /*-- PROPERTIES --*/
         private id: number;
+        private uid: string;
         private active: boolean;
         private hourPrice: number;
 
@@ -764,6 +787,7 @@ module app.models.teacher {
 
             //init properties
             this.id = obj.id;
+            this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
             this.active = obj.active || false;
             this.hourPrice = obj.hourPrice || 0;
 
@@ -780,6 +804,15 @@ module app.models.teacher {
         set Id(id: number) {
             if (id === undefined) { throw 'Please supply experience id'; }
             this.id = id;
+        }
+
+        get Uid() {
+            return this.uid;
+        }
+
+        set Uid(uid: string) {
+            if (uid === undefined) { throw 'Please supply experience uid'; }
+            this.uid = uid;
         }
 
         get Active() {

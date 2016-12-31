@@ -569,6 +569,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('Certificate Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.active = obj.active || false;
                     this.otherCategory = obj.otherCategory || '';
                     this.category = obj.category || [];
@@ -582,6 +583,19 @@ var app;
                             throw 'Please supply experience id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Immersion.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply experience uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -669,6 +683,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('Price of Teacher Class Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.privateClass = new TypeOfPrice(obj.privateClass);
                     this.groupClass = new TypeOfPrice(obj.groupClass);
                 }
@@ -681,6 +696,19 @@ var app;
                             throw 'Please supply experience id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Price.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply experience uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -719,6 +747,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('TypeOfPrice Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.active = obj.active || false;
                     this.hourPrice = obj.hourPrice || 0;
                 }
@@ -731,6 +760,19 @@ var app;
                             throw 'Please supply experience id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(TypeOfPrice.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply experience uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true

@@ -112,6 +112,22 @@ module app.pages.searchPage {
         /**********************************/
 
         /**
+        * goToDetails
+        * @description - when user clicked a specific result, go to details
+        * @use - this.goToDetails('2');
+        * @function
+        * @params {string} containerId - entity id (teacher, student or school)
+        * @return {void}
+        */
+
+        goToDetails(containerId: string): void {
+            var url = this.$state.href('page.teacherProfilePage', {id: containerId});
+            window.open(url,'_blank');
+        }
+
+        
+
+        /**
         * _getResultTemplate
         * @description - this method return specific template based on type
         * result (students, teachers, schools, etc)
