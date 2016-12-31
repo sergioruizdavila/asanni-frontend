@@ -15,6 +15,7 @@ var app;
                 }
                 TeacherProfilePageController.prototype._init = function () {
                     this.data = null;
+                    this.loading = true;
                     this.activate();
                 };
                 TeacherProfilePageController.prototype.activate = function () {
@@ -33,6 +34,7 @@ var app;
                                 }
                             }
                         ], 'location-circle-map', { lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng) });
+                        self.loading = false;
                     });
                 };
                 TeacherProfilePageController.prototype.goToConfirm = function () {

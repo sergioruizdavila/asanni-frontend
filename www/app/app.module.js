@@ -38,7 +38,7 @@
             prefix: prefix,
             suffix: suffix
         });
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.preferredLanguage('es');
     }
 })();
 //# sourceMappingURL=app.module.js.map

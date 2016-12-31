@@ -38,7 +38,7 @@
             prefix: prefix,
             suffix: suffix
         });
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.preferredLanguage('es');
     }
 })();
 //# sourceMappingURL=app.module.js.map
@@ -531,11 +531,26 @@ var app;
                     };
                 }
                 filters.AgeFilter = AgeFilter;
+                YearMonthFormatFilter.$inject = ['$filter', 'mainApp.core.util.GetDataStaticJsonService'];
+                function YearMonthFormatFilter($filter, getDataFromJson) {
+                    return function (value) {
+                        var dateString = moment(value).format('YYYY/MM/DD').split('/');
+                        var valueI18n = getDataFromJson.returnValuei18n('month', dateString[1]);
+                        var translated = $filter('translate')(valueI18n);
+                        var dateFormatted = {
+                            month: translated,
+                            year: dateString[0]
+                        };
+                        return dateFormatted.month + ' ' + dateFormatted.year;
+                    };
+                }
+                filters.YearMonthFormatFilter = YearMonthFormatFilter;
                 angular
                     .module('mainApp.core.util')
                     .filter('getI18nFilter', GetI18nFilter)
                     .filter('getTypeOfTeacherFilter', GetTypeOfTeacherFilter)
-                    .filter('ageFilter', AgeFilter);
+                    .filter('ageFilter', AgeFilter)
+                    .filter('yearMonthFormatFilter', YearMonthFormatFilter);
             })(filters = util.filters || (util.filters = {}));
         })(util = core.util || (core.util = {}));
     })(core = app.core || (app.core = {}));
@@ -6361,6 +6376,7 @@ var app;
                 }
                 TeacherProfilePageController.prototype._init = function () {
                     this.data = null;
+                    this.loading = true;
                     this.activate();
                 };
                 TeacherProfilePageController.prototype.activate = function () {
@@ -6379,6 +6395,7 @@ var app;
                                 }
                             }
                         ], 'location-circle-map', { lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng) });
+                        self.loading = false;
                     });
                 };
                 TeacherProfilePageController.prototype.goToConfirm = function () {

@@ -4,19 +4,35 @@
 
 <div class="container">
 
-    <!------------------ START: LARGE MESSAGE BLOCK ------------------->
-    <div class="row ma-large-message ma-large-message--info">
+    <!---------------------- START: LARGE MESSAGE BLOCK ----------------------->
+    <div class="row ma-large-message ma-large-message--info" ng-hide="vm.loading">
         <div class="col-md-12 text-center">
             <p class="ma-p ma-p--default ma-p--info margin-reset">
-                <span>
-                    Asi se veria tu perfil cuando terminemos de validar tu información
+                <span translate>
+                    %profile.teacher.large_message.text
                 </span>
             </p>
         </div>
     </div>
-    <!--                  END: PROFILE IMAGE BLOCK                   -->
+    <!--                      END: PROFILE IMAGE BLOCK                       -->
 
-    <div class="row space-top-4">
+
+
+    <!---------------------- START: MAIN LOADING BLOCK ------------------------>
+    <!-- TODO: Dejo este estilo aqui, ya que no estoy seguro si esta sera
+        la version final del loading, cuando lo decida, remover este
+        comentario y el estilo -->
+    <div class="row" ng-show="vm.loading" style="height:800px;margin-top:190px;">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+            <i class="fa fa-cog fa-spin fa-5x fa-fw" style="color: #ff5a5f;"></i>
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!--                      END: MAIN LOADING  BLOCK                       -->
+
+
+
+    <div class="row space-top-4" ng-hide="vm.loading">
 
         <!--                     START: LEFT COLUMN                          -->
         <!--------------------------------------------------------------------->
@@ -48,7 +64,9 @@
                        ng-click="vm.goToEdit(vm.data.id)"
                        href>
                        <i class="material-icons md-18 md-primary">mode_edit</i>
-                       Edit Profile
+                       <span translate>
+                           %profile.teacher.edit_profile.button.text
+                       </span>
                    </a>
                 </div>
             </div>
@@ -58,16 +76,17 @@
 
             <!---------------------- START: VERIFIED BLOCK -------------------->
             <div id="teacherProfile-verified-block"
-                 class="row">
+                 class="teacherProfilePage__verified-block row">
 
                 <div class="col-md-12">
 
                     <div class="ma-box">
                         <h4 class="ma-box__title margin-reset">
-                            <span>Verified</span>
+                            <span translate>
+                                %profile.teacher.verified.title.text
+                            </span>
                             <i class="material-icons
-                                      md-primary md-30 pull-right"
-                               style="position:relative;bottom:5px;">
+                                      md-primary md-30 pull-right">
                                done_all
                            </i>
                         </h4>
@@ -77,16 +96,18 @@
                                     <i class="verified-box__item__icon
                                               material-icons md-30
                                               md-primary">check</i>
-                                    <div class="verified-box__item__text">
-                                        Phone Verified
+                                    <div class="verified-box__item__text"
+                                         translate>
+                                        %profile.teacher.verified.phone.label.text
                                     </div>
                                 </div>
                                 <div class="verified-box__item">
                                     <i class="verified-box__item__icon
                                               material-icons md-30
                                               md-primary">check</i>
-                                    <div class="verified-box__item__text">
-                                        Email Verified
+                                    <div class="verified-box__item__text"
+                                         translate>
+                                        %profile.teacher.verified.email.label.text
                                     </div>
                                 </div>
                             </div>
@@ -147,7 +168,11 @@
                                                       ma-label--simple
                                                       ma-label--simple--medium
                                                       margin-reset">
-                                            <strong>from · </strong> {{vm.data.born}}
+                                            <strong>
+                                                <span translate>
+                                                    %profile.teacher.from.label.text
+                                                </span> ·
+                                            </strong> {{vm.data.born}}
                                         </p>
                                     </div>
                                     <!-- Live in -->
@@ -157,7 +182,11 @@
                                                       ma-label--simple
                                                       ma-label--simple--medium
                                                       margin-reset">
-                                            <strong>live in · </strong> {{vm.data.location.city}}, {{ vm.data.location.country | getI18nFilter:'country' }}
+                                            <strong>
+                                                <span translate>
+                                                    %profile.teacher.live_in.label.text
+                                                </span> ·
+                                            </strong> {{vm.data.location.city}}, {{ vm.data.location.country | getI18nFilter:'country' }}
                                         </p>
                                     </div>
                                 </div>
@@ -169,14 +198,16 @@
                                         margin-reset">
 
                                 <div class="col-md-12">
-                                    <!-- Since -->
+                                    <!-- Joined in -->
                                     <div class="basic-info-box__since pull-right">
                                         <p class="ma-label
                                                       ma-label--simple
                                                       ma-label--simple--medium
                                                       ma-label--simple--primary
                                                       margin-reset">
-                                            Miembro desde Septiembre 2016
+                                            <span translate>
+                                                %profile.teacher.joined_in.label.text
+                                            </span> {{ vm.data.createdAt | yearMonthFormatFilter }}
                                         </p>
                                     </div>
                                 </div>
@@ -187,7 +218,9 @@
                             <div class="row margin-reset">
 
                                 <div class="col-md-12">
-                                    <h4>About me</h4>
+                                    <h4 translate>
+                                        %profile.teacher.about_me.title.text
+                                    </h4>
                                     <p class="ma-p ma-p--default">
                                         {{vm.data.about}}
                                     </p>
@@ -210,7 +243,9 @@
                      class="col-xs-12 col-sm-6 col-md-6">
 
                     <div class="ma-box">
-                        <h4 class="ma-box__title margin-reset">Teacher of</h4>
+                        <h4 class="ma-box__title margin-reset" translate>
+                            %profile.teacher.teacher_of.title.text
+                        </h4>
                         <div class="ma-box__content text-center">
                             <div class="row"
                                  ng-repeat="language in vm.data.languages.teach track by $index">
@@ -233,7 +268,9 @@
                      class="col-xs-12 col-sm-6 col-md-6">
 
                     <div class="ma-box">
-                        <h4 class="ma-box__title margin-reset">Also Speaks</h4>
+                        <h4 class="ma-box__title margin-reset" translate>
+                            %profile.teacher.speak.title.text
+                        </h4>
                         <div class="ma-box__content text-center">
                             <div class="row"
                                  ng-repeat="language in vm.data.languages.learn track by $index">
@@ -289,7 +326,9 @@
                 <div class="col-md-12">
 
                     <div class="ma-box">
-                        <h4 class="ma-box__title margin-reset">Experience as a teacher</h4>
+                        <h4 class="ma-box__title margin-reset" translate>
+                            %create.teacher.experience.form.experience.text
+                        </h4>
                         <div class="ma-box__content">
                             <div class="row margin-reset teacher-experience-box__item-block"
                                  ng-repeat="experience in vm.data.experiences track by $index">
@@ -372,8 +411,8 @@
                 <div class="col-md-12">
 
                     <div class="ma-box">
-                        <h4 class="ma-box__title margin-reset">
-                            Metodologia de enseñanza
+                        <h4 class="ma-box__title margin-reset" translate>
+                            %profile.teacher.methodology.title.text
                         </h4>
                         <div class="ma-box__content">
                             <p class="ma-p ma-p--default">
@@ -391,17 +430,19 @@
 
 
             <!--------------------- START: IMMERSION BLOCK -------------------->
-            <div id="teacherProfile-immersion-block" class="row space-3"
+            <div id="teacherProfile-immersion-block"
+                 class="teacherProfilePage__immersion-block row space-3"
                  ng-if="vm.data.immersion.active">
 
                 <div class="col-md-12">
 
                     <div class="ma-box">
                         <h4 class="ma-box__title margin-reset">
-                            <span>Immersion</span>
+                            <span translate>
+                                %create.teacher.method.form.imm.text
+                            </span>
                             <i class="material-icons
-                                      md-primary md-36 pull-right"
-                               style="position:relative;bottom:10px;">
+                                      md-primary md-36 pull-right">
                                play_for_work
                            </i>
                         </h4>
@@ -439,7 +480,9 @@
                 <div class="col-md-12">
 
                     <div class="ma-box">
-                        <h4 class="ma-box__title margin-reset">Estudios como profesor</h4>
+                        <h4 class="ma-box__title margin-reset" translate>
+                            %create.teacher.education.form.education.text
+                        </h4>
                         <div class="ma-box__content">
                             <div id="teacher-education"
                                  class="row margin-reset teacher-education-box__item-block"
@@ -525,7 +568,9 @@
                 <div class="col-md-12">
 
                     <div class="ma-box">
-                        <h4 class="ma-box__title margin-reset">Certificados como profesor</h4>
+                        <h4 class="ma-box__title margin-reset" translate>
+                            %create.teacher.education.form.certificate.text
+                        </h4>
                         <div class="ma-box__content">
                             <div class="row margin-reset teacher-certificate-box__item-block"
                                  ng-repeat="certificate in vm.data.certificates track by $index">
@@ -598,8 +643,9 @@
                     <div class="ma-box reviews-info-box">
 
                         <!-- Amount of reviews -->
-                        <h4 id="userProfile-reviews-amount" class="ma-box__title margin-reset">
-                            Reviews
+                        <h4 id="teacherProfile-reviews-amount"
+                            class="ma-box__title margin-reset" translate>
+                            %profile.teacher.review.title.text
                             <div class="ma-box__title__right-block pull-right">
                                 <div class="ma-stars-withLabel">
                                     <div class="ma-stars">
@@ -778,14 +824,15 @@
                 <div class="col-md-12">
 
                     <div class="ma-box location-info-box">
-                        <h4 class="ma-box__title margin-reset">
-                            Location
+                        <h4 class="ma-box__title margin-reset" translate>
+                            %profile.teacher.location.title.text
                         </h4>
                         <div class="ma-box__content
                                     ma-box__content--map
                                     ma-box__content--padding-reset">
                             <div class="location-map">
-                                <ma-map ng-if="vm.mapConfig" map-config="vm.mapConfig"></ma-map>
+                                <ma-map ng-if="vm.mapConfig"
+                                        map-config="vm.mapConfig"></ma-map>
                             </div>
                         </div>
                     </div>
@@ -881,8 +928,8 @@
                                     <div class="col-md-12">
                                         <button class="ma-btn ma-btn--primary
                                                   ma-btn--large ma-btn--block"
-                                                  ng-click="vm.goToConfirm()">
-                                            Book a class
+                                                  ng-click="vm.goToConfirm()" translate>
+                                            %profile.teacher.book.button.text
                                         </button>
                                     </div>
                                 </div>
@@ -892,7 +939,12 @@
                                 <div class="row">
                                     <div class="col-md-12 text-center">
                                         <p class="ma-p ma-p--small margin-reset">
-                                            <strong>70</strong> successful classes
+                                            <!-- TODO: No vale la pena crear un class
+                                                para este margin, buscar una solucion -->
+                                            <strong style="margin-right:5px;">70</strong>
+                                            <span translate>
+                                                %profile.teacher.success_classes.label.text
+                                            </span>
                                         </p>
                                     </div>
                                 </div>

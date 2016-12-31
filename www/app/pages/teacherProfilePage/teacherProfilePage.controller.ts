@@ -32,6 +32,7 @@ module app.pages.teacherProfilePage {
         /**********************************/
         mapConfig: components.map.IMapConfig;
         data: app.models.teacher.Teacher;
+        loading: boolean;
         // --------------------------------
 
 
@@ -63,6 +64,9 @@ module app.pages.teacherProfilePage {
             //Init teacher data
             this.data = null;
 
+            //Init loading
+            this.loading = true;
+
             this.activate();
         }
 
@@ -91,6 +95,7 @@ module app.pages.teacherProfilePage {
                         'location-circle-map',
                         {lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng)}
                     );
+                    self.loading = false;
                 }
             );
         }
