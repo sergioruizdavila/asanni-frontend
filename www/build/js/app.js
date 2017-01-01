@@ -1326,7 +1326,7 @@ var app;
                     this.restApi = restApi;
                 }
                 StudentLandingPageService.prototype.createEarlyAdopter = function (userData) {
-                    var url = 'early/';
+                    var url = 'early';
                     return this.restApi.create({ url: url }, userData).$promise
                         .then(function (data) {
                         return data;
