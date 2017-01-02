@@ -57,7 +57,7 @@ module app.pages.studentLandingPage {
         */
         createEarlyAdopter(userData): angular.IPromise<any> {
             //VARIABLES
-            let url = 'early/';
+            let url = 'early';
 
             return this.restApi.create({url: url}, userData).$promise
                 .then(

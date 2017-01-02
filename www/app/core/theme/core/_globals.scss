@@ -113,6 +113,18 @@
 .space-top-10 {
     margin-top: 60px;
 }
+.space-11 {
+    margin-bottom: 66px;
+}
+.space-top-11 {
+    margin-top: 66px;
+}
+.space-12 {
+    margin-bottom: 72px;
+}
+.space-top-12 {
+    margin-top: 72px;
+}
 
 .padding-reset {
     padding: 0;
@@ -229,7 +241,7 @@ body.mainApp {
         background-repeat: no-repeat;
         height: $logo-height;
         width: $logo-width;
-        display: block;
+        display: inline-block;
 
         &--secondary {
             background-image: url($logo-path-secondary);
@@ -238,6 +250,11 @@ body.mainApp {
             background-image: url($logo-path-secondary-short);
             height: $logo-short-height;
             width: $logo-short-width;
+        }
+        &--primary-short {
+            background-image: url($logo-path-primary-short);
+            height: $logo-primary-short-height;
+            width: $logo-primary-short-width;
         }
     }
 

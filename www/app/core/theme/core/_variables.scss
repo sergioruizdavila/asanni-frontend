@@ -41,6 +41,7 @@ $main-palette: (
   success: #3adb76,
   warning: #e8ce47,
   alert: #ff5a5f,
+  alert-secondary: #d45054,
 );
 
 $light-gray: #dce0e0;
@@ -72,10 +73,12 @@ $global-logo-file: "waysily-logo.png";
 //$global-logo-file: "waysily-logo.svg";
 $global-logo-secondary-file: "waysily-logo-secondary.png";
 //$global-logo-secondary-file: "waysily-logo.svg";
+$global-logo-primary-short-file: "waysily-logo-primary-short.svg";
 $global-logo-secondary-short-file: "waysily-logo-secondary-short.svg";
 $global-photo-default-file: "waysily-photo-default.jpg";
 
 $body-background: #fafafa;
+
 $body-font-color: $black;
 //$body-font-family: $global-font-family;
 //TEST
@@ -211,6 +214,10 @@ $button-tertiary-border: 2px solid $white;
 $button-tertiary-color: $white;
 $button-secondary-color-hover: map-get($main-palette, primary);
 $button-tertiary-border-color: $light-gray;
+
+$button-alert-border-color: map-get($main-palette, alert-secondary);
+$button-alert-background: map-get($main-palette, alert);
+$button-alert-background-hover: map-get($main-palette, alert-secondary);
 
 $button-block-width: 100%;
 
@@ -593,11 +600,14 @@ $list-message-status-height-unread: 15px;
 // ----------
 $logo-path: $global-image-path + '/' + $global-logo-file;
 $logo-path-secondary: $global-image-path + '/' + $global-logo-secondary-file;
+$logo-path-primary-short: $global-image-path + '/' + $global-logo-primary-short-file;
 $logo-path-secondary-short: $global-image-path + '/' + $global-logo-secondary-short-file;
 $logo-width: 145px;
 $logo-height: 32px;
 $logo-short-width: 45px;
 $logo-short-height: 32px;
+$logo-primary-short-width: 61px;
+$logo-primary-short-height: 61px;
 
 
 // 9. Paragraph
@@ -636,7 +646,7 @@ $select-tertiary-background: 0 0;
 $select-tertiary-border: 2px solid #FFF;
 $select-tertiary-font-color: #FFF;
 
-$select-borderRound-radius: 7px;
+$select-borderRound-radius: 4px;
 
 $select-tertiary-icon-color: $white;
 

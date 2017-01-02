@@ -1,126 +1,73 @@
 /*************************/
 /*       VARIABLES       */
 /*************************/
-$studentLanding-background: $white;
+$landing-background: $white;
 
-$studentLanding-titleBlock-width: 100%;
-$studentLanding-titleBlock-background: #fff3f0;
-$studentLanding-titleBlock-margin: 0 auto;
-$studentLanding-titleBlock-padding: 30px 0;
-$studentLanding-titleBlock-border: 2px dashed #F59689;
+$landing-titleBlock-h2-font-color: #F59689;
 
-$studentLanding-titleBlock-h2-font-color: #F59689;
+$landing-howWorkBlock-margin-top: 40px;
+$landing-howWorkBlock-margin-bottom: 40px;
 
-$studentLanding-howWorkBlock-margin-top: 40px;
-$studentLanding-howWorkBlock-margin-bottom: 40px;
+$landing-howWorkBlock-row-padding: 0 20px;
 
-$studentLanding-howWorkBlock-row-padding: 0 20px;
+$landing-howWorkBlock-stepItem-padding: 45px 0;
 
-$studentLanding-howWorkBlock-stepItem-padding: 45px 0;
+$landing-dashedAlternate-background-position: -12px center;
+$landing-dashedAlternate-height: 4px;
+$landing-dashedAlternate-left: 0;
+$landing-dashedAlternate-right: 0;
+$landing-dashedAlternate-index: 2;
+$landing-dashedAlternate-bottom: calc(99% - 1px);
 
-$studentLanding-dashedAlternate-background-position: -12px center;
-$studentLanding-dashedAlternate-height: 4px;
-$studentLanding-dashedAlternate-left: 0;
-$studentLanding-dashedAlternate-right: 0;
-$studentLanding-dashedAlternate-index: 2;
-$studentLanding-dashedAlternate-bottom: calc(99% - 1px);
+$landing-withoutContent-padding: 20px 0;
 
-$studentLanding-withoutContent-padding: 20px 0;
+$landing-howWorkBlock-stepImage-width: 50%;
+$landing-howWorkBlock-stepImage-height: 0;
 
-$studentLanding-howWorkBlock-stepImage-width: 50%;
-$studentLanding-howWorkBlock-stepImage-height: 0;
+$landing-howWorkBlock-stepImage-map-padding: 37%;
+$landing-howWorkBlock-stepImage-profile-padding: 40%;
+$landing-howWorkBlock-stepImage-points-padding: 37%;
+$landing-howWorkBlock-stepImage-request-padding: 36%;
+$landing-howWorkBlock-stepImage-meeting-padding: 37%;
 
-$studentLanding-howWorkBlock-stepImage-map-padding: 37%;
-$studentLanding-howWorkBlock-stepImage-profile-padding: 40%;
-$studentLanding-howWorkBlock-stepImage-points-padding: 37%;
-$studentLanding-howWorkBlock-stepImage-request-padding: 36%;
-$studentLanding-howWorkBlock-stepImage-meeting-padding: 37%;
+$landing-howWorkBlock-stepContent-width: 50%;
+$landing-howWorkBlock-stepContent-max-width: 450px;
+$landing-howWorkBlock-stepContent-top: 50%;
+$landing-howWorkBlock-stepContent-transform: translateY(-50%);
+$landing-howWorkBlock-stepContent-padding: 50px;
 
-$studentLanding-howWorkBlock-stepContent-width: 50%;
-$studentLanding-howWorkBlock-stepContent-max-width: 450px;
-$studentLanding-howWorkBlock-stepContent-top: 50%;
-$studentLanding-howWorkBlock-stepContent-transform: translateY(-50%);
-$studentLanding-howWorkBlock-stepContent-padding: 50px;
+$landing-howWorkBlock-stepContent-text-font-size: 20px;
 
-$studentLanding-howWorkBlock-stepContent-text-font-size: 20px;
+$landing-howWorkBlock-imageOnLeft-stepContent-left: 50%;
 
-$studentLanding-howWorkBlock-imageOnLeft-stepContent-left: 50%;
+$landing-earlyAccessBlock-padding: 40px 20px;
+$landing-earlyAccessBlock-background: #E1F7EE;
+$landing-earlyAccessBlock-border: 2px dashed map-get($main-palette, primary);
+$landing-earlyAccessBlock-font-color: map-get($main-palette, primary);
 
-$studentLanding-earlyAccessBlock-padding: 40px 20px;
-$studentLanding-earlyAccessBlock-background: #E1F7EE;
-$studentLanding-earlyAccessBlock-border: 2px dashed map-get($main-palette, primary);
-$studentLanding-earlyAccessBlock-font-color: map-get($main-palette, primary);
+$landing-earlyAccessBlock-formBlock-text-font-color: map-get($main-palette, primary);
 
-$studentLanding-earlyAccessBlock-formBlock-text-font-color: map-get($main-palette, primary);
-
-$studentLanding-earlyAccessBlock-formBlock-formGroup-padding: 0;
+$landing-earlyAccessBlock-formBlock-formGroup-padding: 0;
 
 
 /**********************************************************/
 /*                   USER PROFILE PAGE                    */
 /**********************************************************/
 
-.how-work {
-    &__step {
+.landingPage {
 
-        &__image-block {
+    background-color: $landing-background;
+    height: 100%;
 
-            &__image {
-                background-repeat: no-repeat;
-                background-position: left center;
-                background-size: contain;
+    /* our mission block */
+    &__mission-block {
 
-                &--map {
-                    background-image: url($image-studentLanding-step-map);
-                }
-                &--profile {
-                    background-image: url($image-studentLanding-step-profile);
-                }
-                &--points {
-                    background-image: url($image-studentLanding-step-points);
-                }
-                &--request {
-                    background-image: url($image-studentLanding-step-request);
-                }
-                &--meeting {
-                    background-image: url($image-studentLanding-step-meeting);
-                }
-            }
-
-        }
-
-        &__text-block {
-
-            &__text {
-
-            }
-
-        }
-
-    }
-}
-
-.studentLandingPage {
-
-    background-color: $studentLanding-background;
-
-    /* title block */
-    &__title-block {
-        width: $studentLanding-titleBlock-width;
-        background: $studentLanding-titleBlock-background;
-        margin: $studentLanding-titleBlock-margin;
-        padding: $studentLanding-titleBlock-padding;
-        border-bottom: $studentLanding-titleBlock-border;
-
-        h2 {
-            color: $studentLanding-titleBlock-h2-font-color;
-        }
     }
 
     /* how work block */
     &__how-work-block {
-        margin-top: $studentLanding-howWorkBlock-margin-top;
-        margin-bottom: $studentLanding-howWorkBlock-margin-bottom;
+        margin-top: $landing-howWorkBlock-margin-top;
+        margin-bottom: $landing-howWorkBlock-margin-bottom;
 
         .row {
             display: -webkit-box;
@@ -135,24 +82,24 @@ $studentLanding-earlyAccessBlock-formBlock-formGroup-padding: 0;
                 display: inline-block;
             }
 
-            padding: $studentLanding-howWorkBlock-row-padding;
+            padding: $landing-howWorkBlock-row-padding;
 
             .step-item {
                 position: relative;
-                padding: $studentLanding-howWorkBlock-stepItem-padding;
+                padding: $landing-howWorkBlock-stepItem-padding;
                 overflow: hidden;
 
                 &:before {
                     content: "";
                     background-image: url($image-dashed-alternate);
                     background-repeat: repeat-x;
-                    background-position: $studentLanding-dashedAlternate-background-position;
-                    height: $studentLanding-dashedAlternate-height;
+                    background-position: $landing-dashedAlternate-background-position;
+                    height: $landing-dashedAlternate-height;
                     position: absolute;
-                    left: $studentLanding-dashedAlternate-left;
-                    right: $studentLanding-dashedAlternate-right;
-                    z-index: $studentLanding-dashedAlternate-index;
-                    bottom: $studentLanding-dashedAlternate-bottom;
+                    left: $landing-dashedAlternate-left;
+                    right: $landing-dashedAlternate-right;
+                    z-index: $landing-dashedAlternate-index;
+                    bottom: $landing-dashedAlternate-bottom;
                 }
 
                 &--first {
@@ -163,49 +110,21 @@ $studentLanding-earlyAccessBlock-formBlock-formGroup-padding: 0;
 
                 &--without-content {
                     overflow: visible;
-                    padding: $studentLanding-withoutContent-padding;
-                }
-
-                .step-image {
-                    width: $studentLanding-howWorkBlock-stepImage-width;
-                    height: $studentLanding-howWorkBlock-stepImage-height;
-                    background-repeat: no-repeat;
-                    background-position: left center;
-                    background-size: contain;
-                    &.map {
-                        padding-top: $studentLanding-howWorkBlock-stepImage-map-padding;
-                        background-image: url($image-studentLanding-step-map);
-                    }
-                    &.profile {
-                        padding-top: $studentLanding-howWorkBlock-stepImage-profile-padding;
-                        background-image: url($image-studentLanding-step-profile);
-                    }
-                    &.points {
-                        padding-top: $studentLanding-howWorkBlock-stepImage-points-padding;
-                        background-image: url($image-studentLanding-step-points);
-                    }
-                    &.request {
-                        padding-top: $studentLanding-howWorkBlock-stepImage-request-padding;
-                        background-image: url($image-studentLanding-step-request);
-                    }
-                    &.meeting {
-                        padding-top: $studentLanding-howWorkBlock-stepImage-meeting-padding;
-                        background-image: url($image-studentLanding-step-meeting);
-                    }
+                    padding: $landing-withoutContent-padding;
                 }
 
                 .step-content {
-                    width: $studentLanding-howWorkBlock-stepContent-width;
-                    max-width: $studentLanding-howWorkBlock-stepContent-max-width;
+                    width: $landing-howWorkBlock-stepContent-width;
+                    max-width: $landing-howWorkBlock-stepContent-max-width;
                     position: absolute;
-                    top: $studentLanding-howWorkBlock-stepContent-top;
-                    -webkit-transform: $studentLanding-howWorkBlock-stepContent-transform;
-                    -ms-transform: $studentLanding-howWorkBlock-stepContent-transform;
-                    transform: $studentLanding-howWorkBlock-stepContent-transform;
-                    padding-left: $studentLanding-howWorkBlock-stepContent-padding;
+                    top: $landing-howWorkBlock-stepContent-top;
+                    -webkit-transform: $landing-howWorkBlock-stepContent-transform;
+                    -ms-transform: $landing-howWorkBlock-stepContent-transform;
+                    transform: $landing-howWorkBlock-stepContent-transform;
+                    padding-left: $landing-howWorkBlock-stepContent-padding;
 
                     p {
-                        font-size: $studentLanding-howWorkBlock-stepContent-text-font-size;
+                        font-size: $landing-howWorkBlock-stepContent-text-font-size;
                     }
                 }
 
@@ -220,7 +139,7 @@ $studentLanding-earlyAccessBlock-formBlock-formGroup-padding: 0;
                         float: left;
                     }
                     .step-content {
-                        left: $studentLanding-howWorkBlock-imageOnLeft-stepContent-left;
+                        left: $landing-howWorkBlock-imageOnLeft-stepContent-left;
                     }
                 }
             }
@@ -231,10 +150,10 @@ $studentLanding-earlyAccessBlock-formBlock-formGroup-padding: 0;
 
     /* get early access block */
     &__early-access-block {
-        padding: $studentLanding-earlyAccessBlock-padding;
-        background-color: $studentLanding-earlyAccessBlock-background;
-        border-top: $studentLanding-earlyAccessBlock-border;
-        color: $studentLanding-earlyAccessBlock-font-color;
+        padding: $landing-earlyAccessBlock-padding;
+        background-color: $landing-earlyAccessBlock-background;
+        border-top: $landing-earlyAccessBlock-border;
+        color: $landing-earlyAccessBlock-font-color;
 
         .row {
             display: -webkit-box;
@@ -251,11 +170,11 @@ $studentLanding-earlyAccessBlock-formBlock-formGroup-padding: 0;
 
             &__form-block {
                 .ma-p {
-                    color: $studentLanding-earlyAccessBlock-formBlock-text-font-color;
+                    color: $landing-earlyAccessBlock-formBlock-text-font-color;
                 }
 
                 .form-group {
-                    padding: $studentLanding-earlyAccessBlock-formBlock-formGroup-padding;
+                    padding: $landing-earlyAccessBlock-formBlock-formGroup-padding;
                 }
             }
         }

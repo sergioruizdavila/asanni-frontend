@@ -96,6 +96,18 @@
         }
     }
 
+    &--alert {
+        background-color: $button-alert-background;
+        color: $button-font-color;
+        border-bottom-color: $button-alert-border-color;
+
+        &:hover:enabled, &:focus {
+            background-color: $button-alert-background-hover;
+            text-decoration: none;
+            color: $button-font-color;
+        }
+    }
+
     &--transparent {
         background-color: transparent;
         color: $dark-gray;

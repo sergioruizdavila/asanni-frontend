@@ -18,7 +18,7 @@ var app;
                             email: '',
                             comment: ''
                         },
-                        language: 'en'
+                        language: this.$translate.use() || 'en'
                     };
                     this.success = false;
                     this.sending = false;

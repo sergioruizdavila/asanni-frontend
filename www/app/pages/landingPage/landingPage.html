@@ -18,11 +18,11 @@
                 <!-- Default Select Input -->
                 <div class="form-group ma-form-group">
                     <div class="ma-select-container
-                                ma-select-container--default
+                                ma-select-container--small
                                 ma-select-container--tertiary">
                         <select id="languageSelect"
                                 class="ma-input ma-select
-                                       ma-select--default
+                                       ma-select--small
                                        ma-select--tertiary
                                        ma-select--border-round"
                                 ng-model="vm.form.language"
@@ -79,36 +79,28 @@
 
 
 
-        <!-------------- START: CHANGE LANGUAGE (MD AND LG SCREEN) ------------>
+        <!--------------- START: JOIN SECTION (MD AND LG SCREEN) -------------->
         <div class="ma-header__block
                     ma-header--transparent__block
                     ma-header--transparent__block--right
                     pull-right">
 
-            <!-- Default Select Input -->
-            <div class="form-group ma-form-group">
-                <div class="ma-select-container
-                            ma-select-container--default
-                            ma-select-container--tertiary">
-                    <select id="languageSelect"
-                            class="ma-input ma-select
-                                   ma-select--default
-                                   ma-select--tertiary
-                                   ma-select--border-round"
-                            ng-model="vm.form.language"
-                            ng-change="vm.changeLanguage()"
-                            name="language">
-                        <option value="es" selected="selected" translate>
-                            %header.lang.options.es.text
-                        </option>
-                        <option value="en" translate>
-                            %header.lang.options.en.text
-                        </option>
-                    </select>
-                </div>
+            <div style="display: inline-block">
+                <span style="color: white; font-size:15px;margin-right: 10px;">Join as: </span>
+                <button class="ma-btn ma-btn--alert ma-btn--default" style="margin-right: 6px">
+                    Student
+                </button>
+                <button class="ma-btn ma-btn--alert ma-btn--default" style="margin-right: 6px">
+                    Teacher
+                </button>
+                <button class="ma-btn ma-btn--alert ma-btn--default">
+                    School
+                </button>
+
             </div>
+
         </div>
-        <!--              END: CHANGE LANGUAGE (MD AND LG SCREEN)            -->
+        <!--              END: JOIN SECTION (MD AND LG SCREEN)               -->
 
 
 
@@ -121,7 +113,7 @@
 
 <!--                     START:  STUDENT LANDING PAGE                        -->
 <!----------------------------------------------------------------------------->
-<div class="studentLandingPage">
+<div class="landingPage">
 
     <!--------------------------- START: HERO BLOCK --------------------------->
     <section class="ma-hero">
@@ -136,18 +128,18 @@
 
 		<div class="ma-hero__wrapper text-center">
 
-			<h1 class="ma-hero__wrapper__title animated fadeIn" translate>
-                %landing.student.puv
+			<h1 class="ma-hero__wrapper__title animated fadeIn" translate style="font-size: 43px;font-weight: 600;margin-top: 120px;">
+                Find a language Teacher / School
             </h1>
-            <h2 class="ma-hero__wrapper__description animated fadeIn" translate>
-                %landing.student.puv.description
+            <h2 class="ma-hero__wrapper__description animated fadeIn" translate style="font-size: 22px;margin-top: 27px;">
+                Waysily is a community-based free platform that helps you find local language teachers/schools
             </h2>
 
-			<div class="ma-hero__wrapper__btn-container">
-                <button class="ma-btn ma-btn--primary ma-btn--large"
-                        ng-click="vm.goToEarlyAccessForm()" translate>
-                    %landing.student.get_early_button.text
-                </button>
+			<div class="ma-hero__wrapper__btn-container" style="margin-top: 60px;">
+                <a class="ma-btn ma-btn--primary ma-btn--large"
+                        ui-sref="page.searchPage" href translate>
+                    EXPLORE
+                </a>
 			</div>
 
             <div class="hidden-xs ma-hero__wrapper__go-down row">
@@ -163,260 +155,293 @@
 
 
 
-    <!--------------------------- START: TITLE BLOCK -------------------------->
-    <section class="studentLandingPage__title-block">
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                <h2 class="margin-reset" translate>
-                    %landing.student.how_work.title.text
-                </h2>
+    <!------------------------- START: OUR MISSION BLOCK ---------------------->
+    <section class="landingPage__mission-block space-top-8 space-11 container">
+        <div class="row center-xs">
+            <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
+            <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8 text-center">
+                <i class="ma-logo
+                          ma-logo--primary-short"></i>
             </div>
-
+            <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
         </div>
-    </section>
-    <!--                          END: TITLE BLOCK                           -->
-
-
-
-    <!--------------------- START: HOW DOES IT WORK BLOCK --------------------->
-    <section class="studentLandingPage__how-work-block how-work">
-
-        <!-- Step 1: Map (image-right) -->
-        <div class="row middle-xs center-xs start-sm start-md start-lg
-                    how-work__step how-work__step--image-right space-8">
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-block">
-                <div class="text-block__text">
-                    <h2 translate>
-                        %landing.student.how_work.step_1.title.text
-                    </h2>
-                    <p translate>
-                        %landing.student.how_work.step_1.description.text
-                    </p>
-                </div>
+        <div class="row center-xs">
+            <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
+            <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8 text-center">
+                <h2>Our mission</h2>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6
-                        image-block text-center">
-                <img class="image-block__image"
-                     src="../../../assets/images/step-map.png" alt=""/>
-            </div>
+            <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
         </div>
-
-        <div class="ma-separator-dashed-image space-8 container"></div>
-
-        <!-- Step 2: Profile (image-left) -->
-        <div class="row middle-xs center-xs start-sm start-md start-lg
-                    how-work__step how-work__step--image-left space-8">
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6
-                        image-block text-center">
-                <img class="image-block__image"
-                     src="../../../assets/images/step-profile.png" alt=""/>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6
-                        text-block">
-                <div class="text-block__text">
-                    <h2 translate>
-                        %landing.student.how_work.step_2.title.text
-                    </h2>
-                    <p translate>
-                        %landing.student.how_work.step_2.description.text
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="ma-separator-dashed-image space-8 container"></div>
-
-        <!-- Step 3: Points (image-right) -->
-        <div class="row middle-xs center-xs start-sm start-md start-lg
-                    how-work__step how-work__step--image-right space-8">
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6
-                        text-block">
-                <div class="text-block__text">
-                    <h2 translate>
-                        %landing.student.how_work.step_3.title.text
-                    </h2>
-                    <p translate>
-                        %landing.student.how_work.step_3.description.text
-                    </p>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6
-                        image-block text-center">
-                <img class="image-block__image"
-                     src="../../../assets/images/step-points.png" alt=""/>
-            </div>
-        </div>
-
-        <div class="ma-separator-dashed-image space-8 container"></div>
-
-        <!-- Step 4: Request (image-left) -->
-        <div class="row middle-xs center-xs start-sm start-md start-lg
-                    how-work__step how-work__step--image-left space-8">
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6
-                        image-block text-center">
-                <img class="image-block__image"
-                     src="../../../assets/images/step-request.png" alt=""/>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6
-                        text-block">
-                <div class="text-block__text">
-                    <h2 translate>
-                        %landing.student.how_work.step_4.title.text
-                    </h2>
-                    <p translate>
-                        %landing.student.how_work.step_4.description.text
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="ma-separator-dashed-image space-8 container"></div>
-
-        <!-- Step 5: Meeting (image-right) -->
-        <div class="row middle-xs center-xs start-sm start-md start-lg
-                    how-work__step how-work__step--image-right space-8">
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6
-                        text-block">
-                <div class="text-block__text">
-                    <h2 translate>
-                        %landing.student.how_work.step_5.title.text
-                    </h2>
-                    <p translate>
-                        %landing.student.how_work.step_5.description.text
-                    </p>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6
-                        image-block text-center">
-                <img class="image-block__image"
-                     src="../../../assets/images/step-meeting.png" alt=""/>
-            </div>
-        </div>
-
-        <div class="ma-separator-dashed-image space-8 container"></div>
-
-        <!-- Step 6: Rate (video) -->
-        <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-6 text-center">
-                <h2 translate>
-                    %landing.student.how_work.step_6.title.text
-                </h2>
-                <p class="ma-p ma-p--large" translate>
-                    %landing.student.how_work.step_6.description.text
+        <div class="row center-xs">
+            <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
+            <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8 text-center">
+                <p class="ma-p ma-p--large">
+                    Darle a todos el lugar perfecto para encontrar profesores,
+                    escuelas y personas para aprender un idioma.
+                    <div class="ma-label
+                                ma-label--simple
+                                ma-label--simple--large
+                                ma-label--simple--primary">
+                        (Gratis, y siempre lo será)
+                    </div>
                 </p>
-                <video preload="auto" loop="loop" id="like-video" class="video-playing" autoplay>
-                    <source src="../../../assets/videos/like-button.mp4" type="video/mp4">
-                    <source src="../../../assets/videos/like-button.mkv">
-                </video>
+
+                <h3 class="hidden">Darle a todos el lugar perfecto para encontrar profesores y
+                    escuelas de idiomas, además personas alrededor del mundo para
+                    aprender un idioma.
+                    <div class="ma-label ma-label--large ma-label--primary">
+                        (Gratis, y siempre lo será)</div>
+                    </h3>
             </div>
-            <div class="col-md-3"></div>
+            <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
         </div>
 
     </section>
-    <!--                    END: HOW DOES IT WORK BLOCK                      -->
+    <!--                        END: OUR MISSION BLOCK                       -->
 
 
+    <div class="ma-separator-dashed-image space-11 container"></div>
 
-    <!--------------------- START: GET EARLY ACCESS BLOCK --------------------->
-    <section class="studentLandingPage__early-access-block">
+
+    <!------------------------ START: OUR PROGRESS BLOCK ---------------------->
+    <section class="landingPage__progress-block space-top-11 space-11 container">
+
+        <div class="row center-xs space-5">
+            <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
+            <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8 text-center">
+                <h2 class="margin-reset">Our progress</h2>
+            </div>
+            <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
+        </div>
+
+        <div class="row center-xs">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 space-5">
+                        <div class="country-progress-block
+                                    country-progress-block--first text-left" style="
+                                    background-image: url('../../../../assets/images/colombia.jpg');
+                                    background-size: cover;
+                                    background-position: center;
+                                    width: 100%;
+                                    height: 100%;
+                                    padding: 30px 20px 15px 30px;
+                                    border-radius: 3px;
+                                    ">
+                            <h2 class="margin-reset space-3" style="color: white;text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">Colombia</h2>
+                            <p class="ma-p ma-p--large text-right margin-reset" style="color: white;font-weight: 600;text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                                30 Schools
+                            </p>
+                            <p class="ma-p ma-p--large text-right margin-reset" style="color: white;font-weight: 600;text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                                10 Teachers
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 space-5">
+                        <div class="country-progress-block
+                                    country-progress-block--second text-left"
+                                    style="background-image: url('../../../../assets/images/guatemala.jpg');
+                                    background-size: cover;
+                                    background-position: center;
+                                    width: 100%;
+                                    height: 100%;
+                                    padding: 30px 20px 15px 30px;
+                                    border-radius: 3px;
+                                    opacity:0.5;">
+                            <h2 class="margin-reset space-3" style="color: white;text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">Guatemala</h2>
+                            <p class="ma-p ma-p--large text-center" style="color: white;font-weight: 600;text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                                Coming soon
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 space-5">
+                        <div class="country-progress-block
+                                    country-progress-block--third text-left"
+                                        style="background-image: url('../../../../assets/images/mexico.jpg');
+                                        background-size: cover;
+                                        background-position: center;
+                                        width: 100%;
+                                        height: 100%;
+                                        padding: 30px 20px 15px 30px;
+                                        border-radius: 3px;
+                                        opacity:0.5;">
+                            <h3 class="margin-reset space-3" style="color: white;text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">Mexico</h3>
+                            <p class="ma-p ma-p--large text-center" style="color: white;font-weight: 600;text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                                Coming soon
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!--                       END: OUR PROGRESS BLOCK                       -->
+
+
+    <div class="ma-separator-dashed-image space-12 container"></div>
+
+
+    <!-------------------- START: RECOMMEND SECTION BLOCK --------------------->
+    <section class="landingPage__recommend-block space-top-12 space-12 container">
+
+        <!-- RECOMMEND NEW COUNTRY -->
         <div class="row">
-
-            <div class="col-sm-3 col-md-3 col-lg-3"></div>
-
-            <!-- form block -->
-            <div class="studentLandingPage__early-access-block__form-block
-                        col-sm-6 col-md-6 col-lg-6 center-block text-center"
-                 ng-class="{'hidden' : vm.success}">
-                <!-- title -->
-                <h2 class="margin-reset space-top-2 space-2" translate>
-                    %landing.student.notify_block.title.text
-                </h2>
-                <!-- description text -->
-                <p class="ma-p ma-p--large" translate>
-                    %landing.student.notify_block.description.text
-                </p>
-                <!-- form -->
-                <form>
-
-                    <div class="form-group">
-                        <fieldset class="space-3">
-
-                            <input class="ma-input ma-input--large"
-                                   type="email" name="email"
-                                   ng-model="vm.form.userData.email"
-                                   translate
-                                   translate-attr-placeholder="%landing.student.input_email.placeholder.text">
-
-                            <div class="row margin-reset">
-                               <div class="col-xs-12 col-sm-12
-                                           col-md-12 col-lg-12 padding-reset">
-                                   <a class="ma-link ma-link--box
-                                             ma-link--box--primary
-                                             space-top-1 pull-right"
-                                      ng-class="{'hidden' : vm.addComment}"
-                                      ng-click="vm.showCommentsTextarea()"
-                                      href="#"
-                                      translate>
-                                      %landing.student.add_comment.button.text
-                                   </a>
-                               </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="row center-xs middle-xs">
+                    <div class="col-md-6 text-center">
+                        <label for="recommend-country-input" style="font-size:20px;" translate>
+                            Que pais te gustaria que incluyeramos en Waysily?
+                        </label>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <div class="row middle-xs">
+                            <div class="col-xs-9 col-sm-9 col-md-10 col-lg-10">
+                                <div class="form-group ma-form-group margin-reset">
+                                    <div class="ma-select-container
+                                                ma-select-container--large" style="width:100%;">
+                                        <select id="teacher-typeOfImmersion-input"
+                                                class="ma-input ma-select
+                                                       ma-select--large
+                                                       ma-select--border-round"
+                                                ng-model="vm.typeObject"
+                                                ng-options="type.value | translate disable when type.disabled for type in vm.typeOfImmersionList track by type.code"
+                                                name="teacher[type]" class="form-control">
+                                                <option value="" disabled selected translate>
+                                                    Islas Georgia del Sur y Sandwich del Sur
+                                                </option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-
-                            <input class="ma-input ma-input--large animated fadeIn space-top-3"
-                                   ng-class="{'hidden' : !vm.addComment}"
-                                   type="text" name="name"
-                                   ng-model="vm.form.userData.name"
-                                   translate
-                                   translate-attr-placeholder="%landing.student.input_name.placeholder.text">
-
-                            <div class="form-group ma-form-group text-left space-top-3 animated fadeIn" ng-class="{'hidden' : !vm.addComment}">
-                               <textarea id="commentsTextArea"
-                                         name="user_profile_info[about]"
-                                         class="ma-input ma-input--large ma-textarea"
-                                         ng-model="vm.form.userData.comment"
-                                         translate
-                                         translate-attr-placeholder="%landing.student.input_comment.placeholder.text"
-                                         rows="5" cols="40"></textarea>
+                            <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-left">
+                                <!-- Send Button -->
+                                <button class="ma-btn ma-btn--primary ma-btn--large"
+                                        style="padding: 12px 17px 12px 15px;"
+                                        ng-click="vm._addNewImmersion()"
+                                        translate>
+                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                </button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                        </fieldset>
+        <hr>
 
-                        <button name="btn"
-                                class="ma-btn
-                                       ma-btn--large
-                                       ma-btn--secondary"
-                                ng-click="vm.createEarlyAdopter()"
-                                ng-disabled="vm.sending">
-                                <span ng-class="{'hidden' : vm.sending}"
-                                      translate>
-                                    %landing.student.notify_block.send_button.text
-                                </span>
-                                <span ng-class="{'hidden' : !vm.sending}"
-                                      translate>
-                                    %landing.student.notify_block.send_button.loading.text
-                                </span>
+        <!-- RECOMMEND TEACHER -->
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="row center-xs middle-xs">
+                    <div class="col-md-6 text-center">
+                        <label for="recommend-teacher-input" style="font-size:20px;" translate>
+                            Conoces algún profesor que recomendarias para que haga parte de Waysily?
+                        </label>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <!-- Recommend Button -->
+                        <button class="ma-btn ma-btn--primary ma-btn--large"
+                                ng-click="vm._addNewImmersion()"
+                                translate>
+                            Recomendar Profesor
                         </button>
                     </div>
-                </form>
+                </div>
             </div>
-
-            <div class="studentLandingPage__early-access-block__form-block
-                        col-sm-6 col-md-6 col-lg-6 center-block text-center"
-                 ng-class="{'hidden' : !vm.success}">
-
-                <!-- title -->
-                <h2 class="margin-reset space-top-2 space-2" translate>
-                    %landing.student.notify_block.success_msg.text
-                </h2>
-
-            </div>
-
-            <div class="col-sm-3 col-md-3 col-lg-3"></div>
-
         </div>
+
+        <hr>
+
+        <!-- RECOMMEND SCHOOL -->
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="row center-xs middle-xs">
+                    <div class="col-md-6 text-center">
+                        <label for="recommend-school-input" style="font-size:20px;" translate>
+                            Estudiaste en alguna escuela y tu experiencia fue grandiosa?
+                        </label>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <!-- Recommend Button -->
+                        <button class="ma-btn ma-btn--primary ma-btn--large"
+                                ng-click="vm._addNewImmersion()"
+                                translate>
+                            Recomendar Escuela
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </section>
-    <!--                    END: GET EARLY ACCESS BLOCK                      -->
+    <!--                    END: RECOMMEND SECTION BLOCK                     -->
+
+
+    <div class="ma-separator-dashed-image space-9 container"></div>
+
+
+    <!--------------------- START: GET EARLY ADOPTERS BLOCK ------------------->
+    <section class="landingPage__early-adopter-block space-top-9 space-12 container">
+        <div class="row center-xs space-2">
+            <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
+            <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8 text-center">
+                <i class="ma-logo
+                          ma-logo--primary-short"></i>
+            </div>
+            <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
+        </div>
+        <div class="row center-xs space-3">
+            <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
+            <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8 text-center">
+                <h2 class="margin-reset">Stay Connected!</h2>
+            </div>
+            <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
+        </div>
+        <div class="row center-xs space-2">
+            <div class="col-xs-3 col-sm-4 col-md-4 col-lg-4"></div>
+            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 text-center">
+                <p class="ma-p ma-p--large">
+                    Obtén la lista de nuevos profesores y escuelas en tu bandeja de entrada.
+                </p>
+            </div>
+            <div class="col-xs-3 col-sm-4 col-md-4 col-lg-4"></div>
+        </div>
+
+        <div class="row center-xs">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                <div class="row middle-xs">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <form class="form-inline">
+                          <div class="form-group" style="margin-right: 5px;">
+                            <label class="sr-only" for="exampleInputAmount">
+                                enter email address
+                            </label>
+                            <div class="input-group">
+                              <input class="ma-input
+                                            ma-input--large
+                                            ma-input--border-round"
+                                     type="text"
+                                     placeholder="Enter Email Address"
+                                     name="" value="">
+                            </div>
+                          </div>
+                          <button class="ma-btn ma-btn--primary ma-btn--large"
+                                  style="padding: 12px 17px 12px 15px;"
+                                  ng-click="vm._addNewImmersion()"
+                                  translate>
+                              <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                          </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!--                     END: GET EARLY ADOPTERS BLOCK                   -->
 
 </div>
 <!--                      END: STUDENT LANDING PAGE                          -->

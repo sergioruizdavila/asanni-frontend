@@ -81,7 +81,7 @@ module app.pages.landingPage {
                     email: '',
                     comment: ''
                 },
-                language: 'en'
+                language: this.$translate.use() || 'en'
             };
 
             this.success = false;

@@ -6,7 +6,7 @@
     function config($stateProvider) {
         $stateProvider
             .state('page.landingPage', {
-            url: '/landing/student',
+            url: '/main',
             views: {
                 'container': {
                     templateUrl: 'app/pages/landingPage/landingPage.html',

@@ -35,6 +35,10 @@
         font-size: $input-font-size-large;
     }
 
+    &--border-round {
+        border-radius: $select-borderRound-radius;
+    }
+
     &--invalid {
         background-color: #fff2ef;
         border-color: #ffd1c4;
