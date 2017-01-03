@@ -253,8 +253,21 @@ body.mainApp {
         }
         &--primary-short {
             background-image: url($logo-path-primary-short);
-            height: $logo-primary-short-height;
-            width: $logo-primary-short-width;
+
+            &--small {
+                height: 40px;
+                width: 40px;
+            }
+
+            &--default {
+                height: $logo-primary-short-height;
+                width: $logo-primary-short-width;
+            }
+
+            &--large {
+                height: 81px;
+                width: 81px;
+            }
         }
     }
 

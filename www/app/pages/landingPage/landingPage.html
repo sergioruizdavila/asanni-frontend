@@ -199,7 +199,8 @@
             <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
             <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8 text-center">
                 <i class="ma-logo
-                          ma-logo--primary-short"></i>
+                          ma-logo--primary-short
+                          ma-logo--primary-short--default"></i>
             </div>
             <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
         </div>
@@ -312,7 +313,7 @@
     <section class="landingPage__recommend-block space-top-12 space-12 container">
 
         <!-- RECOMMEND NEW COUNTRY -->
-        <div class="row">
+        <div class="row space-2">
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="row center-xs middle-xs">
                     <div class="col-md-6 text-center">
@@ -330,11 +331,12 @@
                                                 class="ma-input ma-select
                                                        ma-select--large
                                                        ma-select--border-round"
-                                                ng-model="vm.typeObject"
-                                                ng-options="type.value | translate disable when type.disabled for type in vm.typeOfImmersionList track by type.code"
-                                                name="teacher[type]" class="form-control">
+                                                ng-model="vm.countryObject"
+                                                ng-class="{'ma-input--invalid': !vm.validate.country.valid}"
+                                                ng-options="country.value | translate for country in vm.listCountries track by country.code"
+                                                name="recommend[country]" class="form-control">
                                                 <option value="" disabled selected translate>
-                                                    Islas Georgia del Sur y Sandwich del Sur
+                                                    %create.teacher.location.form.cntry.option_list.text
                                                 </option>
                                         </select>
                                     </div>
@@ -347,9 +349,13 @@
                                                ma-btn--large
                                                ma-btn--onlyIcon
                                                ma-btn--onlyIcon--large"
-                                        ng-click="vm._addNewImmersion()"
-                                        translate>
-                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                        ng-click="vm._sendCountryFeedback()"
+                                        ng-disabled="vm.infoCountry.disabled">
+                                    <i  ng-show="vm.infoCountry.sent"
+                                        class="fa fa-paper-plane" aria-hidden="true"></i>
+                                    <i ng-show="vm.infoCountry.sending"
+                                       class="fa fa-cog fa-spin fa-fw"></i>
+                                    <span class="sr-only">Loading...</span>
                                 </button>
                             </div>
                         </div>
@@ -414,11 +420,34 @@
 
     <!--------------------- START: GET EARLY ADOPTERS BLOCK ------------------->
     <section class="landingPage__early-adopter-block space-top-9 space-12 container">
+        <!-- large success message -->
+        <div class="row ma-large-message ma-large-message--success space-2"
+             ng-show="vm.infoNewUser.success">
+            <div class="col-md-12 text-center">
+                <p class="ma-p ma-p--default ma-p--success margin-reset">
+                    <span>
+                        ¡Gracias!, Ya está todo listo. Te agregaremos a nuestra lista.
+                    </span>
+                </p>
+            </div>
+        </div>
+        <!-- large error message -->
+        <div class="row ma-large-message ma-large-message--alert space-2"
+             ng-show="!vm.validate.email.valid">
+            <div class="col-md-12 text-center">
+                <p class="ma-p ma-p--default ma-p--alert margin-reset">
+                    <span translate>
+                        %global.validation.email.message.text
+                    </span>
+                </p>
+            </div>
+        </div>
         <div class="row center-xs space-2">
             <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
             <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8 text-center">
                 <i class="ma-logo
-                          ma-logo--primary-short"></i>
+                          ma-logo--primary-short
+                          ma-logo--primary-short--default"></i>
             </div>
             <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
         </div>
@@ -453,18 +482,25 @@
                                             ma-input--large
                                             ma-input--border-round"
                                      type="text"
+                                     ng-model="vm.form.userData.email"
+                                     ng-class="{'ma-input--invalid': !vm.validate.email.valid}"
                                      placeholder="Enter Email Address"
                                      name="" value="">
                             </div>
                           </div>
+                          <!-- Send Button -->
                           <button class="ma-btn
                                          ma-btn--primary
                                          ma-btn--large
                                          ma-btn--onlyIcon
                                          ma-btn--onlyIcon--large"
-                                  ng-click="vm._addNewImmersion()"
-                                  translate>
-                              <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                  ng-click="vm._createEarlyAdopter()"
+                                  ng-disabled="vm.infoNewUser.disabled">
+                              <i  ng-show="vm.infoNewUser.sent"
+                                  class="fa fa-paper-plane" aria-hidden="true"></i>
+                              <i ng-show="vm.infoNewUser.sending"
+                                 class="fa fa-cog fa-spin fa-fw"></i>
+                              <span class="sr-only">Loading...</span>
                           </button>
                         </form>
                     </div>

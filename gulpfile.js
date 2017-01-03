@@ -28,6 +28,8 @@ var paths = {
         "www/app/core/s3Upload/s3Upload.service.js",
         "www/app/core/restApi/restApi.config.js",
         "www/app/core/restApi/restApi.service.js",
+        "www/app/models/feedback/feedback.model.js",
+        "www/app/models/feedback/feedback.service.js",
         "www/app/models/user/user.model.js",
         "www/app/models/user/user.service.js",
         "www/app/models/student/student.model.js",

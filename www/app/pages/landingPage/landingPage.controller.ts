@@ -27,12 +27,25 @@ module app.pages.landingPage {
     export interface ILandingForm {
         userData: IUserData;
         language: string;
+        feedback: app.models.feedback.Feedback;
     }
 
     export interface IUserData {
         name: string;
         email: string;
         comment: string;
+    }
+
+    export interface IFormStatus {
+        success: boolean;
+        sending: boolean;
+        sent: boolean;
+        disabled: boolean;
+    }
+
+    interface ILandingValidate {
+        country: app.core.util.functionsUtil.IValid;
+        email: app.core.util.functionsUtil.IValid;
     }
 
     export interface ILandingError {
@@ -50,15 +63,22 @@ module app.pages.landingPage {
         /*           PROPERTIES           */
         /**********************************/
         form: ILandingForm;
-        success: boolean;
-        sending: boolean;
+        infoCountry: IFormStatus;
+        infoNewUser: IFormStatus;
+        validate: ILandingValidate;
+        countryObject: app.core.interfaces.IDataFromJsonI18n;
+        listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
         // --------------------------------
 
 
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = ['$state',
                                  '$translate',
-                                 'mainApp.pages.landingPage.LandingPageService'];
+                                 'mainApp.core.util.messageUtilService',
+                                 'mainApp.core.util.FunctionsUtilService',
+                                 'mainApp.pages.landingPage.LandingPageService',
+                                 'mainApp.models.feedback.FeedbackService',
+                                 'mainApp.core.util.GetDataStaticJsonService'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -66,7 +86,11 @@ module app.pages.landingPage {
         constructor(
             private $state: ng.ui.IStateService,
             private $translate: angular.translate.ITranslateService,
-            private LandingPageService: app.pages.landingPage.ILandingPageService) {
+            private messageUtil: app.core.util.messageUtil.IMessageUtilService,
+            private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
+            private LandingPageService: app.pages.landingPage.ILandingPageService,
+            private FeedbackService: app.models.feedback.IFeedbackService,
+            private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,) {
 
             this._init();
 
@@ -81,12 +105,37 @@ module app.pages.landingPage {
                     email: '',
                     comment: ''
                 },
-                language: this.$translate.use() || 'en'
+                language: this.$translate.use() || 'en',
+                feedback: new app.models.feedback.Feedback()
             };
 
-            this.success = false;
+            //Build Countries select lists
+            this.listCountries = this.getDataFromJson.getCountryi18n();
 
-            this.sending = false;
+            // Country Select List Structure
+            this.countryObject = {code: '', value: ''};
+
+            // Init Country form status
+            this.infoCountry = {
+                success: false,
+                sending: false,
+                sent: true,
+                disabled: false
+            };
+
+            // Init New User form status
+            this.infoNewUser = {
+                success: false,
+                sending: false,
+                sent: true,
+                disabled: false
+            };
+
+            // Build validate object fields
+            this.validate = {
+                country: {valid: true, message: ''},
+                email: {valid: true, message: ''}
+            };
 
             this.activate();
         }
@@ -111,38 +160,85 @@ module app.pages.landingPage {
             document.querySelector('.landingPage__early-access-block').scrollIntoView({ behavior: 'smooth' });
         }
 
-        goDown(): void {
-            // Scroll to a certain element
-            document.querySelector('.landingPage__title-block').scrollIntoView({ behavior: 'smooth' });
+        private _sendCountryFeedback(): void {
+            let self = this;
+            this.form.feedback.NextCountry = this.countryObject.code;
+
+            if(this.form.feedback.NextCountry) {
+                this.infoCountry.sending = true;
+                this.infoCountry.sent = false;
+                this.infoCountry.disabled = true;
+                this.FeedbackService.createFeedback(this.form.feedback).then(
+                    function(response) {
+                        if(response.createdAt) {
+                            self.infoCountry.success = true;
+                            self.messageUtil.success('¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.');
+                            self.infoCountry.sent = true;
+                            self.infoCountry.sending = false;
+                            self.infoCountry.disabled = true;
+                            self.validate.country.valid = true;
+                            self.form.userData.email = '';
+                        } else {
+                            self.infoCountry.sending = false;
+                            self.infoCountry.disabled = false;
+                            self.validate.country.valid = true;
+                        }
+                    }
+                );
+            } else {
+                this.validate.country.valid = false;
+            }
+
         }
 
-        createEarlyAdopter(): void {
+        private _createEarlyAdopter(): void {
+            //CONSTANTS
+            const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
+            const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
+            const EMAIL_ENUM = app.core.util.functionsUtil.Validation.Email;
+            /***************************************************/
+
             // VARIABLES
             let self = this;
 
-            this.sending = true;
+            //Validate Email field
+            let email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
+            this.validate.email = this.functionsUtil.validator(this.form.userData.email, email_rules);
 
-            mixpanel.track("Click on Notify button", {
-                "name": this.form.userData.name || '*',
-                "email": this.form.userData.email,
-                "comment": this.form.userData.comment || '*'
-            });
+            if(this.validate.email.valid) {
+                this.infoNewUser.sending = true;
 
-            //TODO: Validate If email is not null
-            let userData = {
-                name: this.form.userData.name || '*',
-                email: this.form.userData.email,
-                comment: this.form.userData.comment || '*'
-            };
-            this.LandingPageService.createEarlyAdopter(userData).then(
-                function(response) {
-                    if(response.createdAt) {
-                        self.success = true;
-                    } else {
-                        self.sending = false;
+                mixpanel.track("Click on Notify button", {
+                    "name": this.form.userData.name || '*',
+                    "email": this.form.userData.email,
+                    "comment": this.form.userData.comment || '*'
+                });
+
+                //TODO: Validate If email is not null
+                let userData = {
+                    name: this.form.userData.name || '*',
+                    email: this.form.userData.email,
+                    comment: this.form.userData.comment || '*'
+                };
+                this.LandingPageService.createEarlyAdopter(userData).then(
+                    function(response) {
+                        if(response.createdAt) {
+                            self.infoNewUser.sent = true;
+                            self.infoNewUser.sending = false;
+                            self.infoNewUser.disabled = true;
+                            self.infoNewUser.success = true;
+                            self.validate.country.valid = true;
+                        } else {
+                            self.infoNewUser.sending = false;
+                            self.infoNewUser.disabled = false;
+                            self.infoNewUser.success = false;
+                            self.validate.email.valid = true;
+                        }
                     }
-                }
-            );
+                );
+            } else {
+                this.validate.email.valid = false;
+            }
         }
 
     }

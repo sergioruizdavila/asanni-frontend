@@ -114,7 +114,7 @@ var app;
                         for (var i = 0; i < validations.length; i++) {
                             switch (validations[i]) {
                                 case 0:
-                                    var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+                                    var pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                                     obj.valid = pattern.test(value);
                                     if (obj.valid == false) {
                                         obj.message = EMAIL_MESSAGE;

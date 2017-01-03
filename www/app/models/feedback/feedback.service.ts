@@ -1,28 +1,27 @@
 /**
- * LandingPageService
- * @description - Services related on Student Landing Page Model.
+ * FeedbackService
+ * @description - Services related on Feedback Model.
  * @constructor
  * @param {app.core.restApi.IRestApi} restApi - instance rest Api service.
  */
 
-module app.pages.landingPage {
+module app.models.feedback {
 
     'use strict';
 
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
-    export interface ILandingPageService {
-        createEarlyAdopter: (userData) => angular.IPromise<any>;
+    export interface IFeedbackService {
+        createFeedback: (feedback: app.models.feedback.Feedback) => angular.IPromise<any>;
     }
-
 
     /****************************************/
     /*           CLASS DEFINITION           */
     /****************************************/
-    export class LandingPageService implements ILandingPageService {
+    export class FeedbackService implements IFeedbackService {
 
-        static serviceId = 'mainApp.pages.landingPage.LandingPageService';
+        static serviceId = 'mainApp.models.feedback.FeedbackService';
 
         /**********************************/
         /*           PROPERTIES           */
@@ -41,7 +40,8 @@ module app.pages.landingPage {
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(private restApi: app.core.restApi.IRestApi) {
-
+            //LOG
+            console.log('feedback service instanced');
         }
 
         /**********************************/
@@ -49,20 +49,22 @@ module app.pages.landingPage {
         /**********************************/
 
         /**
-        * createEarlyAdopter
-        * @description - create early adopter object
-        * @use - this.LandingPageService.createEarlyAdopter();
+        * createFeedback
+        * @description - create Feedback entity on DB
         * @function
-        * @return {angular.IPromise<any>} promise - return early adopter object
+        * @params {app.models.feedback.Feedback} feedback - feedback Object
+        * @return {promise} promise - Return a promise of "Add Feedback Request".
+        * @return {object} response - Returns response about If request was success or error.
         */
-        createEarlyAdopter(userData): angular.IPromise<any> {
-            //VARIABLES
-            let url = 'early';
-
-            return this.restApi.create({url: url}, userData).$promise
-                .then(
-                    function(data) {
-                        return data;
+        createFeedback(feedback): ng.IPromise<any> {
+            var promise;
+            let url = 'feedbacks';
+            promise = this.restApi.create({ url: url }, feedback)
+                .$promise.then(
+                    function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
                     }
                 ).catch(
                     function(err) {
@@ -70,13 +72,15 @@ module app.pages.landingPage {
                         return err;
                     }
                 );
+
+            return promise;
         }
 
     }
 
     /*-- MODULE DEFINITION --*/
     angular
-        .module('mainApp.pages.landingPage')
-        .service(LandingPageService.serviceId, LandingPageService);
+        .module('mainApp.models.feedback', [])
+        .service(FeedbackService.serviceId, FeedbackService);
 
 }
