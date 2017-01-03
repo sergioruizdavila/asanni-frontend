@@ -47,10 +47,9 @@
         margin-top: -250px;
 
         &__title {
-            margin-top: 80px;
-            font-size: 74px;
-            font-weight: 300;
-            //max-width: 715px;
+            font-size: 43px;
+            font-weight: 600;
+            margin-top: 120px;
         }
 
         &__description {
@@ -60,11 +59,12 @@
             margin: auto;
             max-width: 660px;
             font-weight: 300;
+            margin-top: 27px;
         }
 
         &__btn-container {
             margin-bottom: 40px;
-            margin-top: 50px;
+            margin-top: 60px;
         }
 
         &__go-down {
@@ -104,13 +104,13 @@
             margin: auto;
 
             &__title {
-                font-size: 50px;
-                margin-top: 100px;
+                //font-size: 50px;
+                //margin-top: 100px;
             }
 
             &__description {
-                font-size: 18px;
-                line-height: 24px;
+                //font-size: 18px;
+                //line-height: 24px;
             }
         }
     }
@@ -140,15 +140,15 @@
              padding: 0 30px;
 
              &__title {
-                 font-size: 30px;
-                 margin-top: 120px;
+                 //font-size: 30px;
+                 //margin-top: 120px;
              }
 
              &__description {
-                 font-size: 18px;
+                 //font-size: 18px;
                  line-height: 24px;
              }
-             
+
          }
      }
  }
@@ -178,12 +178,12 @@
              padding: 0 30px;
 
              &__title {
-                 font-size: 40px;
-                 margin-top: 130px;
+                 //font-size: 40px;
+                 //margin-top: 130px;
              }
 
              &__description {
-                 font-size: 25px;
+                 //font-size: 25px;
                  line-height: 35px;
              }
          }
@@ -215,12 +215,12 @@
              margin: auto;
 
              &__title {
-                 font-size: 50px;
-                 margin-top: 100px;
+                 //font-size: 50px;
+                 //margin-top: 100px;
              }
 
              &__description {
-                 font-size: 25px;
+                 //font-size: 25px;
                  line-height: 30px;
              }
          }
@@ -253,12 +253,12 @@
              margin-top: -250px;
 
              &__title {
-                 font-size: 50px;
-                 margin-top: 110px;
+                 //font-size: 50px;
+                 //margin-top: 110px;
              }
 
              &__description {
-                 font-size: 25px;
+                 //font-size: 25px;
                  line-height: 30px;
              }
          }
@@ -289,12 +289,12 @@
              margin-top: -250px;
 
              &__title {
-                 font-size: 70px;
-                 margin-top: 80px;
+                 //font-size: 70px;
+                 //margin-top: 80px;
              }
 
              &__description {
-                 font-size: 25px;
+                 //font-size: 25px;
                  line-height: 30px;
              }
          }

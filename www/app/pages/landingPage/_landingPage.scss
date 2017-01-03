@@ -64,89 +64,55 @@ $landing-earlyAccessBlock-formBlock-formGroup-padding: 0;
 
     }
 
-    /* how work block */
-    &__how-work-block {
-        margin-top: $landing-howWorkBlock-margin-top;
-        margin-bottom: $landing-howWorkBlock-margin-bottom;
+    /* our progress block */
+    &__progress-block {
+        .country-progress-block {
+            background-size: cover;
+            background-position: center;
+            width: 100%;
+            height: 100%;
+            padding: 30px 20px 15px 30px;
+            border-radius: 3px;
 
-        .row {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-
-            &:before {
-                display: inline-block;
+            &--first {
+                background-image: url('../../../../assets/images/colombia.jpg');
             }
 
-            &:after {
-                display: inline-block;
+            &--second {
+                background-image: url('../../../../assets/images/guatemala.jpg');
             }
 
-            padding: $landing-howWorkBlock-row-padding;
+            &--third {
+                background-image: url('../../../../assets/images/mexico.jpg');
+            }
 
-            .step-item {
-                position: relative;
-                padding: $landing-howWorkBlock-stepItem-padding;
-                overflow: hidden;
+            &--coming-soon {
+                opacity:0.5;
+            }
 
-                &:before {
-                    content: "";
-                    background-image: url($image-dashed-alternate);
-                    background-repeat: repeat-x;
-                    background-position: $landing-dashedAlternate-background-position;
-                    height: $landing-dashedAlternate-height;
-                    position: absolute;
-                    left: $landing-dashedAlternate-left;
-                    right: $landing-dashedAlternate-right;
-                    z-index: $landing-dashedAlternate-index;
-                    bottom: $landing-dashedAlternate-bottom;
-                }
+            &__text {
+                color: $white;
+                text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 
-                &--first {
-                    &:before {
-                         background: none;
-                    }
-                }
-
-                &--without-content {
-                    overflow: visible;
-                    padding: $landing-withoutContent-padding;
-                }
-
-                .step-content {
-                    width: $landing-howWorkBlock-stepContent-width;
-                    max-width: $landing-howWorkBlock-stepContent-max-width;
-                    position: absolute;
-                    top: $landing-howWorkBlock-stepContent-top;
-                    -webkit-transform: $landing-howWorkBlock-stepContent-transform;
-                    -ms-transform: $landing-howWorkBlock-stepContent-transform;
-                    transform: $landing-howWorkBlock-stepContent-transform;
-                    padding-left: $landing-howWorkBlock-stepContent-padding;
-
-                    p {
-                        font-size: $landing-howWorkBlock-stepContent-text-font-size;
-                    }
-                }
-
-                &--image-on-right {
-                    .step-image {
-                        float: right;
-                    }
-                }
-
-                &--image-on-left {
-                    .step-image {
-                        float: left;
-                    }
-                    .step-content {
-                        left: $landing-howWorkBlock-imageOnLeft-stepContent-left;
-                    }
+                &--strong {
+                    font-weight: 600;
                 }
             }
 
         }
+
     }
 
+    /* recommend block */
+    &__recommend-block {
+        label {
+            font-size: 20px;
+        }
+
+        .ma-select-container {
+            width: 100%;
+        }
+    }
 
     /* get early access block */
     &__early-access-block {

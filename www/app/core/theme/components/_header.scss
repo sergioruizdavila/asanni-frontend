@@ -131,6 +131,24 @@
             &--right {
                 padding-right: $header-transparent-block-right-padding;
             }
+
+            .ma-select-container {
+                vertical-align: middle;
+            }
+
+            &__buttons-list {
+                display: inline-block;
+
+                &__label {
+                    color: $white;
+                    font-size:15px;
+                    margin-right: 10px;
+                }
+
+                &__btn {
+                     margin-right: 6px;
+                }
+            }
         }
     }
 
