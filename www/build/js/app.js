@@ -70,6 +70,7 @@
         modalExperienceTmpl: 'components/modal/modalExperience/modalExperience.html',
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
+        modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
         userId: ''
     };
     angular
@@ -3532,9 +3533,11 @@ var app;
         var landingPage;
         (function (landingPage) {
             var LandingPageController = (function () {
-                function LandingPageController($state, $translate, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson) {
+                function LandingPageController($state, dataConfig, $translate, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson) {
                     this.$state = $state;
+                    this.dataConfig = dataConfig;
                     this.$translate = $translate;
+                    this.$uibModal = $uibModal;
                     this.messageUtil = messageUtil;
                     this.functionsUtil = functionsUtil;
                     this.LandingPageService = LandingPageService;
@@ -3649,11 +3652,25 @@ var app;
                         this.validate.email.valid = false;
                     }
                 };
+                LandingPageController.prototype._openSignUpModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalSignUpTmpl,
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    event.preventDefault();
+                };
                 return LandingPageController;
             }());
             LandingPageController.controllerId = 'mainApp.pages.landingPage.LandingPageController';
             LandingPageController.$inject = ['$state',
+                'dataConfig',
                 '$translate',
+                '$uibModal',
                 'mainApp.core.util.messageUtilService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.pages.landingPage.LandingPageService',

@@ -10,6 +10,7 @@
         modalExperienceTmpl: 'components/modal/modalExperience/modalExperience.html',
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
+        modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
         userId: ''
     };
     angular

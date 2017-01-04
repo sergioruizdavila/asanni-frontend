@@ -17,6 +17,7 @@ interface IDataConfig {
     modalExperienceTmpl: string;
     modalEducationTmpl: string;
     modalCertificateTmpl: string;
+    modalSignUpTmpl: string;
     userId: string;
 }
 
@@ -44,6 +45,7 @@ interface IDataConfig {
         modalExperienceTmpl: 'components/modal/modalExperience/modalExperience.html',
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
+        modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
         userId: ''
     };
 

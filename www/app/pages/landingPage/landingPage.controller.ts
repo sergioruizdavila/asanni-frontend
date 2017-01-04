@@ -73,7 +73,9 @@ module app.pages.landingPage {
 
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = ['$state',
+                                 'dataConfig',
                                  '$translate',
+                                 '$uibModal',
                                  'mainApp.core.util.messageUtilService',
                                  'mainApp.core.util.FunctionsUtilService',
                                  'mainApp.pages.landingPage.LandingPageService',
@@ -85,7 +87,9 @@ module app.pages.landingPage {
         /**********************************/
         constructor(
             private $state: ng.ui.IStateService,
+            private dataConfig: IDataConfig,
             private $translate: angular.translate.ITranslateService,
+            private $uibModal: ng.ui.bootstrap.IModalService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private LandingPageService: app.pages.landingPage.ILandingPageService,
@@ -214,7 +218,6 @@ module app.pages.landingPage {
                     "comment": this.form.userData.comment || '*'
                 });
 
-                //TODO: Validate If email is not null
                 let userData = {
                     name: this.form.userData.name || '*',
                     email: this.form.userData.email,
@@ -239,6 +242,29 @@ module app.pages.landingPage {
             } else {
                 this.validate.email.valid = false;
             }
+        }
+
+        /**
+        * _openSignUpModal
+        * @description - open Modal in order to add a New Teacher's Experience on Box
+        * @use - this._addEditExperience();
+        * @function
+        * @return {void}
+        */
+        private _openSignUpModal(): void {
+            let self = this;
+            // modal default options
+            let options: ng.ui.bootstrap.IModalSettings = {
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                templateUrl: this.dataConfig.modalSignUpTmpl,
+                controller: 'mainApp.components.modal.ModalSignUpController as vm'
+            };
+
+            var modalInstance = this.$uibModal.open(options);
+
+            event.preventDefault();
         }
 
     }
