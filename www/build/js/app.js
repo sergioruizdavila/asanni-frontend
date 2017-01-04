@@ -40,7 +40,7 @@
             prefix: prefix,
             suffix: suffix
         });
-        $translateProvider.preferredLanguage('es');
+        $translateProvider.preferredLanguage('en');
     }
 })();
 //# sourceMappingURL=app.module.js.map
@@ -62,7 +62,7 @@
     'use strict';
     var dataConfig = {
         currentYear: '2017',
-        baseUrl: 'http://127.0.0.1:8000/api/v1/',
+        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -695,6 +695,86 @@ var app;
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
 //# sourceMappingURL=restApi.service.js.map
+var app;
+(function (app) {
+    var models;
+    (function (models) {
+        var feedback;
+        (function (feedback) {
+            var Feedback = (function () {
+                function Feedback(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('Student Model instanced');
+                    this.id = obj.id;
+                    this.nextCountry = obj.nextCountry || '';
+                }
+                Object.defineProperty(Feedback.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Feedback.prototype, "NextCountry", {
+                    get: function () {
+                        return this.nextCountry;
+                    },
+                    set: function (nextCountry) {
+                        if (nextCountry === undefined) {
+                            throw 'Please supply next country';
+                        }
+                        this.nextCountry = nextCountry;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Feedback;
+            }());
+            feedback.Feedback = Feedback;
+        })(feedback = models.feedback || (models.feedback = {}));
+    })(models = app.models || (app.models = {}));
+})(app || (app = {}));
+//# sourceMappingURL=feedback.model.js.map
+var app;
+(function (app) {
+    var models;
+    (function (models) {
+        var feedback;
+        (function (feedback_1) {
+            'use strict';
+            var FeedbackService = (function () {
+                function FeedbackService(restApi) {
+                    this.restApi = restApi;
+                    console.log('feedback service instanced');
+                }
+                FeedbackService.prototype.createFeedback = function (feedback) {
+                    var promise;
+                    var url = 'feedbacks';
+                    promise = this.restApi.create({ url: url }, feedback)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
+                return FeedbackService;
+            }());
+            FeedbackService.serviceId = 'mainApp.models.feedback.FeedbackService';
+            FeedbackService.$inject = [
+                'mainApp.core.restApi.restApiService'
+            ];
+            feedback_1.FeedbackService = FeedbackService;
+            angular
+                .module('mainApp.models.feedback', [])
+                .service(FeedbackService.serviceId, FeedbackService);
+        })(feedback = models.feedback || (models.feedback = {}));
+    })(models = app.models || (app.models = {}));
+})(app || (app = {}));
+//# sourceMappingURL=feedback.service.js.map
 var app;
 (function (app) {
     var models;
@@ -3303,6 +3383,94 @@ var components;
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
 //# sourceMappingURL=modalCertificate.controller.js.map
+var components;
+(function (components) {
+    var modal;
+    (function (modal) {
+        var modalSignUp;
+        (function (modalSignUp) {
+            var ModalSignUpController = (function () {
+                function ModalSignUpController($uibModalInstance, functionsUtil, LandingPageService, messageUtil, $filter) {
+                    this.$uibModalInstance = $uibModalInstance;
+                    this.functionsUtil = functionsUtil;
+                    this.LandingPageService = LandingPageService;
+                    this.messageUtil = messageUtil;
+                    this.$filter = $filter;
+                    this._init();
+                }
+                ModalSignUpController.prototype._init = function () {
+                    var self = this;
+                    this.form = {
+                        email: ''
+                    };
+                    this.sending = false;
+                    this.validate = {
+                        email: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                ModalSignUpController.prototype.activate = function () {
+                    console.log('modalSignUp controller actived');
+                };
+                ModalSignUpController.prototype._validateForm = function () {
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
+                    var EMAIL_ENUM = 0;
+                    var formValid = true;
+                    var email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
+                    this.validate.email = this.functionsUtil.validator(this.form.email, email_rules);
+                    if (!this.validate.email.valid) {
+                        formValid = this.validate.email.valid;
+                    }
+                    return formValid;
+                };
+                ModalSignUpController.prototype.save = function () {
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        var self_1 = this;
+                        this.sending = true;
+                        mixpanel.track("Click on Notify button", {
+                            "name": '*',
+                            "email": this.form.email,
+                            "comment": '*'
+                        });
+                        var userData = {
+                            name: '*',
+                            email: this.form.email,
+                            comment: '*'
+                        };
+                        this.LandingPageService.createEarlyAdopter(userData)
+                            .then(function (response) {
+                            if (response.createdAt) {
+                                self_1.messageUtil.success('¡Gracias!, Ya está todo listo. Te agregaremos a nuestra lista.');
+                                self_1.$uibModalInstance.close();
+                            }
+                            else {
+                                self_1.sending = false;
+                            }
+                        });
+                    }
+                };
+                ModalSignUpController.prototype.close = function () {
+                    this.$uibModalInstance.close();
+                    event.preventDefault();
+                };
+                return ModalSignUpController;
+            }());
+            ModalSignUpController.controllerId = 'mainApp.components.modal.ModalSignUpController';
+            ModalSignUpController.$inject = [
+                '$uibModalInstance',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.pages.landingPage.LandingPageService',
+                'mainApp.core.util.messageUtilService',
+                '$filter'
+            ];
+            angular.module('mainApp.components.modal')
+                .controller(ModalSignUpController.controllerId, ModalSignUpController);
+        })(modalSignUp = modal.modalSignUp || (modal.modalSignUp = {}));
+    })(modal = components.modal || (components.modal = {}));
+})(components || (components = {}));
+//# sourceMappingURL=modalSignUp.controller.js.map
 (function () {
     'use strict';
     angular
