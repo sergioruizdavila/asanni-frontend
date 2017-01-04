@@ -38,7 +38,7 @@
   &.md-60 { font-size: 60px; }
   &.md-72 { font-size: 72px; }
 
-  /* Rules for using icons as black on a light background. */
+  /// ICONS COLOR
   &.md-primary {
       color: map-get($main-palette, primary);
 
@@ -53,7 +53,20 @@
       &.md-inactive { opacity: 0.7; }
   }
 
-  /* Rules for using icons as black on a light background. */
+  &.md-alert {
+      color: map-get($main-palette, alert);
+
+      &--clicked {
+          &:hover {
+            cursor: pointer;
+            color: shade(map-get($main-palette, alert), 100);
+            font-weight: bold;
+          }
+      }
+
+      &.md-inactive { opacity: 0.7; }
+  }
+
   &.md-dark {
       color: rgba(0, 0, 0, 0.54);
 
@@ -68,8 +81,6 @@
       &.md-inactive { color: rgba(0, 0, 0, 0.26); }
   }
 
-
-  /* Rules for using icons as white on a dark background. */
   &.md-light {
       color: rgba(255, 255, 255, 1);
 

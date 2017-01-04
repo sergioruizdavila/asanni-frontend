@@ -33,6 +33,17 @@
     <meta name="google-site-verification" content="sNQGm2AGNi9EyOzMeAKwKdSrNjqhxbW_9gNRWjMP1Rg" />
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <script src="https://use.fontawesome.com/99e7a6e2c6.js"></script>
+
+    <!-- Facebook Like Button -->
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v2.8&appId=392076184181252";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
     <!--     STYLES     -->
     <!-------------------->
 
@@ -109,7 +120,7 @@ mixpanel.init("86a48c88274599c662ad64edb74b12da");</script>
     <!-- libs (node modules libraries) -->
     <script src="build/js/vendor-libs.min.js"></script>
     <!-- main App: PRD -->
-    <script src="build/js/app.js"></script>
+    <!--script src="build/js/app.js"></script-->
 
     <!-- TODO: EL sourcemap no esta funcionando si en DEV solo coloco la etiqueta
         de arriba (build/js/app.js), asi que es necesario crear una tarea en gulp
@@ -120,7 +131,7 @@ mixpanel.init("86a48c88274599c662ad64edb74b12da");</script>
         y cree la etiqueta de arriba.) -->
 
     <!-- main App: DEV -->
-    <!--script src="app/app.module.js"></script>
+    <script src="app/app.module.js"></script>
     <script src="app/app.core.module.js"></script>
     <script src="app/app.values.js"></script>
     <script src="app/app.run.js"></script>
@@ -132,6 +143,8 @@ mixpanel.init("86a48c88274599c662ad64edb74b12da");</script>
     <script src="app/core/restApi/restApi.config.js"></script>
     <script src="app/core/restApi/restApi.service.js"></script>
     <script src="app/core/s3Upload/s3Upload.service.js"></script>
+    <script src="app/models/feedback/feedback.model.js"></script>
+    <script src="app/models/feedback/feedback.service.js"></script>
     <script src="app/models/user/user.model.js"></script>
     <script src="app/models/user/user.service.js"></script>
     <script src="app/models/student/student.model.js"></script>
@@ -152,11 +165,15 @@ mixpanel.init("86a48c88274599c662ad64edb74b12da");</script>
     <script src="components/modal/modalExperience/modalExperience.controller.js"></script>
     <script src="components/modal/modalEducation/modalEducation.controller.js"></script>
     <script src="components/modal/modalCertificate/modalCertificate.controller.js"></script>
+    <script src="components/modal/modalSignUp/modalSignUp.controller.js"></script>
     <script src="app/pages/main/main.config.js"></script>
     <script src="app/pages/main/main.controller.js"></script>
     <script src="app/pages/studentLandingPage/studentLandingPage.config.js"></script>
     <script src="app/pages/studentLandingPage/studentLandingPage.controller.js"></script>
     <script src="app/pages/studentLandingPage/studentLandingPage.service.js"></script>
+    <script src="app/pages/landingPage/landingPage.config.js"></script>
+    <script src="app/pages/landingPage/landingPage.controller.js"></script>
+    <script src="app/pages/landingPage/landingPage.service.js"></script>
     <script src="app/pages/signUpPage/signUpPage.config.js"></script>
     <script src="app/pages/signUpPage/signUpPage.controller.js"></script>
     <script src="app/pages/searchPage/searchPage.config.js"></script>
@@ -197,13 +214,14 @@ mixpanel.init("86a48c88274599c662ad64edb74b12da");</script>
     <script src="app/pages/createTeacherPage/teacherFinishSection/teacherFinishSection.config.js"></script>
     <script src="app/pages/createTeacherPage/teacherFinishSection/teacherFinishSection.controller.js"></script>
     <script src="app/pages/teacherProfilePage/teacherProfilePage.config.js"></script>
-    <script src="app/pages/teacherProfilePage/teacherProfilePage.controller.js"></script-->
+    <script src="app/pages/teacherProfilePage/teacherProfilePage.controller.js"></script>
 
 
     <!-- TODO: Buscar una forma mas segura de incluir google map API ya que esta expuesto el KEY-->
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y&libraries=places">
     </script>
+
 
 </body>
 

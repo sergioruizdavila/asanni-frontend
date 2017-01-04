@@ -8,12 +8,14 @@
         'mainApp.localStorage',
         'mainApp.core.restApi',
         'mainApp.core.s3Upload',
+        'mainApp.models.feedback',
         'mainApp.models.user',
         'mainApp.models.student',
         'mainApp.models.teacher',
         'mainApp.models.school',
         'mainApp.pages.main',
         'mainApp.pages.studentLandingPage',
+        'mainApp.pages.landingPage',
         'mainApp.pages.searchPage',
         'mainApp.pages.createTeacherPage',
         'mainApp.pages.teacherProfilePage',
@@ -60,7 +62,7 @@
     'use strict';
     var dataConfig = {
         currentYear: '2017',
-        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
+        baseUrl: 'http://127.0.0.1:8000/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -68,6 +70,7 @@
         modalExperienceTmpl: 'components/modal/modalExperience/modalExperience.html',
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
+        modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
         userId: ''
     };
     angular
@@ -260,7 +263,7 @@ var app;
                         for (var i = 0; i < validations.length; i++) {
                             switch (validations[i]) {
                                 case 0:
-                                    var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+                                    var pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                                     obj.valid = pattern.test(value);
                                     if (obj.valid == false) {
                                         obj.message = EMAIL_MESSAGE;
@@ -3475,7 +3478,7 @@ var app;
                     this.restApi = restApi;
                 }
                 StudentLandingPageService.prototype.createEarlyAdopter = function (userData) {
-                    var url = 'early/';
+                    var url = 'early';
                     return this.restApi.create({ url: url }, userData).$promise
                         .then(function (data) {
                         return data;
@@ -3498,6 +3501,224 @@ var app;
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
 //# sourceMappingURL=studentLandingPage.service.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.landingPage', [])
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.landingPage', {
+            url: '/main',
+            views: {
+                'container': {
+                    templateUrl: 'app/pages/landingPage/landingPage.html',
+                    controller: 'mainApp.pages.landingPage.LandingPageController',
+                    controllerAs: 'vm'
+                }
+            },
+            parent: 'page',
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = false;
+                    $rootScope.activeFooter = true;
+                }]
+        });
+    }
+})();
+//# sourceMappingURL=landingPage.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var landingPage;
+        (function (landingPage) {
+            var LandingPageController = (function () {
+                function LandingPageController($state, dataConfig, $translate, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson) {
+                    this.$state = $state;
+                    this.dataConfig = dataConfig;
+                    this.$translate = $translate;
+                    this.$uibModal = $uibModal;
+                    this.messageUtil = messageUtil;
+                    this.functionsUtil = functionsUtil;
+                    this.LandingPageService = LandingPageService;
+                    this.FeedbackService = FeedbackService;
+                    this.getDataFromJson = getDataFromJson;
+                    this._init();
+                }
+                LandingPageController.prototype._init = function () {
+                    this.form = {
+                        userData: {
+                            name: '',
+                            email: '',
+                            comment: ''
+                        },
+                        language: this.$translate.use() || 'en',
+                        feedback: new app.models.feedback.Feedback()
+                    };
+                    this.listCountries = this.getDataFromJson.getCountryi18n();
+                    this.countryObject = { code: '', value: '' };
+                    this.infoCountry = {
+                        success: false,
+                        sending: false,
+                        sent: true,
+                        disabled: false
+                    };
+                    this.infoNewUser = {
+                        success: false,
+                        sending: false,
+                        sent: true,
+                        disabled: false
+                    };
+                    this.validate = {
+                        country: { valid: true, message: '' },
+                        email: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                LandingPageController.prototype.activate = function () {
+                    var self = this;
+                    console.log('landingPage controller actived');
+                };
+                LandingPageController.prototype.changeLanguage = function () {
+                    this.$translate.use(this.form.language);
+                };
+                LandingPageController.prototype.goToEarlyAccessForm = function () {
+                    document.querySelector('.landingPage__early-access-block').scrollIntoView({ behavior: 'smooth' });
+                };
+                LandingPageController.prototype._sendCountryFeedback = function () {
+                    var self = this;
+                    this.form.feedback.NextCountry = this.countryObject.code;
+                    if (this.form.feedback.NextCountry) {
+                        this.infoCountry.sending = true;
+                        this.infoCountry.sent = false;
+                        this.infoCountry.disabled = true;
+                        this.FeedbackService.createFeedback(this.form.feedback).then(function (response) {
+                            if (response.createdAt) {
+                                self.infoCountry.success = true;
+                                self.messageUtil.success('¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.');
+                                self.infoCountry.sent = true;
+                                self.infoCountry.sending = false;
+                                self.infoCountry.disabled = true;
+                                self.validate.country.valid = true;
+                                self.form.userData.email = '';
+                            }
+                            else {
+                                self.infoCountry.sending = false;
+                                self.infoCountry.disabled = false;
+                                self.validate.country.valid = true;
+                            }
+                        });
+                    }
+                    else {
+                        this.validate.country.valid = false;
+                    }
+                };
+                LandingPageController.prototype._createEarlyAdopter = function () {
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
+                    var EMAIL_ENUM = 0;
+                    var self = this;
+                    var email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
+                    this.validate.email = this.functionsUtil.validator(this.form.userData.email, email_rules);
+                    if (this.validate.email.valid) {
+                        this.infoNewUser.sending = true;
+                        mixpanel.track("Click on Notify button", {
+                            "name": this.form.userData.name || '*',
+                            "email": this.form.userData.email,
+                            "comment": this.form.userData.comment || '*'
+                        });
+                        var userData = {
+                            name: this.form.userData.name || '*',
+                            email: this.form.userData.email,
+                            comment: this.form.userData.comment || '*'
+                        };
+                        this.LandingPageService.createEarlyAdopter(userData).then(function (response) {
+                            if (response.createdAt) {
+                                self.infoNewUser.sent = true;
+                                self.infoNewUser.sending = false;
+                                self.infoNewUser.disabled = true;
+                                self.infoNewUser.success = true;
+                                self.validate.country.valid = true;
+                            }
+                            else {
+                                self.infoNewUser.sending = false;
+                                self.infoNewUser.disabled = false;
+                                self.infoNewUser.success = false;
+                                self.validate.email.valid = true;
+                            }
+                        });
+                    }
+                    else {
+                        this.validate.email.valid = false;
+                    }
+                };
+                LandingPageController.prototype._openSignUpModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalSignUpTmpl,
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    event.preventDefault();
+                };
+                return LandingPageController;
+            }());
+            LandingPageController.controllerId = 'mainApp.pages.landingPage.LandingPageController';
+            LandingPageController.$inject = ['$state',
+                'dataConfig',
+                '$translate',
+                '$uibModal',
+                'mainApp.core.util.messageUtilService',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.pages.landingPage.LandingPageService',
+                'mainApp.models.feedback.FeedbackService',
+                'mainApp.core.util.GetDataStaticJsonService'];
+            landingPage.LandingPageController = LandingPageController;
+            angular
+                .module('mainApp.pages.landingPage')
+                .controller(LandingPageController.controllerId, LandingPageController);
+        })(landingPage = pages.landingPage || (pages.landingPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=landingPage.controller.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var landingPage;
+        (function (landingPage) {
+            'use strict';
+            var LandingPageService = (function () {
+                function LandingPageService(restApi) {
+                    this.restApi = restApi;
+                }
+                LandingPageService.prototype.createEarlyAdopter = function (userData) {
+                    var url = 'early';
+                    return this.restApi.create({ url: url }, userData).$promise
+                        .then(function (data) {
+                        return data;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                };
+                return LandingPageService;
+            }());
+            LandingPageService.serviceId = 'mainApp.pages.landingPage.LandingPageService';
+            LandingPageService.$inject = [
+                'mainApp.core.restApi.restApiService'
+            ];
+            landingPage.LandingPageService = LandingPageService;
+            angular
+                .module('mainApp.pages.landingPage')
+                .service(LandingPageService.serviceId, LandingPageService);
+        })(landingPage = pages.landingPage || (pages.landingPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=landingPage.service.js.map
 (function () {
     'use strict';
     angular

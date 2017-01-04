@@ -151,6 +151,7 @@ module app.pages.studentLandingPage {
                 email: this.form.userData.email,
                 comment: this.form.userData.comment || '*'
             };
+            
             this.StudentLandingPageService.createEarlyAdopter(userData).then(
                 function(response) {
                     if(response.createdAt) {

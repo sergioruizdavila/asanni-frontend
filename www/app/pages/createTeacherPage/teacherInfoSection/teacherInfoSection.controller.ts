@@ -224,7 +224,7 @@ module app.pages.createTeacherPage {
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
             const EMAIL_ENUM = app.core.util.functionsUtil.Validation.Email;
             const NUMBER_ENUM = app.core.util.functionsUtil.Validation.Number;
-            
+
             /***************************************************/
             //VARIABLES
             let formValid = true;

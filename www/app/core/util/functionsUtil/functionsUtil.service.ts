@@ -311,7 +311,7 @@ module app.core.util.functionsUtil {
                 switch (validations[i]) {
 
                     case Validation.Email:
-                        let pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+                        let pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                         obj.valid = pattern.test(value);
                         if(obj.valid == false) {
                             obj.message = EMAIL_MESSAGE;

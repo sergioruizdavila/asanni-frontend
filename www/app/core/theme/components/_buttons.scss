@@ -96,6 +96,18 @@
         }
     }
 
+    &--alert {
+        background-color: $button-alert-background;
+        color: $button-font-color;
+        border-bottom-color: $button-alert-border-color;
+
+        &:hover:enabled, &:focus {
+            background-color: $button-alert-background-hover;
+            text-decoration: none;
+            color: $button-font-color;
+        }
+    }
+
     &--transparent {
         background-color: transparent;
         color: $dark-gray;
@@ -116,6 +128,23 @@
             vertical-align: text-bottom;
         }
     }
+
+    /// BUTTON WITH ICON AND WITHOUT TEXT
+        &--onlyIcon {
+
+            &--small {
+                padding: 4px 9px 4px 8px;
+            }
+
+            &--default {
+                padding: 7px 12px 7px 11px;
+            }
+
+            &--large {
+                padding: 12px 17px 12px 15px;
+            }
+
+        }
 
 }
 

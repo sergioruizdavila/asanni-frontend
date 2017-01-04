@@ -12,6 +12,14 @@
     "%global.upload_file.button.text": "Cargar un archivo desde tu computadora",
     "%global.more.label.text": "+ Más",
     "%global.age.text": "años",
+    "%global.teacher.text": "Profesor",
+    "%global.teachers.text": "Profesores",
+    "%global.student.text": "Estudiante",
+    "%global.students.text": "Estudiantes",
+    "%global.school.text": "Escuela",
+    "%global.schools.text": "Escuelas",
+    "%global.coming_soon.text": "Próximamente",
+    "%global.loading.text": "Cargando...",
 
     "%global.validation.null.message.text": "Valor requerido",
     "%global.validation.empty.message.text": "Valor requerido",
@@ -57,6 +65,29 @@
     "%modal.certificate.form.date_received.text": "Fecha de recepción",
     "%modal.certificate.form.description.text": "¿Que aprendiste?",
     "%modal.certificate.form.description.placeholder.text": "e.g. Aprendi en profundidad el idioma, su historia y gramatica. Además aprendi la metodologia adecuada para enseñar.",
+
+    "__LANDING PAGE__": "",
+    "%landing.header.join.label.text": "Unirse como:",
+    "%landing.puv": "Encuentra un Profesor / Escuela de idiomas",
+    "%landing.puv.description": "Waysily es una plataforma gratuita basada en la comunidad que te ayuda a encontrar tutores / escuelas locales de idiomas.",
+    "%landing.explore.button.text": "EXPLORAR",
+
+    "%landing.mission.title.text": "Nuestra misión",
+    "%landing.mission.description.text": "Darle a todos el lugar perfecto para encontrar profesores, escuelas y personas alrededor del mundo para aprender un idioma.",
+    "%landing.mission.description.free.text": "(Gratis, y siempre lo será)",
+
+    "%landing.progress.title.text": "Nuestro progreso",
+
+    "%landing.recommend.cntry.text": "¿Qué país te gustaría que incluyéramos en Waysily?",
+    "%landing.recommend.teacher.text": "¿Conoces algún profesor que recomendarias para que haga parte de Waysily?",
+    "%landing.recommend.teacher.button.text": "Recomendar Profesor",
+    "%landing.recommend.school.text": "¿Estudiaste en alguna escuela y tuviste una experiencia grandiosa?",
+    "%landing.recommend.school.button.text": "Recomendar Escuela",
+
+    "%landing.get_user.message.success.text": "¡Gracias!, Ya está todo listo. Te agregaremos a nuestra lista.",
+    "%landing.get_user.title.text": "¡Mantente conectado!",
+    "%landing.get_user.description.text": "Obtén la lista de nuevos profesores y escuelas en tu bandeja de entrada.",
+    "%landing.get_user.input_email.placeholder.text": "Introducir tu email",
 
     "__STUDENT LANDING PAGE__":"",
     "%landing.student.puv": "Sumérgete en otra cultura",
@@ -285,6 +316,8 @@
 
     "__FOOTER__": "",
     "%footer.contact_us.title.text": "Contáctanos",
+    "%footer.made.label.text": "Hecho con",
+    "%footer.by.label.text": "por",
 
     "__SEX__": "",
     "%sex.M": "Hombre",
