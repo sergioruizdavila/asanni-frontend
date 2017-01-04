@@ -40,7 +40,7 @@
             prefix: prefix,
             suffix: suffix
         });
-        $translateProvider.preferredLanguage('es');
+        $translateProvider.preferredLanguage('en');
     }
 })();
 //# sourceMappingURL=app.module.js.map
