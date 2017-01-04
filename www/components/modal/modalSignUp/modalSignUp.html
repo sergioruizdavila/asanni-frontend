@@ -1,12 +1,12 @@
-<!----------------------------------------------------->
-<!--         ADD NEW TEACHER EDUCATION MODAL         -->
-<!----------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!--                            USER SIGN UP MODAL                           -->
+<!----------------------------------------------------------------------------->
 
-<div class="ma-box modalEducation">
+<div class="ma-box">
 
     <!--                              CONTENT                                -->
     <!------------------------------------------------------------------------->
-    <div class="ma-box__content modalEducation__content">
+    <div class="ma-box__content">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <i class="material-icons
@@ -18,7 +18,7 @@
         </div>
 
         <!--------------------- START: GET EARLY ADOPTERS BLOCK ------------------->
-        <section class="landingPage__early-adopter-block space-8">
+        <section class="space-8">
             <!-- large error message -->
             <div class="row ma-large-message
                         ma-large-message--alert space-2 space-top-2"
@@ -43,15 +43,17 @@
             <div class="row center-xs space-3">
                 <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
                 <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8 text-center">
-                    <h2 class="margin-reset">Stay Connected!</h2>
+                    <h2 class="margin-reset" translate>
+                        %landing.get_user.title.text
+                    </h2>
                 </div>
                 <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
             </div>
             <div class="row center-xs space-2">
                 <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
                 <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8 text-center">
-                    <p class="ma-p ma-p--large">
-                        Obtén la lista de nuevos profesores y escuelas en tu bandeja de entrada.
+                    <p class="ma-p ma-p--large" translate>
+                        %landing.get_user.description.text
                     </p>
                 </div>
                 <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
@@ -63,8 +65,9 @@
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <form class="form-inline">
                               <div class="form-group" style="margin-right: 5px;">
-                                <label class="sr-only" for="exampleInputAmount">
-                                    enter email address
+                                <label class="sr-only" for="exampleInputAmount"
+                                        translate>
+                                    %landing.get_user.input_email.placeholder.text
                                 </label>
                                 <div class="input-group">
                                   <input class="ma-input
@@ -73,7 +76,8 @@
                                          type="text"
                                          ng-model="vm.form.email"
                                          ng-class="{'ma-input--invalid': !vm.validate.email.valid}"
-                                         placeholder="Enter Email Address"
+                                         translate
+                                         translate-attr-placeholder="%landing.get_user.input_email.placeholder.text"
                                          name="" value="">
                                 </div>
                               </div>
@@ -89,7 +93,9 @@
                                       class="fa fa-paper-plane" aria-hidden="true"></i>
                                   <i ng-show="vm.sending"
                                      class="fa fa-cog fa-spin fa-fw"></i>
-                                  <span class="sr-only">Loading...</span>
+                                  <span class="sr-only" translate>
+                                      %global.loading.text
+                                  </span>
                               </button>
                             </form>
                         </div>

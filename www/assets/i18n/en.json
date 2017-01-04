@@ -12,6 +12,14 @@
     "%global.upload_file.button.text": "Upload a file from your computer",
     "%global.more.label.text": "+ More",
     "%global.age.text": "years old",
+    "%global.teacher.text": "Teacher",
+    "%global.teachers.text": "Teachers",
+    "%global.student.text": "Student",
+    "%global.students.text": "Students",
+    "%global.school.text": "School",
+    "%global.schools.text": "Schools",
+    "%global.coming_soon.text": "Coming soon",
+    "%global.loading.text": "Loading...",
 
     "%global.validation.null.message.text": "Required",
     "%global.validation.empty.message.text": "Required",
@@ -57,6 +65,29 @@
     "%modal.certificate.form.date_received.text": "Date Received",
     "%modal.certificate.form.description.text": "What did you learn?",
     "%modal.certificate.form.description.placeholder.text": "e.g. I learned in depth the language, its history and grammar. I also learned the proper methodology for teaching.",
+
+    "__LANDING PAGE__": "",
+    "%landing.header.join.label.text": "Join as:",
+    "%landing.puv": "Find a language Teacher / School",
+    "%landing.puv.description": "Waysily is a community-based free platform that helps you find local language tutors / schools.",
+    "%landing.explore.button.text": "EXPLORE",
+
+    "%landing.mission.title.text": "Our mission",
+    "%landing.mission.description.text": "To give everyone the perfect place to find teachers, schools, and people around the world to learn a language.",
+    "%landing.mission.description.free.text": "(Free, and always will be)",
+
+    "%landing.progress.title.text": "Our progress",
+
+    "%landing.recommend.cntry.text": "Which country would you like us to include in Waysily?",
+    "%landing.recommend.teacher.text": "Do you know a teacher you would recommend to be part of Waysily?",
+    "%landing.recommend.teacher.button.text": "Recommend Teacher",
+    "%landing.recommend.school.text": "Did you study at any school and you had a great experience there?",
+    "%landing.recommend.school.button.text": "Recommend School",
+
+    "%landing.get_user.message.success.text": "Thank you!, You’re all set. We’ll be in touch.",
+    "%landing.get_user.title.text": "Stay Connected!",
+    "%landing.get_user.description.text": "Get the list of new teachers and schools in your inbox.",
+    "%landing.get_user.input_email.placeholder.text": "Enter Email Address",
 
     "__STUDENT LANDING PAGE__": "",
     "%landing.student.puv": "Immerse yourself in another culture",
@@ -285,6 +316,8 @@
 
     "__FOOTER__": "",
     "%footer.contact_us.title.text": "Contact us",
+    "%footer.made.label.text": "Made with",
+    "%footer.by.label.text": "by",
 
     "__SEX__": "",
     "%sex.M": "Male",
