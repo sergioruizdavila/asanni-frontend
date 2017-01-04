@@ -49,7 +49,7 @@
         /*$locationProvider.html5Mode(true);
         $locationProvider.hashPrefix('!');*/
 
-        $urlRouterProvider.otherwise('/page');
+        $urlRouterProvider.otherwise('/page/main');
         //$urlRouterProvider.otherwise('/page/landing/student');
 
         /* Translate Provider */
