@@ -15,6 +15,7 @@
         'mainApp.models.school',
         'mainApp.pages.main',
         'mainApp.pages.studentLandingPage',
+        'mainApp.pages.teacherLandingPage',
         'mainApp.pages.landingPage',
         'mainApp.pages.searchPage',
         'mainApp.pages.createTeacherPage',

@@ -164,6 +164,36 @@
     border-radius: 50%;
 }
 
+.underline {
+
+    &--primary {
+        border-bottom: 2px solid map-get($main-palette, primary);
+    }
+
+    &--alert {
+        border-bottom: 2px solid map-get($main-palette, alert);
+    }
+
+    &--strong {
+        font-weight: 600;
+    }
+
+}
+
+.strong {
+    font-weight: 600;
+
+    &--primary {
+        color: map-get($main-palette, primary);
+    }
+
+    &--alert {
+        color: map-get($main-palette, alert);
+    }
+
+}
+
+
 /******************** END - MODIFIERS *********************/
 
 
@@ -286,6 +316,23 @@ body.mainApp {
         padding: 0;
         position: absolute;
         width: 1px;
+    }
+
+    li:before {
+        content: "\00bb";
+        margin-right: 10px;
+        color: #ff5a5f;
+        font-size: 30px;
+    }
+
+    blockquote:before {
+        display: block;
+        content: "\201C";
+        font-size: 80px;
+        position: absolute;
+        left: -20px;
+        top: -20px;
+        color: #7a7a7a;
     }
 
 }

@@ -130,10 +130,13 @@
                         ng-click="vm._openSignUpModal()" translate>
                     %global.student.text
                 </button>
-                <button class="ma-header--transparent__block__buttons-list__btn
-                               ma-btn ma-btn--alert ma-btn--default" translate>
+                <a class="ma-header--transparent__block__buttons-list__btn
+                               ma-btn ma-btn--alert ma-btn--default"
+                    ui-sref="page.teacherLandingPage"
+                    href
+                    translate>
                     %global.teacher.text
-                </button>
+                </a>
                 <button class="ma-header--transparent__block__buttons-list__btn
                                ma-btn ma-btn--alert ma-btn--default" translate>
                     %global.school.text
@@ -159,7 +162,7 @@
     <!--------------------------- START: HERO BLOCK --------------------------->
     <section class="ma-hero">
 
-    <div class="visible-xs mobile-poster"></div>
+    <div class="visible-xs poster poster--mobile"></div>
 
     <video class="hidden-xs video-hero"
            autoplay loop muted poster="../../../assets/images/cover-waysily.png">
@@ -432,7 +435,7 @@
         <div class="row ma-large-message ma-large-message--success space-2"
              ng-show="vm.infoNewUser.success">
             <div class="col-md-12 text-center">
-                <p class="ma-p ma-p--default ma-p--success margin-reset">
+                <p class="ma-p ma-p--default ma-p--primary margin-reset">
                     <span translate>
                         %landing.get_user.message.success.text
                     </span>

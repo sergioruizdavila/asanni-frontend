@@ -575,8 +575,10 @@ $link-font-color: $black;
 $link-border: 1px solid transparent;
 
 $link-box-radius-hover: 3px;
-$link-box-background-hover: map-get($main-palette, primary);
-$link-box-border-hover: map-get($main-palette, secondary);
+$link-box-primary-background-hover: map-get($main-palette, primary);
+$link-box-primary-border-hover: map-get($main-palette, secondary);
+$link-box-alert-background-hover: map-get($main-palette, alert);
+$link-box-alert-border-hover: map-get($main-palette, alert-secondary);
 $link-box-font-color-hover: $white;
 
 $link-simple-font-color: $black;
@@ -622,7 +624,7 @@ $paragraph-font-color: $dark-gray;
 $paragraph-bold-font-color: $black;
 
 $paragraph-alert-font-color: map-get($main-palette, alert);
-$paragraph-success-font-color: map-get($main-palette, primary);
+$paragraph-primary-font-color: map-get($main-palette, primary);
 $paragraph-info-font-color: map-get($main-palette, secondary);
 
 

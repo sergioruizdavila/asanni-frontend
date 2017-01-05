@@ -35,8 +35,8 @@
         }
     }
 
-    &--success {
-        color: $paragraph-success-font-color;
+    &--primary {
+        color: $paragraph-primary-font-color;
 
         strong {
             font-size: map-get($global-font-sizes, large);

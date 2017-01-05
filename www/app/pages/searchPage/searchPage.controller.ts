@@ -125,7 +125,7 @@ module app.pages.searchPage {
             window.open(url,'_blank');
         }
 
-        
+
 
         /**
         * _getResultTemplate

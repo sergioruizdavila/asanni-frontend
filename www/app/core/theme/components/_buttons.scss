@@ -63,10 +63,17 @@
         color: $button-font-color;
         border-bottom-color: $button-primary-border-color;
 
-        &:hover:enabled, &:focus {
+        &:hover:enabled {
             background-color: $button-primary-background-hover;
             text-decoration: none;
             color: $button-font-color;
+        }
+
+        &:focus {
+            background-color: $button-primary-background;
+            color: $button-font-color;
+            border-bottom-color: $button-primary-border-color;
+            text-decoration: none;
         }
     }
 
@@ -75,10 +82,17 @@
         border: $button-secondary-border;
         color: $button-primary-background;
 
-        &:hover:enabled, &:focus {
+        &:hover:enabled {
             background-color: $button-secondary-color;
             color: $button-font-color;
             border-bottom-color: $button-secondary-border-color;
+            text-decoration: none;
+        }
+
+        &:focus {
+            background: 0 0;
+            border: $button-secondary-border;
+            color: $button-primary-background;
             text-decoration: none;
         }
     }
@@ -88,10 +102,17 @@
         border: $button-tertiary-border;
         color: $button-tertiary-color;
 
-        &:hover:enabled, &:focus {
+        &:hover:enabled {
             background-color: $button-tertiary-color;
             color: $button-secondary-color-hover;
             border-bottom-color: $button-tertiary-border-color;
+            text-decoration: none;
+        }
+
+        &:focus {
+            background: 0 0;
+            border: $button-tertiary-border;
+            color: $button-tertiary-color;
             text-decoration: none;
         }
     }
@@ -101,11 +122,18 @@
         color: $button-font-color;
         border-bottom-color: $button-alert-border-color;
 
-        &:hover:enabled, &:focus {
+        &:hover:enabled {
             background-color: $button-alert-background-hover;
             text-decoration: none;
             color: $button-font-color;
         }
+
+         &:focus {
+            background-color: $button-alert-background;
+            color: $button-font-color;
+            text-decoration: none;
+            border-bottom-color: $button-alert-border-color;
+         }
     }
 
     &--transparent {
@@ -115,10 +143,19 @@
         border-radius: 0;
         font-weight: normal;
 
-        &:hover:enabled, &:focus {
+        &:hover:enabled {
             text-decoration: none;
             color: $black;
             border-bottom: 2px dashed $button-primary-background;
+        }
+
+        &:focus {
+            background-color: transparent;
+            color: $dark-gray;
+            border: 0 hidden transparent;
+            border-radius: 0;
+            font-weight: normal;
+            text-decoration: none;
         }
     }
 

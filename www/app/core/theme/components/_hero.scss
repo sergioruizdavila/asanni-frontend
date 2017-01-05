@@ -12,16 +12,25 @@
     background: #222222;
     background-size: 100% 100%;
 
-    .mobile-poster {
-        background: linear-gradient(rgba(18,18,18,0.6), rgba(18,18,18,0.5)), url(../../../../assets/images/hero-image.jpg);
+    .poster {
+
         height: 70vh;
-        background-size: cover;
         overflow: hidden;
         top: 0;
         right: 0;
         bottom: 0;
         left: 0;
         position: absolute;
+
+        &--mobile {
+            background: linear-gradient(rgba(18,18,18,0.6), rgba(18,18,18,0.5)), url(../../../../assets/images/hero-image.jpg);
+            background-size: cover;
+        }
+
+        &--teacher {
+            background: linear-gradient(rgba(18,18,18,0.6), rgba(18,18,18,0.5)), url(../../../../assets/images/hero-teacher.jpg);
+            background-size: cover;
+        }
     }
 
     .video-hero {
@@ -90,7 +99,7 @@
         height: 100vh;
         //background-position: -200px 0px;
 
-        .mobile-poster {
+        .poster {
             height: 90vh;
             background-position: -200px 0px;
         }
@@ -125,7 +134,7 @@
          height: 90vh;
          //background-position: -240px 0px;
 
-         .mobile-poster {
+         .poster {
              height: 90vh;
              background-position: -220px 0px;
          }
@@ -159,7 +168,7 @@
          height: 89vh;
          //background-position: -200px 0px;
 
-         .mobile-poster {
+         .poster {
             height: 90vh;
             background-position: -60px 0px;
          }
@@ -197,7 +206,7 @@
          height: 80vh;
          //background-position: -120px 0px;
 
-         .mobile-poster {
+         .poster {
             height: 90vh;
             background-position: -120px 0px;
          }
@@ -233,7 +242,7 @@
          height: 80vh;
          //background-position: 0 0;
 
-         .mobile-poster {
+         .poster {
             height: 100vh;
             background-position: 0 0;
          }
@@ -270,7 +279,7 @@
      .ma-hero {
          height: 100vh;
 
-         .mobile-poster {
+         .poster {
             height: 100vh;
          }
 
