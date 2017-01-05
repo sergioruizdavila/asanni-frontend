@@ -1,0 +1,413 @@
+
+<!--                                HEADER                                   -->
+<!----------------------------------------------------------------------------->
+
+<div class="ma-header ma-header--transparent">
+
+
+    <!--                    START: HEADER (SMALL SCREEN)                     -->
+    <!------------------------------------------------------------------------->
+    <header class="visible-xs clearfix">
+
+        <!---------------- START: CHANGE LANGUAGE (SMALL SCREEN) -------------->
+        <div class="ma-header__block
+                    ma-header--transparent__block
+                    ma-header--transparent__block--right
+                    pull-right">
+
+            <!-- Change Language Select Input -->
+            <div class="form-group ma-form-group">
+                <div class="ma-select-container
+                            ma-select-container--small
+                            ma-select-container--tertiary">
+                    <select id="languageSelect"
+                            class="ma-input ma-select
+                                   ma-select--small
+                                   ma-select--tertiary
+                                   ma-select--border-round"
+                            ng-model="vm.form.language"
+                            ng-change="vm.changeLanguage()"
+                            name="language">
+                        <option value="es" selected="selected" translate>
+                            %header.lang.options.es.text
+                        </option>
+                        <option value="en" translate>
+                            %header.lang.options.en.text
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <!--              END: CHANGE LANGUAGE (SMALL SCREEN)            -->
+
+
+        <!--------------------- START: LOGO (SMALL SCREEN) -------------------->
+        <div class="ma-header__block ma-header--transparent__block pull-left"
+             style="margin-top: 10px;">
+            <a ui-sref="page.searchPage" class="ma-header__block__btn
+                                                ma-header__block__logo-wrapper
+                                                link-reset" aria-label="Waysily">
+                <i class="ma-logo
+                          ma-logo--secondary-short
+                          ma-header__block__btn__ma-logo"></i>
+            </a>
+        </div>
+        <!--                     END: LOGO (SMALL SCREEN)                    -->
+
+
+
+    </header>
+    <!--                     END: HEADER (SMALL SCREEN)                      -->
+
+
+
+    <!--                   START: HEADER (MD AND LG SCREEN)                  -->
+    <!------------------------------------------------------------------------->
+    <header class="hidden-xs clearfix">
+
+        <!-------------------- START: LOGO (MD AND LG SCREEN) ----------------->
+        <div class="ma-header__block ma-header--transparent__block pull-left">
+            <a ui-sref="page.searchPage" class="ma-header__block__btn
+                                                ma-header__block__logo-wrapper
+                                                link-reset" aria-label="Waysily">
+                <i class="ma-logo
+                          ma-logo--secondary
+                          ma-header__block__btn__ma-logo"></i>
+            </a>
+        </div>
+        <!--                   END: LOGO (MD AND LG SCREEN)                  -->
+
+
+
+        <!-------------- START: CHANGE LANGUAGE (MD AND LG SCREEN) ------------>
+        <div class="ma-header__block
+                    ma-header--transparent__block
+                    ma-header--transparent__block--right
+                    pull-right">
+
+            <!-- Change Language Select Input -->
+            <div class="form-group ma-form-group">
+                <div class="ma-select-container
+                            ma-select-container--small
+                            ma-select-container--tertiary">
+
+                    <select id="languageSelect"
+                            class="ma-input ma-select
+                                   ma-select--small
+                                   ma-select--tertiary
+                                   ma-select--border-round"
+                            ng-model="vm.form.language"
+                            ng-change="vm.changeLanguage()"
+                            name="language">
+                        <option value="es" selected="selected" translate>
+                            %header.lang.options.es.text
+                        </option>
+                        <option value="en" translate>
+                            %header.lang.options.en.text
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        <!--             END: CHANGE LANGUAGE (MD AND LG SCREEN)             -->
+
+
+
+        <!--------------- START: JOIN SECTION (MD AND LG SCREEN) -------------->
+        <div class="ma-header__block
+                    ma-header--transparent__block
+                    ma-header--transparent__block--right
+                    pull-right">
+
+            <div class="ma-header--transparent__block__buttons-list">
+                <span class="ma-header--transparent__block__buttons-list__label"
+                      translate>
+                    %landing.header.join.label.text
+                </span>
+                <button class="ma-header--transparent__block__buttons-list__btn
+                               ma-btn ma-btn--alert ma-btn--default"
+                        ng-click="vm._openSignUpModal()" translate>
+                    %global.student.text
+                </button>
+                <a class="ma-header--transparent__block__buttons-list__btn
+                               ma-btn ma-btn--alert ma-btn--default"
+                    ui-sref="page.teacherLandingPage"
+                    href
+                    translate>
+                    %global.teacher.text
+                </a>
+                <button class="ma-header--transparent__block__buttons-list__btn
+                               ma-btn ma-btn--alert ma-btn--default" translate>
+                    %global.school.text
+                </button>
+
+            </div>
+
+        </div>
+        <!--              END: JOIN SECTION (MD AND LG SCREEN)               -->
+
+
+    </header>
+    <!--                    END: HEADER (MD AND LG SCREEN)                   -->
+
+</div>
+
+
+
+<!--                     START:  STUDENT LANDING PAGE                        -->
+<!----------------------------------------------------------------------------->
+<div class="landingPage">
+
+    <!--------------------------- START: HERO BLOCK --------------------------->
+    <section class="ma-hero">
+
+        <div class="poster poster--teacher"></div>
+
+	        <div class="ma-hero__wrapper text-center">
+
+        		<h1 class="ma-hero__wrapper__title animated fadeIn" translate>
+                    Financia tu pasión como un profesor en Waysily.
+                </h1>
+                <h2 class="ma-hero__wrapper__description animated fadeIn">
+                    <span style="margin-right:5px;">Se visible a</span> <span class="underline underline--primary underline--strong">4.000+ estudiantes</span><span style="margin-left:8px;">que viajan a tu pais cada año.</span>
+                </h2>
+
+        		<div class="ma-hero__wrapper__btn-container">
+                    <button class="ma-btn ma-btn--primary ma-btn--large"
+                            ng-click="vm.goToCreate()" translate>
+                       LET'S GO
+                   </button>
+        		</div>
+
+                <div class="hidden-xs ma-hero__wrapper__go-down row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                        <i class="material-icons md-48 md-light"
+                           ng-click="vm.goDown()">keyboard_arrow_down</i>
+                    </div>
+                </div>
+	        </div>
+
+	</section>
+    <!--                          END: HERO BLOCK                            -->
+
+
+    <style media="screen">
+        .landingPage__preview-container .search-result__teacher__block {
+            margin-top: 0;
+        }
+    </style>
+
+    <!---------------------- START: PREVIEW CONTAINER BLOCK ------------------->
+    <section class="landingPage__preview-container row center-xs space-top-8 space-10">
+        <div class="col-xs-10 col-sm-8">
+            <div class="row start-xs middle-xs">
+
+                <!-- Left column: Preview cotainer -->
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <div class="row">
+                        <div class="col-md-12" ng-repeat="item in vm.teacherData">
+                            <p class="ma-p ma-p--large ma-p--primary text-center">
+                                Asi te verian los estudiantes cuando entren al
+                                mapa de Waysily
+                            </p>
+                            <ma-teacher-result></ma-teacher-result>
+                            <p class="ma-p ma-p--small pull-right">
+                                información de ejemplo
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rigtht column: Explanation section -->
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>Has parte de esta gran comunidad</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="ma-p ma-p--large">
+                                Podrias ganar aproximadamente
+                                <span class="underline underline--primary">300 USD</span>
+                                al mes estando en el mapa de Waysily.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--                      END: PREVIEW CONTAINER BLOCK                   -->
+
+    <div class="ma-separator-dashed-image space-11 container"></div>
+
+
+    <!------------------- START: HOW DO YOU GET STARTED BLOCK ----------------->
+    <section class="landingPage__started-container row center-xs space-top-8">
+        <div class="col-xs-10 col-sm-8">
+            <div class="row start-xs">
+                <div class="col-xs-12">
+                    <h2 class="space-4">¿Como empezar?</h2>
+                    <p class="ma-p ma-p--large">
+                        Simplemente rellenar
+                        <a class="ma-link ma-link--box
+                                  ma-link--box--default
+                                  ma-link--box--underline--alert"
+                           href="#">este formulario</a>
+                        con la información de tu experiencia como profesor o tutor de la
+                        comunidad. Validaremos su información para asegurarnos que tu
+                        perfil se vea genial y muy profesional, si hace falta alguna
+                        información, nos pondremos en contacto contigo (por correo
+                        electrónico). El tiempo de revisión de tu perfil es de
+                        aproximadamente 3 a 4 días (dependiendo de la cantidad de
+                        solicitudes que tengamos pendientes). Después de ese periodo de
+                        tiempo, te contactaremos vía correo electrónico para confirmarte
+                        que tu perfil ya esta disponible en el
+                        <a class="ma-link ma-link--box
+                                  ma-link--box--default
+                                  ma-link--box--underline--primary">
+                            mapa de Waysily
+                        </a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--                   END: HOW DO YOU GET STARTED BLOCK                 -->
+
+
+    <!--------------------- START: WHY BE IN WAYSILY BLOCK -------------------->
+    <section class="landingPage__be-in-container row center-xs space-top-8">
+        <div class="col-xs-10 col-sm-8">
+            <div class="row start-xs">
+                <div class="col-xs-12">
+                    <h2 class="space-4">¿Por qué estar en Waysily?</h2>
+                    <p class="ma-p ma-p--large">
+                        Queremos construir la comunidad más grande en el
+                        intercambio de idiomas. Waysily esta abierto a
+                        <span class="underline
+                                     underline--primary
+                                     underline--strong">
+                            4000+ estudiantes / viajeros al año
+                        </span>
+                        . Estas son personas que buscan aprender otro idioma
+                        sumergiéndose en la cultura y costumbres de ese país.
+                        Si tus clases ofrecen una conexión humana, una
+                        metodología dinámica o una inmersión en tu cultura local,
+                        estas en el lugar correcto.
+                    </p>
+                    <p class="ma-p ma-p--large">
+                        Además tu perfil se publicara en este sitio web,
+                        lo compartiremos con todos los estudiantes / viajeros
+                        a través de correo electrónico, Twitter y Facebook.
+                    </p>
+                    <h3 class="space-3 space-top-6">Entonces, ¿Por que estar en Waysily?:</h3>
+                    <ul class="list-unstyled" style="text-indent: -30px;
+                                                    margin-left: 50px;
+                                                    padding-left: 0;
+                                                    list-style: none;
+                                                    letter-spacing: 0;
+                                                    font-weight: 400;
+                                                    font-style: normal;
+                                                    color: #8a8a8a;
+                                                    text-rendering: optimizeLegibility;
+                                                    -webkit-font-smoothing: antialiased;
+                                                    font-size: 20px;">
+                        <li>Construye una reputación, y hazte visible a nivel mundial.</li>
+                        <li>Utiliza esta reputación para encontrar estudiantes mes a mes.</li>
+                        <li>Gana dinero extra.</li>
+                        <li>Marketing gratis, así ya no dependerás de que tus
+                            amigos te recomienden, o tener que ir a cafés y
+                            hostales repartiendo tus tarjetas de presentación.</li>
+                        <li>Tu asignas tus precios y decides cuando tu quieres
+                            dar clases y que tan a menudo.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--                    END: WHY BE IN WAYSILY BLOCK                     -->
+
+    <style media="screen">
+    #quote {
+        width: 100%;
+        text-align: center;
+        font-style: italic;
+        font-family: Georgia, Times, "Times New Roman", serif;
+        background-color: #f9f9f9;
+        padding: 15px 43px 15px 43px;
+        border-radius: 10px;
+        border: 1px solid #eee;
+        position: relative;
+        line-height: 32px;
+    }
+
+    #quote:after {
+        font-size: 60px;
+        color: #ddd;
+        content: '”';
+        position: absolute;
+        top: 16px;
+        right: 16px;
+    }
+
+    #quote:before {
+        font-size: 60px;
+        color: #ddd;
+        content: '“';
+        position: absolute;
+        top: 16px;
+        left: 6px;
+    }
+    </style>
+
+    <!---------------------- START: WHO'S ELIGIBLE BLOCK ---------------------->
+    <section class="landingPage__eligible-container row center-xs space-top-8">
+        <div class="col-xs-10 col-sm-8">
+            <div class="row start-xs text-center">
+                <div class="col-xs-12">
+                    <h2 class="space-6 text-left">¿Quien es elegible?</h2>
+
+                    <h3 id="quote" class="text-center">
+                    	Cualquier persona que hable un idioma, podria enseñarlo.
+                    </h3>
+
+                    <i class="material-icons md-36 md-dark text-center">linear_scale</i>
+
+                    <p class="ma-p ma-p--large text-left space-top-3">
+                        Si no eres profesor certificado o con estudios,
+                        no te preocupes, si tienes alma de profesor y te gusta
+                        enseñar, puedes hacer parte de Waysily.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--                      END: WHO'S ELIGIBLE BLOCK                      -->
+
+
+
+    <!---------------------- START: WHO'S ELIGIBLE BLOCK ---------------------->
+    <section class="landingPage__let-go-container
+                    row center-xs space-top-10 space-12">
+        <div class="col-xs-10 col-sm-8">
+            <div class="row start-xs text-center">
+                <div class="col-xs-12">
+                    <button type="button"
+                            class="ma-btn
+                                    ma-btn--large
+                                    ma-btn--primary"
+                            ng-click="vm.goToCreate()">
+                        JOIN NOW
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--                      END: WHO'S ELIGIBLE BLOCK                      -->
+
+
+</div>
+<!--                      END: STUDENT LANDING PAGE                          -->
