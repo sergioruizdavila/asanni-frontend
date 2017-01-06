@@ -44,7 +44,7 @@
         <!--------------------- START: LOGO (SMALL SCREEN) -------------------->
         <div class="ma-header__block ma-header--transparent__block pull-left"
              style="margin-top: 10px;">
-            <a ui-sref="page.searchPage" class="ma-header__block__btn
+            <a ui-sref="page.landingPage" class="ma-header__block__btn
                                                 ma-header__block__logo-wrapper
                                                 link-reset" aria-label="Waysily">
                 <i class="ma-logo
@@ -67,7 +67,7 @@
 
         <!-------------------- START: LOGO (MD AND LG SCREEN) ----------------->
         <div class="ma-header__block ma-header--transparent__block pull-left">
-            <a ui-sref="page.searchPage" class="ma-header__block__btn
+            <a ui-sref="page.landingPagee" class="ma-header__block__btn
                                                 ma-header__block__logo-wrapper
                                                 link-reset" aria-label="Waysily">
                 <i class="ma-logo
@@ -206,12 +206,12 @@
                 <!-- Left column: Preview cotainer -->
                 <div class="col-xs-12 col-sm-12 col-md-6">
                     <div class="row">
-                        <div class="col-md-12" ng-repeat="item in vm.teacherData">
+                        <div class="col-md-12">
                             <p class="ma-p ma-p--large ma-p--primary text-center">
                                 Asi te verian los estudiantes cuando entren al
                                 mapa de Waysily
                             </p>
-                            <ma-teacher-result></ma-teacher-result>
+                            <div ng-include="vm.TEACHER_FAKE_TMPL"></div>
                             <p class="ma-p ma-p--small pull-right">
                                 información de ejemplo
                             </p>
@@ -255,7 +255,8 @@
                         <a class="ma-link ma-link--box
                                   ma-link--box--default
                                   ma-link--box--underline--alert"
-                           href="#">este formulario</a>
+                           ng-click="vm.goToCreate()"
+                           href>este formulario</a>
                         con la información de tu experiencia como profesor o tutor de la
                         comunidad. Validaremos su información para asegurarnos que tu
                         perfil se vea genial y muy profesional, si hace falta alguna
@@ -267,7 +268,10 @@
                         que tu perfil ya esta disponible en el
                         <a class="ma-link ma-link--box
                                   ma-link--box--default
-                                  ma-link--box--underline--primary">
+                                  ma-link--box--underline--primary"
+                           ui-sref="page.searchPage"
+                           href
+                           target="_blank">
                             mapa de Waysily
                         </a>.
                     </p>
@@ -303,7 +307,7 @@
                         lo compartiremos con todos los estudiantes / viajeros
                         a través de correo electrónico, Twitter y Facebook.
                     </p>
-                    <h3 class="space-3 space-top-6">Entonces, ¿Por que estar en Waysily?:</h3>
+                    <h3 class="space-3 space-top-6">Entonces, ¿Por qué estar en Waysily?:</h3>
                     <ul class="list-unstyled" style="text-indent: -30px;
                                                     margin-left: 50px;
                                                     padding-left: 0;

@@ -15,6 +15,9 @@
                 }
             },
             cache: false,
+            params: {
+                type: '',
+            },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
                     $rootScope.activeFooter = false;

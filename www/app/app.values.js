@@ -11,6 +11,10 @@
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
+        bucketS3: 'waysily-img/teachers-avatar-dev',
+        regionS3: 'us-east-1',
+        accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
+        secretAccessKeyS3: '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',
         userId: ''
     };
     angular

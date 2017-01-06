@@ -72,6 +72,10 @@
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
+        bucketS3: 'waysily-img/teachers-avatar-dev',
+        regionS3: 'us-east-1',
+        accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
+        secretAccessKeyS3: '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',
         userId: ''
     };
     angular
@@ -568,13 +572,14 @@ var app;
         (function (s3Upload) {
             'use strict';
             var S3UploadService = (function () {
-                function S3UploadService($q) {
+                function S3UploadService($q, dataConfig) {
                     this.$q = $q;
+                    this.dataConfig = dataConfig;
                     console.log('S3Upload service instanced');
-                    this.REGION = 'us-east-1';
-                    this.ACCESS_KEY_ID = 'AKIAIHKBYIUQD4KBIRLQ';
-                    this.SECRET_ACCESS_KEY = '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';
-                    this.BUCKET = 'waysily-img';
+                    this.REGION = this.dataConfig.regionS3;
+                    this.ACCESS_KEY_ID = this.dataConfig.accessKeyIdS3;
+                    this.SECRET_ACCESS_KEY = this.dataConfig.secretAccessKeyS3;
+                    this.BUCKET = this.dataConfig.bucketS3;
                     AWS.config.region = this.REGION;
                     AWS.config.update({
                         accessKeyId: this.ACCESS_KEY_ID,
@@ -609,7 +614,7 @@ var app;
                 return S3UploadService;
             }());
             S3UploadService.serviceId = 'mainApp.core.s3Upload.S3UploadService';
-            S3UploadService.$inject = ['$q'];
+            S3UploadService.$inject = ['$q', 'dataConfig'];
             s3Upload.S3UploadService = S3UploadService;
             angular
                 .module('mainApp.core.s3Upload', [])
@@ -2406,7 +2411,10 @@ var components;
             .module('mainApp.components.header')
             .directive(MaHeader.directiveId, MaHeader.instance);
         var HeaderController = (function () {
-            function HeaderController() {
+            function HeaderController($translate, $uibModal, dataConfig) {
+                this.$translate = $translate;
+                this.$uibModal = $uibModal;
+                this.dataConfig = dataConfig;
                 this.init();
             }
             HeaderController.prototype.init = function () {
@@ -2419,9 +2427,25 @@ var components;
             HeaderController.prototype.slideNavMenu = function () {
                 this._slideout = !this._slideout;
             };
+            HeaderController.prototype.changeLanguage = function () {
+                this.$translate.use(this.form.language);
+            };
+            HeaderController.prototype._openSignUpModal = function () {
+                var self = this;
+                var options = {
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    templateUrl: this.dataConfig.modalSignUpTmpl,
+                    controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                };
+                var modalInstance = this.$uibModal.open(options);
+                event.preventDefault();
+            };
             return HeaderController;
         }());
         HeaderController.controllerId = 'mainApp.components.header.HeaderController';
+        HeaderController.$inject = ['$translate', '$uibModal', 'dataConfig'];
         header.HeaderController = HeaderController;
         angular.module('mainApp.components.header')
             .controller(HeaderController.controllerId, HeaderController);
@@ -3673,6 +3697,131 @@ var app;
 (function () {
     'use strict';
     angular
+        .module('mainApp.pages.teacherLandingPage', [])
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.teacherLandingPage', {
+            url: '/main/teacher',
+            views: {
+                'container': {
+                    templateUrl: 'app/pages/teacherLandingPage/teacherLandingPage.html',
+                    controller: 'mainApp.pages.teacherLandingPage.TeacherLandingPageController',
+                    controllerAs: 'vm'
+                }
+            },
+            parent: 'page',
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = false;
+                    $rootScope.activeFooter = true;
+                }]
+        });
+    }
+})();
+//# sourceMappingURL=teacherLandingPage.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var teacherLandingPage;
+        (function (teacherLandingPage) {
+            var TeacherLandingPageController = (function () {
+                function TeacherLandingPageController(TeacherService, $state, dataConfig, $translate, $uibModal) {
+                    this.TeacherService = TeacherService;
+                    this.$state = $state;
+                    this.dataConfig = dataConfig;
+                    this.$translate = $translate;
+                    this.$uibModal = $uibModal;
+                    this._init();
+                }
+                TeacherLandingPageController.prototype._init = function () {
+                    this.form = {
+                        language: this.$translate.use() || 'en'
+                    };
+                    this._hoverDetail = [];
+                    this._buildFakeTeacher();
+                    this.activate();
+                };
+                TeacherLandingPageController.prototype.activate = function () {
+                    this.TEACHER_FAKE_TMPL = 'app/pages/teacherLandingPage/teacherContainerExample/teacherContainerExample.html';
+                    var self = this;
+                    console.log('teacherLandingPage controller actived');
+                };
+                TeacherLandingPageController.prototype.changeLanguage = function () {
+                    this.$translate.use(this.form.language);
+                };
+                TeacherLandingPageController.prototype._openSignUpModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalSignUpTmpl,
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    event.preventDefault();
+                };
+                TeacherLandingPageController.prototype._buildFakeTeacher = function () {
+                    this.fake = new app.models.teacher.Teacher();
+                    this.fake.Id = '1';
+                    this.fake.FirstName = 'Dianne';
+                    this.fake.Born = 'New York, United States';
+                    this.fake.Avatar = 'https://waysily-img.s3.amazonaws.com/b3605bad-0924-4bc1-98c8-676c664acd9d-example.jpeg';
+                    this.fake.Methodology = 'I can customize the lessons to fit your needs. I teach conversational English to intermediate and advanced students with a focus on grammar, pronunciation, vocabulary and clear fluency and Business English with a focus on formal English in a business setting (role-play), business journal articles, and technical, industry based vocabulary';
+                    this.fake.TeacherSince = '2013';
+                    this.fake.Type = 'H';
+                    this.fake.Languages.Native = ['6'];
+                    this.fake.Languages.Teach = ['6', '8'];
+                    this.fake.Languages.Learn = ['8', '7'];
+                    this.fake.Immersion.Active = true;
+                    this.fake.Price.PrivateClass.Active = true;
+                    this.fake.Price.PrivateClass.HourPrice = 20.00;
+                    this.fake.Price.GroupClass.Active = true;
+                    this.fake.Price.GroupClass.HourPrice = 15.00;
+                };
+                TeacherLandingPageController.prototype._hoverEvent = function (id, status) {
+                    var args = { id: id, status: status };
+                    this._hoverDetail[id] = status;
+                };
+                TeacherLandingPageController.prototype._assignNativeClass = function (languages) {
+                    var native = languages.native;
+                    var teach = languages.teach;
+                    var isNative = false;
+                    for (var i = 0; i < native.length; i++) {
+                        for (var j = 0; j < teach.length; j++) {
+                            if (teach[j] === native[i]) {
+                                isNative = true;
+                            }
+                        }
+                    }
+                    return isNative;
+                };
+                TeacherLandingPageController.prototype.goToCreate = function () {
+                    var params = {
+                        type: 'new'
+                    };
+                    this.$state.go('page.createTeacherPage.basicInfo', params, { reload: true });
+                };
+                return TeacherLandingPageController;
+            }());
+            TeacherLandingPageController.controllerId = 'mainApp.pages.teacherLandingPage.TeacherLandingPageController';
+            TeacherLandingPageController.$inject = ['mainApp.models.teacher.TeacherService',
+                '$state',
+                'dataConfig',
+                '$translate',
+                '$uibModal'];
+            teacherLandingPage.TeacherLandingPageController = TeacherLandingPageController;
+            angular
+                .module('mainApp.pages.teacherLandingPage')
+                .controller(TeacherLandingPageController.controllerId, TeacherLandingPageController);
+        })(teacherLandingPage = pages.teacherLandingPage || (pages.teacherLandingPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=teacherLandingPage.controller.js.map
+(function () {
+    'use strict';
+    angular
         .module('mainApp.pages.landingPage', [])
         .config(config);
     function config($stateProvider) {
@@ -4774,6 +4923,9 @@ var app;
                 }
             },
             cache: false,
+            params: {
+                type: '',
+            },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
                     $rootScope.activeFooter = false;
@@ -4789,7 +4941,7 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var CreateTeacherPageController = (function () {
-                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, messageUtil, localStorage, dataConfig, $state, $filter, $scope, $rootScope, $uibModal) {
+                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, messageUtil, localStorage, dataConfig, $state, $stateParams, $filter, $scope, $rootScope, $uibModal) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.teacherService = teacherService;
@@ -4797,6 +4949,7 @@ var app;
                     this.localStorage = localStorage;
                     this.dataConfig = dataConfig;
                     this.$state = $state;
+                    this.$stateParams = $stateParams;
                     this.$filter = $filter;
                     this.$scope = $scope;
                     this.$rootScope = $rootScope;
@@ -4815,6 +4968,9 @@ var app;
                     var self = this;
                     console.log('createTeacherPage controller actived');
                     this._subscribeToEvents();
+                    if (this.$stateParams.type === 'new') {
+                        this.localStorage.setItem('waysily.teacher_id', '');
+                    }
                     this.fillFormWithTeacherData();
                 };
                 CreateTeacherPageController.prototype.fillFormWithTeacherData = function () {
@@ -4880,6 +5036,7 @@ var app;
                 'mainApp.localStorageService',
                 'dataConfig',
                 '$state',
+                '$stateParams',
                 '$filter',
                 '$scope',
                 '$rootScope',
@@ -6695,9 +6852,11 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherFinishSectionController = (function () {
-                function TeacherFinishSectionController($scope, functionsUtilService) {
+                function TeacherFinishSectionController($scope, $state, functionsUtilService, localStorage) {
                     this.$scope = $scope;
+                    this.$state = $state;
                     this.functionsUtilService = functionsUtilService;
+                    this.localStorage = localStorage;
                     this._init();
                 }
                 TeacherFinishSectionController.prototype._init = function () {
@@ -6707,12 +6866,18 @@ var app;
                 TeacherFinishSectionController.prototype.activate = function () {
                     console.log('TeacherFinishSectionController controller actived');
                 };
+                TeacherFinishSectionController.prototype._finishProcess = function () {
+                    this.localStorage.setItem('waysily.teacher_id', '');
+                    this.$state.go('page.teacherProfilePage', { id: this.$scope.$parent.vm.teacherData.Id });
+                };
                 return TeacherFinishSectionController;
             }());
             TeacherFinishSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherFinishSectionController';
             TeacherFinishSectionController.$inject = [
                 '$scope',
-                'mainApp.core.util.FunctionsUtilService'
+                '$state',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.localStorageService'
             ];
             createTeacherPage.TeacherFinishSectionController = TeacherFinishSectionController;
             angular

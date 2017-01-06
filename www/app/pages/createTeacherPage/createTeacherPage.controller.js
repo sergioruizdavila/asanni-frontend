@@ -5,7 +5,7 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var CreateTeacherPageController = (function () {
-                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, messageUtil, localStorage, dataConfig, $state, $filter, $scope, $rootScope, $uibModal) {
+                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, messageUtil, localStorage, dataConfig, $state, $stateParams, $filter, $scope, $rootScope, $uibModal) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.teacherService = teacherService;
@@ -13,6 +13,7 @@ var app;
                     this.localStorage = localStorage;
                     this.dataConfig = dataConfig;
                     this.$state = $state;
+                    this.$stateParams = $stateParams;
                     this.$filter = $filter;
                     this.$scope = $scope;
                     this.$rootScope = $rootScope;
@@ -31,6 +32,9 @@ var app;
                     var self = this;
                     console.log('createTeacherPage controller actived');
                     this._subscribeToEvents();
+                    if (this.$stateParams.type === 'new') {
+                        this.localStorage.setItem('waysily.teacher_id', '');
+                    }
                     this.fillFormWithTeacherData();
                 };
                 CreateTeacherPageController.prototype.fillFormWithTeacherData = function () {
@@ -96,6 +100,7 @@ var app;
                 'mainApp.localStorageService',
                 'dataConfig',
                 '$state',
+                '$stateParams',
                 '$filter',
                 '$scope',
                 '$rootScope',

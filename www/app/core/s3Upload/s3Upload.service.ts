@@ -38,20 +38,20 @@ module app.core.s3Upload {
 
 
         /*-- INJECT DEPENDENCIES --*/
-        static $inject = ['$q'];
+        static $inject = ['$q', 'dataConfig'];
 
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        constructor(private $q: ng.IQService) {
+        constructor(private $q: ng.IQService, private dataConfig: IDataConfig) {
             //LOG
             console.log('S3Upload service instanced');
             //CONSTANTS
-            this.REGION = 'us-east-1';
-            this.ACCESS_KEY_ID = 'AKIAIHKBYIUQD4KBIRLQ';
-            this.SECRET_ACCESS_KEY = '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';
-            this.BUCKET = 'waysily-img';
+            this.REGION = this.dataConfig.regionS3;
+            this.ACCESS_KEY_ID = this.dataConfig.accessKeyIdS3;
+            this.SECRET_ACCESS_KEY = this.dataConfig.secretAccessKeyS3;
+            this.BUCKET = this.dataConfig.bucketS3;
             /*********************************/
 
             // Init AWS S3

@@ -6,13 +6,14 @@ var app;
         (function (s3Upload) {
             'use strict';
             var S3UploadService = (function () {
-                function S3UploadService($q) {
+                function S3UploadService($q, dataConfig) {
                     this.$q = $q;
+                    this.dataConfig = dataConfig;
                     console.log('S3Upload service instanced');
-                    this.REGION = 'us-east-1';
-                    this.ACCESS_KEY_ID = 'AKIAIHKBYIUQD4KBIRLQ';
-                    this.SECRET_ACCESS_KEY = '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';
-                    this.BUCKET = 'waysily-img';
+                    this.REGION = this.dataConfig.regionS3;
+                    this.ACCESS_KEY_ID = this.dataConfig.accessKeyIdS3;
+                    this.SECRET_ACCESS_KEY = this.dataConfig.secretAccessKeyS3;
+                    this.BUCKET = this.dataConfig.bucketS3;
                     AWS.config.region = this.REGION;
                     AWS.config.update({
                         accessKeyId: this.ACCESS_KEY_ID,
@@ -47,7 +48,7 @@ var app;
                 return S3UploadService;
             }());
             S3UploadService.serviceId = 'mainApp.core.s3Upload.S3UploadService';
-            S3UploadService.$inject = ['$q'];
+            S3UploadService.$inject = ['$q', 'dataConfig'];
             s3Upload.S3UploadService = S3UploadService;
             angular
                 .module('mainApp.core.s3Upload', [])

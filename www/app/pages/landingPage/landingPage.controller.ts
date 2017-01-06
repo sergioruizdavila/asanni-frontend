@@ -155,6 +155,7 @@ module app.pages.landingPage {
         /**********************************/
         /*            METHODS             */
         /**********************************/
+        
         changeLanguage(): void {
              this.$translate.use(this.form.language);
         }

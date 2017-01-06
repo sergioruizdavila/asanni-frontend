@@ -34,45 +34,67 @@
 
         &--primary {
             color: map-get($main-palette, primary);
-            &:hover, &:focus {
+            &:hover {
                 background-color: $link-box-primary-background-hover;
                 border-bottom-color: $link-box-primary-border-hover;
                 color: $link-box-font-color-hover;
                 border-radius: $link-box-radius-hover;
                 text-decoration: none;
             }
+
+            &:focus {
+                color: map-get($main-palette, primary);
+                text-decoration: none;
+            }
         }
 
         &--alert {
             color: map-get($main-palette, alert);
-            &:hover, &:focus {
+            &:hover {
                 background-color: $link-box-alert-background-hover;
                 border-bottom-color: $link-box-alert-border-hover;
                 color: $link-box-font-color-hover;
                 border-radius: $link-box-radius-hover;
                 text-decoration: none;
             }
+
+            &:focus {
+                color: map-get($main-palette, alert);
+                color: $link-font-color;
+            }
         }
 
         &--underline {
             &--primary {
                 border-bottom: 2px solid map-get($main-palette, primary);
-                &:hover, &:focus {
+                &:hover {
                     background-color: $link-box-primary-background-hover;
                     border-bottom-color: $link-box-primary-border-hover;
                     color: $link-box-font-color-hover;
                     border-radius: $link-box-radius-hover;
                     text-decoration: none;
                 }
+
+                &:focus {
+                    border-bottom: 2px solid map-get($main-palette, primary);
+                    color: $link-font-color;
+                    text-decoration: none;
+                }
             }
 
             &--alert {
                 border-bottom: 2px solid map-get($main-palette, alert);
-                &:hover, &:focus {
+                &:hover {
                     background-color: $link-box-alert-background-hover;
                     border-bottom-color: $link-box-alert-border-hover;
                     color: $link-box-font-color-hover;
                     border-radius: $link-box-radius-hover;
+                    text-decoration: none;
+                }
+
+                &:focus {
+                    border-bottom: 2px solid map-get($main-palette, alert);
+                    color: $link-font-color;
                     text-decoration: none;
                 }
             }

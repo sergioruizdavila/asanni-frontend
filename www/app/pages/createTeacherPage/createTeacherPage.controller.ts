@@ -55,6 +55,7 @@ module app.pages.createTeacherPage {
             'mainApp.localStorageService',
             'dataConfig',
             '$state',
+            '$stateParams',
             '$filter',
             '$scope',
             '$rootScope',
@@ -71,6 +72,7 @@ module app.pages.createTeacherPage {
             private localStorage,
             private dataConfig: IDataConfig,
             private $state: ng.ui.IStateService,
+            private $stateParams: app.core.interfaces.IStateParamsData,
             private $filter: angular.IFilterService,
             private $scope: ICreateTeacherScope,
             private $rootScope: app.core.interfaces.IMainAppRootScope,
@@ -107,8 +109,15 @@ module app.pages.createTeacherPage {
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
 
+            // If come from landing page in order to create a new teacher:
+            // remove teacher id on localStorage
+            if(this.$stateParams.type === 'new') {
+                this.localStorage.setItem('waysily.teacher_id', '');
+            }
+
             //Charge teacher data if teacher entity exist on DB
             this.fillFormWithTeacherData();
+
         }
 
         /**********************************/

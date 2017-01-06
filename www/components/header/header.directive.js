@@ -25,7 +25,10 @@ var components;
             .module('mainApp.components.header')
             .directive(MaHeader.directiveId, MaHeader.instance);
         var HeaderController = (function () {
-            function HeaderController() {
+            function HeaderController($translate, $uibModal, dataConfig) {
+                this.$translate = $translate;
+                this.$uibModal = $uibModal;
+                this.dataConfig = dataConfig;
                 this.init();
             }
             HeaderController.prototype.init = function () {
@@ -38,9 +41,25 @@ var components;
             HeaderController.prototype.slideNavMenu = function () {
                 this._slideout = !this._slideout;
             };
+            HeaderController.prototype.changeLanguage = function () {
+                this.$translate.use(this.form.language);
+            };
+            HeaderController.prototype._openSignUpModal = function () {
+                var self = this;
+                var options = {
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    templateUrl: this.dataConfig.modalSignUpTmpl,
+                    controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                };
+                var modalInstance = this.$uibModal.open(options);
+                event.preventDefault();
+            };
             return HeaderController;
         }());
         HeaderController.controllerId = 'mainApp.components.header.HeaderController';
+        HeaderController.$inject = ['$translate', '$uibModal', 'dataConfig'];
         header.HeaderController = HeaderController;
         angular.module('mainApp.components.header')
             .controller(HeaderController.controllerId, HeaderController);

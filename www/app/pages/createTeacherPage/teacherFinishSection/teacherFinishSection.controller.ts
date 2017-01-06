@@ -34,7 +34,9 @@ module app.pages.createTeacherPage {
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = [
             '$scope',
-            'mainApp.core.util.FunctionsUtilService'
+            '$state',
+            'mainApp.core.util.FunctionsUtilService',
+            'mainApp.localStorageService'
         ];
 
         /**********************************/
@@ -42,7 +44,9 @@ module app.pages.createTeacherPage {
         /**********************************/
         constructor(
             private $scope: ITeacherFinishScope,
-            private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService) {
+            private $state: ng.ui.IStateService,
+            private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
+            private localStorage) {
                 this._init();
         }
 
@@ -64,6 +68,13 @@ module app.pages.createTeacherPage {
         /**********************************/
         /*            METHODS             */
         /**********************************/
+
+        _finishProcess() {
+            //Clean teacher id in localStorage
+            this.localStorage.setItem('waysily.teacher_id', '');
+            //Go to teacher profile in order to show a preview profile
+            this.$state.go('page.teacherProfilePage', {id: this.$scope.$parent.vm.teacherData.Id});
+        }
 
 
     }

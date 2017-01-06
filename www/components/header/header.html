@@ -2,7 +2,7 @@
 <!--                 HEADER                  -->
 <!--------------------------------------------->
 
-<div class="ma-header">
+<div class="ma-header" ng-controller="mainApp.pages.landingPage.LandingPageController as vm">
 
     <!--                     START: HEADER (SMALL SCREEN)                    -->
     <!------------------------------------------------------------------------->
@@ -170,7 +170,7 @@
 
 
         <!---------------- START: PROFILE IMAGE (MD AND LG SCREEN) ------------>
-        <div class="ma-header__block pull-right">
+        <div class="ma-header__block pull-right hidden">
 
             <!-- User menu options dropdown -->
             <span uib-dropdown on-toggle="toggled(open)">
@@ -229,7 +229,7 @@
 
 
         <!---------------- START: LOG IN BUTTON (MD AND LG SCREEN) ------------>
-        <div class="ma-header__block pull-right">
+        <div class="ma-header__block pull-right hidden">
             <a href="#" class="ma-header__block__btn link-reset">
                 Log In
             </a>
@@ -239,7 +239,7 @@
 
 
         <!--------------- START: SIGN UP BUTTON (MD AND LG SCREEN) ------------>
-        <div class="ma-header__block pull-right">
+        <div class="ma-header__block pull-right hidden">
             <a href="#" class="ma-header__block__btn link-reset">
                 Sign Up
             </a>
@@ -249,7 +249,7 @@
 
 
         <!---------------- START: INBOX BUTTON (MD AND LG SCREEN) ------------->
-        <div class="ma-header__block pull-right">
+        <div class="ma-header__block pull-right hidden">
             <a ui-sref="page.userInboxPage" href
                class="ma-header__block__btn link-reset">
                <span class="ma-icon-container">
@@ -270,8 +270,77 @@
 
 
 
+        <!-------------- START: CHANGE LANGUAGE (MD AND LG SCREEN) ------------>
+        <div class="ma-header__block
+                    ma-header--transparent__block
+                    ma-header--transparent__block--right
+                    pull-right">
+
+            <!-- Change Language Select Input -->
+            <div class="form-group ma-form-group">
+                <div class="ma-select-container
+                            ma-select-container--small">
+
+                    <select id="languageSelect"
+                            class="ma-input ma-select
+                                   ma-select--small
+                                   ma-select--border-round"
+                            ng-model="vm.form.language"
+                            ng-change="vm.changeLanguage()"
+                            name="language">
+                        <option value="es" selected="selected" translate>
+                            %header.lang.options.es.text
+                        </option>
+                        <option value="en" translate>
+                            %header.lang.options.en.text
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        <!--             END: CHANGE LANGUAGE (MD AND LG SCREEN)             -->
+
+
+
+        <!--------------- START: JOIN SECTION (MD AND LG SCREEN) -------------->
+        <div class="ma-header__block
+                    ma-header--transparent__block
+                    ma-header--transparent__block--right
+                    pull-right">
+
+            <div class="ma-header--transparent__block__buttons-list">
+                <span class="ma-header--transparent__block__buttons-list__label"
+                      style="color: inherit;"
+                      translate>
+                    %landing.header.join.label.text
+                </span>
+                <button class="ma-header--transparent__block__buttons-list__btn
+                               ma-btn ma-btn--alert ma-btn--default"
+                        ng-click="vm._openSignUpModal()" translate>
+                    %global.student.text
+                </button>
+                <a class="ma-header--transparent__block__buttons-list__btn
+                               ma-btn ma-btn--alert ma-btn--default"
+                    ui-sref="page.teacherLandingPage"
+                    href
+                    translate>
+                    %global.teacher.text
+                </a>
+                <button class="ma-header--transparent__block__buttons-list__btn
+                               ma-btn ma-btn--alert ma-btn--default" translate>
+                    %global.school.text
+                </button>
+
+            </div>
+
+        </div>
+        <!--              END: JOIN SECTION (MD AND LG SCREEN)               -->
+
+
+
         <!------------------ START: SEARCH (MD AND LG SCREEN) ----------------->
-        <div class="ma-header__block ma-header__block__search-wrapper"
+        <div class="ma-header__block ma-header__block__search-wrapper hidden"
              role="search">
             <form class="ma-header__block__search-wrapper__form">
                 <div class="ma-header__block__search-wrapper__form__search-bar">

@@ -62,6 +62,14 @@ module app.core.interfaces {
         title: string;
         description: string;
     }
+
+    /********************************/
+    /*    STATEPARAMS INTERFACES    */
+    /********************************/
+    export interface IStateParamsData extends ng.ui.IStateParamsService {
+        type?: string;
+    }
+
     /////////////////////////////////
 
 

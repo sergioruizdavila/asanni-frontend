@@ -24,6 +24,9 @@
                     }
                 },
                 cache: false,
+                params: {
+                    type: '',
+                },
                 onEnter: ['$rootScope', function ($rootScope) {
                     // Show/Hide header & footer
                     $rootScope.activeHeader = false;

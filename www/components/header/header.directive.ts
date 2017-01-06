@@ -77,6 +77,10 @@ module components.header {
 
     }
 
+    interface IHeaderForm {
+        language: string;
+    }
+
     /****************************************/
     /*           CLASS DEFINITION           */
     /****************************************/
@@ -88,13 +92,20 @@ module components.header {
         /*           PROPERTIES           */
         /**********************************/
         private _slideout: boolean;
+        form: IHeaderForm;
         // --------------------------------
+
+
+        /*-- INJECT DEPENDENCIES --*/
+        public static $inject = ['$translate', '$uibModal', 'dataConfig'];
 
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        constructor() {
+        constructor(private $translate: angular.translate.ITranslateService,
+                    private $uibModal: ng.ui.bootstrap.IModalService,
+                    private dataConfig: IDataConfig) {
             this.init();
         }
 
@@ -121,6 +132,34 @@ module components.header {
         */
         slideNavMenu(): void {
             this._slideout = !this._slideout;
+        }
+
+        changeLanguage(): void {
+             this.$translate.use(this.form.language);
+        }
+
+
+        /**
+        * _openSignUpModal
+        * @description - open Modal in order to add a New Teacher's Experience on Box
+        * @use - this._addEditExperience();
+        * @function
+        * @return {void}
+        */
+        private _openSignUpModal(): void {
+            let self = this;
+            // modal default options
+            let options: ng.ui.bootstrap.IModalSettings = {
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                templateUrl: this.dataConfig.modalSignUpTmpl,
+                controller: 'mainApp.components.modal.ModalSignUpController as vm'
+            };
+
+            var modalInstance = this.$uibModal.open(options);
+
+            event.preventDefault();
         }
 
     }

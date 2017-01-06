@@ -5,9 +5,11 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherFinishSectionController = (function () {
-                function TeacherFinishSectionController($scope, functionsUtilService) {
+                function TeacherFinishSectionController($scope, $state, functionsUtilService, localStorage) {
                     this.$scope = $scope;
+                    this.$state = $state;
                     this.functionsUtilService = functionsUtilService;
+                    this.localStorage = localStorage;
                     this._init();
                 }
                 TeacherFinishSectionController.prototype._init = function () {
@@ -17,12 +19,18 @@ var app;
                 TeacherFinishSectionController.prototype.activate = function () {
                     console.log('TeacherFinishSectionController controller actived');
                 };
+                TeacherFinishSectionController.prototype._finishProcess = function () {
+                    this.localStorage.setItem('waysily.teacher_id', '');
+                    this.$state.go('page.teacherProfilePage', { id: this.$scope.$parent.vm.teacherData.Id });
+                };
                 return TeacherFinishSectionController;
             }());
             TeacherFinishSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherFinishSectionController';
             TeacherFinishSectionController.$inject = [
                 '$scope',
-                'mainApp.core.util.FunctionsUtilService'
+                '$state',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.localStorageService'
             ];
             createTeacherPage.TeacherFinishSectionController = TeacherFinishSectionController;
             angular

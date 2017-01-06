@@ -30,7 +30,7 @@ module app.pages.searchPage {
         error: ISearchPageError;
         mapConfig: components.map.IMapConfig;
         data: Array<app.models.student.Student>;
-        _hoverDetail: Array<boolean>;
+        private _hoverDetail: Array<boolean>;
         type: string;
         // --------------------------------
 
