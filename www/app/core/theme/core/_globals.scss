@@ -59,11 +59,23 @@
 .space-top-1 {
     margin-top: 6px;
 }
+.space-right-1 {
+    margin-right: 6px;
+}
+.space-left-1 {
+    margin-left: 6px;
+}
 .space-2 {
     margin-bottom: 12px;
 }
 .space-top-2 {
     margin-top: 12px;
+}
+.space-right-2 {
+    margin-right: 12px;
+}
+.space-left-2 {
+    margin-left: 12px;
 }
 .space-3 {
     margin-bottom: 18px;
@@ -71,11 +83,23 @@
 .space-top-3 {
     margin-top: 18px;
 }
+.space-right-3 {
+    margin-right: 18px;
+}
+.space-left-3 {
+    margin-left: 18px;
+}
 .space-4 {
     margin-bottom: 24px;
 }
 .space-top-4 {
     margin-top: 24px;
+}
+.space-right-4 {
+    margin-right: 24px;
+}
+.space-left-4 {
+    margin-left: 24px;
 }
 .space-5 {
     margin-bottom: 30px;
@@ -83,11 +107,23 @@
 .space-top-5 {
     margin-top: 30px;
 }
+.space-right-5 {
+    margin-right: 30px;
+}
+.space-left-5 {
+    margin-left: 30px;
+}
 .space-6 {
     margin-bottom: 36px;
 }
 .space-top-6 {
     margin-top: 36px;
+}
+.space-right-6 {
+    margin-right: 36px;
+}
+.space-left-6 {
+    margin-left: 36px;
 }
 .space-7 {
     margin-bottom: 42px;
@@ -95,11 +131,23 @@
 .space-top-7 {
     margin-top: 42px;
 }
+.space-right-7 {
+    margin-right: 42px;
+}
+.space-left-7 {
+    margin-left: 42px;
+}
 .space-8 {
     margin-bottom: 48px;
 }
 .space-top-8 {
     margin-top: 48px;
+}
+.space-right-8 {
+    margin-right: 48px;
+}
+.space-left-8 {
+    margin-left: 48px;
 }
 .space-9 {
     margin-bottom: 54px;
@@ -107,11 +155,23 @@
 .space-top-9 {
     margin-top: 54px;
 }
+.space-right-9 {
+    margin-right: 54px;
+}
+.space-left-9 {
+    margin-left: 54px;
+}
 .space-10 {
     margin-bottom: 60px;
 }
 .space-top-10 {
     margin-top: 60px;
+}
+.space-right-10 {
+    margin-right: 60px;
+}
+.space-left-10 {
+    margin-left: 60px;
 }
 .space-11 {
     margin-bottom: 66px;
@@ -119,11 +179,23 @@
 .space-top-11 {
     margin-top: 66px;
 }
+.space-right-11 {
+    margin-right: 66px;
+}
+.space-left-11 {
+    margin-left: 66px;
+}
 .space-12 {
     margin-bottom: 72px;
 }
 .space-top-12 {
     margin-top: 72px;
+}
+.space-right-12 {
+    margin-right: 72px;
+}
+.space-left-12 {
+    margin-left: 72px;
 }
 
 .padding-reset {
@@ -316,13 +388,6 @@ body.mainApp {
         padding: 0;
         position: absolute;
         width: 1px;
-    }
-
-    li:before {
-        content: "\00bb";
-        margin-right: 10px;
-        color: #ff5a5f;
-        font-size: 30px;
     }
 
     blockquote:before {
