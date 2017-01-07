@@ -5,17 +5,16 @@ var app;
         var teacherLandingPage;
         (function (teacherLandingPage) {
             var TeacherLandingPageController = (function () {
-                function TeacherLandingPageController(TeacherService, $state, dataConfig, $translate, $uibModal) {
-                    this.TeacherService = TeacherService;
+                function TeacherLandingPageController(functionsUtil, $state, dataConfig, $uibModal) {
+                    this.functionsUtil = functionsUtil;
                     this.$state = $state;
                     this.dataConfig = dataConfig;
-                    this.$translate = $translate;
                     this.$uibModal = $uibModal;
                     this._init();
                 }
                 TeacherLandingPageController.prototype._init = function () {
                     this.form = {
-                        language: this.$translate.use() || 'en'
+                        language: this.functionsUtil.getCurrentLanguage() || 'en'
                     };
                     this._hoverDetail = [];
                     this._buildFakeTeacher();
@@ -27,7 +26,7 @@ var app;
                     console.log('teacherLandingPage controller actived');
                 };
                 TeacherLandingPageController.prototype.changeLanguage = function () {
-                    this.$translate.use(this.form.language);
+                    this.functionsUtil.changeLanguage(this.form.language);
                 };
                 TeacherLandingPageController.prototype._openSignUpModal = function () {
                     var self = this;
@@ -85,10 +84,9 @@ var app;
                 return TeacherLandingPageController;
             }());
             TeacherLandingPageController.controllerId = 'mainApp.pages.teacherLandingPage.TeacherLandingPageController';
-            TeacherLandingPageController.$inject = ['mainApp.models.teacher.TeacherService',
+            TeacherLandingPageController.$inject = ['mainApp.core.util.FunctionsUtilService',
                 '$state',
                 'dataConfig',
-                '$translate',
                 '$uibModal'];
             teacherLandingPage.TeacherLandingPageController = TeacherLandingPageController;
             angular

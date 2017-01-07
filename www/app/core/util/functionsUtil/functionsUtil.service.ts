@@ -19,6 +19,8 @@ module app.core.util.functionsUtil {
         buildNumberSelectList: (from: number, to:number) => Array<app.core.interfaces.ISelectListElement>;
         dateFormat: (date: string) => string;
         ageFormat: (date: any) => string;
+        getCurrentLanguage: () => string;
+        changeLanguage: (language: string) => void;
         joinDate: (day:string, month:string, year:string) => string;
         splitDate: (date:string) => app.core.interfaces.IDateSplitted;
         progress: (currentStep: number, totalSteps: number) => string;
@@ -61,13 +63,16 @@ module app.core.util.functionsUtil {
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/
-        public static $inject = ['$filter', 'dataConfig'];
+        public static $inject = ['$filter',
+                                 'dataConfig',
+                                 '$translate'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(private $filter: angular.IFilterService,
-                    private dataConfig: IDataConfig) {
+                    private dataConfig: IDataConfig,
+                    private $translate: angular.translate.ITranslateService) {
             console.log('functionsUtil service called');
         }
 
@@ -122,6 +127,34 @@ module app.core.util.functionsUtil {
             let age = currentYear - birthYear;
 
             return age.toString();
+        }
+
+
+
+        /**
+        * getCurrentLanguage
+        * @description - get current site language
+        * @use - this.FunctionsUtilService.getCurrentLanguage();
+        * @function
+        * @return {string} currentLanguage - current site language code (e.g. 'es', 'en')
+        */
+        getCurrentLanguage(): string {
+             let currentLanguage = this.$translate.use();
+             return currentLanguage;
+        }
+
+
+
+        /**
+        * changeLanguage
+        * @description - change site language
+        * @use - this.FunctionsUtilService.changeLanguage('es');
+        * @function
+        * @params {string} language - language code
+        * @return {void}
+        */
+        changeLanguage(language): void {
+             this.$translate.use(language);
         }
 
 

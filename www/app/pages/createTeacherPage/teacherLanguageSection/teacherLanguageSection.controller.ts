@@ -78,7 +78,7 @@ module app.pages.createTeacherPage {
         /**********************************/
         constructor(
             private dataConfig: IDataConfig,
-            private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
+            private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
@@ -100,7 +100,7 @@ module app.pages.createTeacherPage {
             /*********************************/
 
             //Put title on parent scope
-            this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(3, 9);
+            this.$scope.$parent.vm.progressWidth = this.functionsUtil.progress(3, 9);
 
             //Put Help Text Default
             this.helpText = {
@@ -202,28 +202,28 @@ module app.pages.createTeacherPage {
             //CONSTANTS
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
-            
+
             /***************************************************/
             //VARIABLES
             let formValid = true;
 
             //Validate Native Languages List
             let native_rules = [NULL_ENUM, EMPTY_ENUM];
-            this.validate.native = this.functionsUtilService.validator(this.form.native, native_rules);
+            this.validate.native = this.functionsUtil.validator(this.form.native, native_rules);
             if(!this.validate.native.valid) {
                 formValid = this.validate.native.valid;
             }
 
             //Validate Learn Languages List
             let learn_rules = [NULL_ENUM, EMPTY_ENUM];
-            this.validate.learn = this.functionsUtilService.validator(this.form.learn, learn_rules);
+            this.validate.learn = this.functionsUtil.validator(this.form.learn, learn_rules);
             if(!this.validate.learn.valid) {
                 formValid = this.validate.learn.valid;
             }
 
             //Validate Teach Languages List
             let teach_rules = [NULL_ENUM, EMPTY_ENUM];
-            this.validate.teach = this.functionsUtilService.validator(this.form.teach, teach_rules);
+            this.validate.teach = this.functionsUtil.validator(this.form.teach, teach_rules);
             if(!this.validate.teach.valid) {
                 formValid = this.validate.teach.valid;
             }

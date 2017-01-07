@@ -5,9 +5,9 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherLanguageSectionController = (function () {
-                function TeacherLanguageSectionController(dataConfig, functionsUtilService, getDataFromJson, $state, $filter, $scope, $timeout, $uibModal) {
+                function TeacherLanguageSectionController(dataConfig, functionsUtil, getDataFromJson, $state, $filter, $scope, $timeout, $uibModal) {
                     this.dataConfig = dataConfig;
-                    this.functionsUtilService = functionsUtilService;
+                    this.functionsUtil = functionsUtil;
                     this.getDataFromJson = getDataFromJson;
                     this.$state = $state;
                     this.$filter = $filter;
@@ -22,7 +22,7 @@ var app;
                     this.STEP4_STATE = 'page.createTeacherPage.experience';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.lang.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.lang.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(3, 9);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtil.progress(3, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -71,17 +71,17 @@ var app;
                     var EMPTY_ENUM = 3;
                     var formValid = true;
                     var native_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.native = this.functionsUtilService.validator(this.form.native, native_rules);
+                    this.validate.native = this.functionsUtil.validator(this.form.native, native_rules);
                     if (!this.validate.native.valid) {
                         formValid = this.validate.native.valid;
                     }
                     var learn_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.learn = this.functionsUtilService.validator(this.form.learn, learn_rules);
+                    this.validate.learn = this.functionsUtil.validator(this.form.learn, learn_rules);
                     if (!this.validate.learn.valid) {
                         formValid = this.validate.learn.valid;
                     }
                     var teach_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.teach = this.functionsUtilService.validator(this.form.teach, teach_rules);
+                    this.validate.teach = this.functionsUtil.validator(this.form.teach, teach_rules);
                     if (!this.validate.teach.valid) {
                         formValid = this.validate.teach.valid;
                     }

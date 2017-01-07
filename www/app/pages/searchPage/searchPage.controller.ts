@@ -92,16 +92,24 @@ module app.pages.searchPage {
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
 
-            //Get All Students of this zone (Default results)
-            this.StudentService.getAllStudents().then(
-                function(response: Array<app.models.student.Student>) {
-                    self.type = 'student';
+            //Get All Teacher of this zone (Default results)
+            this.TeacherService.getAllTeachers().then(
+                function(response: app.models.teacher.ITeacherQueryObject) {
+
+                    self.type = 'teacher';
                     self.mapConfig = self.FunctionsUtilService.buildMapConfig(
-                        response,
+                        response.results,
                         'search-map',
-                        {lat: 6.175434,lng: -75.583329}
+                        null
                     );
-                    self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+
+                    /*
+                    * Send event to child (MapController) in order to It draws
+                    * each Marker on the Map
+                    */
+                    self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+
+                    self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                 }
             );
 
@@ -228,6 +236,7 @@ module app.pages.searchPage {
                              students list from server
             * @event
             */
+
             this.$scope.$on('Students', function(event, args) {
                 //Get All Users of this zone
                 self.StudentService.getAllStudents().then(
@@ -260,6 +269,7 @@ module app.pages.searchPage {
                              teachers list from server
             * @event
             */
+
             this.$scope.$on('Teachers', function(event, args) {
                 //Get All Teachers of this zone
                 self.TeacherService.getAllTeachers().then(
@@ -292,6 +302,7 @@ module app.pages.searchPage {
                              schools list from server
             * @event
             */
+
             this.$scope.$on('Schools', function(event, args) {
                 //Get All Schools of this zone
                 self.SchoolService.getAllSchools().then(
@@ -325,6 +336,7 @@ module app.pages.searchPage {
                              specific result container
             * @event
             */
+
             this.$scope.$on('SelectContainer', function(event, args) {
                 //VARIABLES
                 let containerId = '#container-' + args;

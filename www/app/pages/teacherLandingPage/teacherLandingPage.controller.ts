@@ -45,20 +45,18 @@ module app.pages.teacherLandingPage {
 
 
         /*-- INJECT DEPENDENCIES --*/
-        public static $inject = ['mainApp.models.teacher.TeacherService',
+        public static $inject = ['mainApp.core.util.FunctionsUtilService',
                                  '$state',
                                  'dataConfig',
-                                 '$translate',
                                  '$uibModal'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
-            private TeacherService: app.models.teacher.ITeacherService,
+            private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private $state: ng.ui.IStateService,
             private dataConfig: IDataConfig,
-            private $translate: angular.translate.ITranslateService,
             private $uibModal: ng.ui.bootstrap.IModalService) {
 
             this._init();
@@ -69,7 +67,7 @@ module app.pages.teacherLandingPage {
         private _init() {
             //Init form
             this.form = {
-                language: this.$translate.use() || 'en'
+                language: this.functionsUtil.getCurrentLanguage() || 'en'
             };
 
             //Init hoverDetail array
@@ -96,9 +94,20 @@ module app.pages.teacherLandingPage {
         /**********************************/
         /*            METHODS             */
         /**********************************/
+
+        /**
+        * changeLanguage
+        * @description - open Modal in order to add a New Teacher's Experience on Box
+        * @use - this._addEditExperience();
+        * @function
+        * @return {void}
+        */
+
         changeLanguage(): void {
-             this.$translate.use(this.form.language);
+             this.functionsUtil.changeLanguage(this.form.language);
         }
+
+
 
         /**
         * _openSignUpModal
@@ -107,6 +116,7 @@ module app.pages.teacherLandingPage {
         * @function
         * @return {void}
         */
+
         private _openSignUpModal(): void {
             let self = this;
             // modal default options
@@ -123,6 +133,15 @@ module app.pages.teacherLandingPage {
             event.preventDefault();
         }
 
+
+
+        /**
+        * _buildFakeTeacher
+        * @description - this method build fake teacher container example
+        * @use - this._buildFakeTeacher();
+        * @function
+        * @return {void}
+        */
 
         private _buildFakeTeacher(): void {
             this.fake = new app.models.teacher.Teacher();
@@ -145,6 +164,8 @@ module app.pages.teacherLandingPage {
 
         }
 
+
+
         /**
         * _hoverEvent
         * @description - this method is launched  when user launchs
@@ -160,6 +181,7 @@ module app.pages.teacherLandingPage {
             let args = {id: id, status: status};
             this._hoverDetail[id] = status;
         }
+
 
 
         /**
@@ -189,6 +211,15 @@ module app.pages.teacherLandingPage {
             return isNative;
         }
 
+
+
+        /**
+        * goToCreate
+        * @description - go to add/create new teacher
+        * @use - this._buildFakeTeacher();
+        * @function
+        * @return {void}
+        */
 
         goToCreate(): void {
             //VARIABLES

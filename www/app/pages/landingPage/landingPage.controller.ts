@@ -74,7 +74,6 @@ module app.pages.landingPage {
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = ['$state',
                                  'dataConfig',
-                                 '$translate',
                                  '$uibModal',
                                  'mainApp.core.util.messageUtilService',
                                  'mainApp.core.util.FunctionsUtilService',
@@ -88,7 +87,6 @@ module app.pages.landingPage {
         constructor(
             private $state: ng.ui.IStateService,
             private dataConfig: IDataConfig,
-            private $translate: angular.translate.ITranslateService,
             private $uibModal: ng.ui.bootstrap.IModalService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
@@ -109,7 +107,7 @@ module app.pages.landingPage {
                     email: '',
                     comment: ''
                 },
-                language: this.$translate.use() || 'en',
+                language: this.functionsUtil.getCurrentLanguage() || 'en',
                 feedback: new app.models.feedback.Feedback()
             };
 
@@ -155,17 +153,35 @@ module app.pages.landingPage {
         /**********************************/
         /*            METHODS             */
         /**********************************/
-        
+
+        /**
+        * changeLanguage
+        * @description - open Modal in order to add a New Teacher's Experience on Box
+        * @use - this._addEditExperience();
+        * @function
+        * @return {void}
+        */
+
         changeLanguage(): void {
-             this.$translate.use(this.form.language);
+             this.functionsUtil.changeLanguage(this.form.language);
         }
 
-        goToEarlyAccessForm(): void {
-            // Scroll to a certain element
-            document.querySelector('.landingPage__early-access-block').scrollIntoView({ behavior: 'smooth' });
-        }
+
+
+        /**
+        * _sendCountryFeedback
+        * @description - save country feedback to database
+        * @use - this._sendCountryFeedback();
+        * @function
+        * @return {void}
+        */
 
         private _sendCountryFeedback(): void {
+            //CONSTANTS
+            const FEEDBACK_SUCCESS_MESSAGE = '¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.';
+            /***************************************************/
+
+            //VARIABLES
             let self = this;
             this.form.feedback.NextCountry = this.countryObject.code;
 
@@ -177,7 +193,7 @@ module app.pages.landingPage {
                     function(response) {
                         if(response.createdAt) {
                             self.infoCountry.success = true;
-                            self.messageUtil.success('¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.');
+                            self.messageUtil.success(FEEDBACK_SUCCESS_MESSAGE);
                             self.infoCountry.sent = true;
                             self.infoCountry.sending = false;
                             self.infoCountry.disabled = true;
@@ -195,6 +211,16 @@ module app.pages.landingPage {
             }
 
         }
+
+
+
+        /**
+        * _createEarlyAdopter
+        * @description - save new user's email early adopter
+        * @use - this._createEarlyAdopter();
+        * @function
+        * @return {void}
+        */
 
         private _createEarlyAdopter(): void {
             //CONSTANTS
@@ -244,6 +270,8 @@ module app.pages.landingPage {
                 this.validate.email.valid = false;
             }
         }
+
+
 
         /**
         * _openSignUpModal

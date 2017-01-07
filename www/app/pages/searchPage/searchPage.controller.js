@@ -29,10 +29,11 @@ var app;
                     var self = this;
                     console.log('searchPage controller actived');
                     this._subscribeToEvents();
-                    this.StudentService.getAllStudents().then(function (response) {
-                        self.type = 'student';
-                        self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
-                        self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                    this.TeacherService.getAllTeachers().then(function (response) {
+                        self.type = 'teacher';
+                        self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null);
+                        self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                        self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                     });
                 };
                 SearchPageController.prototype.goToDetails = function (containerId) {
