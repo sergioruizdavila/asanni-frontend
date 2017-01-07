@@ -3816,7 +3816,7 @@ var app;
                     var params = {
                         type: 'new'
                     };
-                    this.$state.go('page.createTeacherPage.basicInfo', params, { reload: true });
+                    this.$state.go('page.createTeacherPage.start', params, { reload: true });
                 };
                 return TeacherLandingPageController;
             }());
@@ -5061,6 +5061,68 @@ var app;
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
 //# sourceMappingURL=createTeacherPage.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.createTeacherPage')
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.createTeacherPage.start', {
+            url: '/start',
+            views: {
+                'step': {
+                    templateUrl: 'app/pages/createTeacherPage/teacherWelcomeSection/teacherWelcomeSection.html',
+                    controller: 'mainApp.pages.createTeacherPage.TeacherWelcomeSectionController',
+                    controllerAs: 'vm'
+                }
+            },
+            cache: false
+        });
+    }
+})();
+//# sourceMappingURL=teacherWelcomeSection.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var createTeacherPage;
+        (function (createTeacherPage) {
+            var TeacherWelcomeSectionController = (function () {
+                function TeacherWelcomeSectionController($state, $scope, functionsUtilService) {
+                    this.$state = $state;
+                    this.$scope = $scope;
+                    this.functionsUtilService = functionsUtilService;
+                    this._init();
+                }
+                TeacherWelcomeSectionController.prototype._init = function () {
+                    this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
+                    this.INITIAL_PROGRESS_WIDTH = '2%';
+                    this.$scope.$parent.vm.progressWidth = this.INITIAL_PROGRESS_WIDTH;
+                    this.activate();
+                };
+                TeacherWelcomeSectionController.prototype.activate = function () {
+                    console.log('TeacherWelcomeSectionController controller actived');
+                };
+                TeacherWelcomeSectionController.prototype.goToStart = function () {
+                    this.$state.go(this.STEP1_STATE, { reload: true });
+                };
+                return TeacherWelcomeSectionController;
+            }());
+            TeacherWelcomeSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherWelcomeSectionController';
+            TeacherWelcomeSectionController.$inject = [
+                '$state',
+                '$scope',
+                'mainApp.core.util.FunctionsUtilService'
+            ];
+            createTeacherPage.TeacherWelcomeSectionController = TeacherWelcomeSectionController;
+            angular
+                .module('mainApp.pages.createTeacherPage')
+                .controller(TeacherWelcomeSectionController.controllerId, TeacherWelcomeSectionController);
+        })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=teacherWelcomeSection.controller.js.map
 (function () {
     'use strict';
     angular

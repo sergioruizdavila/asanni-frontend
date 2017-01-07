@@ -82,6 +82,8 @@ var paths = {
         "www/app/pages/userInboxDetailsPage/userInboxDetailsPage.controller.js",
         "www/app/pages/createTeacherPage/createTeacherPage.config.js",
         "www/app/pages/createTeacherPage/createTeacherPage.controller.js",
+        "www/app/pages/createTeacherPage/teacherWelcomeSection/teacherWelcomeSection.config.js",
+        "www/app/pages/createTeacherPage/teacherWelcomeSection/teacherWelcomeSection.controller.js",
         "www/app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.config.js",
         "www/app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.controller.js",
         "www/app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.config.js",
