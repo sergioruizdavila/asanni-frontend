@@ -5,10 +5,9 @@ var app;
         var landingPage;
         (function (landingPage) {
             var LandingPageController = (function () {
-                function LandingPageController($state, dataConfig, $translate, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson) {
+                function LandingPageController($state, dataConfig, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson) {
                     this.$state = $state;
                     this.dataConfig = dataConfig;
-                    this.$translate = $translate;
                     this.$uibModal = $uibModal;
                     this.messageUtil = messageUtil;
                     this.functionsUtil = functionsUtil;
@@ -24,7 +23,7 @@ var app;
                             email: '',
                             comment: ''
                         },
-                        language: this.$translate.use() || 'en',
+                        language: this.functionsUtil.getCurrentLanguage() || 'en',
                         feedback: new app.models.feedback.Feedback()
                     };
                     this.listCountries = this.getDataFromJson.getCountryi18n();
@@ -52,12 +51,10 @@ var app;
                     console.log('landingPage controller actived');
                 };
                 LandingPageController.prototype.changeLanguage = function () {
-                    this.$translate.use(this.form.language);
-                };
-                LandingPageController.prototype.goToEarlyAccessForm = function () {
-                    document.querySelector('.landingPage__early-access-block').scrollIntoView({ behavior: 'smooth' });
+                    this.functionsUtil.changeLanguage(this.form.language);
                 };
                 LandingPageController.prototype._sendCountryFeedback = function () {
+                    var FEEDBACK_SUCCESS_MESSAGE = '¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.';
                     var self = this;
                     this.form.feedback.NextCountry = this.countryObject.code;
                     if (this.form.feedback.NextCountry) {
@@ -67,7 +64,7 @@ var app;
                         this.FeedbackService.createFeedback(this.form.feedback).then(function (response) {
                             if (response.createdAt) {
                                 self.infoCountry.success = true;
-                                self.messageUtil.success('¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.');
+                                self.messageUtil.success(FEEDBACK_SUCCESS_MESSAGE);
                                 self.infoCountry.sent = true;
                                 self.infoCountry.sending = false;
                                 self.infoCountry.disabled = true;
@@ -141,7 +138,6 @@ var app;
             LandingPageController.controllerId = 'mainApp.pages.landingPage.LandingPageController';
             LandingPageController.$inject = ['$state',
                 'dataConfig',
-                '$translate',
                 '$uibModal',
                 'mainApp.core.util.messageUtilService',
                 'mainApp.core.util.FunctionsUtilService',

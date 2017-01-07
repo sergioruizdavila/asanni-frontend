@@ -173,9 +173,10 @@ var app;
                     Validation[Validation["IsTrue"] = 7] = "IsTrue";
                 })(Validation = functionsUtil.Validation || (functionsUtil.Validation = {}));
                 var FunctionsUtilService = (function () {
-                    function FunctionsUtilService($filter, dataConfig) {
+                    function FunctionsUtilService($filter, dataConfig, $translate) {
                         this.$filter = $filter;
                         this.dataConfig = dataConfig;
+                        this.$translate = $translate;
                         console.log('functionsUtil service called');
                     }
                     FunctionsUtilService.generateGuid = function () {
@@ -195,6 +196,13 @@ var app;
                         var birthYear = parseInt(year);
                         var age = currentYear - birthYear;
                         return age.toString();
+                    };
+                    FunctionsUtilService.prototype.getCurrentLanguage = function () {
+                        var currentLanguage = this.$translate.use();
+                        return currentLanguage;
+                    };
+                    FunctionsUtilService.prototype.changeLanguage = function (language) {
+                        this.$translate.use(language);
                     };
                     FunctionsUtilService.prototype.joinDate = function (day, month, year) {
                         var newDate = year + '-' + month + '-' + day;
@@ -334,7 +342,9 @@ var app;
                     return FunctionsUtilService;
                 }());
                 FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
-                FunctionsUtilService.$inject = ['$filter', 'dataConfig'];
+                FunctionsUtilService.$inject = ['$filter',
+                    'dataConfig',
+                    '$translate'];
                 functionsUtil.FunctionsUtilService = FunctionsUtilService;
                 angular
                     .module('mainApp.core.util', [])
@@ -2411,13 +2421,16 @@ var components;
             .module('mainApp.components.header')
             .directive(MaHeader.directiveId, MaHeader.instance);
         var HeaderController = (function () {
-            function HeaderController($translate, $uibModal, dataConfig) {
-                this.$translate = $translate;
+            function HeaderController(functionsUtil, $uibModal, dataConfig) {
+                this.functionsUtil = functionsUtil;
                 this.$uibModal = $uibModal;
                 this.dataConfig = dataConfig;
                 this.init();
             }
             HeaderController.prototype.init = function () {
+                this.form = {
+                    language: this.functionsUtil.getCurrentLanguage() || 'en'
+                };
                 this._slideout = false;
                 this.activate();
             };
@@ -2428,7 +2441,7 @@ var components;
                 this._slideout = !this._slideout;
             };
             HeaderController.prototype.changeLanguage = function () {
-                this.$translate.use(this.form.language);
+                this.functionsUtil.changeLanguage(this.form.language);
             };
             HeaderController.prototype._openSignUpModal = function () {
                 var self = this;
@@ -2445,7 +2458,11 @@ var components;
             return HeaderController;
         }());
         HeaderController.controllerId = 'mainApp.components.header.HeaderController';
-        HeaderController.$inject = ['$translate', '$uibModal', 'dataConfig'];
+        HeaderController.$inject = [
+            'mainApp.core.util.FunctionsUtilService',
+            '$uibModal',
+            'dataConfig'
+        ];
         header.HeaderController = HeaderController;
         angular.module('mainApp.components.header')
             .controller(HeaderController.controllerId, HeaderController);
@@ -2596,7 +2613,6 @@ var components;
                 if (this._map === void 0) {
                     this.$timeout(function () {
                         self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
-                        self._createFilterButtons();
                         for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                             var marker = self.mapConfig.data.markers[i];
                             self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.GREEN_PIN);
@@ -3580,9 +3596,9 @@ var app;
         var studentLandingPage;
         (function (studentLandingPage) {
             var StudentLandingPageController = (function () {
-                function StudentLandingPageController($state, $translate, StudentLandingPageService) {
+                function StudentLandingPageController($state, functionsUtil, StudentLandingPageService) {
                     this.$state = $state;
-                    this.$translate = $translate;
+                    this.functionsUtil = functionsUtil;
                     this.StudentLandingPageService = StudentLandingPageService;
                     this._init();
                 }
@@ -3593,7 +3609,7 @@ var app;
                             email: '',
                             comment: ''
                         },
-                        language: 'en'
+                        language: this.functionsUtil.getCurrentLanguage() || 'en'
                     };
                     this.success = false;
                     this.sending = false;
@@ -3608,7 +3624,7 @@ var app;
                     console.log('studentLandingPage controller actived');
                 };
                 StudentLandingPageController.prototype.changeLanguage = function () {
-                    this.$translate.use(this.form.language);
+                    this.functionsUtil.changeLanguage(this.form.language);
                     mixpanel.track("Change Language");
                 };
                 StudentLandingPageController.prototype.goToEarlyAccessForm = function () {
@@ -3649,7 +3665,7 @@ var app;
             }());
             StudentLandingPageController.controllerId = 'mainApp.pages.studentLandingPage.StudentLandingPageController';
             StudentLandingPageController.$inject = ['$state',
-                '$translate',
+                'mainApp.core.util.FunctionsUtilService',
                 'mainApp.pages.studentLandingPage.StudentLandingPageService'];
             studentLandingPage.StudentLandingPageController = StudentLandingPageController;
             angular
@@ -3726,17 +3742,16 @@ var app;
         var teacherLandingPage;
         (function (teacherLandingPage) {
             var TeacherLandingPageController = (function () {
-                function TeacherLandingPageController(TeacherService, $state, dataConfig, $translate, $uibModal) {
-                    this.TeacherService = TeacherService;
+                function TeacherLandingPageController(functionsUtil, $state, dataConfig, $uibModal) {
+                    this.functionsUtil = functionsUtil;
                     this.$state = $state;
                     this.dataConfig = dataConfig;
-                    this.$translate = $translate;
                     this.$uibModal = $uibModal;
                     this._init();
                 }
                 TeacherLandingPageController.prototype._init = function () {
                     this.form = {
-                        language: this.$translate.use() || 'en'
+                        language: this.functionsUtil.getCurrentLanguage() || 'en'
                     };
                     this._hoverDetail = [];
                     this._buildFakeTeacher();
@@ -3748,7 +3763,7 @@ var app;
                     console.log('teacherLandingPage controller actived');
                 };
                 TeacherLandingPageController.prototype.changeLanguage = function () {
-                    this.$translate.use(this.form.language);
+                    this.functionsUtil.changeLanguage(this.form.language);
                 };
                 TeacherLandingPageController.prototype._openSignUpModal = function () {
                     var self = this;
@@ -3806,10 +3821,9 @@ var app;
                 return TeacherLandingPageController;
             }());
             TeacherLandingPageController.controllerId = 'mainApp.pages.teacherLandingPage.TeacherLandingPageController';
-            TeacherLandingPageController.$inject = ['mainApp.models.teacher.TeacherService',
+            TeacherLandingPageController.$inject = ['mainApp.core.util.FunctionsUtilService',
                 '$state',
                 'dataConfig',
-                '$translate',
                 '$uibModal'];
             teacherLandingPage.TeacherLandingPageController = TeacherLandingPageController;
             angular
@@ -3851,10 +3865,9 @@ var app;
         var landingPage;
         (function (landingPage) {
             var LandingPageController = (function () {
-                function LandingPageController($state, dataConfig, $translate, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson) {
+                function LandingPageController($state, dataConfig, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson) {
                     this.$state = $state;
                     this.dataConfig = dataConfig;
-                    this.$translate = $translate;
                     this.$uibModal = $uibModal;
                     this.messageUtil = messageUtil;
                     this.functionsUtil = functionsUtil;
@@ -3870,7 +3883,7 @@ var app;
                             email: '',
                             comment: ''
                         },
-                        language: this.$translate.use() || 'en',
+                        language: this.functionsUtil.getCurrentLanguage() || 'en',
                         feedback: new app.models.feedback.Feedback()
                     };
                     this.listCountries = this.getDataFromJson.getCountryi18n();
@@ -3898,12 +3911,10 @@ var app;
                     console.log('landingPage controller actived');
                 };
                 LandingPageController.prototype.changeLanguage = function () {
-                    this.$translate.use(this.form.language);
-                };
-                LandingPageController.prototype.goToEarlyAccessForm = function () {
-                    document.querySelector('.landingPage__early-access-block').scrollIntoView({ behavior: 'smooth' });
+                    this.functionsUtil.changeLanguage(this.form.language);
                 };
                 LandingPageController.prototype._sendCountryFeedback = function () {
+                    var FEEDBACK_SUCCESS_MESSAGE = '¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.';
                     var self = this;
                     this.form.feedback.NextCountry = this.countryObject.code;
                     if (this.form.feedback.NextCountry) {
@@ -3913,7 +3924,7 @@ var app;
                         this.FeedbackService.createFeedback(this.form.feedback).then(function (response) {
                             if (response.createdAt) {
                                 self.infoCountry.success = true;
-                                self.messageUtil.success('¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.');
+                                self.messageUtil.success(FEEDBACK_SUCCESS_MESSAGE);
                                 self.infoCountry.sent = true;
                                 self.infoCountry.sending = false;
                                 self.infoCountry.disabled = true;
@@ -3987,7 +3998,6 @@ var app;
             LandingPageController.controllerId = 'mainApp.pages.landingPage.LandingPageController';
             LandingPageController.$inject = ['$state',
                 'dataConfig',
-                '$translate',
                 '$uibModal',
                 'mainApp.core.util.messageUtilService',
                 'mainApp.core.util.FunctionsUtilService',
@@ -4168,10 +4178,11 @@ var app;
                     var self = this;
                     console.log('searchPage controller actived');
                     this._subscribeToEvents();
-                    this.StudentService.getAllStudents().then(function (response) {
-                        self.type = 'student';
-                        self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
-                        self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                    this.TeacherService.getAllTeachers().then(function (response) {
+                        self.type = 'teacher';
+                        self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null);
+                        self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                        self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                     });
                 };
                 SearchPageController.prototype.goToDetails = function (containerId) {
@@ -5580,9 +5591,9 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherLanguageSectionController = (function () {
-                function TeacherLanguageSectionController(dataConfig, functionsUtilService, getDataFromJson, $state, $filter, $scope, $timeout, $uibModal) {
+                function TeacherLanguageSectionController(dataConfig, functionsUtil, getDataFromJson, $state, $filter, $scope, $timeout, $uibModal) {
                     this.dataConfig = dataConfig;
-                    this.functionsUtilService = functionsUtilService;
+                    this.functionsUtil = functionsUtil;
                     this.getDataFromJson = getDataFromJson;
                     this.$state = $state;
                     this.$filter = $filter;
@@ -5597,7 +5608,7 @@ var app;
                     this.STEP4_STATE = 'page.createTeacherPage.experience';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.lang.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.lang.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(3, 9);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtil.progress(3, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -5646,17 +5657,17 @@ var app;
                     var EMPTY_ENUM = 3;
                     var formValid = true;
                     var native_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.native = this.functionsUtilService.validator(this.form.native, native_rules);
+                    this.validate.native = this.functionsUtil.validator(this.form.native, native_rules);
                     if (!this.validate.native.valid) {
                         formValid = this.validate.native.valid;
                     }
                     var learn_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.learn = this.functionsUtilService.validator(this.form.learn, learn_rules);
+                    this.validate.learn = this.functionsUtil.validator(this.form.learn, learn_rules);
                     if (!this.validate.learn.valid) {
                         formValid = this.validate.learn.valid;
                     }
                     var teach_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.teach = this.functionsUtilService.validator(this.form.teach, teach_rules);
+                    this.validate.teach = this.functionsUtil.validator(this.form.teach, teach_rules);
                     if (!this.validate.teach.valid) {
                         formValid = this.validate.teach.valid;
                     }

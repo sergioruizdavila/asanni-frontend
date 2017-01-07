@@ -35,7 +35,7 @@ interface IDataConfig {
     // Use: command - json-server --watch db.json
     // DEV Local
     // baseUrl: 'http://127.0.0.1:8000/api/v1/'
-    // bucketS3: 'waysily-img'
+    // bucketS3: 'waysily-img/teachers-avatar-dev'
     // DEV Heroku
     // baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/'
     // bucketS3: 'waysily-img/teachers-avatar-dev'

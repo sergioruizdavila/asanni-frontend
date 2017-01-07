@@ -19,9 +19,10 @@ var app;
                     Validation[Validation["IsTrue"] = 7] = "IsTrue";
                 })(Validation = functionsUtil.Validation || (functionsUtil.Validation = {}));
                 var FunctionsUtilService = (function () {
-                    function FunctionsUtilService($filter, dataConfig) {
+                    function FunctionsUtilService($filter, dataConfig, $translate) {
                         this.$filter = $filter;
                         this.dataConfig = dataConfig;
+                        this.$translate = $translate;
                         console.log('functionsUtil service called');
                     }
                     FunctionsUtilService.generateGuid = function () {
@@ -41,6 +42,13 @@ var app;
                         var birthYear = parseInt(year);
                         var age = currentYear - birthYear;
                         return age.toString();
+                    };
+                    FunctionsUtilService.prototype.getCurrentLanguage = function () {
+                        var currentLanguage = this.$translate.use();
+                        return currentLanguage;
+                    };
+                    FunctionsUtilService.prototype.changeLanguage = function (language) {
+                        this.$translate.use(language);
                     };
                     FunctionsUtilService.prototype.joinDate = function (day, month, year) {
                         var newDate = year + '-' + month + '-' + day;
@@ -180,7 +188,9 @@ var app;
                     return FunctionsUtilService;
                 }());
                 FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
-                FunctionsUtilService.$inject = ['$filter', 'dataConfig'];
+                FunctionsUtilService.$inject = ['$filter',
+                    'dataConfig',
+                    '$translate'];
                 functionsUtil.FunctionsUtilService = FunctionsUtilService;
                 angular
                     .module('mainApp.core.util', [])

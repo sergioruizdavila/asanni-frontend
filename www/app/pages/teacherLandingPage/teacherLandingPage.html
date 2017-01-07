@@ -42,8 +42,8 @@
 
 
         <!--------------------- START: LOGO (SMALL SCREEN) -------------------->
-        <div class="ma-header__block ma-header--transparent__block pull-left"
-             style="margin-top: 10px;">
+        <div class="ma-header__block
+                    ma-header--transparent__block pull-left">
             <a ui-sref="page.landingPage" class="ma-header__block__btn
                                                 ma-header__block__logo-wrapper
                                                 link-reset" aria-label="Waysily">
@@ -67,7 +67,7 @@
 
         <!-------------------- START: LOGO (MD AND LG SCREEN) ----------------->
         <div class="ma-header__block ma-header--transparent__block pull-left">
-            <a ui-sref="page.landingPagee" class="ma-header__block__btn
+            <a ui-sref="page.landingPage" class="ma-header__block__btn
                                                 ma-header__block__logo-wrapper
                                                 link-reset" aria-label="Waysily">
                 <i class="ma-logo
@@ -169,8 +169,16 @@
         		<h1 class="ma-hero__wrapper__title animated fadeIn" translate>
                     Financia tu pasión como un profesor en Waysily.
                 </h1>
+
                 <h2 class="ma-hero__wrapper__description animated fadeIn">
-                    <span style="margin-right:5px;">Se visible a</span> <span class="underline underline--primary underline--strong">4.000+ estudiantes</span><span style="margin-left:8px;">que viajan a tu pais cada año.</span>
+                    <span class="space-right-1">Se visible a</span>
+                    <span class="underline
+                                 underline--primary underline--strong">
+                        4.000+ estudiantes
+                    </span>
+                    <span class="space-left-1">
+                        que viajan a tu pais cada año.
+                    </span>
                 </h2>
 
         		<div class="ma-hero__wrapper__btn-container">
@@ -186,17 +194,13 @@
                            ng-click="vm.goDown()">keyboard_arrow_down</i>
                     </div>
                 </div>
+
 	        </div>
 
 	</section>
     <!--                          END: HERO BLOCK                            -->
 
 
-    <style media="screen">
-        .landingPage__preview-container .search-result__teacher__block {
-            margin-top: 0;
-        }
-    </style>
 
     <!---------------------- START: PREVIEW CONTAINER BLOCK ------------------->
     <section class="landingPage__preview-container row center-xs space-top-8 space-10">
@@ -230,7 +234,9 @@
                         <div class="col-md-12">
                             <p class="ma-p ma-p--large">
                                 Podrias ganar aproximadamente
-                                <span class="underline underline--primary">300 USD</span>
+                                <span class="underline underline--primary">
+                                    300 USD
+                                </span>
                                 al mes estando en el mapa de Waysily.
                             </p>
                         </div>
@@ -307,18 +313,14 @@
                         lo compartiremos con todos los estudiantes / viajeros
                         a través de correo electrónico, Twitter y Facebook.
                     </p>
-                    <h3 class="space-3 space-top-6">Entonces, ¿Por qué estar en Waysily?:</h3>
-                    <ul class="list-unstyled" style="text-indent: -30px;
-                                                    margin-left: 50px;
-                                                    padding-left: 0;
-                                                    list-style: none;
-                                                    letter-spacing: 0;
-                                                    font-weight: 400;
-                                                    font-style: normal;
-                                                    color: #8a8a8a;
-                                                    text-rendering: optimizeLegibility;
-                                                    -webkit-font-smoothing: antialiased;
-                                                    font-size: 20px;">
+                    <h3 class="space-3 space-top-6">
+                        Entonces, ¿Por qué estar en Waysily?:
+                    </h3>
+                    <ul class="ma-p ma-p--large
+                               ma-list ma-list--text-indent-30
+                               ma-list--bullet--arrow
+                               ma-list--bullet--alert
+                               ma-list--bullet--default space-left-9">
                         <li>Construye una reputación, y hazte visible a nivel mundial.</li>
                         <li>Utiliza esta reputación para encontrar estudiantes mes a mes.</li>
                         <li>Gana dinero extra.</li>
@@ -334,38 +336,7 @@
     </section>
     <!--                    END: WHY BE IN WAYSILY BLOCK                     -->
 
-    <style media="screen">
-    #quote {
-        width: 100%;
-        text-align: center;
-        font-style: italic;
-        font-family: Georgia, Times, "Times New Roman", serif;
-        background-color: #f9f9f9;
-        padding: 15px 43px 15px 43px;
-        border-radius: 10px;
-        border: 1px solid #eee;
-        position: relative;
-        line-height: 32px;
-    }
 
-    #quote:after {
-        font-size: 60px;
-        color: #ddd;
-        content: '”';
-        position: absolute;
-        top: 16px;
-        right: 16px;
-    }
-
-    #quote:before {
-        font-size: 60px;
-        color: #ddd;
-        content: '“';
-        position: absolute;
-        top: 16px;
-        left: 6px;
-    }
-    </style>
 
     <!---------------------- START: WHO'S ELIGIBLE BLOCK ---------------------->
     <section class="landingPage__eligible-container row center-xs space-top-8">
@@ -374,7 +345,11 @@
                 <div class="col-xs-12">
                     <h2 class="space-6 text-left">¿Quien es elegible?</h2>
 
-                    <h3 id="quote" class="text-center">
+                    <h3 class="ma-quote
+                               ma-quote--block
+                               ma-quote--block--gray
+                               ma-quote--block--default
+                               ma-quote--block--round text-center">
                     	Cualquier persona que hable un idioma, podria enseñarlo.
                     </h3>
 

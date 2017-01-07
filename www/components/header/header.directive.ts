@@ -97,13 +97,17 @@ module components.header {
 
 
         /*-- INJECT DEPENDENCIES --*/
-        public static $inject = ['$translate', '$uibModal', 'dataConfig'];
+        public static $inject = [
+            'mainApp.core.util.FunctionsUtilService',
+            '$uibModal',
+            'dataConfig'
+        ];
 
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        constructor(private $translate: angular.translate.ITranslateService,
+        constructor(private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
                     private $uibModal: ng.ui.bootstrap.IModalService,
                     private dataConfig: IDataConfig) {
             this.init();
@@ -111,7 +115,13 @@ module components.header {
 
         /*-- INITIALIZE METHOD --*/
         private init() {
+            //Init form
+            this.form = {
+                language: this.functionsUtil.getCurrentLanguage() || 'en'
+            };
+
             this._slideout = false;
+
             this.activate();
         }
 
@@ -134,9 +144,20 @@ module components.header {
             this._slideout = !this._slideout;
         }
 
+
+
+        /**
+        * changeLanguage
+        * @description - open Modal in order to add a New Teacher's Experience on Box
+        * @use - this._addEditExperience();
+        * @function
+        * @return {void}
+        */
+
         changeLanguage(): void {
-             this.$translate.use(this.form.language);
+             this.functionsUtil.changeLanguage(this.form.language);
         }
+
 
 
         /**
