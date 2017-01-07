@@ -227,7 +227,7 @@ module app.pages.teacherLandingPage {
             let params = {
                 type: 'new'
             };
-            this.$state.go('page.createTeacherPage.basicInfo',  params, {reload: true});
+            this.$state.go('page.createTeacherPage.start',  params, {reload: true});
         }
 
     }

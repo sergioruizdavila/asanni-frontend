@@ -87,7 +87,7 @@ module app.pages.createTeacherPage {
             this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.price.help_text.description.text');
             /*********************************/
 
-            //Put title on parent scope
+            // Update progress bar width
             this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(7, 9);
 
             //Put Help Text Default
@@ -201,7 +201,7 @@ module app.pages.createTeacherPage {
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
             const TRUE_ENUM = app.core.util.functionsUtil.Validation.IsTrue;
             const GLOBAL_MESSAGE = this.$filter('translate')('%create.teacher.price.validation.message.text');
-            
+
             /***************************************************/
             //VARIABLES
             let formValid = true;

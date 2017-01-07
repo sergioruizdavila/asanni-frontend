@@ -93,7 +93,7 @@ module app.pages.createTeacherPage {
             this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.description.text');
             /*********************************/
 
-            //Put title on parent scope
+            // Update progress bar width
             this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(4, 9);
 
             //Put Help Text Default

@@ -79,7 +79,7 @@ var app;
                     var params = {
                         type: 'new'
                     };
-                    this.$state.go('page.createTeacherPage.basicInfo', params, { reload: true });
+                    this.$state.go('page.createTeacherPage.start', params, { reload: true });
                 };
                 return TeacherLandingPageController;
             }());
