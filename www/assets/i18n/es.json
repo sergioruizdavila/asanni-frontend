@@ -20,6 +20,8 @@
     "%global.schools.text": "Escuelas",
     "%global.coming_soon.text": "Próximamente",
     "%global.loading.text": "Cargando...",
+    "%global.teacher.type.hobby.text": "Tutor de la comunidad",
+    "%global.teacher.type.professional.text": "Profesor Profesional",
 
     "%global.validation.null.message.text": "Valor requerido",
     "%global.validation.empty.message.text": "Valor requerido",
@@ -233,8 +235,6 @@
     "__4. TEACHER EXPERIENCE SECTION__": "",
     "%create.teacher.experience.title.text": "Paso 4 -  ¿Cual es tu experiencia como profesor?",
     "%create.teacher.experience.form.type.text": "Tipo de profesor",
-    "%create.teacher.experience.form.type.hobby_option.text": "Tutor de la comunidad",
-    "%create.teacher.experience.form.type.professional_option.text": "Profesor Profesional",
     "%create.teacher.experience.form.since.text": "Profesor desde",
     "%create.teacher.experience.form.experience.text": "Experiencia como profesor",
     "%create.teacher.experience.form.experience.add_button.text": "+ Agregar experiencia",

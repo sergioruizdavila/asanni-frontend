@@ -11,7 +11,16 @@ $createTeacher-mapBlock-height: 300px;
 /**********************************************************/
 
 .createTeacherPage {
+
     &__block {
+
+        .teacher-welcome-help-box {
+
+            .main-title {
+                line-height: 40px;
+            }
+
+        }
 
         .teacher-experience-box {
 
@@ -93,10 +102,29 @@ $createTeacher-mapBlock-height: 300px;
     }
 
     &__help-block {
+
         .teacher-avatar-help-box {
 
             &__preview-image {
                 border: 5px solid map-get($main-palette, alert);
+            }
+
+        }
+
+        .teacher-welcome-help-box {
+
+            &__price-average {
+
+                .currency, .time {
+                    font-size: 20px;
+                }
+
+                .amount {
+                    font-weight: 400;
+                    font-size: 30px;
+                    color: map-get($main-palette, primary);
+                }
+
             }
 
         }

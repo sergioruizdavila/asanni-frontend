@@ -6,29 +6,30 @@
 //
 //   1. Global
 //   2. Agenda
-//   3. Box
-//   4. Buttons
-//   5. DateTime Picker
-//   5. Dropdown
-//   5. Form
-//   6. Header
-//   7. Header - Blocks (Tabs)
-//   8. Header - Search Bar
-//   9. Header - SubNav
-//   10. Icons
-//   11. Images
-//   12. Input Text
-//   13. Labels
-//   14. Left Nav (small devices)
-//   15. Links
-//   16. List
-//   17. Logo
-//   18. Paragraph
-//   19. Progress Bar
-//   19. Select List
-//   20. Stars
-//   21. Strong
-//   22. Switchs
+//   3. Badge
+//   4. Box
+//   5. Buttons
+//   6. DateTime Picker
+//   7. Dropdown
+//   8. Form
+//   9. Header
+//   10. Header - Blocks (Tabs)
+//   11. Header - Search Bar
+//   12. Header - SubNav
+//   13. Icons
+//   14. Images
+//   15. Input Text
+//   16. Labels
+//   17. Left Nav (small devices)
+//   18. Links
+//   19. List
+//   20. Logo
+//   21. Paragraph
+//   22. Progress Bar
+//   23. Select List
+//   24. Stars
+//   25. Strong
+//   26. Switchs
 
 //**********************************************************
 
@@ -76,6 +77,7 @@ $global-logo-secondary-file: "waysily-logo-secondary.png";
 $global-logo-primary-short-file: "waysily-logo-primary-short.svg";
 $global-logo-secondary-short-file: "waysily-logo-secondary-short.svg";
 $global-photo-default-file: "waysily-photo-default.jpg";
+$global-badge-file: "waysily-badge-teacher.svg";
 
 $body-background: #fafafa;
 
@@ -178,6 +180,11 @@ $boxMenu-item-font-color-green-hover: $white;
 
 $boxMenu-item-withIcon-padding: 15px 25px;
 $boxMenu-item-withIcon-margin: 0;
+
+
+// 2. Badge
+// ----------
+$badge-path: $global-image-path + '/' + $global-badge-file;
 
 
 // 2. Buttons

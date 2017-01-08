@@ -48,9 +48,9 @@ module app.core.util.filters {
             let translated = '';
 
             if(value === 'H') {
-                translated = $filter('translate')('%create.teacher.experience.form.type.hobby_option.text');
+                translated = $filter('translate')('%global.teacher.type.hobby.text');
             } else if (value === 'P') {
-                translated = $filter('translate')('%create.teacher.experience.form.type.professional_option.text');
+                translated = $filter('translate')('%global.teacher.type.professional.text');
             }
 
             return translated;

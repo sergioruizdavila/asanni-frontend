@@ -1,6 +1,8 @@
 {
     "__GLOBAL__": "",
     "%global.zone": "en-US",
+
+    "__BUTTONS__": "",
     "%global.save.button.text": "Save",
     "%global.next.button.text": "Next",
     "%global.finish.button.text": "Finish",
@@ -10,6 +12,8 @@
     "%global.add.button.text": "+ Add",
     "%global.add_more.button.text": "+ Add More",
     "%global.upload_file.button.text": "Upload a file from your computer",
+    "%global.start.button.text": "Let's Start",
+
     "%global.more.label.text": "+ More",
     "%global.age.text": "years old",
     "%global.teacher.text": "Teacher",
@@ -20,6 +24,8 @@
     "%global.schools.text": "Schools",
     "%global.coming_soon.text": "Coming soon",
     "%global.loading.text": "Loading...",
+    "%global.teacher.type.hobby.text": "Community Tutor",
+    "%global.teacher.type.professional.text": "Professional Teacher",
 
     "%global.validation.null.message.text": "Required",
     "%global.validation.empty.message.text": "Required",
@@ -159,6 +165,17 @@
     "%profile.teacher.success_classes.label.text": "successful classes",
 
     "__CREATE TEACHER PAGE__": "",
+
+    "__TEACHER WELCOME SECTION__":"",
+    "%create.teacher.welcome.title.text": "¡Bienvenido!, El proceso toma aproximadamente 10 minutos",
+    "$create.teacher.welcome.subtitle.text": "¿Que tipo de profesores hacen parte de Waysily?",
+    "$create.teacher.welcome.type.hobby.description.text": "Hablante nativo o casi nativo que disfruta de la enseñanza informal. 18 años o más.",
+    "$create.teacher.welcome.type.professional.description.text": "Profesional que ha recibido formación en la enseñanza de lenguas extranjeras.",
+
+    "%create.teacher.welcome.help_text.description.text": "En tu ciudad, los profesores privados estan ganando aproximadamente:",
+    "%create.teacher.welcome.help_text.currency.text": "$US",
+    "%create.teacher.welcome.help_text.time.text": "/ week",
+
     "__1. TEACHER INFO SECTION__": "",
     "%create.teacher.basic_info.title.text": "Step 1 -  Basic Information",
     "%create.teacher.basic_info.form.first_name.text": "First Name",
@@ -233,8 +250,6 @@
     "__4. TEACHER EXPERIENCE SECTION__": "",
     "%create.teacher.experience.title.text": "Step 4 -  What is you experience as a teacher?",
     "%create.teacher.experience.form.type.text": "Teacher type",
-    "%create.teacher.experience.form.type.hobby_option.text": "Community Tutor",
-    "%create.teacher.experience.form.type.professional_option.text": "Professional Teacher",
     "%create.teacher.experience.form.since.text": "Teacher since",
     "%create.teacher.experience.form.experience.text": "Experiences as a teacher",
     "%create.teacher.experience.form.experience.add_button.text": "+ Add experience",
