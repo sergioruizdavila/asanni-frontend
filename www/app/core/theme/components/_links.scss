@@ -43,7 +43,6 @@
             }
 
             &:focus {
-                color: map-get($main-palette, primary);
                 text-decoration: none;
             }
         }
