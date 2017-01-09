@@ -103,6 +103,10 @@ $createTeacher-mapBlock-height: 300px;
 
     &__help-block {
 
+        .ma-box {
+            position: fixed;
+        }
+
         .teacher-avatar-help-box {
 
             &__preview-image {
@@ -134,3 +138,54 @@ $createTeacher-mapBlock-height: 300px;
         height: $createTeacher-mapBlock-height;
     }
 }
+
+
+/*==========  Mobile First Method  ==========*/
+
+ /* Custom, iPhone Retina */
+ @media only screen and (min-width : 320px) {}
+
+ /* Extra Small Devices, Phones */
+ @media only screen and (min-width : 480px) {}
+
+ /* Small Devices, Tablets */
+ @media only screen and (min-width : 768px) {}
+
+ /* Medium Devices, Desktops */
+ @media only screen and (min-width : 992px) {
+
+    .createTeacherPage {
+        &__help-block {
+            .ma-box {
+                width: 280px;
+            }
+        }
+    }
+
+ }
+
+ /* Large Devices, Wide Screens */
+ @media only screen and (min-width : 1200px) {
+
+    .createTeacherPage {
+        &__help-block {
+            .ma-box {
+                width: 345px;
+            }
+        }
+    }
+
+ }
+
+ /* Extra Large Devices, Wide Screens */
+ @media only screen and (min-width : 1600px) {
+
+    .createTeacherPage {
+        &__help-block {
+            .ma-box {
+                width: 345px;
+            }
+        }
+    }
+
+ }

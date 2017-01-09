@@ -41,6 +41,7 @@ module app.pages.createTeacherPage {
         form: ICreateTeacherForm;
         error: ICreateTeacherError;
         teacherData: app.models.teacher.Teacher;
+        showHeaderFixed: boolean;
         progressWidth: string;
         titleSection: string;
         // --------------------------------
@@ -58,6 +59,7 @@ module app.pages.createTeacherPage {
             '$stateParams',
             '$filter',
             '$scope',
+            '$window',
             '$rootScope',
             '$uibModal'];
 
@@ -75,6 +77,7 @@ module app.pages.createTeacherPage {
             private $stateParams: app.core.interfaces.IStateParamsData,
             private $filter: angular.IFilterService,
             private $scope: ICreateTeacherScope,
+            private $window,
             private $rootScope: app.core.interfaces.IMainAppRootScope,
             private $uibModal: ng.ui.bootstrap.IModalService) {
 
@@ -84,12 +87,25 @@ module app.pages.createTeacherPage {
 
         /*-- INITIALIZE METHOD --*/
         private _init() {
+            //VARIABLES
+            let self = this;
 
             //Get current state
             let currentState = this.$state.current.name;
 
             //Init teacher instance
             this.teacherData = new app.models.teacher.Teacher();
+
+            // Init header fixed
+            angular.element(this.$window).bind("scroll", function() {
+                let floatHeader = document.getElementById('header-float');
+                let floatHeaderClasses = floatHeader.classList;
+             if (this.pageYOffset >= 30) {
+                 floatHeaderClasses.remove('hidden');
+             } else {
+                 floatHeaderClasses.add('hidden');
+             }
+        });
 
             this.error = {
                 message: ''
