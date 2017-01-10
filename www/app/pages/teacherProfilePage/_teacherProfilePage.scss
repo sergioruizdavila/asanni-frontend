@@ -3,7 +3,12 @@
 /**********************************************************/
 
 .teacherProfilePage {
-    padding-top: $userProfile-padding;
+
+    &__preview-message {
+        position: fixed;
+        z-index: 2;
+        width: inherit;
+    }
 
     &__verified-block {
 
@@ -23,4 +28,89 @@
             }
         }
     }
+
+    &__booking-block {
+        .ma-box {
+            position: fixed;
+        }
+    }
 }
+
+
+/*==========  Mobile First Method  ==========*/
+
+ /* Custom, iPhone Retina */
+ @media only screen and (min-width : 320px) {
+
+ }
+
+ /* Extra Small Devices, Phones */
+ @media only screen and (min-width : 480px) {
+
+ }
+
+ /* Small Devices, Tablets */
+ @media only screen and (min-width : 768px) {
+    .teacherProfilePage {
+        &__avatar-block {
+            .ma-photo-profile {
+                width: 170px;
+                height: 170px;
+            }
+        }
+    }
+ }
+
+ /* Medium Devices, Desktops */
+ @media only screen and (min-width : 992px) {
+
+     .teacherProfilePage {
+         &__avatar-block {
+             .ma-photo-profile {
+                width: 170px;
+                height: 170px;
+             }
+         }
+     }
+
+ }
+
+ /* Large Devices, Wide Screens */
+ @media only screen and (min-width : 1200px) {
+
+    .teacherProfilePage {
+        &__avatar-block {
+            .ma-photo-profile {
+                width: 240px;
+                height: 240px;
+            }
+        }
+
+        &__booking-block {
+            .ma-box {
+                width: 20.8%;
+            }
+        }
+    }
+
+ }
+
+ /* Extra Large Devices, Wide Screens */
+ @media only screen and (min-width : 1600px) {
+
+    .teacherProfilePage {
+        &__avatar-block {
+            .ma-photo-profile {
+                width: 240px;
+                height: 240px;
+            }
+        }
+
+        &__booking-block {
+            .ma-box {
+                width: 16%;
+            }
+        }
+    }
+
+ }

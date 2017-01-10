@@ -63,7 +63,7 @@
     'use strict';
     var dataConfig = {
         currentYear: '2017',
-        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
+        baseUrl: 'http://127.0.0.1:8000/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -72,7 +72,7 @@
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
-        bucketS3: 'waysily-img/teachers-avatar-prd',
+        bucketS3: 'waysily-img/teachers-avatar-dev',
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
@@ -4952,7 +4952,7 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var CreateTeacherPageController = (function () {
-                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, messageUtil, localStorage, dataConfig, $state, $stateParams, $filter, $scope, $rootScope, $uibModal) {
+                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, messageUtil, localStorage, dataConfig, $state, $stateParams, $filter, $scope, $window, $rootScope, $uibModal) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.teacherService = teacherService;
@@ -4963,13 +4963,25 @@ var app;
                     this.$stateParams = $stateParams;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$window = $window;
                     this.$rootScope = $rootScope;
                     this.$uibModal = $uibModal;
                     this._init();
                 }
                 CreateTeacherPageController.prototype._init = function () {
+                    var self = this;
                     var currentState = this.$state.current.name;
                     this.teacherData = new app.models.teacher.Teacher();
+                    angular.element(this.$window).bind("scroll", function () {
+                        var floatHeader = document.getElementById('header-float');
+                        var floatHeaderClasses = floatHeader.classList;
+                        if (this.pageYOffset >= 30) {
+                            floatHeaderClasses.remove('hidden');
+                        }
+                        else {
+                            floatHeaderClasses.add('hidden');
+                        }
+                    });
                     this.error = {
                         message: ''
                     };
@@ -5050,6 +5062,7 @@ var app;
                 '$stateParams',
                 '$filter',
                 '$scope',
+                '$window',
                 '$rootScope',
                 '$uibModal'
             ];

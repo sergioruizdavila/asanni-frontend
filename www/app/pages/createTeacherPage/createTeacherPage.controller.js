@@ -5,7 +5,7 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var CreateTeacherPageController = (function () {
-                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, messageUtil, localStorage, dataConfig, $state, $stateParams, $filter, $scope, $rootScope, $uibModal) {
+                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, messageUtil, localStorage, dataConfig, $state, $stateParams, $filter, $scope, $window, $rootScope, $uibModal) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.teacherService = teacherService;
@@ -16,13 +16,25 @@ var app;
                     this.$stateParams = $stateParams;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$window = $window;
                     this.$rootScope = $rootScope;
                     this.$uibModal = $uibModal;
                     this._init();
                 }
                 CreateTeacherPageController.prototype._init = function () {
+                    var self = this;
                     var currentState = this.$state.current.name;
                     this.teacherData = new app.models.teacher.Teacher();
+                    angular.element(this.$window).bind("scroll", function () {
+                        var floatHeader = document.getElementById('header-float');
+                        var floatHeaderClasses = floatHeader.classList;
+                        if (this.pageYOffset >= 30) {
+                            floatHeaderClasses.remove('hidden');
+                        }
+                        else {
+                            floatHeaderClasses.add('hidden');
+                        }
+                    });
                     this.error = {
                         message: ''
                     };
@@ -103,6 +115,7 @@ var app;
                 '$stateParams',
                 '$filter',
                 '$scope',
+                '$window',
                 '$rootScope',
                 '$uibModal'
             ];

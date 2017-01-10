@@ -2,11 +2,13 @@
 <!--             TEACHER PROFILE PAGE             -->
 <!-------------------------------------------------->
 
-<div class="container">
+<div class="teacherProfilePage container">
 
     <!---------------------- START: LARGE MESSAGE BLOCK ----------------------->
-    <div class="row ma-large-message ma-large-message--info" ng-hide="vm.loading">
-        <div class="col-md-12 text-center">
+    <div class="teacherProfilePage__preview-message
+                row ma-large-message ma-large-message--info"
+         ng-hide="vm.loading">
+        <div class="col-xs-12 text-center">
             <p class="ma-p ma-p--default ma-p--info margin-reset">
                 <span translate>
                     %profile.teacher.large_message.text
@@ -23,7 +25,7 @@
         la version final del loading, cuando lo decida, remover este
         comentario y el estilo -->
     <div class="row" ng-show="vm.loading" style="height:800px;margin-top:190px;">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+        <div class="col-xs-12 text-center">
             <i class="fa fa-cog fa-spin fa-5x fa-fw" style="color: #ff5a5f;"></i>
             <span class="sr-only">Loading...</span>
         </div>
@@ -32,20 +34,23 @@
 
 
 
-    <div class="row space-top-4" ng-hide="vm.loading">
+    <div class="row space-top-11" ng-hide="vm.loading">
 
         <!--                     START: LEFT COLUMN                          -->
         <!--------------------------------------------------------------------->
-        <div id="teacherProfile-left-column" class="col-md-3 col-lg-3">
+        <div id="teacherProfile-left-column" class="col-xs-12 col-sm-4 col-md-3">
 
             <!------------------ START: PROFILE IMAGE BLOCK ------------------->
             <div id="teacherProfile-image-block"
-                 class="row margin-reset space-4 text-center center-xs">
+                 class="teacherProfilePage__avatar-block
+                        row space-4 text-center center-xs">
 
-                <div class="ma-photo-profile ma-photo-profile--large round">
-                    <img class="img-responsive center-block"
-                         width="240" height="240"
-                         src="{{vm.data.avatar}}" alt="{{vm.data.firstName}}">
+                <div class="col-xs-12">
+                    <div class="ma-photo-profile ma-photo-profile--large round">
+                        <img class="img-responsive center-block"
+                             width="240" height="240"
+                             src="{{vm.data.avatar}}" alt="{{vm.data.firstName}}">
+                    </div>
                 </div>
 
             </div>
@@ -76,9 +81,10 @@
 
             <!---------------------- START: VERIFIED BLOCK -------------------->
             <div id="teacherProfile-verified-block"
-                 class="teacherProfilePage__verified-block row">
+                 class="teacherProfilePage__verified-block
+                        center-xs row space-4">
 
-                <div class="col-md-12">
+                <div class="col-xs-12">
 
                     <div class="ma-box">
                         <h4 class="ma-box__title margin-reset">
@@ -126,19 +132,19 @@
 
         <!--                     START: MIDDLE COLUMN                        -->
         <!--------------------------------------------------------------------->
-        <div id="teacherProfile-middle-column" class="col-md-6 col-lg-6">
+        <div id="teacherProfile-middle-column" class="col-sm-8 col-md-6">
 
             <!-------------------- START: BASIC INFO BLOCK -------------------->
             <div id="teacherProfile-basicInfo-block"
                  class="space-3 row">
 
-                <div class="col-md-12">
+                <div class="col-xs-12">
 
                     <div class="ma-box basic-info-box">
                         <div class="ma-box__content">
                             <div class="row margin-reset">
 
-                                <div class="col-md-12">
+                                <div class="col-xs-12">
                                     <!-- Age - Orientation -->
                                     <div id="teacherProfile-basicInfo-ageOrientation"
                                          class="pull-right">
@@ -197,7 +203,7 @@
                                  class="row basic-info-box__last-block
                                         margin-reset">
 
-                                <div class="col-md-12">
+                                <div class="col-xs-12">
                                     <!-- Joined in -->
                                     <div class="basic-info-box__since pull-right">
                                         <p class="ma-label
@@ -217,7 +223,7 @@
                         <div class="ma-box__footer" ng-if="vm.data.about">
                             <div class="row margin-reset">
 
-                                <div class="col-md-12">
+                                <div class="col-xs-12">
                                     <h4 translate>
                                         %profile.teacher.about_me.title.text
                                     </h4>
@@ -240,7 +246,7 @@
 
                 <!-- Teacher of -->
                 <div id="teacherProfile-languages-teach"
-                     class="col-xs-12 col-sm-6 col-md-6">
+                     class="col-xs-12 col-sm-6 col-md-6 space-4">
 
                     <div class="ma-box">
                         <h4 class="ma-box__title margin-reset" translate>
@@ -249,7 +255,7 @@
                         <div class="ma-box__content text-center">
                             <div class="row"
                                  ng-repeat="language in vm.data.languages.teach track by $index">
-                                <div class="col-md-12">
+                                <div class="col-xs-12">
                                     <p class="ma-p ma-p--default text-truncate">
                                         <span>{{ language | getI18nFilter:'language' }}</span>
                                         <i class="material-icons ma-stars__icon
@@ -274,7 +280,7 @@
                         <div class="ma-box__content text-center">
                             <div class="row"
                                  ng-repeat="language in vm.data.languages.learn track by $index">
-                                <div class="col-md-12">
+                                <div class="col-xs-12">
                                     <p class="ma-p ma-p--default text-truncate">
                                         {{ language | getI18nFilter:'language' }}
                                     </p>
@@ -294,7 +300,7 @@
             <!------------------- START: TEACHER SINCE BLOCK ------------------>
             <div id="teacherProfile-since-block"
                  class="row middle-xs space-3">
-                <div class="col-md-6 text-left">
+                <div class="col-xs-7 text-left">
                     <div class="ma-label
                                 ma-label--box
                                 ma-label--box--space2
@@ -303,7 +309,7 @@
                         {{ vm.data.type | getTypeOfTeacherFilter }}
                     </div>
                 </div>
-                <div class="col-md-6 text-right">
+                <div class="col-xs-5 text-right">
                     <h4>
                         <span translate>
                             %search.container.teacher.since.title.text
@@ -323,7 +329,7 @@
                  class="row space-3"
                  ng-if="vm.data.experiences.length > 0">
 
-                <div class="col-md-12">
+                <div class="col-xs-12">
 
                     <div class="ma-box">
                         <h4 class="ma-box__title margin-reset" translate>
@@ -333,11 +339,11 @@
                             <div class="row margin-reset teacher-experience-box__item-block"
                                  ng-repeat="experience in vm.data.experiences track by $index">
 
-                                <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
+                                <div class="col-xs-12 padding-reset">
                                     <div class="row margin-reset">
-                                        <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
+                                        <div class="col-xs-12 padding-reset">
                                             <div class="row margin-reset">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="col-xs-12">
                                                     <h4 class="margin-reset pull-left">
                                                         {{experience.position}}
                                                     </h4>
@@ -350,9 +356,9 @@
                                     </div>
 
                                     <div class="row margin-reset">
-                                        <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
+                                        <div class="col-xs-12 padding-reset">
                                             <div class="row margin-reset">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="col-xs-12">
                                                     <h5 class="margin-reset text-left">
                                                         {{experience.company}}
                                                     </h5>
@@ -362,9 +368,9 @@
                                     </div>
 
                                     <div class="row margin-reset">
-                                        <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
+                                        <div class="col-xs-12 padding-reset">
                                             <div class="row margin-reset">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="col-xs-12">
                                                     <p class="ma-p ma-p--small margin-reset text-left">
                                                         {{experience.city}}, {{ experience.country | getI18nFilter:'country' }}
                                                     </p>
@@ -375,9 +381,9 @@
 
                                     <div class="row margin-reset space-top-2 space-2"
                                          ng-if="experience.description">
-                                        <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
+                                        <div class="col-xs-12 padding-reset">
                                             <div class="row margin-reset">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="col-xs-12">
                                                     <p class="ma-p
                                                               ma-p--default
                                                               margin-reset
@@ -408,7 +414,7 @@
             <!-------------------- START: METHODOLOGY BLOCK ------------------->
             <div id="teacherProfile-methodology-block" class="row space-3">
 
-                <div class="col-md-12">
+                <div class="col-xs-12">
 
                     <div class="ma-box">
                         <h4 class="ma-box__title margin-reset" translate>
@@ -434,7 +440,7 @@
                  class="teacherProfilePage__immersion-block row space-3"
                  ng-if="vm.data.immersion.active">
 
-                <div class="col-md-12">
+                <div class="col-xs-12">
 
                     <div class="ma-box">
                         <h4 class="ma-box__title margin-reset">
@@ -446,7 +452,7 @@
                                play_for_work
                            </i>
                         </h4>
-                        <div class="ma-box__content">
+                        <div class="ma-box__content" ng-if="vm.data.immersion.otherCategory">
                             <p class="ma-p ma-p--default">
                                 {{vm.data.immersion.otherCategory}}
                             </p>
@@ -477,7 +483,7 @@
                  class="row space-3"
                  ng-if="vm.data.educations.length > 0 && vm.data.type == 'P'">
 
-                <div class="col-md-12">
+                <div class="col-xs-12">
 
                     <div class="ma-box">
                         <h4 class="ma-box__title margin-reset" translate>
@@ -488,11 +494,11 @@
                                  class="row margin-reset teacher-education-box__item-block"
                                  ng-repeat="education in vm.data.educations track by $index">
 
-                                <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
+                                <div class="col-xs-12 padding-reset">
                                     <div class="row margin-reset">
-                                        <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
+                                        <div class="col-xs-12 padding-reset">
                                             <div class="row margin-reset">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="col-xs-12">
                                                     <h4 class="margin-reset pull-left">
                                                         {{education.fieldStudy}}
                                                     </h4>
@@ -505,9 +511,9 @@
                                     </div>
 
                                     <div class="row margin-reset">
-                                        <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
+                                        <div class="col-xs-12 padding-reset">
                                             <div class="row margin-reset">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="col-xs-12">
                                                     <h5 class="margin-reset text-left">
                                                         {{education.school}}
                                                     </h5>
@@ -517,9 +523,9 @@
                                     </div>
 
                                     <div class="row margin-reset">
-                                        <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
+                                        <div class="col-xs-12 padding-reset">
                                             <div class="row margin-reset">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="col-xs-12">
                                                     <p class="ma-p ma-p--small margin-reset text-left">
                                                         {{ education.degree | getI18nFilter:'degree' }}
                                                     </p>
@@ -530,9 +536,9 @@
 
                                     <div class="row margin-reset space-top-2 space-2"
                                          ng-if="education.description">
-                                        <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
+                                        <div class="col-xs-12 padding-reset">
                                             <div class="row margin-reset">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="col-xs-12">
                                                     <p class="ma-p
                                                               ma-p--default
                                                               margin-reset
@@ -565,7 +571,7 @@
                  class="row space-3"
                  ng-if="vm.data.certificates.length > 0 && vm.data.type == 'P'">
 
-                <div class="col-md-12">
+                <div class="col-xs-12">
 
                     <div class="ma-box">
                         <h4 class="ma-box__title margin-reset" translate>
@@ -575,11 +581,11 @@
                             <div class="row margin-reset teacher-certificate-box__item-block"
                                  ng-repeat="certificate in vm.data.certificates track by $index">
 
-                                <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
+                                <div class="col-xs-12 padding-reset">
                                     <div class="row margin-reset">
-                                        <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
+                                        <div class="col-xs-12 padding-reset">
                                             <div class="row margin-reset">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="col-xs-12">
                                                     <h4 class="margin-reset pull-left">
                                                         {{certificate.name}}
                                                     </h4>
@@ -592,9 +598,9 @@
                                     </div>
 
                                     <div class="row margin-reset">
-                                        <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
+                                        <div class="col-xs-12 padding-reset">
                                             <div class="row margin-reset">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="col-xs-12">
                                                     <h5 class="margin-reset text-left">
                                                         {{certificate.institution}}
                                                     </h5>
@@ -605,9 +611,9 @@
 
                                     <div class="row margin-reset space-top-2 space-2"
                                          ng-if="certificate.description">
-                                        <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
+                                        <div class="col-xs-12 padding-reset">
                                             <div class="row margin-reset">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="col-xs-12">
                                                     <p class="ma-p
                                                               ma-p--default
                                                               margin-reset
@@ -638,7 +644,7 @@
             <!----------------------- START: REVIEWS BLOCK -------------------->
             <div id="teacherProfile-reviews-block" class="row hidden">
 
-                <div class="col-md-12">
+                <div class="col-xs-12">
 
                     <div class="ma-box reviews-info-box">
 
@@ -729,14 +735,14 @@
                                 <!-- Comment -->
                                 <div class="reviews-info-box__footer__comments-block__comment
                                             row margin-reset">
-                                    <div class="col-md-3 text-center">
+                                    <div class="col-xs-3 text-center">
                                         <div class="ma-photo-profile
                                                         round">
                                             <img class="img-responsive center-block" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="Sergio Ruiz">
                                         </div>
                                         <h4>Jimena</h4>
                                     </div>
-                                    <div class="col-md-9">
+                                    <div class="col-xs-9">
                                         <!-- TODO: Hacer el texto truncado para estos parrafos-->
                                         <div class="row margin-reset">
                                             <p class="ma-p ma-p--default">
@@ -769,14 +775,14 @@
                                 <!-- Comment -->
                                 <div class="reviews-info-box__footer__comments-block__comment
                                             row margin-reset">
-                                    <div class="col-md-3 text-center">
+                                    <div class="col-xs-3 text-center">
                                         <div class="ma-photo-profile
                                                     round">
                                             <img class="img-responsive center-block" src="https://s3.amazonaws.com/uifaces/faces/twitter/samihah/128.jpg" alt="Sergio Ruiz">
                                         </div>
                                         <h4>Estela</h4>
                                     </div>
-                                    <div class="col-md-9">
+                                    <div class="col-xs-9">
                                         <!-- TODO: Hacer el texto truncado para estos parrafos-->
                                         <div class="row margin-reset">
                                             <p class="ma-p ma-p--default">
@@ -821,7 +827,7 @@
             <!-------------------- START: LOCATION MAP BLOCK ------------------>
             <div id="teacherProfile-location-block" class="row space-5">
 
-                <div class="col-md-12">
+                <div class="col-xs-12">
 
                     <div class="ma-box location-info-box">
                         <h4 class="ma-box__title margin-reset" translate>
@@ -849,12 +855,13 @@
 
         <!--                     START: RIGHT COLUMN                         -->
         <!--------------------------------------------------------------------->
-        <div id="userProfile-right-column" class="col-md-3 col-lg-3">
+        <div id="userProfile-right-column" class="col-xs-3 hidden-sm">
 
-            <!---------------------- START: MEETING BLOCK --------------------->
-            <div id="userProfile-meeting-block" class="row">
+            <!------------------- START: BOOK A CLASS BLOCK ------------------->
+            <div id="userProfile-meeting-block"
+                 class="teacherProfilePage__booking-block row">
 
-                <div class="col-md-12">
+                <div class="col-xs-12">
 
                     <div class="ma-box">
                         <h4 class="ma-box__title margin-reset" translate>
@@ -866,7 +873,7 @@
                                 <!------------------- START: CLASSES PRICE INFO BLOCK ----------------->
                                 <div class="search-result__teacher__block__price
                                             row text-center space-1">
-                                    <div class="col-xs-6 col-md-6">
+                                    <div class="col-sm-5">
                                         <div class="row">
                                             <div class="col-xs-12 col-md-12">
                                                 <p class="ma-p ma-p--default margin-reset"
@@ -877,7 +884,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-6 col-md-6">
+                                    <div class="col-sm-7">
                                         <div class="row">
                                             <div class="col-xs-12 col-md-12">
                                                 <p class="ma-p ma-p--info ma-p--default margin-reset"
@@ -895,7 +902,7 @@
 
                                 <div class="search-result__teacher__block__price
                                             row text-center space-4">
-                                    <div class="col-xs-6 col-md-6">
+                                    <div class="col-sm-5">
                                         <div class="row">
                                             <div class="col-xs-12 col-md-12">
                                                 <p class="ma-p ma-p--default
@@ -907,7 +914,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-6 col-md-6">
+                                    <div class="col-sm-7">
                                         <div class="row">
                                             <div class="col-xs-12 col-md-12">
                                                 <p class="ma-p ma-p--info ma-p--default margin-reset"
@@ -937,7 +944,7 @@
                                 <hr>
 
                                 <div class="row">
-                                    <div class="col-md-12 text-center">
+                                    <div class="col-xs-12 text-center">
                                         <p class="ma-p ma-p--small margin-reset">
                                             <strong class="space-right-1">70</strong>
                                             <span translate>
@@ -954,7 +961,7 @@
                 </div>
 
             </div>
-            <!--                      END: MEETING BLOCK                     -->
+            <!--                   END: BOOK A CLASS BLOCK                   -->
 
         </div>
         <!--                      END: RIGHT COLUMN                          -->
