@@ -7,7 +7,8 @@
 <div id="createTeacher-method-left-column"
      class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
 
-    <div id="createTeacher-block" class="createTeacherPage__block row">
+    <div id="createTeacher-block"
+         class="createTeacherPage__block row">
 
         <div class="col-xs-12">
 
@@ -37,9 +38,9 @@
                     <div id="teacher-private-class-block"
                          ng-mouseover="vm.changeHelpText('privateClass')"
                          class="row">
-                        <div class="col-xs-3 col-sm-3 col-md-3"></div>
+                        <div class="hidden-xs col-sm-3"></div>
 
-                        <div class="col-xs-6 col-sm-6 col-md-6">
+                        <div class="col-xs-12 col-sm-6">
                             <div class="row center-xs middle-xs">
                                 <div class="col-md-6 text-right">
                                     <label for="teacher-private-class-input" translate>
@@ -65,7 +66,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xs-3 col-sm-3 col-md-3"></div>
+                        <div class="hidden-xs col-sm-3"></div>
                     </div>
 
 
@@ -115,9 +116,9 @@
                     <div id="teacher-group-class-block"
                          ng-mouseover="vm.changeHelpText('groupClass')"
                          class="row">
-                        <div class="col-xs-3 col-sm-3 col-md-3"></div>
+                        <div class="hidden-xs col-sm-3"></div>
 
-                        <div class="col-xs-6 col-sm-6 col-md-6">
+                        <div class="col-xs-12 col-sm-6">
                             <div class="row center-xs middle-xs">
                                 <div class="col-md-6 text-right">
                                     <label for="teacher-group-class-input" translate>
@@ -143,7 +144,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xs-3 col-sm-3 col-md-3"></div>
+                        <div class="hidden-xs col-sm-3"></div>
                     </div>
 
 
@@ -196,7 +197,7 @@
 
                     <div class="row middle-xs">
 
-                        <div class="col-md-4 text-left">
+                        <div class="col-xs-6 col-sm-4 text-left">
 
                             <button class="ma-btn
                                            ma-btn--transparent
@@ -211,9 +212,9 @@
 
                         </div>
 
-                        <div class="col-md-4"></div>
+                        <div class="hidden-xs col-sm-4"></div>
 
-                        <div class="col-md-4 text-right">
+                        <div class="col-xs-6 col-sm-4 text-right">
 
                             <button class="ma-btn
                                            ma-btn--primary
@@ -237,8 +238,9 @@
 
 
 <!--------------------------- START: RIGHT COLUMN ----------------------------->
-<div id="createTeacher-right-column" class="createTeacherPage__help-block
-                                            col-md-4 col-lg-4 hidden-sm">
+<div id="createTeacher-right-column"
+     class="createTeacherPage__help-block
+            col-md-4 col-lg-4 hidden-xs hidden-sm">
 
     <div class="ma-box space-5">
 
@@ -266,7 +268,7 @@
                     </div>
                     <!-- Help Text Block -->
                     <div class="row">
-                        <div class="col-md-12 text-left">
+                        <div class="col-xs-12 text-left">
                             <p class="ma-p ma-p--default">
                                 {{vm.helpText.description}}
                             </p>
