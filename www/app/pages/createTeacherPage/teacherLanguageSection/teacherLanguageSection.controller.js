@@ -75,11 +75,6 @@ var app;
                     if (!this.validate.native.valid) {
                         formValid = this.validate.native.valid;
                     }
-                    var learn_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.learn = this.functionsUtil.validator(this.form.learn, learn_rules);
-                    if (!this.validate.learn.valid) {
-                        formValid = this.validate.learn.valid;
-                    }
                     var teach_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.teach = this.functionsUtil.validator(this.form.teach, teach_rules);
                     if (!this.validate.teach.valid) {

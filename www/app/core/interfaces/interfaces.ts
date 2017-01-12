@@ -70,6 +70,14 @@ module app.core.interfaces {
         type?: string;
     }
 
+    /************************************/
+    /*    TOOLTIP OPTIONS INTERFACES    */
+    /************************************/
+    export interface ITooltipOptions extends ng.ui.bootstrap.ITooltipOptions {
+        class: string;
+    }
+
+
     /////////////////////////////////
 
 

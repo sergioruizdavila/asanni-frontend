@@ -256,7 +256,11 @@
                             <div class="row"
                                  ng-repeat="language in vm.data.languages.teach track by $index">
                                 <div class="col-xs-12">
-                                    <p class="ma-p ma-p--default text-truncate">
+                                    <p tooltip-placement="{{vm.nativeTooltipOptions.placement}}"
+                                       tooltip-animation="{{vm.nativeTooltipOptions.animation}}"
+                                       tooltip-class="{{vm.nativeTooltipOptions.class}}"
+                                       uib-tooltip="{{vm._assignNativeTooltip(language)}}"
+                                    class="ma-p ma-p--default text-truncate">
                                         <span>{{ language | getI18nFilter:'language' }}</span>
                                         <i class="material-icons ma-stars__icon
                                                   ma-stars__icon--tiny"

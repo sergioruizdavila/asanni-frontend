@@ -132,6 +132,10 @@
                 <a class="ma-header--transparent__block__buttons-list__btn
                                ma-btn ma-btn--alert ma-btn--default"
                     ui-sref="page.teacherLandingPage"
+                    uib-tooltip-template="'headerTooltip.tmpl.html'"
+                    tooltip-placement="bottom"
+                    tooltip-animation="false"
+                    tooltip-class="ma-tooltip ma-tooltip--gray ma-tooltip--small"
                     href
                     translate>
                     %global.teacher.text
@@ -526,6 +530,16 @@
 
     </section>
     <!--                     END: GET EARLY ADOPTERS BLOCK                   -->
+
+    <script type="text/ng-template" id="headerTooltip.tmpl.html">
+      <span translate>%header.join.teacher.tooltip.first_part.text</span>
+      <p class="strong strong--primary margin-reset space-right-1">
+          <span class="space-right-1" translate>%global.currency.text</span>
+          <span>300</span>
+          <span translate>%global.time.text</span>
+      </p>
+      <span translate>%header.join.teacher.tooltip.second_part.text</span>
+    </script>
 
 </div>
 <!--                      END: STUDENT LANDING PAGE                          -->

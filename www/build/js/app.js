@@ -2421,10 +2421,11 @@ var components;
             .module('mainApp.components.header')
             .directive(MaHeader.directiveId, MaHeader.instance);
         var HeaderController = (function () {
-            function HeaderController(functionsUtil, $uibModal, dataConfig) {
+            function HeaderController(functionsUtil, $uibModal, dataConfig, $filter) {
                 this.functionsUtil = functionsUtil;
                 this.$uibModal = $uibModal;
                 this.dataConfig = dataConfig;
+                this.$filter = $filter;
                 this.init();
             }
             HeaderController.prototype.init = function () {
@@ -2461,7 +2462,8 @@ var components;
         HeaderController.$inject = [
             'mainApp.core.util.FunctionsUtilService',
             '$uibModal',
-            'dataConfig'
+            'dataConfig',
+            '$filter'
         ];
         header.HeaderController = HeaderController;
         angular.module('mainApp.components.header')
@@ -5736,11 +5738,6 @@ var app;
                     if (!this.validate.native.valid) {
                         formValid = this.validate.native.valid;
                     }
-                    var learn_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.learn = this.functionsUtil.validator(this.form.learn, learn_rules);
-                    if (!this.validate.learn.valid) {
-                        formValid = this.validate.learn.valid;
-                    }
                     var teach_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.teach = this.functionsUtil.validator(this.form.teach, teach_rules);
                     if (!this.validate.teach.valid) {
@@ -7019,6 +7016,7 @@ var app;
                 TeacherProfilePageController.prototype._init = function () {
                     this.data = null;
                     this.loading = true;
+                    this._initNativeTooltip();
                     this.activate();
                 };
                 TeacherProfilePageController.prototype.activate = function () {
@@ -7040,6 +7038,13 @@ var app;
                         self.loading = false;
                     });
                 };
+                TeacherProfilePageController.prototype._initNativeTooltip = function () {
+                    this.nativeTooltipOptions = {
+                        placement: 'top',
+                        animation: false,
+                        class: 'ma-tooltip ma-tooltip--primary ma-tooltip--default'
+                    };
+                };
                 TeacherProfilePageController.prototype.goToConfirm = function () {
                 };
                 TeacherProfilePageController.prototype._assignNative = function (language) {
@@ -7052,6 +7057,16 @@ var app;
                         }
                     }
                     return isNativeOfThisLanguage;
+                };
+                TeacherProfilePageController.prototype._assignNativeTooltip = function (language) {
+                    var TOOLTIP_TEXT = this.$filter('translate')('%profile.teacher.native.lang.tooltip.text');
+                    var firstName = this.data.FirstName;
+                    var tooltipText = null;
+                    var isNative = this._assignNative(language);
+                    if (isNative) {
+                        tooltipText = firstName + ' ' + TOOLTIP_TEXT;
+                    }
+                    return tooltipText;
                 };
                 return TeacherProfilePageController;
             }());

@@ -31,6 +31,7 @@ module app.pages.teacherProfilePage {
         /*           PROPERTIES           */
         /**********************************/
         mapConfig: components.map.IMapConfig;
+        nativeTooltipOptions: app.core.interfaces.ITooltipOptions;
         data: app.models.teacher.Teacher;
         loading: boolean;
         // --------------------------------
@@ -66,6 +67,9 @@ module app.pages.teacherProfilePage {
 
             //Init loading
             this.loading = true;
+
+            //Init native tooltip
+            this._initNativeTooltip();
 
             this.activate();
         }
@@ -105,6 +109,24 @@ module app.pages.teacherProfilePage {
         /*            METHODS             */
         /**********************************/
 
+        /**
+        * _initNativeTooltip
+        * @description - this method create a default Native Tooltip Option.
+        * @use - this._initNativeTooltip();
+        * @function
+        * @return {void}
+        */
+
+        private _initNativeTooltip(): void {
+            this.nativeTooltipOptions = {
+                placement: 'top',
+                animation: false,
+                class: 'ma-tooltip ma-tooltip--primary ma-tooltip--default'
+            };
+        }
+
+
+
         goToConfirm (): void {
             //TODO: Ir a googleDoc Form o a Typeform con el fin de obtener todos
             // los datos necesarios del estudiante interesado.
@@ -115,14 +137,14 @@ module app.pages.teacherProfilePage {
         * _assignNative
         * @description - this method create a match between native language and
         * teach language in order to mark it as a Native languages
-        * @use - this._assignNative(languages);
+        * @use - this._assignNative(language);
         * @function
-        * @param {native Array, learn Array and teach Array} languages
-        * teacher languages (native, teach and learn)
-        * @return {boolean} isNative
+        * @param {string} language - current language on the ng-repeat loop
+        * @return {boolean} isNativeOfThisLanguage - He/She is native of this
+        * language
         */
 
-        private _assignNative(language: any): boolean {
+        private _assignNative(language: string): boolean {
             let native = this.data.Languages.Native;
             let isNativeOfThisLanguage = false;
 
@@ -134,6 +156,31 @@ module app.pages.teacherProfilePage {
             }
 
             return isNativeOfThisLanguage;
+        }
+
+
+
+        /**
+        * _assignNativeTooltip
+        * @description - this method create a tooltip on teacher native language
+        * @use - this._assignNativeTooltip(language);
+        * @function
+        * @param {string} language - current language on the ng-repeat loop
+        * @return {boolean} tooltipText - return tooltip text
+        */
+
+        private _assignNativeTooltip(language: string): string {
+            //CONSTANTS
+            const TOOLTIP_TEXT = this.$filter('translate')('%profile.teacher.native.lang.tooltip.text');
+            //VARIABLES
+            let firstName = this.data.FirstName;
+            let tooltipText = null;
+            let isNative = this._assignNative(language);
+
+            if(isNative) {
+                tooltipText = firstName + ' ' + TOOLTIP_TEXT;
+            }
+            return tooltipText;
         }
 
     }
