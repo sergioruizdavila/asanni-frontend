@@ -36,6 +36,7 @@ module app.models.user {
         private born: string;
         private about: string;
         private location: Location;
+        private validated: boolean;
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -57,6 +58,7 @@ module app.models.user {
             this.born = obj.born || '';
             this.about = obj.about || '';
             this.location = new Location(obj.location);
+            this.validated = obj.validated || false;
 
         }
 
@@ -170,6 +172,15 @@ module app.models.user {
         set Location(location: Location) {
             if (location === undefined) { throw 'Please supply location'; }
             this.location = location;
+        }
+
+        get Validated() {
+            return this.validated;
+        }
+
+        set Validated(validated: boolean) {
+            if (validated === undefined) { throw 'Please supply validated value'; }
+            this.validated = validated;
         }
 
     }

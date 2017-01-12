@@ -63,7 +63,7 @@
     'use strict';
     var dataConfig = {
         currentYear: '2017',
-        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
+        baseUrl: 'http://127.0.0.1:8000/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -813,6 +813,7 @@ var app;
                     this.born = obj.born || '';
                     this.about = obj.about || '';
                     this.location = new Location(obj.location);
+                    this.validated = obj.validated || false;
                 }
                 Object.defineProperty(User.prototype, "Id", {
                     get: function () {
@@ -966,6 +967,19 @@ var app;
                             throw 'Please supply location';
                         }
                         this.location = location;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(User.prototype, "Validated", {
+                    get: function () {
+                        return this.validated;
+                    },
+                    set: function (validated) {
+                        if (validated === undefined) {
+                            throw 'Please supply validated value';
+                        }
+                        this.validated = validated;
                     },
                     enumerable: true,
                     configurable: true

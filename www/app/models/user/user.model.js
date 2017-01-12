@@ -20,6 +20,7 @@ var app;
                     this.born = obj.born || '';
                     this.about = obj.about || '';
                     this.location = new Location(obj.location);
+                    this.validated = obj.validated || false;
                 }
                 Object.defineProperty(User.prototype, "Id", {
                     get: function () {
@@ -173,6 +174,19 @@ var app;
                             throw 'Please supply location';
                         }
                         this.location = location;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(User.prototype, "Validated", {
+                    get: function () {
+                        return this.validated;
+                    },
+                    set: function (validated) {
+                        if (validated === undefined) {
+                            throw 'Please supply validated value';
+                        }
+                        this.validated = validated;
                     },
                     enumerable: true,
                     configurable: true
