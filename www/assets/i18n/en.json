@@ -26,6 +26,8 @@
     "%global.loading.text": "Loading...",
     "%global.teacher.type.hobby.text": "Community Tutor",
     "%global.teacher.type.professional.text": "Professional Teacher",
+    "%global.currency.text": "$US",
+    "%global.time.text": "/ week",
 
     "%global.validation.null.message.text": "Required",
     "%global.validation.empty.message.text": "Required",
@@ -38,6 +40,8 @@
     "__HEADER__": "",
     "%header.lang.options.en.text": "English",
     "%header.lang.options.es.text": "Spanish",
+    "%header.join.teacher.tooltip.first_part.text": "A teacher on Waysily earns",
+    "%header.join.teacher.tooltip.second_part.text": "on average",
 
     "__NOTIFICATION__": "",
     "%notification.success.text": "Successfully saved!",
@@ -157,6 +161,7 @@
     "%profile.teacher.joined_in.label.text": "Joined in",
     "%profile.teacher.about_me.title.text": "About me",
     "%profile.teacher.teacher_of.title.text": "Teacher of",
+    "%profile.teacher.native.lang.tooltip.text": "is native in this language",
     "%profile.teacher.speak.title.text": "Also Speaks",
     "%profile.teacher.methodology.title.text": "Teaching methodology",
     "%profile.teacher.review.title.text": "Reviews",
@@ -173,8 +178,6 @@
     "$create.teacher.welcome.type.professional.description.text": "Profesional que ha recibido formación en la enseñanza de lenguas extranjeras.",
 
     "%create.teacher.welcome.help_text.description.text": "En tu ciudad, los profesores privados estan ganando aproximadamente:",
-    "%create.teacher.welcome.help_text.currency.text": "$US",
-    "%create.teacher.welcome.help_text.time.text": "/ week",
 
     "__1. TEACHER INFO SECTION__": "",
     "%create.teacher.basic_info.title.text": "Step 1 -  Basic Information",
@@ -236,7 +239,7 @@
     "%create.teacher.lang.title.text": "Step 3 -  What languages do you dominate?",
     "%create.teacher.lang.form.native.text": "Your native languages",
     "%create.teacher.lang.form.teach.text": "Languages you teach",
-    "%create.teacher.lang.form.learn.text": "Languages you speak or learn",
+    "%create.teacher.lang.form.learn.text": "Other languages you speak or learn",
 
     "%create.teacher.lang.help_text.title.text": "Show the world who you are",
     "%create.teacher.lang.help_text.description.text": "Waysily focuses on creating real connections. Describe in detail helps other users to know you much better. Share with them your tastes, trips, anecdotes or hobbies. Tell them what it would be like to have you as their teacher, you can even go into more personal aspects: Is there any particular phrase that defines your way of teaching?",

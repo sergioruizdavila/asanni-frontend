@@ -25,10 +25,11 @@ var components;
             .module('mainApp.components.header')
             .directive(MaHeader.directiveId, MaHeader.instance);
         var HeaderController = (function () {
-            function HeaderController(functionsUtil, $uibModal, dataConfig) {
+            function HeaderController(functionsUtil, $uibModal, dataConfig, $filter) {
                 this.functionsUtil = functionsUtil;
                 this.$uibModal = $uibModal;
                 this.dataConfig = dataConfig;
+                this.$filter = $filter;
                 this.init();
             }
             HeaderController.prototype.init = function () {
@@ -65,7 +66,8 @@ var components;
         HeaderController.$inject = [
             'mainApp.core.util.FunctionsUtilService',
             '$uibModal',
-            'dataConfig'
+            'dataConfig',
+            '$filter'
         ];
         header.HeaderController = HeaderController;
         angular.module('mainApp.components.header')

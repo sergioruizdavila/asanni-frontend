@@ -73,7 +73,7 @@ module components.header {
         slideNavMenu: () => void;
     }
 
-    export interface IHeaderScope extends angular.IScope {
+    interface IHeaderScope extends angular.IScope {
 
     }
 
@@ -100,7 +100,8 @@ module components.header {
         public static $inject = [
             'mainApp.core.util.FunctionsUtilService',
             '$uibModal',
-            'dataConfig'
+            'dataConfig',
+            '$filter'
         ];
 
 
@@ -109,9 +110,11 @@ module components.header {
         /**********************************/
         constructor(private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
                     private $uibModal: ng.ui.bootstrap.IModalService,
-                    private dataConfig: IDataConfig) {
+                    private dataConfig: IDataConfig,
+                    private $filter: angular.IFilterService) {
             this.init();
         }
+
 
         /*-- INITIALIZE METHOD --*/
         private init() {
@@ -130,6 +133,7 @@ module components.header {
             //LOG
             console.log('header controller actived');
         }
+
 
         /**********************************/
         /*            METHODS             */
@@ -155,7 +159,7 @@ module components.header {
         */
 
         changeLanguage(): void {
-             this.functionsUtil.changeLanguage(this.form.language);
+            this.functionsUtil.changeLanguage(this.form.language);
         }
 
 
@@ -167,6 +171,7 @@ module components.header {
         * @function
         * @return {void}
         */
+
         private _openSignUpModal(): void {
             let self = this;
             // modal default options

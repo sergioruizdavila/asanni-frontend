@@ -16,6 +16,7 @@ var app;
                 TeacherProfilePageController.prototype._init = function () {
                     this.data = null;
                     this.loading = true;
+                    this._initNativeTooltip();
                     this.activate();
                 };
                 TeacherProfilePageController.prototype.activate = function () {
@@ -37,6 +38,13 @@ var app;
                         self.loading = false;
                     });
                 };
+                TeacherProfilePageController.prototype._initNativeTooltip = function () {
+                    this.nativeTooltipOptions = {
+                        placement: 'top',
+                        animation: false,
+                        class: 'ma-tooltip ma-tooltip--primary ma-tooltip--default'
+                    };
+                };
                 TeacherProfilePageController.prototype.goToConfirm = function () {
                 };
                 TeacherProfilePageController.prototype._assignNative = function (language) {
@@ -49,6 +57,16 @@ var app;
                         }
                     }
                     return isNativeOfThisLanguage;
+                };
+                TeacherProfilePageController.prototype._assignNativeTooltip = function (language) {
+                    var TOOLTIP_TEXT = this.$filter('translate')('%profile.teacher.native.lang.tooltip.text');
+                    var firstName = this.data.FirstName;
+                    var tooltipText = null;
+                    var isNative = this._assignNative(language);
+                    if (isNative) {
+                        tooltipText = firstName + ' ' + TOOLTIP_TEXT;
+                    }
+                    return tooltipText;
                 };
                 return TeacherProfilePageController;
             }());

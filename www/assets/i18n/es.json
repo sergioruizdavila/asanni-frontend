@@ -1,7 +1,9 @@
 {
     "__GLOBAL__":"",
     "%global.zone": "es-ES",
-    "%global.save.button.text": "Save",
+
+    "__BUTTONS__": "",
+    "%global.save.button.text": "Guardar",
     "%global.next.button.text": "Siguiente",
     "%global.finish.button.text": "Terminar",
     "%global.back.button.text": "Volver",
@@ -10,6 +12,8 @@
     "%global.add.button.text": "+ Agregar",
     "%global.add_more.button.text": "+ Agregar más",
     "%global.upload_file.button.text": "Cargar un archivo desde tu computadora",
+    "%global.start.button.text": "Empecemos",
+
     "%global.more.label.text": "+ Más",
     "%global.age.text": "años",
     "%global.teacher.text": "Profesor",
@@ -22,6 +26,8 @@
     "%global.loading.text": "Cargando...",
     "%global.teacher.type.hobby.text": "Tutor de la comunidad",
     "%global.teacher.type.professional.text": "Profesor Profesional",
+    "%global.currency.text": "$US",
+    "%global.time.text": "/ semana",
 
     "%global.validation.null.message.text": "Valor requerido",
     "%global.validation.empty.message.text": "Valor requerido",
@@ -34,6 +40,8 @@
     "__HEADER__": "",
     "%header.lang.options.en.text": "Inglés",
     "%header.lang.options.es.text": "Español",
+    "%header.join.teacher.tooltip.first_part.text": "Un profesor en Waysily gana",
+    "%header.join.teacher.tooltip.second_part.text": "en promedio",
 
     "__NOTIFICATION__": "",
     "%notification.success.text": "Guardado Exitoso!",
@@ -153,6 +161,7 @@
     "%profile.teacher.joined_in.label.text": "Miembro desde",
     "%profile.teacher.about_me.title.text": "Acerca de mi",
     "%profile.teacher.teacher_of.title.text": "Profesor de",
+    "%profile.teacher.native.lang.tooltip.text": "es nativo en este idioma",
     "%profile.teacher.speak.title.text": "También habla",
     "%profile.teacher.methodology.title.text": "Metodología de la enseñanza",
     "%profile.teacher.review.title.text": "Evaluaciones",
@@ -161,6 +170,15 @@
     "%profile.teacher.success_classes.label.text": " clases existosas",
 
     "__CREATE TEACHER PAGE__": "",
+
+    "__TEACHER WELCOME SECTION__":"",
+    "%create.teacher.welcome.title.text": "¡Bienvenido!, El proceso toma aproximadamente 10 minutos",
+    "$create.teacher.welcome.subtitle.text": "¿Que tipo de profesores hacen parte de Waysily?",
+    "$create.teacher.welcome.type.hobby.description.text": "Hablante nativo o casi nativo que disfruta de la enseñanza informal. 18 años o más.",
+    "$create.teacher.welcome.type.professional.description.text": "Profesional que ha recibido formación en la enseñanza de lenguas extranjeras.",
+
+    "%create.teacher.welcome.help_text.description.text": "En tu ciudad, los profesores privados estan ganando aproximadamente:",
+
     "__1. TEACHER INFO SECTION__": "",
     "%create.teacher.basic_info.title.text": "Paso 1 -  Información Basica",
     "%create.teacher.basic_info.form.first_name.text": "Nombre",
@@ -221,7 +239,7 @@
     "%create.teacher.lang.title.text": "Paso 3 -  ¿Que idiomas dominas?",
     "%create.teacher.lang.form.native.text": "Tus idiomas nativos",
     "%create.teacher.lang.form.teach.text": "Idiomas que enseñas",
-    "%create.teacher.lang.form.learn.text": "Idiomas que hablas o estas aprendiendo",
+    "%create.teacher.lang.form.learn.text": "Otros idiomas que hablas o estas aprendiendo",
 
     "%create.teacher.lang.help_text.title.text": "Muestrale al mundo quien eres",
     "%create.teacher.lang.help_text.description.text": "Waysily se centra en crear conexiones reales. Describirte en detalle ayuda los demás usuarios a conocerte mucho mejor. Comparte con ellos tus gustos, viajes, anecdotas o pasatiempos. Cuéntales cómo sería tenerte como su profesor, incluso puedes entrar en aspectos más personales: ¿Hay alguna frase en especial que defina tu forma de enseñar?",
