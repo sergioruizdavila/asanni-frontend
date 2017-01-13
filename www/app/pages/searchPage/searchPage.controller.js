@@ -5,15 +5,17 @@ var app;
         var searchPage;
         (function (searchPage) {
             var SearchPageController = (function () {
-                function SearchPageController(StudentService, TeacherService, SchoolService, FunctionsUtilService, $state, $filter, $scope, $rootScope) {
+                function SearchPageController(StudentService, TeacherService, SchoolService, FunctionsUtilService, $state, $stateParams, $filter, $scope, $rootScope, $timeout) {
                     this.StudentService = StudentService;
                     this.TeacherService = TeacherService;
                     this.SchoolService = SchoolService;
                     this.FunctionsUtilService = FunctionsUtilService;
                     this.$state = $state;
+                    this.$stateParams = $stateParams;
                     this.$filter = $filter;
                     this.$scope = $scope;
                     this.$rootScope = $rootScope;
+                    this.$timeout = $timeout;
                     this._init();
                 }
                 SearchPageController.prototype._init = function () {
@@ -29,6 +31,16 @@ var app;
                     var self = this;
                     console.log('searchPage controller actived');
                     this._subscribeToEvents();
+                    if (this.$stateParams.country) {
+                        var location_1 = {
+                            country: this.$stateParams.country,
+                            city: 'Medellin',
+                            address: 'Transversal 31Sur #32B-64'
+                        };
+                        this.$timeout(function () {
+                            self.$scope.$broadcast('PositionCountry', location_1);
+                        });
+                    }
                     this.TeacherService.getAllTeachers().then(function (response) {
                         self.type = 'teacher';
                         self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null);
@@ -113,9 +125,11 @@ var app;
                 'mainApp.models.school.SchoolService',
                 'mainApp.core.util.FunctionsUtilService',
                 '$state',
+                '$stateParams',
                 '$filter',
                 '$scope',
-                '$rootScope'
+                '$rootScope',
+                '$timeout'
             ];
             searchPage.SearchPageController = SearchPageController;
             angular

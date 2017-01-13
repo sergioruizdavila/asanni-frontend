@@ -17,6 +17,13 @@ module app.pages.searchPage {
         message: string;
     }
 
+    /********************************/
+    /*    STATEPARAMS INTERFACES    */
+    /********************************/
+    export interface ISearchPageParams extends ng.ui.IStateParamsService {
+        country: string;
+    }
+
     /****************************************/
     /*           CLASS DEFINITION           */
     /****************************************/
@@ -42,9 +49,11 @@ module app.pages.searchPage {
             'mainApp.models.school.SchoolService',
             'mainApp.core.util.FunctionsUtilService',
             '$state',
+            '$stateParams',
             '$filter',
             '$scope',
-            '$rootScope'];
+            '$rootScope',
+            '$timeout'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -55,9 +64,11 @@ module app.pages.searchPage {
             private SchoolService: app.models.school.ISchoolService,
             private FunctionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
             private $state: ng.ui.IStateService,
+            private $stateParams: ISearchPageParams,
             private $filter: angular.IFilterService,
             private $scope: angular.IScope,
-            private $rootScope: angular.IRootScopeService) {
+            private $rootScope: angular.IRootScopeService,
+            private $timeout: angular.ITimeoutService) {
 
             this._init();
 
@@ -91,6 +102,20 @@ module app.pages.searchPage {
 
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
+
+            // Get position from WhereTo dropdown
+            if(this.$stateParams.country) {
+                let location = {
+                    country: this.$stateParams.country,
+                    city: 'Medellin',
+                    address: 'Transversal 31Sur #32B-64'
+                };
+                /************************************/
+
+                this.$timeout(function(){
+                    self.$scope.$broadcast('PositionCountry', location);
+                });
+            }
 
             //Get All Teacher of this zone (Default results)
             this.TeacherService.getAllTeachers().then(

@@ -9,6 +9,7 @@ var components;
                 this.controller = HeaderController.controllerId;
                 this.controllerAs = 'vm';
                 this.restrict = 'E';
+                this.scope = true;
                 this.templateUrl = 'components/header/header.html';
                 console.log('maHeader directive constructor');
             }
@@ -25,16 +26,18 @@ var components;
             .module('mainApp.components.header')
             .directive(MaHeader.directiveId, MaHeader.instance);
         var HeaderController = (function () {
-            function HeaderController(functionsUtil, $uibModal, dataConfig, $filter) {
+            function HeaderController(functionsUtil, $uibModal, dataConfig, $filter, $state) {
                 this.functionsUtil = functionsUtil;
                 this.$uibModal = $uibModal;
                 this.dataConfig = dataConfig;
                 this.$filter = $filter;
+                this.$state = $state;
                 this.init();
             }
             HeaderController.prototype.init = function () {
                 this.form = {
-                    language: this.functionsUtil.getCurrentLanguage() || 'en'
+                    language: this.functionsUtil.getCurrentLanguage() || 'en',
+                    whereTo: 'Where to?'
                 };
                 this._slideout = false;
                 this.activate();
@@ -47,6 +50,10 @@ var components;
             };
             HeaderController.prototype.changeLanguage = function () {
                 this.functionsUtil.changeLanguage(this.form.language);
+            };
+            HeaderController.prototype.search = function (country) {
+                this.form.whereTo = country;
+                this.$state.go('page.searchPage', { country: country });
             };
             HeaderController.prototype._openSignUpModal = function () {
                 var self = this;
@@ -67,7 +74,8 @@ var components;
             'mainApp.core.util.FunctionsUtilService',
             '$uibModal',
             'dataConfig',
-            '$filter'
+            '$filter',
+            '$state'
         ];
         header.HeaderController = HeaderController;
         angular.module('mainApp.components.header')

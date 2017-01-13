@@ -72,7 +72,7 @@
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
-        bucketS3: 'waysily-img/teachers-avatar-prd',
+        bucketS3: 'waysily-img/teachers-avatar-dev',
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
@@ -2419,6 +2419,7 @@ var components;
                 this.controller = HeaderController.controllerId;
                 this.controllerAs = 'vm';
                 this.restrict = 'E';
+                this.scope = true;
                 this.templateUrl = 'components/header/header.html';
                 console.log('maHeader directive constructor');
             }
@@ -2435,16 +2436,18 @@ var components;
             .module('mainApp.components.header')
             .directive(MaHeader.directiveId, MaHeader.instance);
         var HeaderController = (function () {
-            function HeaderController(functionsUtil, $uibModal, dataConfig, $filter) {
+            function HeaderController(functionsUtil, $uibModal, dataConfig, $filter, $state) {
                 this.functionsUtil = functionsUtil;
                 this.$uibModal = $uibModal;
                 this.dataConfig = dataConfig;
                 this.$filter = $filter;
+                this.$state = $state;
                 this.init();
             }
             HeaderController.prototype.init = function () {
                 this.form = {
-                    language: this.functionsUtil.getCurrentLanguage() || 'en'
+                    language: this.functionsUtil.getCurrentLanguage() || 'en',
+                    whereTo: 'Where to?'
                 };
                 this._slideout = false;
                 this.activate();
@@ -2457,6 +2460,10 @@ var components;
             };
             HeaderController.prototype.changeLanguage = function () {
                 this.functionsUtil.changeLanguage(this.form.language);
+            };
+            HeaderController.prototype.search = function (country) {
+                this.form.whereTo = country;
+                this.$state.go('page.searchPage', { country: country });
             };
             HeaderController.prototype._openSignUpModal = function () {
                 var self = this;
@@ -2477,7 +2484,8 @@ var components;
             'mainApp.core.util.FunctionsUtilService',
             '$uibModal',
             'dataConfig',
-            '$filter'
+            '$filter',
+            '$state'
         ];
         header.HeaderController = HeaderController;
         angular.module('mainApp.components.header')
@@ -2849,6 +2857,20 @@ var components;
                     }
                 });
             };
+            MapController.prototype._positionCountry = function (geocoder, country, address, city) {
+                var self = this;
+                var location = country + ',' + city + ',' + address;
+                geocoder.geocode({
+                    address: location
+                }, function (results, status) {
+                    if (status == 'OK') {
+                        self._map.setCenter(results[0].geometry.location);
+                    }
+                    else {
+                        console.log(status);
+                    }
+                });
+            };
             MapController.prototype._subscribeToEvents = function () {
                 var self = this;
                 this.$scope.$on('BuildMarkers', function (event, args) {
@@ -2879,6 +2901,10 @@ var components;
                 this.$scope.$on('CodeAddress', function (event, args) {
                     var geocoder = new google.maps.Geocoder();
                     self._codeAddress(geocoder, args.country, args.address, args.city);
+                });
+                this.$scope.$on('PositionCountry', function (event, args) {
+                    var geocoder = new google.maps.Geocoder();
+                    self._positionCountry(geocoder, args.country, args.address, args.city);
                 });
             };
             return MapController;
@@ -4152,13 +4178,13 @@ var app;
                 }
             },
             parent: 'page',
+            params: {
+                country: null
+            },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = true;
                     $rootScope.activeFooter = false;
-                }],
-            params: {
-                user: null
-            }
+                }]
         });
     }
 })();
@@ -4170,15 +4196,17 @@ var app;
         var searchPage;
         (function (searchPage) {
             var SearchPageController = (function () {
-                function SearchPageController(StudentService, TeacherService, SchoolService, FunctionsUtilService, $state, $filter, $scope, $rootScope) {
+                function SearchPageController(StudentService, TeacherService, SchoolService, FunctionsUtilService, $state, $stateParams, $filter, $scope, $rootScope, $timeout) {
                     this.StudentService = StudentService;
                     this.TeacherService = TeacherService;
                     this.SchoolService = SchoolService;
                     this.FunctionsUtilService = FunctionsUtilService;
                     this.$state = $state;
+                    this.$stateParams = $stateParams;
                     this.$filter = $filter;
                     this.$scope = $scope;
                     this.$rootScope = $rootScope;
+                    this.$timeout = $timeout;
                     this._init();
                 }
                 SearchPageController.prototype._init = function () {
@@ -4194,6 +4222,16 @@ var app;
                     var self = this;
                     console.log('searchPage controller actived');
                     this._subscribeToEvents();
+                    if (this.$stateParams.country) {
+                        var location_1 = {
+                            country: this.$stateParams.country,
+                            city: 'Medellin',
+                            address: 'Transversal 31Sur #32B-64'
+                        };
+                        this.$timeout(function () {
+                            self.$scope.$broadcast('PositionCountry', location_1);
+                        });
+                    }
                     this.TeacherService.getAllTeachers().then(function (response) {
                         self.type = 'teacher';
                         self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null);
@@ -4278,9 +4316,11 @@ var app;
                 'mainApp.models.school.SchoolService',
                 'mainApp.core.util.FunctionsUtilService',
                 '$state',
+                '$stateParams',
                 '$filter',
                 '$scope',
-                '$rootScope'
+                '$rootScope',
+                '$timeout'
             ];
             searchPage.SearchPageController = SearchPageController;
             angular

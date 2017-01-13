@@ -301,6 +301,20 @@ var components;
                     }
                 });
             };
+            MapController.prototype._positionCountry = function (geocoder, country, address, city) {
+                var self = this;
+                var location = country + ',' + city + ',' + address;
+                geocoder.geocode({
+                    address: location
+                }, function (results, status) {
+                    if (status == 'OK') {
+                        self._map.setCenter(results[0].geometry.location);
+                    }
+                    else {
+                        console.log(status);
+                    }
+                });
+            };
             MapController.prototype._subscribeToEvents = function () {
                 var self = this;
                 this.$scope.$on('BuildMarkers', function (event, args) {
@@ -331,6 +345,10 @@ var components;
                 this.$scope.$on('CodeAddress', function (event, args) {
                     var geocoder = new google.maps.Geocoder();
                     self._codeAddress(geocoder, args.country, args.address, args.city);
+                });
+                this.$scope.$on('PositionCountry', function (event, args) {
+                    var geocoder = new google.maps.Geocoder();
+                    self._positionCountry(geocoder, args.country, args.address, args.city);
                 });
             };
             return MapController;

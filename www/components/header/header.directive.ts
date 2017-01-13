@@ -28,6 +28,7 @@ module components.header {
         controller = HeaderController.controllerId;
         controllerAs: string = 'vm';
         restrict: string = 'E';
+        scope = true;
         templateUrl: string = 'components/header/header.html';
         // --------------------------------
 
@@ -68,17 +69,14 @@ module components.header {
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
-    export interface IHeaderController {
+    interface IHeaderController {
         activate: () => void;
         slideNavMenu: () => void;
     }
 
-    interface IHeaderScope extends angular.IScope {
-
-    }
-
     interface IHeaderForm {
         language: string;
+        whereTo: string;
     }
 
     /****************************************/
@@ -97,11 +95,12 @@ module components.header {
 
 
         /*-- INJECT DEPENDENCIES --*/
-        public static $inject = [
+        static $inject = [
             'mainApp.core.util.FunctionsUtilService',
             '$uibModal',
             'dataConfig',
-            '$filter'
+            '$filter',
+            '$state'
         ];
 
 
@@ -111,7 +110,8 @@ module components.header {
         constructor(private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
                     private $uibModal: ng.ui.bootstrap.IModalService,
                     private dataConfig: IDataConfig,
-                    private $filter: angular.IFilterService) {
+                    private $filter: angular.IFilterService,
+                    private $state: ng.ui.IStateService) {
             this.init();
         }
 
@@ -120,7 +120,8 @@ module components.header {
         private init() {
             //Init form
             this.form = {
-                language: this.functionsUtil.getCurrentLanguage() || 'en'
+                language: this.functionsUtil.getCurrentLanguage() || 'en',
+                whereTo: 'Where to?'
             };
 
             this._slideout = false;
@@ -144,6 +145,7 @@ module components.header {
         * @description Show or Hide Nav Menu when user press 'menu' button
         * (small devices)
         */
+
         slideNavMenu(): void {
             this._slideout = !this._slideout;
         }
@@ -162,6 +164,20 @@ module components.header {
             this.functionsUtil.changeLanguage(this.form.language);
         }
 
+
+
+        /**
+        * search
+        * @description - TODO
+        * @use - this.search('Colombia');
+        * @function
+        * @return {void}
+        */
+
+        search(country): void {
+            this.form.whereTo = country;
+            this.$state.go('page.searchPage', {country: country});
+        }
 
 
         /**
