@@ -7055,7 +7055,7 @@ var app;
                 };
                 TeacherFinishSectionController.prototype._finishProcess = function () {
                     this.localStorage.setItem('waysily.teacher_id', '');
-                    this.$state.go('page.teacherProfilePage', { id: this.$scope.$parent.vm.teacherData.Id });
+                    this.$state.go('page.landingPage');
                 };
                 return TeacherFinishSectionController;
             }());

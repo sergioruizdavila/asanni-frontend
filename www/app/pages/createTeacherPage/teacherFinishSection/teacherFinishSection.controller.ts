@@ -73,7 +73,8 @@ module app.pages.createTeacherPage {
             //Clean teacher id in localStorage
             this.localStorage.setItem('waysily.teacher_id', '');
             //Go to teacher profile in order to show a preview profile
-            this.$state.go('page.teacherProfilePage', {id: this.$scope.$parent.vm.teacherData.Id});
+            //this.$state.go('page.teacherProfilePage', {id: this.$scope.$parent.vm.teacherData.Id});
+            this.$state.go('page.landingPage');
         }
 
 
