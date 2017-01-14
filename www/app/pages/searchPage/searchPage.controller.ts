@@ -37,7 +37,6 @@ module app.pages.searchPage {
         error: ISearchPageError;
         mapConfig: components.map.IMapConfig;
         data: Array<app.models.student.Student>;
-        private _hoverDetail: Array<boolean>;
         type: string;
         // --------------------------------
 
@@ -83,9 +82,6 @@ module app.pages.searchPage {
             //Type of results (student, teacher, school)
             this.type = null;
 
-            //Init hoverDetail array
-            this._hoverDetail = [];
-
             this.error = {
                 message: ''
             };
@@ -103,20 +99,6 @@ module app.pages.searchPage {
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
 
-            // Get position from WhereTo dropdown
-            if(this.$stateParams.country) {
-                let location = {
-                    country: this.$stateParams.country,
-                    city: 'Medellin',
-                    address: 'Transversal 31Sur #32B-64'
-                };
-                /************************************/
-
-                this.$timeout(function(){
-                    self.$scope.$broadcast('PositionCountry', location);
-                });
-            }
-
             //Get All Teacher of this zone (Default results)
             this.TeacherService.getAllTeachers().then(
                 function(response: app.models.teacher.ITeacherQueryObject) {
@@ -125,7 +107,8 @@ module app.pages.searchPage {
                     self.mapConfig = self.FunctionsUtilService.buildMapConfig(
                         response.results,
                         'search-map',
-                        null
+                        null,
+                        6
                     );
 
                     /*
@@ -135,6 +118,13 @@ module app.pages.searchPage {
                     self.$scope.$broadcast('BuildMarkers', self.mapConfig);
 
                     self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
+
+                    //Center Map on Country selected
+                    if(self.$stateParams.country) {
+                        self.$timeout(function(){
+                            self._searchByCountry(self.$stateParams.country);
+                        });
+                    }
                 }
             );
 
@@ -143,22 +133,6 @@ module app.pages.searchPage {
         /**********************************/
         /*            METHODS             */
         /**********************************/
-
-        /**
-        * goToDetails
-        * @description - when user clicked a specific result, go to details
-        * @use - this.goToDetails('2');
-        * @function
-        * @params {string} containerId - entity id (teacher, student or school)
-        * @return {void}
-        */
-
-        goToDetails(containerId: string): void {
-            var url = this.$state.href('page.teacherProfilePage', {id: containerId});
-            window.open(url,'_blank');
-        }
-
-
 
         /**
         * _getResultTemplate
@@ -190,53 +164,32 @@ module app.pages.searchPage {
 
 
         /**
-        * _assignNativeClass
-        * @description - this method return if teacher is native or not
-        * result (students, teachers, schools, etc)
-        * @use - this._assignNativeClass(languages);
+        * _searchByCountry
+        * @description - TODO: Este metodo es temporal, en realidad no deberia
+        * buscar por un pais en particular, sino con la direccion que el user
+        * especifique en el buscador. Dejar esye metodo hasta cuando sea necesarios
+        * implementar el buscador completo
+        * @use - this._subscribeToEvents();
         * @function
-        * @param {native Array, learn Array and teach Array} languages
-        * teacher languages (native, teach and learn)
-        * @return {boolean} isNative
+        * @return {void}
         */
 
-        private _assignNativeClass(languages): boolean {
-            let native = languages.native;
-            let teach = languages.teach;
-            let isNative = false;
-
-            for (let i = 0; i < native.length; i++) {
-                for (let j = 0; j < teach.length; j++) {
-                    if(teach[j] === native[i]) {
-                        isNative = true;
-                    }
-                }
-            }
-
-            return isNative;
-        }
-
-
-
-        /**
-        * _hoverEvent
-        * @description - this method is launched  when user launchs
-        * mouseover/mouseleave event on result container
-        * @use - this._hoverEvent('10', true);
-        * @function
-        * @param {string} id - container result id
-        * @param {boolean} status - mouseover = true / mouseleave = false
-        */
-
-        private _hoverEvent(id: string, status: boolean): void {
+        private _searchByCountry(country): void {
             //VARIABLES
-            let args = {id: id, status: status};
-            this._hoverDetail[id] = status;
-            /*
-            * Send event to child (MapController) in order to It changes icon in
-            * specific Marker on the Map
-            */
-            this.$rootScope.$broadcast('ChangeMarker', args);
+            let self = this;
+
+            if(country == 'Colombia') {
+                let location = {
+                    country: country,
+                    city: 'Medellin',
+                    address: 'Transversal 31Sur #32B-64'
+                };
+                /************************************/
+
+                this.$timeout(function(){
+                    self.$rootScope.$broadcast('PositionCountry', location);
+                });
+            }
         }
 
 
@@ -271,7 +224,8 @@ module app.pages.searchPage {
                         self.mapConfig = self.FunctionsUtilService.buildMapConfig(
                             response,
                             'search-map',
-                            {lat: 6.175434,lng: -75.583329}
+                            {lat: 6.175434,lng: -75.583329},
+                            6
                         );
 
                         /*
@@ -304,7 +258,8 @@ module app.pages.searchPage {
                         self.mapConfig = self.FunctionsUtilService.buildMapConfig(
                             response.results,
                             'search-map',
-                            null
+                            null,
+                            6
                         );
 
                         /*
@@ -337,7 +292,8 @@ module app.pages.searchPage {
                         self.mapConfig = self.FunctionsUtilService.buildMapConfig(
                             response,
                             'search-map',
-                            {lat: 6.175434,lng: -75.583329}
+                            {lat: 6.175434,lng: -75.583329},
+                            6
                         );
 
                         /*
@@ -350,7 +306,6 @@ module app.pages.searchPage {
                     }
                 );
             });
-
 
 
             /**
@@ -368,6 +323,20 @@ module app.pages.searchPage {
                 let containerClasses = document.querySelector(containerId).classList;
                 containerClasses.add('search-result__teacher__block--selected');
                 document.querySelector(containerId).scrollIntoView({ behavior: 'smooth' });
+            });
+
+
+            /**
+            * SearchCountry event
+            * @parent - HeaderController
+            * @description - Parent (HeaderController) send event
+                             (SearchPageController) in order to change map
+                             center position
+            * @event
+            */
+
+            this.$scope.$on('SearchCountry', function(event, args) {
+                self._searchByCountry(args);
             });
         }
 

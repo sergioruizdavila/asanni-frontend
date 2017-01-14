@@ -64,7 +64,7 @@ var components;
             };
             MapController.prototype._searchMapBuilder = function () {
                 var self = this;
-                var zoom = 16;
+                var zoom = this.mapConfig.data.zoom || 16;
                 var center = this.mapConfig.data.position;
                 this._draggable = false;
                 this.$scope.options = {
@@ -168,9 +168,6 @@ var components;
                 };
                 marker = new google.maps.Marker(markerOptions);
                 this._markers.push(marker);
-                if (this._map) {
-                    this._map.setCenter(position);
-                }
                 if (this._draggable) {
                     google.maps.event.addListener(marker, 'dragend', function (event) {
                         var position = {

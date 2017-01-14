@@ -14,7 +14,8 @@ module app.core.util.functionsUtil {
         splitToColumns: (arr: Array<any>, size: number) => Array<any>;
         buildMapConfig: (dataSet: Array<any>,
                         mapType: string,
-                        position: components.map.IPosition) =>  components.map.IMapConfig;
+                        position: components.map.IPosition,
+                        zoom: number) =>  components.map.IMapConfig;
         generateRangesOfNumbers: (from: number, to:number) => Array<number>;
         buildNumberSelectList: (from: number, to:number) => Array<app.core.interfaces.ISelectListElement>;
         dateFormat: (date: string) => string;
@@ -231,15 +232,17 @@ module app.core.util.functionsUtil {
         * @params {Array<any>} dataSet - dataSet array
         * @params {string} mapType - map type
         * @params {components.map.IPosition} position - position on map (lat and lng)
+        * @params {number} zoom - zoom on the mapa
         * @return {components.map.IMapConfig} mapConfig - google map config.
         */
-        buildMapConfig(dataSet, mapType, position): components.map.IMapConfig {
+        buildMapConfig(dataSet, mapType, position, zoom): components.map.IMapConfig {
             //VARIABLES
             let mapConfig = {
                 type: mapType,
                 data: {
                     position: position || {lat: 6.175434,lng: -75.583329},
-                    markers: []
+                    markers: [],
+                    zoom: zoom
                 }
             };
 

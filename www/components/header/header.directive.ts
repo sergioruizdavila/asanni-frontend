@@ -100,6 +100,8 @@ module components.header {
             '$uibModal',
             'dataConfig',
             '$filter',
+            '$scope',
+            '$rootScope',
             '$state'
         ];
 
@@ -111,6 +113,8 @@ module components.header {
                     private $uibModal: ng.ui.bootstrap.IModalService,
                     private dataConfig: IDataConfig,
                     private $filter: angular.IFilterService,
+                    private $scope: angular.IScope,
+                    private $rootScope: angular.IRootScopeService,
                     private $state: ng.ui.IStateService) {
             this.init();
         }
@@ -175,8 +179,17 @@ module components.header {
         */
 
         search(country): void {
+            //VARIABLES
+            //Get current state
+            let currentState = this.$state.current.name;
             this.form.whereTo = country;
-            this.$state.go('page.searchPage', {country: country});
+
+            if(currentState !== 'page.searchPage') {
+                this.$state.go('page.searchPage', {country: country});
+            } else {
+                this.$rootScope.$broadcast('SearchCountry', country);
+            }
+
         }
 
 

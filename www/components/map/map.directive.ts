@@ -109,6 +109,7 @@ module components.map {
     export interface IMapDataSet {
         position: IPosition;
         markers: Array<IMapMarkers>;
+        zoom: number;
     }
 
     export interface IMapMarkers extends google.maps.Marker{
@@ -211,7 +212,7 @@ module components.map {
         private _searchMapBuilder(): void {
             //VARIABLES
             let self = this;
-            let zoom = 16;
+            let zoom = this.mapConfig.data.zoom || 16;
             let center = this.mapConfig.data.position;
             this._draggable = false;
             /********************/
@@ -417,9 +418,11 @@ module components.map {
             this._markers.push(marker);
 
             //center map on last marker created on the map
-            if (this._map) {
+            //TODO: Validar si esto es la mejor opcion, yo creeria que centrar
+            //el mapa depende de que el usuario escogio en el Search
+            /*if (this._map) {
                 this._map.setCenter(position);
-            }
+            }*/
 
             // If marker is draggable
             if(this._draggable) {
