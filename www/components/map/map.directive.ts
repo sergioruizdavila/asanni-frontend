@@ -109,6 +109,7 @@ module components.map {
     export interface IMapDataSet {
         position: IPosition;
         markers: Array<IMapMarkers>;
+        zoom: number;
     }
 
     export interface IMapMarkers extends google.maps.Marker{
@@ -207,11 +208,11 @@ module components.map {
         * @function
         * @return {void}
         */
-        
+
         private _searchMapBuilder(): void {
             //VARIABLES
             let self = this;
-            let zoom = 16;
+            let zoom = this.mapConfig.data.zoom || 16;
             let center = this.mapConfig.data.position;
             this._draggable = false;
             /********************/
@@ -417,9 +418,11 @@ module components.map {
             this._markers.push(marker);
 
             //center map on last marker created on the map
-            if (this._map) {
+            //TODO: Validar si esto es la mejor opcion, yo creeria que centrar
+            //el mapa depende de que el usuario escogio en el Search
+            /*if (this._map) {
                 this._map.setCenter(position);
-            }
+            }*/
 
             // If marker is draggable
             if(this._draggable) {
@@ -647,6 +650,52 @@ module components.map {
 
 
         /**
+        * TODO: El metodo _codeAddress y este hacen relativamente lo mismo, lo que
+        * el de arriba pone un PIN y este solo centra el mapa en la posicion. Crear
+        * un metodo que se encargue de devolver la posicion dependiendo de una
+        * direccion, ciudad, pais y zipCode, y que cada uno de estos metodos lo
+        * llamen y hagan lo que tienen que hacer
+        * _positionCountry
+        * @description - get position on map (lng, lat) based on Address,
+        * Country and zipCode.
+        * @use - this._subscribeToEvents();
+        * @function
+        * @param {google.maps.Geocoder} geocoder - geocoder object
+        * @param {string} country - country code
+        * @param {string} address - user address
+        * @param {string} city - user city
+        * @return {void}
+        */
+
+        private _positionCountry(geocoder: google.maps.Geocoder,
+                                 country: string,
+                                 address: string,
+                                 city: string): void {
+
+            let self = this;
+
+            //Build Address joining 'Country, City, Address'
+            let location = country + ',' + city + ',' + address;
+
+            geocoder.geocode({
+              address: location
+          }, function(results, status: any) {
+
+              if (status == 'OK') {
+
+                  self._map.setCenter(results[0].geometry.location);
+
+              } else {
+
+                  console.log(status);
+
+              }
+            });
+        }
+
+
+
+        /**
         * _subscribeToEvents
         * @description - this method subscribes Map Component to Parent Events
         * @use - this._subscribeToEvents();
@@ -718,6 +767,20 @@ module components.map {
                 //Init geoCode google map in order to get lat & lng base on teacher street
                 let geocoder = new google.maps.Geocoder();
                 self._codeAddress(geocoder, args.country, args.address, args.city);
+            });
+
+
+            /**
+            * PositionCountry event
+            * @parent - TeacherLocationSectionController
+            * @description - Parent send country, address, zipCode to child
+            * in order to get position (lng, lat) on the map.
+            * @event
+            */
+            this.$scope.$on('PositionCountry', function(event, args) {
+                //Init geoCode google map in order to get lat & lng base on teacher street
+                let geocoder = new google.maps.Geocoder();
+                self._positionCountry(geocoder, args.country, args.address, args.city);
             });
 
         }

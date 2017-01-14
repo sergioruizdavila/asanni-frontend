@@ -72,7 +72,7 @@
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
-        bucketS3: 'waysily-img/teachers-avatar-prd',
+        bucketS3: 'waysily-img/teachers-avatar-dev',
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
@@ -225,12 +225,13 @@ var app;
                         }
                         return newArr;
                     };
-                    FunctionsUtilService.prototype.buildMapConfig = function (dataSet, mapType, position) {
+                    FunctionsUtilService.prototype.buildMapConfig = function (dataSet, mapType, position, zoom) {
                         var mapConfig = {
                             type: mapType,
                             data: {
                                 position: position || { lat: 6.175434, lng: -75.583329 },
-                                markers: []
+                                markers: [],
+                                zoom: zoom
                             }
                         };
                         if (dataSet) {
@@ -2419,6 +2420,7 @@ var components;
                 this.controller = HeaderController.controllerId;
                 this.controllerAs = 'vm';
                 this.restrict = 'E';
+                this.scope = true;
                 this.templateUrl = 'components/header/header.html';
                 console.log('maHeader directive constructor');
             }
@@ -2435,16 +2437,20 @@ var components;
             .module('mainApp.components.header')
             .directive(MaHeader.directiveId, MaHeader.instance);
         var HeaderController = (function () {
-            function HeaderController(functionsUtil, $uibModal, dataConfig, $filter) {
+            function HeaderController(functionsUtil, $uibModal, dataConfig, $filter, $scope, $rootScope, $state) {
                 this.functionsUtil = functionsUtil;
                 this.$uibModal = $uibModal;
                 this.dataConfig = dataConfig;
                 this.$filter = $filter;
+                this.$scope = $scope;
+                this.$rootScope = $rootScope;
+                this.$state = $state;
                 this.init();
             }
             HeaderController.prototype.init = function () {
                 this.form = {
-                    language: this.functionsUtil.getCurrentLanguage() || 'en'
+                    language: this.functionsUtil.getCurrentLanguage() || 'en',
+                    whereTo: 'Where to?'
                 };
                 this._slideout = false;
                 this.activate();
@@ -2457,6 +2463,16 @@ var components;
             };
             HeaderController.prototype.changeLanguage = function () {
                 this.functionsUtil.changeLanguage(this.form.language);
+            };
+            HeaderController.prototype.search = function (country) {
+                var currentState = this.$state.current.name;
+                this.form.whereTo = country;
+                if (currentState !== 'page.searchPage') {
+                    this.$state.go('page.searchPage', { country: country });
+                }
+                else {
+                    this.$rootScope.$broadcast('SearchCountry', country);
+                }
             };
             HeaderController.prototype._openSignUpModal = function () {
                 var self = this;
@@ -2477,7 +2493,10 @@ var components;
             'mainApp.core.util.FunctionsUtilService',
             '$uibModal',
             'dataConfig',
-            '$filter'
+            '$filter',
+            '$scope',
+            '$rootScope',
+            '$state'
         ];
         header.HeaderController = HeaderController;
         angular.module('mainApp.components.header')
@@ -2612,7 +2631,7 @@ var components;
             };
             MapController.prototype._searchMapBuilder = function () {
                 var self = this;
-                var zoom = 16;
+                var zoom = this.mapConfig.data.zoom || 16;
                 var center = this.mapConfig.data.position;
                 this._draggable = false;
                 this.$scope.options = {
@@ -2716,9 +2735,6 @@ var components;
                 };
                 marker = new google.maps.Marker(markerOptions);
                 this._markers.push(marker);
-                if (this._map) {
-                    this._map.setCenter(position);
-                }
                 if (this._draggable) {
                     google.maps.event.addListener(marker, 'dragend', function (event) {
                         var position = {
@@ -2849,6 +2865,20 @@ var components;
                     }
                 });
             };
+            MapController.prototype._positionCountry = function (geocoder, country, address, city) {
+                var self = this;
+                var location = country + ',' + city + ',' + address;
+                geocoder.geocode({
+                    address: location
+                }, function (results, status) {
+                    if (status == 'OK') {
+                        self._map.setCenter(results[0].geometry.location);
+                    }
+                    else {
+                        console.log(status);
+                    }
+                });
+            };
             MapController.prototype._subscribeToEvents = function () {
                 var self = this;
                 this.$scope.$on('BuildMarkers', function (event, args) {
@@ -2879,6 +2909,10 @@ var components;
                 this.$scope.$on('CodeAddress', function (event, args) {
                     var geocoder = new google.maps.Geocoder();
                     self._codeAddress(geocoder, args.country, args.address, args.city);
+                });
+                this.$scope.$on('PositionCountry', function (event, args) {
+                    var geocoder = new google.maps.Geocoder();
+                    self._positionCountry(geocoder, args.country, args.address, args.city);
                 });
             };
             return MapController;
@@ -4152,13 +4186,13 @@ var app;
                 }
             },
             parent: 'page',
+            params: {
+                country: null
+            },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = true;
                     $rootScope.activeFooter = false;
-                }],
-            params: {
-                user: null
-            }
+                }]
         });
     }
 })();
@@ -4170,21 +4204,22 @@ var app;
         var searchPage;
         (function (searchPage) {
             var SearchPageController = (function () {
-                function SearchPageController(StudentService, TeacherService, SchoolService, FunctionsUtilService, $state, $filter, $scope, $rootScope) {
+                function SearchPageController(StudentService, TeacherService, SchoolService, FunctionsUtilService, $state, $stateParams, $filter, $scope, $rootScope, $timeout) {
                     this.StudentService = StudentService;
                     this.TeacherService = TeacherService;
                     this.SchoolService = SchoolService;
                     this.FunctionsUtilService = FunctionsUtilService;
                     this.$state = $state;
+                    this.$stateParams = $stateParams;
                     this.$filter = $filter;
                     this.$scope = $scope;
                     this.$rootScope = $rootScope;
+                    this.$timeout = $timeout;
                     this._init();
                 }
                 SearchPageController.prototype._init = function () {
                     this.data = [];
                     this.type = null;
-                    this._hoverDetail = [];
                     this.error = {
                         message: ''
                     };
@@ -4196,14 +4231,15 @@ var app;
                     this._subscribeToEvents();
                     this.TeacherService.getAllTeachers().then(function (response) {
                         self.type = 'teacher';
-                        self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null);
+                        self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
                         self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                         self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
+                        if (self.$stateParams.country) {
+                            self.$timeout(function () {
+                                self._searchByCountry(self.$stateParams.country);
+                            });
+                        }
                     });
-                };
-                SearchPageController.prototype.goToDetails = function (containerId) {
-                    var url = this.$state.href('page.teacherProfilePage', { id: containerId });
-                    window.open(url, '_blank');
                 };
                 SearchPageController.prototype._getResultTemplate = function (type) {
                     var STUDENT_TYPE = 'student';
@@ -4218,30 +4254,25 @@ var app;
                             return 'app/pages/searchPage/schoolResult/schoolResult.html';
                     }
                 };
-                SearchPageController.prototype._assignNativeClass = function (languages) {
-                    var native = languages.native;
-                    var teach = languages.teach;
-                    var isNative = false;
-                    for (var i = 0; i < native.length; i++) {
-                        for (var j = 0; j < teach.length; j++) {
-                            if (teach[j] === native[i]) {
-                                isNative = true;
-                            }
-                        }
+                SearchPageController.prototype._searchByCountry = function (country) {
+                    var self = this;
+                    if (country == 'Colombia') {
+                        var location_1 = {
+                            country: country,
+                            city: 'Medellin',
+                            address: 'Transversal 31Sur #32B-64'
+                        };
+                        this.$timeout(function () {
+                            self.$rootScope.$broadcast('PositionCountry', location_1);
+                        });
                     }
-                    return isNative;
-                };
-                SearchPageController.prototype._hoverEvent = function (id, status) {
-                    var args = { id: id, status: status };
-                    this._hoverDetail[id] = status;
-                    this.$rootScope.$broadcast('ChangeMarker', args);
                 };
                 SearchPageController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Students', function (event, args) {
                         self.StudentService.getAllStudents().then(function (response) {
                             self.type = 'student';
-                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 }, 6);
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                             self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                         });
@@ -4249,7 +4280,7 @@ var app;
                     this.$scope.$on('Teachers', function (event, args) {
                         self.TeacherService.getAllTeachers().then(function (response) {
                             self.type = 'teacher';
-                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null);
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                             self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         });
@@ -4257,7 +4288,7 @@ var app;
                     this.$scope.$on('Schools', function (event, args) {
                         self.SchoolService.getAllSchools().then(function (response) {
                             self.type = 'school';
-                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 });
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 }, 6);
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                             self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                         });
@@ -4267,6 +4298,9 @@ var app;
                         var containerClasses = document.querySelector(containerId).classList;
                         containerClasses.add('search-result__teacher__block--selected');
                         document.querySelector(containerId).scrollIntoView({ behavior: 'smooth' });
+                    });
+                    this.$scope.$on('SearchCountry', function (event, args) {
+                        self._searchByCountry(args);
                     });
                 };
                 return SearchPageController;
@@ -4278,9 +4312,11 @@ var app;
                 'mainApp.models.school.SchoolService',
                 'mainApp.core.util.FunctionsUtilService',
                 '$state',
+                '$stateParams',
                 '$filter',
                 '$scope',
-                '$rootScope'
+                '$rootScope',
+                '$timeout'
             ];
             searchPage.SearchPageController = SearchPageController;
             angular
@@ -4300,7 +4336,7 @@ var app;
             var MaTeacherResult = (function () {
                 function MaTeacherResult() {
                     this.bindToController = true;
-                    this.controller = app.pages.searchPage.SearchPageController.controllerId;
+                    this.controller = TeacherResultController.controllerId;
                     this.controllerAs = 'vm';
                     this.restrict = 'E';
                     this.templateUrl = 'app/pages/searchPage/teacherResult/teacherResult.html';
@@ -4318,6 +4354,60 @@ var app;
             angular
                 .module('mainApp.pages.searchPage')
                 .directive(MaTeacherResult.directiveId, MaTeacherResult.instance);
+            var TeacherResultController = (function () {
+                function TeacherResultController(functionsUtil, $uibModal, dataConfig, $filter, $state, $rootScope) {
+                    this.functionsUtil = functionsUtil;
+                    this.$uibModal = $uibModal;
+                    this.dataConfig = dataConfig;
+                    this.$filter = $filter;
+                    this.$state = $state;
+                    this.$rootScope = $rootScope;
+                    this.init();
+                }
+                TeacherResultController.prototype.init = function () {
+                    this.form = {};
+                    this._hoverDetail = [];
+                    this.activate();
+                };
+                TeacherResultController.prototype.activate = function () {
+                    console.log('teacherResult controller actived');
+                };
+                TeacherResultController.prototype.goToDetails = function (containerId) {
+                    var url = this.$state.href('page.teacherProfilePage', { id: containerId });
+                    window.open(url, '_blank');
+                };
+                TeacherResultController.prototype._assignNativeClass = function (languages) {
+                    var native = languages.native;
+                    var teach = languages.teach;
+                    var isNative = false;
+                    for (var i = 0; i < native.length; i++) {
+                        for (var j = 0; j < teach.length; j++) {
+                            if (teach[j] === native[i]) {
+                                isNative = true;
+                            }
+                        }
+                    }
+                    return isNative;
+                };
+                TeacherResultController.prototype._hoverEvent = function (id, status) {
+                    var args = { id: id, status: status };
+                    this._hoverDetail[id] = status;
+                    this.$rootScope.$broadcast('ChangeMarker', args);
+                };
+                return TeacherResultController;
+            }());
+            TeacherResultController.controllerId = 'mainApp.pages.searchPage.TeacherResultController';
+            TeacherResultController.$inject = [
+                'mainApp.core.util.FunctionsUtilService',
+                '$uibModal',
+                'dataConfig',
+                '$filter',
+                '$state',
+                '$rootScope'
+            ];
+            searchPage.TeacherResultController = TeacherResultController;
+            angular.module('mainApp.pages.searchPage')
+                .controller(TeacherResultController.controllerId, TeacherResultController);
         })(searchPage = pages.searchPage || (pages.searchPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));

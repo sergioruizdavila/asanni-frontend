@@ -71,12 +71,13 @@ var app;
                         }
                         return newArr;
                     };
-                    FunctionsUtilService.prototype.buildMapConfig = function (dataSet, mapType, position) {
+                    FunctionsUtilService.prototype.buildMapConfig = function (dataSet, mapType, position, zoom) {
                         var mapConfig = {
                             type: mapType,
                             data: {
                                 position: position || { lat: 6.175434, lng: -75.583329 },
-                                markers: []
+                                markers: [],
+                                zoom: zoom
                             }
                         };
                         if (dataSet) {

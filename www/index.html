@@ -10,10 +10,10 @@
 <!--<![endif]-->
 
 <head>
+    <title>Waysily | Meet with locals to learn a language</title>
+    <!--base href="/page/"-->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!--<base href="/">-->
-    <title>Waysily | Meet with locals to learn a language</title>
     <meta name="description" content="The best way to learn a language. Meet with locals, face to face not remotely.">
     <link rel="canonical" href="http://www.waysily.com/">
     <meta property="og:locale" content="en_US">
@@ -120,7 +120,7 @@ mixpanel.init("86a48c88274599c662ad64edb74b12da");</script>
     <!-- libs (node modules libraries) -->
     <script src="build/js/vendor-libs.min.js"></script>
     <!-- main App: PRD -->
-    <script src="build/js/app.js"></script>
+    <!--script src="build/js/app.js"></script-->
 
     <!-- TODO: EL sourcemap no esta funcionando si en DEV solo coloco la etiqueta
         de arriba (build/js/app.js), asi que es necesario crear una tarea en gulp
@@ -131,7 +131,7 @@ mixpanel.init("86a48c88274599c662ad64edb74b12da");</script>
         y cree la etiqueta de arriba.) -->
 
     <!-- main App: DEV -->
-    <!--script src="app/app.module.js"></script>
+    <script src="app/app.module.js"></script>
     <script src="app/app.core.module.js"></script>
     <script src="app/app.values.js"></script>
     <script src="app/app.run.js"></script>
@@ -218,7 +218,7 @@ mixpanel.init("86a48c88274599c662ad64edb74b12da");</script>
     <script src="app/pages/createTeacherPage/teacherFinishSection/teacherFinishSection.config.js"></script>
     <script src="app/pages/createTeacherPage/teacherFinishSection/teacherFinishSection.controller.js"></script>
     <script src="app/pages/teacherProfilePage/teacherProfilePage.config.js"></script>
-    <script src="app/pages/teacherProfilePage/teacherProfilePage.controller.js"></script-->
+    <script src="app/pages/teacherProfilePage/teacherProfilePage.controller.js"></script>
 
 
     <!-- TODO: Buscar una forma mas segura de incluir google map API ya que esta expuesto el KEY-->

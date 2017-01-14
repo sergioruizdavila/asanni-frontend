@@ -2,7 +2,7 @@
 <!--                 HEADER                  -->
 <!--------------------------------------------->
 
-<div class="ma-header" ng-controller="mainApp.pages.landingPage.LandingPageController as vm">
+<div class="ma-header">
 
     <!--                     START: HEADER (SMALL SCREEN)                    -->
     <!------------------------------------------------------------------------->
@@ -250,6 +250,7 @@
 
         <!---------------- START: INBOX BUTTON (MD AND LG SCREEN) ------------->
         <div class="ma-header__block pull-right hidden">
+
             <a ui-sref="page.userInboxPage" href
                class="ma-header__block__btn link-reset">
                <span class="ma-icon-container">
@@ -341,6 +342,85 @@
         </div>
         <!--              END: JOIN SECTION (MD AND LG SCREEN)               -->
 
+
+        <style media="screen">
+
+        .ma-dropdown li > a {
+            font-size: 20px;
+        }
+
+        .ma-dropdown li > a.disabled {
+            font-size: 20px;
+            color: #CCC;
+            cursor: no-drop;
+        }
+
+        .ma-dropdown li > a.disabled .ma-p {
+            color: #CCC;
+        }
+
+        .ma-dropdown li > a.disabled:hover {
+            color: #CCC;
+            text-decoration: none;
+            background-color: transparent;
+            font-weight: 100;
+            margin-left: 0;
+        }
+        </style>
+
+        <!--------------- START: WHERE DROPDOWN (MD AND LG SCREEN) ------------>
+        <div class="ma-header__block ma-header__block__search-wrapper"
+             uib-dropdown on-toggle="toggled(open)"
+             role="search">
+            <form class="ma-header__block__search-wrapper__form"
+                  uib-dropdown-toggle href
+                  aria-haspopup="true" aria-expanded="true">
+                <div class="ma-header__block__search-wrapper__form__search-bar" style="cursor:pointer;">
+                    <i class="material-icons
+                              ma-header__block__btn__icon
+                              ma-header__block__search-wrapper__form__search-bar__icon">
+                        search
+                    </i>
+                    <p class="ma-p ma-p--default margin-reset"
+                        style="padding: 0 0 0 48px;">
+                        {{vm.form.whereTo}}
+                    </p>
+                </div>
+            </form>
+            <ul class="ma-dropdown
+                       dropdown-menu
+                       dropdown-menu-left" style="width: 90%;"
+                uib-dropdown-menu
+                role="menu"
+                aria-labelledby="user-menu-options">
+                <li class="ma-dropdown__option">
+                    <a class="ma-dropdown__option__btn"
+                       ng-click="vm.search('Colombia')"
+                       href>
+                      Colombia
+                    </a>
+                </li>
+                <li class="ma-dropdown__option">
+                    <a class="ma-dropdown__option__btn disabled"
+                       href>
+                        Guatemala
+                        <span class="ma-p ma-p--default pull-right">
+                            Coming soon
+                        </span>
+                    </a>
+                </li>
+                <li class="ma-dropdown__option">
+                    <a class="ma-dropdown__option__btn disabled"
+                       href>
+                        Mexico
+                        <span class="ma-p ma-p--default pull-right">
+                            Coming soon
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!--              END: WHERE DROPDOWN (MD AND LG SCREEN)             -->
 
 
         <!------------------ START: SEARCH (MD AND LG SCREEN) ----------------->

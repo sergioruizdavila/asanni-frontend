@@ -90,7 +90,7 @@ module app.pages.createTeacherPage {
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
             private $scope: ITeacherLocationScope,
-            private $timeout) {
+            private $timeout: angular.ITimeoutService) {
                 this._init();
         }
 
@@ -224,7 +224,7 @@ module app.pages.createTeacherPage {
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
             const NUMBER_ENUM = app.core.util.functionsUtil.Validation.Number;
-            
+
             /***************************************************/
             //VARIABLES
             let formValid = true;
