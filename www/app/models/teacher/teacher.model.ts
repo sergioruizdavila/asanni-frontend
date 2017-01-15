@@ -25,6 +25,7 @@ module app.models.teacher {
         private methodology: string;
         private immersion: Immersion;
         private price: Price;
+        private ratings: Array<Rating>;
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -62,10 +63,17 @@ module app.models.teacher {
                     this.addCertificate(certificateInstance);
                 }
 
+                this.ratings = [];
+                for (let key in obj.ratings) {
+                    let ratingInstance = new Rating(obj.ratings[key]);
+                    this.addRating(ratingInstance);
+                }
+
             } else {
                 this.experiences = [];
                 this.educations = [];
                 this.certificates = [];
+                this.ratings = [];
             }
 
         }
@@ -183,6 +191,25 @@ module app.models.teacher {
         set Price(price: Price) {
             if (price === undefined) { throw 'Please supply price'; }
             this.price = price;
+        }
+
+        get Ratings() {
+            return this.ratings;
+        }
+
+        addRating(rating: Rating): void {
+            if(rating === undefined) { throw 'Please supply rating value (Add)'; }
+            this.ratings.push(rating);
+        }
+
+        editRating(rating: Rating): void {
+            if(rating === undefined) { throw 'Please supply rating value (Edit)'; }
+            //Edit existing Rating
+            this.ratings.forEach(function (element, index, array) {
+                if (rating.Id === element.Id) {
+                    array[index] = rating;
+                }
+            });
         }
 
     }
@@ -832,6 +859,87 @@ module app.models.teacher {
             if (hourPrice === undefined) { throw 'Please supply hour price value'; }
             this.hourPrice = hourPrice;
         }
+    }
+
+
+
+    /************************************************/
+    /*            RATING CLASS DEFINITION           */
+    /************************************************/
+
+    export class Rating {
+
+        /*-- PROPERTIES --*/
+        private id: number;
+        private methodologyValue: number;
+        private teachingValue: number;
+        private communicationValue: number;
+        private review: string;
+
+        /**********************************/
+        /*           CONSTRUCTOR          */
+        /**********************************/
+        constructor(obj: any = {}) {
+            //LOG
+            console.log('Rating Model instanced');
+
+            //init properties
+            this.id = obj.id;
+            this.methodologyValue = obj.methodologyValue || 0;
+            this.teachingValue = obj.teachingValue || 0;
+            this.communicationValue = obj.communicationValue || 0;
+            this.review = obj.review || '';
+        }
+
+        /**********************************/
+        /*             METHODS            */
+        /**********************************/
+
+        get Id() {
+            return this.id;
+        }
+
+        set Id(id: number) {
+            if (id === undefined) { throw 'Please supply experience id'; }
+            this.id = id;
+        }
+
+        get MethodologyValue() {
+            return this.methodologyValue;
+        }
+
+        set MethodologyValue(methodologyValue: number) {
+            if (methodologyValue === undefined) { throw 'Please supply methodology value'; }
+            this.methodologyValue = methodologyValue;
+        }
+
+        get TeachingValue() {
+            return this.teachingValue;
+        }
+
+        set TeachingValue(teachingValue: number) {
+            if (teachingValue === undefined) { throw 'Please supply teaching value'; }
+            this.teachingValue = teachingValue;
+        }
+
+        get CommunicationValue() {
+            return this.communicationValue;
+        }
+
+        set CommunicationValue(communicationValue: number) {
+            if (communicationValue === undefined) { throw 'Please supply communication value'; }
+            this.communicationValue = communicationValue;
+        }
+
+        get Review() {
+            return this.review;
+        }
+
+        set Review(review: string) {
+            if (review === undefined) { throw 'Please supply review value'; }
+            this.review = review;
+        }
+
     }
 
 }
