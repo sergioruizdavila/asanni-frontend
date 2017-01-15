@@ -1407,11 +1407,17 @@ var app;
                             var certificateInstance = new Certificate(obj.certificates[key]);
                             _this.addCertificate(certificateInstance);
                         }
+                        _this.ratings = [];
+                        for (var key in obj.ratings) {
+                            var ratingInstance = new Rating(obj.ratings[key]);
+                            _this.addRating(ratingInstance);
+                        }
                     }
                     else {
                         _this.experiences = [];
                         _this.educations = [];
                         _this.certificates = [];
+                        _this.ratings = [];
                     }
                     return _this;
                 }
@@ -1562,6 +1568,29 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
+                Object.defineProperty(Teacher.prototype, "Ratings", {
+                    get: function () {
+                        return this.ratings;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Teacher.prototype.addRating = function (rating) {
+                    if (rating === undefined) {
+                        throw 'Please supply rating value (Add)';
+                    }
+                    this.ratings.push(rating);
+                };
+                Teacher.prototype.editRating = function (rating) {
+                    if (rating === undefined) {
+                        throw 'Please supply rating value (Edit)';
+                    }
+                    this.ratings.forEach(function (element, index, array) {
+                        if (rating.Id === element.Id) {
+                            array[index] = rating;
+                        }
+                    });
+                };
                 return Teacher;
             }(app.models.user.User));
             teacher.Teacher = Teacher;
@@ -2175,6 +2204,84 @@ var app;
                 return TypeOfPrice;
             }());
             teacher.TypeOfPrice = TypeOfPrice;
+            var Rating = (function () {
+                function Rating(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('Rating Model instanced');
+                    this.id = obj.id;
+                    this.methodologyValue = obj.methodologyValue || 0;
+                    this.teachingValue = obj.teachingValue || 0;
+                    this.communicationValue = obj.communicationValue || 0;
+                    this.review = obj.review || '';
+                }
+                Object.defineProperty(Rating.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply experience id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Rating.prototype, "MethodologyValue", {
+                    get: function () {
+                        return this.methodologyValue;
+                    },
+                    set: function (methodologyValue) {
+                        if (methodologyValue === undefined) {
+                            throw 'Please supply methodology value';
+                        }
+                        this.methodologyValue = methodologyValue;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Rating.prototype, "TeachingValue", {
+                    get: function () {
+                        return this.teachingValue;
+                    },
+                    set: function (teachingValue) {
+                        if (teachingValue === undefined) {
+                            throw 'Please supply teaching value';
+                        }
+                        this.teachingValue = teachingValue;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Rating.prototype, "CommunicationValue", {
+                    get: function () {
+                        return this.communicationValue;
+                    },
+                    set: function (communicationValue) {
+                        if (communicationValue === undefined) {
+                            throw 'Please supply communication value';
+                        }
+                        this.communicationValue = communicationValue;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Rating.prototype, "Review", {
+                    get: function () {
+                        return this.review;
+                    },
+                    set: function (review) {
+                        if (review === undefined) {
+                            throw 'Please supply review value';
+                        }
+                        this.review = review;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Rating;
+            }());
+            teacher.Rating = Rating;
         })(teacher = models.teacher || (models.teacher = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
