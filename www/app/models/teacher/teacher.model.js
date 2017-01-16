@@ -840,6 +840,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('Rating Model instanced');
                     this.id = obj.id;
+                    this.author = new app.models.student.Student(obj.author);
                     this.methodologyValue = obj.methodologyValue || 0;
                     this.teachingValue = obj.teachingValue || 0;
                     this.communicationValue = obj.communicationValue || 0;
@@ -854,6 +855,19 @@ var app;
                             throw 'Please supply experience id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Rating.prototype, "Author", {
+                    get: function () {
+                        return this.author;
+                    },
+                    set: function (author) {
+                        if (author === undefined) {
+                            throw 'Please supply author';
+                        }
+                        this.author = author;
                     },
                     enumerable: true,
                     configurable: true

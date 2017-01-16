@@ -1,0 +1,11 @@
+<!--------------------------------------------->
+<!--                 RATING                  -->
+<!--------------------------------------------->
+
+<div class="ma-rating">
+    <i class="material-icons ma-stars__icon"
+              ng-class="vm._assignClass()"
+              ng-repeat="rating in vm._ratingList track by $index">
+        {{rating}}
+    </i>
+</div>

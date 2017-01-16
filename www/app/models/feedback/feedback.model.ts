@@ -25,7 +25,7 @@ module app.models.feedback {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('Student Model instanced');
+            console.log('Feedback Model instanced');
 
             //init properties
             this.id = obj.id;
