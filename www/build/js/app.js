@@ -64,7 +64,7 @@
     'use strict';
     var dataConfig = {
         currentYear: '2017',
-        baseUrl: 'http://127.0.0.1:8000/api/v1/',
+        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -73,7 +73,7 @@
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
-        bucketS3: 'waysily-img/teachers-avatar-dev',
+        bucketS3: 'waysily-img/teachers-avatar-prd',
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
@@ -2636,6 +2636,84 @@ var components;
     })(header = components.header || (components.header = {}));
 })(components || (components = {}));
 //# sourceMappingURL=header.directive.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.components.rating', [])
+        .config(config);
+    function config() { }
+})();
+//# sourceMappingURL=rating.config.js.map
+var components;
+(function (components) {
+    var rating;
+    (function (rating) {
+        'use strict';
+        var MaRating = (function () {
+            function MaRating() {
+                this.bindToController = true;
+                this.controller = RatingController.controllerId;
+                this.controllerAs = 'vm';
+                this.restrict = 'E';
+                this.scope = {
+                    ratingValue: '=',
+                    size: '@'
+                };
+                this.templateUrl = 'components/rating/rating.html';
+                console.log('maRating directive constructor');
+            }
+            MaRating.prototype.link = function ($scope, elm, attr) {
+                console.log('maRating link function');
+            };
+            MaRating.instance = function () {
+                return new MaRating();
+            };
+            return MaRating;
+        }());
+        MaRating.directiveId = 'maRating';
+        angular
+            .module('mainApp.components.rating')
+            .directive(MaRating.directiveId, MaRating.instance);
+        var RatingController = (function () {
+            function RatingController() {
+                this.init();
+            }
+            RatingController.prototype.init = function () {
+                this._ratingList = [];
+                this.activate();
+            };
+            RatingController.prototype.activate = function () {
+                console.log('rating controller actived');
+                this._calcuteStars();
+            };
+            RatingController.prototype._calcuteStars = function () {
+                var value = this.ratingValue;
+                var halfValue = value / 2;
+                for (var i = 0; i < 5; i++) {
+                    if (halfValue >= 1) {
+                        this._ratingList.push('star');
+                    }
+                    else if (halfValue == 0.5) {
+                        this._ratingList.push('star_half');
+                    }
+                    else if (halfValue <= 0) {
+                        this._ratingList.push('star_border');
+                    }
+                    halfValue = halfValue - 1;
+                }
+            };
+            RatingController.prototype._assignClass = function () {
+                return 'ma-stars__icon--' + this.size;
+            };
+            return RatingController;
+        }());
+        RatingController.controllerId = 'mainApp.components.rating.RatingController';
+        rating.RatingController = RatingController;
+        angular.module('mainApp.components.rating')
+            .controller(RatingController.controllerId, RatingController);
+    })(rating = components.rating || (components.rating = {}));
+})(components || (components = {}));
+//# sourceMappingURL=rating.directive.js.map
 (function () {
     'use strict';
     angular
