@@ -90,7 +90,7 @@ var components;
             };
             MapController.prototype._dragMarkerMapBuilder = function () {
                 var self = this;
-                var zoom = 17;
+                var zoom = this.mapConfig.data.zoom || 17;
                 var center = this.mapConfig.data.position;
                 this._draggable = true;
                 this.$scope.options = {
@@ -116,7 +116,7 @@ var components;
             };
             MapController.prototype._locationCircleMapBuilder = function () {
                 var self = this;
-                var zoom = 16;
+                var zoom = this.mapConfig.data.zoom || 16;
                 var center = this.mapConfig.data.position;
                 var circle_strokeColor = '#ff5a5f';
                 var circle_strokeOpacity = 0.8;
@@ -306,6 +306,9 @@ var components;
                 }, function (results, status) {
                     if (status == 'OK') {
                         self._map.setCenter(results[0].geometry.location);
+                        if (self.mapConfig.data.zoom) {
+                            self._map.setZoom(self.mapConfig.data.zoom);
+                        }
                     }
                     else {
                         console.log(status);

@@ -271,7 +271,7 @@ module components.map {
         _dragMarkerMapBuilder(): void {
             //VARIABLES
             let self = this;
-            let zoom = 17;
+            let zoom = this.mapConfig.data.zoom || 17;
             let center = this.mapConfig.data.position;
             this._draggable = true;
             /********************/
@@ -326,7 +326,7 @@ module components.map {
         _locationCircleMapBuilder(): void {
             //VARIABLES
             let self = this;
-            let zoom = 16;
+            let zoom = this.mapConfig.data.zoom || 16;
             let center = this.mapConfig.data.position;
             let circle_strokeColor = '#ff5a5f';
            let circle_strokeOpacity = 0.8;
@@ -684,6 +684,9 @@ module components.map {
               if (status == 'OK') {
 
                   self._map.setCenter(results[0].geometry.location);
+                  if(self.mapConfig.data.zoom) {
+                    self._map.setZoom(self.mapConfig.data.zoom);
+                  }
 
               } else {
 
