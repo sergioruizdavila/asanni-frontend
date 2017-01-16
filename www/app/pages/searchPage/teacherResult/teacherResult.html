@@ -72,6 +72,9 @@
             <div class="col-xs-12 col-md-12">
 
                 <p class="ma-p ma-p--default margin-reset">
+                    <span>
+                        <i class="material-icons md-12">public</i>
+                    </span>
                     {{item.born}}
                 </p>
 
@@ -120,8 +123,11 @@
         <div class="search-result__teacher__block__languages
                     row text-center space-1">
 
+            <!-- Teacher Teaching Languages List -->
             <div class="search-result__teacher__block__languages__container
+                        search-result__teacher__block__languages__container--gray
                         search-result__teacher__block__languages__container--left
+                        search-result__teacher__block__languages__container--left--gray
                         col-xs-6 col-md-6">
 
                 <div class="row space-2">
@@ -153,7 +159,9 @@
 
             </div>
 
+            <!-- Teacher Speaking Languages List -->
             <div class="search-result__teacher__block__languages__container
+                        search-result__teacher__block__languages__container--gray
                         col-xs-6 col-md-6">
 
                 <div class="row space-2">
@@ -196,10 +204,10 @@
     <div class="ma-box__content" ng-show="vm._hoverDetail[item.id]">
 
 
-        <!---------------------- START: NATIVE INFO BLOCK --------------------->
+        <!------------------ START: NATIVE INFO BLOCK (LEGACY) ---------------->
         <div class="search-result__teacher__block__native
                     row text-center
-                    space-1"
+                    space-1 hidden"
              ng-class="{'search-result__teacher__block__native--noNative': !vm._assignNativeClass(item.languages)}">
 
             <div class="col-xs-12 col-md-12">
@@ -211,8 +219,26 @@
             </div>
 
         </div>
-        <!--                     END: NATIVE INFO BLOCK                      -->
+        <!--                  END: NATIVE INFO BLOCK (LEGACY)                -->
 
+
+        <!--------------------- START: NATIVE INFO BLOCK ---------------------->
+        <div class="row space-2">
+            <div class="col-xs-12">
+                <div class="ma-label
+                            ma-label--box
+                            ma-label--box--uppercase
+                            ma-label--box--primary
+                            ma-label--box--small
+                            pull-right"
+                    ng-class="{'ma-label--box--gray
+                                ma-label--box--gray--line-through': !vm._assignNativeClass(item.languages)}"
+                    translate>
+                    %search.container.teacher.native.title.text
+                </div>
+            </div>
+        </div>
+        <!--                      END: NATIVE INFO BLOCK                     -->
 
 
         <!------------------- START: TYPE OF TEACHER INFO BLOCK --------------->

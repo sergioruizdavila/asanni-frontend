@@ -209,17 +209,50 @@ $search-teacher-block-height: 500px;
 
                 &__container {
 
-                    &--left {
-                        border-right: 2px dashed #00B592;
-                        height: 136px;
+                    h4 {
+                        padding: 3px;
+                        border-radius: 2px;
                     }
 
-                    h4 {
-                        background-color: #00b592;
-                        color: #FFF;
-                        padding: 3px;
-                        border-radius: 3px;
+                    /// TYPE OF CONTAINER
+                    &--primary {
+                        h4 {
+                            background-color: map-get($main-palette, primary);
+                            color: $white;
+                        }
                     }
+
+                    &--alert {
+                        h4 {
+                            background-color: map-get($main-palette, alert);
+                            color: $white;
+                        }
+                    }
+
+                    &--gray {
+                        h4 {
+                            background-color: #f5f5f5;
+                            color: $black;
+                        }
+                    }
+
+                    &--left {
+                        &--primary {
+                            border-right: 2px dashed map-get($main-palette, primary);
+                            height: 136px;
+                        }
+
+                        &--alert {
+                            border-right: 2px dashed map-get($main-palette, alert);
+                            height: 136px;
+                        }
+
+                        &--gray {
+                            border-right: 1px dashed $light-gray;
+                            height: 136px;
+                        }
+                    }
+
                 }
             }
 
