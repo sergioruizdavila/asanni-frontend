@@ -27,6 +27,7 @@ module app.core.util.functionsUtil {
         progress: (currentStep: number, totalSteps: number) => string;
         validator: (value: any, validations: Array<Validation>) => IValid;
         averageNumbersArray: (values: Array<number>) => number;
+        teacherRatingAverage: (ratingsArr: Array<Object>) => number;
     }
 
     export interface IValid {
@@ -461,6 +462,33 @@ module app.core.util.functionsUtil {
             }
 
             average = Math.round(total / amountValues);
+
+            return average;
+        }
+
+
+
+        teacherRatingAverage(ratingsArr: Array<Object>): number {
+            //VARIABLES
+            let average = 0;
+            let averageArr = [];
+            let ratings: Array<app.models.teacher.Rating> = [];
+
+            for (let i = 0; i < ratingsArr.length; i++) {
+
+                ratings.push(new app.models.teacher.Rating(ratingsArr[i]));
+
+                let newArr = [
+                    ratings[i].MethodologyValue,
+                    ratings[i].TeachingValue,
+                    ratings[i].CommunicationValue
+                ];
+
+                averageArr.push(this.averageNumbersArray(newArr));
+
+            }
+
+            average = this.averageNumbersArray(averageArr);
 
             return average;
         }

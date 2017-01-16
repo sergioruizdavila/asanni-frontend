@@ -196,6 +196,22 @@ var app;
                         average = Math.round(total / amountValues);
                         return average;
                     };
+                    FunctionsUtilService.prototype.teacherRatingAverage = function (ratingsArr) {
+                        var average = 0;
+                        var averageArr = [];
+                        var ratings = [];
+                        for (var i = 0; i < ratingsArr.length; i++) {
+                            ratings.push(new app.models.teacher.Rating(ratingsArr[i]));
+                            var newArr = [
+                                ratings[i].MethodologyValue,
+                                ratings[i].TeachingValue,
+                                ratings[i].CommunicationValue
+                            ];
+                            averageArr.push(this.averageNumbersArray(newArr));
+                        }
+                        average = this.averageNumbersArray(averageArr);
+                        return average;
+                    };
                     return FunctionsUtilService;
                 }());
                 FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
