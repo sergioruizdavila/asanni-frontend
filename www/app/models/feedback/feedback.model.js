@@ -7,7 +7,7 @@ var app;
             var Feedback = (function () {
                 function Feedback(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('Student Model instanced');
+                    console.log('Feedback Model instanced');
                     this.id = obj.id;
                     this.nextCountry = obj.nextCountry || '';
                 }

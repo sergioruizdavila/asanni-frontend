@@ -186,6 +186,16 @@ var app;
                         }
                         console.log(JSON.stringify(countries_json));
                     };
+                    FunctionsUtilService.prototype.averageNumbersArray = function (values) {
+                        var total = 0;
+                        var average = 0;
+                        var amountValues = values.length;
+                        for (var i = 0; i < values.length; i++) {
+                            total = values[i] + total;
+                        }
+                        average = Math.round(total / amountValues);
+                        return average;
+                    };
                     return FunctionsUtilService;
                 }());
                 FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';

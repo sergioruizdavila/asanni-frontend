@@ -28,6 +28,7 @@
         'mainApp.pages.userInboxDetailsPage',
         'mainApp.pages.meetingConfirmationPage',
         'mainApp.components.header',
+        'mainApp.components.rating',
         'mainApp.components.map',
         'mainApp.components.modal',
         'mainApp.components.footer'
@@ -41,7 +42,7 @@
             prefix: prefix,
             suffix: suffix
         });
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.preferredLanguage('es');
     }
 })();
 //# sourceMappingURL=app.module.js.map
@@ -63,7 +64,7 @@
     'use strict';
     var dataConfig = {
         currentYear: '2017',
-        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
+        baseUrl: 'http://127.0.0.1:8000/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -72,7 +73,7 @@
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
-        bucketS3: 'waysily-img/teachers-avatar-prd',
+        bucketS3: 'waysily-img/teachers-avatar-dev',
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
@@ -339,6 +340,16 @@ var app;
                             countries_json["%country." + countryCode] = countryText;
                         }
                         console.log(JSON.stringify(countries_json));
+                    };
+                    FunctionsUtilService.prototype.averageNumbersArray = function (values) {
+                        var total = 0;
+                        var average = 0;
+                        var amountValues = values.length;
+                        for (var i = 0; i < values.length; i++) {
+                            total = values[i] + total;
+                        }
+                        average = Math.round(total / amountValues);
+                        return average;
                     };
                     return FunctionsUtilService;
                 }());
@@ -721,7 +732,7 @@ var app;
             var Feedback = (function () {
                 function Feedback(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('Student Model instanced');
+                    console.log('Feedback Model instanced');
                     this.id = obj.id;
                     this.nextCountry = obj.nextCountry || '';
                 }
@@ -2209,6 +2220,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('Rating Model instanced');
                     this.id = obj.id;
+                    this.author = new app.models.student.Student(obj.author);
                     this.methodologyValue = obj.methodologyValue || 0;
                     this.teachingValue = obj.teachingValue || 0;
                     this.communicationValue = obj.communicationValue || 0;
@@ -2223,6 +2235,19 @@ var app;
                             throw 'Please supply experience id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Rating.prototype, "Author", {
+                    get: function () {
+                        return this.author;
+                    },
+                    set: function (author) {
+                        if (author === undefined) {
+                            throw 'Please supply author';
+                        }
+                        this.author = author;
                     },
                     enumerable: true,
                     configurable: true
@@ -4495,6 +4520,22 @@ var app;
                         }
                     }
                     return isNative;
+                };
+                TeacherResultController.prototype._ratingAverage = function (ratingsArr) {
+                    var average = 0;
+                    var averageArr = [];
+                    var ratings = [];
+                    for (var i = 0; i < ratingsArr.length; i++) {
+                        ratings.push(new app.models.teacher.Rating(ratingsArr[i]));
+                        var newArr = [
+                            ratings[i].MethodologyValue,
+                            ratings[i].TeachingValue,
+                            ratings[i].CommunicationValue
+                        ];
+                        averageArr.push(this.functionsUtil.averageNumbersArray(newArr));
+                    }
+                    average = this.functionsUtil.averageNumbersArray(averageArr);
+                    return average;
                 };
                 TeacherResultController.prototype._hoverEvent = function (id, status) {
                     var args = { id: id, status: status };

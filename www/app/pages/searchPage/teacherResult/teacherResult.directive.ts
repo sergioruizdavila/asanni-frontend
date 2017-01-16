@@ -183,6 +183,32 @@ module app.pages.searchPage {
             }
 
 
+            private _ratingAverage(ratingsArr: Array<Object>): number {
+                //VARIABLES
+                let average = 0;
+                let averageArr = [];
+                let ratings: Array<app.models.teacher.Rating> = [];
+
+                for (let i = 0; i < ratingsArr.length; i++) {
+
+                    ratings.push(new app.models.teacher.Rating(ratingsArr[i]));
+
+                    let newArr = [
+                        ratings[i].MethodologyValue,
+                        ratings[i].TeachingValue,
+                        ratings[i].CommunicationValue
+                    ];
+
+                    averageArr.push(this.functionsUtil.averageNumbersArray(newArr));
+
+                }
+
+                average = this.functionsUtil.averageNumbersArray(averageArr);
+
+                return average;
+            }
+
+
 
             /**
             * _hoverEvent

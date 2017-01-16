@@ -28,6 +28,7 @@
         'mainApp.pages.userInboxDetailsPage',
         'mainApp.pages.meetingConfirmationPage',
         'mainApp.components.header',
+        'mainApp.components.rating',
         'mainApp.components.map',
         'mainApp.components.modal',
         'mainApp.components.footer'
@@ -41,7 +42,7 @@
             prefix: prefix,
             suffix: suffix
         });
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.preferredLanguage('es');
     }
 })();
 //# sourceMappingURL=app.module.js.map

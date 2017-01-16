@@ -871,6 +871,7 @@ module app.models.teacher {
 
         /*-- PROPERTIES --*/
         private id: number;
+        private author: app.models.student.Student;
         private methodologyValue: number;
         private teachingValue: number;
         private communicationValue: number;
@@ -885,6 +886,7 @@ module app.models.teacher {
 
             //init properties
             this.id = obj.id;
+            this.author = new app.models.student.Student(obj.author);
             this.methodologyValue = obj.methodologyValue || 0;
             this.teachingValue = obj.teachingValue || 0;
             this.communicationValue = obj.communicationValue || 0;
@@ -902,6 +904,15 @@ module app.models.teacher {
         set Id(id: number) {
             if (id === undefined) { throw 'Please supply experience id'; }
             this.id = id;
+        }
+
+        get Author() {
+            return this.author;
+        }
+
+        set Author(author: app.models.student.Student) {
+            if (author === undefined) { throw 'Please supply author'; }
+            this.author = author;
         }
 
         get MethodologyValue() {

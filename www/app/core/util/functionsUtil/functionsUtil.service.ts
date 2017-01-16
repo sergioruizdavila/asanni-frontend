@@ -26,6 +26,7 @@ module app.core.util.functionsUtil {
         splitDate: (date:string) => app.core.interfaces.IDateSplitted;
         progress: (currentStep: number, totalSteps: number) => string;
         validator: (value: any, validations: Array<Validation>) => IValid;
+        averageNumbersArray: (values: Array<number>) => number;
     }
 
     export interface IValid {
@@ -436,6 +437,32 @@ module app.core.util.functionsUtil {
             }
 
             console.log(JSON.stringify(countries_json));
+        }
+
+
+
+        /**
+        * averageNumbersArray
+        * @description - Calculate numbers array average
+        * @use - this.FunctionsUtilService.averageNumbersArray([1,4,4,5]);
+        * @function
+        * @param {Array<number>} values - list of numbers
+        * @return {number} average - average value
+        */
+        averageNumbersArray(values): number {
+            //VARIABLES
+            let total = 0;
+            let average = 0;
+            let amountValues = values.length;
+            /***************************/
+
+            for (let i = 0; i < values.length; i++) {
+                total = values[i] + total;
+            }
+
+            average = Math.round(total / amountValues);
+
+            return average;
         }
 
 
