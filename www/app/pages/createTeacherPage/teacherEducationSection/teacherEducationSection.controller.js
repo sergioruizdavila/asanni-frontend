@@ -65,8 +65,10 @@ var app;
                     var formValid = true;
                     var education_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.educations = this.functionsUtilService.validator(this.form.educations, education_rules);
-                    if (!this.validate.educations.valid) {
-                        formValid = this.validate.educations.valid;
+                    var certificates_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.certificates = this.functionsUtilService.validator(this.form.certificates, certificates_rules);
+                    if (!this.validate.educations.valid || !this.validate.certificates.valid) {
+                        formValid = false;
                     }
                     return formValid;
                 };

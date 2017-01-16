@@ -64,7 +64,7 @@
     'use strict';
     var dataConfig = {
         currentYear: '2017',
-        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
+        baseUrl: 'http://127.0.0.1:8000/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -73,7 +73,7 @@
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
-        bucketS3: 'waysily-img/teachers-avatar-prd',
+        bucketS3: 'waysily-img/teachers-avatar-dev',
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
@@ -2961,6 +2961,9 @@ var components;
                 };
                 marker = new google.maps.Marker(markerOptions);
                 this._markers.push(marker);
+                if (this._map) {
+                    this._map.setCenter(position);
+                }
                 if (this._draggable) {
                     google.maps.event.addListener(marker, 'dragend', function (event) {
                         var position = {
@@ -5784,7 +5787,7 @@ var app;
                         positionLocation: new app.models.user.Position()
                     };
                     this.listCountries = this.getDataFromJson.getCountryi18n();
-                    this.mapConfig = self.functionsUtilService.buildMapConfig(null, 'drag-maker-map', null);
+                    this.mapConfig = self.functionsUtilService.buildMapConfig(null, 'drag-maker-map', null, null);
                     this.validate = {
                         countryLocation: { valid: true, message: '' },
                         cityLocation: { valid: true, message: '' },
@@ -5949,7 +5952,7 @@ var app;
                                     }
                                 }
                             }
-                        ], 'drag-maker-map', { lat: parseFloat(self.form.positionLocation.Lat), lng: parseFloat(self.form.positionLocation.Lng) });
+                        ], 'drag-maker-map', { lat: parseFloat(self.form.positionLocation.Lat), lng: parseFloat(self.form.positionLocation.Lng) }, null);
                         self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                     });
                     this.$scope.$on('Position', function (event, args) {
@@ -6539,8 +6542,10 @@ var app;
                     var formValid = true;
                     var education_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.educations = this.functionsUtilService.validator(this.form.educations, education_rules);
-                    if (!this.validate.educations.valid) {
-                        formValid = this.validate.educations.valid;
+                    var certificates_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.certificates = this.functionsUtilService.validator(this.form.certificates, certificates_rules);
+                    if (!this.validate.educations.valid || !this.validate.certificates.valid) {
+                        formValid = false;
                     }
                     return formValid;
                 };
