@@ -50,7 +50,7 @@ module app.pages.teacherProfilePage {
         /**********************************/
         constructor(
             private TeacherService: app.models.teacher.ITeacherService,
-            private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
+            private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private $state: ng.ui.IStateService,
             private $stateParams: ITeacherParams,
             private $filter: angular.IFilterService) {
@@ -84,7 +84,7 @@ module app.pages.teacherProfilePage {
             this.TeacherService.getTeacherById(this.$stateParams.id).then(
                 function(response) {
                     self.data = new app.models.teacher.Teacher(response);
-                    self.mapConfig = self.functionsUtilService.buildMapConfig(
+                    self.mapConfig = self.functionsUtil.buildMapConfig(
                         [
                             {
                                 id: self.data.Location.Position.Id,
@@ -97,7 +97,8 @@ module app.pages.teacherProfilePage {
                             }
                         ],
                         'location-circle-map',
-                        {lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng)}
+                        {lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng)},
+                        null
                     );
                     self.loading = false;
                 }
@@ -182,6 +183,42 @@ module app.pages.teacherProfilePage {
             }
             return tooltipText;
         }
+
+
+        //TODO: poner description
+        private _ratingTotalAverage(ratingsArr: Array<Object>): number {
+            return this.functionsUtil.teacherRatingAverage(ratingsArr);
+        }
+
+
+        //TODO: poner description
+        private _ratingUnitAverage(ratingsArr: Array<Object>, type): number {
+            //VARIABLES
+            let average = 0;
+            let averageArr = [];
+            let ratings: Array<app.models.teacher.Rating> = [];
+
+            for (let i = 0; i < ratingsArr.length; i++) {
+                ratings.push(new app.models.teacher.Rating(ratingsArr[i]));
+                switch(type) {
+                    case 'methodology':
+                        averageArr.push(ratings[i].MethodologyValue);
+                        break;
+                    case 'communication':
+                        averageArr.push(ratings[i].CommunicationValue);
+                        break;
+                    case 'teaching':
+                        averageArr.push(ratings[i].TeachingValue);
+                        break;
+                }
+
+            }
+
+            average = this.functionsUtil.averageNumbersArray(averageArr);
+
+            return average;
+        }
+
 
     }
 

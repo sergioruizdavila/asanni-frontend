@@ -5,9 +5,9 @@ var app;
         var teacherProfilePage;
         (function (teacherProfilePage) {
             var TeacherProfilePageController = (function () {
-                function TeacherProfilePageController(TeacherService, functionsUtilService, $state, $stateParams, $filter) {
+                function TeacherProfilePageController(TeacherService, functionsUtil, $state, $stateParams, $filter) {
                     this.TeacherService = TeacherService;
-                    this.functionsUtilService = functionsUtilService;
+                    this.functionsUtil = functionsUtil;
                     this.$state = $state;
                     this.$stateParams = $stateParams;
                     this.$filter = $filter;
@@ -24,7 +24,7 @@ var app;
                     console.log('teacherProfilePage controller actived');
                     this.TeacherService.getTeacherById(this.$stateParams.id).then(function (response) {
                         self.data = new app.models.teacher.Teacher(response);
-                        self.mapConfig = self.functionsUtilService.buildMapConfig([
+                        self.mapConfig = self.functionsUtil.buildMapConfig([
                             {
                                 id: self.data.Location.Position.Id,
                                 location: {
@@ -34,7 +34,7 @@ var app;
                                     }
                                 }
                             }
-                        ], 'location-circle-map', { lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng) });
+                        ], 'location-circle-map', { lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng) }, null);
                         self.loading = false;
                     });
                 };
@@ -67,6 +67,30 @@ var app;
                         tooltipText = firstName + ' ' + TOOLTIP_TEXT;
                     }
                     return tooltipText;
+                };
+                TeacherProfilePageController.prototype._ratingTotalAverage = function (ratingsArr) {
+                    return this.functionsUtil.teacherRatingAverage(ratingsArr);
+                };
+                TeacherProfilePageController.prototype._ratingUnitAverage = function (ratingsArr, type) {
+                    var average = 0;
+                    var averageArr = [];
+                    var ratings = [];
+                    for (var i = 0; i < ratingsArr.length; i++) {
+                        ratings.push(new app.models.teacher.Rating(ratingsArr[i]));
+                        switch (type) {
+                            case 'methodology':
+                                averageArr.push(ratings[i].MethodologyValue);
+                                break;
+                            case 'communication':
+                                averageArr.push(ratings[i].CommunicationValue);
+                                break;
+                            case 'teaching':
+                                averageArr.push(ratings[i].TeachingValue);
+                                break;
+                        }
+                    }
+                    average = this.functionsUtil.averageNumbersArray(averageArr);
+                    return average;
                 };
                 return TeacherProfilePageController;
             }());

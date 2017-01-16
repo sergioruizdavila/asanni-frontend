@@ -62,20 +62,7 @@ var app;
                     return isNative;
                 };
                 TeacherResultController.prototype._ratingAverage = function (ratingsArr) {
-                    var average = 0;
-                    var averageArr = [];
-                    var ratings = [];
-                    for (var i = 0; i < ratingsArr.length; i++) {
-                        ratings.push(new app.models.teacher.Rating(ratingsArr[i]));
-                        var newArr = [
-                            ratings[i].MethodologyValue,
-                            ratings[i].TeachingValue,
-                            ratings[i].CommunicationValue
-                        ];
-                        averageArr.push(this.functionsUtil.averageNumbersArray(newArr));
-                    }
-                    average = this.functionsUtil.averageNumbersArray(averageArr);
-                    return average;
+                    return this.functionsUtil.teacherRatingAverage(ratingsArr);
                 };
                 TeacherResultController.prototype._hoverEvent = function (id, status) {
                     var args = { id: id, status: status };
