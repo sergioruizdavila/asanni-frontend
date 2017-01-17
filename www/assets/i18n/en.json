@@ -13,6 +13,7 @@
     "%global.add_more.button.text": "+ Add More",
     "%global.upload_file.button.text": "Upload a file from your computer",
     "%global.start.button.text": "Let's Start",
+    "%global.go.button.text": "Let's Go!",
 
     "%global.more.label.text": "+ More",
     "%global.age.text": "years old",
