@@ -64,7 +64,7 @@
     'use strict';
     var dataConfig = {
         currentYear: '2017',
-        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
+        baseUrl: 'http://127.0.0.1:8000/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -73,7 +73,7 @@
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
-        bucketS3: 'waysily-img/teachers-avatar-prd',
+        bucketS3: 'waysily-img/teachers-avatar-dev',
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
@@ -825,6 +825,12 @@ var app;
     (function (models) {
         var user;
         (function (user) {
+            var Status;
+            (function (Status) {
+                Status[Status["new"] = 0] = "new";
+                Status[Status["validated"] = 1] = "validated";
+                Status[Status["verified"] = 2] = "verified";
+            })(Status = user.Status || (user.Status = {}));
             var User = (function () {
                 function User(obj) {
                     if (obj === void 0) { obj = {}; }
@@ -841,7 +847,7 @@ var app;
                     this.born = obj.born || '';
                     this.about = obj.about || '';
                     this.location = new Location(obj.location);
-                    this.validated = obj.validated || false;
+                    this.status = obj.status || 'NW';
                 }
                 Object.defineProperty(User.prototype, "Id", {
                     get: function () {
@@ -999,15 +1005,15 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Validated", {
+                Object.defineProperty(User.prototype, "Status", {
                     get: function () {
-                        return this.validated;
+                        return this.status;
                     },
-                    set: function (validated) {
-                        if (validated === undefined) {
-                            throw 'Please supply validated value';
+                    set: function (status) {
+                        if (status === undefined) {
+                            throw 'Please supply status value';
                         }
-                        this.validated = validated;
+                        this.status = status;
                     },
                     enumerable: true,
                     configurable: true
@@ -2349,6 +2355,16 @@ var app;
                         return err;
                     });
                 };
+                TeacherService.prototype.getAllTeachersByStatus = function (status) {
+                    var url = 'teachers?status=' + status;
+                    return this.restApi.queryObject({ url: url }).$promise
+                        .then(function (data) {
+                        return data;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                };
                 TeacherService.prototype.getAllTeachers = function () {
                     var url = 'teachers';
                     return this.restApi.queryObject({ url: url }).$promise
@@ -2961,6 +2977,9 @@ var components;
                 };
                 marker = new google.maps.Marker(markerOptions);
                 this._markers.push(marker);
+                if (this._map) {
+                    this._map.setCenter(position);
+                }
                 if (this._draggable) {
                     google.maps.event.addListener(marker, 'dragend', function (event) {
                         var position = {
@@ -4447,6 +4466,7 @@ var app;
                     this._init();
                 }
                 SearchPageController.prototype._init = function () {
+                    this.VALIDATED = 'VA';
                     this.data = [];
                     this.type = null;
                     this.error = {
@@ -4458,7 +4478,7 @@ var app;
                     var self = this;
                     console.log('searchPage controller actived');
                     this._subscribeToEvents();
-                    this.TeacherService.getAllTeachers().then(function (response) {
+                    this.TeacherService.getAllTeachersByStatus(this.VALIDATED).then(function (response) {
                         self.type = 'teacher';
                         self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
                         self.$scope.$broadcast('BuildMarkers', self.mapConfig);
@@ -4507,7 +4527,7 @@ var app;
                         });
                     });
                     this.$scope.$on('Teachers', function (event, args) {
-                        self.TeacherService.getAllTeachers().then(function (response) {
+                        self.TeacherService.getAllTeachersByStatus(self.VALIDATED).then(function (response) {
                             self.type = 'teacher';
                             self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);
@@ -5784,7 +5804,7 @@ var app;
                         positionLocation: new app.models.user.Position()
                     };
                     this.listCountries = this.getDataFromJson.getCountryi18n();
-                    this.mapConfig = self.functionsUtilService.buildMapConfig(null, 'drag-maker-map', null);
+                    this.mapConfig = self.functionsUtilService.buildMapConfig(null, 'drag-maker-map', null, null);
                     this.validate = {
                         countryLocation: { valid: true, message: '' },
                         cityLocation: { valid: true, message: '' },
@@ -5949,7 +5969,7 @@ var app;
                                     }
                                 }
                             }
-                        ], 'drag-maker-map', { lat: parseFloat(self.form.positionLocation.Lat), lng: parseFloat(self.form.positionLocation.Lng) });
+                        ], 'drag-maker-map', { lat: parseFloat(self.form.positionLocation.Lat), lng: parseFloat(self.form.positionLocation.Lng) }, null);
                         self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                     });
                     this.$scope.$on('Position', function (event, args) {

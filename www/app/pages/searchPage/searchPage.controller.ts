@@ -38,6 +38,7 @@ module app.pages.searchPage {
         mapConfig: components.map.IMapConfig;
         data: Array<app.models.student.Student>;
         type: string;
+        VALIDATED: string;
         // --------------------------------
 
 
@@ -75,6 +76,10 @@ module app.pages.searchPage {
 
         /*-- INITIALIZE METHOD --*/
         private _init() {
+            //TODO: Buscar una forma de crear un Enum global, donde no tenga que
+            // hacer esto cada vez que quiera usar un filtro
+            //GLOBAL CONSTANTS
+            this.VALIDATED = 'VA';
 
             //Init users list
             this.data = [];
@@ -100,7 +105,7 @@ module app.pages.searchPage {
             this._subscribeToEvents();
 
             //Get All Teacher of this zone (Default results)
-            this.TeacherService.getAllTeachers().then(
+            this.TeacherService.getAllTeachersByStatus(this.VALIDATED).then(
                 function(response: app.models.teacher.ITeacherQueryObject) {
 
                     self.type = 'teacher';
@@ -251,7 +256,7 @@ module app.pages.searchPage {
 
             this.$scope.$on('Teachers', function(event, args) {
                 //Get All Teachers of this zone
-                self.TeacherService.getAllTeachers().then(
+                self.TeacherService.getAllTeachersByStatus(self.VALIDATED).then(
                     function(response: app.models.teacher.ITeacherQueryObject) {
 
                         self.type = 'teacher';

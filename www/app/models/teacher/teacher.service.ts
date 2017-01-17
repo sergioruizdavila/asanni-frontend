@@ -15,6 +15,7 @@ module app.models.teacher {
     export interface ITeacherService {
         getTeacherById: (id: string) => angular.IPromise<any>;
         getAllTeachers: () => angular.IPromise<any>;
+        getAllTeachersByStatus: (status) => angular.IPromise<any>;
         createTeacher: (teacher: app.models.teacher.Teacher) => angular.IPromise<any>;
         updateTeacher: (teacher: app.models.teacher.Teacher) => angular.IPromise<any>;
         createExperience: (teacherId: string, experience: app.models.teacher.Experience) => angular.IPromise<any>;
@@ -89,6 +90,31 @@ module app.models.teacher {
                     }
                 );
         }
+
+        /**
+        * getAllTeachersByStatus
+        * @description - get all Teachers by status filter value
+        * @function
+        * @return {angular.IPromise<any>} return a promise with teachers list
+        */
+        getAllTeachersByStatus(status): angular.IPromise<any> {
+            //VARIABLES
+            let url = 'teachers?status=' + status;
+
+            return this.restApi.queryObject({url: url}).$promise
+                .then(
+                    function(data) {
+                        return data;
+                    }
+                ).catch(
+                    function(err) {
+                        console.log(err);
+                        return err;
+                    }
+                );
+        }
+
+
 
         /**
         * getAllTeachers

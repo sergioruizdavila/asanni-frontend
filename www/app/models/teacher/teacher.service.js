@@ -20,6 +20,16 @@ var app;
                         return err;
                     });
                 };
+                TeacherService.prototype.getAllTeachersByStatus = function (status) {
+                    var url = 'teachers?status=' + status;
+                    return this.restApi.queryObject({ url: url }).$promise
+                        .then(function (data) {
+                        return data;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                };
                 TeacherService.prototype.getAllTeachers = function () {
                     var url = 'teachers';
                     return this.restApi.queryObject({ url: url }).$promise

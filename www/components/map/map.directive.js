@@ -168,6 +168,9 @@ var components;
                 };
                 marker = new google.maps.Marker(markerOptions);
                 this._markers.push(marker);
+                if (this._map) {
+                    this._map.setCenter(position);
+                }
                 if (this._draggable) {
                     google.maps.event.addListener(marker, 'dragend', function (event) {
                         var position = {
