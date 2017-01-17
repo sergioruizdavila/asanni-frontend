@@ -180,7 +180,7 @@ module app.pages.createTeacherPage {
             //CONSTANTS
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
-            
+
             /***************************************************/
             //VARIABLES
             let formValid = true;
@@ -188,8 +188,14 @@ module app.pages.createTeacherPage {
             //Validate Educations list
             let education_rules = [NULL_ENUM, EMPTY_ENUM];
             this.validate.educations = this.functionsUtilService.validator(this.form.educations, education_rules);
-            if(!this.validate.educations.valid) {
-                formValid = this.validate.educations.valid;
+
+            //Validate Certificates list
+            let certificates_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.certificates = this.functionsUtilService.validator(this.form.certificates, certificates_rules);
+
+            // Is neccesary one of them (education or certificate)
+            if(!this.validate.educations.valid || !this.validate.certificates.valid) {
+                formValid = false;
             }
 
             return formValid;
