@@ -57,7 +57,7 @@
     "%modal.experience.title.text": "Agregar/Editar una experiencia",
     "%modal.experience.form.position.text": "Cargo",
     "%modal.experience.form.company.text": "Empresa/Lugar de trabajo",
-    "%modal.experience.form.cntry.text": "Pais",
+    "%modal.experience.form.cntry.text": "País",
     "%modal.experience.form.city.text": "Ciudad",
     "%modal.experience.form.date_start.text": "Fecha de inicio",
     "%modal.experience.form.date_finish.text": "Fecha final",
@@ -114,7 +114,7 @@
     "%landing.teacher.puv.v3": "Construye una reputación, hazte visible y gana dinero haciendo lo que más te apasiona.",
     "%landing.teacher.puv.description.first_part.text": "Se visible a",
     "%landing.teacher.puv.description.second_part.text": "6.000+ estudiantes",
-    "%landing.teacher.puv.description.third_part.text": "que viajan a tu pais cada año.",
+    "%landing.teacher.puv.description.third_part.text": "que viajan a tu país cada año.",
 
     "%landing.teacher.preview_container.title.text": "Así te verían los estudiantes cuando entren al mapa de Waysily",
     "%landing.teacher.preview_container.help_text.text": "información de ejemplo",
@@ -241,11 +241,11 @@
 
     "__TEACHER WELCOME SECTION__":"",
     "%create.teacher.welcome.title.text": "¡Bienvenido!, El proceso toma aproximadamente 10 minutos",
-    "$create.teacher.welcome.subtitle.text": "¿Que tipo de profesores hacen parte de Waysily?",
+    "$create.teacher.welcome.subtitle.text": "¿Qué tipo de profesores eres?",
     "$create.teacher.welcome.type.hobby.description.text": "Hablante nativo o casi nativo que disfruta de la enseñanza informal. 18 años o más.",
     "$create.teacher.welcome.type.professional.description.text": "Profesional que ha recibido formación en la enseñanza de lenguas extranjeras.",
 
-    "%create.teacher.welcome.help_text.description.text": "En tu ciudad, los profesores privados estan ganando aproximadamente:",
+    "%create.teacher.welcome.help_text.description.text": "En tu ciudad, los profesores privados están ganando aproximadamente:",
 
     "__1. TEACHER INFO SECTION__": "",
     "%create.teacher.basic_info.title.text": "Paso 1 -  Información Basica",
@@ -280,7 +280,7 @@
 
     "__2. TEACHER LOCATION SECTION__": "",
     "%create.teacher.location.title.text": "Paso 2 -  ¿Donde estás ubicado?",
-    "%create.teacher.location.form.cntry.text": "Pais",
+    "%create.teacher.location.form.cntry.text": "País",
     "%create.teacher.location.form.cntry.option_list.text": "Selecciona un país",
     "%create.teacher.location.form.city.text": "Ciudad",
     "%create.teacher.location.form.state.text": "Estado/Provincia",
@@ -290,8 +290,8 @@
 
     "%create.teacher.location.help_text.title.text": "Muestrale al mundo quien eres",
     "%create.teacher.location.help_text.description.text": "Waysily se centra en crear conexiones reales. Describirte en detalle ayuda los demás usuarios a conocerte mucho mejor. Comparte con ellos tus gustos, viajes, anecdotas o pasatiempos. Cuéntales cómo sería tenerte como su profesor, incluso puedes entrar en aspectos más personales: ¿Hay alguna frase en especial que defina tu forma de enseñar?",
-    "%create.teacher.location.help_text.cntry.title.text": "Titulo del Pais",
-    "%create.teacher.location.help_text.cntry.description.text": "Descripción del Pais",
+    "%create.teacher.location.help_text.cntry.title.text": "Titulo del País",
+    "%create.teacher.location.help_text.cntry.description.text": "Descripción del País",
     "%create.teacher.location.help_text.state.title.text": "Titulo del Estado/Provincia",
     "%create.teacher.location.help_text.state.description.text": "Descripción del Estado/Provincia",
     "%create.teacher.location.help_text.city.title.text": "Titulo de la Ciudad",
