@@ -359,7 +359,7 @@ module app.pages.createTeacherPage {
                 break;
 
                 case 'birthDate':
-                    this.helpText.title = BIRTHDATE_DESCRIPTION;
+                    this.helpText.title = BIRTHDATE_TITLE;
                     this.helpText.description = BIRTHDATE_DESCRIPTION;
                 break;
 

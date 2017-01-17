@@ -96,11 +96,11 @@ var app;
                             break;
                         case 'native':
                             this.helpText.title = NATIVE_TITLE;
-                            this.helpText.description = NATIVE_TITLE;
+                            this.helpText.description = NATIVE_DESCRIPTION;
                             break;
                         case 'learn':
                             this.helpText.title = LEARN_TITLE;
-                            this.helpText.description = LEARN_TITLE;
+                            this.helpText.description = LEARN_DESCRIPTION;
                             break;
                         case 'teach':
                             this.helpText.title = TEACH_TITLE;
