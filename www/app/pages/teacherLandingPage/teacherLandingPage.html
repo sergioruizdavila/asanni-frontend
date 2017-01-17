@@ -167,24 +167,26 @@
 	        <div class="ma-hero__wrapper text-center">
 
         		<h1 class="ma-hero__wrapper__title animated fadeIn" translate>
-                    Financia tu pasión como un profesor en Waysily.
+                    %landing.teacher.puv.v3
                 </h1>
 
                 <h2 class="ma-hero__wrapper__description animated fadeIn">
-                    <span class="space-right-1">Se visible a</span>
-                    <span class="underline
-                                 underline--primary underline--strong">
-                        4.000+ estudiantes
+                    <span class="space-right-1" translate>
+                        %landing.teacher.puv.description.first_part.text
                     </span>
-                    <span class="space-left-1">
-                        que viajan a tu pais cada año.
+                    <span class="underline
+                                 underline--primary underline--strong" translate>
+                        %landing.teacher.puv.description.second_part.text
+                    </span>
+                    <span class="space-left-1" translate>
+                        %landing.teacher.puv.description.third_part.text
                     </span>
                 </h2>
 
         		<div class="ma-hero__wrapper__btn-container">
-                    <button class="ma-btn ma-btn--primary ma-btn--large"
+                    <button class="ma-btn ma-btn--primary text-uppercase ma-btn--large"
                             ng-click="vm.goToCreate()" translate>
-                       LET'S GO
+                       %global.go.button.text
                    </button>
         		</div>
 
@@ -211,13 +213,14 @@
                 <div class="col-xs-12 col-sm-12 col-md-6">
                     <div class="row">
                         <div class="col-md-12">
-                            <p class="ma-p ma-p--large ma-p--primary text-center">
-                                Asi te verian los estudiantes cuando entren al
-                                mapa de Waysily
+                            <p class="ma-p ma-p--large ma-p--primary text-center"
+                                translate>
+                                %landing.teacher.preview_container.title.text
                             </p>
                             <div ng-include="vm.TEACHER_FAKE_TMPL"></div>
-                            <p class="ma-p ma-p--small pull-right">
-                                información de ejemplo
+                            <p class="ma-p ma-p--small pull-right"
+                               translate>
+                                %landing.teacher.preview_container.help_text.text
                             </p>
                         </div>
                     </div>
@@ -227,17 +230,23 @@
                 <div class="col-xs-12 col-sm-12 col-md-6">
                     <div class="row">
                         <div class="col-md-12">
-                            <h2>Has parte de esta gran comunidad</h2>
+                            <h2 translate>
+                                %landing.teacher.explanation_section.title.text
+                            </h2>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <p class="ma-p ma-p--large">
-                                Podrias ganar aproximadamente
-                                <span class="underline underline--primary">
-                                    300 USD
+                                <span translate>
+                                    %landing.teacher.explanation_section.description.first_part.text
                                 </span>
-                                al mes estando en el mapa de Waysily.
+                                <span class="underline underline--primary" translate>
+                                    %landing.teacher.explanation_section.description.second_part.text
+                                </span>
+                                <span translate>
+                                    %landing.teacher.explanation_section.description.third_part.text
+                                </span>
                             </p>
                         </div>
                     </div>
@@ -260,31 +269,35 @@
         <div class="col-xs-10 col-sm-8">
             <div class="row start-xs">
                 <div class="col-xs-12">
-                    <h2 class="space-4">¿Como empezar?</h2>
+                    <h2 class="space-4" translate>
+                        %landing.teacher.how_start.title.text
+                    </h2>
                     <p class="ma-p ma-p--large">
-                        Simplemente rellenar
+                        <span translate>
+                            %landing.teacher.how_start.description.first_part.text
+                        </span>
+
                         <a class="ma-link ma-link--box
                                   ma-link--box--default
                                   ma-link--box--underline--alert"
                            ng-click="vm.goToCreate()"
-                           href>este formulario</a>
-                        con la información de tu experiencia como profesor o tutor de la
-                        comunidad. Validaremos su información para asegurarnos que tu
-                        perfil se vea genial y muy profesional, si hace falta alguna
-                        información, nos pondremos en contacto contigo (por correo
-                        electrónico). El tiempo de revisión de tu perfil es de
-                        aproximadamente 3 a 4 días (dependiendo de la cantidad de
-                        solicitudes que tengamos pendientes). Después de ese periodo de
-                        tiempo, te contactaremos vía correo electrónico para confirmarte
-                        que tu perfil ya esta disponible en el
+                           href
+                           translate>
+                            %landing.teacher.how_start.description.second_part.text
+                        </a>
+
+                        <span translate>
+                            %landing.teacher.how_start.description.third_part.text
+                        </span>
+
                         <a class="ma-link ma-link--box
                                   ma-link--box--default
                                   ma-link--box--underline--primary"
                            ui-sref="page.searchPage"
                            href
-                           target="_blank">
-                            mapa de Waysily
-                        </a>.
+                           target="_blank" translate>
+                            %landing.teacher.how_start.description.fourth_part.text
+                        </a>
                     </p>
                 </div>
             </div>
@@ -298,50 +311,70 @@
         <div class="col-xs-10 col-sm-8">
             <div class="row start-xs">
                 <div class="col-xs-12">
-                    <h2 class="space-4">¿Por qué estar en Waysily?</h2>
+                    <h2 class="space-4" translate>
+                        %landing.teacher.why_waysily.title.text
+                    </h2>
                     <p class="ma-p ma-p--large">
-                        Queremos construir la comunidad más grande en el
-                        intercambio de idiomas. Waysily esta abierto a
+                        <span translate>
+                            %landing.teacher.why_waysily.description.first_part.text
+                        </span>
                         <span class="underline
                                      underline--primary
-                                     underline--strong">
-                            4000+ estudiantes / viajeros al año
+                                     underline--strong" translate>
+                            %landing.teacher.why_waysily.description.second_part.text
                         </span>
-                        . Estas son personas que buscan aprender otro idioma
-                        sumergiéndose en la cultura y costumbres de ese país.
-                        Si tus clases ofrecen una conexión humana, una
-                        metodología dinámica o una inmersión en tu cultura local,
-                        estas en el lugar correcto.
+                        <span translate>
+                            %landing.teacher.why_waysily.description.third_part.text
+                        </span>
                     </p>
-                    <p class="ma-p ma-p--large">
-                        Además tu perfil se publicara en este sitio web,
-                        lo compartiremos con todos los estudiantes / viajeros
-                        a través de correo electrónico, Twitter y Facebook.
+                    <p class="ma-p ma-p--large" translate>
+                        %landing.teacher.why_waysily.description.fourth_part.text
                     </p>
-                    <h3 class="space-3 space-top-6">
-                        Entonces, ¿Por qué estar en Waysily?:
+                    <h3 class="space-3 space-top-6" translate>
+                        %landing.teacher.why_waysily.details.title.text
                     </h3>
                     <ul class="ma-p ma-p--large
                                ma-list ma-list--text-indent-30
                                ma-list--bullet--arrow
                                ma-list--bullet--alert
                                ma-list--bullet--default space-left-9">
-                        <li>Construye una reputación, y hazte visible a nivel mundial.</li>
-                        <li>Utiliza esta reputación para encontrar estudiantes mes a mes.</li>
-                        <li>Gana dinero extra.</li>
-                        <li>Marketing gratis, así ya no dependerás de que tus
-                            amigos te recomienden, o tener que ir a cafés y
-                            hostales repartiendo tus tarjetas de presentación.</li>
-                        <li>Tu asignas tus precios y decides cuando tu quieres
-                            dar clases y que tan a menudo.</li>
-                        <li>Obtén la <span class="strong strong--alert space-right-1">insignia de Waysily</span>
-                            <svg id="badge" style="" width="20px" height="30px" data-name="badge" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 81.9 127.8"><defs><style>.cls-1{fill:#05b592;}.cls-2{fill:#049b7e;}.cls-3{fill:#f5ae3d;}.cls-4{fill:#e99723;}.cls-5{fill:#fdd078;}.cls-6{fill:#ffdea6;}.cls-7{fill:#ea9823;}</style></defs><title>waysily-badge-teacher-4</title><path class="cls-1" d="M44.8,0H9.9L.9,14.4,36.3,86.7H63.7Z" transform="translate(0 0)"/><path class="cls-2" d="M44.9,85.7,81.7,15.5,72.6,0h-28L17.9,85.7H44.9Z" transform="translate(0 0)"/><circle class="cls-3" cx="40.9" cy="86.9" r="40.9"/><circle class="cls-4" cx="40.9" cy="86.9" r="29"/><circle class="cls-5" cx="40.9" cy="88.9" r="27"/><path class="cls-6" d="M14.4,84.3A26.9,26.9,0,0,0,61.5,71.4,26.9,26.9,0,0,0,14.4,84.3Z" transform="translate(0 0)"/><path class="cls-7" d="M60.8,83.6c-.7-3.6-3.3-6.1-6.3-5.5s-3.6,4.4-2.9,6.2a24.4,24.4,0,0,0,2.8,4.6c2.5,3.9-1.5,9.8-7.5,7.2A24.5,24.5,0,0,1,44.8,99C55.6,104,62.9,94.1,60.8,83.6Z" transform="translate(0 0)"/><path class="cls-3" d="M44.5,79.6c-2.8-.4-5.6,2.3-6.1,6.1a16,16,0,0,0,.2,3.6c2.1,10.6-4.8,13-8.2,11.5s-5.1-8.6,1.6-14.3,3-12.7-.9-14.2-8.6.7-10.6,6.7S18.9,102.2,32,103.9c2.5.3,12.1-1,16-14.6C49.3,85,47.9,80.1,44.5,79.6Z" transform="translate(0 0)"/></svg>
-                            <span class="space-left-1">para destacar entre los demás profesores, prioridad a la hora de recibir asistencia, y muchos más beneficios.</span>
+                        <li translate>
+                            %landing.teacher.why_waysily.details.first_detail.text
+                        </li>
+                        <li translate>
+                            %landing.teacher.why_waysily.details.second_detail.text
+                        </li>
+                        <li translate>
+                            %landing.teacher.why_waysily.details.third_detail.text
+                        </li>
+                        <li translate>
+                            %landing.teacher.why_waysily.details.fourth_detail.text
+                        </li>
+                        <li translate>
+                            %landing.teacher.why_waysily.details.fifth_detail.text
+                        </li>
+                        <li translate>
+                            %landing.teacher.why_waysily.details.sixth_detail.text
+                        </li>
+                        <li>
+                            <span translate>
+                                %landing.teacher.why_waysily.details.seventh_detail.first_part.text
+                            </span>
+                            <span class="strong strong--alert space-right-1"
+                                  translate>
+                                %landing.teacher.why_waysily.details.seventh_detail.second_part.text
+                            </span>
+                            <svg id="badge" width="20px" height="30px" data-name="badge" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 81.9 127.8"><defs><style>.cls-1{fill:#05b592;}.cls-2{fill:#049b7e;}.cls-3{fill:#f5ae3d;}.cls-4{fill:#e99723;}.cls-5{fill:#fdd078;}.cls-6{fill:#ffdea6;}.cls-7{fill:#ea9823;}</style></defs><title>waysily-badge-teacher-4</title><path class="cls-1" d="M44.8,0H9.9L.9,14.4,36.3,86.7H63.7Z" transform="translate(0 0)"/><path class="cls-2" d="M44.9,85.7,81.7,15.5,72.6,0h-28L17.9,85.7H44.9Z" transform="translate(0 0)"/><circle class="cls-3" cx="40.9" cy="86.9" r="40.9"/><circle class="cls-4" cx="40.9" cy="86.9" r="29"/><circle class="cls-5" cx="40.9" cy="88.9" r="27"/><path class="cls-6" d="M14.4,84.3A26.9,26.9,0,0,0,61.5,71.4,26.9,26.9,0,0,0,14.4,84.3Z" transform="translate(0 0)"/><path class="cls-7" d="M60.8,83.6c-.7-3.6-3.3-6.1-6.3-5.5s-3.6,4.4-2.9,6.2a24.4,24.4,0,0,0,2.8,4.6c2.5,3.9-1.5,9.8-7.5,7.2A24.5,24.5,0,0,1,44.8,99C55.6,104,62.9,94.1,60.8,83.6Z" transform="translate(0 0)"/><path class="cls-3" d="M44.5,79.6c-2.8-.4-5.6,2.3-6.1,6.1a16,16,0,0,0,.2,3.6c2.1,10.6-4.8,13-8.2,11.5s-5.1-8.6,1.6-14.3,3-12.7-.9-14.2-8.6.7-10.6,6.7S18.9,102.2,32,103.9c2.5.3,12.1-1,16-14.6C49.3,85,47.9,80.1,44.5,79.6Z" transform="translate(0 0)"/></svg>
+                            <span class="space-left-1"
+                                  translate>
+                                %landing.teacher.why_waysily.details.seventh_detail.third_part.text
+                            </span>
                             <a class="ma-link ma-link--box
                                       ma-link--box--default
                                       ma-link--box--primary"
-                               ng-click="vm.moreInfoBadge = true" href>
-                                Aprender más.
+                               ng-click="vm.moreInfoBadge = true" href
+                               translate>
+                                %landing.teacher.why_waysily.details.seventh_detail.fourth_part.text
                             </a>
                         </li>
                     </ul>
@@ -357,30 +390,31 @@
     <section class="landingPage__badge-explanation-container
                     row center-xs space-top-5" ng-show="vm.moreInfoBadge">
         <div class="col-xs-10 col-sm-8" style="border-radius: 20px;
-    padding-bottom: 15px;
-    background-color: #f9f9f9;
-    border: 1px solid #eee;">
+                                                padding-bottom: 15px;
+                                                background-color: #f9f9f9;
+                                                border: 1px solid #eee;">
             <div class="row start-xs">
                 <div class="col-xs-12">
 
-                    <h2 class="space-4">¿Que es la insignia de Waysily?</h2>
-                    <p class="ma-p ma-p--large space-6">
-                        Es un distintivo que veras en todas las paginas alusivas
-                        a ti como profesor (perfil, resultados de búsqueda, etc.).
+                    <h2 class="space-4" translate>
+                        %landing.teacher.badge_explanation.what_is.title.text
+                    </h2>
+                    <p class="ma-p ma-p--large space-6" translate>
+                        %landing.teacher.badge_explanation.what_is.description.text
                     </p>
 
-                    <h3>¿Que beneficios adquiero al obtener la insignia de Waysily?</h3>
-                    <p class="ma-p ma-p--large space-5">
-                        Los profesores con la insignia cuentan con reservas de
-                        clases frecuentes, asistencia prioritaria y acceso
-                        exclusivo a nuevos productos y funciones de Waysily.
+                    <h3 translate>
+                        %landing.teacher.badge_explanation.benefit.title.text
+                    </h3>
+                    <p class="ma-p ma-p--large space-5" translate>
+                        %landing.teacher.badge_explanation.benefit.description.text
                     </p>
 
-                    <h3>¿Como obtengo la insignia de Waysily?</h3>
-                    <p class="ma-p ma-p--large space-5">
-                        Los profesores que cumplen los siguientes requisitos
-                        cuentan con la insignia en Waysily, la cual aparece en
-                        la parte inferior de su foto de perfil:
+                    <h3 translate>
+                        %landing.teacher.badge_explanation.get.title.text
+                    </h3>
+                    <p class="ma-p ma-p--large space-5" translate>
+                        %landing.teacher.badge_explanation.get.description.text
                     </p>
 
                     <div class="row start-xs space-top-2">
@@ -388,14 +422,15 @@
                         <div class="col-xs-12 col-sm-12 col-md-6">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h4>Experiencia</h4>
+                                    <h4 translate>
+                                        %landing.teacher.badge_explanation.get.first_requirement.title.text
+                                    </h4>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <p class="ma-p ma-p--large">
-                                        Los profesores que reciben un mínimo
-                                        de 10 clases al mes a través de Waysily.
+                                    <p class="ma-p ma-p--large" translate>
+                                        %landing.teacher.badge_explanation.get.first_requirement.description.text
                                     </p>
                                 </div>
                             </div>
@@ -404,15 +439,15 @@
                         <div class="col-xs-12 col-sm-12 col-md-6">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h4>Evaluaciones con 5 estrellas</h4>
+                                    <h4 translate>
+                                        %landing.teacher.badge_explanation.get.second_requirement.title.text
+                                    </h4>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <p class="ma-p ma-p--large">
-                                        Los profesores que reciben excelentes
-                                        calificaciones. Como mínimo, el 80%
-                                        de estas deben ser de 5 estrellas.
+                                    <p class="ma-p ma-p--large" translate>
+                                        %landing.teacher.badge_explanation.get.second_requirement.description.text
                                     </p>
                                 </div>
                             </div>
@@ -425,14 +460,15 @@
                         <div class="col-xs-12 col-sm-12 col-md-6">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h4>Ratio de respuesta</h4>
+                                    <h4 translate>
+                                        %landing.teacher.badge_explanation.get.third_requirement.title.text
+                                    </h4>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <p class="ma-p ma-p--large">
-                                        Los profesores que responden
-                                        una solicitud de reserva con rapidez.
+                                    <p class="ma-p ma-p--large" translate>
+                                        %landing.teacher.badge_explanation.get.third_requirement.description.text
                                     </p>
                                 </div>
                             </div>
@@ -441,15 +477,15 @@
                         <div class="col-xs-12 col-sm-12 col-md-6">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h4>Compromiso</h4>
+                                    <h4 translate>
+                                        %landing.teacher.badge_explanation.get.fourth_requirement.title.text
+                                    </h4>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <p class="ma-p ma-p--large">
-                                        Los profesores que respeten las
-                                        reservas ya confirmadas y solo las
-                                        cancelen en muy raras ocasiones.
+                                    <p class="ma-p ma-p--large" translate>
+                                        %landing.teacher.badge_explanation.get.fourth_requirement.description.text
                                     </p>
                                 </div>
                             </div>
@@ -468,7 +504,10 @@
                       ma-link--box--default
                       ma-link--box--alert"
                ng-click="vm.moreInfoBadge = false"
-               href>Cerrar Información</a>
+               href
+               translate>
+               %global.close_information.button.text
+           </a>
         </div>
     </div>
     <!--                  END: WAYSILY BADGE EXPLANATION BLOCK               -->
@@ -484,22 +523,23 @@
         <div class="col-xs-10 col-sm-8">
             <div class="row start-xs text-center">
                 <div class="col-xs-12">
-                    <h2 class="space-6 text-left">¿Quien es elegible?</h2>
+                    <h2 class="space-6 text-left" translate>
+                        %landing.teacher.who.title.text
+                    </h2>
 
                     <h3 class="ma-quote
                                ma-quote--block
                                ma-quote--block--gray
                                ma-quote--block--default
-                               ma-quote--block--round text-center">
-                    	Cualquier persona que hable un idioma, podria enseñarlo.
+                               ma-quote--block--round text-center" translate>
+                    	%landing.teacher.who.quote.text
                     </h3>
 
                     <i class="material-icons md-36 md-dark text-center">linear_scale</i>
 
-                    <p class="ma-p ma-p--large text-left space-top-3">
-                        Si no eres profesor certificado o con estudios,
-                        no te preocupes, si tienes alma de profesor y te gusta
-                        enseñar, puedes hacer parte de Waysily.
+                    <p class="ma-p ma-p--large text-left space-top-3"
+                        translate>
+                        %landing.teacher.who.description.text
                     </p>
                 </div>
             </div>
@@ -518,9 +558,10 @@
                     <button type="button"
                             class="ma-btn
                                     ma-btn--large
-                                    ma-btn--primary"
-                            ng-click="vm.goToCreate()">
-                        JOIN NOW
+                                    ma-btn--primary
+                                    text-uppercase"
+                            ng-click="vm.goToCreate()" translate>
+                        %global.join.button.text
                     </button>
                 </div>
             </div>
