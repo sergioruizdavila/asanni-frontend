@@ -5,6 +5,15 @@
 module app.models.user {
 
     /****************************************/
+    /*        ENUM STATUS DEFINITION        */
+    /****************************************/
+    export const enum Status {
+        new,
+        validated,
+        verified
+    }
+
+    /****************************************/
     /*         INTERFACES DEFINITION        */
     /****************************************/
     export interface ILocation {
@@ -36,7 +45,7 @@ module app.models.user {
         private born: string;
         private about: string;
         private location: Location;
-        private validated: boolean;
+        private status: string;
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -58,7 +67,7 @@ module app.models.user {
             this.born = obj.born || '';
             this.about = obj.about || '';
             this.location = new Location(obj.location);
-            this.validated = obj.validated || false;
+            this.status = obj.status || 'NW';
 
         }
 
@@ -174,13 +183,13 @@ module app.models.user {
             this.location = location;
         }
 
-        get Validated() {
-            return this.validated;
+        get Status() {
+            return this.status;
         }
 
-        set Validated(validated: boolean) {
-            if (validated === undefined) { throw 'Please supply validated value'; }
-            this.validated = validated;
+        set Status(status: string) {
+            if (status === undefined) { throw 'Please supply status value'; }
+            this.status = status;
         }
 
     }

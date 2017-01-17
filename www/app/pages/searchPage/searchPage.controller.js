@@ -19,6 +19,7 @@ var app;
                     this._init();
                 }
                 SearchPageController.prototype._init = function () {
+                    this.VALIDATED = 'VA';
                     this.data = [];
                     this.type = null;
                     this.error = {
@@ -30,7 +31,7 @@ var app;
                     var self = this;
                     console.log('searchPage controller actived');
                     this._subscribeToEvents();
-                    this.TeacherService.getAllTeachers().then(function (response) {
+                    this.TeacherService.getAllTeachersByStatus(this.VALIDATED).then(function (response) {
                         self.type = 'teacher';
                         self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
                         self.$scope.$broadcast('BuildMarkers', self.mapConfig);
@@ -79,7 +80,7 @@ var app;
                         });
                     });
                     this.$scope.$on('Teachers', function (event, args) {
-                        self.TeacherService.getAllTeachers().then(function (response) {
+                        self.TeacherService.getAllTeachersByStatus(self.VALIDATED).then(function (response) {
                             self.type = 'teacher';
                             self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);

@@ -4,6 +4,12 @@ var app;
     (function (models) {
         var user;
         (function (user) {
+            var Status;
+            (function (Status) {
+                Status[Status["new"] = 0] = "new";
+                Status[Status["validated"] = 1] = "validated";
+                Status[Status["verified"] = 2] = "verified";
+            })(Status = user.Status || (user.Status = {}));
             var User = (function () {
                 function User(obj) {
                     if (obj === void 0) { obj = {}; }
@@ -20,7 +26,7 @@ var app;
                     this.born = obj.born || '';
                     this.about = obj.about || '';
                     this.location = new Location(obj.location);
-                    this.validated = obj.validated || false;
+                    this.status = obj.status || 'NW';
                 }
                 Object.defineProperty(User.prototype, "Id", {
                     get: function () {
@@ -178,15 +184,15 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Validated", {
+                Object.defineProperty(User.prototype, "Status", {
                     get: function () {
-                        return this.validated;
+                        return this.status;
                     },
-                    set: function (validated) {
-                        if (validated === undefined) {
-                            throw 'Please supply validated value';
+                    set: function (status) {
+                        if (status === undefined) {
+                            throw 'Please supply status value';
                         }
-                        this.validated = validated;
+                        this.status = status;
                     },
                     enumerable: true,
                     configurable: true

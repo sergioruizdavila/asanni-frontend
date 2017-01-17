@@ -418,11 +418,11 @@ module components.map {
             this._markers.push(marker);
 
             //center map on last marker created on the map
-            //TODO: Validar si esto es la mejor opcion, yo creeria que centrar
-            //el mapa depende de que el usuario escogio en el Search
-            /*if (this._map) {
+            //TODO: Cuando lo comento se rompe el mapa de location en teacherLocationSection
+            // Buscar una solucion optima para no tener que centrar el marker aqui
+            if (this._map) {
                 this._map.setCenter(position);
-            }*/
+            }
 
             // If marker is draggable
             if(this._draggable) {

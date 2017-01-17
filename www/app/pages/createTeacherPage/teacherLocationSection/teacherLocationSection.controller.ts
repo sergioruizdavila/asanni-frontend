@@ -132,7 +132,7 @@ module app.pages.createTeacherPage {
 
             // Init Map
             this.mapConfig = self.functionsUtilService.buildMapConfig(
-                null, 'drag-maker-map', null
+                null, 'drag-maker-map', null, null
             );
 
             // Build validate object fields
@@ -449,7 +449,8 @@ module app.pages.createTeacherPage {
                         }
                     ],
                     'drag-maker-map',
-                    {lat: parseFloat(self.form.positionLocation.Lat), lng: parseFloat(self.form.positionLocation.Lng)}
+                    {lat: parseFloat(self.form.positionLocation.Lat), lng: parseFloat(self.form.positionLocation.Lng)},
+                    null
                 );
 
                 /*
