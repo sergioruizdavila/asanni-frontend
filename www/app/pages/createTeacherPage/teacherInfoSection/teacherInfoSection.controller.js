@@ -170,7 +170,7 @@ var app;
                             this.helpText.description = SEX_DESCRIPTION;
                             break;
                         case 'birthDate':
-                            this.helpText.title = BIRTHDATE_DESCRIPTION;
+                            this.helpText.title = BIRTHDATE_TITLE;
                             this.helpText.description = BIRTHDATE_DESCRIPTION;
                             break;
                         case 'born':
