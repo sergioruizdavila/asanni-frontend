@@ -209,6 +209,10 @@
     text-overflow: ellipsis;
 }
 
+.text-shadow {
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
 .vertical-align {
   display: flex;
   flex-direction: row;

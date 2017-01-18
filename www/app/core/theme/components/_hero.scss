@@ -9,7 +9,7 @@
     overflow: hidden;
     position: relative;
     width: 100%;
-    background: #222222;
+    background: #4a6979;
     background-size: 100% 100%;
 
     .poster {
@@ -29,6 +29,11 @@
 
         &--teacher {
             background: linear-gradient(rgba(18,18,18,0.6), rgba(18,18,18,0.5)), url(../../../../assets/images/hero-teacher.jpg);
+            background-size: cover;
+        }
+
+        &--main {
+            background: linear-gradient(rgba(18,18,18,0.9), rgba(18,18,18,0.4)), url(../../../../assets/images/hero-min.jpg);
             background-size: cover;
         }
     }
