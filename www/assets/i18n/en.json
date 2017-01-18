@@ -286,6 +286,7 @@
     "%create.teacher.education.help_text.educations.description.text": "Description of Education",
     "%create.teacher.education.help_text.certificates.title.text": "Title of Certificate",
     "%create.teacher.education.help_text.certificates.description.text": "Description of Certificate",
+    "%create.teacher.education.validation.message.text": "You need to share some study (professional degree or certificate)",
 
     "__6. TEACHER METHOD SECTION__": "",
     "%create.teacher.method.title.text": "Step 6 -  Methodology",

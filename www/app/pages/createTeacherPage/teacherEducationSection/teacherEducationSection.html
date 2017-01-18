@@ -21,6 +21,17 @@
 
                 <div class="ma-box__content">
 
+                    <!-- Global Validate Error Message -->
+                    <div class="row ma-large-message
+                                ma-large-message--alert space-5"
+                         ng-show="!vm.validate.globalValidate.valid">
+                        <div class="col-md-12 text-center">
+                            <p class="ma-p ma-p--default ma-p--alert margin-reset">
+                                <span>{{vm.validate.globalValidate.message}}</span>
+                            </p>
+                        </div>
+                    </div>
+
                     <!--------------- START: EDUCATION INFO BLOCK ------------->
 
                     <!-- Educations List -->
@@ -115,15 +126,6 @@
                                 </div>
                             </div>
 
-                            <div class="row margin-reset">
-                                <div class="col-sm-12 padding-reset">
-                                    <p class="ma-p ma-p--default ma-p--alert pull-left"
-                                       ng-show="!vm.validate.educations.valid">
-                                        <span>{{vm.validate.educations.message}}</span>
-                                    </p>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
 
@@ -164,7 +166,8 @@
                                     <div class="text-left
                                                 teacher-certificate-box
                                                 ma-labels-box
-                                                ma-labels-box--dashed">
+                                                ma-labels-box--dashed"
+                                         ng-class="{'ma-labels-box--dashed--invalid': !vm.validate.certificates.valid}">
 
                                         <div id="teacher-certificate"
                                              class="row margin-reset teacher-certificate-box__item-block"

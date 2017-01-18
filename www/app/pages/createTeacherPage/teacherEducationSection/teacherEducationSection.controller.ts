@@ -30,6 +30,7 @@ module app.pages.createTeacherPage {
     interface ITeacherEducationValidate {
         educations: app.core.util.functionsUtil.IValid;
         certificates: app.core.util.functionsUtil.IValid;
+        globalValidate: app.core.util.functionsUtil.IValid;
     }
 
     /****************************************/
@@ -104,7 +105,8 @@ module app.pages.createTeacherPage {
             // Build validate object fields
             this.validate = {
                 educations: {valid: true, message: ''},
-                certificates: {valid: true, message: ''}
+                certificates: {valid: true, message: ''},
+                globalValidate: {valid: true, message: ''}
             };
 
             this.activate();
@@ -180,7 +182,7 @@ module app.pages.createTeacherPage {
             //CONSTANTS
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
-
+            const GLOBAL_MESSAGE = this.$filter('translate')('%create.teacher.education.validation.message.text');
             /***************************************************/
             //VARIABLES
             let formValid = true;
@@ -193,9 +195,23 @@ module app.pages.createTeacherPage {
             let certificates_rules = [NULL_ENUM, EMPTY_ENUM];
             this.validate.certificates = this.functionsUtilService.validator(this.form.certificates, certificates_rules);
 
-            // Is neccesary one of them (education or certificate)
-            if(!this.validate.educations.valid || !this.validate.certificates.valid) {
-                formValid = false;
+            //If educations is not valid
+            if(this.validate.educations.valid) {
+
+                this.validate.globalValidate.valid = true;
+                this.validate.globalValidate.message = '';
+
+            } else if(this.validate.certificates.valid) {
+
+                this.validate.globalValidate.valid = true;
+                this.validate.globalValidate.message = '';
+
+            } else {
+
+                this.validate.globalValidate.valid = false;
+                this.validate.globalValidate.message = GLOBAL_MESSAGE;
+                formValid = this.validate.globalValidate.valid;
+
             }
 
             return formValid;
