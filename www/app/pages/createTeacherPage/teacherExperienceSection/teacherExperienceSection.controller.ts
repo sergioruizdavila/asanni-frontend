@@ -258,8 +258,10 @@ module app.pages.createTeacherPage {
         */
         changeHelpText(type): void {
             //CONSTANTS
-            const TYPE_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.type.title.text');
-            const TYPE_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.type.description.text');
+            const TYPE_HOBBY_TITLE = this.$filter('translate')('%global.teacher.type.hobby.text');
+            const TYPE_HOBBY_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.type.hobby.description.text');
+            const TYPE_PROFESSIONAL_TITLE = this.$filter('translate')('%global.teacher.type.professional.text');
+            const TYPE_PROFESSIONAL_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.type.professional.description.text');
             const SINCE_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.teacher_since.title.text');
             const SINCE_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.teacher_since.description.text');
             const EXPERIENCES_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.experiences.title.text');
@@ -272,9 +274,14 @@ module app.pages.createTeacherPage {
                     this.helpText.description = this.HELP_TEXT_DESCRIPTION;
                 break;
 
-                case 'type':
-                    this.helpText.title = TYPE_TITLE;
-                    this.helpText.description = TYPE_DESCRIPTION;
+                case 'hobby':
+                    this.helpText.title = TYPE_HOBBY_TITLE;
+                    this.helpText.description = TYPE_HOBBY_DESCRIPTION;
+                break;
+
+                case 'professional':
+                    this.helpText.title = TYPE_PROFESSIONAL_TITLE;
+                    this.helpText.description = TYPE_PROFESSIONAL_DESCRIPTION;
                 break;
 
                 case 'teacherSince':
