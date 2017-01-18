@@ -31,7 +31,8 @@ var app;
                     };
                     this.validate = {
                         educations: { valid: true, message: '' },
-                        certificates: { valid: true, message: '' }
+                        certificates: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
                     };
                     this.activate();
                 };
@@ -62,11 +63,24 @@ var app;
                 TeacherEducationSectionController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
                     var EMPTY_ENUM = 3;
+                    var GLOBAL_MESSAGE = this.$filter('translate')('%create.teacher.education.validation.message.text');
                     var formValid = true;
                     var education_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.educations = this.functionsUtilService.validator(this.form.educations, education_rules);
-                    if (!this.validate.educations.valid) {
-                        formValid = this.validate.educations.valid;
+                    var certificates_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.certificates = this.functionsUtilService.validator(this.form.certificates, certificates_rules);
+                    if (this.validate.educations.valid) {
+                        this.validate.globalValidate.valid = true;
+                        this.validate.globalValidate.message = '';
+                    }
+                    else if (this.validate.certificates.valid) {
+                        this.validate.globalValidate.valid = true;
+                        this.validate.globalValidate.message = '';
+                    }
+                    else {
+                        this.validate.globalValidate.valid = false;
+                        this.validate.globalValidate.message = GLOBAL_MESSAGE;
+                        formValid = this.validate.globalValidate.valid;
                     }
                     return formValid;
                 };

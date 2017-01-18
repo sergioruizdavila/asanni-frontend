@@ -350,6 +350,7 @@
     "%create.teacher.education.help_text.educations.description.text": "Description of Education",
     "%create.teacher.education.help_text.certificates.title.text": "Title of Certificate",
     "%create.teacher.education.help_text.certificates.description.text": "Description of Certificate",
+    "%create.teacher.education.validation.message.text": "Usted necesita compartir algún estudio (título profesional o certificado)",
 
     "__6. TEACHER METHOD SECTION__": "",
     "%create.teacher.method.title.text": "Paso 6 -  Metodología",
