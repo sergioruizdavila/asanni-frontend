@@ -348,7 +348,7 @@ module app.pages.createTeacherPage {
         */
         private _setDataModelFromForm(): void {
 
-            if(this.form.native !== null) {
+            if(this.form.native) {
                 let native = [];
                 for (let i = 0; i < this.form.native.length; i++) {
                     native.push(this.form.native[i].key);
@@ -356,7 +356,7 @@ module app.pages.createTeacherPage {
                 this.$scope.$parent.vm.teacherData.Languages.Native = native;
             }
 
-            if(this.form.learn !== null){
+            if(this.form.learn) {
                 let learn = [];
                 for (let i = 0; i < this.form.learn.length; i++) {
                     learn.push(this.form.learn[i].key);
@@ -364,7 +364,7 @@ module app.pages.createTeacherPage {
                 this.$scope.$parent.vm.teacherData.Languages.Learn = learn;
             }
 
-            if(this.form.teach !== null){
+            if(this.form.teach) {
                 let teach = [];
                 for (let i = 0; i < this.form.teach.length; i++) {
                     teach.push(this.form.teach[i].key);
