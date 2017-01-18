@@ -27,7 +27,6 @@
 
                         <!-- Type of Teacher Input -->
                         <div id="teacher-type-experience"
-                             ng-mouseover="vm.changeHelpText('type')"
                              class="row">
                             <div class="hidden-xs col-sm-3"></div>
                             <div class="col-xs-12 col-sm-6">
@@ -46,6 +45,7 @@
                                             ma-label--box--space5"
                                      ng-class="{'ma-label--box--check--active' : vm._hobbyChecked.checked}"
                                      ng-click="vm._checkType(vm._hobbyChecked)"
+                                     ng-mouseover="vm.changeHelpText('hobby')"
                                      translate>
                                     %global.teacher.type.hobby.text
                                 </div>
@@ -59,6 +59,7 @@
                                          ma-label--box--space5"
                                      ng-class="{'ma-label--box--check--active' : vm._professionalChecked.checked}"
                                      ng-click="vm._checkType(vm._professionalChecked)"
+                                     ng-mouseover="vm.changeHelpText('professional')"
                                      translate>
                                     %global.teacher.type.professional.text
                                 </div>
