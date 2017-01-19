@@ -125,7 +125,7 @@ module components.header {
             //Init form
             this.form = {
                 language: this.functionsUtil.getCurrentLanguage() || 'en',
-                whereTo: 'Where to?'
+                whereTo: this.$filter('translate')('%header.search.placeholder.text')
             };
 
             this._slideout = false;

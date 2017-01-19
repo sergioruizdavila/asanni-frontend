@@ -39,7 +39,7 @@ var components;
             HeaderController.prototype.init = function () {
                 this.form = {
                     language: this.functionsUtil.getCurrentLanguage() || 'en',
-                    whereTo: 'Where to?'
+                    whereTo: this.$filter('translate')('%header.search.placeholder.text')
                 };
                 this._slideout = false;
                 this.activate();
