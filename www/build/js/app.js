@@ -7422,6 +7422,7 @@ var app;
                     };
                 };
                 TeacherProfilePageController.prototype.goToConfirm = function () {
+                    this.$state.go('https://waysily.typeform.com/to/NDPRAb');
                 };
                 TeacherProfilePageController.prototype._assignNative = function (language) {
                     var native = this.data.Languages.Native;

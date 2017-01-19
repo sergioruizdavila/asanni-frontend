@@ -131,6 +131,7 @@ module app.pages.teacherProfilePage {
         goToConfirm (): void {
             //TODO: Ir a googleDoc Form o a Typeform con el fin de obtener todos
             // los datos necesarios del estudiante interesado.
+            this.$state.go('https://waysily.typeform.com/to/NDPRAb');
         }
 
 
