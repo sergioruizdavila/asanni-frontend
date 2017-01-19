@@ -1,0 +1,279 @@
+<!----------------------------------------------------------------------------->
+<!--                         STEP 2 SECTION TEMPLATE                         -->
+<!----------------------------------------------------------------------------->
+
+
+<!---------------------------- START: LEFT COLUMN ----------------------------->
+<div id="createTeacher-location-left-column"
+     class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+
+    <div id="createTeacher-block"
+         class="createTeacherPage__block row">
+
+        <div class="col-xs-12">
+
+            <div class="ma-box">
+
+                <h4 class="ma-box__title margin-reset"
+                    ng-mouseover="vm.changeHelpText('default')" translate>
+                    %create.teacher.location.title.text
+                </h4>
+
+                <div class="ma-box__content">
+
+                    <!---------------- START: LOCATION INFO BLOCK ------------->
+
+                    <form class="form-horizontal
+                                 ma-form--horizontal">
+
+                        <!-- Country Select List -->
+                        <div class="form-group
+                                 ma-form-group
+                                 ma-form-group--large"
+                                 ng-mouseover="vm.changeHelpText('country')">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                    for="teacher-country-location" translate>
+                                    %create.teacher.location.form.cntry.text
+                            </label>
+                            <div class="col-xs-9 col-sm-9">
+                                <div class="ma-select-container
+                                            ma-select-container--large">
+                                    <select id="teacher-country-location"
+                                            class="ma-input ma-select
+                                                   ma-select--large"
+                                            ng-model="vm.countryObject"
+                                            ng-change="vm.changeMapPosition()"
+                                            ng-options="country.value | translate for country in vm.listCountries track by country.code"
+                                            ng-class="{'ma-input--invalid': !vm.validate.countryLocation.valid}"
+                                            name="teacher[country]" class="form-control">
+                                            <option value="" disabled selected translate>
+                                                %create.teacher.location.form.cntry.option_list.text
+                                            </option>
+                                    </select>
+                                    <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                        ng-show="!vm.validate.countryLocation.valid">
+                                        <span>{{vm.validate.countryLocation.message}}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- City Input -->
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--large"
+                                    ng-mouseover="vm.changeHelpText('city')">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                   for="teacher-city-location" translate>
+                                %create.teacher.location.form.city.text
+                            </label>
+                            <div class="col-xs-9 col-sm-9">
+                                <input id="teacher-city-location"
+                                       type="text"
+                                       ng-model="vm.form.cityLocation"
+                                       ng-blur="vm.changeMapPosition()"
+                                       class="ma-input ma-input--large"
+                                       ng-class="{'ma-input--invalid': !vm.validate.cityLocation.valid}">
+                                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                  ng-show="!vm.validate.cityLocation.valid">
+                                   <span>{{vm.validate.cityLocation.message}}</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- State Input -->
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--large"
+                                    ng-mouseover="vm.changeHelpText('state')">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                   for="teacher-state-location" translate>
+                                %create.teacher.location.form.state.text
+                            </label>
+                            <div class="col-xs-9 col-sm-9">
+                                <input id="teacher-state-location"
+                                       type="text"
+                                       ng-model="vm.form.stateLocation"
+                                       ng-blur="vm.changeMapPosition()"
+                                       class="ma-input ma-input--large"
+                                       ng-class="{'ma-input--invalid': !vm.validate.stateLocation.valid}">
+                                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                   ng-show="!vm.validate.stateLocation.valid">
+                                    <span>{{vm.validate.stateLocation.message}}</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Zip Code Input -->
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--large"
+                                    ng-mouseover="vm.changeHelpText('zipCode')">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                   for="teacher-zipcode-location" translate>
+                                %create.teacher.location.form.zip_code.text
+                            </label>
+                            <div class="col-xs-9 col-sm-9">
+                                <input id="teacher-zipcode-location"
+                                       type="text"
+                                       ng-model="vm.form.zipCodeLocation"
+                                       class="ma-input ma-input--large"
+                                       ng-class="{'ma-input--invalid': !vm.validate.zipCodeLocation.valid}">
+                                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                  ng-show="!vm.validate.zipCodeLocation.valid">
+                                   <span>{{vm.validate.zipCodeLocation.message}}</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Street Address Input -->
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--large"
+                                    ng-mouseover="vm.changeHelpText('address')">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                   for="teacher-address-location" translate>
+                                %create.teacher.location.form.address.text
+                            </label>
+                            <div class="col-xs-9 col-sm-9">
+                                <input id="teacher-address-location"
+                                       type="text"
+                                       placeholder="House name/number + street/road"
+                                       ng-model="vm.form.addressLocation"
+                                       ng-blur="vm.changeMapPosition()"
+                                       class="ma-input ma-input--large"
+                                       ng-class="{'ma-input--invalid': !vm.validate.addressLocation.valid}">
+                                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                   ng-show="!vm.validate.addressLocation.valid">
+                                    <span>{{vm.validate.addressLocation.message}}</span>
+                                </p>
+                            </div>
+                        </div>
+
+                    </form>
+
+                    <hr>
+
+                    <!---------------- START: LOCATION MAP BLOCK -------------->
+
+                    <div id="createTeacher-map-block"
+                         class="row"
+                         ng-mouseover="vm.changeHelpText('position')">
+
+                        <div class="col-xs-12" style="height: 300px;">
+                            <div class="location-map location-map--border"
+                                 ng-class="{'location-map--border--invalid': !vm.validate.positionLocation.valid}">
+                                <ma-map map-config="vm.mapConfig"></ma-map>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <p class="ma-p ma-p--small ma-p--alert pull-right"
+                       ng-show="!vm.validate.positionLocation.valid">
+                        <span>{{vm.validate.positionLocation.message}}</span>
+                    </p>
+
+                    <p class="ma-p ma-p--large space-top-3" translate>
+                        %create.teacher.location.form.position.text
+                    </p>
+
+                    <!--                END: LOCATION MAP BLOCK              -->
+
+                </div>
+
+                <div class="ma-box__footer">
+
+                    <div class="row middle-xs">
+
+                        <div class="col-xs-6 col-sm-4 text-left">
+
+                            <button class="ma-btn
+                                           ma-btn--transparent
+                                           ma-btn--medium
+                                           ma-btn--withIcon"
+                                      ng-click="vm.goToBack()">
+                                <i class="material-icons md-18 md-dark">
+                                    keyboard_backspace
+                                </i>
+                                <span translate>
+                                    %global.back.button.text
+                                </span>
+                            </button>
+
+                        </div>
+
+                        <div class="hidden-xs col-sm-4"></div>
+
+                        <div class="col-xs-6 col-sm-4 text-right">
+
+                            <button class="ma-btn
+                                           ma-btn--primary
+                                           ma-btn--large"
+                                    ng-click="vm.goToNext()"
+                                    translate>
+                                %global.next.button.text
+                           </button>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<!--                           END: LEFT COLUMN                              -->
+
+
+<!--------------------------- START: RIGHT COLUMN ----------------------------->
+<div id="createTeacher-right-column" class="createTeacherPage__help-block
+                                            col-md-4 col-lg-4 hidden-sm">
+
+    <div class="ma-box space-5">
+
+        <div class="ma-box__content">
+
+            <!-------- START: HELP AND INFO BLOCK --------->
+            <div id="createTeacher-info-block"
+                 class="row margin-reset text-center">
+
+                 <div class="col-xs-12">
+                     <!-- Help Icon Block -->
+                     <div class="row">
+                         <div class="col-xs-12 text-right padding-reset">
+                             <i class="material-icons md-36 md-primary">
+                                 lightbulb_outline
+                             </i>
+                         </div>
+                     </div>
+                     <!-- Help Title Block -->
+                     <div class="row">
+                         <div class="col-xs-12 text-left">
+                             <h4>
+                                {{vm.helpText.title}}
+                             </h4>
+                         </div>
+                     </div>
+                     <!-- Help Text Block -->
+                     <div class="row">
+                         <div class="col-xs-12 text-left">
+                             <p class="ma-p ma-p--default">
+                                {{vm.helpText.description}}
+                             </p>
+                         </div>
+                     </div>
+                 </div>
+
+            </div>
+            <!--        END: HELP AND INFO BLOCK         -->
+
+        </div>
+
+    </div>
+
+</div>
+<!--                          END: RIGHT COLUMN                              -->

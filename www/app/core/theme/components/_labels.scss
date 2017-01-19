@@ -26,6 +26,10 @@
         padding: map-get($label-box-paddings, default);
         font-size: map-get($label-font-sizes, default);
 
+        &--uppercase {
+            text-transform: uppercase;
+        }
+
         ///LABEL BOX SIZE
 
         &--small {
@@ -105,6 +109,55 @@
             color: $label-box-secondary-font-color;
         }
 
+        &--primary-altern {
+            background: 0 0;
+            background-color: $label-box-primary-altern-background;
+            color: $label-box-primary-altern-font-color;
+        }
+
+        &--alert {
+            background: 0 0;
+            background-color: $label-box-alert-background;
+            color: $label-box-alert-font-color;
+        }
+
+        &--alert-secondary {
+            background: 0 0;
+            border: $label-box-alert-secondary-border;
+            color: $label-box-alert-secondary-font-color;
+        }
+
+        &--gray {
+            background: 0 0;
+            background-color: $label-box-gray-background;
+            border: $label-box-gray-secondary-border;
+            color: $label-box-gray-font-color;
+
+            &--line-through {
+                text-decoration: line-through;
+            }
+        }
+
+        ///OPACITY BOX
+        &--opacity {
+            cursor: pointer;
+            opacity: 0.3;
+            &:hover {
+                opacity: 1;
+            }
+        }
+
+        ///CHECK BOX
+        &--check {
+            cursor: pointer;
+            &--active {
+                background: 0 0;
+                background-color: $label-box-primary-background;
+                color: $label-box-primary-font-color;
+                opacity: 1;
+            }
+        }
+
         ///SPACE BETWEEN LABELS
 
         &--space2 {
@@ -163,5 +216,8 @@
         border: $labelsBox-dashed-border;
         min-height: $labelsBox-dashed-height;
         padding: $labelsBox-dashed-padding;
+        &--invalid {
+            border: $labelsBox-dashed-invalid-border;
+        }
     }
 }

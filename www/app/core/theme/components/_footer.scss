@@ -3,8 +3,7 @@
 /**********************************************************/
 
 .ma-footer {
-   padding: 20px;
-   padding-bottom: 13px;
+   padding: 5px 20px;
    background-color: #F4F4F4;
    color: #FFF;
    border-top: 1px solid #dce0e0;
@@ -27,5 +26,20 @@
 
    &__copyright {
        padding: 5px;
+   }
+
+   .twitter-follow-button, .fb-like {
+       position: relative!important;
+       margin-left: 15px;
+       bottom: 7px;
+   }
+
+   .fb-like {
+       bottom: 12px;
+   }
+
+   .ma-logo {
+       height: 40px;
+       width: 40px;
    }
 }

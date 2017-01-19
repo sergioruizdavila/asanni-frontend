@@ -109,9 +109,10 @@ module components.map {
     export interface IMapDataSet {
         position: IPosition;
         markers: Array<IMapMarkers>;
+        zoom: number;
     }
 
-    export interface IMapMarkers {
+    export interface IMapMarkers extends google.maps.Marker{
         id: string;
         position: IPosition;
     }
@@ -127,12 +128,15 @@ module components.map {
         /*           PROPERTIES           */
         /**********************************/
         private _map: google.maps.Map;
+        private _draggable: boolean;
         private _infoWindow: google.maps.InfoWindow;
-        private _markers: Array<any>;
-        private _meetingPointDetailsData: any;
+        private _markers: Array<IMapMarkers>;
         form: IMapForm;
         mapId: string;
         mapConfig: IMapConfig;
+        RED_PIN: string;
+        POSITION_PIN: string;
+        GREEN_PIN: string;
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/
@@ -144,34 +148,39 @@ module components.map {
         /**********************************/
         constructor(public $scope: IMapScope,
                     public $rootScope: app.core.interfaces.IMainAppRootScope,
-                    private $timeout) {
+                    private $timeout: angular.ITimeoutService) {
             this.init();
         }
 
         /*-- INITIALIZE METHOD --*/
         private init() {
+            //CONSTANTS
+            this.RED_PIN = 'assets/images/red-pin.png';
+            this.POSITION_PIN = 'assets/images/red-pin.png';
+            this.GREEN_PIN = 'assets/images/green-pin.png';
+            /*********************************/
             //VARIABLES
             let self = this;
             /********************/
 
             //init properties
             this._map;
+            this._draggable = false;
             this.mapId = 'ma-map-' + Math.floor((Math.random() * 100) + 1);
             this._infoWindow = null;
             this._markers = [];
             this.$scope.options = null;
-            //Form init
-            this.form = {
-                position: {
-                    lat: null,
-                    lng: null
-                }
-            };
 
             //default map options
             switch(this.mapConfig.type) {
                 case 'search-map':
                     this._searchMapBuilder();
+                break;
+                case 'drag-maker-map':
+                    this._dragMarkerMapBuilder();
+                break;
+                case 'location-circle-map':
+                    this._locationCircleMapBuilder();
                 break;
             }
 
@@ -187,6 +196,7 @@ module components.map {
             this._subscribeToEvents();
         }
 
+
         /**********************************/
         /*            METHODS             */
         /**********************************/
@@ -198,11 +208,13 @@ module components.map {
         * @function
         * @return {void}
         */
+
         private _searchMapBuilder(): void {
             //VARIABLES
             let self = this;
-            let zoom = 16;
+            let zoom = this.mapConfig.data.zoom || 16;
             let center = this.mapConfig.data.position;
+            this._draggable = false;
             /********************/
 
             //Map options
@@ -229,21 +241,147 @@ module components.map {
                         self.$scope.options
                     );
 
-                    //Create Filter Buttons
-                    self._createFilterButtons();
+                    //Create Filter Buttons (TODO: Descomentar cuando habilitemos
+                    // mostrar profesores, escuelas y estudiantes)
+                    //self._createFilterButtons();
 
-                    //set markers
+                    //Set markers
                     for (let i = 0; i < self.mapConfig.data.markers.length; i++) {
                         let marker = self.mapConfig.data.markers[i];
                         self._setMarker(marker.id,
                                         new google.maps.LatLng(marker.position.lat, marker.position.lng),
-                                        'assets/images/meeting-point.png');
+                                        self.GREEN_PIN);
                     }
 
                 });
             }
 
         }
+
+
+
+        /**
+        * _dragMarkerMapBuilder
+        * @description - this method builds the draggable marker on Map
+        * @use - this._dragMarkerMapBuilder();
+        * @function
+        * @return {void}
+        */
+
+        _dragMarkerMapBuilder(): void {
+            //VARIABLES
+            let self = this;
+            let zoom = this.mapConfig.data.zoom || 17;
+            let center = this.mapConfig.data.position;
+            this._draggable = true;
+            /********************/
+
+            //Map options
+            this.$scope.options = {
+                center: new google.maps.LatLng(center.lat, center.lng),
+                zoom: zoom,
+                mapTypeControl: false,
+                zoomControl: true,
+                streetViewControl: false,
+                scrollwheel: false,
+                zoomControlOptions: {
+                    position: google.maps.ControlPosition.TOP_LEFT
+                }
+            };
+
+            // Init map
+            if (this._map === void 0) {
+
+                this.$timeout(function() {
+
+                    //Init Map
+                    self._map = new google.maps.Map(
+                        document.getElementById(self.mapId),
+                        self.$scope.options
+                    );
+
+                    //set markers
+                    for (let i = 0; i < self.mapConfig.data.markers.length; i++) {
+                        let marker = self.mapConfig.data.markers[i];
+                        self._setMarker(marker.id,
+                                        new google.maps.LatLng(marker.position.lat, marker.position.lng),
+                                        self.POSITION_PIN);
+                    }
+
+                });
+            }
+
+        }
+
+
+
+        /**
+        * _locationCircleMapBuilder
+        * @description - this method builds the location circle Map
+        * @use - this._locationCircleMapBuilder();
+        * @function
+        * @return {void}
+        */
+
+        _locationCircleMapBuilder(): void {
+            //VARIABLES
+            let self = this;
+            let zoom = this.mapConfig.data.zoom || 16;
+            let center = this.mapConfig.data.position;
+            let circle_strokeColor = '#ff5a5f';
+           let circle_strokeOpacity = 0.8;
+           let circle_strokeWeight = 2;
+           let circle_fillColor = '#ff5a5f';
+           let circle_fillOpacity = 0.35;
+           let circle_center = {
+               lat: 6.1739743,
+               lng: -75.5822414
+           };
+           let circle_radius = 140;
+            this._draggable = false;
+            /********************/
+
+            //Map options
+            this.$scope.options = {
+                center: new google.maps.LatLng(center.lat, center.lng),
+                zoom: zoom,
+                mapTypeControl: false,
+                zoomControl: true,
+                streetViewControl: false,
+                scrollwheel: false,
+                zoomControlOptions: {
+                    position: google.maps.ControlPosition.TOP_RIGHT
+                }
+            };
+
+            // Init map
+            if (this._map === void 0) {
+
+                this.$timeout(function() {
+
+                    //Init Map
+                    self._map = new google.maps.Map(
+                        document.getElementById(self.mapId),
+                        self.$scope.options
+                    );
+
+                    //Init Circle
+                    let circle = new google.maps.Circle ({
+                        strokeColor: circle_strokeColor,
+                        strokeOpacity: circle_strokeOpacity,
+                        strokeWeight: circle_strokeWeight,
+                        fillColor: circle_fillColor,
+                        fillOpacity: circle_fillOpacity,
+                        map: self._map,
+                        center: new google.maps.LatLng(center.lat, center.lng),
+                        radius: circle_radius
+                    });
+
+                });
+            }
+
+        }
+
 
 
         /**
@@ -268,7 +406,8 @@ module components.map {
                 id: id,
                 position: position,
                 map: this._map,
-                icon: icon
+                icon: icon,
+                draggable: this._draggable
             };
             /********************/
 
@@ -278,7 +417,81 @@ module components.map {
             // add marker to markers array
             this._markers.push(marker);
 
+            //center map on last marker created on the map
+            //TODO: Cuando lo comento se rompe el mapa de location en teacherLocationSection
+            // Buscar una solucion optima para no tener que centrar el marker aqui
+            if (this._map) {
+                this._map.setCenter(position);
+            }
+
+            // If marker is draggable
+            if(this._draggable) {
+                // Get position of Marker draggable
+                google.maps.event.addListener(marker, 'dragend', function (event) {
+                    let position = {
+                        lng: this.getPosition().lng(),
+                        lat: this.getPosition().lat()
+                    };
+                    self.$scope.$emit('Position', position);
+                });
+            }
+
+            // If the map is 'search-map' type
+            if(this.mapConfig.type === 'search-map') {
+
+                // Add click event
+                google.maps.event.addListener(marker, 'click', function (event) {
+                    //Change marker
+                    for (let i = 0; i < self._markers.length; i++) {
+                        if(self._markers[i].id === marker.id) {
+                            self._markers[i].setIcon(self.GREEN_PIN);
+                        } else {
+                            self._markers[i].setIcon(self.RED_PIN);
+                        }
+                    }
+                    //Emit event to parent in order to selected result container
+                    self.$scope.$emit('SelectContainer', marker.id);
+                });
+
+            }
+
         }
+
+
+
+        /**
+        * _removeMarkers
+        * @description - this method remove all markers on Map
+        * @use - this._removeMarkers();
+        * @function
+        * @return {void}
+        */
+
+        private _removeMarkers(): void {
+            for (let i = 0; i < this._markers.length; i++) {
+                this._markers[i].setMap(null);
+            }
+        }
+
+
+        /**
+        * _createFilterButtons
+        * @description - this method builds every filter button on the Map
+        * @use - this._createFilterButtons();
+        * @function
+        * @return {void}
+        */
+
+        private _createFilterButtons(): void {
+            let buttons = ['Students', 'Teachers', 'Schools'];
+
+            for (let i = 0; i < buttons.length; i++) {
+                let controlDiv: HTMLDivElement = document.createElement('div');
+                let control = this._filterControl(controlDiv, buttons[i]);
+                this._map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
+            }
+        }
+
 
 
         /**
@@ -379,47 +592,110 @@ module components.map {
                 element.style.borderBottom = border_bottom_active;
                 child.style.color = color_active;
 
-                //Remove all markers
-                self._removeMarkers();
-
                 self.$scope.$emit(type);
             });
 
         }
 
 
+
         /**
-        * _removeMarkers
-        * @description - this method remove all markers on Map
-        * @use - this._removeMarkers();
+        * _codeAddress
+        * @description - get position on map (lng, lat) based on Address,
+        * Country and zipCode.
+        * @use - this._subscribeToEvents();
         * @function
+        * @param {google.maps.Geocoder} geocoder - geocoder object
+        * @param {string} country - country code
+        * @param {string} address - user address
+        * @param {string} city - user city
         * @return {void}
         */
 
-        private _removeMarkers(): void {
-            for (let i = 0; i < this._markers.length; i++) {
-                this._markers[i].setMap(null);
-            }
+        private _codeAddress(geocoder: google.maps.Geocoder,
+                             country: string,
+                             address: string,
+                             city: string): void {
+
+            let self = this;
+
+            //Build Address joining 'Country, City, Address'
+            let location = country + ',' + city + ',' + address;
+
+            geocoder.geocode({
+              address: location
+          }, function(results, status: any) {
+
+              if (status == 'OK') {
+
+                  //self._map.setCenter(results[0].geometry.location);
+                  self._removeMarkers();
+                  self._setMarker('1',
+                                  results[0].geometry.location,
+                                  self.RED_PIN);
+                  let position = {
+                      lng: results[0].geometry.location.lng(),
+                      lat: results[0].geometry.location.lat()
+                  };
+                  self.$scope.$emit('Position', position);
+
+              } else {
+
+                  console.log(status);
+
+              }
+            });
         }
+
 
 
         /**
-        * _createFilterButtons
-        * @description - this method builds every filter button on the Map
-        * @use - this._createFilterButtons();
+        * TODO: El metodo _codeAddress y este hacen relativamente lo mismo, lo que
+        * el de arriba pone un PIN y este solo centra el mapa en la posicion. Crear
+        * un metodo que se encargue de devolver la posicion dependiendo de una
+        * direccion, ciudad, pais y zipCode, y que cada uno de estos metodos lo
+        * llamen y hagan lo que tienen que hacer
+        * _positionCountry
+        * @description - get position on map (lng, lat) based on Address,
+        * Country and zipCode.
+        * @use - this._subscribeToEvents();
         * @function
+        * @param {google.maps.Geocoder} geocoder - geocoder object
+        * @param {string} country - country code
+        * @param {string} address - user address
+        * @param {string} city - user city
         * @return {void}
         */
 
-        private _createFilterButtons(): void {
-            let buttons = ['Students', 'Teachers', 'Schools'];
+        private _positionCountry(geocoder: google.maps.Geocoder,
+                                 country: string,
+                                 address: string,
+                                 city: string): void {
 
-            for (let i = 0; i < buttons.length; i++) {
-                let controlDiv: HTMLDivElement = document.createElement('div');
-                let control = this._filterControl(controlDiv, buttons[i]);
-                this._map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
-            }
+            let self = this;
+
+            //Build Address joining 'Country, City, Address'
+            let location = country + ',' + city + ',' + address;
+
+            geocoder.geocode({
+              address: location
+          }, function(results, status: any) {
+
+              if (status == 'OK') {
+
+                  self._map.setCenter(results[0].geometry.location);
+                  if(self.mapConfig.data.zoom) {
+                    self._map.setZoom(self.mapConfig.data.zoom);
+                  }
+
+              } else {
+
+                  console.log(status);
+
+              }
+            });
         }
+
 
 
         /**
@@ -442,14 +718,74 @@ module components.map {
             */
             this.$scope.$on('BuildMarkers', function(event, args) {
                 self.mapConfig = args;
+                //remove last markers
+                self._removeMarkers();
                 //set markers
                 for (let i = 0; i < self.mapConfig.data.markers.length; i++) {
                     let marker = self.mapConfig.data.markers[i];
                     self._setMarker(marker.id,
                                     new google.maps.LatLng(marker.position.lat, marker.position.lng),
-                                    'assets/images/meeting-point.png');
+                                    self.RED_PIN);
                 }
             });
+
+
+            /**
+            * ChangeMarker event
+            * @parent - SearchPageController
+            * @description - Parent send markers list in order to Child changes
+            * specific marker
+            * @event
+            */
+            this.$scope.$on('ChangeMarker', function(event, args) {
+                //VARIABLES
+                let markerId = args.id;
+                let status = args.status;
+
+                //Change marker
+                for (let i = 0; i < self._markers.length; i++) {
+                    if(self._markers[i].id === markerId) {
+                        if(status === true){
+                            self._markers[i].setIcon(self.GREEN_PIN);
+                        } else {
+                            self._markers[i].setIcon(self.RED_PIN);
+                        }
+                    } else {
+                        self._markers[i].setIcon(self.RED_PIN);
+                    }
+                }
+
+
+            });
+
+
+            /**
+            * CodeAddress event
+            * @parent - TeacherLocationSectionController
+            * @description - Parent send country, address, zipCode to child
+            * in order to get position (lng, lat) on the map.
+            * @event
+            */
+            this.$scope.$on('CodeAddress', function(event, args) {
+                //Init geoCode google map in order to get lat & lng base on teacher street
+                let geocoder = new google.maps.Geocoder();
+                self._codeAddress(geocoder, args.country, args.address, args.city);
+            });
+
+
+            /**
+            * PositionCountry event
+            * @parent - TeacherLocationSectionController
+            * @description - Parent send country, address, zipCode to child
+            * in order to get position (lng, lat) on the map.
+            * @event
+            */
+            this.$scope.$on('PositionCountry', function(event, args) {
+                //Init geoCode google map in order to get lat & lng base on teacher street
+                let geocoder = new google.maps.Geocoder();
+                self._positionCountry(geocoder, args.country, args.address, args.city);
+            });
+
         }
 
     }

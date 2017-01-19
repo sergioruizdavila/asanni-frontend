@@ -1,0 +1,576 @@
+
+<!--                                HEADER                                   -->
+<!----------------------------------------------------------------------------->
+
+<div class="ma-header ma-header--transparent">
+
+
+    <!--                    START: HEADER (SMALL SCREEN)                     -->
+    <!------------------------------------------------------------------------->
+    <header class="visible-xs clearfix">
+
+        <!---------------- START: CHANGE LANGUAGE (SMALL SCREEN) -------------->
+        <div class="ma-header__block
+                    ma-header--transparent__block
+                    ma-header--transparent__block--right
+                    pull-right">
+
+            <!-- Change Language Select Input -->
+            <div class="form-group ma-form-group">
+                <div class="ma-select-container
+                            ma-select-container--small
+                            ma-select-container--tertiary">
+                    <select id="languageSelect"
+                            class="ma-input ma-select
+                                   ma-select--small
+                                   ma-select--tertiary
+                                   ma-select--border-round"
+                            ng-model="vm.form.language"
+                            ng-change="vm.changeLanguage()"
+                            name="language">
+                        <option value="es" selected="selected" translate>
+                            %header.lang.options.es.text
+                        </option>
+                        <option value="en" translate>
+                            %header.lang.options.en.text
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <!--              END: CHANGE LANGUAGE (SMALL SCREEN)            -->
+
+
+        <!--------------------- START: LOGO (SMALL SCREEN) -------------------->
+        <div class="ma-header__block
+                    ma-header--transparent__block pull-left">
+            <a ui-sref="page.landingPage" class="ma-header__block__btn
+                                                ma-header__block__logo-wrapper
+                                                link-reset" aria-label="Waysily">
+                <i class="ma-logo
+                          ma-logo--secondary-short
+                          ma-header__block__btn__ma-logo"></i>
+            </a>
+        </div>
+        <!--                     END: LOGO (SMALL SCREEN)                    -->
+
+
+
+    </header>
+    <!--                     END: HEADER (SMALL SCREEN)                      -->
+
+
+
+    <!--                   START: HEADER (MD AND LG SCREEN)                  -->
+    <!------------------------------------------------------------------------->
+    <header class="hidden-xs clearfix">
+
+        <!-------------------- START: LOGO (MD AND LG SCREEN) ----------------->
+        <div class="ma-header__block ma-header--transparent__block pull-left">
+            <a ui-sref="page.landingPage" class="ma-header__block__btn
+                                                ma-header__block__logo-wrapper
+                                                link-reset" aria-label="Waysily">
+                <i class="ma-logo
+                          ma-logo--secondary
+                          ma-header__block__btn__ma-logo"></i>
+            </a>
+        </div>
+        <!--                   END: LOGO (MD AND LG SCREEN)                  -->
+
+
+
+        <!-------------- START: CHANGE LANGUAGE (MD AND LG SCREEN) ------------>
+        <div class="ma-header__block
+                    ma-header--transparent__block
+                    ma-header--transparent__block--right
+                    pull-right">
+
+            <!-- Change Language Select Input -->
+            <div class="form-group ma-form-group">
+                <div class="ma-select-container
+                            ma-select-container--small
+                            ma-select-container--tertiary">
+
+                    <select id="languageSelect"
+                            class="ma-input ma-select
+                                   ma-select--small
+                                   ma-select--tertiary
+                                   ma-select--border-round"
+                            ng-model="vm.form.language"
+                            ng-change="vm.changeLanguage()"
+                            name="language">
+                        <option value="es" selected="selected" translate>
+                            %header.lang.options.es.text
+                        </option>
+                        <option value="en" translate>
+                            %header.lang.options.en.text
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        <!--             END: CHANGE LANGUAGE (MD AND LG SCREEN)             -->
+
+
+
+        <!--------------- START: JOIN SECTION (MD AND LG SCREEN) -------------->
+        <div class="ma-header__block
+                    ma-header--transparent__block
+                    ma-header--transparent__block--right
+                    pull-right">
+
+            <div class="ma-header--transparent__block__buttons-list">
+                <span class="ma-header--transparent__block__buttons-list__label"
+                      translate>
+                    %landing.header.join.label.text
+                </span>
+                <button class="ma-header--transparent__block__buttons-list__btn
+                               ma-btn ma-btn--alert ma-btn--default"
+                        ng-click="vm._openSignUpModal()" translate>
+                    %global.student.text
+                </button>
+                <a class="ma-header--transparent__block__buttons-list__btn
+                               ma-btn ma-btn--alert ma-btn--default"
+                    ui-sref="page.teacherLandingPage"
+                    href
+                    translate>
+                    %global.teacher.text
+                </a>
+                <a class="ma-header--transparent__block__buttons-list__btn
+                               ma-btn ma-btn--alert ma-btn--default"
+                   href="https://waysily.typeform.com/to/jvr0zW"
+                   target="_blank" translate>
+                    %global.school.text
+                </a>
+
+            </div>
+
+        </div>
+        <!--              END: JOIN SECTION (MD AND LG SCREEN)               -->
+
+
+    </header>
+    <!--                    END: HEADER (MD AND LG SCREEN)                   -->
+
+</div>
+
+
+
+<!--                     START:  TEACHER LANDING PAGE                        -->
+<!----------------------------------------------------------------------------->
+<div class="landingPage">
+
+    <!--------------------------- START: HERO BLOCK --------------------------->
+    <section class="ma-hero">
+
+        <div class="poster poster--teacher"></div>
+
+	        <div class="ma-hero__wrapper text-center">
+
+        		<h1 class="ma-hero__wrapper__title animated fadeIn" translate>
+                    %landing.teacher.puv.v3
+                </h1>
+
+                <h2 class="ma-hero__wrapper__description animated fadeIn">
+                    <span class="space-right-1" translate>
+                        %landing.teacher.puv.description.first_part.text
+                    </span>
+                    <span class="underline
+                                 underline--primary underline--strong" translate>
+                        %landing.teacher.puv.description.second_part.text
+                    </span>
+                    <span class="space-left-1" translate>
+                        %landing.teacher.puv.description.third_part.text
+                    </span>
+                </h2>
+
+        		<div class="ma-hero__wrapper__btn-container">
+                    <button class="ma-btn ma-btn--primary text-uppercase ma-btn--large"
+                            ng-click="vm.goToCreate()" translate>
+                       %global.go.button.text
+                   </button>
+        		</div>
+
+                <div class="hidden-xs ma-hero__wrapper__go-down row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                        <i class="material-icons md-48 md-light"
+                           ng-click="vm.goDown()">keyboard_arrow_down</i>
+                    </div>
+                </div>
+
+	        </div>
+
+	</section>
+    <!--                          END: HERO BLOCK                            -->
+
+
+
+    <!---------------------- START: PREVIEW CONTAINER BLOCK ------------------->
+    <section class="landingPage__preview-container row center-xs space-top-8 space-10">
+        <div class="col-xs-10 col-sm-8">
+            <div class="row start-xs middle-xs">
+
+                <!-- Left column: Preview cotainer -->
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="ma-p ma-p--large ma-p--primary text-center"
+                                translate>
+                                %landing.teacher.preview_container.title.text
+                            </p>
+                            <div ng-include="vm.TEACHER_FAKE_TMPL"></div>
+                            <p class="ma-p ma-p--small pull-right"
+                               translate>
+                                %landing.teacher.preview_container.help_text.text
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rigtht column: Explanation section -->
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2 translate>
+                                %landing.teacher.explanation_section.title.text
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="ma-p ma-p--large">
+                                <span translate>
+                                    %landing.teacher.explanation_section.description.first_part.text
+                                </span>
+                                <span class="underline underline--primary" translate>
+                                    %landing.teacher.explanation_section.description.second_part.text
+                                </span>
+                                <span translate>
+                                    %landing.teacher.explanation_section.description.third_part.text
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--                      END: PREVIEW CONTAINER BLOCK                   -->
+
+
+    <div class="row center-xs space-top-10">
+        <div class="col-xs-10 col-sm-8">
+            <div class="ma-separator-dashed-image"></div>
+        </div>
+    </div>
+
+
+    <!------------------- START: HOW DO YOU GET STARTED BLOCK ----------------->
+    <section class="landingPage__started-container row center-xs space-top-8">
+        <div class="col-xs-10 col-sm-8">
+            <div class="row start-xs">
+                <div class="col-xs-12">
+                    <h2 class="space-4" translate>
+                        %landing.teacher.how_start.title.text
+                    </h2>
+                    <p class="ma-p ma-p--large">
+                        <span translate>
+                            %landing.teacher.how_start.description.first_part.text
+                        </span>
+
+                        <a class="ma-link ma-link--box
+                                  ma-link--box--default
+                                  ma-link--box--underline--alert"
+                           ng-click="vm.goToCreate()"
+                           href
+                           translate>
+                            %landing.teacher.how_start.description.second_part.text
+                        </a>
+
+                        <span translate>
+                            %landing.teacher.how_start.description.third_part.text
+                        </span>
+
+                        <a class="ma-link ma-link--box
+                                  ma-link--box--default
+                                  ma-link--box--underline--primary"
+                           ui-sref="page.searchPage"
+                           href
+                           target="_blank" translate>
+                            %landing.teacher.how_start.description.fourth_part.text
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--                   END: HOW DO YOU GET STARTED BLOCK                 -->
+
+
+    <!--------------------- START: WHY BE IN WAYSILY BLOCK -------------------->
+    <section class="landingPage__be-in-container row center-xs space-top-8">
+        <div class="col-xs-10 col-sm-8">
+            <div class="row start-xs">
+                <div class="col-xs-12">
+                    <h2 class="space-4" translate>
+                        %landing.teacher.why_waysily.title.text
+                    </h2>
+                    <p class="ma-p ma-p--large">
+                        <span translate>
+                            %landing.teacher.why_waysily.description.first_part.text
+                        </span>
+                        <span class="underline
+                                     underline--primary
+                                     underline--strong" translate>
+                            %landing.teacher.why_waysily.description.second_part.text
+                        </span>
+                        <span translate>
+                            %landing.teacher.why_waysily.description.third_part.text
+                        </span>
+                    </p>
+                    <p class="ma-p ma-p--large" translate>
+                        %landing.teacher.why_waysily.description.fourth_part.text
+                    </p>
+                    <h3 class="space-3 space-top-6" translate>
+                        %landing.teacher.why_waysily.details.title.text
+                    </h3>
+                    <ul class="ma-p ma-p--large
+                               ma-list ma-list--text-indent-30
+                               ma-list--bullet--arrow
+                               ma-list--bullet--alert
+                               ma-list--bullet--default space-left-9">
+                        <li translate>
+                            %landing.teacher.why_waysily.details.first_detail.text
+                        </li>
+                        <li translate>
+                            %landing.teacher.why_waysily.details.second_detail.text
+                        </li>
+                        <li translate>
+                            %landing.teacher.why_waysily.details.third_detail.text
+                        </li>
+                        <li translate>
+                            %landing.teacher.why_waysily.details.fourth_detail.text
+                        </li>
+                        <li translate>
+                            %landing.teacher.why_waysily.details.fifth_detail.text
+                        </li>
+                        <li translate>
+                            %landing.teacher.why_waysily.details.sixth_detail.text
+                        </li>
+                        <li>
+                            <span translate>
+                                %landing.teacher.why_waysily.details.seventh_detail.first_part.text
+                            </span>
+                            <span class="strong strong--alert space-right-1"
+                                  translate>
+                                %landing.teacher.why_waysily.details.seventh_detail.second_part.text
+                            </span>
+                            <svg id="badge" width="20px" height="30px" data-name="badge" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 81.9 127.8"><defs><style>.cls-1{fill:#05b592;}.cls-2{fill:#049b7e;}.cls-3{fill:#f5ae3d;}.cls-4{fill:#e99723;}.cls-5{fill:#fdd078;}.cls-6{fill:#ffdea6;}.cls-7{fill:#ea9823;}</style></defs><title>waysily-badge-teacher-4</title><path class="cls-1" d="M44.8,0H9.9L.9,14.4,36.3,86.7H63.7Z" transform="translate(0 0)"/><path class="cls-2" d="M44.9,85.7,81.7,15.5,72.6,0h-28L17.9,85.7H44.9Z" transform="translate(0 0)"/><circle class="cls-3" cx="40.9" cy="86.9" r="40.9"/><circle class="cls-4" cx="40.9" cy="86.9" r="29"/><circle class="cls-5" cx="40.9" cy="88.9" r="27"/><path class="cls-6" d="M14.4,84.3A26.9,26.9,0,0,0,61.5,71.4,26.9,26.9,0,0,0,14.4,84.3Z" transform="translate(0 0)"/><path class="cls-7" d="M60.8,83.6c-.7-3.6-3.3-6.1-6.3-5.5s-3.6,4.4-2.9,6.2a24.4,24.4,0,0,0,2.8,4.6c2.5,3.9-1.5,9.8-7.5,7.2A24.5,24.5,0,0,1,44.8,99C55.6,104,62.9,94.1,60.8,83.6Z" transform="translate(0 0)"/><path class="cls-3" d="M44.5,79.6c-2.8-.4-5.6,2.3-6.1,6.1a16,16,0,0,0,.2,3.6c2.1,10.6-4.8,13-8.2,11.5s-5.1-8.6,1.6-14.3,3-12.7-.9-14.2-8.6.7-10.6,6.7S18.9,102.2,32,103.9c2.5.3,12.1-1,16-14.6C49.3,85,47.9,80.1,44.5,79.6Z" transform="translate(0 0)"/></svg>
+                            <span class="space-left-1"
+                                  translate>
+                                %landing.teacher.why_waysily.details.seventh_detail.third_part.text
+                            </span>
+                            <a class="ma-link ma-link--box
+                                      ma-link--box--default
+                                      ma-link--box--primary"
+                               ng-click="vm.moreInfoBadge = true" href
+                               translate>
+                                %landing.teacher.why_waysily.details.seventh_detail.fourth_part.text
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--                    END: WHY BE IN WAYSILY BLOCK                     -->
+
+
+
+    <!----------------- START:WAYSILY BADGE EXPLANATION BLOCK ----------------->
+    <section class="landingPage__badge-explanation-container
+                    row center-xs space-top-5" ng-show="vm.moreInfoBadge">
+        <div class="col-xs-10 col-sm-8" style="border-radius: 20px;
+                                                padding-bottom: 15px;
+                                                background-color: #f9f9f9;
+                                                border: 1px solid #eee;">
+            <div class="row start-xs">
+                <div class="col-xs-12">
+
+                    <h2 class="space-4" translate>
+                        %landing.teacher.badge_explanation.what_is.title.text
+                    </h2>
+                    <p class="ma-p ma-p--large space-6" translate>
+                        %landing.teacher.badge_explanation.what_is.description.text
+                    </p>
+
+                    <h3 translate>
+                        %landing.teacher.badge_explanation.benefit.title.text
+                    </h3>
+                    <p class="ma-p ma-p--large space-5" translate>
+                        %landing.teacher.badge_explanation.benefit.description.text
+                    </p>
+
+                    <h3 translate>
+                        %landing.teacher.badge_explanation.get.title.text
+                    </h3>
+                    <p class="ma-p ma-p--large space-5" translate>
+                        %landing.teacher.badge_explanation.get.description.text
+                    </p>
+
+                    <div class="row start-xs space-top-2">
+
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4 translate>
+                                        %landing.teacher.badge_explanation.get.first_requirement.title.text
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="ma-p ma-p--large" translate>
+                                        %landing.teacher.badge_explanation.get.first_requirement.description.text
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4 translate>
+                                        %landing.teacher.badge_explanation.get.second_requirement.title.text
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="ma-p ma-p--large" translate>
+                                        %landing.teacher.badge_explanation.get.second_requirement.description.text
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row start-xs">
+
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4 translate>
+                                        %landing.teacher.badge_explanation.get.third_requirement.title.text
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="ma-p ma-p--large" translate>
+                                        %landing.teacher.badge_explanation.get.third_requirement.description.text
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4 translate>
+                                        %landing.teacher.badge_explanation.get.fourth_requirement.title.text
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="ma-p ma-p--large" translate>
+                                        %landing.teacher.badge_explanation.get.fourth_requirement.description.text
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="row center-xs space-top-3" ng-show="vm.moreInfoBadge">
+        <div class="col-xs-10 col-sm-8">
+            <a class="ma-link ma-link--box
+                      ma-link--box--default
+                      ma-link--box--alert"
+               ng-click="vm.moreInfoBadge = false"
+               href
+               translate>
+               %global.close_information.button.text
+           </a>
+        </div>
+    </div>
+    <!--                  END: WAYSILY BADGE EXPLANATION BLOCK               -->
+
+    <div class="row center-xs space-top-10" ng-show="vm.moreInfoBadge">
+        <div class="col-xs-10 col-sm-8">
+            <div class="ma-separator-dashed-image"></div>
+        </div>
+    </div>
+
+    <!---------------------- START: WHO'S ELIGIBLE BLOCK ---------------------->
+    <section class="landingPage__eligible-container row center-xs space-top-8">
+        <div class="col-xs-10 col-sm-8">
+            <div class="row start-xs text-center">
+                <div class="col-xs-12">
+                    <h2 class="space-6 text-left" translate>
+                        %landing.teacher.who.title.text
+                    </h2>
+
+                    <h3 class="ma-quote
+                               ma-quote--block
+                               ma-quote--block--gray
+                               ma-quote--block--default
+                               ma-quote--block--round text-center" translate>
+                    	%landing.teacher.who.quote.text
+                    </h3>
+
+                    <i class="material-icons md-36 md-dark text-center">linear_scale</i>
+
+                    <p class="ma-p ma-p--large text-left space-top-3"
+                        translate>
+                        %landing.teacher.who.description.text
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--                      END: WHO'S ELIGIBLE BLOCK                      -->
+
+
+
+    <!---------------------- START: WHO'S ELIGIBLE BLOCK ---------------------->
+    <section class="landingPage__let-go-container
+                    row center-xs space-top-10 space-12">
+        <div class="col-xs-10 col-sm-8">
+            <div class="row start-xs text-center">
+                <div class="col-xs-12">
+                    <button type="button"
+                            class="ma-btn
+                                    ma-btn--large
+                                    ma-btn--primary
+                                    text-uppercase"
+                            ng-click="vm.goToCreate()" translate>
+                        %global.join.button.text
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--                      END: WHO'S ELIGIBLE BLOCK                      -->
+
+
+</div>
+<!--                      END: TEACHER LANDING PAGE                          -->

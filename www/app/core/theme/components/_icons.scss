@@ -29,6 +29,7 @@
   font-feature-settings: 'liga';
 
   /* Rules for sizing the icon. */
+  &.md-12 { font-size: 12px; }
   &.md-18 { font-size: 18px; }
   &.md-24 { font-size: 24px; }
   &.md-30 { font-size: 30px; }
@@ -37,7 +38,7 @@
   &.md-60 { font-size: 60px; }
   &.md-72 { font-size: 72px; }
 
-  /* Rules for using icons as black on a light background. */
+  /// ICONS COLOR
   &.md-primary {
       color: map-get($main-palette, primary);
 
@@ -52,7 +53,20 @@
       &.md-inactive { opacity: 0.7; }
   }
 
-  /* Rules for using icons as black on a light background. */
+  &.md-alert {
+      color: map-get($main-palette, alert);
+
+      &--clicked {
+          &:hover {
+            cursor: pointer;
+            color: shade(map-get($main-palette, alert), 100);
+            font-weight: bold;
+          }
+      }
+
+      &.md-inactive { opacity: 0.7; }
+  }
+
   &.md-dark {
       color: rgba(0, 0, 0, 0.54);
 
@@ -67,8 +81,6 @@
       &.md-inactive { color: rgba(0, 0, 0, 0.26); }
   }
 
-
-  /* Rules for using icons as white on a dark background. */
   &.md-light {
       color: rgba(255, 255, 255, 1);
 
@@ -91,12 +103,91 @@
 
 
 /**********************************************************/
-/*                    ICONS WITH COUNTER                  */
+/*                     ICONS CONTAINER                    */
 /**********************************************************/
 //TODO: Pasar a variables
 .ma-icon-container {
     position: relative;
+    text-align: center;
 
+    /// WRAP COLOR
+    &--primary {
+        background-color: #00b592;
+        color: $white;
+        border: 2px solid #00b592;
+    }
+
+    &--secondary {
+        border: 2px solid #00b592;
+        color: #00b592;
+        background-color: $white;
+    }
+
+    &--alert {
+        background-color: map-get($main-palette, alert);
+        border: 2px solid map-get($main-palette, alert);
+        color: $white;
+    }
+
+    &--alert-secondary {
+        background-color: $white;
+        border: 2px solid map-get($main-palette, alert);
+        color: map-get($main-palette, alert);
+    }
+
+    &--white {
+        background-color: $white;
+        border: 2px solid $white;
+        color: map-get($main-palette, primary);
+    }
+
+    &--transparent {
+        background-color: transparent;
+        border: 0 hidden transparent;
+    }
+
+    /// WRAP SIZE
+    &--small {
+        width: 25px;
+        height: 25px;
+
+        &__icon {
+            line-height: 22px;
+            font-size: 16px;
+        }
+    }
+
+    &--default {
+        width: 35px;
+        height: 35px;
+
+        &__icon {
+            line-height: 31px;
+            font-size: 22px;
+        }
+    }
+
+    &--medium {
+        width: 45px;
+        height: 45px;
+
+        &__icon {
+            line-height: 45px;
+            font-size: 30px;
+        }
+    }
+
+    &--large {
+        width: 55px;
+        height: 55px;
+
+        &__icon {
+            line-height: 52px;
+            font-size: 35px;
+        }
+    }
+
+    // ICONS WITH COUNTER
     &__count {
         display:inline-block;
         top: $icon-container-count-top;
@@ -152,6 +243,41 @@
         }
 
     }
+
+
+    /// BADGE ICON
+    &__badge {
+        background-image: url($badge-path);
+        background-repeat: no-repeat;
+        display: inline-block;
+
+        /// BADGE SIZES
+
+        &--small {
+            width: 25px;
+            height: 25px;
+            background-size: 25px 25px;
+        }
+
+        &--default {
+            width: 35px;
+            height: 35px;
+            background-size: 35px 35px;
+        }
+
+        &--medium {
+            width: 45px;
+            height: 45px;
+            background-size: 45px 45px;
+        }
+
+        &--large {
+            width: 55px;
+            height: 55px;
+            background-size: 55px 55px;
+        }
+    }
+
 }
 
 

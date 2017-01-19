@@ -44,7 +44,9 @@
 
             &--large {
                 label {
-                    padding-top: map-get($form-horizontal-label-paddings, large);
+                    //padding-top: map-get($form-horizontal-label-paddings, large);
+                    //TEST
+                    padding-top: 12px;
                 }
             }
 

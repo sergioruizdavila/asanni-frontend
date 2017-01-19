@@ -41,6 +41,8 @@
 @import 'components/inputText';
 // labels Style
 @import 'components/labels';
+// large message Style
+@import 'components/largeMessage';
 // links Style
 @import 'components/links';
 // lists Style
@@ -49,10 +51,16 @@
 @import 'components/locationMap';
 // map Style
 @import 'components/map';
+// notification Style
+@import 'components/notification';
 // paragraphs Style
 @import 'components/paragraphs';
 // photo profile Style
 @import 'components/photoProfile';
+// progress bar Style
+@import 'components/progressBar';
+// quotes Style
+@import 'components/quotes';
 // stars Style
 @import 'components/stars';
 // switch Style
@@ -61,14 +69,20 @@
 @import 'components/searchMap';
 // strong map Style
 @import 'components/strong';
+// tooltip Style
+@import 'components/tooltip';
 
 
 // TEST: Import kind of fonts
 @import 'https://fonts.googleapis.com/css?family=Roboto';
 
+@import 'https://fonts.googleapis.com/css?family=Lato';
+
 // MainApp Pages and Other components (modals, etc)
 // --------------------------------------------------
 
+// landing Page Style
+@import '../../pages/landingPage/landingPage';
 // student Landing Page Style
 @import '../../pages/studentLandingPage/studentLandingPage';
 // meeting Confirmation Page Style
@@ -89,5 +103,9 @@
 @import '../../pages/userInboxPage/userInboxPage';
 // user Inbox Details Pages Style
 @import '../../pages/userInboxDetailsPage/userInboxDetailsPage';
+// Create Teacher Page Style
+@import '../../pages/createTeacherPage/createTeacherPage';
+// teacher Profile Page Style
+@import '../../pages/teacherProfilePage/teacherProfilePage';
 // add meeting Point Modals Style
 @import '../../../components/modal/modalMeetingPoint/modalMeetingPoint';

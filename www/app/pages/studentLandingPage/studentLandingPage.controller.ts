@@ -60,7 +60,7 @@ module app.pages.studentLandingPage {
 
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = ['$state',
-                                 '$translate',
+                                 'mainApp.core.util.FunctionsUtilService',
                                  'mainApp.pages.studentLandingPage.StudentLandingPageService'];
 
         /**********************************/
@@ -68,7 +68,7 @@ module app.pages.studentLandingPage {
         /**********************************/
         constructor(
             private $state: ng.ui.IStateService,
-            private $translate: any,
+            private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private StudentLandingPageService: app.pages.studentLandingPage.IStudentLandingPageService) {
 
             this._init();
@@ -84,7 +84,7 @@ module app.pages.studentLandingPage {
                     email: '',
                     comment: ''
                 },
-                language: 'en'
+                language: this.functionsUtil.getCurrentLanguage() || 'en'
             };
 
             this.success = false;
@@ -112,7 +112,7 @@ module app.pages.studentLandingPage {
         /*            METHODS             */
         /**********************************/
         changeLanguage(): void {
-             this.$translate.use(this.form.language);
+             this.functionsUtil.changeLanguage(this.form.language);
              mixpanel.track("Change Language");
         }
 
@@ -151,6 +151,7 @@ module app.pages.studentLandingPage {
                 email: this.form.userData.email,
                 comment: this.form.userData.comment || '*'
             };
+
             this.StudentLandingPageService.createEarlyAdopter(userData).then(
                 function(response) {
                     if(response.createdAt) {

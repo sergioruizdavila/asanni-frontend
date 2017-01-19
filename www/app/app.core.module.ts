@@ -16,7 +16,9 @@
         'pascalprecht.translate',
         'ui.bootstrap',
         'ui.calendar',
-        'ui.bootstrap.datetimepicker'
+        'ui.bootstrap.datetimepicker',
+        'ngFileUpload',
+        'ngImgCrop'
     ]);
 
     /*angular.module('mainApp.core', [

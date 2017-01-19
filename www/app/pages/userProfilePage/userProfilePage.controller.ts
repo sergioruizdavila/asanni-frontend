@@ -92,7 +92,8 @@ module app.pages.userProfilePage {
 
             // init map config
             this.mapConfig = {
-                type: 'location-map'
+                type: 'location-map',
+                data: null
             };
 
 
@@ -116,7 +117,7 @@ module app.pages.userProfilePage {
             // Get User information
             this.UserService.getUserById(this.$stateParams.id).then(
                 function(response) {
-                    self.data = new app.models.user.Student(response);
+                    self.data = new app.models.user.User(response);
                 }
             );
         }

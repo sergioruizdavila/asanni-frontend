@@ -1,0 +1,112 @@
+/*************************/
+/*       VARIABLES       */
+/*************************/
+$landing-background: $white;
+
+$landing-titleBlock-h2-font-color: #F59689;
+
+$landing-howWorkBlock-margin-top: 40px;
+$landing-howWorkBlock-margin-bottom: 40px;
+
+$landing-howWorkBlock-row-padding: 0 20px;
+
+$landing-howWorkBlock-stepItem-padding: 45px 0;
+
+$landing-dashedAlternate-background-position: -12px center;
+$landing-dashedAlternate-height: 4px;
+$landing-dashedAlternate-left: 0;
+$landing-dashedAlternate-right: 0;
+$landing-dashedAlternate-index: 2;
+$landing-dashedAlternate-bottom: calc(99% - 1px);
+
+$landing-withoutContent-padding: 20px 0;
+
+$landing-howWorkBlock-stepImage-width: 50%;
+$landing-howWorkBlock-stepImage-height: 0;
+
+$landing-howWorkBlock-stepImage-map-padding: 37%;
+$landing-howWorkBlock-stepImage-profile-padding: 40%;
+$landing-howWorkBlock-stepImage-points-padding: 37%;
+$landing-howWorkBlock-stepImage-request-padding: 36%;
+$landing-howWorkBlock-stepImage-meeting-padding: 37%;
+
+$landing-howWorkBlock-stepContent-width: 50%;
+$landing-howWorkBlock-stepContent-max-width: 450px;
+$landing-howWorkBlock-stepContent-top: 50%;
+$landing-howWorkBlock-stepContent-transform: translateY(-50%);
+$landing-howWorkBlock-stepContent-padding: 50px;
+
+$landing-howWorkBlock-stepContent-text-font-size: 20px;
+
+$landing-howWorkBlock-imageOnLeft-stepContent-left: 50%;
+
+$landing-earlyAccessBlock-padding: 40px 20px;
+$landing-earlyAccessBlock-background: #E1F7EE;
+$landing-earlyAccessBlock-border: 2px dashed map-get($main-palette, primary);
+$landing-earlyAccessBlock-font-color: map-get($main-palette, primary);
+
+$landing-earlyAccessBlock-formBlock-text-font-color: map-get($main-palette, primary);
+
+$landing-earlyAccessBlock-formBlock-formGroup-padding: 0;
+
+
+/**********************************************************/
+/*                   USER PROFILE PAGE                    */
+/**********************************************************/
+
+.landingPage {
+
+    background-color: $landing-background;
+    height: 100%;
+
+    /* our progress block */
+    &__progress-block {
+        .country-progress-block {
+            background-size: cover;
+            background-position: center;
+            width: 100%;
+            height: 100%;
+            padding: 30px 20px 15px 30px;
+            border-radius: 3px;
+
+            &--first {
+                background-image: url('../../../../assets/images/colombia.jpg');
+            }
+
+            &--second {
+                background-image: url('../../../../assets/images/guatemala.jpg');
+            }
+
+            &--third {
+                background-image: url('../../../../assets/images/mexico.jpg');
+            }
+
+            &--coming-soon {
+                opacity:0.5;
+            }
+
+            &__text {
+                color: $white;
+                text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+
+                &--strong {
+                    font-weight: 600;
+                }
+            }
+
+        }
+
+    }
+
+    /* recommend block */
+    &__recommend-block {
+        label {
+            font-size: 20px;
+        }
+
+        .ma-select-container {
+            width: 100%;
+        }
+    }
+
+}

@@ -3,7 +3,7 @@ var app;
     var models;
     (function (models) {
         var teacher;
-        (function (teacher) {
+        (function (teacher_1) {
             'use strict';
             var TeacherService = (function () {
                 function TeacherService(restApi) {
@@ -11,7 +11,7 @@ var app;
                     console.log('teacher service instanced');
                 }
                 TeacherService.prototype.getTeacherById = function (id) {
-                    var url = 'teachers/';
+                    var url = 'teachers';
                     return this.restApi.show({ url: url, id: id }).$promise
                         .then(function (data) {
                         return data;
@@ -20,9 +20,9 @@ var app;
                         return err;
                     });
                 };
-                TeacherService.prototype.getAllTeachers = function () {
-                    var url = 'teachers/';
-                    return this.restApi.query({ url: url }).$promise
+                TeacherService.prototype.getAllTeachersByStatus = function (status) {
+                    var url = 'teachers?status=' + status;
+                    return this.restApi.queryObject({ url: url }).$promise
                         .then(function (data) {
                         return data;
                     }).catch(function (err) {
@@ -30,13 +30,135 @@ var app;
                         return err;
                     });
                 };
+                TeacherService.prototype.getAllTeachers = function () {
+                    var url = 'teachers';
+                    return this.restApi.queryObject({ url: url }).$promise
+                        .then(function (data) {
+                        return data;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                };
+                TeacherService.prototype.createTeacher = function (teacher) {
+                    var promise;
+                    var url = 'teachers';
+                    promise = this.restApi.create({ url: url }, teacher)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
+                TeacherService.prototype.updateTeacher = function (teacher) {
+                    var promise;
+                    var url = 'teachers';
+                    promise = this.restApi.update({ url: url, id: teacher.Id }, teacher)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
+                TeacherService.prototype.createExperience = function (teacherId, experience) {
+                    var promise;
+                    var url = 'teachers/' + teacherId + '/experiences';
+                    promise = this.restApi.create({ url: url }, experience)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
+                TeacherService.prototype.updateExperience = function (teacherId, experience) {
+                    var promise;
+                    var url = 'teachers/' + teacherId + '/experiences';
+                    promise = this.restApi.update({ url: url, id: experience.Id }, experience)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
+                TeacherService.prototype.createEducation = function (teacherId, education) {
+                    var promise;
+                    var url = 'teachers/' + teacherId + '/educations';
+                    promise = this.restApi.create({ url: url }, education)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
+                TeacherService.prototype.updateEducation = function (teacherId, education) {
+                    var promise;
+                    var url = 'teachers/' + teacherId + '/educations';
+                    promise = this.restApi.update({ url: url, id: education.Id }, education)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
+                TeacherService.prototype.createCertificate = function (teacherId, certificate) {
+                    var promise;
+                    var url = 'teachers/' + teacherId + '/certificates';
+                    promise = this.restApi.create({ url: url }, certificate)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
+                TeacherService.prototype.updateCertificate = function (teacherId, certificate) {
+                    var promise;
+                    var url = 'teachers/' + teacherId + '/certificates';
+                    promise = this.restApi.update({ url: url, id: certificate.Id }, certificate)
+                        .$promise.then(function (response) {
+                        return response;
+                    }, function (error) {
+                        return error;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                    return promise;
+                };
                 return TeacherService;
             }());
             TeacherService.serviceId = 'mainApp.models.teacher.TeacherService';
             TeacherService.$inject = [
                 'mainApp.core.restApi.restApiService'
             ];
-            teacher.TeacherService = TeacherService;
+            teacher_1.TeacherService = TeacherService;
             angular
                 .module('mainApp.models.teacher', [])
                 .service(TeacherService.serviceId, TeacherService);

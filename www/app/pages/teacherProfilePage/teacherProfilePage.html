@@ -1,0 +1,930 @@
+<!-------------------------------------------------->
+<!--             TEACHER PROFILE PAGE             -->
+<!-------------------------------------------------->
+
+<div class="teacherProfilePage container">
+
+    <!---------------------- START: LARGE MESSAGE BLOCK ----------------------->
+    <!--div class="teacherProfilePage__preview-message
+                row ma-large-message ma-large-message--info"
+         ng-hide="vm.loading">
+        <div class="col-xs-12 text-center">
+            <p class="ma-p ma-p--default ma-p--info margin-reset">
+                <span translate>
+                    %profile.teacher.large_message.text
+                </span>
+            </p>
+        </div>
+    </div-->
+    <!--                      END: PROFILE IMAGE BLOCK                       -->
+
+
+
+    <!---------------------- START: MAIN LOADING BLOCK ------------------------>
+    <!-- TODO: Dejo este estilo aqui, ya que no estoy seguro si esta sera
+        la version final del loading, cuando lo decida, remover este
+        comentario y el estilo -->
+    <div class="row" ng-show="vm.loading" style="height:800px;margin-top:190px;">
+        <div class="col-xs-12 text-center">
+            <i class="fa fa-cog fa-spin fa-5x fa-fw" style="color: #ff5a5f;"></i>
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!--                      END: MAIN LOADING  BLOCK                       -->
+
+
+
+    <div class="row space-top-5" ng-hide="vm.loading">
+
+        <!--                     START: LEFT COLUMN                          -->
+        <!--------------------------------------------------------------------->
+        <div id="teacherProfile-left-column" class="col-xs-12 col-sm-4 col-md-3">
+
+            <!------------------ START: PROFILE IMAGE BLOCK ------------------->
+            <div id="teacherProfile-image-block"
+                 class="teacherProfilePage__avatar-block
+                        row space-4 text-center center-xs">
+
+                <div class="col-xs-12">
+                    <div class="ma-photo-profile ma-photo-profile--large round">
+                        <img class="img-responsive center-block"
+                             width="240" height="240"
+                             src="{{vm.data.avatar}}" alt="{{vm.data.firstName}}">
+                    </div>
+                </div>
+
+            </div>
+            <!--                  END: PROFILE IMAGE BLOCK                   -->
+
+
+
+            <!------------------- START: EDIT PROFILE BUTTON ------------------>
+            <!--div id="teacherProfile-edit-block" class="row">
+                <div class="col-md-12 space-2 text-center">
+                    <a class="ma-link
+                              ma-link--simple
+                              ma-link--simple--default
+                              ma-link--simple--primary
+                              text-center"
+                       ng-click="vm.goToEdit(vm.data.id)"
+                       href>
+                       <i class="material-icons md-18 md-primary">mode_edit</i>
+                       <span translate>
+                           %profile.teacher.edit_profile.button.text
+                       </span>
+                   </a>
+                </div>
+            </div-->
+            <!--                   END: EDIT PROFILE BUTTON                  -->
+
+
+
+            <!---------------------- START: VERIFIED BLOCK -------------------->
+            <div id="teacherProfile-verified-block"
+                 class="teacherProfilePage__verified-block
+                        center-xs row space-4">
+
+                <div class="col-xs-12">
+
+                    <div class="ma-box">
+                        <h4 class="ma-box__title margin-reset">
+                            <span translate>
+                                %profile.teacher.verified.title.text
+                            </span>
+                            <i class="material-icons
+                                      md-primary md-30 pull-right">
+                               done_all
+                           </i>
+                        </h4>
+                        <div class="ma-box__content">
+                            <div class="verified-box">
+                                <div class="verified-box__item">
+                                    <i class="verified-box__item__icon
+                                              material-icons md-30
+                                              md-primary">check</i>
+                                    <div class="verified-box__item__text"
+                                         translate>
+                                        %profile.teacher.verified.phone.label.text
+                                    </div>
+                                </div>
+                                <div class="verified-box__item">
+                                    <i class="verified-box__item__icon
+                                              material-icons md-30
+                                              md-primary">check</i>
+                                    <div class="verified-box__item__text"
+                                         translate>
+                                        %profile.teacher.verified.email.label.text
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <!--                     END: VERIFIED BLOCK                     -->
+
+        </div>
+        <!--                        END: LEFT COLUMN                         -->
+
+
+
+        <!--                     START: MIDDLE COLUMN                        -->
+        <!--------------------------------------------------------------------->
+        <div id="teacherProfile-middle-column" class="col-sm-8 col-md-6">
+
+            <!-------------------- START: BASIC INFO BLOCK -------------------->
+            <div id="teacherProfile-basicInfo-block"
+                 class="space-3 row">
+
+                <div class="col-xs-12">
+
+                    <div class="ma-box basic-info-box">
+                        <div class="ma-box__content">
+                            <div class="row margin-reset">
+
+                                <div class="col-xs-12">
+                                    <!-- Age - Orientation -->
+                                    <div id="teacherProfile-basicInfo-ageOrientation"
+                                         class="pull-right">
+                                        <div class="basic-info-box__age">
+                                            <p class="ma-p margin-reset">
+                                                {{vm.data.birthDate | ageFilter}}
+                                            </p>
+                                        </div>
+                                        <div class="basic-info-box__orientation
+                                                    text-center">
+                                            <p class="ma-p margin-reset">
+                                                {{ vm.data.sex | getI18nFilter:'sex' }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <!-- Name -->
+                                    <div id="teacherProfile-basicInfo-name"
+                                         class="basic-info-box__name">
+                                        <h2 class="margin-reset">
+                                            {{vm.data.firstName}}
+                                        </h2>
+                                    </div>
+                                    <!-- From -->
+                                    <div id="teacherProfile-basicInfo-from"
+                                         class="basic-info-box__from">
+                                        <p class="ma-label
+                                                      ma-label--simple
+                                                      ma-label--simple--medium
+                                                      margin-reset">
+                                            <strong>
+                                                <span translate>
+                                                    %profile.teacher.from.label.text
+                                                </span> ·
+                                            </strong> {{vm.data.born}}
+                                        </p>
+                                    </div>
+                                    <!-- Live in -->
+                                    <div id="teacherProfile-basicInfo-liveIn"
+                                         class="basic-info-box__live">
+                                        <p class="ma-label
+                                                      ma-label--simple
+                                                      ma-label--simple--medium
+                                                      margin-reset">
+                                            <strong>
+                                                <span translate>
+                                                    %profile.teacher.live_in.label.text
+                                                </span> ·
+                                            </strong> {{vm.data.location.city}}, {{ vm.data.location.country | getI18nFilter:'country' }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div id="teacherProfile-basicInfo-since"
+                                 class="row basic-info-box__last-block
+                                        margin-reset">
+
+                                <div class="col-xs-12">
+                                    <!-- Joined in -->
+                                    <div class="basic-info-box__since pull-right">
+                                        <p class="ma-label
+                                                      ma-label--simple
+                                                      ma-label--simple--medium
+                                                      ma-label--simple--primary
+                                                      margin-reset">
+                                            <span translate>
+                                                %profile.teacher.joined_in.label.text
+                                            </span> {{ vm.data.createdAt | yearMonthFormatFilter }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="ma-box__footer" ng-if="vm.data.about">
+                            <div class="row margin-reset">
+
+                                <div class="col-xs-12">
+                                    <h4 translate>
+                                        %profile.teacher.about_me.title.text
+                                    </h4>
+                                    <p class="ma-p ma-p--default">
+                                        {{vm.data.about}}
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!--                     END: BASIC INFO BLOCK                   -->
+
+
+            <!------------------ START: TEACH AND SPEAK BLOCK ----------------->
+            <div id="teacherProfile-languages-block" class="row space-3">
+
+                <!-- Teacher of -->
+                <div id="teacherProfile-languages-teach"
+                     class="col-xs-12 col-sm-6 col-md-6 space-4">
+
+                    <div class="ma-box">
+                        <h4 class="ma-box__title margin-reset" translate>
+                            %profile.teacher.teacher_of.title.text
+                        </h4>
+                        <div class="ma-box__content text-center">
+                            <div class="row"
+                                 ng-repeat="language in vm.data.languages.teach track by $index">
+                                <div class="col-xs-12">
+                                    <p tooltip-placement="{{vm.nativeTooltipOptions.placement}}"
+                                       tooltip-animation="{{vm.nativeTooltipOptions.animation}}"
+                                       tooltip-class="{{vm.nativeTooltipOptions.class}}"
+                                       uib-tooltip="{{vm._assignNativeTooltip(language)}}"
+                                    class="ma-p ma-p--default text-truncate">
+                                        <span>{{ language | getI18nFilter:'language' }}</span>
+                                        <i class="material-icons ma-stars__icon
+                                                  ma-stars__icon--tiny"
+                                           ng-if="vm._assignNative(language)">star</i>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Also Speak  -->
+                <div id="teacherProfile-languages-speak"
+                     class="col-xs-12 col-sm-6 col-md-6">
+
+                    <div class="ma-box">
+                        <h4 class="ma-box__title margin-reset" translate>
+                            %profile.teacher.speak.title.text
+                        </h4>
+                        <div class="ma-box__content text-center">
+                            <div class="row"
+                                 ng-repeat="language in vm.data.languages.learn track by $index">
+                                <div class="col-xs-12">
+                                    <p class="ma-p ma-p--default text-truncate">
+                                        {{ language | getI18nFilter:'language' }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!--                 END: TEACH AND SPEAK BLOCK                  -->
+
+
+            <div class="ma-separator-dashed-image space-6 space-top-6"></div>
+
+
+            <!------------------- START: TEACHER SINCE BLOCK ------------------>
+            <div id="teacherProfile-since-block"
+                 class="row middle-xs space-3">
+                <div class="col-xs-7 text-left">
+                    <div class="ma-label
+                                ma-label--box
+                                ma-label--box--space2
+                                ma-label--box--large"
+                         ng-class="vm.data.type === 'H' ? 'ma-label--box--primary-altern' : 'ma-label--box--alert'">
+                        {{ vm.data.type | getTypeOfTeacherFilter }}
+                    </div>
+                </div>
+                <div class="col-xs-5 text-right">
+                    <h4>
+                        <span translate>
+                            %search.container.teacher.since.title.text
+                        </span>
+                        <span>
+                            {{vm.data.teacherSince}}
+                        </span>
+                    </h4>
+                </div>
+            </div>
+            <!--                   END: TEACHER SINCE BLOCK                  -->
+
+
+
+            <!--------------------- START: EXPERIENCE BLOCK ------------------->
+            <div id="teacherProfile-experiences-block"
+                 class="row space-3"
+                 ng-if="vm.data.experiences.length > 0">
+
+                <div class="col-xs-12">
+
+                    <div class="ma-box">
+                        <h4 class="ma-box__title margin-reset" translate>
+                            %create.teacher.experience.form.experience.text
+                        </h4>
+                        <div class="ma-box__content">
+                            <div class="row margin-reset teacher-experience-box__item-block"
+                                 ng-repeat="experience in vm.data.experiences track by $index">
+
+                                <div class="col-xs-12 padding-reset">
+                                    <div class="row margin-reset">
+                                        <div class="col-xs-12 padding-reset">
+                                            <div class="row margin-reset">
+                                                <div class="col-xs-12">
+                                                    <h4 class="margin-reset pull-left">
+                                                        {{experience.position}}
+                                                    </h4>
+                                                    <p class="ma-p ma-p--small pull-right">
+                                                        {{experience.dateStart}} - {{experience.dateFinish}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row margin-reset">
+                                        <div class="col-xs-12 padding-reset">
+                                            <div class="row margin-reset">
+                                                <div class="col-xs-12">
+                                                    <h5 class="margin-reset text-left">
+                                                        {{experience.company}}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row margin-reset">
+                                        <div class="col-xs-12 padding-reset">
+                                            <div class="row margin-reset">
+                                                <div class="col-xs-12">
+                                                    <p class="ma-p ma-p--small margin-reset text-left">
+                                                        {{experience.city}}, {{ experience.country | getI18nFilter:'country' }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row margin-reset space-top-2 space-2"
+                                         ng-if="experience.description">
+                                        <div class="col-xs-12 padding-reset">
+                                            <div class="row margin-reset">
+                                                <div class="col-xs-12">
+                                                    <p class="ma-p
+                                                              ma-p--default
+                                                              margin-reset
+                                                              text-left
+                                                              teacher-experience-box__item-block__description">
+                                                        {{experience.description}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr ng-if="$index + 1 < vm.data.experiences.length">
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <!--                    END: EXPERIENCE BLOCK                    -->
+
+
+
+            <!-------------------- START: METHODOLOGY BLOCK ------------------->
+            <div id="teacherProfile-methodology-block" class="row space-3">
+
+                <div class="col-xs-12">
+
+                    <div class="ma-box">
+                        <h4 class="ma-box__title margin-reset" translate>
+                            %profile.teacher.methodology.title.text
+                        </h4>
+                        <div class="ma-box__content">
+                            <p class="ma-p ma-p--default">
+                                {{vm.data.methodology}}
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <!--                   END: METHODOLOGY BLOCK                    -->
+
+
+
+            <!--------------------- START: IMMERSION BLOCK -------------------->
+            <div id="teacherProfile-immersion-block"
+                 class="teacherProfilePage__immersion-block row space-3"
+                 ng-if="vm.data.immersion.active">
+
+                <div class="col-xs-12">
+
+                    <div class="ma-box">
+                        <h4 class="ma-box__title margin-reset">
+                            <span translate>
+                                %create.teacher.method.form.imm.text
+                            </span>
+                            <i class="material-icons
+                                      md-primary md-30 pull-right">
+                               lightbulb_outline
+                           </i>
+                        </h4>
+                        <div class="ma-box__content" ng-if="vm.data.immersion.otherCategory">
+                            <p class="ma-p ma-p--default">
+                                {{vm.data.immersion.otherCategory}}
+                            </p>
+                        </div>
+                        <div class="ma-box__footer text-center">
+                            <div ng-repeat="category in vm.data.immersion.category"
+                                 class="ma-label
+                                        ma-label--box
+                                        ma-label--box--secondary
+                                        ma-label--box--space5
+                                        ma-label--box--default">
+                                {{category | getI18nFilter:'immersion'}}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <!--                    END: IMMERSION BLOCK                     -->
+
+
+            <div class="ma-separator-dashed-image space-6 space-top-6"></div>
+
+
+            <!---------------------- START: EDUCATION BLOCK ------------------->
+            <div id="teacherProfile-education-block"
+                 class="row space-3"
+                 ng-if="vm.data.educations.length > 0 && vm.data.type == 'P'">
+
+                <div class="col-xs-12">
+
+                    <div class="ma-box">
+                        <h4 class="ma-box__title margin-reset" translate>
+                            %create.teacher.education.form.education.text
+                        </h4>
+                        <div class="ma-box__content">
+                            <div id="teacher-education"
+                                 class="row margin-reset teacher-education-box__item-block"
+                                 ng-repeat="education in vm.data.educations track by $index">
+
+                                <div class="col-xs-12 padding-reset">
+                                    <div class="row margin-reset">
+                                        <div class="col-xs-12 padding-reset">
+                                            <div class="row margin-reset">
+                                                <div class="col-xs-12">
+                                                    <h4 class="margin-reset pull-left">
+                                                        {{education.fieldStudy}}
+                                                    </h4>
+                                                    <p class="ma-p ma-p--small pull-right">
+                                                        {{education.dateStart}} - {{education.dateFinish}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row margin-reset">
+                                        <div class="col-xs-12 padding-reset">
+                                            <div class="row margin-reset">
+                                                <div class="col-xs-12">
+                                                    <h5 class="margin-reset text-left">
+                                                        {{education.school}}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row margin-reset">
+                                        <div class="col-xs-12 padding-reset">
+                                            <div class="row margin-reset">
+                                                <div class="col-xs-12">
+                                                    <p class="ma-p ma-p--small margin-reset text-left">
+                                                        {{ education.degree | getI18nFilter:'degree' }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row margin-reset space-top-2 space-2"
+                                         ng-if="education.description">
+                                        <div class="col-xs-12 padding-reset">
+                                            <div class="row margin-reset">
+                                                <div class="col-xs-12">
+                                                    <p class="ma-p
+                                                              ma-p--default
+                                                              margin-reset
+                                                              text-left
+                                                              teacher-experience-box__item-block__description">
+                                                        {{education.description}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr ng-if="$index + 1 < vm.data.educations.length">
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <!--                    END: EXPERIENCE BLOCK                    -->
+
+
+
+            <!-------------------- START: CERTIFICATES BLOCK ------------------>
+            <div id="teacherProfile-certificate-block"
+                 class="row space-3"
+                 ng-if="vm.data.certificates.length > 0 && vm.data.type == 'P'">
+
+                <div class="col-xs-12">
+
+                    <div class="ma-box">
+                        <h4 class="ma-box__title margin-reset" translate>
+                            %create.teacher.education.form.certificate.text
+                        </h4>
+                        <div class="ma-box__content">
+                            <div class="row margin-reset teacher-certificate-box__item-block"
+                                 ng-repeat="certificate in vm.data.certificates track by $index">
+
+                                <div class="col-xs-12 padding-reset">
+                                    <div class="row margin-reset">
+                                        <div class="col-xs-12 padding-reset">
+                                            <div class="row margin-reset">
+                                                <div class="col-xs-12">
+                                                    <h4 class="margin-reset pull-left">
+                                                        {{certificate.name}}
+                                                    </h4>
+                                                    <p class="ma-p ma-p--small pull-right">
+                                                        {{certificate.dateReceived}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row margin-reset">
+                                        <div class="col-xs-12 padding-reset">
+                                            <div class="row margin-reset">
+                                                <div class="col-xs-12">
+                                                    <h5 class="margin-reset text-left">
+                                                        {{certificate.institution}}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row margin-reset space-top-2 space-2"
+                                         ng-if="certificate.description">
+                                        <div class="col-xs-12 padding-reset">
+                                            <div class="row margin-reset">
+                                                <div class="col-xs-12">
+                                                    <p class="ma-p
+                                                              ma-p--default
+                                                              margin-reset
+                                                              text-left
+                                                              teacher-certificate-box__item-block__description">
+                                                        {{certificate.description}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr ng-if="$index + 1 < vm.data.certificates.length">
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <!--                    END: EXPERIENCE BLOCK                    -->
+
+
+
+            <!----------------------- START: REVIEWS BLOCK -------------------->
+            <div id="teacherProfile-reviews-block" class="row"
+                 ng-if="vm.data.ratings.length > 0">
+
+                <div class="col-xs-12">
+
+                    <div class="ma-box reviews-info-box">
+
+                        <!-- Amount of reviews -->
+                        <h4 id="teacherProfile-reviews-amount"
+                            class="ma-box__title margin-reset">
+                            <span style="text-transform: capitalize;"
+                                  translate>%global.review.text</span>
+                            <div class="ma-box__title__right-block pull-right">
+                                <div class="ma-stars-withLabel">
+                                    <ma-rating class="space-right-1"
+                                               rating-value="vm._ratingTotalAverage(vm.data.ratings)"
+                                               size="small"
+                                               style="display: inline-block"></ma-rating>
+                                    <div class="ma-stars-withLabel__label-container">
+                                        <div class="ma-label
+                                                    ma-label--simple
+                                                    ma-label--simple--small
+                                                    ma-label--simple--gray
+                                                    margin-reset">
+                                                    <span>
+                                                        {{vm.data.ratings.length}}
+                                                    </span>
+                                                    <span translate>
+                                                        %global.review.text
+                                                    </span>
+                                                </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </h4>
+
+                        <!-- Type of reviews -->
+                        <div id="userProfile-reviews-types"
+                             class="ma-box__content text-center">
+                            <div class="reviews-info-box__content__block">
+                                <h4 translate>
+                                    %profile.teacher.review.teaching.label.text
+                                </h4>
+                                <ma-rating rating-value="vm._ratingUnitAverage(vm.data.ratings, 'teaching')"
+                                           size="tiny">
+                            </div>
+                            <div id="userProfile-reviews-comunication"
+                                 class="reviews-info-box__content__block">
+                                <h4 translate>
+                                    %profile.teacher.review.communication.label.text
+                                </h4>
+                                <ma-rating rating-value="vm._ratingUnitAverage(vm.data.ratings, 'communication')"
+                                           size="tiny">
+                            </div>
+                            <div id="userProfile-reviews-funny"
+                                 class="reviews-info-box__content__block">
+                                <h4 translate>
+                                    %profile.teacher.review.methodology.label.text
+                                </h4>
+                                <ma-rating rating-value="vm._ratingUnitAverage(vm.data.ratings, 'methodology')"
+                                           size="tiny">
+                            </div>
+                        </div>
+
+                        <!-- Comments block-->
+                        <div class="ma-box__footer">
+
+                            <div id="userProfile-reviews-comments-block"
+                                 class="reviews-info-box__footer__comments-block">
+
+                                <!-- Comment -->
+                                <div class="reviews-info-box__footer__comments-block__comment
+                                            row margin-reset"
+                                     ng-repeat="rating in vm.data.ratings track by $index">
+
+                                    <div class="col-xs-3 text-center hidden">
+                                        <div class="ma-photo-profile
+                                                        round hidden">
+                                            <img class="img-responsive center-block"
+                                                 src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="Sergio Ruiz">
+                                        </div>
+                                        <h4 class="margin-reset">{{rating.author.firstName}}</h4>
+                                        <h4 class="margin-reset">{{rating.author.lastName}}</h4>
+                                    </div>
+
+                                    <div class="col-xs-12">
+                                        <div class="row margin-reset">
+                                            <p class="ma-p ma-p--small">
+                                                {{rating.review}}
+                                            </p>
+                                        </div>
+                                        <div class="row margin-reset">
+                                            <div class="col-xs-6 padding-reset">
+                                                <div class="reviews-info-box__footer__comments-block__date-flag
+                                                            pull-left">
+                                                    <p class="ma-p ma-p--small" style="font-style: italic; font-weight: 600;">
+                                                        - {{rating.author.firstName}} {{rating.author.lastName}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <div class="reviews-info-box__footer__comments-block__date-flag
+                                                            pull-right">
+                                                    <p class="ma-label
+                                                              ma-label--simple
+                                                              ma-label--simple--default
+                                                              ma-label--simple--primary
+                                                              margin-reset">
+                                                        {{ rating.createdAt | yearMonthFormatFilter }}
+                                                    </p>
+                                                    <strong class="point-separate hidden"></strong>
+                                                    <i class="material-icons md-18
+                                                              md-primary hidden">flag</i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr ng-if="$index + 1 < vm.data.ratings.length"
+                                        style="width: 100%;">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <!--                      END: REVIEWS BLOCK                     -->
+
+
+
+            <!-------------------- START: LOCATION MAP BLOCK ------------------>
+            <div id="teacherProfile-location-block" class="row space-5">
+
+                <div class="col-xs-12">
+
+                    <div class="ma-box location-info-box">
+                        <h4 class="ma-box__title margin-reset" translate>
+                            %profile.teacher.location.title.text
+                        </h4>
+                        <div class="ma-box__content
+                                    ma-box__content--map
+                                    ma-box__content--padding-reset">
+                            <div class="location-map">
+                                <ma-map ng-if="vm.mapConfig"
+                                        map-config="vm.mapConfig"></ma-map>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <!--                    END: LOCATION MAP BLOCK                  -->
+
+        </div>
+        <!--                      END: MIDDLE COLUMN                         -->
+
+
+
+        <!--                     START: RIGHT COLUMN                         -->
+        <!--------------------------------------------------------------------->
+        <div id="userProfile-right-column" class="col-xs-3 hidden-sm">
+
+            <!------------------- START: BOOK A CLASS BLOCK ------------------->
+            <div id="userProfile-meeting-block"
+                 class="teacherProfilePage__booking-block row">
+
+                <div class="col-xs-12">
+
+                    <div class="ma-box">
+                        <h4 class="ma-box__title margin-reset" translate>
+                            %search.container.teacher.price.title.text
+                        </h4>
+                        <div class="ma-box__content">
+                            <form class="meeting-box">
+
+                                <!------------------- START: CLASSES PRICE INFO BLOCK ----------------->
+                                <div class="search-result__teacher__block__price
+                                            row text-center space-1">
+                                    <div class="col-sm-5">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-12">
+                                                <p class="ma-p ma-p--default margin-reset"
+                                                   ng-class="{'ma-p--disable-line-through': !vm.data.price.privateClass.active}"
+                                                   translate>
+                                                    %search.container.teacher.price.private.title.text
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-12">
+                                                <p class="ma-p ma-p--info ma-p--default margin-reset"
+                                                   ng-if="vm.data.price.privateClass.active">
+                                                    ${{vm.data.price.privateClass.hourPrice}} / hr
+                                                </p>
+                                                <i class="material-icons md-24"
+                                                   ng-if="!vm.data.price.privateClass.active">
+                                                    event_busy
+                                                </i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="search-result__teacher__block__price
+                                            row text-center space-4">
+                                    <div class="col-sm-5">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-12">
+                                                <p class="ma-p ma-p--default
+                                                          margin-reset"
+                                                   ng-class="{'ma-p--disable-line-through': !vm.data.price.groupClass.active}"
+                                                   translate>
+                                                    %search.container.teacher.price.group.title.text
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-12">
+                                                <p class="ma-p ma-p--info ma-p--default margin-reset"
+                                                   ng-if="vm.data.price.groupClass.active">
+                                                    ${{vm.data.price.groupClass.hourPrice}} / hr
+                                                </p>
+                                                <i class="material-icons md-24"
+                                                   ng-if="!vm.data.price.groupClass.active">
+                                                    event_busy
+                                                </i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--                   END: CLASSES PRICE INFO BLOCK                 -->
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <a class="ma-btn ma-btn--primary
+                                                  ma-btn--large ma-btn--block"
+                                            href="https://waysily.typeform.com/to/NDPRAb"
+                                            target="_blank" translate>
+                                            %profile.teacher.book.button.text
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <hr class="hidden">
+
+                                <div class="row hidden">
+                                    <div class="col-xs-12 text-center">
+                                        <p class="ma-p ma-p--small margin-reset">
+                                            <strong class="space-right-1">70</strong>
+                                            <span translate>
+                                                %profile.teacher.success_classes.label.text
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <!--                   END: BOOK A CLASS BLOCK                   -->
+
+        </div>
+        <!--                      END: RIGHT COLUMN                          -->
+
+    </div>
+
+</div>

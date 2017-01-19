@@ -58,6 +58,8 @@ $search-map-bottom: 0;
 $search-map-top: 61px;
 $search-map-padding: 0;
 
+$search-teacher-block-height: 500px;
+
 
 /**********************************************************/
 /*                      SEARCH PAGE                       */
@@ -174,6 +176,147 @@ $search-map-padding: 0;
                     .ma-label {
                         margin: $search-info-block-interests-options-interest-margin;
                     }
+                }
+            }
+        }
+    }
+
+    //TEACHER INFO SIDE
+    &__teacher {
+
+        &__block {
+            cursor: pointer;
+            height: $search-teacher-block-height;
+            overflow: hidden;
+
+            &--selected {
+                border: 1px solid #ccc;
+            }
+
+            &__avatar {
+
+                &__container {
+
+                    .ma-icon-container {
+                        position: absolute;
+                        right: 0;
+                        bottom: 0;
+                    }
+                }
+            }
+
+            &__languages {
+
+                &__container {
+
+                    h4 {
+                        padding: 3px;
+                        border-radius: 2px;
+                    }
+
+                    /// TYPE OF CONTAINER
+                    &--primary {
+                        h4 {
+                            background-color: map-get($main-palette, primary);
+                            color: $white;
+                        }
+                    }
+
+                    &--alert {
+                        h4 {
+                            background-color: map-get($main-palette, alert);
+                            color: $white;
+                        }
+                    }
+
+                    &--gray {
+                        h4 {
+                            background-color: #f5f5f5;
+                            color: $black;
+                        }
+                    }
+
+                    &--left {
+                        &--primary {
+                            border-right: 2px dashed map-get($main-palette, primary);
+                            height: 136px;
+                        }
+
+                        &--alert {
+                            border-right: 2px dashed map-get($main-palette, alert);
+                            height: 136px;
+                        }
+
+                        &--gray {
+                            border-right: 1px dashed $light-gray;
+                            height: 136px;
+                        }
+                    }
+
+                }
+            }
+
+            &__native {
+
+                h4 {
+                    padding: 10px;
+                    border-radius: 3px;
+                    background-color: #fff;
+                    border: 2px solid #00B592;
+                    color: #00B592;
+                }
+
+                &--noNative {
+                    h4 {
+                        padding: 10px;
+                        border-radius: 3px;
+                        background-color: #dce0e0;
+                        color: #555;
+                        border: 0 hidden transparent;
+                        text-decoration: line-through;
+                    }
+                }
+            }
+
+            &__type-teacher {
+                .ma-label {
+                    width: 100%;
+                }
+            }
+
+            &__immersion {
+
+                &--NoImmersion {
+                    h3 {
+                        color: #CCC;
+                        text-decoration: line-through;
+                    }
+
+                    .material-icons {
+                        color: #CCC;
+                        vertical-align: text-top;
+                    }
+                }
+
+                .material-icons {
+                    vertical-align: text-top;
+                }
+            }
+
+            &__price {
+                .material-icons {
+                    vertical-align: text-top;
+                    color: #ddd;
+                }
+            }
+
+            &__methodology {
+                padding: 15px 20px;
+                .ma-p {
+                    @include text-truncate-multiline($font-size: 14px,
+                                                     $line-height: $paragraph-lineHeight,
+                                                     $lines-to-show: $paragraph-lines-to-show,
+                                                     $excerpt-bg: transparent);
                 }
             }
         }

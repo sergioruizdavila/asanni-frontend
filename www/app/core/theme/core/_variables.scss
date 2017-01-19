@@ -6,28 +6,30 @@
 //
 //   1. Global
 //   2. Agenda
-//   3. Box
-//   4. Buttons
-//   5. DateTime Picker
-//   5. Dropdown
-//   5. Form
-//   6. Header
-//   7. Header - Blocks (Tabs)
-//   8. Header - Search Bar
-//   9. Header - SubNav
-//   10. Icons
-//   11. Images
-//   12. Input Text
-//   13. Labels
-//   14. Left Nav (small devices)
-//   15. Links
-//   16. List
-//   17. Logo
-//   18. Paragraph
-//   19. Select List
-//   20. Stars
-//   21. Strong
-//   22. Switchs
+//   3. Badge
+//   4. Box
+//   5. Buttons
+//   6. DateTime Picker
+//   7. Dropdown
+//   8. Form
+//   9. Header
+//   10. Header - Blocks (Tabs)
+//   11. Header - Search Bar
+//   12. Header - SubNav
+//   13. Icons
+//   14. Images
+//   15. Input Text
+//   16. Labels
+//   17. Left Nav (small devices)
+//   18. Links
+//   19. List
+//   20. Logo
+//   21. Paragraph
+//   22. Progress Bar
+//   23. Select List
+//   24. Stars
+//   25. Strong
+//   26. Switchs
 
 //**********************************************************
 
@@ -40,6 +42,7 @@ $main-palette: (
   success: #3adb76,
   warning: #e8ce47,
   alert: #ff5a5f,
+  alert-secondary: #d45054,
 );
 
 $light-gray: #dce0e0;
@@ -71,14 +74,17 @@ $global-logo-file: "waysily-logo.png";
 //$global-logo-file: "waysily-logo.svg";
 $global-logo-secondary-file: "waysily-logo-secondary.png";
 //$global-logo-secondary-file: "waysily-logo.svg";
+$global-logo-primary-short-file: "waysily-logo-primary-short.svg";
 $global-logo-secondary-short-file: "waysily-logo-secondary-short.svg";
-$global-photo-default-file: "waysily-photo-default.png";
+$global-photo-default-file: "waysily-photo-default.jpg";
+$global-badge-file: "waysily-badge-teacher.svg";
 
 $body-background: #fafafa;
+
 $body-font-color: $black;
 //$body-font-family: $global-font-family;
 //TEST
-$body-font-family: 'Roboto', sans-serif;
+$body-font-family: 'Lato', 'Helvetica Neue', Helvetica, 'Roboto', sans-serif;
 
 $body-antialiased: true;
 
@@ -176,6 +182,11 @@ $boxMenu-item-withIcon-padding: 15px 25px;
 $boxMenu-item-withIcon-margin: 0;
 
 
+// 2. Badge
+// ----------
+$badge-path: $global-image-path + '/' + $global-badge-file;
+
+
 // 2. Buttons
 // ----------
 $button-margin: 0 0 $global-margin 0;
@@ -210,6 +221,10 @@ $button-tertiary-border: 2px solid $white;
 $button-tertiary-color: $white;
 $button-secondary-color-hover: map-get($main-palette, primary);
 $button-tertiary-border-color: $light-gray;
+
+$button-alert-border-color: map-get($main-palette, alert-secondary);
+$button-alert-background: map-get($main-palette, alert);
+$button-alert-background-hover: map-get($main-palette, alert-secondary);
 
 $button-block-width: 100%;
 
@@ -426,10 +441,30 @@ $input-paddings: (
   default: 10px,
   large: 13px,
 );
+$input-font-size-default: 16px;
 $input-font-size-large: 18px;
 
 $input-primary-border-focus: map-get($main-palette, primary);
 $input-outline-focus: 0;
+
+$input-invalid-background: #fff2ef;
+$input-invalid-border: #ffd1c4;
+
+$input-group-addon-primary-background: map-get($main-palette, primary);
+$input-group-addon-primary-border: 1px solid map-get($main-palette, primary);
+$input-group-addon-primary-font-color: $white;
+
+$input-group-addon-secondary-background: $white;
+$input-group-addon-secondary-border: 1px solid map-get($main-palette, primary);
+$input-group-addon-secondary-font-color: map-get($main-palette, primary);
+
+$input-group-addon-alert-background: map-get($main-palette, alert);
+$input-group-addon-alert-border: 1px solid map-get($main-palette, alert);
+$input-group-addon-alert-font-color: $white;
+
+$input-group-addon-primary-alert-background: $white;
+$input-group-addon-primary-alert-border: 1px solid map-get($main-palette, alert);
+$input-group-addon-primary-alert-font-color: map-get($main-palette, alert);
 
 // 6. Labels
 // ---------
@@ -479,7 +514,21 @@ $label-box-primary-background: map-get($main-palette, primary);
 $label-box-secondary-font-color: map-get($main-palette, primary);
 $label-box-secondary-border: 2px solid map-get($main-palette, primary);
 
+$label-box-primary-altern-font-color: $white;
+$label-box-primary-altern-background: map-get($main-palette, secondary);
+
+$label-box-alert-font-color: $white;
+$label-box-alert-background: map-get($main-palette, alert);
+
+$label-box-alert-secondary-font-color: map-get($main-palette, alert);
+$label-box-alert-secondary-border: 2px solid map-get($main-palette, alert);
+
+$label-box-gray-font-color: $black;
+$label-box-gray-background: $light-gray;
+$label-box-gray-secondary-border: 2px solid $light-gray;
+
 $labelsBox-dashed-border: 2px dashed $light-gray;
+$labelsBox-dashed-invalid-border: 2px dashed #ffd1c4;
 $labelsBox-dashed-height: 100px;
 $labelsBox-dashed-padding: 5px;
 
@@ -537,8 +586,10 @@ $link-font-color: $black;
 $link-border: 1px solid transparent;
 
 $link-box-radius-hover: 3px;
-$link-box-background-hover: map-get($main-palette, primary);
-$link-box-border-hover: map-get($main-palette, secondary);
+$link-box-primary-background-hover: map-get($main-palette, primary);
+$link-box-primary-border-hover: map-get($main-palette, secondary);
+$link-box-alert-background-hover: map-get($main-palette, alert);
+$link-box-alert-border-hover: map-get($main-palette, alert-secondary);
 $link-box-font-color-hover: $white;
 
 $link-simple-font-color: $black;
@@ -562,11 +613,14 @@ $list-message-status-height-unread: 15px;
 // ----------
 $logo-path: $global-image-path + '/' + $global-logo-file;
 $logo-path-secondary: $global-image-path + '/' + $global-logo-secondary-file;
+$logo-path-primary-short: $global-image-path + '/' + $global-logo-primary-short-file;
 $logo-path-secondary-short: $global-image-path + '/' + $global-logo-secondary-short-file;
 $logo-width: 145px;
 $logo-height: 32px;
 $logo-short-width: 45px;
 $logo-short-height: 32px;
+$logo-primary-short-width: 61px;
+$logo-primary-short-height: 61px;
 
 
 // 9. Paragraph
@@ -579,6 +633,18 @@ $paragraph-lines-to-show: 3;
 
 $paragraph-font-color: $dark-gray;
 $paragraph-bold-font-color: $black;
+
+$paragraph-alert-font-color: map-get($main-palette, alert);
+$paragraph-primary-font-color: map-get($main-palette, primary);
+$paragraph-info-font-color: map-get($main-palette, secondary);
+
+
+// 10. Progress Bar
+// --------------
+
+$progressBar-background: #7CD175;
+$progressBar-line: 3px dashed $medium-gray;
+$progressBar-circle-background: $medium-gray;
 
 
 // 11. Select List
@@ -593,7 +659,7 @@ $select-tertiary-background: 0 0;
 $select-tertiary-border: 2px solid #FFF;
 $select-tertiary-font-color: #FFF;
 
-$select-borderRound-radius: 7px;
+$select-borderRound-radius: 4px;
 
 $select-tertiary-icon-color: $white;
 

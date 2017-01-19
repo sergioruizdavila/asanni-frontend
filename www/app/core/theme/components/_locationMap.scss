@@ -16,6 +16,10 @@
 
     &--border {
         border: 1px solid $light-gray;
+        &--invalid {
+            background-color: #fff2ef;
+            border-color: #ffd1c4;
+        }
     }
 
 }

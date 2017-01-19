@@ -10,7 +10,7 @@ module app.core.restApi {
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
-    export interface IRestApi extends ng.resource.IResource<any>{
+    export interface IRestApi extends ng.resource.IResource<any> {
         show: any;
         query: any;
         queryObject: any;
@@ -73,13 +73,13 @@ module app.core.restApi {
         .config(configApi);
 
         configApi.$inject = ['$httpProvider'];
-        customHttpInterceptor.$inject = ['$q'];
+        customHttpInterceptor.$inject = ['$q', 'mainApp.core.util.messageUtilService'];
 
         function configApi($httpProvider) {
             $httpProvider.interceptors.push('customHttpInterceptor');
         }
 
-        function customHttpInterceptor($q) {
+        function customHttpInterceptor($q, messageUtil: app.core.util.messageUtil.IMessageUtilService) {
             return {
                 request: function(req) {
                     req.url = decodeURIComponent(req.url);
@@ -92,6 +92,12 @@ module app.core.restApi {
                     return res;
                 },
                 responseError: function (rejection) {
+                    if(rejection.data){
+                        messageUtil.error(rejection.data.Message);
+                    } else {
+                        messageUtil.error('');
+                    }
+
                     return rejection;
                 }
             }

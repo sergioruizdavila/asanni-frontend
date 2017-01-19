@@ -1,0 +1,145 @@
+<!----------------------------------------------------->
+<!--         ADD NEW TEACHER CERTIFICATE MODAL       -->
+<!----------------------------------------------------->
+
+<div class="ma-box modalCertificate">
+
+    <!--                               TITLE                                 -->
+    <!------------------------------------------------------------------------->
+    <h4 class="ma-box__title margin-reset">
+        <span translate>%modal.certificate.title.text</span>
+        <div class="ma-box__title__right-block pull-right">
+            <i class="material-icons
+                      md-18
+                      md-dark md-dark--clicked"
+                      ng-click="vm.close()">close</i>
+        </div>
+    </h4>
+
+
+    <!--                              CONTENT                                -->
+    <!------------------------------------------------------------------------->
+    <div class="ma-box__content modalCertificate__content">
+
+        <!--                START: ADD CERTIFICATE FORM BLOCK                -->
+        <!--------------------------------------------------------------------->
+        <form  id="modalCertificate-form-block" class="ma-form
+                                                      ma-form--basic">
+
+            <!-- Certificate Name Input Text -->
+            <div class="form-group ma-form-group">
+                <label for="name-certificate-input" translate>
+                    %modal.certificate.form.name.text
+                </label>
+                <input id="name-certificate-input" type="text"
+                        class="ma-input
+                                ma-input--large"
+                        ng-class="{'ma-input--invalid': !vm.validate.name.valid}"
+                        ng-model="vm.form.name">
+                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                   ng-show="!vm.validate.name.valid">
+                    <span>{{vm.validate.name.message}}</span>
+                </p>
+            </div>
+
+            <!-- School/Institution Input Text -->
+            <div class="form-group ma-form-group">
+                <label for="institution-certificate-input" translate>
+                    %modal.certificate.form.institution.text
+                </label>
+                <input id="institution-certificate-input" type="text"
+                        class="ma-input
+                                ma-input--large"
+                        ng-class="{'ma-input--invalid': !vm.validate.institution.valid}"
+                        ng-model="vm.form.institution"
+                        placeholder="e.g. English Institute / Spanish Institute">
+                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                   ng-show="!vm.validate.institution.valid">
+                    <span>{{vm.validate.institution.message}}</span>
+                </p>
+            </div>
+
+        </form>
+
+        <hr>
+
+        <form class="form-inline">
+
+            <!-- Date Received Input -->
+            <div class="row">
+                <div class="hidden-xs col-sm-3"></div>
+
+                <div class="col-xs-12 col-sm-6">
+                    <div class="row center-xs middle-xs">
+                        <div class="col-md-6 text-right">
+                            <label for="dateReceived-certificate-input" translate>
+                                %modal.certificate.form.date_received.text
+                            </label>
+                        </div>
+                        <div class="col-md-6 text-left">
+                            <!-- Date Received Year -->
+                            <div class="ma-select-container
+                                        ma-select-container--large">
+                                <select id="ateReceived-certificate-input"
+                                        class="ma-input ma-select
+                                               ma-select--large"
+                                        ng-model="vm.receivedYearObject"
+                                        ng-class="{'ma-input--invalid': !vm.validate.dateReceived.valid}"
+                                        ng-options="year.value for year in vm.listReceivedYears | orderBy:'value':true track by year.value"
+                                        name="teacher_certificate[date_received]"
+                                        class="form-control">
+                                        <option value="" disabled selected>
+                                            yyyy
+                                        </option>
+                                </select>
+                                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                    ng-show="!vm.validate.dateReceived.valid">
+                                    <span>{{vm.validate.dateReceived.message}}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden-xs col-sm-3"></div>
+            </div>
+        </form>
+
+        <hr>
+
+        <form  id="modalCertificate-form-block" class="ma-form
+                                                      ma-form--basic">
+
+            <div id="modalCertificate-description-block">
+                <!-- Description Input -->
+                <div class="form-group ma-form-group">
+                    <label class="space-top-4 space-2" translate>
+                        %modal.certificate.form.description.text
+                    </label>
+                    <textarea id="description-certificate-input"
+                              name="teacher_certificate[description]"
+                              ng-model="vm.form.description"
+                              class="ma-input ma-input--large ma-textarea"
+                              translate
+                              translate-attr-placeholder="%modal.certificate.form.description.placeholder.text"
+                              rows="4" cols="20"></textarea>
+                </div>
+
+            </div>
+
+        </form>
+        <!--                 END: ADD CERTIFICATE FORM BLOCK                 -->
+
+    </div>
+
+
+    <!--                              FOOTER                                 -->
+    <!------------------------------------------------------------------------->
+    <div class="ma-box__footer text-center">
+        <button class="ma-btn ma-btn--primary ma-btn--large"
+                ng-click="vm.save()" translate>
+            %global.save.button.text
+        </button>
+    </div>
+
+</div>

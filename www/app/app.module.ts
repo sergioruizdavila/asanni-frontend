@@ -16,15 +16,30 @@
             'mainApp.core.util',
             'mainApp.localStorage',
             'mainApp.core.restApi',
+            'mainApp.core.s3Upload',
+            'mainApp.models.feedback',
             'mainApp.models.user',
             'mainApp.models.student',
             'mainApp.models.teacher',
             'mainApp.models.school',
             'mainApp.pages.main',
             'mainApp.pages.studentLandingPage',
+            'mainApp.pages.teacherLandingPage',
+            'mainApp.pages.landingPage',
             'mainApp.pages.searchPage',
+            'mainApp.pages.createTeacherPage',
+            'mainApp.pages.teacherProfilePage',
+            'mainApp.pages.userProfilePage',
+            'mainApp.pages.userEditProfilePage',
+            'mainApp.pages.userEditAgendaPage',
+            'mainApp.pages.userEditMediaPage',
+            'mainApp.pages.userInboxPage',
+            'mainApp.pages.userInboxDetailsPage',
+            'mainApp.pages.meetingConfirmationPage',
             'mainApp.components.header',
+            'mainApp.components.rating',
             'mainApp.components.map',
+            'mainApp.components.modal',
             'mainApp.components.footer'
         ])
         .config(config);
@@ -36,8 +51,8 @@
         /*$locationProvider.html5Mode(true);
         $locationProvider.hashPrefix('!');*/
 
-        //$urlRouterProvider.otherwise('/page');
-        $urlRouterProvider.otherwise('/page/landing/student');
+        $urlRouterProvider.otherwise('/page/main');
+        //$urlRouterProvider.otherwise('/page/landing/student');
 
         /* Translate Provider */
         let prefix = 'assets/i18n/';
@@ -48,7 +63,7 @@
             suffix: suffix
         });
 
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.preferredLanguage('es');
 
     }
 

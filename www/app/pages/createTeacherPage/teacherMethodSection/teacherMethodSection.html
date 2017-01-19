@@ -1,0 +1,294 @@
+<!----------------------------------------------------------------------------->
+<!--                         STEP 6 SECTION TEMPLATE                         -->
+<!----------------------------------------------------------------------------->
+
+
+<!---------------------------- START: LEFT COLUMN ----------------------------->
+<div id="createTeacher-method-left-column"
+     class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+
+    <div id="createTeacher-block"
+         class="createTeacherPage__block row">
+
+        <div class="col-xs-12">
+
+            <div class="ma-box">
+
+                <h4 class="ma-box__title margin-reset"
+                    ng-mouseover="vm.changeHelpText('default')" translate>
+                    %create.teacher.method.title.text
+                </h4>
+
+                <div class="ma-box__content">
+
+                    <!------------- START: METHODOLOGY INFO BLOCK ------------->
+
+                    <!-- Methodology TextArea Input -->
+                    <form class="ma-form ma-form--basic space-6" novalidate>
+
+                        <div id="teacher-type-methodology-block"
+                             ng-mouseover="vm.changeHelpText('methodology')">
+                            <div class="form-group ma-form-group">
+                                <label for="type-methodology-input"
+                                       class="space-top-2 space-2" translate>
+                                    %create.teacher.method.form.methodology.text
+                                </label>
+                                <textarea id="type-methodology-input"
+                                          name="teacher[methodology]"
+                                          ng-model="vm.form.methodology"
+                                          class="ma-input ma-input--large ma-textarea"
+                                          ng-class="{'ma-input--invalid': !vm.validate.methodology.valid}"
+                                          translate
+                                          translate-attr-placeholder="%create.teacher.method.form.methodology.placeholder.text"
+                                          rows="4" cols="20"></textarea>
+                                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                  ng-show="!vm.validate.methodology.valid">
+                                  <span>{{vm.validate.methodology.message}}</span>
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </form>
+
+
+                    <hr>
+
+
+                    <!-- Immersion Switch -->
+                    <div id="teacher-immersion-block"
+                         ng-mouseover="vm.changeHelpText('immersion')"
+                         class="row">
+                        <div class="hidden-xs col-sm-3"></div>
+
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="row center-xs middle-xs">
+                                <div class="col-md-6 text-right">
+                                    <label for="teacher-immersion-input" translate>
+                                        %create.teacher.method.form.imm.text
+                                    </label>
+                                </div>
+                                <div class="col-md-6 text-left">
+                                    <div class="ma-switch">
+                                        <button class="ma-btn ma-btn--default ma-switch__btn"
+                                                ng-disabled="vm.form.immersion.Active == true"
+                                                translate
+                                                ng-click="vm.changeStatus()">
+                                            %global.yes.button.text
+                                        </button>
+                                        <button class="ma-btn ma-btn--default ma-switch__btn"
+                                                ng-disabled="vm.form.immersion.Active == false"
+                                                ng-disabled="vm.form.immersion.Active" translate
+                                                ng-click="vm.changeStatus()">
+                                            %global.no.button.text
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hidden-xs col-sm-3"></div>
+                    </div>
+
+
+                    <hr ng-if="vm.form.immersion.Active == true">
+
+
+                    <div class="immersion-block" ng-if="vm.form.immersion.Active == true">
+
+                        <!-- Type of Immersion Select List-->
+                        <div class="row bottom-xs">
+
+                            <div class="col-xs-12 col-sm-6">
+
+                                <div class="form-group ma-form-group margin-reset">
+                                    <label for="teacher-typeOfImmersion-input" translate>
+                                        %create.teacher.method.form.imm.type.text
+                                    </label>
+                                    <div class="ma-select-container
+                                                ma-select-container--large" style="width:100%;">
+                                        <select id="teacher-typeOfImmersion-input"
+                                                class="ma-input ma-select
+                                                       ma-select--large"
+                                                ng-model="vm.typeObject"
+                                                ng-options="type.value | translate disable when type.disabled for type in vm.typeOfImmersionList track by type.code"
+                                                name="teacher[type]" class="form-control">
+                                                <option value="" disabled selected translate>
+                                                    %create.teacher.method.form.imm.type.option_list.text
+                                                </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-xs-12 col-sm-6 text-right">
+                                <!-- Add Button -->
+                                <button class="ma-btn ma-btn--primary ma-btn--large"
+                                        ng-click="vm._addNewImmersion()"
+                                        translate>
+                                    %global.add.button.text
+                                </button>
+                            </div>
+                        </div>
+
+
+
+                        <!-- Type of Immersion List Box -->
+                        <div class="row space-top-3">
+                            <div class="col-xs-12">
+
+                                <div class="form-group ma-form-group"
+                                     ng-mouseover="vm.changeHelpText('immersion')">
+                                    <div id="teacher-immersion-list"
+                                         class="text-left ma-labels-box ma-labels-box--dashed"
+                                         ng-class="{'ma-labels-box--dashed--invalid': !vm.validate.typeOfImmersionList.valid}">
+                                         <div class="ma-label ma-label--box
+                                                     ma-label--box--secondary
+                                                     ma-label--box--default
+                                                     ma-label--box--default--with-icon
+                                                     ma-label--box--space2"
+                                              ng-repeat="immersion in vm.typeOfImmersionOptionBox">
+                                             {{immersion.value | translate}}
+                                             <i class="ma-label--box--default--with-icon__icon
+                                                           material-icons"
+                                                ng-click="vm._removeImmersion(immersion.key)">clear</i>
+                                         </div>
+                                    </div>
+                                    <div class="row margin-reset">
+                                        <div class="col-sm-12 padding-reset">
+                                            <p class="ma-p ma-p--default ma-p--alert pull-left"
+                                               ng-show="!vm.validate.typeOfImmersionList.valid">
+                                                <span>{{vm.validate.typeOfImmersionList.message}}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                        <!-- Other type of Immersion Input -->
+                        <form class="ma-form ma-form--basic space-top-2"
+                              ng-mouseover="vm.changeHelpText('immersion')"
+                              novalidate>
+
+                            <div id="teacher-otherType-methodology-block">
+                                <div class="form-group ma-form-group">
+                                    <label class="space-top-2 space-2" translate>
+                                        %create.teacher.method.form.imm.type.other.text
+                                    </label>
+                                    <textarea id="otherType-immersion-input"
+                                              name="teacher_immersion[otherType]"
+                                              ng-model="vm.form.immersion.OtherCategory"
+                                              class="ma-input ma-input--large ma-textarea"
+                                              translate
+                                              translate-attr-placeholder="%create.teacher.method.form.imm.type.other.placeholder.text"
+                                              rows="4" cols="20"></textarea>
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                    <!--              END: METHODOLOGY INFO BLOCK             -->
+
+                </div>
+
+                <div class="ma-box__footer">
+
+                    <div class="row middle-xs">
+
+                        <div class="col-xs-6 col-sm-4 text-left">
+
+                            <button class="ma-btn
+                                           ma-btn--transparent
+                                           ma-btn--medium
+                                           ma-btn--withIcon"
+                                      ng-click="vm.goToBack()">
+                                <i class="material-icons md-18 md-dark">
+                                    keyboard_backspace
+                                </i>
+                                <span translate>%global.back.button.text</span>
+                            </button>
+
+                        </div>
+
+                        <div class="hidden-xs col-sm-4"></div>
+
+                        <div class="col-xs-6 col-sm-4 text-right">
+
+                            <button class="ma-btn
+                                           ma-btn--primary
+                                           ma-btn--large"
+                                    ng-click="vm.goToNext()" translate>
+                               %global.next.button.text
+                           </button>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<!--                           END: LEFT COLUMN                              -->
+
+
+<!--------------------------- START: RIGHT COLUMN ----------------------------->
+<div id="createTeacher-right-column"
+     class="createTeacherPage__help-block
+            col-md-4 col-lg-4 hidden-xs hidden-sm">
+
+    <div class="ma-box space-5">
+
+        <div class="ma-box__content">
+
+            <!----------------- START: HELP AND INFO BLOCK -------------------->
+            <div id="createTeacher-info-block"
+                 class="row margin-reset text-center">
+
+                <div class="col-xs-12">
+                    <!-- Help Icon Block -->
+                    <div class="row">
+                        <div class="col-xs-12 text-right padding-reset">
+                            <i class="material-icons md-36 md-primary">
+                                 lightbulb_outline
+                             </i>
+                        </div>
+                    </div>
+                    <!-- Help Title Block -->
+                    <div class="row">
+                        <div class="col-xs-12 text-left">
+                            <h4>
+                                {{vm.helpText.title}}
+                            </h4>
+                        </div>
+                    </div>
+                    <!-- Help Text Block -->
+                    <div class="row">
+                        <div class="col-xs-12 text-left">
+                            <p class="ma-p ma-p--default">
+                                {{vm.helpText.description}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!--                END: HELP AND INFO BLOCK                     -->
+
+        </div>
+
+    </div>
+
+</div>
+<!--                          END: RIGHT COLUMN                              -->

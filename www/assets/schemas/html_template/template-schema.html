@@ -1,3 +1,7 @@
+
+
+
+
 <div class="container">
     <!------------------------------>
     <!--         TITLES           -->
@@ -82,10 +86,10 @@
                            font-style: normal;
                            white-space: nowrap;">Large Paragraph</h4>
             <p class="ma-p ma-p--large">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque rutrum pulvinar magna, et iaculis neque posuere a. Suspendisse sit amet mollis nunc, nec faucibus ipsum. Nunc et nisl eget enim gravida sagittis. Donec massa nulla, tempor eu orci quis,
-                tincidunt tincidunt odio. Cras eleifend ex non arcu sollicitudin, ac rhoncus lectus sollicitudin. Donec auctor eu risus in tincidunt. In tincidunt erat volutpat dolor varius ullamcorper. Mauris laoreet orci eget purus pretium auctor. Duis
-                ex sem, vulputate ac tellus vel, posuere gravida nulla. Integer diam diam, luctus sit amet tellus in, eleifend viverra purus. Vestibulum commodo elit lorem, eget blandit sem placerat sed. Quisque eu metus iaculis, consequat augue id, auctor
-                massa. Phasellus aliquet nec urna vitae.</p>
+                Lorem ipsum dolor sit amet, consectetur <span class="underline underline--alert">adipiscing</span> elit. Quisque rutrum pulvinar magna, et iaculis neque posuere a. Suspendisse sit amet <span class="strong strong--alert">mollis</span> nunc, nec faucibus ipsum. Nunc et nisl eget enim gravida sagittis. Donec massa nulla, tempor eu orci quis,
+                tincidunt tincidunt odio. Cras <span class="strong strong--primary">eleifend</span> ex non arcu sollicitudin, ac rhoncus lectus sollicitudin. Donec auctor eu risus in tincidunt. In tincidunt erat volutpat dolor varius ullamcorper. Mauris laoreet orci eget purus pretium auctor. Duis
+                ex sem, vulputate ac tellus vel, posuere gravida nulla. Integer <span class="underline underline--primary">diam diam</span>, luctus sit amet tellus in, eleifend viverra purus. Vestibulum commodo elit lorem, eget blandit sem placerat sed. Quisque eu metus iaculis, consequat augue id, auctor
+                massa. <span class="underline underline--primary underline--strong">Phasellus</span> aliquet nec urna vitae.</p>
         </div>
     </div>
 
@@ -149,6 +153,153 @@
                                 by a stork. We use this data for analysis and
                                 never share it with other users.
                             </p>
+                        </div>
+
+                        <!-- Input small with addon (prefix)-->
+                        <div class="form-group ma-form-group">
+                            <label for="inputWithAddon1">Input small with Addon (dollars)</label>
+                            <div class="input-group ma-input-group">
+                                <div class="input-group-addon
+                                            ma-input-group-addon
+                                            ma-input-group-addon--small
+                                            ma-input-group-addon--alert-secondary">US$</div>
+                                <input id="inputWithAddon1" type="text"
+                                       class="ma-input
+                                              ma-input--small
+                                              ma-input--left-addon"
+                                       placeholder="Amount">
+                                <!--<div class="input-group-addon">.00</div>-->
+                            </div>
+                        </div>
+
+                        <!-- Input default with addon (prefix)-->
+                        <div class="form-group ma-form-group">
+                            <label for="inputWithAddon2">Input default with Addon (dollars)</label>
+                            <div class="input-group ma-input-group">
+                                <div class="input-group-addon
+                                            ma-input-group-addon
+                                            ma-input-group-addon--default
+                                            ma-input-group-addon--alert-secondary">US$</div>
+                                <input id="inputWithAddon2" type="text"
+                                       class="ma-input
+                                              ma-input--default
+                                              ma-input--left-addon"
+                                       placeholder="Amount">
+                            </div>
+                        </div>
+
+                        <!-- Input large with addon (prefix)-->
+                        <div class="form-group ma-form-group">
+                            <label for="inputWithAddon3">Input large with Addon (dollars)</label>
+                            <div class="input-group ma-input-group">
+                                <div class="input-group-addon
+                                            ma-input-group-addon
+                                            ma-input-group-addon--large
+                                            ma-input-group-addon--alert-secondary">US$</div>
+                                <input id="inputWithAddon3" type="text"
+                                       class="ma-input
+                                              ma-input--large
+                                              ma-input--left-addon"
+                                       placeholder="Amount">
+                            </div>
+                        </div>
+
+                        <!-- Input with addon (prefix) several colors -->
+                        <div class="form-group ma-form-group">
+                            <label for="inputWithAddon4">Input with Addon (primary color)</label>
+                            <div class="input-group ma-input-group">
+                                <div class="input-group-addon
+                                            ma-input-group-addon
+                                            ma-input-group-addon--small
+                                            ma-input-group-addon--primary">US$</div>
+                                <input id="inputWithAddon4" type="text"
+                                       class="ma-input
+                                              ma-input--small
+                                              ma-input--left-addon"
+                                       placeholder="Amount">
+                            </div>
+                        </div>
+
+                        <div class="form-group ma-form-group">
+                            <label for="inputWithAddon5">Input with Addon (secondary color)</label>
+                            <div class="input-group ma-input-group">
+                                <div class="input-group-addon
+                                            ma-input-group-addon
+                                            ma-input-group-addon--small
+                                            ma-input-group-addon--secondary">US$</div>
+                                <input id="inputWithAddon5" type="text"
+                                       class="ma-input
+                                              ma-input--small
+                                              ma-input--left-addon"
+                                       placeholder="Amount">
+                            </div>
+                        </div>
+
+                        <div class="form-group ma-form-group">
+                            <label for="inputWithAddon6">Input with Addon (alert color)</label>
+                            <div class="input-group ma-input-group">
+                                <div class="input-group-addon
+                                            ma-input-group-addon
+                                            ma-input-group-addon--small
+                                            ma-input-group-addon--alert">US$</div>
+                                <input id="inputWithAddon6" type="text"
+                                       class="ma-input
+                                              ma-input--small
+                                              ma-input--left-addon"
+                                       placeholder="Amount">
+                            </div>
+                        </div>
+
+                        <div class="form-group ma-form-group">
+                            <label for="inputWithAddon7">Input with Addon (alert secondary color)</label>
+                            <div class="input-group ma-input-group">
+                                <div class="input-group-addon
+                                            ma-input-group-addon
+                                            ma-input-group-addon--small
+                                            ma-input-group-addon--alert-secondary">US$</div>
+                                <input id="inputWithAddon7" type="text"
+                                       class="ma-input
+                                              ma-input--small
+                                              ma-input--left-addon"
+                                       placeholder="Amount">
+                            </div>
+                        </div>
+
+                        <!-- Input with addon (suffix) -->
+                        <div class="form-group ma-form-group">
+                            <label for="inputWithAddon8">Input with Addon (suffix)</label>
+                            <div class="input-group ma-input-group">
+                                <input id="inputWithAddon8" type="text"
+                                       class="ma-input
+                                              ma-input--small
+                                              ma-input--right-addon"
+                                       placeholder="Amount">
+                                <div class="input-group-addon
+                                            ma-input-group-addon
+                                            ma-input-group-addon--small
+                                            ma-input-group-addon--primary">.00</div>
+                            </div>
+                        </div>
+
+                        <!-- Input with addon (prefix and suffix) -->
+                        <div class="form-group ma-form-group">
+                            <label for="inputWithAddon9">Input with Addon (prefix and suffix)</label>
+                            <div class="input-group ma-input-group">
+                                <div class="input-group-addon
+                                            ma-input-group-addon
+                                            ma-input-group-addon--small
+                                            ma-input-group-addon--primary">US$</div>
+                                <input id="inputWithAddon9" type="text"
+                                       class="ma-input
+                                              ma-input--small
+                                              ma-input--right-addon
+                                              ma-input--left-addon"
+                                       placeholder="Amount">
+                                <div class="input-group-addon
+                                            ma-input-group-addon
+                                            ma-input-group-addon--small
+                                            ma-input-group-addon--primary">.00</div>
+                            </div>
                         </div>
 
                         <!-- Small Select Input -->
@@ -757,9 +908,101 @@
 
     <hr>
 
+    <button class="ma-btn
+                   ma-btn--primary
+                   ma-btn--small
+                   ma-btn--onlyIcon
+                   ma-btn--onlyIcon--small">
+        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+    </button>
+
+    <button class="ma-btn
+                   ma-btn--primary
+                   ma-btn--default
+                   ma-btn--onlyIcon
+                   ma-btn--onlyIcon--default">
+        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+    </button>
+
+    <button class="ma-btn
+                   ma-btn--primary
+                   ma-btn--large
+                   ma-btn--onlyIcon
+                   ma-btn--onlyIcon--large">
+        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+    </button>
+
+    <hr>
+
+    <button class="ma-btn ma-btn--transparent ma-btn--small">
+        btn sm transparent
+    </button>
+
+    <button class="ma-btn ma-btn--transparent ma-btn--default">
+        btn df transparent
+    </button>
+
+    <button class="ma-btn ma-btn--transparent ma-btn--medium">
+        btn md transparent
+    </button>
+
+    <button class="ma-btn ma-btn--transparent ma-btn--large">
+        btn lg transparent
+    </button>
+
+    <hr>
+
+    <button class="ma-btn ma-btn--transparent ma-btn--small ma-btn--withIcon">
+        <i class="material-icons md-12 md-dark">
+            keyboard_backspace
+        </i>
+        btn sm trans withIcon
+    </button>
+
+    <button class="ma-btn ma-btn--transparent ma-btn--default ma-btn--withIcon">
+        <i class="material-icons md-18 md-dark">
+            keyboard_backspace
+        </i>
+        btn df trans withIcon
+    </button>
+
+    <button class="ma-btn ma-btn--transparent ma-btn--medium ma-btn--withIcon">
+        <i class="material-icons md-18 md-dark">
+            keyboard_backspace
+        </i>
+        btn md trans withIcon
+    </button>
+
+    <button class="ma-btn ma-btn--transparent ma-btn--large ma-btn--withIcon">
+        <i class="material-icons md-24 md-dark">
+            keyboard_backspace
+        </i>
+        btn lg trans withIcon
+    </button>
+
+    <hr>
+
     <a class="ma-link ma-link--box ma-link--box--small ma-link--box--primary" href="#">See more small link...</a>
     <a class="ma-link ma-link--box ma-link--box--default ma-link--box--primary" href="#">See more default link...</a>
     <a class="ma-link ma-link--box ma-link--box--large ma-link--box--primary" href="#">See more large link...</a>
+
+    <hr>
+
+    <a class="ma-link ma-link--box ma-link--box--small ma-link--box--alert" href="#">See more small link...</a>
+    <a class="ma-link ma-link--box ma-link--box--default ma-link--box--alert" href="#">See more default link...</a>
+    <a class="ma-link ma-link--box ma-link--box--large ma-link--box--alert" href="#">See more large link...</a>
+
+    <hr>
+
+    <a class="ma-link ma-link--box ma-link--box--small ma-link--box--underline ma-link--box--underline--primary" href="#">See more small link...</a>
+    <a class="ma-link ma-link--box ma-link--box--default ma-link--box--underline ma-link--box--underline--primary" href="#">See more default link...</a>
+    <a class="ma-link ma-link--box ma-link--box--large ma-link--box--underline ma-link--box--underline--primary" href="#">See more large link...</a>
+
+    <hr>
+
+    <a class="ma-link ma-link--box ma-link--box--small ma-link--box--underline ma-link--box--underline--alert" href="#">See more small link...</a>
+    <a class="ma-link ma-link--box ma-link--box--default ma-link--box--underline ma-link--box--underline--alert" href="#">See more default link...</a>
+    <a class="ma-link ma-link--box ma-link--box--large ma-link--box--underline ma-link--box--underline--alert" href="#">See more large link...</a>
 
     <hr>
 
@@ -821,77 +1064,478 @@
                    white-space: nowrap;">Labels</h2>
 
     <div class="row margin-reset">
-        <h3 style="text-decoration: none;
-                      letter-spacing: 0;
-                      font-style: normal;
-                      white-space: nowrap;">Label Box</h3>
 
-        <div class="ma-label
-                    ma-label--box
-                    ma-label--box--secondary
-                    ma-label--box--small
-                    ma-label--box--space5">small label box</div>
-        <div class="ma-label
-                    ma-label--box
-                    ma-label--box--secondary
-                    ma-label--box--default
-                    ma-label--box--space5">default label box</div>
-        <div class="ma-label
-                    ma-label--box
-                    ma-label--box--secondary
-                    ma-label--box--large
-                    ma-label--box--space5">large label box</div>
-    </div>
+        <div class="col-md-12">
+            <h3 style="text-decoration: none;
+                          letter-spacing: 0;
+                          font-style: normal;
+                          white-space: nowrap;">Label Box</h3>
 
-    <div class="row margin-reset">
-        <h3>Label Box with Icon</h3>
-        <div class="ma-label ma-label--box
-                    ma-label--box--secondary
-                    ma-label--box--small
-                    ma-label--box--small--with-icon
-                    ma-label--box--space5">
-             Small Label Box
-             <i class="ma-label--box--small--with-icon__icon
-                               material-icons">clear</i>
-         </div>
-         <div class="ma-label ma-label--box
-                     ma-label--box--secondary
-                     ma-label--box--default
-                     ma-label--box--default--with-icon
-                     ma-label--box--space5">
-              Default Label Box
-              <i class="ma-label--box--default--with-icon__icon
-                                material-icons">clear</i>
-          </div>
-          <div class="ma-label ma-label--box
-                      ma-label--box--secondary
-                      ma-label--box--large
-                      ma-label--box--large--with-icon
-                      ma-label--box--space5">
-               Large Label Box
-               <i class="ma-label--box--large--with-icon__icon
-                                 material-icons">clear</i>
-           </div>
+            <div class="ma-label
+                        ma-label--box
+                        ma-label--box--secondary
+                        ma-label--box--small
+                        ma-label--box--space5">small label box</div>
+            <div class="ma-label
+                        ma-label--box
+                        ma-label--box--secondary
+                        ma-label--box--default
+                        ma-label--box--space5">default label box</div>
+            <div class="ma-label
+                        ma-label--box
+                        ma-label--box--secondary
+                        ma-label--box--large
+                        ma-label--box--space5">large label box</div>
+
+        </div>
 
     </div>
 
-    <div class="row margin-reset">
-        <h3 style="text-decoration: none;
-                      letter-spacing: 0;
-                      font-style: normal;
-                      white-space: nowrap;">Simple Label</h3>
 
-        <div class="ma-label ma-label--simple ma-label--simple--small margin-reset">small simple label</div>
-        <strong class="point-separate"></strong>
-        <div class="ma-label ma-label--simple ma-label--simple--default margin-reset">default simple label</div>
-        <strong class="point-separate"></strong>
-        <div class="ma-label ma-label--simple ma-label--simple--medium margin-reset">medium simple label</div>
-        <strong class="point-separate"></strong>
-        <div class="ma-label ma-label--simple ma-label--simple--large margin-reset">large simple label</div>
+    <div class="row margin-reset">
+
+        <div class="col-md-12">
+            <h3 style="text-decoration: none;
+                          letter-spacing: 0;
+                          font-style: normal;
+                          white-space: nowrap;">Label Box Color</h3>
+
+            <div class="ma-label
+                        ma-label--box
+                        ma-label--box--primary
+                        ma-label--box--default
+                        ma-label--box--space5">label primary box</div>
+            <div class="ma-label
+                        ma-label--box
+                        ma-label--box--primary-altern
+                        ma-label--box--default
+                        ma-label--box--space5">label primary-altern box</div>
+            <div class="ma-label
+                        ma-label--box
+                        ma-label--box--secondary
+                        ma-label--box--default
+                        ma-label--box--space5">label secondary box</div>
+            <div class="ma-label
+                        ma-label--box
+                        ma-label--box--alert
+                        ma-label--box--default
+                        ma-label--box--space5">label alert box</div>
+            <div class="ma-label
+                        ma-label--box
+                        ma-label--box--alert-secondary
+                        ma-label--box--default
+                        ma-label--box--space5">label alert-altern box</div>
+            <div class="ma-label
+                        ma-label--box
+                        ma-label--box--gray
+                        ma-label--box--default
+                        ma-label--box--space5">label gray box</div>
+            <div class="ma-label
+                        ma-label--box
+                        ma-label--box--gray
+                        ma-label--box--gray--line-through
+                        ma-label--box--default
+                        ma-label--box--space5">label gray with through-line box</div>
+
+        </div>
+
+    </div>
+
+
+    <div class="row margin-reset">
+
+        <div class="col-md-12">
+            <h3>Label Box with Icon</h3>
+            <div class="ma-label ma-label--box
+                        ma-label--box--secondary
+                        ma-label--box--small
+                        ma-label--box--small--with-icon
+                        ma-label--box--space5">
+                 Small Label Box
+                 <i class="ma-label--box--small--with-icon__icon
+                                   material-icons">clear</i>
+             </div>
+             <div class="ma-label ma-label--box
+                         ma-label--box--secondary
+                         ma-label--box--default
+                         ma-label--box--default--with-icon
+                         ma-label--box--space5">
+                  Default Label Box
+                  <i class="ma-label--box--default--with-icon__icon
+                                    material-icons">clear</i>
+              </div>
+              <div class="ma-label ma-label--box
+                          ma-label--box--secondary
+                          ma-label--box--large
+                          ma-label--box--large--with-icon
+                          ma-label--box--space5">
+                   Large Label Box
+                   <i class="ma-label--box--large--with-icon__icon
+                                     material-icons">clear</i>
+               </div>
+        </div>
+
+    </div>
+
+    <div class="row margin-reset">
+
+        <div class="col-md-12">
+            <h3 style="text-decoration: none;
+                          letter-spacing: 0;
+                          font-style: normal;
+                          white-space: nowrap;">Simple Label</h3>
+
+            <div class="ma-label ma-label--simple ma-label--simple--small margin-reset">small simple label</div>
+            <strong class="point-separate"></strong>
+            <div class="ma-label ma-label--simple ma-label--simple--default margin-reset">default simple label</div>
+            <strong class="point-separate"></strong>
+            <div class="ma-label ma-label--simple ma-label--simple--medium margin-reset">medium simple label</div>
+            <strong class="point-separate"></strong>
+            <div class="ma-label ma-label--simple ma-label--simple--large margin-reset">large simple label</div>
+        </div>
+
     </div>
 
 
     <hr>
+
+
+    <!-------------------------------->
+    <!--          TOOLTIPS          -->
+    <!-------------------------------->
+
+    <h2 style="text-decoration: none;
+                   letter-spacing: 0;
+                   font-style: normal;
+                   font-weight:bold;
+                   white-space: nowrap;">Tooltips</h2>
+
+    <div class="row">
+        <div class="col-xs-12">
+
+            <h3>Size Tooltips</h3>
+            <div class="ma-label ma-label--simple
+                        ma-label--simple--default margin-reset"
+                 tooltip-placement="top"
+                 tooltip-animation="false"
+                 tooltip-class="ma-tooltip ma-tooltip--primary ma-tooltip--small"
+                 uib-tooltip="Small Tooltip">
+                 small tooltip
+            </div>
+            <strong class="point-separate"></strong>
+            <div class="ma-label ma-label--simple
+                        ma-label--simple--default margin-reset"
+                 tooltip-placement="bottom"
+                 tooltip-animation="false"
+                 tooltip-class="ma-tooltip ma-tooltip--primary ma-tooltip--default"
+                 uib-tooltip="Default Tooltip">
+                default tooltip
+            </div>
+            <strong class="point-separate"></strong>
+            <div class="ma-label ma-label--simple
+                        ma-label--simple--default margin-reset"
+                 tooltip-placement="right"
+                 tooltip-animation="false"
+                 tooltip-class="ma-tooltip ma-tooltip--primary ma-tooltip--large"
+                 uib-tooltip="Large Tooltip">
+                large tooltip
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+
+            <h3>Color Tooltips</h3>
+            <div class="ma-label ma-label--simple
+                        ma-label--simple--large margin-reset"
+                 tooltip-placement="top"
+                 tooltip-animation="false"
+                 tooltip-class="ma-tooltip ma-tooltip--primary ma-tooltip--default"
+                 uib-tooltip="Primary Tooltip">
+                 primary tooltip
+            </div>
+            <strong class="point-separate"></strong>
+            <div class="ma-label ma-label--simple
+                        ma-label--simple--large margin-reset"
+                 tooltip-placement="bottom"
+                 tooltip-animation="false"
+                 tooltip-class="ma-tooltip ma-tooltip--alert ma-tooltip--default"
+                 uib-tooltip="Alert Tooltip">
+                alert tooltip
+            </div>
+            <strong class="point-separate"></strong>
+            <div class="ma-label ma-label--simple
+                        ma-label--simple--large margin-reset"
+                 tooltip-placement="right"
+                 tooltip-animation="false"
+                 tooltip-class="ma-tooltip ma-tooltip--gray ma-tooltip--default"
+                 uib-tooltip="Gray Tooltip">
+                gray tooltip
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+    <!-------------------------------->
+    <!--        LARGE MESSAGE       -->
+    <!-------------------------------->
+
+    <h2 style="text-decoration: none;
+                   letter-spacing: 0;
+                   font-style: normal;
+                   font-weight:bold;
+                   white-space: nowrap;">Large Message</h2>
+
+    <!-- large alert message -->
+    <div class="row ma-large-message ma-large-message--alert">
+        <div class="col-md-12 text-center">
+            <p class="ma-p ma-p--default ma-p--alert margin-reset">
+                <span>Large Alert Message</span>
+            </p>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- large success message -->
+    <div class="row ma-large-message ma-large-message--success">
+        <div class="col-md-12 text-center">
+            <p class="ma-p ma-p--default ma-p--primary margin-reset">
+                <span>Large Success Message</span>
+            </p>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- large info message -->
+    <div class="row ma-large-message ma-large-message--info">
+        <div class="col-md-12 text-center">
+            <p class="ma-p ma-p--default ma-p--info margin-reset">
+                <span>Large Info Message</span>
+            </p>
+        </div>
+    </div>
+
+    <hr>
+
+
+    <!------------------------------>
+    <!--       ICONS BUBBLE       -->
+    <!------------------------------>
+
+    <h2 style="text-decoration: none;
+                   letter-spacing: 0;
+                   font-style: normal;
+                   font-weight:bold;
+                   white-space: nowrap;">Icons Bubble</h2>
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <h3>Small Icon Bubbles</h3>
+
+            <div class="ma-icon-container
+                        ma-icon-container--white
+                        ma-icon-container--small round" style="display:inline-block;">
+                <i class="ma-icon-container--small__icon
+                          material-icons">
+                   done_all
+               </i>
+            </div>
+
+            <div class="ma-icon-container
+                        ma-icon-container--alert
+                        ma-icon-container--small round" style="display:inline-block;">
+                <i class="ma-icon-container--small__icon
+                          material-icons">
+                   done_all
+               </i>
+            </div>
+
+            <div class="ma-icon-container
+                        ma-icon-container--alert-secondary
+                        ma-icon-container--small round" style="display:inline-block;">
+                <i class="ma-icon-container--small__icon
+                          material-icons">
+                   done_all
+               </i>
+            </div>
+
+            <div class="ma-icon-container
+                        ma-icon-container--primary
+                        ma-icon-container--small round" style="display:inline-block;">
+                <i class="ma-icon-container--small__icon
+                          material-icons">
+                   done_all
+               </i>
+            </div>
+            <div class="ma-icon-container
+                        ma-icon-container--secondary
+                        ma-icon-container--small round" style="display:inline-block;">
+                <i class="ma-icon-container--small__icon
+                          material-icons">
+                   done_all
+               </i>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+
+            <h3>Default Icon Bubbles</h3>
+
+            <div class="ma-icon-container
+                        ma-icon-container--white
+                        ma-icon-container--default round" style="display:inline-block;">
+                <i class="ma-icon-container--default__icon
+                          material-icons">
+                   done_all
+               </i>
+            </div>
+
+            <div class="ma-icon-container
+                        ma-icon-container--alert
+                        ma-icon-container--default round" style="display:inline-block;">
+                <i class="ma-icon-container--default__icon
+                          material-icons">
+                   done_all
+               </i>
+            </div>
+
+            <div class="ma-icon-container
+                        ma-icon-container--alert-secondary
+                        ma-icon-container--default round" style="display:inline-block;">
+                <i class="ma-icon-container--default__icon
+                          material-icons">
+                   done_all
+               </i>
+            </div>
+
+            <div class="ma-icon-container
+                        ma-icon-container--primary
+                        ma-icon-container--default round" style="display:inline-block;">
+                <i class="ma-icon-container--default__icon
+                          material-icons">
+                   done_all
+               </i>
+            </div>
+
+            <div class="ma-icon-container
+                        ma-icon-container--secondary
+                        ma-icon-container--default round" style="display:inline-block;">
+                <i class="ma-icon-container--default__icon
+                          material-icons">
+                   done_all
+               </i>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+
+            <h3>Medium Icon Bubbles</h3>
+
+            <div class="ma-icon-container
+                        ma-icon-container--white
+                        ma-icon-container--medium round" style="display:inline-block;">
+                <i class="ma-icon-container--medium__icon
+                          material-icons">
+                   done_all
+               </i>
+            </div>
+
+            <div class="ma-icon-container
+                        ma-icon-container--alert
+                        ma-icon-container--medium round" style="display:inline-block;">
+                <i class="ma-icon-container--medium__icon
+                          material-icons">
+                   done_all
+               </i>
+            </div>
+
+            <div class="ma-icon-container
+                        ma-icon-container--alert-secondary
+                        ma-icon-container--medium round" style="display:inline-block;">
+                <i class="ma-icon-container--medium__icon
+                          material-icons">
+                   done_all
+               </i>
+            </div>
+
+            <div class="ma-icon-container
+                        ma-icon-container--primary
+                        ma-icon-container--medium round" style="display:inline-block;">
+                <i class="ma-icon-container--medium__icon
+                          material-icons">
+                   done_all
+               </i>
+            </div>
+            <div class="ma-icon-container
+                        ma-icon-container--secondary
+                        ma-icon-container--medium round" style="display:inline-block;">
+                <i class="ma-icon-container--medium__icon
+                          material-icons">
+                   done_all
+               </i>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+
+            <h3>Large Icon Bubbles</h3>
+
+            <div class="ma-icon-container
+                        ma-icon-container--white
+                        ma-icon-container--large round" style="display:inline-block;">
+                <i class="ma-icon-container--large__icon
+                          material-icons">
+                   done_all
+               </i>
+            </div>
+
+            <div class="ma-icon-container
+                        ma-icon-container--alert
+                        ma-icon-container--large round" style="display:inline-block;">
+                <i class="ma-icon-container--large__icon
+                          material-icons">
+                   done_all
+               </i>
+            </div>
+
+            <div class="ma-icon-container
+                        ma-icon-container--alert-secondary
+                        ma-icon-container--large round" style="display:inline-block;">
+                <i class="ma-icon-container--large__icon
+                          material-icons">
+                   done_all
+               </i>
+            </div>
+
+            <div class="ma-icon-container
+                        ma-icon-container--primary
+                        ma-icon-container--large round" style="display:inline-block;">
+                <i class="ma-icon-container--large__icon
+                          material-icons">
+                   done_all
+               </i>
+            </div>
+            <div class="ma-icon-container
+                        ma-icon-container--secondary
+                        ma-icon-container--large round" style="display:inline-block;">
+                <i class="ma-icon-container--large__icon
+                          material-icons">
+                   done_all
+               </i>
+            </div>
+        </div>
+
+    </div>
 
 
     <!------------------------------>
@@ -907,96 +1551,107 @@
     <!-- Tiny Stars -->
     <div class="row margin-reset">
 
-        <h3 style="text-decoration: none;
-                      letter-spacing: 0;
-                      font-style: normal;
-                      white-space: nowrap;">Tiny Stars</h3>
+        <div class="col-md-12">
+            <h3 style="text-decoration: none;
+                          letter-spacing: 0;
+                          font-style: normal;
+                          white-space: nowrap;">Tiny Stars</h3>
 
-        <i class="material-icons ma-stars__icon ma-stars__icon--tiny">star</i>
-        <i class="material-icons ma-stars__icon ma-stars__icon--tiny">star</i>
-        <i class="material-icons ma-stars__icon ma-stars__icon--tiny">star</i>
-        <i class="material-icons ma-stars__icon ma-stars__icon--tiny">star_half</i>
-        <i class="material-icons ma-stars__icon ma-stars__icon--tiny">star_border</i>
+            <i class="material-icons ma-stars__icon ma-stars__icon--tiny">star</i>
+            <i class="material-icons ma-stars__icon ma-stars__icon--tiny">star</i>
+            <i class="material-icons ma-stars__icon ma-stars__icon--tiny">star</i>
+            <i class="material-icons ma-stars__icon ma-stars__icon--tiny">star_half</i>
+            <i class="material-icons ma-stars__icon ma-stars__icon--tiny">star_border</i>
+        </div>
 
     </div>
 
     <!-- Small Stars -->
     <div class="row margin-reset">
 
-        <h3 style="text-decoration: none;
-                      letter-spacing: 0;
-                      font-style: normal;
-                      white-space: nowrap;">Small Stars</h3>
+        <div class="col-md-12">
+            <h3 style="text-decoration: none;
+                          letter-spacing: 0;
+                          font-style: normal;
+                          white-space: nowrap;">Small Stars</h3>
 
-        <i class="material-icons ma-stars__icon ma-stars__icon--small">star</i>
-        <i class="material-icons ma-stars__icon ma-stars__icon--small">star</i>
-        <i class="material-icons ma-stars__icon ma-stars__icon--small">star</i>
-        <i class="material-icons ma-stars__icon ma-stars__icon--small">star_half</i>
-        <i class="material-icons ma-stars__icon ma-stars__icon--small">star_border</i>
+            <i class="material-icons ma-stars__icon ma-stars__icon--small">star</i>
+            <i class="material-icons ma-stars__icon ma-stars__icon--small">star</i>
+            <i class="material-icons ma-stars__icon ma-stars__icon--small">star</i>
+            <i class="material-icons ma-stars__icon ma-stars__icon--small">star_half</i>
+            <i class="material-icons ma-stars__icon ma-stars__icon--small">star_border</i>
+        </div>
 
     </div>
 
     <!-- Default Stars -->
     <div class="row margin-reset">
 
-        <h3 style="text-decoration: none;
-                      letter-spacing: 0;
-                      font-style: normal;
-                      white-space: nowrap;">Default Stars</h3>
+        <div class="col-md-12">
+            <h3 style="text-decoration: none;
+                          letter-spacing: 0;
+                          font-style: normal;
+                          white-space: nowrap;">Default Stars</h3>
 
-        <i class="material-icons ma-stars__icon ma-stars__icon--default">star</i>
-        <i class="material-icons ma-stars__icon ma-stars__icon--default">star</i>
-        <i class="material-icons ma-stars__icon ma-stars__icon--default">star</i>
-        <i class="material-icons ma-stars__icon ma-stars__icon--default">star_half</i>
-        <i class="material-icons ma-stars__icon ma-stars__icon--default">star_border</i>
+            <i class="material-icons ma-stars__icon ma-stars__icon--default">star</i>
+            <i class="material-icons ma-stars__icon ma-stars__icon--default">star</i>
+            <i class="material-icons ma-stars__icon ma-stars__icon--default">star</i>
+            <i class="material-icons ma-stars__icon ma-stars__icon--default">star_half</i>
+            <i class="material-icons ma-stars__icon ma-stars__icon--default">star_border</i>
+        </div>
 
     </div>
 
     <!-- Large Stars -->
     <div class="row margin-reset">
 
-        <h3 style="text-decoration: none;
-                      letter-spacing: 0;
-                      font-style: normal;
-                      white-space: nowrap;">Large Stars</h3>
+        <div class="col-md-12">
+            <h3 style="text-decoration: none;
+                          letter-spacing: 0;
+                          font-style: normal;
+                          white-space: nowrap;">Large Stars</h3>
 
-        <i class="material-icons ma-stars__icon ma-stars__icon--large">star</i>
-        <i class="material-icons ma-stars__icon ma-stars__icon--large">star</i>
-        <i class="material-icons ma-stars__icon ma-stars__icon--large">star</i>
-        <i class="material-icons ma-stars__icon ma-stars__icon--large">star_half</i>
-        <i class="material-icons ma-stars__icon ma-stars__icon--large">star_border</i>
+            <i class="material-icons ma-stars__icon ma-stars__icon--large">star</i>
+            <i class="material-icons ma-stars__icon ma-stars__icon--large">star</i>
+            <i class="material-icons ma-stars__icon ma-stars__icon--large">star</i>
+            <i class="material-icons ma-stars__icon ma-stars__icon--large">star_half</i>
+            <i class="material-icons ma-stars__icon ma-stars__icon--large">star_border</i>
+        </div>
 
     </div>
 
     <!-- Stars with Amount reviews -->
     <div class="row margin-reset">
 
-        <h3 style="text-decoration: none;
-                      letter-spacing: 0;
-                      font-style: normal;
-                      white-space: nowrap;">Stars with Amount reviews</h3>
+        <div class="col-md-12">
+            <h3 style="text-decoration: none;
+                          letter-spacing: 0;
+                          font-style: normal;
+                          white-space: nowrap;">Stars with Amount reviews</h3>
 
-        <div class="ma-stars-withLabel">
-            <div class="ma-stars">
-                <i class="material-icons ma-stars__icon
-                        ma-stars__icon--tiny">star</i>
-                <i class="material-icons ma-stars__icon
-                        ma-stars__icon--tiny">star</i>
-                <i class="material-icons ma-stars__icon
-                        ma-stars__icon--tiny">star</i>
-                <i class="material-icons ma-stars__icon
-                        ma-stars__icon--tiny">star_half</i>
-                <i class="material-icons ma-stars__icon
-                        ma-stars__icon--tiny">star_border</i>
-            </div>
-            <div class="ma-stars-withLabel__label-container">
-                <div class="ma-label
-                          ma-label--simple
-                          ma-label--simple--small
-                          ma-label--simple--gray
-                          margin-reset">(33 reviews)</div>
+            <div class="ma-stars-withLabel">
+                <div class="ma-stars">
+                    <i class="material-icons ma-stars__icon
+                            ma-stars__icon--tiny">star</i>
+                    <i class="material-icons ma-stars__icon
+                            ma-stars__icon--tiny">star</i>
+                    <i class="material-icons ma-stars__icon
+                            ma-stars__icon--tiny">star</i>
+                    <i class="material-icons ma-stars__icon
+                            ma-stars__icon--tiny">star_half</i>
+                    <i class="material-icons ma-stars__icon
+                            ma-stars__icon--tiny">star_border</i>
+                </div>
+                <div class="ma-stars-withLabel__label-container">
+                    <div class="ma-label
+                              ma-label--simple
+                              ma-label--simple--small
+                              ma-label--simple--gray
+                              margin-reset">(33 reviews)</div>
+                </div>
             </div>
         </div>
+
     </div>
 
     <hr>
@@ -1014,43 +1669,46 @@
     <!-- Tiny Icon -->
     <div class="row margin-reset">
 
-        <h3 style="text-decoration: none;
-                      letter-spacing: 0;
-                      font-style: normal;
-                      white-space: nowrap;">Tiny Icon</h3>
+        <div class="col-md-12">
+            <h3 style="text-decoration: none;
+                          letter-spacing: 0;
+                          font-style: normal;
+                          white-space: nowrap;">Tiny Icon</h3>
 
-        <div class="ma-icon-container"  style="display: inline-block">
-            <span class="ma-icon-container__count
-                         ma-icon-container__count--primary
-                         ma-icon-container__count--tiny
-                         text-center">1</span>
-            <i class="material-icons md-18 md-dark">
-                inbox
-            </i>
-        </div>
+            <div class="ma-icon-container"  style="display: inline-block">
+                <span class="ma-icon-container__count
+                             ma-icon-container__count--primary
+                             ma-icon-container__count--tiny
+                             text-center">1</span>
+                <i class="material-icons md-18 md-dark">
+                    inbox
+                </i>
+            </div>
 
-        <strong class="point-separate"></strong>
+            <strong class="point-separate"></strong>
 
-        <div class="ma-icon-container"  style="display: inline-block">
-            <span class="ma-icon-container__count
-                         ma-icon-container__count--secondary
-                         ma-icon-container__count--tiny
-                         text-center">2</span>
-            <i class="material-icons md-18 md-dark">
-                inbox
-            </i>
-        </div>
+            <div class="ma-icon-container"  style="display: inline-block">
+                <span class="ma-icon-container__count
+                             ma-icon-container__count--secondary
+                             ma-icon-container__count--tiny
+                             text-center">2</span>
+                <i class="material-icons md-18 md-dark">
+                    inbox
+                </i>
+            </div>
 
-        <strong class="point-separate"></strong>
+            <strong class="point-separate"></strong>
 
-        <div class="ma-icon-container"  style="display: inline-block">
-            <span class="ma-icon-container__count
-                         ma-icon-container__count--alert
-                         ma-icon-container__count--tiny
-                         text-center">3</span>
-            <i class="material-icons md-18 md-dark">
-                inbox
-            </i>
+            <div class="ma-icon-container"  style="display: inline-block">
+                <span class="ma-icon-container__count
+                             ma-icon-container__count--alert
+                             ma-icon-container__count--tiny
+                             text-center">3</span>
+                <i class="material-icons md-18 md-dark">
+                    inbox
+                </i>
+            </div>
+
         </div>
 
     </div>
@@ -1059,43 +1717,45 @@
     <!-- Small Icon -->
     <div class="row margin-reset">
 
-        <h3 style="text-decoration: none;
-                      letter-spacing: 0;
-                      font-style: normal;
-                      white-space: nowrap;">Small Icon</h3>
+        <div class="col-md-12">
+            <h3 style="text-decoration: none;
+                          letter-spacing: 0;
+                          font-style: normal;
+                          white-space: nowrap;">Small Icon</h3>
 
-        <div class="ma-icon-container"  style="display: inline-block">
-            <span class="ma-icon-container__count
-                         ma-icon-container__count--primary
-                         ma-icon-container__count--small
-                         text-center">1</span>
-            <i class="material-icons md-24 md-dark">
-                inbox
-            </i>
-        </div>
+            <div class="ma-icon-container"  style="display: inline-block">
+                <span class="ma-icon-container__count
+                             ma-icon-container__count--primary
+                             ma-icon-container__count--small
+                             text-center">1</span>
+                <i class="material-icons md-24 md-dark">
+                    inbox
+                </i>
+            </div>
 
-        <strong class="point-separate"></strong>
+            <strong class="point-separate"></strong>
 
-        <div class="ma-icon-container"  style="display: inline-block">
-            <span class="ma-icon-container__count
-                         ma-icon-container__count--secondary
-                         ma-icon-container__count--small
-                         text-center">2</span>
-            <i class="material-icons md-24 md-dark">
-                inbox
-            </i>
-        </div>
+            <div class="ma-icon-container"  style="display: inline-block">
+                <span class="ma-icon-container__count
+                             ma-icon-container__count--secondary
+                             ma-icon-container__count--small
+                             text-center">2</span>
+                <i class="material-icons md-24 md-dark">
+                    inbox
+                </i>
+            </div>
 
-        <strong class="point-separate"></strong>
+            <strong class="point-separate"></strong>
 
-        <div class="ma-icon-container"  style="display: inline-block">
-            <span class="ma-icon-container__count
-                         ma-icon-container__count--alert
-                         ma-icon-container__count--small
-                         text-center">3</span>
-            <i class="material-icons md-24 md-dark">
-                inbox
-            </i>
+            <div class="ma-icon-container"  style="display: inline-block">
+                <span class="ma-icon-container__count
+                             ma-icon-container__count--alert
+                             ma-icon-container__count--small
+                             text-center">3</span>
+                <i class="material-icons md-24 md-dark">
+                    inbox
+                </i>
+            </div>
         </div>
 
     </div>
@@ -1104,43 +1764,45 @@
     <!-- Default Icon -->
     <div class="row margin-reset">
 
-        <h3 style="text-decoration: none;
-                      letter-spacing: 0;
-                      font-style: normal;
-                      white-space: nowrap;">Default Icon</h3>
+        <div class="col-md-12">
+            <h3 style="text-decoration: none;
+                          letter-spacing: 0;
+                          font-style: normal;
+                          white-space: nowrap;">Default Icon</h3>
 
-        <div class="ma-icon-container"  style="display: inline-block">
-            <span class="ma-icon-container__count
-                         ma-icon-container__count--primary
-                         ma-icon-container__count--default
-                         text-center">1</span>
-            <i class="material-icons md-36 md-dark">
-                inbox
-            </i>
-        </div>
+            <div class="ma-icon-container"  style="display: inline-block">
+                <span class="ma-icon-container__count
+                             ma-icon-container__count--primary
+                             ma-icon-container__count--default
+                             text-center">1</span>
+                <i class="material-icons md-36 md-dark">
+                    inbox
+                </i>
+            </div>
 
-        <strong class="point-separate"></strong>
+            <strong class="point-separate"></strong>
 
-        <div class="ma-icon-container"  style="display: inline-block">
-            <span class="ma-icon-container__count
-                         ma-icon-container__count--secondary
-                         ma-icon-container__count--default
-                         text-center">2</span>
-            <i class="material-icons md-36 md-dark">
-                inbox
-            </i>
-        </div>
+            <div class="ma-icon-container"  style="display: inline-block">
+                <span class="ma-icon-container__count
+                             ma-icon-container__count--secondary
+                             ma-icon-container__count--default
+                             text-center">2</span>
+                <i class="material-icons md-36 md-dark">
+                    inbox
+                </i>
+            </div>
 
-        <strong class="point-separate"></strong>
+            <strong class="point-separate"></strong>
 
-        <div class="ma-icon-container"  style="display: inline-block">
-            <span class="ma-icon-container__count
-                         ma-icon-container__count--alert
-                         ma-icon-container__count--default
-                         text-center">3</span>
-            <i class="material-icons md-36 md-dark">
-                inbox
-            </i>
+            <div class="ma-icon-container"  style="display: inline-block">
+                <span class="ma-icon-container__count
+                             ma-icon-container__count--alert
+                             ma-icon-container__count--default
+                             text-center">3</span>
+                <i class="material-icons md-36 md-dark">
+                    inbox
+                </i>
+            </div>
         </div>
 
     </div>
@@ -1162,15 +1824,17 @@
     <!-- Tiny Profile Image -->
     <div class="row margin-reset">
 
-        <h3 style="text-decoration: none;
-                     letter-spacing: 0;
-                     font-style: normal;
-                     white-space: nowrap;">Tiny Profile Image</h3>
+        <div class="col-md-12">
+            <h3 style="text-decoration: none;
+                         letter-spacing: 0;
+                         font-style: normal;
+                         white-space: nowrap;">Tiny Profile Image</h3>
 
-        <div class="ma-photo-profile
-                    ma-photo-profile--tiny
-                    round">
-            <img width="32" height="32" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="">
+            <div class="ma-photo-profile
+                        ma-photo-profile--tiny
+                        round">
+                <img width="32" height="32" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="">
+            </div>
         </div>
 
     </div>
@@ -1178,15 +1842,17 @@
     <!-- Small Profile Image -->
     <div class="row margin-reset">
 
-        <h3 style="text-decoration: none;
-                     letter-spacing: 0;
-                     font-style: normal;
-                     white-space: nowrap;">Small Profile Image</h3>
+        <div class="col-md-12">
+            <h3 style="text-decoration: none;
+                         letter-spacing: 0;
+                         font-style: normal;
+                         white-space: nowrap;">Small Profile Image</h3>
 
-        <div class="ma-photo-profile
-                    ma-photo-profile--small
-                    round">
-            <img width="70" height="70" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="">
+            <div class="ma-photo-profile
+                        ma-photo-profile--small
+                        round">
+                <img width="70" height="70" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="">
+            </div>
         </div>
 
     </div>
@@ -1194,15 +1860,17 @@
     <!-- Default Profile Image -->
     <div class="row margin-reset">
 
-        <h3 style="text-decoration: none;
-                     letter-spacing: 0;
-                     font-style: normal;
-                     white-space: nowrap;">Default Profile Image</h3>
+        <div class="col-md-12">
+            <h3 style="text-decoration: none;
+                         letter-spacing: 0;
+                         font-style: normal;
+                         white-space: nowrap;">Default Profile Image</h3>
 
-        <div class="ma-photo-profile
-                        ma-photo-profile--default
-                        round">
-            <img width="100" height="100" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="Sergio Ruiz">
+            <div class="ma-photo-profile
+                            ma-photo-profile--default
+                            round">
+                <img width="100" height="100" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="Sergio Ruiz">
+            </div>
         </div>
 
     </div>
@@ -1210,15 +1878,17 @@
     <!-- Medium Profile Image -->
     <div class="row margin-reset">
 
-        <h3 style="text-decoration: none;
-                     letter-spacing: 0;
-                     font-style: normal;
-                     white-space: nowrap;">Medium Profile Image</h3>
+        <div class="col-md-12">
+            <h3 style="text-decoration: none;
+                         letter-spacing: 0;
+                         font-style: normal;
+                         white-space: nowrap;">Medium Profile Image</h3>
 
-        <div class="ma-photo-profile
-                        ma-photo-profile--medium
-                        round">
-            <img width="170" height="170" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="Sergio Ruiz">
+            <div class="ma-photo-profile
+                            ma-photo-profile--medium
+                            round">
+                <img width="170" height="170" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="Sergio Ruiz">
+            </div>
         </div>
 
     </div>
@@ -1226,17 +1896,149 @@
     <!-- Large Profile Image -->
     <div class="row margin-reset">
 
-        <h3 style="text-decoration: none;
-                     letter-spacing: 0;
-                     font-style: normal;
-                     white-space: nowrap;">Large Profile Image</h3>
+        <div class="col-md-12">
+            <h3 style="text-decoration: none;
+                         letter-spacing: 0;
+                         font-style: normal;
+                         white-space: nowrap;">Large Profile Image</h3>
 
-        <div class="ma-photo-profile
-                        ma-photo-profile--large
-                        round">
-            <img width="240" height="240" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="Sergio Ruiz">
+            <div class="ma-photo-profile
+                            ma-photo-profile--large
+                            round">
+                <img width="240" height="240" src="https://cdn-images-1.medium.com/fit/c/100/100/1*PfqhetmETrlmYs2pZZcr_g.jpeg" alt="Sergio Ruiz">
+            </div>
         </div>
 
     </div>
+
+    <hr>
+
+
+    <!------------------------------>
+    <!--          METER           -->
+    <!------------------------------>
+    <style media="screen">
+        .ma-meter {
+            border-radius: 4px;
+            border: 1px solid #e5e5e5;
+            padding: 4px 10px;
+            display: inline-block;
+        }
+
+        .ma-meter ol li {
+            display: inline-block;
+            background-color: #d8d8d8;
+            border-radius: 50%;
+            height: 8px;
+            width: 8px;
+            margin: 0 2px;
+        }
+
+        .ma-meter--1-selected ol li:first-child,
+        .ma-meter--2-selected ol li:nth-child(-n+2) {
+            background-color: #ff5a5f;
+        }
+
+        .ma-meter--3-selected ol li:nth-child(-n+3) {
+            background-color: #e89947;
+        }
+
+        .ma-meter--4-selected ol li:nth-child(-n+4) {
+            background-color: #e8ce47;
+        }
+
+        .ma-meter--5-selected ol li {
+            background-color: #82B541;
+        }
+        .u-visually-hidden {
+            border: 0!important;
+            clip: rect(1px 1px 1px 1px);
+            clip: rect(1px,1px,1px,1px);
+            height: 1px!important;
+            overflow: hidden;
+            padding: 0!important;
+            position: absolute!important;
+            width: 1px!important;
+        }
+    </style>
+    <div class="ma-meter ma-meter--2-selected">
+		<p class="ma-p ma-p--default" style="margin: 0 30px 0 0;display:inline-block;">
+            Skill level
+        </p>
+		<ol style="display: inline-block;list-style: none;padding: 0;margin: 0">
+			<li><span class="u-visually-hidden">1</span>
+			</li>
+			<li><span class="u-visually-hidden">2</span>
+			</li>
+			<li><span class="u-visually-hidden">3</span>
+			</li>
+			<li><span class="u-visually-hidden">4</span>
+			</li>
+			<li><span class="u-visually-hidden">5</span>
+			</li>
+		</ol>
+	</div>
+
+    <hr>
+
+    <div class="ma-meter ma-meter--3-selected">
+		<p class="ma-p ma-p--default" style="margin: 0 30px 0 0;display:inline-block;">
+            Skill level
+        </p>
+		<ol style="display: inline-block;list-style: none;padding: 0;margin: 0">
+			<li><span class="u-visually-hidden">1</span>
+			</li>
+			<li><span class="u-visually-hidden">2</span>
+			</li>
+			<li><span class="u-visually-hidden">3</span>
+			</li>
+			<li><span class="u-visually-hidden">4</span>
+			</li>
+			<li><span class="u-visually-hidden">5</span>
+			</li>
+		</ol>
+	</div>
+
+    <hr>
+
+    <div class="ma-meter ma-meter--4-selected">
+		<p class="ma-p ma-p--default" style="margin: 0 30px 0 0;display:inline-block;">
+            Skill level
+        </p>
+		<ol style="display: inline-block;list-style: none;padding: 0;margin: 0">
+			<li><span class="u-visually-hidden">1</span>
+			</li>
+			<li><span class="u-visually-hidden">2</span>
+			</li>
+			<li><span class="u-visually-hidden">3</span>
+			</li>
+			<li><span class="u-visually-hidden">4</span>
+			</li>
+			<li><span class="u-visually-hidden">5</span>
+			</li>
+		</ol>
+	</div>
+
+    <hr>
+
+    <div class="ma-meter ma-meter--5-selected">
+		<p class="ma-p ma-p--default" style="margin: 0 30px 0 0;display:inline-block;">
+            Skill level
+        </p>
+		<ol style="display: inline-block;list-style: none;padding: 0;margin: 0">
+			<li><span class="u-visually-hidden">1</span>
+			</li>
+			<li><span class="u-visually-hidden">2</span>
+			</li>
+			<li><span class="u-visually-hidden">3</span>
+			</li>
+			<li><span class="u-visually-hidden">4</span>
+			</li>
+			<li><span class="u-visually-hidden">5</span>
+			</li>
+		</ol>
+	</div>
+
+    <hr>
 
 </div>

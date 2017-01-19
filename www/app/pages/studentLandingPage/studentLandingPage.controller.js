@@ -5,9 +5,9 @@ var app;
         var studentLandingPage;
         (function (studentLandingPage) {
             var StudentLandingPageController = (function () {
-                function StudentLandingPageController($state, $translate, StudentLandingPageService) {
+                function StudentLandingPageController($state, functionsUtil, StudentLandingPageService) {
                     this.$state = $state;
-                    this.$translate = $translate;
+                    this.functionsUtil = functionsUtil;
                     this.StudentLandingPageService = StudentLandingPageService;
                     this._init();
                 }
@@ -18,7 +18,7 @@ var app;
                             email: '',
                             comment: ''
                         },
-                        language: 'en'
+                        language: this.functionsUtil.getCurrentLanguage() || 'en'
                     };
                     this.success = false;
                     this.sending = false;
@@ -33,7 +33,7 @@ var app;
                     console.log('studentLandingPage controller actived');
                 };
                 StudentLandingPageController.prototype.changeLanguage = function () {
-                    this.$translate.use(this.form.language);
+                    this.functionsUtil.changeLanguage(this.form.language);
                     mixpanel.track("Change Language");
                 };
                 StudentLandingPageController.prototype.goToEarlyAccessForm = function () {
@@ -74,7 +74,7 @@ var app;
             }());
             StudentLandingPageController.controllerId = 'mainApp.pages.studentLandingPage.StudentLandingPageController';
             StudentLandingPageController.$inject = ['$state',
-                '$translate',
+                'mainApp.core.util.FunctionsUtilService',
                 'mainApp.pages.studentLandingPage.StudentLandingPageService'];
             studentLandingPage.StudentLandingPageController = StudentLandingPageController;
             angular

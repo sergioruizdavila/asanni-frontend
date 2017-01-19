@@ -35,8 +35,8 @@
                         search
                     </i>
                     <label class="screen-reader-only"
-                           for="header-search-form" aria-hidden="true">
-                        Where to?
+                           for="header-search-form" aria-hidden="true" translate>
+                        %header.search.placeholder.text
                     </label>
                     <input type="text"
                            class="ma-header__block__search-wrapper__form__search-bar__input"
@@ -159,7 +159,7 @@
 
         <!-------------------- START: LOGO (MD AND LG SCREEN) ----------------->
         <div class="ma-header__block pull-left">
-            <a ui-sref="page.searchPage" class="ma-header__block__btn
+            <a ui-sref="page.landingPage" class="ma-header__block__btn
                           ma-header__block__logo-wrapper
                           link-reset" aria-label="Waysily">
                 <i class="ma-logo ma-header__block__btn__ma-logo"></i>
@@ -170,7 +170,7 @@
 
 
         <!---------------- START: PROFILE IMAGE (MD AND LG SCREEN) ------------>
-        <div class="ma-header__block pull-right">
+        <div class="ma-header__block pull-right hidden">
 
             <!-- User menu options dropdown -->
             <span uib-dropdown on-toggle="toggled(open)">
@@ -229,7 +229,7 @@
 
 
         <!---------------- START: LOG IN BUTTON (MD AND LG SCREEN) ------------>
-        <div class="ma-header__block pull-right">
+        <div class="ma-header__block pull-right hidden">
             <a href="#" class="ma-header__block__btn link-reset">
                 Log In
             </a>
@@ -239,7 +239,7 @@
 
 
         <!--------------- START: SIGN UP BUTTON (MD AND LG SCREEN) ------------>
-        <div class="ma-header__block pull-right">
+        <div class="ma-header__block pull-right hidden">
             <a href="#" class="ma-header__block__btn link-reset">
                 Sign Up
             </a>
@@ -249,7 +249,8 @@
 
 
         <!---------------- START: INBOX BUTTON (MD AND LG SCREEN) ------------->
-        <div class="ma-header__block pull-right">
+        <div class="ma-header__block pull-right hidden">
+
             <a ui-sref="page.userInboxPage" href
                class="ma-header__block__btn link-reset">
                <span class="ma-icon-container">
@@ -270,8 +271,162 @@
 
 
 
-        <!------------------ START: SEARCH (MD AND LG SCREEN) ----------------->
+        <!-------------- START: CHANGE LANGUAGE (MD AND LG SCREEN) ------------>
+        <div class="ma-header__block
+                    ma-header--transparent__block
+                    ma-header--transparent__block--right
+                    pull-right">
+
+            <!-- Change Language Select Input -->
+            <div class="form-group ma-form-group">
+                <div class="ma-select-container
+                            ma-select-container--small">
+
+                    <select id="languageSelect"
+                            class="ma-input ma-select
+                                   ma-select--small
+                                   ma-select--border-round"
+                            ng-model="vm.form.language"
+                            ng-change="vm.changeLanguage()"
+                            name="language">
+                        <option value="es" selected="selected" translate>
+                            %header.lang.options.es.text
+                        </option>
+                        <option value="en" translate>
+                            %header.lang.options.en.text
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        <!--             END: CHANGE LANGUAGE (MD AND LG SCREEN)             -->
+
+
+
+        <!--------------- START: JOIN SECTION (MD AND LG SCREEN) -------------->
+        <div class="ma-header__block
+                    ma-header--transparent__block
+                    ma-header--transparent__block--right
+                    pull-right">
+
+            <div class="ma-header--transparent__block__buttons-list">
+                <span class="ma-header--transparent__block__buttons-list__label"
+                      style="color: inherit;"
+                      translate>
+                    %landing.header.join.label.text
+                </span>
+                <button class="ma-header--transparent__block__buttons-list__btn
+                               ma-btn ma-btn--alert ma-btn--default"
+                        ng-click="vm._openSignUpModal()" translate>
+                    %global.student.text
+                </button>
+                <a class="ma-header--transparent__block__buttons-list__btn
+                               ma-btn ma-btn--alert ma-btn--default"
+                    ui-sref="page.teacherLandingPage"
+                    uib-tooltip-template="'headerTooltip.tmpl.html'"
+                    tooltip-placement="bottom"
+                    tooltip-animation="false"
+                    tooltip-class="ma-tooltip ma-tooltip--gray ma-tooltip--small"
+                    href
+                    translate>
+                    %global.teacher.text
+                </a>
+                <a class="ma-header--transparent__block__buttons-list__btn
+                               ma-btn ma-btn--alert ma-btn--default"
+                   href="https://waysily.typeform.com/to/jvr0zW"
+                   target="_blank" translate>
+                    %global.school.text
+                </a>
+
+            </div>
+
+        </div>
+        <!--              END: JOIN SECTION (MD AND LG SCREEN)               -->
+
+
+        <style media="screen">
+
+        .ma-dropdown li > a {
+            font-size: 20px;
+        }
+
+        .ma-dropdown li > a.disabled {
+            font-size: 20px;
+            color: #CCC;
+            cursor: no-drop;
+        }
+
+        .ma-dropdown li > a.disabled .ma-p {
+            color: #CCC;
+        }
+
+        .ma-dropdown li > a.disabled:hover {
+            color: #CCC;
+            text-decoration: none;
+            background-color: transparent;
+            font-weight: 100;
+            margin-left: 0;
+        }
+        </style>
+
+        <!--------------- START: WHERE DROPDOWN (MD AND LG SCREEN) ------------>
         <div class="ma-header__block ma-header__block__search-wrapper"
+             uib-dropdown on-toggle="toggled(open)"
+             role="search">
+            <form class="ma-header__block__search-wrapper__form"
+                  uib-dropdown-toggle href
+                  aria-haspopup="true" aria-expanded="true">
+                <div class="ma-header__block__search-wrapper__form__search-bar" style="cursor:pointer;">
+                    <i class="material-icons
+                              ma-header__block__btn__icon
+                              ma-header__block__search-wrapper__form__search-bar__icon">
+                        search
+                    </i>
+                    <p class="ma-p ma-p--default margin-reset"
+                        style="padding: 0 0 0 48px;">
+                        {{vm.form.whereTo}}
+                    </p>
+                </div>
+            </form>
+            <ul class="ma-dropdown
+                       dropdown-menu
+                       dropdown-menu-left" style="width: 90%;"
+                uib-dropdown-menu
+                role="menu"
+                aria-labelledby="user-menu-options">
+                <li class="ma-dropdown__option">
+                    <a class="ma-dropdown__option__btn"
+                       ng-click="vm.search('Colombia')"
+                       href>
+                      Colombia
+                    </a>
+                </li>
+                <li class="ma-dropdown__option">
+                    <a class="ma-dropdown__option__btn disabled"
+                       href>
+                        Guatemala
+                        <span class="ma-p ma-p--default pull-right" translate>
+                            %global.coming_soon.text
+                        </span>
+                    </a>
+                </li>
+                <li class="ma-dropdown__option">
+                    <a class="ma-dropdown__option__btn disabled"
+                       href>
+                        Mexico
+                        <span class="ma-p ma-p--default pull-right" translate>
+                            %global.coming_soon.text
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!--              END: WHERE DROPDOWN (MD AND LG SCREEN)             -->
+
+
+        <!------------------ START: SEARCH (MD AND LG SCREEN) ----------------->
+        <div class="ma-header__block ma-header__block__search-wrapper hidden"
              role="search">
             <form class="ma-header__block__search-wrapper__form">
                 <div class="ma-header__block__search-wrapper__form__search-bar">
@@ -296,5 +451,15 @@
 
     </header>
     <!--                    END: HEADER (MD AND LG SCREEN)                   -->
+
+    <script type="text/ng-template" id="headerTooltip.tmpl.html">
+      <span translate>%header.join.teacher.tooltip.first_part.text</span>
+      <p class="strong strong--primary margin-reset space-right-1">
+          <span>340</span>
+          <span translate>%global.currency.suffix.text</span>
+          <span translate>%global.time.text</span>
+      </p>
+      <span translate>%header.join.teacher.tooltip.second_part.text</span>
+    </script>
 
 </div>

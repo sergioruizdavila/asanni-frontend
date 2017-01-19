@@ -1,0 +1,205 @@
+<!----------------------------------------------------->
+<!--        ADD NEW TEACHER EXPERIENCE MODAL         -->
+<!----------------------------------------------------->
+
+<div class="ma-box modalExperience">
+
+    <!--                               TITLE                                 -->
+    <!------------------------------------------------------------------------->
+    <h4 class="ma-box__title margin-reset">
+        <span translate>%modal.experience.title.text</span>
+        <div class="ma-box__title__right-block pull-right">
+            <i class="material-icons
+                      md-18
+                      md-dark md-dark--clicked"
+                      ng-click="vm.close()">close</i>
+        </div>
+    </h4>
+
+
+    <!--                              CONTENT                                -->
+    <!------------------------------------------------------------------------->
+    <div class="ma-box__content modalExperience__content">
+
+        <!--                 START: ADD EXPERIENCE FORM BLOCK                -->
+        <!--------------------------------------------------------------------->
+        <form  id="modalExperience-form-block" class="ma-form
+                                                      ma-form--basic">
+
+            <!-- Position Input Text -->
+            <div class="form-group ma-form-group">
+                <label for="position-experience-input" translate>
+                    %modal.experience.form.position.text
+                </label>
+                <!-- TODO: Remover el placeholder quemado en este input -->
+                <input id="position-experience-input" type="text"
+                        class="ma-input
+                                ma-input--large"
+                        ng-class="{'ma-input--invalid': !vm.validate.position.valid}"
+                        ng-model="vm.form.position"
+                        autofocus
+                        placeholder="e.g. English Teacher">
+                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                   ng-show="!vm.validate.position.valid">
+                    <span>{{vm.validate.position.message}}</span>
+                </p>
+            </div>
+
+            <!-- Company/Workplace Input Text -->
+            <div class="form-group ma-form-group">
+                <label for="company-experience-input" translate>
+                    %modal.experience.form.company.text
+                </label>
+                <!-- TODO: Remover el placeholder quemado en este input -->
+                <input id="company-experience-input" type="text"
+                        class="ma-input
+                                ma-input--large"
+                        ng-class="{'ma-input--invalid': !vm.validate.company.valid}"
+                        ng-model="vm.form.company"
+                        placeholder="e.g. Early Birds Institute / Velvet Cafe">
+                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                   ng-show="!vm.validate.company.valid">
+                    <span>{{vm.validate.company.message}}</span>
+                </p>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-8">
+                    <!-- Country Select List -->
+                    <div class="form-group ma-form-group">
+                        <label for="country-experience-input" translate>
+                            %modal.experience.form.cntry.text
+                        </label>
+                        <div class="ma-select-container
+                                    ma-select-container--large">
+                            <select id="country-experience-input"
+                                    class="ma-input ma-select
+                                           ma-select--large"
+                                    ng-model="vm.countryObject"
+                                    ng-options="country.value | translate for country in vm.listCountries track by country.code"
+                                    ng-class="{'ma-input--invalid': !vm.validate.country.valid}"
+                                    name="experience[country]" class="form-control">
+                                    <option value="" disabled selected translate>
+                                        %create.teacher.location.form.cntry.option_list.text
+                                    </option>
+                            </select>
+                            <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                ng-show="!vm.validate.country.valid">
+                                <span>{{vm.validate.country.message}}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <!-- City Input Text -->
+                    <div class="form-group ma-form-group">
+                        <label for="city-experience-input" translate>
+                            %modal.experience.form.city.text
+                        </label>
+                        <input id="city-experience-input" type="text"
+                                ng-model="vm.form.city"
+                                class="ma-input
+                                ma-input--large"
+                                ng-class="{'ma-input--invalid': !vm.validate.city.valid}">
+                        <p class="ma-p ma-p--small ma-p--alert pull-right"
+                           ng-show="!vm.validate.city.valid">
+                            <span>{{vm.validate.city.message}}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                    <!-- Date Start Select List -->
+                    <div class="form-group ma-form-group">
+                        <label for="dateStart-experience-input" translate>
+                            %modal.experience.form.date_start.text
+                        </label>
+                        <div class="ma-select-container
+                                    ma-select-container--large">
+                            <select id="dateStart-experience-input"
+                                    class="ma-input ma-select
+                                           ma-select--large"
+                                    ng-model="vm.startYearObject"
+                                    ng-class="{'ma-input--invalid': !vm.validate.dateStart.valid}"
+                                    ng-options="year.value for year in vm.listStartYears | orderBy:'value':true track by year.value"
+                                    name="experience[dateStart]"
+                                    class="form-control">
+                                    <option value="" disabled selected>
+                                        yyyy
+                                    </option>
+                            </select>
+                            <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                ng-show="!vm.validate.dateStart.valid">
+                                <span>{{vm.validate.dateStart.message}}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 text-left">
+                    <!-- Date Finish Select List -->
+                    <div class="form-group ma-form-group">
+                        <label for="dateFinish-experience-input" translate>
+                            %modal.experience.form.date_finish.text
+                        </label>
+                        <div class="ma-select-container
+                                    ma-select-container--large">
+                            <select id="dateFinish-experience-input"
+                                    class="ma-input ma-select
+                                           ma-select--large"
+                                    ng-model="vm.finishYearObject"
+                                    ng-class="{'ma-input--invalid': !vm.validate.dateFinish.valid}"
+                                    ng-options="year.value for year in vm.listFinishYears | orderBy:'value':true track by year.value"
+                                    name="experience[dateFinish]"
+                                    class="form-control">
+                                    <option value="" disabled selected>
+                                        yyyy
+                                    </option>
+                            </select>
+                            <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                ng-show="!vm.validate.dateFinish.valid">
+                                <span>{{vm.validate.dateFinish.message}}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        <!--                  END: ADD EXPERIENCE FORM BLOCK                 -->
+
+        <hr>
+
+        <div id="modalExperience-description-block">
+            <!-- Description Input -->
+            <div class="form-group ma-form-group">
+                <label class="space-top-4 space-2" translate>
+                    %modal.experience.form.description.text
+                </label>
+                <textarea id="description-experience-input"
+                          name="teacher_experience[description]"
+                          ng-model="vm.form.description"
+                          class="ma-input ma-input--large ma-textarea"
+                          translate
+                          translate-attr-placeholder="%modal.experience.form.description.placeholder.text"
+                          rows="4" cols="20"></textarea>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!--                              FOOTER                                 -->
+    <!------------------------------------------------------------------------->
+    <div class="ma-box__footer text-center">
+        <button class="ma-btn ma-btn--primary ma-btn--large"
+                ng-click="vm.save()" translate>
+            %global.save.button.text
+        </button>
+    </div>
+
+</div>

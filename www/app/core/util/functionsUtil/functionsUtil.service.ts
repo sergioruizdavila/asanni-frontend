@@ -12,19 +12,49 @@ module app.core.util.functionsUtil {
     /**********************************/
     export interface IFunctionsUtilService {
         splitToColumns: (arr: Array<any>, size: number) => Array<any>;
-        buildMarkersOnMap: (dataSet: Array<any>,
-                            mapType: string,
-                            position: components.map.IPosition) =>  components.map.IMapConfig;
-        //dateMonthToString: (date: string, zone: string) => string;
-        //getPositionByUid: (array: Array<any>, uid: string) => number;
-        //groupByYear: (array: Array<any>) => any;
-        //arrayToObject: (array: Array<any>) => any;
+        buildMapConfig: (dataSet: Array<any>,
+                        mapType: string,
+                        position: components.map.IPosition,
+                        zoom: number) =>  components.map.IMapConfig;
+        generateRangesOfNumbers: (from: number, to:number) => Array<number>;
+        buildNumberSelectList: (from: number, to:number) => Array<app.core.interfaces.ISelectListElement>;
+        dateFormat: (date: string) => string;
+        ageFormat: (date: any) => string;
+        getCurrentLanguage: () => string;
+        changeLanguage: (language: string) => void;
+        joinDate: (day:string, month:string, year:string) => string;
+        splitDate: (date:string) => app.core.interfaces.IDateSplitted;
+        progress: (currentStep: number, totalSteps: number) => string;
+        validator: (value: any, validations: Array<Validation>) => IValid;
+        averageNumbersArray: (values: Array<number>) => number;
+        teacherRatingAverage: (ratingsArr: Array<Object>) => number;
+    }
+
+    export interface IValid {
+        valid: boolean;
+        message: string;
     }
 
 
     /****************************************/
+    /*      ENUM VALIDATION DEFINITION      */
+    /****************************************/
+
+    export const enum Validation {
+        Email = 0,
+        String = 1,
+        Null = 2,
+        Empty = 3,
+        Number = 4,
+        IsNotZero = 5,
+        Defined = 6,
+        IsTrue = 7
+    }
+
+    /****************************************/
     /*           CLASS DEFINITION           */
     /****************************************/
+
     export class FunctionsUtilService implements IFunctionsUtilService {
 
         static serviceId = 'mainApp.core.util.FunctionsUtilService';
@@ -35,16 +65,144 @@ module app.core.util.functionsUtil {
 
         // --------------------------------
 
+        /*-- INJECT DEPENDENCIES --*/
+        public static $inject = ['$filter',
+                                 'dataConfig',
+                                 '$translate'];
+
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        constructor() {
+        constructor(private $filter: angular.IFilterService,
+                    private dataConfig: IDataConfig,
+                    private $translate: angular.translate.ITranslateService) {
             console.log('functionsUtil service called');
         }
+
 
         /**********************************/
         /*            METHODS             */
         /**********************************/
+
+        /**
+        * generateGuid
+        * @description - generate Guid id string
+        * @function
+        * @return {string} guid - Returns an Guid Id string.
+        */
+        public static generateGuid(): string {
+            var fmt = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+            var guid = fmt.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+            return guid;
+        }
+
+
+        /**
+        * dateFormat
+        * @description - format a date to 'YYYY-MM-DD'
+        * @use - this.FunctionsUtilService.dateFormat('June 10, 2016');
+        * @function
+        * @params {string} date - date to format
+        * @return {string} dateFormatted - date formatted.
+        */
+        dateFormat(date: string): string {
+            let dateFormatted = moment(date).format('YYYY-MM-DD');
+            return dateFormatted;
+        }
+
+
+
+        /**
+        * ageFormat
+        * @description - return the current age
+        * @use - this.FunctionsUtilService.ageFormat('1987');
+        * @function
+        * @params {any} year - birth year
+        * @return {string} age - age of user.
+        */
+        ageFormat(year): string {
+            //VARIABLES
+            let currentYear = parseInt(this.dataConfig.currentYear);
+            let birthYear = parseInt(year);
+            let age = currentYear - birthYear;
+
+            return age.toString();
+        }
+
+
+
+        /**
+        * getCurrentLanguage
+        * @description - get current site language
+        * @use - this.FunctionsUtilService.getCurrentLanguage();
+        * @function
+        * @return {string} currentLanguage - current site language code (e.g. 'es', 'en')
+        */
+        getCurrentLanguage(): string {
+             let currentLanguage = this.$translate.use();
+             return currentLanguage;
+        }
+
+
+
+        /**
+        * changeLanguage
+        * @description - change site language
+        * @use - this.FunctionsUtilService.changeLanguage('es');
+        * @function
+        * @params {string} language - language code
+        * @return {void}
+        */
+        changeLanguage(language): void {
+             this.$translate.use(language);
+        }
+
+
+
+        /**
+        * joinDate
+        * @description - join separate values (day, month and year) and formatting
+        * a date to 'YYYY-MM-DD'
+        * @use - this.FunctionsUtilService.joinDate(obj);
+        * @function
+        * @params {string} day - day value
+        * @params {string} month - month value
+        * @params {string} year - year value
+        * @return {string} dateFormatted - date formatted.
+        */
+        joinDate(day, month, year): string {
+            let newDate = year + '-' + month + '-' + day;
+            let dateFormatted = moment(newDate).format('YYYY-MM-DD');
+            return dateFormatted;
+        }
+
+
+
+        /**
+        * splitDate
+        * @description - Split Date in 3 parts: day, month and year
+        * @use - this.FunctionsUtilService.splitDate(date);
+        * @function
+        * @params {string} date - date value
+        * @return {app.core.interfaces.IDateSplitted} dateFormatted - date formatted.
+        */
+        splitDate(date): app.core.interfaces.IDateSplitted {
+
+            let dateString = moment(date).format('YYYY-MM-DD').split('-');
+            //Split date to day, month and year
+            let dateFormatted = {
+                day: dateString[2],
+                month: dateString[1],
+                year: dateString[0]
+            };
+
+            return dateFormatted;
+        }
+
+
 
         /**
         * splitToColumns
@@ -63,168 +221,277 @@ module app.core.util.functionsUtil {
             return newArr;
         }
 
+
+
         /**
-        * buildMarkersOnMap
+        * buildMapConfig
         * @description - build each marker on a specific map (based on a dataSet)
-        * @use - this.FunctionsUtilService.buildMarkersOnMap(data, 2);
+        * @use - this.FunctionsUtilService.buildMapConfig(response,
+                                                          'search-map',
+                                                          {lat: 6.175434,lng: -75.583329});
         * @function
+        * TODO: Asignar un tipo de datos al Array, ya que esta muy complicado entender que es dataSet
         * @params {Array<any>} dataSet - dataSet array
         * @params {string} mapType - map type
         * @params {components.map.IPosition} position - position on map (lat and lng)
+        * @params {number} zoom - zoom on the mapa
         * @return {components.map.IMapConfig} mapConfig - google map config.
         */
-        buildMarkersOnMap(dataSet, mapType, position): components.map.IMapConfig {
+        buildMapConfig(dataSet, mapType, position, zoom): components.map.IMapConfig {
             //VARIABLES
-            let mapConfig: components.map.IMapConfig = {
+            let mapConfig = {
                 type: mapType,
                 data: {
-                    position: position,
-                    markers: []
+                    position: position || {lat: 6.175434,lng: -75.583329},
+                    markers: [],
+                    zoom: zoom
                 }
             };
 
-            for (let i = 0; i < dataSet.length; i++) {
-                mapConfig.data.markers.push({
-                    id: dataSet[i].id,
-                    position: dataSet[i].location.position
-                });
+            if(dataSet) {
+                for (let i = 0; i < dataSet.length; i++) {
+                    mapConfig.data.markers.push({
+                        id: dataSet[i].id,
+                        position: dataSet[i].location.position
+                    });
+                }
             }
 
             return mapConfig;
         }
 
-        /*
-        * Split Date Format Method
-        * @description Split Date in 3 parts: day, month and year
-        */
-        /*public static splitDateFormat(date: string): app.core.interfaces.IDateFormatted {
-            //Format date to MM/DD/YYYY
-            let dateString = moment(date).format('YYYY/MMM/DD').split('/');
-            //Split date to day, month and year
-            let dateFormatted = {
-                complete: date,
-                day: dateString[2],
-                month: dateString[1],
-                year: dateString[0]
-            };
 
-            return dateFormatted;
-        }*/
 
         /**
-        * dateMonthToString
-        * @description - format month to long string (example: 'November')
-        * @use - this.FinanceService.dateMonthToString('Mon May 01 2016 01:23:34 GMT-0500 (COT)', 'es-ES');
+        * generateRangesOfNumbers
+        * @description - generate a range of numbers (i.e from 3 until 34)
+        * @use - this.FunctionsUtilService.generateRangesOfNumbers(1, 31);
         * @function
-        * @params {string} date - complete date
-        * @params {string} zone - specific the language zone (example: 'en-US', 'es-ES')
-        * @return {string} month - Returns month formatted to long string (example: 'November')
+        * @params {number} from - start number
+        * @params {number} to - finish number
+        * @return {Array<number>} array - range of numbers array.
         */
-        /*dateMonthToString(date, zone): string {
+        generateRangesOfNumbers(from, to): Array<number> {
+            var array = [];
+            for (var i = from; i <= to; i++) {
+                array.push(i);
+            }
+            return array;
+        }
+
+
+
+        /**
+        * buildNumberSelectList
+        * @description - buil numbers (days, years, etc) select list
+        * @use - this.FunctionsUtilService.buildNumberSelect(1, 31);
+        * @function
+        * @params {number} from - start number
+        * @params {number} to - finish number
+        * @return {Array<app.core.interfaces.ISelectList>} list - list format
+        * to use on one select list element
+        */
+        buildNumberSelectList(from, to): Array<app.core.interfaces.ISelectListElement> {
+            let dayRange = this.generateRangesOfNumbers(from, to);
+            let list = [];
+            for (let i = 0; i < dayRange.length; i++) {
+                list.push({value: dayRange[i]});
+            }
+
+            return list;
+        }
+
+
+
+        /**
+        * progress
+        * @description - increase or reduce progress bar width
+        * @param {number} currentStep - current step
+        * @param {number} totalSteps - total steps
+        * @function
+        * @return void
+        */
+        progress(currentStep, totalSteps): string {
+            let percent = (100 / totalSteps) * (currentStep);
+            return percent + '%';
+        }
+
+
+
+        /**
+        * validator
+        * @description - All form's field validate rules
+        * @use - this.FunctionsUtilService.validator('sergioruizdavila@gmail.com',
+                                                     [Validation.Null, Validation.Email]);
+        * @function
+        * @param {any} value - value to validate (string, number, object, etc)
+        * @param {Array<Validation>} validations - list of validations required:
+        * (e.g. Null, String, Email, Number, Empty, etc)
+        * @return {IValid} obj - object with validation result: valid and message
+        */
+        validator(value, validations = []): IValid {
+            //CONSTANTS
+            const NULL_MESSAGE = this.$filter('translate')('%global.validation.null.message.text');
+            const EMPTY_MESSAGE = this.$filter('translate')('%global.validation.empty.message.text');
+            const DEFINED_MESSAGE = this.$filter('translate')('%global.validation.null.message.text');
+            const IS_NOT_ZERO_MESSAGE = this.$filter('translate')('%global.validation.is_not_zero.message.text');
+            const STRING_MESSAGE = this.$filter('translate')('%global.validation.string.message.text');
+            const NUMBER_MESSAGE = this.$filter('translate')('%global.validation.number.message.text');
+            const EMAIL_MESSAGE = this.$filter('translate')('%global.validation.email.message.text');
+            const TRUE_MESSAGE = this.$filter('translate')('%global.validation.true.message.text');
+            /*******************************/
             //VARIABLES
-            var dateFormatted = new Date(date);
-            var options = {month: "long"};
-            var month = dateFormatted.toLocaleDateString(zone, options);
-            return month;
-        }*/
+            let obj = {valid: true, message: 'ok'};
+            /*******************************/
 
-        /**
-        * formatCurrency
-        * @description - format a number to currency string
-        * @function
-        * @params {number} num - number without format
-        * @params {string} formatted - number formatted (if you don't have this value, please send '')
-        * @return {object} currency - Returns an object with 2 properties: num - number without format
-        * and formatted - number formatted.
-        */
-        /*formatCurrency(num: number, formatted: string): app.models.finance.IMoney {
+            for (let i = 0; i < validations.length; i++) {
 
-            let currency = {
-                num: num,
-                formatted: formatted
-            };
+                switch (validations[i]) {
 
-            if (currency.formatted) {
-                currency.num = accounting.unformat(currency.formatted);
-            }
-
-            //TODO: Remove '$' hardcode, change it with some variable
-            currency.formatted = accounting.formatMoney(currency.num, '$', 0);
-
-            return currency;
-
-        }*/
-
-        /**
-        * generateGuid
-        * @description - generate Guid id string
-        * @function
-        * @return {string} guid - Returns an Guid Id string.
-        */
-        /*public static generateGuid(): string {
-            var fmt = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
-            var guid = fmt.replace(/[xy]/g, function (c) {
-                var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
-            });
-            return guid;
-        }*/
-
-        /**
-        * getPositionByUid
-        * @description - get Position on Array by Uid
-        * @example - this.FunctionsUtilService.getPositionByUid(expenses, expenseId);
-        * @function
-        * @params {Array<any>} array - list of data
-        @params {string} uid - data uid
-        * @return {number} index - Returns an index position on Array
-        */
-        /*getPositionByUid(array, uid): number {
-            let index = array.map(function(element){
-                return element.Uid;
-            }).indexOf(uid);
-            return index;
-        }*/
-
-        /**
-        * groupByYear
-        * @description - take an array and grouping it by Year
-        * @function
-        * @return {Array<any>} newArrayGroupedByYear - Returns an array grouped by Year
-        */
-        /*groupByYear(array): any {
-            let newArrayGroupedByYear = _.groupBy(array, function(item:any) {
-                return item.dateCreated.year;
-            });
-
-            return newArrayGroupedByYear;
-        }*/
-
-
-        /**
-        * arrayToObject
-        * @description - change an Array to firebase object.
-        * @example - array = [{title: 'text'}, {title: 'text'}]
-                return  firebaseObject = {
-                            367990d1-258b-404a-aa32-b29125fcde3e: {title: 'text'},
-                            e8f703e7-6970-462c-88ae-66d1e9bf4792: {title: 'text'}
+                    case Validation.Email:
+                        let pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        obj.valid = pattern.test(value);
+                        if(obj.valid == false) {
+                            obj.message = EMAIL_MESSAGE;
                         }
-        * @function
-        * @params {Array<any>} array - list of data
-        * @return {Array<any>} newArrayGroupedByYear - Returns an array grouped by Year
-        */
-        /*arrayToObject(array): any {
-            let newObject = {};
+                        break;
 
-            for (let i = 0; i < array.length; ++i) {
-                if (array[i] !== undefined) {
-                    newObject[array[i].uid] = array[i];
+                    case Validation.String:
+                        if(typeof value !== 'string') {
+                            obj.message = STRING_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+
+                    case Validation.Null:
+                        if(value == null) {
+                            obj.message = NULL_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+
+                    case Validation.Empty:
+                        if(value == '') {
+                            obj.message = EMPTY_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+
+                    case Validation.Number:
+                        if(typeof value !== 'number') {
+                            obj.message = NUMBER_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+
+                    case Validation.IsNotZero:
+                        if(parseInt(value) == 0) {
+                            obj.message = IS_NOT_ZERO_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+
+                    case Validation.Defined:
+                        if(value === undefined) {
+                            obj.message = DEFINED_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+
+                    case Validation.IsTrue:
+                        if(value !== true){
+                            obj.message = TRUE_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+
                 }
+
             }
 
-            return newObject;
-        }*/
+            return obj;
 
+        }
+
+
+
+        /**
+        * External Function: extractCountriesFromHtml
+        * @external
+        * @description Get Countries and Codes from HTML (assets/schemas/countries/countries.html)
+        * @use 1. You have to paste countries html in one app template (i.e. studentPage.html)
+               2. On Dev Console Chrome put:
+        * var countriesList = app.core.util.functionsUtil.FunctionsUtilService.extractCountriesFromHtml()
+        * return on console: countries list Object formatted to i18n json
+        */
+        public static extractCountriesFromHtml(): any {
+            // VARIABLES
+            let countries_json = {};
+            let language = 'EN'; //Change to specific language (ES, EN, etc)
+            let html:any = document.getElementById("countriesList." + language);
+
+
+            for (let i = 0; i < html.length; i++) {
+                let countryText = html[i].innerText;
+                let countryCode = html[i].attributes[0].nodeValue;
+                countries_json["%country." + countryCode] = countryText;
+            }
+
+            console.log(JSON.stringify(countries_json));
+        }
+
+
+
+        /**
+        * averageNumbersArray
+        * @description - Calculate numbers array average
+        * @use - this.FunctionsUtilService.averageNumbersArray([1,4,4,5]);
+        * @function
+        * @param {Array<number>} values - list of numbers
+        * @return {number} average - average value
+        */
+        averageNumbersArray(values): number {
+            //VARIABLES
+            let total = 0;
+            let average = 0;
+            let amountValues = values.length;
+            /***************************/
+
+            for (let i = 0; i < values.length; i++) {
+                total = values[i] + total;
+            }
+
+            average = Math.round(total / amountValues);
+
+            return average;
+        }
+
+
+
+        teacherRatingAverage(ratingsArr: Array<Object>): number {
+            //VARIABLES
+            let average = 0;
+            let averageArr = [];
+            let ratings: Array<app.models.teacher.Rating> = [];
+
+            for (let i = 0; i < ratingsArr.length; i++) {
+
+                ratings.push(new app.models.teacher.Rating(ratingsArr[i]));
+
+                let newArr = [
+                    ratings[i].MethodologyValue,
+                    ratings[i].TeachingValue,
+                    ratings[i].CommunicationValue
+                ];
+
+                averageArr.push(this.averageNumbersArray(newArr));
+
+            }
+
+            average = this.averageNumbersArray(averageArr);
+
+            return average;
+        }
 
 
     }

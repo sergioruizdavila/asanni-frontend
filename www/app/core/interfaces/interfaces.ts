@@ -8,6 +8,8 @@ module app.core.interfaces {
     /*     ROOTSCOPE INTERFACE     */
     /*******************************/
     export interface IMainAppRootScope extends angular.IRootScopeService {
+        teacher_id: string;
+        language_doc: angular.translate.ITranslateProvider;
         activeHeader: boolean;
         activeFooter: boolean;
     }
@@ -22,18 +24,58 @@ module app.core.interfaces {
     }
 
     /*******************************/
-    /*   DATE FORMATTED INTERFACE  */
+    /*   DATE SPLITTED INTERFACE  */
     /*******************************/
-    export interface IDateFormatted {
-        complete: string;
+    export interface IDateSplitted {
         day: string;
         month: string;
         year: string;
     }
 
+    /********************************************/
+    /*    DATA OBJECT OBTAINED FROM I18N JSON   */
+    /********************************************/
+    export interface IDataFromJsonI18n {
+        value: string;
+        code: string;
+    }
+
+    /********************************************/
+    /*      KEY - VALUE OBJECT INTERFACE        */
+    /********************************************/
+    export interface IKeyValue {
+        key: any;
+        value: any;
+    }
+
+    /****************************************/
+    /*    SELECT LIST ELEMENT INTERFACES    */
+    /****************************************/
+    export interface ISelectListElement {
+        value: any;
+    }
+
+    /*******************************************/
+    /*    HELP TEXT OF EACH STEP INTERFACES    */
+    /*******************************************/
+    export interface IHelpTextStep {
+        title: string;
+        description: string;
+    }
+
     /********************************/
     /*    STATEPARAMS INTERFACES    */
     /********************************/
+    export interface IStateParamsData extends ng.ui.IStateParamsService {
+        type?: string;
+    }
+
+    /************************************/
+    /*    TOOLTIP OPTIONS INTERFACES    */
+    /************************************/
+    export interface ITooltipOptions extends ng.ui.bootstrap.ITooltipOptions {
+        class: string;
+    }
 
 
     /////////////////////////////////

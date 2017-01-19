@@ -1,0 +1,124 @@
+<!----------------------------------------------------->
+<!--               CREATE TEACHER PAGE               -->
+<!----------------------------------------------------->
+
+<div class="createTeacherPage container">
+
+    <!--                START: HEADER STATIC (MD AND LG SCREEN)              -->
+    <!------------------------------------------------------------------------->
+    <header id="header-static"
+            class="clearfix">
+
+        <div class="row middle-xs">
+
+            <div class="col-xs-3">
+                <!--------------- START: LOGO (MD AND LG SCREEN) -------------->
+                <div class="ma-header__block ma-header--transparent__block">
+                    <a ui-sref="page.landingPage"
+                       class="ma-header__block__btn
+                       ma-header__block__logo-wrapper
+                       link-reset" aria-label="Waysily">
+                        <i class="ma-logo
+                                  ma-logo--primary
+                                  ma-header__block__btn__ma-logo
+                                  hidden-xs"></i>
+
+                        <i class="ma-logo
+                                  ma-logo--primary-short
+                                  ma-header__block__btn__ma-logo
+                                  visible-xs"></i>
+                    </a>
+                </div>
+
+                <!--                END: LOGO (MD AND LG SCREEN)             -->
+            </div>
+
+            <div class="col-xs-9">
+                <div class="ma-progressBar">
+                    <div ng-style="{width: vm.progressWidth}"
+                         class="ma-progressBar__progressLine
+                                ma-progressBar__progressLine--2Percent"></div>
+                    <div class="ma-progressBar__innerLine"></div>
+                    <div class="ma-progressBar__circle"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </header>
+    <!--                  END: HEADER STATIC (MD AND LG SCREEN)              -->
+
+
+
+    <!--                 START: HEADER FLOAT (MD AND LG SCREEN)              -->
+    <!------------------------------------------------------------------------->
+    <div id="header-float"
+         class="ma-header hidden">
+        <header class="container clearfix">
+
+            <div class="row middle-xs">
+
+                <div class="col-xs-3">
+                    <!--------------- START: LOGO (MD AND LG SCREEN) ---- --------->
+                    <div class="ma-header__block ma-header--transparent__block">
+                        <a ui-sref="page.landingPage"
+                           class="ma-header__block__btn
+                           ma-header__block__logo-wrapper
+                           link-reset" aria-label="Waysily">
+                            <i class="ma-logo
+                                      ma-logo--primary
+                                      ma-header__block__btn__ma-logo
+                                      hidden-xs"></i>
+
+                            <i class="ma-logo
+                                      ma-logo--primary-short
+                                      ma-header__block__btn__ma-logo
+                                      visible-xs"></i>
+                        </a>
+                    </div>
+                    <!--                END: LOGO (MD AND LG SCREEN)             -->
+                </div>
+
+                <div class="col-xs-9">
+                    <div class="ma-progressBar">
+                        <div ng-style="{width: vm.progressWidth}"
+                             class="ma-progressBar__progressLine
+                                    ma-progressBar__progressLine--2Percent"></div>
+                        <div class="ma-progressBar__innerLine"></div>
+                        <div class="ma-progressBar__circle"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+    </div>
+    <!--                  END: HEADER FLOAT (MD AND LG SCREEN)               -->
+
+
+
+    <div class="row">
+
+        <!--                   START: CREATE TEACHER BLOCK                   -->
+        <!--------------------------------------------------------------------->
+        <div id="createTeacher-main-block" class="col-xs-12">
+
+            <div class="ma-box space-5">
+
+                <div class="ma-box__content row">
+
+                    <div class="col-xs-12">
+                        <div ui-view="step" class="row"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+        <!--                    END: CREATE TEACHER BLOCK                    -->
+
+    </div>
+
+</div>
