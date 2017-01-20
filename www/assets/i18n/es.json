@@ -352,7 +352,7 @@
     "%create.teacher.education.form.inline_help_text.certificate.text":"Texto de ayuda explicando algo importante en esta sección.",
 
     "%create.teacher.education.help_text.title.text": "Estudios como profesor profesional",
-    "%create.teacher.education.help_text.description.text": "Tu tiempo y dinero invertido aprendiendo un idioma, una metodología formal de enseñanza es muy valorado por todos los estudiantes.",
+    "%create.teacher.education.help_text.description.text": "Tu tiempo y dinero invertido aprendiendo un idioma es algo muy valorado por los estudiantes. Cuéntales que tanto has estudiado.",
     "%create.teacher.education.help_text.educations.title.text": "Título universitario o superior en Educación o Enseñanza",
     "%create.teacher.education.help_text.educations.description.text": "Comparte tus títulos profesionales con los estudiantes. (p.ej. Licenciatura, maestría o doctorado en Educación).",
     "%create.teacher.education.help_text.certificates.title.text": "Certificado de enseñanza en idiomas",
@@ -378,7 +378,7 @@
 
     "__7. TEACHER PRICE SECTION__": "",
     "%create.teacher.price.title.text": "Paso 7 -  Precio de tus clases",
-    "%create.teacher.price.form.price.text": "Precio por hora (dolares)",
+    "%create.teacher.price.form.price.text": "Precio por hora (dólares)",
     "%create.teacher.price.form.private_class.text": "Clases Privadas",
     "%create.teacher.price.form.group_class.text": "Clases Grupales",
 
@@ -392,12 +392,12 @@
 
     "__8. TEACHER AVATAR PHOTO SECTION__": "",
     "%create.teacher.photo.title.text": "Paso 8 -  Foto de perfil",
-    "%create.teacher.photo.form.avatar.description.text": "Asegurate que tu foto cumple con los siguientes criterios:",
+    "%create.teacher.photo.form.avatar.description.text": "Asegúrate que tu foto cumple con los siguientes criterios:",
     "%create.teacher.photo.form.avatar.criteria.1.text": "no muestra a otra persona",
     "%create.teacher.photo.form.avatar.criteria.2.text": "no estas demasiado cerca ni demasiado lejos",
     "%create.teacher.photo.form.avatar.criteria.3.text": "se ven tus ojos y tu rostro claramente",
     "%create.teacher.photo.form.avatar.criteria.4.text": "es clara y tiene buena iluminación",
-    "%create.teacher.photo.form.avatar.criteria.5.text": "es amigable pero a la vez profesional",
+    "%create.teacher.photo.form.avatar.criteria.5.text": "es amigable, pero a la vez profesional",
     "%create.teacher.photo.help_text.title.text": "La primera impresión es la más importante",
     "%create.teacher.photo.help_text.description.text": "Las fotos frontales claras son una forma importante para que los profesores y estudiantes se conozcan. Carga una foto que muestre claramente tu cara.",
     "%create.teacher.photo.help_text.avatar.title.text": "La primera impresión es la más importante",
