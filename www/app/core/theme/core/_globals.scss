@@ -335,7 +335,7 @@ body.mainApp {
     color: $body-font-color;
     overflow-x: hidden;
 
-    .row {
+    .row:before {
         display: inherit;
     }
 
