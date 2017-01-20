@@ -27,12 +27,14 @@ var app;
                     this.teacherData = new app.models.teacher.Teacher();
                     angular.element(this.$window).bind("scroll", function () {
                         var floatHeader = document.getElementById('header-float');
-                        var floatHeaderClasses = floatHeader.classList;
-                        if (this.pageYOffset >= 30) {
-                            floatHeaderClasses.remove('hidden');
-                        }
-                        else {
-                            floatHeaderClasses.add('hidden');
+                        if (floatHeader) {
+                            var floatHeaderClasses = floatHeader.classList;
+                            if (this.pageYOffset >= 30) {
+                                floatHeaderClasses.remove('hidden');
+                            }
+                            else {
+                                floatHeaderClasses.add('hidden');
+                            }
                         }
                     });
                     this.error = {

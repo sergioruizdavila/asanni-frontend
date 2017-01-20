@@ -97,14 +97,20 @@ module app.pages.createTeacherPage {
             this.teacherData = new app.models.teacher.Teacher();
 
             // Init header fixed
+            //TODO: Remover esto de aqui, y colocarlo en un lugar global, ya que
+            // despues de que la App paso por esta pagina, le bindea este evento
+            // siempre, entonces cada vez que scrollee en cada pagina, va a entrar
+            // por aqui. 
             angular.element(this.$window).bind("scroll", function() {
                 let floatHeader = document.getElementById('header-float');
-                let floatHeaderClasses = floatHeader.classList;
-             if (this.pageYOffset >= 30) {
-                 floatHeaderClasses.remove('hidden');
-             } else {
-                 floatHeaderClasses.add('hidden');
-             }
+                if(floatHeader) {
+                    let floatHeaderClasses = floatHeader.classList;
+                    if (this.pageYOffset >= 30) {
+                        floatHeaderClasses.remove('hidden');
+                    } else {
+                        floatHeaderClasses.add('hidden');
+                    }
+                }
         });
 
             this.error = {

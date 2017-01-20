@@ -189,7 +189,11 @@ var app;
                         return guid;
                     };
                     FunctionsUtilService.prototype.dateFormat = function (date) {
-                        var dateFormatted = moment(date).format('YYYY-MM-DD');
+                        var DEFAULT_DJANGO_DATE_FORMAT = 'YYYY-MM-DD';
+                        var TEMPORAL_FORMAT = 'MM/DD/YYYY';
+                        var dateTemporalFormatted = moment(date).format(TEMPORAL_FORMAT);
+                        var dateFormattedSplit = this.splitDate(dateTemporalFormatted);
+                        var dateFormatted = this.joinDate(dateFormattedSplit.day, dateFormattedSplit.month, dateFormattedSplit.year);
                         return dateFormatted;
                     };
                     FunctionsUtilService.prototype.ageFormat = function (year) {
@@ -207,15 +211,15 @@ var app;
                     };
                     FunctionsUtilService.prototype.joinDate = function (day, month, year) {
                         var newDate = year + '-' + month + '-' + day;
-                        var dateFormatted = moment(newDate).format('YYYY-MM-DD');
-                        return dateFormatted;
+                        return newDate;
                     };
                     FunctionsUtilService.prototype.splitDate = function (date) {
-                        var dateString = moment(date).format('YYYY-MM-DD').split('-');
+                        var TEMPORAL_FORMAT = 'MM/DD/YYYY';
+                        var dateString = moment(date).format(TEMPORAL_FORMAT).split('/');
                         var dateFormatted = {
-                            day: dateString[2],
-                            month: dateString[1],
-                            year: dateString[0]
+                            day: dateString[1],
+                            month: dateString[0],
+                            year: dateString[2]
                         };
                         return dateFormatted;
                     };
@@ -5332,12 +5336,14 @@ var app;
                     this.teacherData = new app.models.teacher.Teacher();
                     angular.element(this.$window).bind("scroll", function () {
                         var floatHeader = document.getElementById('header-float');
-                        var floatHeaderClasses = floatHeader.classList;
-                        if (this.pageYOffset >= 30) {
-                            floatHeaderClasses.remove('hidden');
-                        }
-                        else {
-                            floatHeaderClasses.add('hidden');
+                        if (floatHeader) {
+                            var floatHeaderClasses = floatHeader.classList;
+                            if (this.pageYOffset >= 30) {
+                                floatHeaderClasses.remove('hidden');
+                            }
+                            else {
+                                floatHeaderClasses.add('hidden');
+                            }
                         }
                     });
                     this.error = {
