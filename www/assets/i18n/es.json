@@ -233,7 +233,7 @@
     "%profile.teacher.from.label.text": "nació",
     "%profile.teacher.live_in.label.text": "vive en",
     "%profile.teacher.joined_in.label.text": "Miembro desde",
-    "%profile.teacher.about_me.title.text": "Acerca de mi",
+    "%profile.teacher.about_me.title.text": "Acerca de mí",
     "%profile.teacher.teacher_of.title.text": "Profesor de",
     "%profile.teacher.native.lang.tooltip.text": "es nativo en este idioma",
     "%profile.teacher.speak.title.text": "También habla",
@@ -406,7 +406,7 @@
     "%create.teacher.photo.help_text.avatar.title.text": "La primera impresión es la más importante",
     "%create.teacher.photo.help_text.avatar.description.text": "Las fotos frontales claras son una forma importante para que los profesores y estudiantes se conozcan. Carga una foto que muestre claramente tu cara.",
     "%create.teacher.photo.help_text.avatar.uploaded.title.text": "Vista previa de tu foto",
-    "%create.teacher.photo.help_text.avatar.uploaded.description.text": "Validaremos tu fotografía con el fin de que estes seguro que cumple los criterios mínimos. Esto te ayudará a conseguir estudiantes rápidamente.",
+    "%create.teacher.photo.help_text.avatar.uploaded.description.text": "Validaremos tu fotografía para que estés seguro de que cumples con los criterios mínimos. Esto te ayudará a conseguir estudiantes rápidamente.",
     "%create.teacher.photo.validation.message.text": "Es necesaria una foto de perfil",
 
     "__9. TEACHER FINISH SECTION__": "",
