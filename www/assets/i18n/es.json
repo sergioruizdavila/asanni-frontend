@@ -55,17 +55,20 @@
     "%notification.error.server.text": "Estamos teniendo un problema, por favor intentelo nuevamente",
 
     "__MODALS__": "",
+    "%modal.lang.title.text": "Agregar un nuevo idioma",
     "%modal.lang.help_text.text": "Selecciona uno o más idiomas.",
 
     "%modal.experience.title.text": "Agregar/Editar una experiencia",
     "%modal.experience.form.position.text": "Cargo",
+    "%modal.experience.form.position.placeholder.text": "p.ej. Profesor de Inglés",
     "%modal.experience.form.company.text": "Empresa/Lugar de trabajo",
+    "%modal.experience.form.company.placeholder.text": "p.ej. Early Birds Institute / Velvet Café",
     "%modal.experience.form.cntry.text": "País",
     "%modal.experience.form.city.text": "Ciudad",
     "%modal.experience.form.date_start.text": "Fecha de inicio",
     "%modal.experience.form.date_finish.text": "Fecha final",
-    "%modal.experience.form.description.text": "Cuentanos de tu experiencia",
-    "%modal.experience.form.description.placeholder.text": "p.ej. Yo enseñaba a personas de todo el mundo, nos reunimos en los parques y museos para tener una immersion completa.",
+    "%modal.experience.form.description.text": "Cuéntanos de tu experiencia",
+    "%modal.experience.form.description.placeholder.text": "p.ej. Yo enseñaba a personas de todo el mundo, nos reunimos en los parques y museos para tener una immersión completa.",
 
     "%modal.education.title.text": "Agregar/Editar Educación",
     "%modal.education.form.field_study.text": "Campo de Estudio",
@@ -326,7 +329,7 @@
     "%create.teacher.lang.help_text.learn.description.text": "Es importante que tus estudiantes sepan que otros idiomas hablas fluidamente o estás aprendiendo, ya que esto ayudaría a una mejor comunicación durante las clases.",
 
     "__4. TEACHER EXPERIENCE SECTION__": "",
-    "%create.teacher.experience.title.text": "Paso 4 -  ¿Cual es tu experiencia como profesor?",
+    "%create.teacher.experience.title.text": "Paso 4 -  ¿Cuál es tu experiencia como profesor?",
     "%create.teacher.experience.form.type.text": "Tipo de profesor",
     "%create.teacher.experience.form.since.text": "Profesor desde",
     "%create.teacher.experience.form.experience.text": "Experiencia como profesor",

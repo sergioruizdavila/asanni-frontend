@@ -55,11 +55,14 @@
     "%notification.error.server.text": "Server error occurred, try again please",
 
     "__MODALS__": "",
+    "%modal.lang.title.text": "Add New Languages",
     "%modal.lang.help_text.text": "Select one or more languages.",
 
     "%modal.experience.title.text": "Add/Edit Experience",
     "%modal.experience.form.position.text": "Position",
+    "%modal.experience.form.position.placeholder.text": "e.g. English Teacher",
     "%modal.experience.form.company.text": "Company/Workspace",
+    "%modal.experience.form.company.placeholder.text": "e.g. Early Birds Institute / Velvet Café",
     "%modal.experience.form.cntry.text": "Country",
     "%modal.experience.form.city.text": "City",
     "%modal.experience.form.date_start.text": "Date Start",
