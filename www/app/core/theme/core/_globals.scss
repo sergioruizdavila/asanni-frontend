@@ -335,6 +335,10 @@ body.mainApp {
     color: $body-font-color;
     overflow-x: hidden;
 
+    .row {
+        display: inherit;
+    }
+
     label {
         display: block;
         font-size: 18px;
