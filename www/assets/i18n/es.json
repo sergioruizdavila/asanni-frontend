@@ -55,6 +55,8 @@
     "%notification.error.server.text": "Estamos teniendo un problema, por favor intentelo nuevamente",
 
     "__MODALS__": "",
+    "%modal.lang.help_text.text": "Selecciona uno o más idiomas.",
+
     "%modal.experience.title.text": "Agregar/Editar una experiencia",
     "%modal.experience.form.position.text": "Cargo",
     "%modal.experience.form.company.text": "Empresa/Lugar de trabajo",
@@ -74,7 +76,7 @@
     "%modal.education.form.date_start.text": "Fecha de inicio",
     "%modal.education.form.date_finish.text": "Fecha final",
     "%modal.education.form.description.text": "¿Que aprendiste?",
-    "%modal.education.form.description.placeholder.text": "p.ej. Aprendi en profundidad el idioma, su historia y gramatica. Además aprendi la metodologia adecuada para enseñar.",
+    "%modal.education.form.description.placeholder.text": "p.ej. Aprendí a fondo el idioma, su historia y gramática. Además, aprendí la metodología adecuada para enseñar.",
 
     "%modal.certificate.title.text": "Agregar/Editar Certificado",
     "%modal.certificate.form.name.text": "Nombre del Certificado",
@@ -310,16 +312,16 @@
     "%create.teacher.lang.title.text": "Paso 3 -  ¿Que idiomas dominas?",
     "%create.teacher.lang.form.native.text": "Tus idiomas nativos",
     "%create.teacher.lang.form.teach.text": "Idiomas que enseñas",
-    "%create.teacher.lang.form.learn.text": "Otros idiomas que hablas o estas aprendiendo",
+    "%create.teacher.lang.form.learn.text": "Idiomas que hablas o estás aprendiendo",
 
     "%create.teacher.lang.help_text.title.text": "Idiomas que te rodean",
-    "%create.teacher.lang.help_text.description.text": "Comparte todos los idiomas con los que estas familiarizado, desde el materno, hasta el que estas aprendiendo para darle a conocer a tus estudiantes en que otro idioma pueden comunicarse contigo.",
+    "%create.teacher.lang.help_text.description.text": "Comparte todos los idiomas con los que estás familiarizado, desde el materno, hasta el que estás aprendiendo para darle a conocer a tus estudiantes en que otro idioma pueden comunicarse contigo.",
     "%create.teacher.lang.help_text.native.title.text": "Idiomas Nativos",
     "%create.teacher.lang.help_text.native.description.text": "Idiomas que dominas desde tu niñez.",
     "%create.teacher.lang.help_text.teach.title.text": "Idiomas que enseñas",
-    "%create.teacher.lang.help_text.teach.description.text": "Agrega todos los idiomas que has aprendido a lo largo de tu vida y que estas en la capacidad de enseñar.",
-    "%create.teacher.lang.help_text.learn.title.text": "Otros idiomas que hablas o estás aprendiendo",
-    "%create.teacher.lang.help_text.learn.description.text": "Es importante que tus estudiantes sepan que otros idiomas hablas fluidamente o estas aprendiendo, ya que esto ayudaría a una mejor comunicación durante las clases.",
+    "%create.teacher.lang.help_text.teach.description.text": "Agrega todos los idiomas que has aprendido a lo largo de tu vida y que estás en la capacidad de enseñar.",
+    "%create.teacher.lang.help_text.learn.title.text": "Idiomas que hablas o estás aprendiendo",
+    "%create.teacher.lang.help_text.learn.description.text": "Es importante que tus estudiantes sepan que otros idiomas hablas fluidamente o estás aprendiendo, ya que esto ayudaría a una mejor comunicación durante las clases.",
 
     "__4. TEACHER EXPERIENCE SECTION__": "",
     "%create.teacher.experience.title.text": "Paso 4 -  ¿Cual es tu experiencia como profesor?",
@@ -437,7 +439,7 @@
     "%degree.04": "Maestría",
     "%degree.05": "Doctorado",
     "%degree.06": "Postdoctoral",
-    "%degree.07": "Other",
+    "%degree.07": "Otro",
 
     "__IMMERSION__": "",
     "%immersion.01": "Excursiones bilingües",
