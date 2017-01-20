@@ -52,7 +52,8 @@
                                 ma-input--large"
                         ng-class="{'ma-input--invalid': !vm.validate.institution.valid}"
                         ng-model="vm.form.institution"
-                        placeholder="e.g. English Institute / Spanish Institute">
+                        translate
+                        translate-attr-placeholder="%modal.certificate.form.institution.placeholder.text">
                 <p class="ma-p ma-p--small ma-p--alert pull-right"
                    ng-show="!vm.validate.institution.valid">
                     <span>{{vm.validate.institution.message}}</span>
