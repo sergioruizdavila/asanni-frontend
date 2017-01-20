@@ -73,7 +73,6 @@ var components;
                     controller: 'mainApp.components.modal.ModalSignUpController as vm'
                 };
                 var modalInstance = this.$uibModal.open(options);
-                event.preventDefault();
             };
             return HeaderController;
         }());

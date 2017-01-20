@@ -11,6 +11,7 @@
     angular.module('mainApp.core', [
         /*Angular Modules*/
         'ngResource',
+        'ngCookies',
         'ui.router',
         /*3rd Party*/
         'pascalprecht.translate',

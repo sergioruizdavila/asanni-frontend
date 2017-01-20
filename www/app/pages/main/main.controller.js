@@ -5,9 +5,7 @@ var app;
         var main;
         (function (main) {
             var MainController = (function () {
-                function MainController($rootScope, $state) {
-                    this.$rootScope = $rootScope;
-                    this.$state = $state;
+                function MainController() {
                     this.init();
                 }
                 MainController.prototype.init = function () {
@@ -20,7 +18,6 @@ var app;
                 return MainController;
             }());
             MainController.controllerId = 'mainApp.pages.main.MainController';
-            MainController.$inject = ['$rootScope', '$state'];
             main.MainController = MainController;
             angular
                 .module('mainApp.pages.main')

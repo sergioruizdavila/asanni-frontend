@@ -47,13 +47,13 @@ var app;
                     console.log('createTeacherPage controller actived');
                     this._subscribeToEvents();
                     if (this.$stateParams.type === 'new') {
-                        this.localStorage.setItem('waysily.teacher_id', '');
+                        this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
                     }
                     this.fillFormWithTeacherData();
                 };
                 CreateTeacherPageController.prototype.fillFormWithTeacherData = function () {
                     var self = this;
-                    this.$rootScope.teacher_id = this.localStorage.getItem('waysily.teacher_id');
+                    this.$rootScope.teacher_id = this.localStorage.getItem(this.dataConfig.teacherIdLocalStorage);
                     if (this.$rootScope.teacher_id) {
                         this.teacherService.getTeacherById(this.$rootScope.teacher_id)
                             .then(function (response) {
@@ -78,7 +78,7 @@ var app;
                                     window.scrollTo(0, 0);
                                     self.messageUtil.success(SUCCESS_MESSAGE);
                                     self.$rootScope.teacher_id = response.id;
-                                    self.localStorage.setItem('waysily.teacher_id', response.id);
+                                    self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
                                     self.teacherData = new app.models.teacher.Teacher(response);
                                     self.$scope.$broadcast('Fill Form', self.teacherData);
                                 }
@@ -93,7 +93,7 @@ var app;
                                     window.scrollTo(0, 0);
                                     self.messageUtil.success(SUCCESS_MESSAGE);
                                     self.$rootScope.teacher_id = response.id;
-                                    self.localStorage.setItem('waysily.teacher_id', response.id);
+                                    self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
                                     self.teacherData = new app.models.teacher.Teacher(response);
                                     self.$scope.$broadcast('Fill Form', self.teacherData);
                                 }
