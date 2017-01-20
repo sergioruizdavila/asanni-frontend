@@ -42,7 +42,8 @@
             prefix: prefix,
             suffix: suffix
         });
-        $translateProvider.preferredLanguage('es');
+        $translateProvider.preferredLanguage('en');
+        $translateProvider.useCookieStorage();
     }
 })();
 //# sourceMappingURL=app.module.js.map
@@ -50,6 +51,7 @@
     'use strict';
     angular.module('mainApp.core', [
         'ngResource',
+        'ngCookies',
         'ui.router',
         'pascalprecht.translate',
         'ui.bootstrap',
@@ -64,7 +66,7 @@
     'use strict';
     var dataConfig = {
         currentYear: '2017',
-        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
+        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -73,11 +75,12 @@
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
-        bucketS3: 'waysily-img/teachers-avatar-prd',
+        bucketS3: 'waysily-img/teachers-avatar-dev',
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
-        userId: ''
+        userId: '',
+        teacherIdLocalStorage: 'waysily.teacher_id'
     };
     angular
         .module('mainApp')
@@ -89,7 +92,9 @@
     angular
         .module('mainApp')
         .run(run);
-    run.$inject = ['$rootScope', 'dataConfig', '$http'];
+    run.$inject = ['$rootScope',
+        'dataConfig',
+        '$http'];
     function run($rootScope, dataConfig, $http) {
         mixpanel.init(dataConfig.mixpanelToken, {
             loaded: function (mixpanel) {
@@ -2652,7 +2657,6 @@ var components;
                     controller: 'mainApp.components.modal.ModalSignUpController as vm'
                 };
                 var modalInstance = this.$uibModal.open(options);
-                event.preventDefault();
             };
             return HeaderController;
         }());
@@ -3834,9 +3838,7 @@ var app;
         var main;
         (function (main) {
             var MainController = (function () {
-                function MainController($rootScope, $state) {
-                    this.$rootScope = $rootScope;
-                    this.$state = $state;
+                function MainController() {
                     this.init();
                 }
                 MainController.prototype.init = function () {
@@ -3849,7 +3851,6 @@ var app;
                 return MainController;
             }());
             MainController.controllerId = 'mainApp.pages.main.MainController';
-            MainController.$inject = ['$rootScope', '$state'];
             main.MainController = MainController;
             angular
                 .module('mainApp.pages.main')
@@ -5352,13 +5353,13 @@ var app;
                     console.log('createTeacherPage controller actived');
                     this._subscribeToEvents();
                     if (this.$stateParams.type === 'new') {
-                        this.localStorage.setItem('waysily.teacher_id', '');
+                        this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
                     }
                     this.fillFormWithTeacherData();
                 };
                 CreateTeacherPageController.prototype.fillFormWithTeacherData = function () {
                     var self = this;
-                    this.$rootScope.teacher_id = this.localStorage.getItem('waysily.teacher_id');
+                    this.$rootScope.teacher_id = this.localStorage.getItem(this.dataConfig.teacherIdLocalStorage);
                     if (this.$rootScope.teacher_id) {
                         this.teacherService.getTeacherById(this.$rootScope.teacher_id)
                             .then(function (response) {
@@ -5383,7 +5384,7 @@ var app;
                                     window.scrollTo(0, 0);
                                     self.messageUtil.success(SUCCESS_MESSAGE);
                                     self.$rootScope.teacher_id = response.id;
-                                    self.localStorage.setItem('waysily.teacher_id', response.id);
+                                    self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
                                     self.teacherData = new app.models.teacher.Teacher(response);
                                     self.$scope.$broadcast('Fill Form', self.teacherData);
                                 }
@@ -5398,7 +5399,7 @@ var app;
                                     window.scrollTo(0, 0);
                                     self.messageUtil.success(SUCCESS_MESSAGE);
                                     self.$rootScope.teacher_id = response.id;
-                                    self.localStorage.setItem('waysily.teacher_id', response.id);
+                                    self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
                                     self.teacherData = new app.models.teacher.Teacher(response);
                                     self.$scope.$broadcast('Fill Form', self.teacherData);
                                 }
@@ -7318,9 +7319,10 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherFinishSectionController = (function () {
-                function TeacherFinishSectionController($scope, $state, functionsUtilService, localStorage) {
+                function TeacherFinishSectionController($scope, $state, dataConfig, functionsUtilService, localStorage) {
                     this.$scope = $scope;
                     this.$state = $state;
+                    this.dataConfig = dataConfig;
                     this.functionsUtilService = functionsUtilService;
                     this.localStorage = localStorage;
                     this._init();
@@ -7333,7 +7335,7 @@ var app;
                     console.log('TeacherFinishSectionController controller actived');
                 };
                 TeacherFinishSectionController.prototype._finishProcess = function () {
-                    this.localStorage.setItem('waysily.teacher_id', '');
+                    this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
                     this.$state.go('page.landingPage');
                 };
                 return TeacherFinishSectionController;
@@ -7342,6 +7344,7 @@ var app;
             TeacherFinishSectionController.$inject = [
                 '$scope',
                 '$state',
+                'dataConfig',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.localStorageService'
             ];

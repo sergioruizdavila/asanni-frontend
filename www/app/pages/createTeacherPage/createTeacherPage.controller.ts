@@ -100,7 +100,7 @@ module app.pages.createTeacherPage {
             //TODO: Remover esto de aqui, y colocarlo en un lugar global, ya que
             // despues de que la App paso por esta pagina, le bindea este evento
             // siempre, entonces cada vez que scrollee en cada pagina, va a entrar
-            // por aqui. 
+            // por aqui.
             angular.element(this.$window).bind("scroll", function() {
                 let floatHeader = document.getElementById('header-float');
                 if(floatHeader) {
@@ -134,7 +134,7 @@ module app.pages.createTeacherPage {
             // If come from landing page in order to create a new teacher:
             // remove teacher id on localStorage
             if(this.$stateParams.type === 'new') {
-                this.localStorage.setItem('waysily.teacher_id', '');
+                this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
             }
 
             //Charge teacher data if teacher entity exist on DB
@@ -157,7 +157,7 @@ module app.pages.createTeacherPage {
             // VARIABLES
             let self = this;
 
-            this.$rootScope.teacher_id = this.localStorage.getItem('waysily.teacher_id');
+            this.$rootScope.teacher_id = this.localStorage.getItem(this.dataConfig.teacherIdLocalStorage);
 
             if(this.$rootScope.teacher_id) {
                 // GET TEACHER DATA
@@ -215,7 +215,7 @@ module app.pages.createTeacherPage {
                                 self.messageUtil.success(SUCCESS_MESSAGE);
                                 //Save teacher id
                                 self.$rootScope.teacher_id = response.id;
-                                self.localStorage.setItem('waysily.teacher_id', response.id);
+                                self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
 
                                 //Fill Form
                                 self.teacherData = new app.models.teacher.Teacher(response);
@@ -238,7 +238,7 @@ module app.pages.createTeacherPage {
                                 self.messageUtil.success(SUCCESS_MESSAGE);
                                 //Save teacher id
                                 self.$rootScope.teacher_id = response.id;
-                                self.localStorage.setItem('waysily.teacher_id', response.id);
+                                self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
 
                                 //Fill Form
                                 self.teacherData = new app.models.teacher.Teacher(response);

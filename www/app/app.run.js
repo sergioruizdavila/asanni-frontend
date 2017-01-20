@@ -3,7 +3,9 @@
     angular
         .module('mainApp')
         .run(run);
-    run.$inject = ['$rootScope', 'dataConfig', '$http'];
+    run.$inject = ['$rootScope',
+        'dataConfig',
+        '$http'];
     function run($rootScope, dataConfig, $http) {
         mixpanel.init(dataConfig.mixpanelToken, {
             loaded: function (mixpanel) {
