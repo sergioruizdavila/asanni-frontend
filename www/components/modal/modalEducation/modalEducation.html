@@ -80,7 +80,8 @@
                                 ma-input--large"
                         ng-class="{'ma-input--invalid': !vm.validate.school.valid}"
                         ng-model="vm.form.school"
-                        placeholder="e.g. University of Cambridge / University of Toronto">
+                        translate
+                        translate-attr-placeholder="%modal.education.form.school.placeholder.text">
                 <p class="ma-p ma-p--small ma-p--alert pull-right"
                    ng-show="!vm.validate.school.valid">
                     <span>{{vm.validate.school.message}}</span>

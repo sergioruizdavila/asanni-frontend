@@ -71,6 +71,7 @@
     "%modal.education.form.field_study.text": "Field of Study",
     "%modal.education.form.field_study.placeholder.text": "e.g. Spanish Teacher / Bachelor of Languages",
     "%modal.education.form.school.text": "School/Institution",
+    "%modal.education.form.school.placeholder.text": "e.g. University of Cambridge / University of Toronto",
     "%modal.education.form.dg.text": "Degree",
     "%modal.education.form.dg.option_list.text": "degree",
     "%modal.education.form.date_start.text": "Date Start",
