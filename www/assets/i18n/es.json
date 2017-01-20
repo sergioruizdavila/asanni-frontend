@@ -82,9 +82,10 @@
     "%modal.certificate.title.text": "Agregar/Editar Certificado",
     "%modal.certificate.form.name.text": "Nombre del Certificado",
     "%modal.certificate.form.institution.text": "Escuela/Institución",
+    "%modal.certificate.form.institution.placeholder.text": "p.ej. Instituto de Inglés / Instituto de Español",
     "%modal.certificate.form.date_received.text": "Fecha de recepción",
     "%modal.certificate.form.description.text": "¿Que aprendiste?",
-    "%modal.certificate.form.description.placeholder.text": "p.ej. Aprendi en profundidad el idioma, su historia y gramatica. Además aprendi la metodologia adecuada para enseñar.",
+    "%modal.certificate.form.description.placeholder.text": "p.ej. Aprendí a fondo el idioma, su historia y gramática. Además, aprendí la metodología adecuada para enseñar.",
 
     "__LANDING PAGE__": "",
     "%landing.header.join.label.text": "Unirse como:",

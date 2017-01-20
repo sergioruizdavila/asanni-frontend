@@ -82,6 +82,7 @@
     "%modal.certificate.title.text": "Add/Edit Certificate",
     "%modal.certificate.form.name.text": "Certificate Name",
     "%modal.certificate.form.institution.text": "School/Institution",
+    "%modal.certificate.form.institution.placeholder.text": "e.g. English Institute / Spanish Institute",
     "%modal.certificate.form.date_received.text": "Date Received",
     "%modal.certificate.form.description.text": "What did you learn?",
     "%modal.certificate.form.description.placeholder.text": "e.g. I learned in depth the language, its history and grammar. I also learned the proper methodology for teaching.",
