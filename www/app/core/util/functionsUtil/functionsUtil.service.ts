@@ -109,7 +109,16 @@ module app.core.util.functionsUtil {
         * @return {string} dateFormatted - date formatted.
         */
         dateFormat(date: string): string {
-            let dateFormatted = moment(date).format('YYYY-MM-DD');
+            //CONSTANTS
+            const DEFAULT_DJANGO_DATE_FORMAT = 'YYYY-MM-DD';
+            //Safari issue with 'YYYY-MM-DD' format
+            const TEMPORAL_FORMAT = 'MM/DD/YYYY';
+            /*****************************/
+
+            let dateTemporalFormatted = moment(date).format(TEMPORAL_FORMAT);
+            let dateFormattedSplit = this.splitDate(dateTemporalFormatted);
+            let dateFormatted = this.joinDate(dateFormattedSplit.day, dateFormattedSplit.month, dateFormattedSplit.year);
+
             return dateFormatted;
         }
 
@@ -175,8 +184,8 @@ module app.core.util.functionsUtil {
         */
         joinDate(day, month, year): string {
             let newDate = year + '-' + month + '-' + day;
-            let dateFormatted = moment(newDate).format('YYYY-MM-DD');
-            return dateFormatted;
+            //let dateFormatted = moment(newDate).format('YYYY-MM-DD');
+            return newDate;
         }
 
 
@@ -190,13 +199,17 @@ module app.core.util.functionsUtil {
         * @return {app.core.interfaces.IDateSplitted} dateFormatted - date formatted.
         */
         splitDate(date): app.core.interfaces.IDateSplitted {
+            //CONSTANTS
+            //Safari issue with 'YYYY-MM-DD' format
+            const TEMPORAL_FORMAT = 'MM/DD/YYYY';
+            /*****************************/
 
-            let dateString = moment(date).format('YYYY-MM-DD').split('-');
+            let dateString = moment(date).format(TEMPORAL_FORMAT).split('/');
             //Split date to day, month and year
             let dateFormatted = {
-                day: dateString[2],
-                month: dateString[1],
-                year: dateString[0]
+                day: dateString[1],
+                month: dateString[0],
+                year: dateString[2]
             };
 
             return dateFormatted;

@@ -75,6 +75,11 @@ var app;
                     if (!this.validate.native.valid) {
                         formValid = this.validate.native.valid;
                     }
+                    var learn_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.learn = this.functionsUtil.validator(this.form.learn, learn_rules);
+                    if (!this.validate.learn.valid) {
+                        formValid = this.validate.learn.valid;
+                    }
                     var teach_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.teach = this.functionsUtil.validator(this.form.teach, teach_rules);
                     if (!this.validate.teach.valid) {
@@ -108,7 +113,7 @@ var app;
                             break;
                     }
                 };
-                TeacherLanguageSectionController.prototype._addNewLanguages = function (type) {
+                TeacherLanguageSectionController.prototype._addNewLanguages = function (type, $event) {
                     var self = this;
                     var options = {
                         animation: false,
@@ -131,7 +136,7 @@ var app;
                     }, function () {
                         console.info('Modal dismissed at: ' + new Date());
                     });
-                    event.preventDefault();
+                    $event.preventDefault();
                 };
                 TeacherLanguageSectionController.prototype._removeLanguage = function (key, type) {
                     var newArray = this.form[type].filter(function (el) {

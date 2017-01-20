@@ -38,7 +38,8 @@
                         ng-class="{'ma-input--invalid': !vm.validate.position.valid}"
                         ng-model="vm.form.position"
                         autofocus
-                        placeholder="e.g. English Teacher">
+                        translate
+                        translate-attr-placeholder="%modal.experience.form.position.placeholder.text">
                 <p class="ma-p ma-p--small ma-p--alert pull-right"
                    ng-show="!vm.validate.position.valid">
                     <span>{{vm.validate.position.message}}</span>
@@ -56,7 +57,8 @@
                                 ma-input--large"
                         ng-class="{'ma-input--invalid': !vm.validate.company.valid}"
                         ng-model="vm.form.company"
-                        placeholder="e.g. Early Birds Institute / Velvet Cafe">
+                        translate
+                        translate-attr-placeholder="%modal.experience.form.company.placeholder.text">
                 <p class="ma-p ma-p--small ma-p--alert pull-right"
                    ng-show="!vm.validate.company.valid">
                     <span>{{vm.validate.company.message}}</span>

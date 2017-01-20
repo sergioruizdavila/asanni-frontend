@@ -50,8 +50,8 @@
                                               ma-link--box--default
                                               ma-link--box--primary
                                               pull-right"
-                                       href="#"
-                                       ng-click="vm._addEditEducation()"
+                                       href
+                                       ng-click="vm._addEditEducation(null, $event)"
                                        translate>
                                         %create.teacher.education.form.education.add_button.text
                                     </a>
@@ -70,7 +70,7 @@
                                         <div id="teacher-education"
                                              class="row margin-reset teacher-education-box__item-block"
                                              ng-repeat="education in vm.form.educations track by $index"
-                                             ng-click="vm._addEditEducation($index)">
+                                             ng-click="vm._addEditEducation($index, $event)">
 
                                             <div class="col-xs-12 padding-reset">
                                                 <div class="row margin-reset">
@@ -152,8 +152,8 @@
                                               ma-link--box--default
                                               ma-link--box--primary
                                               pull-right"
-                                       href="#"
-                                       ng-click="vm._addEditCertificate()"
+                                       href
+                                       ng-click="vm._addEditCertificate(null, $event)"
                                        translate>
                                         %create.teacher.education.form.certificate.add_button.text
                                     </a>
@@ -172,7 +172,7 @@
                                         <div id="teacher-certificate"
                                              class="row margin-reset teacher-certificate-box__item-block"
                                              ng-repeat="certificate in vm.form.certificates track by $index"
-                                             ng-click="vm._addEditCertificate($index)">
+                                             ng-click="vm._addEditCertificate($index, $event)">
 
                                             <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
                                                 <div class="row margin-reset">

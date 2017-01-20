@@ -135,7 +135,7 @@
                                               ma-link--box--primary
                                               pull-right"
                                        href
-                                       ng-click="vm._addEditExperience()"
+                                       ng-click="vm._addEditExperience(null, $event)"
                                        translate>
                                         %create.teacher.experience.form.experience.add_button.text
                                     </a>
@@ -153,7 +153,7 @@
                                         <div id="teacher-experience"
                                              class="row margin-reset teacher-experience-box__item-block"
                                              ng-repeat="experience in vm.form.experiences track by $index"
-                                             ng-click="vm._addEditExperience($index)">
+                                             ng-click="vm._addEditExperience($index, $event)">
 
                                             <div class="col-xs-12 col-sm-12 col-md-12 padding-reset">
                                                 <div class="row margin-reset">

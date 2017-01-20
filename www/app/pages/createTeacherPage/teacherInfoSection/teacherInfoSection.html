@@ -106,7 +106,8 @@
                                 <input id="teacher-phone-number"
                                        type="text"
                                        ng-model="vm.form.phoneNumber"
-                                       placeholder="e.g. 3052345678"
+                                       translate
+                                       translate-attr-placeholder="%create.teacher.basic_info.form.phone_number.placeholder.text"
                                        class="ma-input ma-input--large"
                                        ng-class="{'ma-input--invalid': !vm.validate.phoneNumber.valid}">
                                 <p class="ma-p ma-p--small ma-p--alert pull-right"
@@ -228,7 +229,8 @@
                                        class="ma-input ma-input--large"
                                        ng-class="{'ma-input--invalid': !vm.validate.born.valid}"
                                        ng-model="vm.form.born"
-                                       placeholder="e.g. Medellin, Colombia / Lisboa, Portugal">
+                                       translate
+                                       translate-attr-placeholder="%create.teacher.basic_info.form.born.placeholder.text">
                                 <p class="ma-p ma-p--small ma-p--alert pull-right"
                                     ng-show="!vm.validate.born.valid">
                                    <span>{{vm.validate.born.message}}</span>
@@ -249,7 +251,6 @@
                                 <textarea id="teacher-about"
                                           name="teacher[about]"
                                           class="ma-input ma-input--large ma-textarea"
-                                          placeholder=""
                                           translate
                                           translate-attr-placeholder="%create.teacher.basic_info.form.about.input.text"
                                           ng-model="vm.form.about"

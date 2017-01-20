@@ -104,7 +104,7 @@ var app;
                             break;
                     }
                 };
-                TeacherEducationSectionController.prototype._addEditEducation = function (index) {
+                TeacherEducationSectionController.prototype._addEditEducation = function (index, $event) {
                     var self = this;
                     var options = {
                         animation: false,
@@ -129,9 +129,9 @@ var app;
                     }, function () {
                         console.info('Modal dismissed at: ' + new Date());
                     });
-                    event.preventDefault();
+                    $event.preventDefault();
                 };
-                TeacherEducationSectionController.prototype._addEditCertificate = function (index) {
+                TeacherEducationSectionController.prototype._addEditCertificate = function (index, $event) {
                     var self = this;
                     var options = {
                         animation: false,
@@ -156,7 +156,7 @@ var app;
                     }, function () {
                         console.info('Modal dismissed at: ' + new Date());
                     });
-                    event.preventDefault();
+                    $event.preventDefault();
                 };
                 TeacherEducationSectionController.prototype._subscribeToEvents = function () {
                     var self = this;

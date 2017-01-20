@@ -189,7 +189,11 @@ var app;
                         return guid;
                     };
                     FunctionsUtilService.prototype.dateFormat = function (date) {
-                        var dateFormatted = moment(date).format('YYYY-MM-DD');
+                        var DEFAULT_DJANGO_DATE_FORMAT = 'YYYY-MM-DD';
+                        var TEMPORAL_FORMAT = 'MM/DD/YYYY';
+                        var dateTemporalFormatted = moment(date).format(TEMPORAL_FORMAT);
+                        var dateFormattedSplit = this.splitDate(dateTemporalFormatted);
+                        var dateFormatted = this.joinDate(dateFormattedSplit.day, dateFormattedSplit.month, dateFormattedSplit.year);
                         return dateFormatted;
                     };
                     FunctionsUtilService.prototype.ageFormat = function (year) {
@@ -207,15 +211,15 @@ var app;
                     };
                     FunctionsUtilService.prototype.joinDate = function (day, month, year) {
                         var newDate = year + '-' + month + '-' + day;
-                        var dateFormatted = moment(newDate).format('YYYY-MM-DD');
-                        return dateFormatted;
+                        return newDate;
                     };
                     FunctionsUtilService.prototype.splitDate = function (date) {
-                        var dateString = moment(date).format('YYYY-MM-DD').split('-');
+                        var TEMPORAL_FORMAT = 'MM/DD/YYYY';
+                        var dateString = moment(date).format(TEMPORAL_FORMAT).split('/');
                         var dateFormatted = {
-                            day: dateString[2],
-                            month: dateString[1],
-                            year: dateString[0]
+                            day: dateString[1],
+                            month: dateString[0],
+                            year: dateString[2]
                         };
                         return dateFormatted;
                     };
@@ -3295,7 +3299,6 @@ var components;
                 };
                 ModalLanguagesController.prototype.close = function () {
                     this.$uibModalInstance.close();
-                    event.preventDefault();
                 };
                 return ModalLanguagesController;
             }());
@@ -3441,7 +3444,6 @@ var components;
                 };
                 ModalExperienceController.prototype.close = function () {
                     this.$uibModalInstance.close();
-                    event.preventDefault();
                 };
                 return ModalExperienceController;
             }());
@@ -3583,7 +3585,6 @@ var components;
                 };
                 ModalEducationController.prototype.close = function () {
                     this.$uibModalInstance.close();
-                    event.preventDefault();
                 };
                 return ModalEducationController;
             }());
@@ -3702,7 +3703,6 @@ var components;
                 };
                 ModalCertificateController.prototype.close = function () {
                     this.$uibModalInstance.close();
-                    event.preventDefault();
                 };
                 return ModalCertificateController;
             }());
@@ -5332,12 +5332,14 @@ var app;
                     this.teacherData = new app.models.teacher.Teacher();
                     angular.element(this.$window).bind("scroll", function () {
                         var floatHeader = document.getElementById('header-float');
-                        var floatHeaderClasses = floatHeader.classList;
-                        if (this.pageYOffset >= 30) {
-                            floatHeaderClasses.remove('hidden');
-                        }
-                        else {
-                            floatHeaderClasses.add('hidden');
+                        if (floatHeader) {
+                            var floatHeaderClasses = floatHeader.classList;
+                            if (this.pageYOffset >= 30) {
+                                floatHeaderClasses.remove('hidden');
+                            }
+                            else {
+                                floatHeaderClasses.add('hidden');
+                            }
                         }
                     });
                     this.error = {
@@ -6094,6 +6096,11 @@ var app;
                     if (!this.validate.native.valid) {
                         formValid = this.validate.native.valid;
                     }
+                    var learn_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.learn = this.functionsUtil.validator(this.form.learn, learn_rules);
+                    if (!this.validate.learn.valid) {
+                        formValid = this.validate.learn.valid;
+                    }
                     var teach_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.teach = this.functionsUtil.validator(this.form.teach, teach_rules);
                     if (!this.validate.teach.valid) {
@@ -6127,7 +6134,7 @@ var app;
                             break;
                     }
                 };
-                TeacherLanguageSectionController.prototype._addNewLanguages = function (type) {
+                TeacherLanguageSectionController.prototype._addNewLanguages = function (type, $event) {
                     var self = this;
                     var options = {
                         animation: false,
@@ -6150,7 +6157,7 @@ var app;
                     }, function () {
                         console.info('Modal dismissed at: ' + new Date());
                     });
-                    event.preventDefault();
+                    $event.preventDefault();
                 };
                 TeacherLanguageSectionController.prototype._removeLanguage = function (key, type) {
                     var newArray = this.form[type].filter(function (el) {
@@ -6410,7 +6417,7 @@ var app;
                             break;
                     }
                 };
-                TeacherExperienceSectionController.prototype._addEditExperience = function (index) {
+                TeacherExperienceSectionController.prototype._addEditExperience = function (index, $event) {
                     var self = this;
                     var options = {
                         animation: false,
@@ -6435,7 +6442,7 @@ var app;
                     }, function () {
                         console.info('Modal dismissed at: ' + new Date());
                     });
-                    event.preventDefault();
+                    $event.preventDefault();
                 };
                 TeacherExperienceSectionController.prototype._setDataModelFromForm = function () {
                     this.$scope.$parent.vm.teacherData.Type = this.form.type;
@@ -6604,7 +6611,7 @@ var app;
                             break;
                     }
                 };
-                TeacherEducationSectionController.prototype._addEditEducation = function (index) {
+                TeacherEducationSectionController.prototype._addEditEducation = function (index, $event) {
                     var self = this;
                     var options = {
                         animation: false,
@@ -6629,9 +6636,9 @@ var app;
                     }, function () {
                         console.info('Modal dismissed at: ' + new Date());
                     });
-                    event.preventDefault();
+                    $event.preventDefault();
                 };
-                TeacherEducationSectionController.prototype._addEditCertificate = function (index) {
+                TeacherEducationSectionController.prototype._addEditCertificate = function (index, $event) {
                     var self = this;
                     var options = {
                         animation: false,
@@ -6656,7 +6663,7 @@ var app;
                     }, function () {
                         console.info('Modal dismissed at: ' + new Date());
                     });
-                    event.preventDefault();
+                    $event.preventDefault();
                 };
                 TeacherEducationSectionController.prototype._subscribeToEvents = function () {
                     var self = this;

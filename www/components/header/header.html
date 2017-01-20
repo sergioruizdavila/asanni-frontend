@@ -10,7 +10,7 @@
 
         <!-------------------- START: MENU (SMALL SCREEN) --------------------->
         <div class="ma-header__block pull-left">
-            <a href="#"
+            <a href
                aria-label="Homepage"
                class="ma-header__block__btn link-reset"
                ng-click="vm.slideNavMenu()">
@@ -230,7 +230,7 @@
 
         <!---------------- START: LOG IN BUTTON (MD AND LG SCREEN) ------------>
         <div class="ma-header__block pull-right hidden">
-            <a href="#" class="ma-header__block__btn link-reset">
+            <a href class="ma-header__block__btn link-reset">
                 Log In
             </a>
         </div>
@@ -240,7 +240,7 @@
 
         <!--------------- START: SIGN UP BUTTON (MD AND LG SCREEN) ------------>
         <div class="ma-header__block pull-right hidden">
-            <a href="#" class="ma-header__block__btn link-reset">
+            <a href class="ma-header__block__btn link-reset">
                 Sign Up
             </a>
         </div>
@@ -371,7 +371,7 @@
         </style>
 
         <!--------------- START: WHERE DROPDOWN (MD AND LG SCREEN) ------------>
-        <div class="ma-header__block ma-header__block__search-wrapper"
+        <div class="ma-header__block ma-header__block__search-wrapper hidden-sm"
              uib-dropdown on-toggle="toggled(open)"
              role="search">
             <form class="ma-header__block__search-wrapper__form"
@@ -399,22 +399,28 @@
                     <a class="ma-dropdown__option__btn"
                        ng-click="vm.search('Colombia')"
                        href>
-                      Colombia
+                       <span translate>
+                           %country.CO
+                       </span>
                     </a>
                 </li>
                 <li class="ma-dropdown__option">
-                    <a class="ma-dropdown__option__btn disabled"
+                    <a class="ma-dropdown__option__btn clearfix disabled"
                        href>
-                        Guatemala
+                       <span class="pull-left" translate>
+                           %country.GT
+                       </span>
                         <span class="ma-p ma-p--default pull-right" translate>
                             %global.coming_soon.text
                         </span>
                     </a>
                 </li>
                 <li class="ma-dropdown__option">
-                    <a class="ma-dropdown__option__btn disabled"
+                    <a class="ma-dropdown__option__btn clearfix disabled"
                        href>
-                        Mexico
+                        <span class="pull-left" translate>
+                            %country.MX
+                        </span>
                         <span class="ma-p ma-p--default pull-right" translate>
                             %global.coming_soon.text
                         </span>

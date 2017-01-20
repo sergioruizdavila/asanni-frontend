@@ -215,13 +215,11 @@ module app.pages.createTeacherPage {
             }
 
             //Validate Learn Languages List
-            //TODO: Validar si tengo que validar que el profesor este aprendiendo
-            // otro idioma.
-            /*let learn_rules = [NULL_ENUM, EMPTY_ENUM];
+            let learn_rules = [NULL_ENUM, EMPTY_ENUM];
             this.validate.learn = this.functionsUtil.validator(this.form.learn, learn_rules);
             if(!this.validate.learn.valid) {
                 formValid = this.validate.learn.valid;
-            }*/
+            }
 
             //Validate Teach Languages List
             let teach_rules = [NULL_ENUM, EMPTY_ENUM];
@@ -286,7 +284,7 @@ module app.pages.createTeacherPage {
         * @function
         * @return {void}
         */
-        private _addNewLanguages(type): void {
+        private _addNewLanguages(type, $event): void {
             let self = this;
             // modal default options
             let options: ng.ui.bootstrap.IModalSettings = {
@@ -315,7 +313,7 @@ module app.pages.createTeacherPage {
                 console.info('Modal dismissed at: ' + new Date());
             });
 
-            event.preventDefault();
+            $event.preventDefault();
         }
 
 
