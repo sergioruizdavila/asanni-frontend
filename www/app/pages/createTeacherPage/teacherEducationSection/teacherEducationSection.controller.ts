@@ -263,7 +263,7 @@ module app.pages.createTeacherPage {
         * @function
         * @return {void}
         */
-        private _addEditEducation(index): void {
+        private _addEditEducation(index, $event): void {
             let self = this;
             // modal default options
             let options: ng.ui.bootstrap.IModalSettings = {
@@ -294,7 +294,7 @@ module app.pages.createTeacherPage {
                 console.info('Modal dismissed at: ' + new Date());
             });
 
-            event.preventDefault();
+            $event.preventDefault();
         }
 
 
@@ -306,7 +306,7 @@ module app.pages.createTeacherPage {
         * @function
         * @return {void}
         */
-        private _addEditCertificate(index): void {
+        private _addEditCertificate(index, $event): void {
             let self = this;
             // modal default options
             let options: ng.ui.bootstrap.IModalSettings = {
@@ -337,7 +337,7 @@ module app.pages.createTeacherPage {
                 console.info('Modal dismissed at: ' + new Date());
             });
 
-            event.preventDefault();
+            $event.preventDefault();
         }
 
 

@@ -198,7 +198,6 @@ module components.modal.modalLanguages {
         */
         close(): void {
             this.$uibModalInstance.close();
-            event.preventDefault();
         }
 
 

@@ -144,7 +144,7 @@ module components.modal.modalCertificate {
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
             const EMAIL_ENUM = app.core.util.functionsUtil.Validation.Email;
-            
+
             /***************************************************/
             //VARIABLES
             let formValid = true;
@@ -244,7 +244,6 @@ module components.modal.modalCertificate {
         */
         close(): void {
             this.$uibModalInstance.close();
-            event.preventDefault();
         }
 
 

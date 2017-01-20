@@ -306,7 +306,7 @@ module app.pages.createTeacherPage {
         * @function
         * @return {void}
         */
-        private _addEditExperience(index): void {
+        private _addEditExperience(index, $event): void {
             let self = this;
             // modal default options
             let options: ng.ui.bootstrap.IModalSettings = {
@@ -337,7 +337,7 @@ module app.pages.createTeacherPage {
                 console.info('Modal dismissed at: ' + new Date());
             });
 
-            event.preventDefault();
+            $event.preventDefault();
         }
 
 

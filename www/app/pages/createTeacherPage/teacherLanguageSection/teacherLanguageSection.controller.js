@@ -108,7 +108,7 @@ var app;
                             break;
                     }
                 };
-                TeacherLanguageSectionController.prototype._addNewLanguages = function (type) {
+                TeacherLanguageSectionController.prototype._addNewLanguages = function (type, $event) {
                     var self = this;
                     var options = {
                         animation: false,
@@ -131,7 +131,7 @@ var app;
                     }, function () {
                         console.info('Modal dismissed at: ' + new Date());
                     });
-                    event.preventDefault();
+                    $event.preventDefault();
                 };
                 TeacherLanguageSectionController.prototype._removeLanguage = function (key, type) {
                     var newArray = this.form[type].filter(function (el) {

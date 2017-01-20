@@ -3299,7 +3299,6 @@ var components;
                 };
                 ModalLanguagesController.prototype.close = function () {
                     this.$uibModalInstance.close();
-                    event.preventDefault();
                 };
                 return ModalLanguagesController;
             }());
@@ -3445,7 +3444,6 @@ var components;
                 };
                 ModalExperienceController.prototype.close = function () {
                     this.$uibModalInstance.close();
-                    event.preventDefault();
                 };
                 return ModalExperienceController;
             }());
@@ -3587,7 +3585,6 @@ var components;
                 };
                 ModalEducationController.prototype.close = function () {
                     this.$uibModalInstance.close();
-                    event.preventDefault();
                 };
                 return ModalEducationController;
             }());
@@ -3706,7 +3703,6 @@ var components;
                 };
                 ModalCertificateController.prototype.close = function () {
                     this.$uibModalInstance.close();
-                    event.preventDefault();
                 };
                 return ModalCertificateController;
             }());
@@ -6133,7 +6129,7 @@ var app;
                             break;
                     }
                 };
-                TeacherLanguageSectionController.prototype._addNewLanguages = function (type) {
+                TeacherLanguageSectionController.prototype._addNewLanguages = function (type, $event) {
                     var self = this;
                     var options = {
                         animation: false,
@@ -6156,7 +6152,7 @@ var app;
                     }, function () {
                         console.info('Modal dismissed at: ' + new Date());
                     });
-                    event.preventDefault();
+                    $event.preventDefault();
                 };
                 TeacherLanguageSectionController.prototype._removeLanguage = function (key, type) {
                     var newArray = this.form[type].filter(function (el) {
@@ -6416,7 +6412,7 @@ var app;
                             break;
                     }
                 };
-                TeacherExperienceSectionController.prototype._addEditExperience = function (index) {
+                TeacherExperienceSectionController.prototype._addEditExperience = function (index, $event) {
                     var self = this;
                     var options = {
                         animation: false,
@@ -6441,7 +6437,7 @@ var app;
                     }, function () {
                         console.info('Modal dismissed at: ' + new Date());
                     });
-                    event.preventDefault();
+                    $event.preventDefault();
                 };
                 TeacherExperienceSectionController.prototype._setDataModelFromForm = function () {
                     this.$scope.$parent.vm.teacherData.Type = this.form.type;
@@ -6610,7 +6606,7 @@ var app;
                             break;
                     }
                 };
-                TeacherEducationSectionController.prototype._addEditEducation = function (index) {
+                TeacherEducationSectionController.prototype._addEditEducation = function (index, $event) {
                     var self = this;
                     var options = {
                         animation: false,
@@ -6635,9 +6631,9 @@ var app;
                     }, function () {
                         console.info('Modal dismissed at: ' + new Date());
                     });
-                    event.preventDefault();
+                    $event.preventDefault();
                 };
-                TeacherEducationSectionController.prototype._addEditCertificate = function (index) {
+                TeacherEducationSectionController.prototype._addEditCertificate = function (index, $event) {
                     var self = this;
                     var options = {
                         animation: false,
@@ -6662,7 +6658,7 @@ var app;
                     }, function () {
                         console.info('Modal dismissed at: ' + new Date());
                     });
-                    event.preventDefault();
+                    $event.preventDefault();
                 };
                 TeacherEducationSectionController.prototype._subscribeToEvents = function () {
                     var self = this;

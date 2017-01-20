@@ -294,7 +294,6 @@ module components.modal.modalExperience {
         */
         close(): void {
             this.$uibModalInstance.close();
-            event.preventDefault();
         }
 
 
