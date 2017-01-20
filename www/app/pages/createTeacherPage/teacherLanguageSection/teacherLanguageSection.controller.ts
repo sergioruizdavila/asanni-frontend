@@ -286,7 +286,7 @@ module app.pages.createTeacherPage {
         * @function
         * @return {void}
         */
-        private _addNewLanguages(type): void {
+        private _addNewLanguages(type, $event): void {
             let self = this;
             // modal default options
             let options: ng.ui.bootstrap.IModalSettings = {
@@ -315,7 +315,7 @@ module app.pages.createTeacherPage {
                 console.info('Modal dismissed at: ' + new Date());
             });
 
-            event.preventDefault();
+            $event.preventDefault();
         }
 
 

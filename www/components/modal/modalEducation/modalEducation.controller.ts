@@ -281,8 +281,7 @@ module components.modal.modalEducation {
         * @return {void}
         */
         close(): void {
-            this.$uibModalInstance.close();
-            event.preventDefault();
+            this.$uibModalInstance.close();            
         }
 
 

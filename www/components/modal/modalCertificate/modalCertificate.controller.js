@@ -97,7 +97,6 @@ var components;
                 };
                 ModalCertificateController.prototype.close = function () {
                     this.$uibModalInstance.close();
-                    event.preventDefault();
                 };
                 return ModalCertificateController;
             }());

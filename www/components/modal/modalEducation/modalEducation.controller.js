@@ -120,7 +120,6 @@ var components;
                 };
                 ModalEducationController.prototype.close = function () {
                     this.$uibModalInstance.close();
-                    event.preventDefault();
                 };
                 return ModalEducationController;
             }());

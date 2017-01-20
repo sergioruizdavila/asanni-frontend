@@ -128,7 +128,6 @@ var components;
                 };
                 ModalExperienceController.prototype.close = function () {
                     this.$uibModalInstance.close();
-                    event.preventDefault();
                 };
                 return ModalExperienceController;
             }());

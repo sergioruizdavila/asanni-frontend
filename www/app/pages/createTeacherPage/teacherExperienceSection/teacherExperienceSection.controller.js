@@ -129,7 +129,7 @@ var app;
                             break;
                     }
                 };
-                TeacherExperienceSectionController.prototype._addEditExperience = function (index) {
+                TeacherExperienceSectionController.prototype._addEditExperience = function (index, $event) {
                     var self = this;
                     var options = {
                         animation: false,
@@ -154,7 +154,7 @@ var app;
                     }, function () {
                         console.info('Modal dismissed at: ' + new Date());
                     });
-                    event.preventDefault();
+                    $event.preventDefault();
                 };
                 TeacherExperienceSectionController.prototype._setDataModelFromForm = function () {
                     this.$scope.$parent.vm.teacherData.Type = this.form.type;

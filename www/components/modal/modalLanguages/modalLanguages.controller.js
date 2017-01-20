@@ -69,7 +69,6 @@ var components;
                 };
                 ModalLanguagesController.prototype.close = function () {
                     this.$uibModalInstance.close();
-                    event.preventDefault();
                 };
                 return ModalLanguagesController;
             }());
