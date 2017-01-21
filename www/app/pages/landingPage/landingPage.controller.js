@@ -49,9 +49,11 @@ var app;
                 LandingPageController.prototype.activate = function () {
                     var self = this;
                     console.log('landingPage controller actived');
+                    mixpanel.track("Enter: Main Landing Page");
                 };
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
+                    mixpanel.track("Change Language on landingPage");
                 };
                 LandingPageController.prototype._sendCountryFeedback = function () {
                     var FEEDBACK_SUCCESS_MESSAGE = '¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.';
@@ -131,7 +133,7 @@ var app;
                         controller: 'mainApp.components.modal.ModalSignUpController as vm'
                     };
                     var modalInstance = this.$uibModal.open(options);
-                    event.preventDefault();
+                    mixpanel.track("Click on 'Join as Student' landing page header");
                 };
                 return LandingPageController;
             }());

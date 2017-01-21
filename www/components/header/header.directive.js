@@ -52,6 +52,7 @@ var components;
             };
             HeaderController.prototype.changeLanguage = function () {
                 this.functionsUtil.changeLanguage(this.form.language);
+                mixpanel.track("Change Language on header");
             };
             HeaderController.prototype.search = function (country) {
                 var currentState = this.$state.current.name;
@@ -73,6 +74,7 @@ var components;
                     controller: 'mainApp.components.modal.ModalSignUpController as vm'
                 };
                 var modalInstance = this.$uibModal.open(options);
+                mixpanel.track("Click on 'Join as Student' main header");
             };
             return HeaderController;
         }());

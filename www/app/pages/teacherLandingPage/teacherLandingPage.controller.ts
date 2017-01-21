@@ -89,6 +89,9 @@ module app.pages.teacherLandingPage {
             //LOG
             console.log('teacherLandingPage controller actived');
 
+            //MIXPANEL
+            mixpanel.track("Enter: Teacher Landing Page");
+
         }
 
         /**********************************/
@@ -105,6 +108,7 @@ module app.pages.teacherLandingPage {
 
         changeLanguage(): void {
              this.functionsUtil.changeLanguage(this.form.language);
+             mixpanel.track("Change Language on teacherLandingPage");
         }
 
 
@@ -130,7 +134,9 @@ module app.pages.teacherLandingPage {
 
             var modalInstance = this.$uibModal.open(options);
 
-            event.preventDefault();
+            //MIXPANEL
+            mixpanel.track("Click on 'Join as Student' teacher landing page header");
+
         }
 
 

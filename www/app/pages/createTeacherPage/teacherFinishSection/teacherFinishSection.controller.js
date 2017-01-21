@@ -19,9 +19,15 @@ var app;
                 };
                 TeacherFinishSectionController.prototype.activate = function () {
                     console.log('TeacherFinishSectionController controller actived');
+                    mixpanel.track("Enter: Finish Create Teacher Process");
                 };
                 TeacherFinishSectionController.prototype._finishProcess = function () {
                     this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
+                    mixpanel.track("Finish Process: Create Teacher", {
+                        "id": this.$scope.$parent.vm.teacherData.Id,
+                        "name": this.$scope.$parent.vm.teacherData.FirstName + ' ' + this.$scope.$parent.vm.teacherData.LastName,
+                        "email": this.$scope.$parent.vm.teacherData.Email
+                    });
                     this.$state.go('page.landingPage');
                 };
                 return TeacherFinishSectionController;
