@@ -66,7 +66,7 @@
     'use strict';
     var dataConfig = {
         currentYear: '2017',
-        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
+        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -75,7 +75,7 @@
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
-        bucketS3: 'waysily-img/teachers-avatar-prd',
+        bucketS3: 'waysily-img/teachers-avatar-dev',
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
@@ -2636,6 +2636,7 @@ var components;
             };
             HeaderController.prototype.changeLanguage = function () {
                 this.functionsUtil.changeLanguage(this.form.language);
+                mixpanel.track("Change Language on header");
             };
             HeaderController.prototype.search = function (country) {
                 var currentState = this.$state.current.name;
@@ -2657,6 +2658,7 @@ var components;
                     controller: 'mainApp.components.modal.ModalSignUpController as vm'
                 };
                 var modalInstance = this.$uibModal.open(options);
+                mixpanel.track("Click on 'Join as Student' main header");
             };
             return HeaderController;
         }());
@@ -4060,9 +4062,11 @@ var app;
                     this.TEACHER_FAKE_TMPL = 'app/pages/teacherLandingPage/teacherContainerExample/teacherContainerExample.html';
                     var self = this;
                     console.log('teacherLandingPage controller actived');
+                    mixpanel.track("Enter: Teacher Landing Page");
                 };
                 TeacherLandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
+                    mixpanel.track("Change Language on teacherLandingPage");
                 };
                 TeacherLandingPageController.prototype._openSignUpModal = function () {
                     var self = this;
@@ -4074,7 +4078,7 @@ var app;
                         controller: 'mainApp.components.modal.ModalSignUpController as vm'
                     };
                     var modalInstance = this.$uibModal.open(options);
-                    event.preventDefault();
+                    mixpanel.track("Click on 'Join as Student' teacher landing page header");
                 };
                 TeacherLandingPageController.prototype._buildFakeTeacher = function () {
                     this.fake = new app.models.teacher.Teacher();
@@ -4208,9 +4212,11 @@ var app;
                 LandingPageController.prototype.activate = function () {
                     var self = this;
                     console.log('landingPage controller actived');
+                    mixpanel.track("Enter: Main Landing Page");
                 };
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
+                    mixpanel.track("Change Language on landingPage");
                 };
                 LandingPageController.prototype._sendCountryFeedback = function () {
                     var FEEDBACK_SUCCESS_MESSAGE = '¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.';
@@ -4290,7 +4296,7 @@ var app;
                         controller: 'mainApp.components.modal.ModalSignUpController as vm'
                     };
                     var modalInstance = this.$uibModal.open(options);
-                    event.preventDefault();
+                    mixpanel.track("Click on 'Join as Student' landing page header");
                 };
                 return LandingPageController;
             }());
@@ -4478,6 +4484,7 @@ var app;
                 SearchPageController.prototype.activate = function () {
                     var self = this;
                     console.log('searchPage controller actived');
+                    mixpanel.track("Enter: Search Page");
                     this._subscribeToEvents();
                     this.TeacherService.getAllTeachersByStatus(this.VALIDATED).then(function (response) {
                         self.type = 'teacher';
@@ -5351,6 +5358,7 @@ var app;
                 CreateTeacherPageController.prototype.activate = function () {
                     var self = this;
                     console.log('createTeacherPage controller actived');
+                    mixpanel.track("Enter: Create Teacher Page");
                     this._subscribeToEvents();
                     if (this.$stateParams.type === 'new') {
                         this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
@@ -5477,6 +5485,7 @@ var app;
                 };
                 TeacherWelcomeSectionController.prototype.activate = function () {
                     console.log('TeacherWelcomeSectionController controller actived');
+                    mixpanel.track("Enter: Start Create Teacher Process");
                 };
                 TeacherWelcomeSectionController.prototype.goToStart = function () {
                     this.$state.go(this.STEP1_STATE, { reload: true });
@@ -5583,6 +5592,11 @@ var app;
                 TeacherInfoSectionController.prototype.goToNext = function () {
                     var formValid = this._validateForm();
                     if (formValid) {
+                        mixpanel.track("Enter: Basic Info on Create Teacher", {
+                            "name": this.form.firstName + ' ' + this.form.lastName,
+                            "email": this.form.email,
+                            "phone": this.form.phoneNumber
+                        });
                         this._setDataModelFromForm();
                         this.$scope.$emit('Save Data');
                         this.$state.go(this.STEP2_STATE, { reload: true });
@@ -7333,9 +7347,15 @@ var app;
                 };
                 TeacherFinishSectionController.prototype.activate = function () {
                     console.log('TeacherFinishSectionController controller actived');
+                    mixpanel.track("Enter: Finish Create Teacher Process");
                 };
                 TeacherFinishSectionController.prototype._finishProcess = function () {
                     this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
+                    mixpanel.track("Finish Process: Create Teacher", {
+                        "id": this.$scope.$parent.vm.teacherData.Id,
+                        "name": this.$scope.$parent.vm.teacherData.FirstName + ' ' + this.$scope.$parent.vm.teacherData.LastName,
+                        "email": this.$scope.$parent.vm.teacherData.Email
+                    });
                     this.$state.go('page.landingPage');
                 };
                 return TeacherFinishSectionController;
@@ -7408,6 +7428,7 @@ var app;
                 TeacherProfilePageController.prototype.activate = function () {
                     var self = this;
                     console.log('teacherProfilePage controller actived');
+                    mixpanel.track("Enter: Teacher Profile Details");
                     this.TeacherService.getTeacherById(this.$stateParams.id).then(function (response) {
                         self.data = new app.models.teacher.Teacher(response);
                         self.mapConfig = self.functionsUtil.buildMapConfig([
@@ -7432,7 +7453,12 @@ var app;
                     };
                 };
                 TeacherProfilePageController.prototype.goToConfirm = function () {
-                    this.$state.go('https://waysily.typeform.com/to/NDPRAb');
+                    mixpanel.track("Click on book a class", {
+                        "teacher_id": this.data.Id,
+                        "teacher_name": this.data.FirstName + ' ' + this.data.LastName
+                    });
+                    var url = 'https://waysily.typeform.com/to/NDPRAb';
+                    window.open(url, '_blank');
                 };
                 TeacherProfilePageController.prototype._assignNative = function (language) {
                     var native = this.data.Languages.Native;

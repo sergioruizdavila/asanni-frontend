@@ -128,6 +128,9 @@ module app.pages.createTeacherPage {
             //LOG
             console.log('createTeacherPage controller actived');
 
+            //MIXPANEL
+            mixpanel.track("Enter: Create Teacher Page");
+
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
 

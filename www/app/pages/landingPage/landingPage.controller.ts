@@ -148,6 +148,9 @@ module app.pages.landingPage {
             let self = this;
             //LOG
             console.log('landingPage controller actived');
+
+            //MIXPANEL
+            mixpanel.track("Enter: Main Landing Page");
         }
 
         /**********************************/
@@ -164,6 +167,7 @@ module app.pages.landingPage {
 
         changeLanguage(): void {
              this.functionsUtil.changeLanguage(this.form.language);
+             mixpanel.track("Change Language on landingPage");
         }
 
 
@@ -293,7 +297,7 @@ module app.pages.landingPage {
 
             var modalInstance = this.$uibModal.open(options);
 
-            event.preventDefault();
+            mixpanel.track("Click on 'Join as Student' landing page header");
         }
 
     }

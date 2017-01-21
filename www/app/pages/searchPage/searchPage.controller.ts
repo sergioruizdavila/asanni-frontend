@@ -100,6 +100,8 @@ module app.pages.searchPage {
             let self = this;
             //LOG
             console.log('searchPage controller actived');
+            //MIXPANEL
+            mixpanel.track("Enter: Search Page");
 
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();

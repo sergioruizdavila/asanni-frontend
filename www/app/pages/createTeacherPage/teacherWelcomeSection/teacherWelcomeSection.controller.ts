@@ -65,6 +65,9 @@ module app.pages.createTeacherPage {
         activate(): void {
             //LOG
             console.log('TeacherWelcomeSectionController controller actived');
+
+            //MIXPANEL
+            mixpanel.track("Enter: Start Create Teacher Process");
         }
 
         /**********************************/
