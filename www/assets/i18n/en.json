@@ -318,7 +318,7 @@
     "%create.teacher.lang.title.text": "Step 3 -  What languages do you dominate?",
     "%create.teacher.lang.form.native.text": "Your native languages",
     "%create.teacher.lang.form.teach.text": "Languages you teach",
-    "%create.teacher.lang.form.learn.text": "Other languages you speak or learn",
+    "%create.teacher.lang.form.learn.text": "Languages you speak or learn",
 
     "%create.teacher.lang.help_text.title.text": "Languages around you",
     "%create.teacher.lang.help_text.description.text": "Share all languages with which you are familiar, from the native language until the language you are learning in order to make known to your students in which other languages they could communicate with you.",
@@ -326,7 +326,7 @@
     "%create.teacher.lang.help_text.native.description.text": "Languages you have mastered since childhood.",
     "%create.teacher.lang.help_text.teach.title.text": "Languages you are teaching",
     "%create.teacher.lang.help_text.teach.description.text": "Add all the languages you have learned throughout your life and you are in the ability to teach.",
-    "%create.teacher.lang.help_text.learn.title.text": "Other languages you speak or learn",
+    "%create.teacher.lang.help_text.learn.title.text": "Languages you speak or learn",
     "%create.teacher.lang.help_text.learn.description.text": "It's important that your students know which other languages you speak fluently or you're learning, as this would help better communication during the lessons.",
 
     "__4. TEACHER EXPERIENCE SECTION__": "",
