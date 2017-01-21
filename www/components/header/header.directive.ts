@@ -213,8 +213,6 @@ module components.header {
             };
 
             var modalInstance = this.$uibModal.open(options);
-
-            event.preventDefault();
         }
 
     }

@@ -15,11 +15,13 @@
         .module('mainApp')
         .run(run);
 
-    run.$inject = ['$rootScope', 'dataConfig', '$http'];
+    run.$inject = ['$rootScope',
+                   'dataConfig',
+                   '$http'];
 
     function run($rootScope: ng.IRootScopeService,
                  dataConfig: IDataConfig,
-                 $http: any ): void {
+                 $http: any): void {
 
         mixpanel.init(dataConfig.mixpanelToken, {
             loaded: function(mixpanel) {
@@ -31,11 +33,6 @@
                 }
             }
         });
-
-        //TODO URGENTE: En cuanto cargue la App, deberia ir a localStorage y validar
-        // si hay una variable: waysily.lang. Si esta deberia tomar su valor y
-        // guardarlo en una variable global (rootScope). Sino esta, deberia guardar
-        // el que el usuario tiene en el momento: this.functionsUtil.getCurrentLanguage()
 
         //TODO: Get these values from the logged user
         dataConfig.userId = 'id1234';

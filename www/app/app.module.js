@@ -42,7 +42,8 @@
             prefix: prefix,
             suffix: suffix
         });
-        $translateProvider.preferredLanguage('es');
+        $translateProvider.preferredLanguage('en');
+        $translateProvider.useCookieStorage();
     }
 })();
 //# sourceMappingURL=app.module.js.map

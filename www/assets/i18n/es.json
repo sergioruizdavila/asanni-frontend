@@ -33,6 +33,7 @@
     "%global.currency.suffix.text": "USD",
     "%global.time.text": "/ semana",
     "%global.review.text": "evaluaciones",
+    "%global.new.label.text": "nuevo",
 
     "%global.validation.null.message.text": "Valor requerido",
     "%global.validation.empty.message.text": "Valor requerido",

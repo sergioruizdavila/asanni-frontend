@@ -27,13 +27,12 @@ module app.pages.main {
 
 
         /*-- INJECT DEPENDENCIES --*/
-        public static $inject = ['$rootScope', '$state'];
+        //public static $inject = [];
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        constructor(private $rootScope: any,
-                    private $state: ng.ui.IStateService) {
+        constructor() {
             this.init();
         }
 
@@ -46,6 +45,7 @@ module app.pages.main {
         activate(): void {
             //VARIABLES
             let self = this;
+
             //LOG
             console.log('main controller actived');
 

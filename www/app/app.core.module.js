@@ -2,6 +2,7 @@
     'use strict';
     angular.module('mainApp.core', [
         'ngResource',
+        'ngCookies',
         'ui.router',
         'pascalprecht.translate',
         'ui.bootstrap',
