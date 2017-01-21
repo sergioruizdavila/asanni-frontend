@@ -22,6 +22,7 @@ var app;
                 TeacherProfilePageController.prototype.activate = function () {
                     var self = this;
                     console.log('teacherProfilePage controller actived');
+                    mixpanel.track("Enter: Teacher Profile Details");
                     this.TeacherService.getTeacherById(this.$stateParams.id).then(function (response) {
                         self.data = new app.models.teacher.Teacher(response);
                         self.mapConfig = self.functionsUtil.buildMapConfig([
@@ -46,7 +47,12 @@ var app;
                     };
                 };
                 TeacherProfilePageController.prototype.goToConfirm = function () {
-                    this.$state.go('https://waysily.typeform.com/to/NDPRAb');
+                    mixpanel.track("Click on book a class", {
+                        "teacher_id": this.data.Id,
+                        "teacher_name": this.data.FirstName + ' ' + this.data.LastName
+                    });
+                    var url = 'https://waysily.typeform.com/to/NDPRAb';
+                    window.open(url, '_blank');
                 };
                 TeacherProfilePageController.prototype._assignNative = function (language) {
                     var native = this.data.Languages.Native;

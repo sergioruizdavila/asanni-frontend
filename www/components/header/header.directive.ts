@@ -166,6 +166,7 @@ module components.header {
 
         changeLanguage(): void {
             this.functionsUtil.changeLanguage(this.form.language);
+            mixpanel.track("Change Language on header");
         }
 
 
@@ -213,6 +214,9 @@ module components.header {
             };
 
             var modalInstance = this.$uibModal.open(options);
+
+            //MIXPANEL
+            mixpanel.track("Click on 'Join as Student' main header");
         }
 
     }

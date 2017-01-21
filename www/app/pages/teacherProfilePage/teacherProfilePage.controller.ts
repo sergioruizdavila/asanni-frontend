@@ -80,6 +80,8 @@ module app.pages.teacherProfilePage {
             let self = this;
             //LOG
             console.log('teacherProfilePage controller actived');
+            //MIXPANEL
+            mixpanel.track("Enter: Teacher Profile Details");
             // Get Teacher information
             this.TeacherService.getTeacherById(this.$stateParams.id).then(
                 function(response) {
@@ -127,11 +129,16 @@ module app.pages.teacherProfilePage {
         }
 
 
-
+        //TODO: Poner descripcion
         goToConfirm (): void {
-            //TODO: Ir a googleDoc Form o a Typeform con el fin de obtener todos
-            // los datos necesarios del estudiante interesado.
-            this.$state.go('https://waysily.typeform.com/to/NDPRAb');
+            //MIXPANEL
+            mixpanel.track("Click on book a class", {
+                "teacher_id": this.data.Id,
+                "teacher_name": this.data.FirstName + ' ' + this.data.LastName
+            });
+
+            var url = 'https://waysily.typeform.com/to/NDPRAb';
+            window.open(url,'_blank');
         }
 
 

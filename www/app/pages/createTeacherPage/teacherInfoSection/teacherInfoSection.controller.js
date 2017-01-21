@@ -63,6 +63,11 @@ var app;
                 TeacherInfoSectionController.prototype.goToNext = function () {
                     var formValid = this._validateForm();
                     if (formValid) {
+                        mixpanel.track("Enter: Basic Info on Create Teacher", {
+                            "name": this.form.firstName + ' ' + this.form.lastName,
+                            "email": this.form.email,
+                            "phone": this.form.phoneNumber
+                        });
                         this._setDataModelFromForm();
                         this.$scope.$emit('Save Data');
                         this.$state.go(this.STEP2_STATE, { reload: true });

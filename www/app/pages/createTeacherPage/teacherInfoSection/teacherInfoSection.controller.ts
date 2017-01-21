@@ -198,6 +198,12 @@ module app.pages.createTeacherPage {
             let formValid = this._validateForm();
 
             if(formValid) {
+                //MIXPANEL
+                mixpanel.track("Enter: Basic Info on Create Teacher", {
+                    "name": this.form.firstName + ' ' + this.form.lastName,
+                    "email": this.form.email,
+                    "phone": this.form.phoneNumber
+                });
                 this._setDataModelFromForm();
                 this.$scope.$emit('Save Data');
                 // GO TO NEXT STEP

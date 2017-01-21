@@ -19,6 +19,7 @@ var app;
                 };
                 TeacherWelcomeSectionController.prototype.activate = function () {
                     console.log('TeacherWelcomeSectionController controller actived');
+                    mixpanel.track("Enter: Start Create Teacher Process");
                 };
                 TeacherWelcomeSectionController.prototype.goToStart = function () {
                     this.$state.go(this.STEP1_STATE, { reload: true });

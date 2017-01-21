@@ -30,6 +30,7 @@ var app;
                 SearchPageController.prototype.activate = function () {
                     var self = this;
                     console.log('searchPage controller actived');
+                    mixpanel.track("Enter: Search Page");
                     this._subscribeToEvents();
                     this.TeacherService.getAllTeachersByStatus(this.VALIDATED).then(function (response) {
                         self.type = 'teacher';

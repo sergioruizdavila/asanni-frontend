@@ -45,6 +45,7 @@ var app;
                 CreateTeacherPageController.prototype.activate = function () {
                     var self = this;
                     console.log('createTeacherPage controller actived');
+                    mixpanel.track("Enter: Create Teacher Page");
                     this._subscribeToEvents();
                     if (this.$stateParams.type === 'new') {
                         this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');

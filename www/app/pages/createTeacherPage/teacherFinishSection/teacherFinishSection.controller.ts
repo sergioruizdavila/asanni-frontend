@@ -65,6 +65,9 @@ module app.pages.createTeacherPage {
         activate(): void {
             //LOG
             console.log('TeacherFinishSectionController controller actived');
+
+            //MIXPANEL
+            mixpanel.track("Enter: Finish Create Teacher Process");
         }
 
         /**********************************/
@@ -76,6 +79,13 @@ module app.pages.createTeacherPage {
             this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
             //Go to teacher profile in order to show a preview profile
             //this.$state.go('page.teacherProfilePage', {id: this.$scope.$parent.vm.teacherData.Id});
+            //MIXPANEL
+            mixpanel.track("Finish Process: Create Teacher", {
+                "id": this.$scope.$parent.vm.teacherData.Id,
+                "name": this.$scope.$parent.vm.teacherData.FirstName + ' ' + this.$scope.$parent.vm.teacherData.LastName,
+                "email": this.$scope.$parent.vm.teacherData.Email
+            });
+
             this.$state.go('page.landingPage');
         }
 
