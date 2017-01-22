@@ -84,6 +84,16 @@ var app;
                         this.validate.country.valid = false;
                     }
                 };
+                LandingPageController.prototype._recommendTeacher = function () {
+                    var url = 'https://waysily.typeform.com/to/iAWFeg';
+                    mixpanel.track("Click on recommend teacher");
+                    window.open(url, '_blank');
+                };
+                LandingPageController.prototype._recommendSchool = function () {
+                    var url = 'https://waysily.typeform.com/to/q5uT0P';
+                    mixpanel.track("Click on recommend school");
+                    window.open(url, '_blank');
+                };
                 LandingPageController.prototype._createEarlyAdopter = function () {
                     var NULL_ENUM = 2;
                     var EMPTY_ENUM = 3;
