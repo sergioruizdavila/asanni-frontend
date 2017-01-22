@@ -51,7 +51,7 @@ $search-info-block-interests-title-marginTop: 0;
 $search-info-block-interests-options-interest-margin: 2px;
 
 
-$search-map-background: $dark-gray;
+$search-map-background: $cloud;
 $search-map-right: 0;
 $search-map-left: auto;
 $search-map-bottom: 0;
@@ -231,7 +231,7 @@ $search-teacher-block-height: 500px;
 
                     &--gray {
                         h4 {
-                            background-color: #f5f5f5;
+                            background-color: $cloud;
                             color: $black;
                         }
                     }

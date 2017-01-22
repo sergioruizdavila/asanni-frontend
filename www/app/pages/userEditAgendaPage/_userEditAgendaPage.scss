@@ -40,7 +40,7 @@ $userEditAgenda-block-exceptions-add-button-font-color-hover: map-get($main-pale
 
             &__exceptions {
                 border: $userEditAgenda-block-exceptions-border;
-                //background-color: #f5f5f5;
+                //background-color: $cloud;
                 background-color: $userEditAgenda-block-exceptions-background;
                 padding: $userEditAgenda-block-exceptions-padding;
                 margin-left: $userEditAgenda-block-exceptions-marginLeft;

@@ -66,7 +66,7 @@
     'use strict';
     var dataConfig = {
         currentYear: '2017',
-        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
+        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelToken: '86a48c88274599c662ad64edb74b12da',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -75,7 +75,7 @@
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
-        bucketS3: 'waysily-img/teachers-avatar-prd',
+        bucketS3: 'waysily-img/teachers-avatar-dev',
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
@@ -4485,7 +4485,8 @@ var app;
                 SearchPageController.prototype._init = function () {
                     this.VALIDATED = 'VA';
                     this.data = [];
-                    this.type = null;
+                    this.type = 'teacher';
+                    this.loading = true;
                     this.error = {
                         message: ''
                     };
@@ -4501,6 +4502,9 @@ var app;
                         self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
                         self.$scope.$broadcast('BuildMarkers', self.mapConfig);
                         self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
+                        self.$timeout(function () {
+                            self.loading = false;
+                        });
                         if (self.$stateParams.country) {
                             self.$timeout(function () {
                                 self._searchByCountry(self.$stateParams.country);
@@ -4508,7 +4512,7 @@ var app;
                         }
                     });
                 };
-                SearchPageController.prototype._getResultTemplate = function (type) {
+                SearchPageController.prototype._getResultLoading = function (type) {
                     var STUDENT_TYPE = 'student';
                     var TEACHER_TYPE = 'teacher';
                     var SCHOOL_TYPE = 'school';
@@ -4516,7 +4520,7 @@ var app;
                         case STUDENT_TYPE:
                             return 'app/pages/searchPage/studentResult/studentResult.html';
                         case TEACHER_TYPE:
-                            return 'app/pages/searchPage/teacherResult/teacherResult.html';
+                            return 'app/pages/searchPage/teacherLoading/teacherLoading.html';
                         case SCHOOL_TYPE:
                             return 'app/pages/searchPage/schoolResult/schoolResult.html';
                     }

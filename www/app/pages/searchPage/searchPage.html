@@ -9,20 +9,29 @@
     <div id="search-result-left-column"
          class="search-result__info col-xs-12 col-sm-7 col-md-7">
 
+        <div class="row margin-reset" ng-show="vm.loading">
+            <div class="col-sm-12 col-md-6">
+                <div ng-include="vm._getResultLoading(vm.type)"></div>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+                <div ng-include="vm._getResultLoading(vm.type)"></div>
+            </div>
+
+        </div>
+
         <div class="row margin-reset" ng-repeat="rows in vm.data">
 
             <div class="col-sm-12 col-md-6"
                  ng-repeat="item in rows"
                  ng-if="vm.type === 'student'">
                 <!-- Dynamic section template: users, teachers or schools results -->
-                <!--div ng-include="vm._getResultTemplate(vm.type)"></div-->
             </div>
 
             <div class="col-sm-12 col-md-6"
                  ng-repeat="item in rows"
                  ng-if="vm.type === 'school'">
                 <!-- Dynamic section template: users, teachers or schools results -->
-                <!--div ng-include="vm._getResultTemplate(vm.type)"></div-->
             </div>
 
             <div class="col-sm-12 col-md-6"
@@ -44,12 +53,32 @@
 
     <!--                    START: MAP SIDE (RIGHT COLUMN)                   -->
     <!------------------------------------------------------------------------->
-    <div id="search-result-right-column" class="search-result__map
+    <div id="search-result-right-column"
+         class="search-result__map
                 col-md-5 col-sm-5
                 visible-lg visible-md visible-sm">
+
+
+        <!---------------------- START: MAIN LOADING BLOCK -------------------->
+        <div class="row
+                    ma-loading-container
+                    ma-loading-container--center-screen"
+             ng-show="vm.loading">
+            <div class="col-xs-12 text-center">
+                <i class="ma-loading
+                          ma-loading--medium-gray
+                          fa fa-cog fa-spin fa-5x fa-fw"></i>
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!--                    END: MAIN LOADING  BLOCK                     -->
+
+
         <div class="search-map">
             <ma-map ng-if="vm.mapConfig" map-config="vm.mapConfig"></ma-map>
         </div>
+
+
     </div>
     <!--                    END: MAP SIDE (RIGHT COLUMN)                     -->
 
