@@ -218,6 +218,30 @@ module app.pages.landingPage {
 
 
 
+        //TODO: Poner descripcion
+        _recommendTeacher(): void {
+            //VARIABLES
+            let url = 'https://waysily.typeform.com/to/iAWFeg';
+
+            //MIXPANEL
+            mixpanel.track("Click on recommend teacher");
+            window.open(url,'_blank');
+        }
+
+
+
+        //TODO: Poner descripcion
+        _recommendSchool(): void {
+            //VARIABLES
+            let url = 'https://waysily.typeform.com/to/q5uT0P';
+
+            //MIXPANEL
+            mixpanel.track("Click on recommend school");
+            window.open(url,'_blank');
+        }
+
+
+
         /**
         * _createEarlyAdopter
         * @description - save new user's email early adopter

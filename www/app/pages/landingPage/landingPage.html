@@ -397,12 +397,11 @@
                     </div>
                     <div class="col-md-6 text-center">
                         <!-- Recommend Button -->
-                        <a class="ma-btn ma-btn--primary ma-btn--large"
-                                href="https://waysily.typeform.com/to/iAWFeg"
-                                target="_blank"
-                                translate>
+                        <button class="ma-btn ma-btn--primary ma-btn--large"
+                           ng-click="vm._recommendTeacher()"
+                           translate>
                             %landing.recommend.teacher.button.text
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -421,12 +420,11 @@
                     </div>
                     <div class="col-md-6 text-center">
                         <!-- Recommend Button -->
-                        <a class="ma-btn ma-btn--primary ma-btn--large"
-                            href="https://waysily.typeform.com/to/q5uT0P"
-                            target="_blank"
+                        <button class="ma-btn ma-btn--primary ma-btn--large"
+                            ng-click="vm._recommendSchool()"
                             translate>
                             %landing.recommend.school.button.text
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
