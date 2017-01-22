@@ -7,6 +7,10 @@
     border: $box-border;
     text-align: left;
 
+    &--border-transparent {
+        border: $box-border-transparent;
+    }
+
     &__title {
         border-bottom: $box-title-border;
         padding: $box-title-padding;

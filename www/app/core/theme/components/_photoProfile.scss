@@ -42,4 +42,8 @@
         height: map-get($image-photo-sizes, large);
     }
 
+    &--empty {
+        background: #f5f5f5;
+    }
+
 }
