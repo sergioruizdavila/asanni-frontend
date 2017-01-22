@@ -39,6 +39,7 @@ module app.pages.searchPage {
         data: Array<app.models.student.Student>;
         type: string;
         VALIDATED: string;
+        loading: boolean;
         // --------------------------------
 
 
@@ -85,7 +86,10 @@ module app.pages.searchPage {
             this.data = [];
 
             //Type of results (student, teacher, school)
-            this.type = null;
+            this.type = 'teacher';
+
+            //Init loading
+            this.loading = true;
 
             this.error = {
                 message: ''
@@ -126,6 +130,10 @@ module app.pages.searchPage {
 
                     self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
 
+                    self.$timeout(function(){
+                        self.loading = false;
+                    });
+
                     //Center Map on Country selected
                     if(self.$stateParams.country) {
                         self.$timeout(function(){
@@ -142,16 +150,16 @@ module app.pages.searchPage {
         /**********************************/
 
         /**
-        * _getResultTemplate
-        * @description - this method return specific template based on type
-        * result (students, teachers, schools, etc)
+        * _getResultLoading
+        * @description - this method return specific loading template
+        * based on type result (students, teachers, schools, etc)
         * @use - this._getResultTemplate('student');
         * @function
         * @params {string} type - type of results list (students, teachers, schools, etc)
         * @return {string} result template path
         */
 
-        private _getResultTemplate(type: string): string {
+        private _getResultLoading(type: string): string {
             //CONSTANTS
             const STUDENT_TYPE = 'student';
             const TEACHER_TYPE = 'teacher';
@@ -162,7 +170,7 @@ module app.pages.searchPage {
                 case STUDENT_TYPE:
                 return 'app/pages/searchPage/studentResult/studentResult.html';
                 case TEACHER_TYPE:
-                return 'app/pages/searchPage/teacherResult/teacherResult.html';
+                return 'app/pages/searchPage/teacherLoading/teacherLoading.html';
                 case SCHOOL_TYPE:
                 return 'app/pages/searchPage/schoolResult/schoolResult.html';
             }
