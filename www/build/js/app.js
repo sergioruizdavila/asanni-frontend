@@ -66,16 +66,18 @@
     'use strict';
     var dataConfig = {
         currentYear: '2017',
-        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
+        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
+        domain: 'http://www.waysily.com',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
-        mixpanelToken: '86a48c88274599c662ad64edb74b12da',
+        mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',
+        mixpanelTokenDEV: 'eda475bf46e7f01e417a4ed1d9cc3e58',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
         modalLanguagesTmpl: 'components/modal/modalLanguages/modalLanguages.html',
         modalExperienceTmpl: 'components/modal/modalExperience/modalExperience.html',
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
-        bucketS3: 'waysily-img/teachers-avatar-prd',
+        bucketS3: 'waysily-img/teachers-avatar-dev',
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
@@ -96,16 +98,24 @@
         'dataConfig',
         '$http'];
     function run($rootScope, dataConfig, $http) {
-        mixpanel.init(dataConfig.mixpanelToken, {
-            loaded: function (mixpanel) {
-                var first_visit = mixpanel.get_property("First visit");
-                var current_date = moment().format('MMMM Do YYYY, h:mm:ss a');
-                if (first_visit == null) {
-                    mixpanel.register_once({ "First visit": current_date });
-                    mixpanel.track("Visit");
+        var productionHost = dataConfig.domain;
+        var mixpanelTokenDEV = dataConfig.mixpanelTokenDEV;
+        var mixpanelTokenPRD = dataConfig.mixpanelTokenPRD;
+        if (window.location.hostname.toLowerCase().search(productionHost) < 0) {
+            mixpanel.init(mixpanelTokenDEV);
+        }
+        else {
+            mixpanel.init(mixpanelTokenPRD, {
+                loaded: function (mixpanel) {
+                    var first_visit = mixpanel.get_property("First visit");
+                    var current_date = moment().format('MMMM Do YYYY, h:mm:ss a');
+                    if (first_visit == null) {
+                        mixpanel.register_once({ "First visit": current_date });
+                        mixpanel.track("Visit");
+                    }
                 }
-            }
-        });
+            });
+        }
         dataConfig.userId = 'id1234';
     }
 })();
