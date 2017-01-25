@@ -15,7 +15,8 @@
     "%global.start.button.text": "Let's Start",
     "%global.go.button.text": "Let's Go!",
     "%global.close_information.button.text": "Close information",
-    "%global.join.button.text": "join now",
+    "%global.join.button.text": "join",
+    "%global.join_now.button.text": "join now",
 
     "%global.more.label.text": "+ More",
     "%global.age.text": "years old",
@@ -90,6 +91,13 @@
     "%modal.certificate.form.date_received.text": "Date Received",
     "%modal.certificate.form.description.text": "What did you learn?",
     "%modal.certificate.form.description.placeholder.text": "e.g. I learned in depth the language, its history and grammar. I also learned the proper methodology for teaching.",
+
+    "%modal.recommend.teacher.title.text": "wants you to be part of the biggest community of teachers and language schools.",
+    "%modal.recommend.teacher.description.text": "wrote the following recommendation and rating you as language tutor:",
+    "%modal.recommend.teacher.invitation.message.first_part.text": "Being part of Waysily, you will create a reputation as teacher receiving recommendations from your students. Also, you can become visible to 6000+ students who travel to your country every year, and earn approximately",
+    "%modal.recommend.teacher.invitation.message.third_part.text": "a week for doing what you do best:",
+    "%modal.recommend.teacher.invitation.message.teach.label.text": "Teach",
+    "%modal.recommend.teacher.create_profile.label.text": "Create your profile, it's free!",
 
     "__LANDING PAGE__": "",
     "%landing.header.join.label.text": "Join as:",
