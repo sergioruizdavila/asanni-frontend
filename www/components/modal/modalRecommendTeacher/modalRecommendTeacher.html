@@ -2,11 +2,11 @@
 <!--                     RECOMMENDATION FROM STUDENT MODAL                   -->
 <!----------------------------------------------------------------------------->
 
-<div class="ma-box">
+<div class="ma-box modalRecommendTeacher">
 
     <!--                              CONTENT                                -->
     <!------------------------------------------------------------------------->
-    <div class="ma-box__content" style="padding-left: 30px;padding-right: 30px;">
+    <div class="ma-box__content modalRecommendTeacher__content">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <i class="material-icons
@@ -17,9 +17,10 @@
             </div>
         </div>
 
-        <!--------------------- START: GET EARLY ADOPTERS BLOCK ------------------->
+        <!--          START: RECOMMENDATION FROM STUDENT BLOCK               -->
         <section class="space-2">
 
+            <! Waysily Short Logo >
             <div class="row center-xs space-2">
                 <div class="col-xs-12 text-center">
                     <i class="ma-logo
@@ -28,49 +29,56 @@
                 </div>
             </div>
 
+            <! Recommendation title >
             <div class="row space-4 text-center">
                 <div class="col-xs-12">
-                    <h3 style="line-height:30px;" class="margin-reset" translate>
-                        Karlu, desea que hagas parte de la comunidad más grande en el intercambio de idiomas.
+                    <h3 class="margin-reset">
+                        <span class="underline underline--primary">
+                            Karlu
+                        </span>
+                        <span translate>
+                            %modal.recommend.teacher.title.text
+                        </span>
                     </h3>
                 </div>
             </div>
 
+            <! Recommendation description >
             <div class="row space-2">
                 <div class="col-xs-12">
-                    <p class="ma-p ma-p--large" translate>
-                        Escribio la siguiente recomendación y te califico como tutor de idiomas:
+                    <p class="ma-p ma-p--large">
+                        <span>
+                            Karlu
+                        </span>
+                        <span translate>
+                            %modal.recommend.teacher.description.text
+                        </span>
                     </p>
                 </div>
             </div>
 
             <div class="ma-separator-dashed-image space-3 hidden"></div>
 
-            <!-- Comment -->
-            <div class="reviews-info-box__footer__comments-block__comment
-                        row margin-reset">
+            <! Comment >
+            <div class="row recommendation-block margin-reset space-3">
 
-                <div class="col-xs-12 space-2" style="border: 1px solid #CCC;
-                                                padding-top: 8px;
-                                                border-radius: 10px;
-                                                background-color: rgba(245, 245, 245, 0.84);">
+                <div class="col-xs-12">
                     <div class="row margin-reset">
                         <p class="ma-p ma-p--default">
-                            Very friendly and patient manner of teaching. Good style and very flexible with class times!
+                            Very friendly and patient manner of teaching.
+                            Good style and very flexible with class times!
                         </p>
                     </div>
                     <div class="row margin-reset">
                         <div class="col-xs-6 padding-reset">
-                            <div class="reviews-info-box__footer__comments-block__date-flag
-                                        pull-left">
-                                <p class="ma-p ma-p--default" style="font-style: italic; font-weight: 600;">
+                            <div class="pull-left">
+                                <p class="ma-p ma-p--default text-italic strong">
                                     - Karlu Chu
                                 </p>
                             </div>
                         </div>
                         <div class="col-xs-6">
-                            <div class="reviews-info-box__footer__comments-block__date-flag
-                                        pull-right">
+                            <div class="pull-right">
                                 <p class="ma-label
                                           ma-label--simple
                                           ma-label--simple--medium
@@ -85,28 +93,28 @@
 
             </div>
 
-            <hr class="margin-reset space-top-1 space-1 hidden">
-
+            <! Rate Detail >
             <div class="row space-5">
 
                 <div class="col-xs-12 text-center">
                     <div class="reviews-info-box__content__block">
                         <h4 translate>
-                            Enseñanza
+                            %profile.teacher.review.teaching.label.text
                         </h4>
                         <ma-rating rating-value="10"
                                    size="tiny">
                     </div>
                     <div class="reviews-info-box__content__block">
                         <h4 translate>
-                            Comunicación
+                            %profile.teacher.review.communication.label.text
                         </h4>
                         <ma-rating rating-value="10"
                                    size="tiny">
                     </div>
-                    <div class="reviews-info-box__content__block" style="margin-right: 0;">
+                    <div class="reviews-info-box__content__block"
+                         style="margin-right: 0;">
                         <h4 translate>
-                            Metodologia
+                            %profile.teacher.review.methodology.label.text
                         </h4>
                         <ma-rating rating-value="10"
                                    size="tiny">
@@ -117,29 +125,34 @@
 
             <div class="ma-separator-dashed-image space-5"></div>
 
+            <! Teacher invitation message >
             <div class="row space-6">
                 <div class="col-xs-12">
                     <p class="ma-p ma-p--large text-center">
-                        En Waysily podrás crear una reputación como profesor de
-                        idiomas recibiendo recomendaciones de tus estudiantes,
-                        hacerte visible a 6000+ estudiantes que viajan a tu pais
-                        cada año, y ganar aproximamente
-                        <span class="strong strong--primary">
-                            340 USD / semana
+                        <span translate>
+                            %modal.recommend.teacher.invitation.message.first_part.text
                         </span>
-                        por hacer lo que mejor sabes hacer:
-                        <strong>Enseñar</strong>.
+                        <span class="strong strong--primary" translate>
+                            %landing.teacher.explanation_section.description.second_part.text
+                        </span>
+                        <span translate>
+                            %modal.recommend.teacher.invitation.message.third_part.text
+                        </span>
+                        <span class="strong text-capitalize" translate>
+                            %modal.recommend.teacher.invitation.message.teach.label.text
+                        </span>.
                     </p>
                 </div>
             </div>
 
+            <! Join Button >
             <div class="row text-center space-2">
                 <div class="col-xs-12">
                     <button type="button"
                             class="ma-btn ma-btn--large
                                    ma-btn--primary text-uppercase"
                             translate>
-                        join
+                        %global.join.button.text
                     </button>
                 </div>
             </div>
@@ -149,12 +162,12 @@
                             ma-label--simple
                             ma-label--simple--default
                             ma-label--simple--primary" translate>
-                    ¡Crear el perfil es gratuito!
+                    %modal.recommend.teacher.create_profile.label.text
                 </div>
             </div>
 
         </section>
-        <!--                     END: GET EARLY ADOPTERS BLOCK                   -->
+        <!--              END: RECOMMENDATION FROM STUDENT BLOCK             -->
 
     </div>
 
