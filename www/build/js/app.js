@@ -66,16 +66,19 @@
     'use strict';
     var dataConfig = {
         currentYear: '2017',
-        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
+        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
+        domain: 'http://www.waysily.com',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
-        mixpanelToken: '86a48c88274599c662ad64edb74b12da',
+        mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',
+        mixpanelTokenDEV: 'eda475bf46e7f01e417a4ed1d9cc3e58',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
         modalLanguagesTmpl: 'components/modal/modalLanguages/modalLanguages.html',
         modalExperienceTmpl: 'components/modal/modalExperience/modalExperience.html',
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
-        bucketS3: 'waysily-img/teachers-avatar-prd',
+        modalRecommendTeacherTmpl: 'components/modal/modalRecommendTeacher/modalRecommendTeacher.html',
+        bucketS3: 'waysily-img/teachers-avatar-dev',
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
@@ -96,16 +99,24 @@
         'dataConfig',
         '$http'];
     function run($rootScope, dataConfig, $http) {
-        mixpanel.init(dataConfig.mixpanelToken, {
-            loaded: function (mixpanel) {
-                var first_visit = mixpanel.get_property("First visit");
-                var current_date = moment().format('MMMM Do YYYY, h:mm:ss a');
-                if (first_visit == null) {
-                    mixpanel.register_once({ "First visit": current_date });
-                    mixpanel.track("Visit");
+        var productionHost = dataConfig.domain;
+        var mixpanelTokenDEV = dataConfig.mixpanelTokenDEV;
+        var mixpanelTokenPRD = dataConfig.mixpanelTokenPRD;
+        if (window.location.hostname.toLowerCase().search(productionHost) < 0) {
+            mixpanel.init(mixpanelTokenDEV);
+        }
+        else {
+            mixpanel.init(mixpanelTokenPRD, {
+                loaded: function (mixpanel) {
+                    var first_visit = mixpanel.get_property("First visit");
+                    var current_date = moment().format('MMMM Do YYYY, h:mm:ss a');
+                    if (first_visit == null) {
+                        mixpanel.register_once({ "First visit": current_date });
+                        mixpanel.track("Visit");
+                    }
                 }
-            }
-        });
+            });
+        }
         dataConfig.userId = 'id1234';
     }
 })();
@@ -3816,6 +3827,46 @@ var components;
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
 //# sourceMappingURL=modalSignUp.controller.js.map
+var components;
+(function (components) {
+    var modal;
+    (function (modal) {
+        var modalRecommendTeacher;
+        (function (modalRecommendTeacher) {
+            var ModalRecommendTeacherController = (function () {
+                function ModalRecommendTeacherController($uibModalInstance, $timeout, $filter) {
+                    this.$uibModalInstance = $uibModalInstance;
+                    this.$timeout = $timeout;
+                    this.$filter = $filter;
+                    this._init();
+                }
+                ModalRecommendTeacherController.prototype._init = function () {
+                    var self = this;
+                    this.activate();
+                };
+                ModalRecommendTeacherController.prototype.activate = function () {
+                    console.log('modalRecommendTeacher controller actived');
+                };
+                ModalRecommendTeacherController.prototype.close = function () {
+                    this.$uibModalInstance.close();
+                };
+                return ModalRecommendTeacherController;
+            }());
+            ModalRecommendTeacherController.controllerId = 'mainApp.components.modal.ModalRecommendTeacherController';
+            ModalRecommendTeacherController.$inject = [
+                '$uibModalInstance',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.models.teacher.TeacherService',
+                '$timeout',
+                '$filter'
+            ];
+            angular.module('mainApp.components.modal')
+                .controller(ModalRecommendTeacherController.controllerId, ModalRecommendTeacherController);
+        })(modalRecommendTeacher = modal.modalRecommendTeacher || (modal.modalRecommendTeacher = {}));
+    })(modal = components.modal || (components.modal = {}));
+})(components || (components = {}));
+//# sourceMappingURL=modalRecommendTeacher.controller.js.map
 (function () {
     'use strict';
     angular
@@ -4213,6 +4264,14 @@ var app;
                     var self = this;
                     console.log('landingPage controller actived');
                     mixpanel.track("Enter: Main Landing Page");
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalRecommendTeacherTmpl,
+                        controller: 'mainApp.components.modal.ModalRecommendTeacherController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
                 };
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);

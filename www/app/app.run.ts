@@ -23,16 +23,25 @@
                  dataConfig: IDataConfig,
                  $http: any): void {
 
-        mixpanel.init(dataConfig.mixpanelToken, {
-            loaded: function(mixpanel) {
-                let first_visit = mixpanel.get_property("First visit");
-                let current_date = moment().format('MMMM Do YYYY, h:mm:ss a');
-                if(first_visit == null) {
-                    mixpanel.register_once({ "First visit": current_date });
-                    mixpanel.track("Visit");
+        //VARIABLES
+        let productionHost = dataConfig.domain;
+        let mixpanelTokenDEV = dataConfig.mixpanelTokenDEV;
+        let mixpanelTokenPRD = dataConfig.mixpanelTokenPRD;
+
+        if (window.location.hostname.toLowerCase().search(productionHost) < 0) {
+            mixpanel.init(mixpanelTokenDEV);
+        } else {
+            mixpanel.init(mixpanelTokenPRD, {
+                loaded: function(mixpanel) {
+                    let first_visit = mixpanel.get_property("First visit");
+                    let current_date = moment().format('MMMM Do YYYY, h:mm:ss a');
+                    if(first_visit == null) {
+                        mixpanel.register_once({ "First visit": current_date });
+                        mixpanel.track("Visit");
+                    }
                 }
-            }
-        });
+            });
+        }
 
         //TODO: Get these values from the logged user
         dataConfig.userId = 'id1234';

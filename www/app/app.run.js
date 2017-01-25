@@ -7,16 +7,24 @@
         'dataConfig',
         '$http'];
     function run($rootScope, dataConfig, $http) {
-        mixpanel.init(dataConfig.mixpanelToken, {
-            loaded: function (mixpanel) {
-                var first_visit = mixpanel.get_property("First visit");
-                var current_date = moment().format('MMMM Do YYYY, h:mm:ss a');
-                if (first_visit == null) {
-                    mixpanel.register_once({ "First visit": current_date });
-                    mixpanel.track("Visit");
+        var productionHost = dataConfig.domain;
+        var mixpanelTokenDEV = dataConfig.mixpanelTokenDEV;
+        var mixpanelTokenPRD = dataConfig.mixpanelTokenPRD;
+        if (window.location.hostname.toLowerCase().search(productionHost) < 0) {
+            mixpanel.init(mixpanelTokenDEV);
+        }
+        else {
+            mixpanel.init(mixpanelTokenPRD, {
+                loaded: function (mixpanel) {
+                    var first_visit = mixpanel.get_property("First visit");
+                    var current_date = moment().format('MMMM Do YYYY, h:mm:ss a');
+                    if (first_visit == null) {
+                        mixpanel.register_once({ "First visit": current_date });
+                        mixpanel.track("Visit");
+                    }
                 }
-            }
-        });
+            });
+        }
         dataConfig.userId = 'id1234';
     }
 })();
