@@ -257,7 +257,7 @@
 }
 
 .strong {
-    font-weight: 600;
+    font-weight: 600!important;
 
     &--primary {
         color: map-get($main-palette, primary);
@@ -267,6 +267,10 @@
         color: map-get($main-palette, alert);
     }
 
+}
+
+.text-italic {
+    font-style: italic!important;
 }
 
 
