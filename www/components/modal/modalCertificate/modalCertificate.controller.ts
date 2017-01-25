@@ -55,8 +55,6 @@ module components.modal.modalCertificate {
         listReceivedYears: Array<app.core.interfaces.ISelectListElement>;
         receivedYearObject: app.core.interfaces.ISelectListElement;
         defaultConfig: any;
-        HELP_TEXT_TITLE: string;
-        HELP_TEXT_DESCRIPTION: string;
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/

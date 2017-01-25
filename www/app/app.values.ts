@@ -20,6 +20,7 @@ interface IDataConfig {
     modalEducationTmpl: string;
     modalCertificateTmpl: string;
     modalSignUpTmpl: string;
+    modalRecommendTeacherTmpl: string;
     bucketS3: string;
     regionS3: string;
     accessKeyIdS3: string;
@@ -58,6 +59,7 @@ interface IDataConfig {
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
+        modalRecommendTeacherTmpl: 'components/modal/modalRecommendTeacher/modalRecommendTeacher.html',
         bucketS3: 'waysily-img/teachers-avatar-dev',
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',

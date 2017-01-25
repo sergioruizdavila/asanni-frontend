@@ -50,6 +50,14 @@ var app;
                     var self = this;
                     console.log('landingPage controller actived');
                     mixpanel.track("Enter: Main Landing Page");
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalRecommendTeacherTmpl,
+                        controller: 'mainApp.components.modal.ModalRecommendTeacherController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
                 };
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);

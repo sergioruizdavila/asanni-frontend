@@ -151,6 +151,18 @@ module app.pages.landingPage {
 
             //MIXPANEL
             mixpanel.track("Enter: Main Landing Page");
+
+            // modal default options
+            let options: ng.ui.bootstrap.IModalSettings = {
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                templateUrl: this.dataConfig.modalRecommendTeacherTmpl,
+                controller: 'mainApp.components.modal.ModalRecommendTeacherController as vm'
+            };
+
+            // Open Teacher Recommendation Modal
+            var modalInstance = this.$uibModal.open(options);
         }
 
         /**********************************/

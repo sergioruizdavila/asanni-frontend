@@ -77,6 +77,7 @@
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
+        modalRecommendTeacherTmpl: 'components/modal/modalRecommendTeacher/modalRecommendTeacher.html',
         bucketS3: 'waysily-img/teachers-avatar-dev',
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
@@ -4223,6 +4224,14 @@ var app;
                     var self = this;
                     console.log('landingPage controller actived');
                     mixpanel.track("Enter: Main Landing Page");
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalRecommendTeacherTmpl,
+                        controller: 'mainApp.components.modal.ModalRecommendTeacherController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
                 };
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
