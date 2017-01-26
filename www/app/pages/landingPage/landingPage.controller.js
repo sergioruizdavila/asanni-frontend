@@ -5,7 +5,7 @@ var app;
         var landingPage;
         (function (landingPage) {
             var LandingPageController = (function () {
-                function LandingPageController($state, dataConfig, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson) {
+                function LandingPageController($state, dataConfig, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope) {
                     this.$state = $state;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
@@ -14,6 +14,7 @@ var app;
                     this.LandingPageService = LandingPageService;
                     this.FeedbackService = FeedbackService;
                     this.getDataFromJson = getDataFromJson;
+                    this.$rootScope = $rootScope;
                     this._init();
                 }
                 LandingPageController.prototype._init = function () {
@@ -26,6 +27,7 @@ var app;
                         language: this.functionsUtil.getCurrentLanguage() || 'en',
                         feedback: new app.models.feedback.Feedback()
                     };
+                    this.$rootScope.activeMessageBar = false;
                     this.listCountries = this.getDataFromJson.getCountryi18n();
                     this.countryObject = { code: '', value: '' };
                     this.infoCountry = {
@@ -163,7 +165,8 @@ var app;
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.pages.landingPage.LandingPageService',
                 'mainApp.models.feedback.FeedbackService',
-                'mainApp.core.util.GetDataStaticJsonService'];
+                'mainApp.core.util.GetDataStaticJsonService',
+                '$rootScope'];
             landingPage.LandingPageController = LandingPageController;
             angular
                 .module('mainApp.pages.landingPage')

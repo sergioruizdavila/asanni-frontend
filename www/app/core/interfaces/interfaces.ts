@@ -12,6 +12,7 @@ module app.core.interfaces {
         language_doc: angular.translate.ITranslateProvider;
         activeHeader: boolean;
         activeFooter: boolean;
+        activeMessageBar: boolean;
     }
 
     /*******************************/
