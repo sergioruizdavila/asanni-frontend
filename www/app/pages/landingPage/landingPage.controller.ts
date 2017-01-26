@@ -113,7 +113,7 @@ module app.pages.landingPage {
                 feedback: new app.models.feedback.Feedback()
             };
 
-            this.$rootScope.activeMessageBar = false;
+            this.$rootScope.activeMessageBar = true;
 
             //Build Countries select lists
             this.listCountries = this.getDataFromJson.getCountryi18n();

@@ -4308,7 +4308,7 @@ var app;
                         language: this.functionsUtil.getCurrentLanguage() || 'en',
                         feedback: new app.models.feedback.Feedback()
                     };
-                    this.$rootScope.activeMessageBar = false;
+                    this.$rootScope.activeMessageBar = true;
                     this.listCountries = this.getDataFromJson.getCountryi18n();
                     this.countryObject = { code: '', value: '' };
                     this.infoCountry = {
