@@ -21,8 +21,7 @@ module components.modal.modalRecommendTeacher {
     }
 
     interface IDataSet {
-        certificate: app.models.teacher.Certificate;
-        teacherId: string;
+        earlyId: string;
     }
 
 
@@ -33,20 +32,20 @@ module components.modal.modalRecommendTeacher {
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
-        certificate: app.models.teacher.Certificate;
-        listReceivedYears: Array<app.core.interfaces.ISelectListElement>;
-        receivedYearObject: app.core.interfaces.ISelectListElement;
         defaultConfig: any;
+        rating: app.models.teacher.Rating;
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/
         static $inject = [
             '$uibModalInstance',
-            'mainApp.core.util.GetDataStaticJsonService',
-            'mainApp.core.util.FunctionsUtilService',
-            'mainApp.models.teacher.TeacherService',
+            'dataSetModal',
+            'mainApp.localStorageService',
+            'mainApp.models.student.StudentService',
+            'dataConfig',
             '$timeout',
-            '$filter'
+            '$filter',
+            '$rootScope'
         ];
 
 
@@ -55,8 +54,13 @@ module components.modal.modalRecommendTeacher {
         /**********************************/
         constructor(
             private $uibModalInstance: ng.ui.bootstrap.IModalServiceInstance,
+            private dataSetModal: IDataSet,
+            private localStorage,
+            private StudentService: app.models.student.IStudentService,
+            private dataConfig,
             private $timeout: angular.ITimeoutService,
-            private $filter: angular.IFilterService) {
+            private $filter: angular.IFilterService,
+            private $rootScope: app.core.interfaces.IMainAppRootScope) {
 
             this._init();
 
@@ -72,15 +76,26 @@ module components.modal.modalRecommendTeacher {
 
         //active function to handle all controller logic
         activate(): void {
+            //VARIABLES
+            let self = this;
             //LOG
             console.log('modalRecommendTeacher controller actived');
+
+            //Get Early Adopter Recommendation Details
+            this.StudentService.getRatingByEarlyid(this.dataSetModal.earlyId).then(
+                function(response) {
+                    if(response.id) {
+
+                        self.rating = new app.models.teacher.Rating(response);
+
+                    }
+                }
+            );
         }
 
         /**********************************/
         /*            METHODS             */
         /**********************************/
-
-
 
         /**
         * close
@@ -90,6 +105,9 @@ module components.modal.modalRecommendTeacher {
         * @return {void}
         */
         close(): void {
+            //Save early id on localStorage to keep it while user navigate waysily
+            this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, this.dataSetModal.earlyId);
+            this.$rootScope.activeMessageBar = true;
             this.$uibModalInstance.close();
         }
 

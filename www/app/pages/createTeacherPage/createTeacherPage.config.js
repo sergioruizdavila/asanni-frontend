@@ -21,6 +21,7 @@
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
                     $rootScope.activeFooter = false;
+                    $rootScope.activeMessageBar = false;
                 }]
         });
     }

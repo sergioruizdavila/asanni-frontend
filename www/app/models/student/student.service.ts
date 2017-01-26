@@ -15,6 +15,7 @@ module app.models.student {
     export interface IStudentService {
         getStudentById: (id: string) => angular.IPromise<any>;
         getAllStudents: () => angular.IPromise<any>;
+        getRatingByEarlyid: (id: string) => angular.IPromise<any>;
     }
 
 
@@ -60,7 +61,7 @@ module app.models.student {
         */
         getStudentById(id): angular.IPromise<any> {
             //VARIABLES
-            let url = 'students/';
+            let url = 'students';
 
             return this.restApi.show({url: url, id: id}).$promise
                 .then(
@@ -84,9 +85,37 @@ module app.models.student {
         */
         getAllStudents(): angular.IPromise<any> {
             //VARIABLES
-            let url = 'students/';
+            let url = 'students';
 
             return this.restApi.query({url: url}).$promise
+                .then(
+                    function(data) {
+                        return data;
+                    }
+                ).catch(
+                    function(err) {
+                        console.log(err);
+                        return err;
+                    }
+                );
+        }
+
+
+
+        /** TODO: Mover a su respectivo lugar cuando se cree el modelo independiente
+        * de Rating
+        * getRatingByEarlyid
+        * @description - get rating by Early Id
+        * @use - this.StudentService.getRatingByEarlyid('98d667ae');
+        * @function
+        * @params {string} id - early adopter id
+        * @return {angular.IPromise<any>} promise - return rating by Ealry Adopter Id
+        */
+        getRatingByEarlyid(id): angular.IPromise<any> {
+            //VARIABLES
+            let url = 'ratings';
+
+            return this.restApi.show({url: url, id: id}).$promise
                 .then(
                     function(data) {
                         return data;

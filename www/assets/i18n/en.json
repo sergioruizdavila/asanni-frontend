@@ -52,6 +52,11 @@
     "%header.join.teacher.tooltip.first_part.text": "A private teacher earns",
     "%header.join.teacher.tooltip.second_part.text": "on average",
 
+    "__FLOAT MESSAGE BAR__": "",
+    "%message.bar.text_block.first_part.label.text.bkp": "You have a recommendation from",
+    "%message.bar.text_block.first_part.label.text": "You have a recommendation",
+    "%message.bar.text_block.second_part.label.text": "Create your profile as a teacher, and it'll be visible to everyone.",
+
     "__NOTIFICATION__": "",
     "%notification.success.text": "Successfully saved!",
     "%notification.error.server.text": "Server error occurred, try again please",

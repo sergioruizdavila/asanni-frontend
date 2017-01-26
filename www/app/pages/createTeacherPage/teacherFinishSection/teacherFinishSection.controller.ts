@@ -68,6 +68,7 @@ module app.pages.createTeacherPage {
 
             //MIXPANEL
             mixpanel.track("Enter: Finish Create Teacher Process");
+
         }
 
         /**********************************/
@@ -77,6 +78,9 @@ module app.pages.createTeacherPage {
         _finishProcess() {
             //Clean teacher id in localStorage
             this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
+            //Clean early adopter id in localStorage
+            this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, '');
+
             //Go to teacher profile in order to show a preview profile
             //this.$state.go('page.teacherProfilePage', {id: this.$scope.$parent.vm.teacherData.Id});
             //MIXPANEL

@@ -73,6 +73,7 @@ module app.pages.landingPage {
 
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = ['$state',
+                                 '$stateParams',
                                  'dataConfig',
                                  '$uibModal',
                                  'mainApp.core.util.messageUtilService',
@@ -80,13 +81,15 @@ module app.pages.landingPage {
                                  'mainApp.pages.landingPage.LandingPageService',
                                  'mainApp.models.feedback.FeedbackService',
                                  'mainApp.core.util.GetDataStaticJsonService',
-                                 '$rootScope'];
+                                 '$rootScope',
+                                 'mainApp.localStorageService'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
             private $state: ng.ui.IStateService,
+            private $stateParams: IParams,
             private dataConfig: IDataConfig,
             private $uibModal: ng.ui.bootstrap.IModalService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
@@ -94,7 +97,8 @@ module app.pages.landingPage {
             private LandingPageService: app.pages.landingPage.ILandingPageService,
             private FeedbackService: app.models.feedback.IFeedbackService,
             private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
-            private $rootScope: app.core.interfaces.IMainAppRootScope) {
+            private $rootScope: app.core.interfaces.IMainAppRootScope,
+            private localStorage) {
 
             this._init();
 
@@ -112,8 +116,6 @@ module app.pages.landingPage {
                 language: this.functionsUtil.getCurrentLanguage() || 'en',
                 feedback: new app.models.feedback.Feedback()
             };
-
-            this.$rootScope.activeMessageBar = false;
 
             //Build Countries select lists
             this.listCountries = this.getDataFromJson.getCountryi18n();
@@ -156,17 +158,30 @@ module app.pages.landingPage {
             //MIXPANEL
             mixpanel.track("Enter: Main Landing Page");
 
-            // modal default options
-            let options: ng.ui.bootstrap.IModalSettings = {
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                templateUrl: this.dataConfig.modalRecommendTeacherTmpl,
-                controller: 'mainApp.components.modal.ModalRecommendTeacherController as vm'
-            };
+            //Validate if come from recommendation email
+            if(this.$stateParams.id) {
 
-            // Open Teacher Recommendation Modal
-            var modalInstance = this.$uibModal.open(options);
+                // modal default options
+                let options: ng.ui.bootstrap.IModalSettings = {
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    templateUrl: this.dataConfig.modalRecommendTeacherTmpl,
+                    controller: 'mainApp.components.modal.ModalRecommendTeacherController as vm',
+                    resolve: {
+                        //one way to send data from this scope to modal
+                        dataSetModal: function () {
+                            return {
+                                earlyId: self.$stateParams.id
+                            }
+                        }
+                    }
+                };
+
+                // Open Teacher Recommendation Modal
+                var modalInstance = this.$uibModal.open(options);
+            }
+
         }
 
         /**********************************/

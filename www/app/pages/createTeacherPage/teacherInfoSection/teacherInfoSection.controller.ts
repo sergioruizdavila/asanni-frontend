@@ -91,6 +91,8 @@ module app.pages.createTeacherPage {
         public static $inject = [
             'mainApp.core.util.GetDataStaticJsonService',
             'mainApp.core.util.FunctionsUtilService',
+            'mainApp.localStorageService',
+            'dataConfig',
             '$state',
             '$filter',
             '$scope'
@@ -102,6 +104,8 @@ module app.pages.createTeacherPage {
         constructor(
             private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
             private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
+            private localStorage,
+            private dataConfig: IDataConfig,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
             private $scope: ITeacherInfoScope) {
@@ -398,6 +402,7 @@ module app.pages.createTeacherPage {
                                     this.dateObject.month.code,
                                     this.dateObject.year.value);
             let sexCode = this.sexObject.sex.code;
+            let recommended = this.localStorage.getItem(this.dataConfig.earlyIdLocalStorage);
             /*********************************/
 
             // Send data to parent (createTeacherPage)
@@ -409,6 +414,9 @@ module app.pages.createTeacherPage {
             this.$scope.$parent.vm.teacherData.BirthDate = dateFormatted;
             this.$scope.$parent.vm.teacherData.Born = this.form.born;
             this.$scope.$parent.vm.teacherData.About = this.form.about;
+
+            //If this teacher was recommended by a Student
+            this.$scope.$parent.vm.teacherData.Recommended = recommended ? recommended : null;
         }
 
 

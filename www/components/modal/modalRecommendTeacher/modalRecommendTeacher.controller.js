@@ -5,10 +5,15 @@ var components;
         var modalRecommendTeacher;
         (function (modalRecommendTeacher) {
             var ModalRecommendTeacherController = (function () {
-                function ModalRecommendTeacherController($uibModalInstance, $timeout, $filter) {
+                function ModalRecommendTeacherController($uibModalInstance, dataSetModal, localStorage, StudentService, dataConfig, $timeout, $filter, $rootScope) {
                     this.$uibModalInstance = $uibModalInstance;
+                    this.dataSetModal = dataSetModal;
+                    this.localStorage = localStorage;
+                    this.StudentService = StudentService;
+                    this.dataConfig = dataConfig;
                     this.$timeout = $timeout;
                     this.$filter = $filter;
+                    this.$rootScope = $rootScope;
                     this._init();
                 }
                 ModalRecommendTeacherController.prototype._init = function () {
@@ -16,9 +21,17 @@ var components;
                     this.activate();
                 };
                 ModalRecommendTeacherController.prototype.activate = function () {
+                    var self = this;
                     console.log('modalRecommendTeacher controller actived');
+                    this.StudentService.getRatingByEarlyid(this.dataSetModal.earlyId).then(function (response) {
+                        if (response.id) {
+                            self.rating = new app.models.teacher.Rating(response);
+                        }
+                    });
                 };
                 ModalRecommendTeacherController.prototype.close = function () {
+                    this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, this.dataSetModal.earlyId);
+                    this.$rootScope.activeMessageBar = true;
                     this.$uibModalInstance.close();
                 };
                 return ModalRecommendTeacherController;
@@ -26,11 +39,13 @@ var components;
             ModalRecommendTeacherController.controllerId = 'mainApp.components.modal.ModalRecommendTeacherController';
             ModalRecommendTeacherController.$inject = [
                 '$uibModalInstance',
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                'mainApp.models.teacher.TeacherService',
+                'dataSetModal',
+                'mainApp.localStorageService',
+                'mainApp.models.student.StudentService',
+                'dataConfig',
                 '$timeout',
-                '$filter'
+                '$filter',
+                '$rootScope'
             ];
             angular.module('mainApp.components.modal')
                 .controller(ModalRecommendTeacherController.controllerId, ModalRecommendTeacherController);

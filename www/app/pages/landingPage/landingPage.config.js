@@ -15,6 +15,26 @@
                 }
             },
             parent: 'page',
+            cache: false,
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = false;
+                    $rootScope.activeFooter = true;
+                }]
+        })
+            .state('page.landingPage.recommendation', {
+            url: '/main/recommendation/:id',
+            views: {
+                'container': {
+                    templateUrl: 'app/pages/landingPage/landingPage.html',
+                    controller: 'mainApp.pages.landingPage.LandingPageController',
+                    controllerAs: 'vm'
+                }
+            },
+            parent: 'page',
+            params: {
+                id: null
+            },
+            cache: false,
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
                     $rootScope.activeFooter = true;

@@ -27,6 +27,7 @@ var app;
                     this.about = obj.about || '';
                     this.location = new Location(obj.location);
                     this.status = obj.status || 'NW';
+                    this.createdAt = obj.createdAt || '';
                 }
                 Object.defineProperty(User.prototype, "Id", {
                     get: function () {
@@ -193,6 +194,13 @@ var app;
                             throw 'Please supply status value';
                         }
                         this.status = status;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(User.prototype, "CreatedAt", {
+                    get: function () {
+                        return this.createdAt;
                     },
                     enumerable: true,
                     configurable: true

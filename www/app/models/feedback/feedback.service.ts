@@ -14,6 +14,7 @@ module app.models.feedback {
     /**********************************/
     export interface IFeedbackService {
         createFeedback: (feedback: app.models.feedback.Feedback) => angular.IPromise<any>;
+        getEarlyById: (id: string) => angular.IPromise<any>;
     }
 
     /****************************************/
@@ -74,6 +75,33 @@ module app.models.feedback {
                 );
 
             return promise;
+        }
+
+
+
+        /**
+        * getEarlyById
+        * @description - get early adopter by Id
+        * @use - this.UserService.getEarlyById('98d667ae');
+        * @function
+        * @params {string} id - early adopter id
+        * @return {angular.IPromise<any>} promise - return early adopter by Id
+        */
+        getEarlyById(id): angular.IPromise<any> {
+            //VARIABLES
+            let url = 'early/';
+
+            return this.restApi.show({url: url, id: id}).$promise
+                .then(
+                    function(data) {
+                        return data;
+                    }
+                ).catch(
+                    function(err) {
+                        console.log(err);
+                        return err;
+                    }
+                );
         }
 
     }
