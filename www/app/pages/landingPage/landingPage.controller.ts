@@ -79,7 +79,8 @@ module app.pages.landingPage {
                                  'mainApp.core.util.FunctionsUtilService',
                                  'mainApp.pages.landingPage.LandingPageService',
                                  'mainApp.models.feedback.FeedbackService',
-                                 'mainApp.core.util.GetDataStaticJsonService'];
+                                 'mainApp.core.util.GetDataStaticJsonService',
+                                 '$rootScope'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -92,7 +93,8 @@ module app.pages.landingPage {
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private LandingPageService: app.pages.landingPage.ILandingPageService,
             private FeedbackService: app.models.feedback.IFeedbackService,
-            private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,) {
+            private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
+            private $rootScope: app.core.interfaces.IMainAppRootScope) {
 
             this._init();
 
@@ -110,6 +112,8 @@ module app.pages.landingPage {
                 language: this.functionsUtil.getCurrentLanguage() || 'en',
                 feedback: new app.models.feedback.Feedback()
             };
+
+            this.$rootScope.activeMessageBar = false;
 
             //Build Countries select lists
             this.listCountries = this.getDataFromJson.getCountryi18n();

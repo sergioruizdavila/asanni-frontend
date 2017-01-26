@@ -31,7 +31,8 @@
         'mainApp.components.rating',
         'mainApp.components.map',
         'mainApp.components.modal',
-        'mainApp.components.footer'
+        'mainApp.components.footer',
+        'mainApp.components.floatMessageBar'
     ])
         .config(config);
     function config($locationProvider, $urlRouterProvider, $translateProvider) {
@@ -2823,6 +2824,72 @@ var components;
 (function () {
     'use strict';
     angular
+        .module('mainApp.components.floatMessageBar', [])
+        .config(config);
+    function config() { }
+})();
+//# sourceMappingURL=floatMessageBar.config.js.map
+var components;
+(function (components) {
+    var floatMessageBar;
+    (function (floatMessageBar) {
+        'use strict';
+        var MaFloatMessageBar = (function () {
+            function MaFloatMessageBar() {
+                this.bindToController = true;
+                this.controller = FloatMessageBarController.controllerId;
+                this.controllerAs = 'vm';
+                this.restrict = 'E';
+                this.scope = true;
+                this.templateUrl = 'components/floatMessageBar/floatMessageBar.html';
+                console.log('maFloatMessageBar directive constructor');
+            }
+            MaFloatMessageBar.prototype.link = function ($scope, elm, attr) {
+                console.log('maFloatMessageBar link function');
+            };
+            MaFloatMessageBar.instance = function () {
+                return new MaFloatMessageBar();
+            };
+            return MaFloatMessageBar;
+        }());
+        MaFloatMessageBar.directiveId = 'maFloatMessageBar';
+        angular
+            .module('mainApp.components.floatMessageBar')
+            .directive(MaFloatMessageBar.directiveId, MaFloatMessageBar.instance);
+        var FloatMessageBarController = (function () {
+            function FloatMessageBarController(dataConfig, $filter, $scope, $rootScope, $state) {
+                this.dataConfig = dataConfig;
+                this.$filter = $filter;
+                this.$scope = $scope;
+                this.$rootScope = $rootScope;
+                this.$state = $state;
+                this.init();
+            }
+            FloatMessageBarController.prototype.init = function () {
+                this.activate();
+            };
+            FloatMessageBarController.prototype.activate = function () {
+                console.log('floatMessageBar controller actived');
+            };
+            return FloatMessageBarController;
+        }());
+        FloatMessageBarController.controllerId = 'mainApp.components.floatMessageBar.FloatMessageBarController';
+        FloatMessageBarController.$inject = [
+            'dataConfig',
+            '$filter',
+            '$scope',
+            '$rootScope',
+            '$state'
+        ];
+        floatMessageBar.FloatMessageBarController = FloatMessageBarController;
+        angular.module('mainApp.components.floatMessageBar')
+            .controller(FloatMessageBarController.controllerId, FloatMessageBarController);
+    })(floatMessageBar = components.floatMessageBar || (components.floatMessageBar = {}));
+})(components || (components = {}));
+//# sourceMappingURL=floatMessageBar.directive.js.map
+(function () {
+    'use strict';
+    angular
         .module('mainApp.components.map', [])
         .config(config);
     function config() { }
@@ -4219,7 +4286,7 @@ var app;
         var landingPage;
         (function (landingPage) {
             var LandingPageController = (function () {
-                function LandingPageController($state, dataConfig, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson) {
+                function LandingPageController($state, dataConfig, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope) {
                     this.$state = $state;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
@@ -4228,6 +4295,7 @@ var app;
                     this.LandingPageService = LandingPageService;
                     this.FeedbackService = FeedbackService;
                     this.getDataFromJson = getDataFromJson;
+                    this.$rootScope = $rootScope;
                     this._init();
                 }
                 LandingPageController.prototype._init = function () {
@@ -4240,6 +4308,7 @@ var app;
                         language: this.functionsUtil.getCurrentLanguage() || 'en',
                         feedback: new app.models.feedback.Feedback()
                     };
+                    this.$rootScope.activeMessageBar = false;
                     this.listCountries = this.getDataFromJson.getCountryi18n();
                     this.countryObject = { code: '', value: '' };
                     this.infoCountry = {
@@ -4377,7 +4446,8 @@ var app;
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.pages.landingPage.LandingPageService',
                 'mainApp.models.feedback.FeedbackService',
-                'mainApp.core.util.GetDataStaticJsonService'];
+                'mainApp.core.util.GetDataStaticJsonService',
+                '$rootScope'];
             landingPage.LandingPageController = LandingPageController;
             angular
                 .module('mainApp.pages.landingPage')

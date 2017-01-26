@@ -44,6 +44,8 @@ var paths = {
         "www/components/rating/rating.directive.js",
         "www/components/footer/footer.config.js",
         "www/components/footer/footer.directive.js",
+        "www/components/floatMessageBar/floatMessageBar.config.js",
+        "www/components/floatMessageBar/floatMessageBar.directive.js",
         "www/components/map/map.config.js",
         "www/components/map/map.directive.js",
         "www/components/modal/modal.config.js",
