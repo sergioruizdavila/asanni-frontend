@@ -23,6 +23,7 @@ var app;
                 };
                 TeacherFinishSectionController.prototype._finishProcess = function () {
                     this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
+                    this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, '');
                     mixpanel.track("Finish Process: Create Teacher", {
                         "id": this.$scope.$parent.vm.teacherData.Id,
                         "name": this.$scope.$parent.vm.teacherData.FirstName + ' ' + this.$scope.$parent.vm.teacherData.LastName,

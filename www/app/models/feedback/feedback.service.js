@@ -24,6 +24,16 @@ var app;
                     });
                     return promise;
                 };
+                FeedbackService.prototype.getEarlyById = function (id) {
+                    var url = 'early/';
+                    return this.restApi.show({ url: url, id: id }).$promise
+                        .then(function (data) {
+                        return data;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                };
                 return FeedbackService;
             }());
             FeedbackService.serviceId = 'mainApp.models.feedback.FeedbackService';

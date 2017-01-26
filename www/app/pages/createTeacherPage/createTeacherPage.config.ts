@@ -31,6 +31,7 @@
                     // Show/Hide header & footer
                     $rootScope.activeHeader = false;
                     $rootScope.activeFooter = false;
+                    $rootScope.activeMessageBar = false;
                 }]
             });
     }

@@ -34,7 +34,7 @@
                 <div class="col-xs-12">
                     <h3 class="margin-reset">
                         <span class="underline underline--primary">
-                            Karlu
+                            {{vm.rating.author.FirstName}}
                         </span>
                         <span translate>
                             %modal.recommend.teacher.title.text
@@ -48,7 +48,7 @@
                 <div class="col-xs-12">
                     <p class="ma-p ma-p--large">
                         <span>
-                            Karlu
+                            {{vm.rating.author.FirstName}}
                         </span>
                         <span translate>
                             %modal.recommend.teacher.description.text
@@ -65,15 +65,14 @@
                 <div class="col-xs-12">
                     <div class="row margin-reset">
                         <p class="ma-p ma-p--default">
-                            Very friendly and patient manner of teaching.
-                            Good style and very flexible with class times!
+                            {{vm.rating.Review}}
                         </p>
                     </div>
                     <div class="row margin-reset">
                         <div class="col-xs-6 padding-reset">
                             <div class="pull-left">
                                 <p class="ma-p ma-p--default text-italic strong">
-                                    - Karlu Chu
+                                    - {{vm.rating.author.FirstName}} {{vm.rating.author.LastName}}
                                 </p>
                             </div>
                         </div>
@@ -84,7 +83,7 @@
                                           ma-label--simple--medium
                                           ma-label--simple--primary
                                           margin-reset">
-                                    Enero 2017
+                                    {{ vm.rating.createdAt | yearMonthFormatFilter }}
                                 </p>
                             </div>
                         </div>
@@ -101,23 +100,26 @@
                         <h4 translate>
                             %profile.teacher.review.teaching.label.text
                         </h4>
-                        <ma-rating rating-value="10"
-                                   size="tiny">
+                        <ma-rating ng-if="vm.rating.TeachingValue"
+                                   rating-value="vm.rating.TeachingValue"
+                                   size="tiny"></ma-rating>
                     </div>
                     <div class="reviews-info-box__content__block">
                         <h4 translate>
                             %profile.teacher.review.communication.label.text
                         </h4>
-                        <ma-rating rating-value="10"
-                                   size="tiny">
+                        <ma-rating ng-if="vm.rating.CommunicationValue"
+                                   rating-value="vm.rating.CommunicationValue"
+                                   size="tiny"></ma-rating>
                     </div>
                     <div class="reviews-info-box__content__block"
                          style="margin-right: 0;">
                         <h4 translate>
                             %profile.teacher.review.methodology.label.text
                         </h4>
-                        <ma-rating rating-value="10"
-                                   size="tiny">
+                        <ma-rating ng-if="vm.rating.MethodologyValue"
+                                   rating-value="vm.rating.MethodologyValue"
+                                   size="tiny"></ma-rating>
                     </div>
                 </div>
 

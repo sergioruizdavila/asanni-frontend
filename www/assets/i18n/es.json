@@ -52,6 +52,11 @@
     "%header.join.teacher.tooltip.first_part.text": "Un profesor privado gana",
     "%header.join.teacher.tooltip.second_part.text": "en promedio",
 
+    "__FLOAT MESSAGE BAR__": "",
+    "%message.bar.text_block.first_part.label.text.bkp": "Tienes una recomendación de",
+    "%message.bar.text_block.first_part.label.text": "Tienes una recomendación",
+    "%message.bar.text_block.second_part.label.text": "Crea tu perfil como profesor, y esta será visible a todos.",
+
     "__NOTIFICATION__": "",
     "%notification.success.text": "Guardado Exitoso!",
     "%notification.error.server.text": "Estamos teniendo un problema, por favor intentelo nuevamente",

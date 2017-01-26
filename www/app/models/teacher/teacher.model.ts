@@ -26,6 +26,7 @@ module app.models.teacher {
         private immersion: Immersion;
         private price: Price;
         private ratings: Array<Rating>;
+        private recommended: number;
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -210,6 +211,15 @@ module app.models.teacher {
                     array[index] = rating;
                 }
             });
+        }
+
+        get Recommended() {
+            return this.recommended;
+        }
+
+        set Recommended(recommended: number) {
+            if (recommended === undefined) { throw 'Please supply recommended early id'; }
+            this.recommended = recommended;
         }
 
     }
@@ -876,6 +886,7 @@ module app.models.teacher {
         private teachingValue: number;
         private communicationValue: number;
         private review: string;
+        private createdAt: string;
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -891,6 +902,7 @@ module app.models.teacher {
             this.teachingValue = obj.teachingValue || 0;
             this.communicationValue = obj.communicationValue || 0;
             this.review = obj.review || '';
+            this.createdAt = obj.createdAt || '';
         }
 
         /**********************************/
@@ -949,6 +961,10 @@ module app.models.teacher {
         set Review(review: string) {
             if (review === undefined) { throw 'Please supply review value'; }
             this.review = review;
+        }
+
+        get CreatedAt() {
+            return this.createdAt;
         }
 
     }

@@ -5,8 +5,9 @@ var app;
         var landingPage;
         (function (landingPage) {
             var LandingPageController = (function () {
-                function LandingPageController($state, dataConfig, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope) {
+                function LandingPageController($state, $stateParams, dataConfig, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope, localStorage) {
                     this.$state = $state;
+                    this.$stateParams = $stateParams;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
                     this.messageUtil = messageUtil;
@@ -15,6 +16,7 @@ var app;
                     this.FeedbackService = FeedbackService;
                     this.getDataFromJson = getDataFromJson;
                     this.$rootScope = $rootScope;
+                    this.localStorage = localStorage;
                     this._init();
                 }
                 LandingPageController.prototype._init = function () {
@@ -27,7 +29,6 @@ var app;
                         language: this.functionsUtil.getCurrentLanguage() || 'en',
                         feedback: new app.models.feedback.Feedback()
                     };
-                    this.$rootScope.activeMessageBar = true;
                     this.listCountries = this.getDataFromJson.getCountryi18n();
                     this.countryObject = { code: '', value: '' };
                     this.infoCountry = {
@@ -52,14 +53,23 @@ var app;
                     var self = this;
                     console.log('landingPage controller actived');
                     mixpanel.track("Enter: Main Landing Page");
-                    var options = {
-                        animation: false,
-                        backdrop: 'static',
-                        keyboard: false,
-                        templateUrl: this.dataConfig.modalRecommendTeacherTmpl,
-                        controller: 'mainApp.components.modal.ModalRecommendTeacherController as vm'
-                    };
-                    var modalInstance = this.$uibModal.open(options);
+                    if (this.$stateParams.id) {
+                        var options = {
+                            animation: false,
+                            backdrop: 'static',
+                            keyboard: false,
+                            templateUrl: this.dataConfig.modalRecommendTeacherTmpl,
+                            controller: 'mainApp.components.modal.ModalRecommendTeacherController as vm',
+                            resolve: {
+                                dataSetModal: function () {
+                                    return {
+                                        earlyId: self.$stateParams.id
+                                    };
+                                }
+                            }
+                        };
+                        var modalInstance = this.$uibModal.open(options);
+                    }
                 };
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
@@ -159,6 +169,7 @@ var app;
             }());
             LandingPageController.controllerId = 'mainApp.pages.landingPage.LandingPageController';
             LandingPageController.$inject = ['$state',
+                '$stateParams',
                 'dataConfig',
                 '$uibModal',
                 'mainApp.core.util.messageUtilService',
@@ -166,7 +177,8 @@ var app;
                 'mainApp.pages.landingPage.LandingPageService',
                 'mainApp.models.feedback.FeedbackService',
                 'mainApp.core.util.GetDataStaticJsonService',
-                '$rootScope'];
+                '$rootScope',
+                'mainApp.localStorageService'];
             landingPage.LandingPageController = LandingPageController;
             angular
                 .module('mainApp.pages.landingPage')
