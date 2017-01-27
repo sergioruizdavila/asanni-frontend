@@ -67,7 +67,7 @@
     'use strict';
     var dataConfig = {
         currentYear: '2017',
-        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
+        baseUrl: 'http://127.0.0.1:8000/api/v1/',
         domain: 'http://www.waysily.com',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',
@@ -2921,6 +2921,11 @@ var components;
             FloatMessageBarController.prototype.activate = function () {
                 console.log('floatMessageBar controller actived');
             };
+            FloatMessageBarController.prototype._join = function () {
+                var CREATE_TEACHER = 'page.createTeacherPage.start';
+                mixpanel.track("Click on join as a teacher from floatMessageBar");
+                this.$state.go(CREATE_TEACHER, { reload: true });
+            };
             return FloatMessageBarController;
         }());
         FloatMessageBarController.controllerId = 'mainApp.components.floatMessageBar.FloatMessageBarController';
@@ -3902,7 +3907,7 @@ var components;
                     if (formValid) {
                         var self_1 = this;
                         this.sending = true;
-                        mixpanel.track("Click on Notify button", {
+                        mixpanel.track("Click on Join as a Student button", {
                             "name": '*',
                             "email": this.form.email,
                             "comment": '*'
@@ -3951,11 +3956,12 @@ var components;
         var modalRecommendTeacher;
         (function (modalRecommendTeacher) {
             var ModalRecommendTeacherController = (function () {
-                function ModalRecommendTeacherController($uibModalInstance, dataSetModal, localStorage, StudentService, dataConfig, $timeout, $filter, $rootScope) {
+                function ModalRecommendTeacherController($uibModalInstance, dataSetModal, localStorage, StudentService, $state, dataConfig, $timeout, $filter, $rootScope) {
                     this.$uibModalInstance = $uibModalInstance;
                     this.dataSetModal = dataSetModal;
                     this.localStorage = localStorage;
                     this.StudentService = StudentService;
+                    this.$state = $state;
                     this.dataConfig = dataConfig;
                     this.$timeout = $timeout;
                     this.$filter = $filter;
@@ -3975,7 +3981,15 @@ var components;
                         }
                     });
                 };
+                ModalRecommendTeacherController.prototype._join = function () {
+                    var CREATE_TEACHER = 'page.createTeacherPage.start';
+                    mixpanel.track("Click on join as a teacher from recommendation modal");
+                    this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, this.dataSetModal.earlyId);
+                    this.$uibModalInstance.close();
+                    this.$state.go(CREATE_TEACHER, { reload: true });
+                };
                 ModalRecommendTeacherController.prototype.close = function () {
+                    mixpanel.track("Click on Close recommend teacher modal button");
                     this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, this.dataSetModal.earlyId);
                     this.$rootScope.activeMessageBar = true;
                     this.$uibModalInstance.close();
@@ -3988,6 +4002,7 @@ var components;
                 'dataSetModal',
                 'mainApp.localStorageService',
                 'mainApp.models.student.StudentService',
+                '$state',
                 'dataConfig',
                 '$timeout',
                 '$filter',

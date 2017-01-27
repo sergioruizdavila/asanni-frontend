@@ -40,6 +40,11 @@ var components;
             FloatMessageBarController.prototype.activate = function () {
                 console.log('floatMessageBar controller actived');
             };
+            FloatMessageBarController.prototype._join = function () {
+                var CREATE_TEACHER = 'page.createTeacherPage.start';
+                mixpanel.track("Click on join as a teacher from floatMessageBar");
+                this.$state.go(CREATE_TEACHER, { reload: true });
+            };
             return FloatMessageBarController;
         }());
         FloatMessageBarController.controllerId = 'mainApp.components.floatMessageBar.FloatMessageBarController';

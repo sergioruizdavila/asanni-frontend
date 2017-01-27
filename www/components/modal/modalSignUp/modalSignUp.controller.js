@@ -44,7 +44,7 @@ var components;
                     if (formValid) {
                         var self_1 = this;
                         this.sending = true;
-                        mixpanel.track("Click on Notify button", {
+                        mixpanel.track("Click on Join as a Student button", {
                             "name": '*',
                             "email": this.form.email,
                             "comment": '*'

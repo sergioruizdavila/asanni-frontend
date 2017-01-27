@@ -54,8 +54,8 @@
 
     "__FLOAT MESSAGE BAR__": "",
     "%message.bar.text_block.first_part.label.text.bkp": "Tienes una recomendación de",
-    "%message.bar.text_block.first_part.label.text": "Tienes una recomendación",
-    "%message.bar.text_block.second_part.label.text": "Crea tu perfil como profesor, y esta será visible a todos.",
+    "%message.bar.text_block.first_part.label.text": "Tienes una recomendación.",
+    "%message.bar.text_block.second_part.label.text": "Esta será visible a todos cuando crees tú cuenta como profesor.",
 
     "__NOTIFICATION__": "",
     "%notification.success.text": "Guardado Exitoso!",
@@ -402,9 +402,9 @@
     "%create.teacher.price.help_text.title.text": "Ponle precio a tu trabajo",
     "%create.teacher.price.help_text.description.text": "Asígnale el precio a tu hora de enseñanza (en dólares). En promedio un profesor que dicta clases a un viajero en tu país está cobrando 20 USD / hora. Todo depende de tu experiencia y la reputación que construyas en Waysily.",
     "%create.teacher.price.help_text.private_class.title.text": "Clases privadas",
-    "%create.teacher.price.help_text.private_class.description.text": "Son aquellas en las que te enfocaras 100% en un solo estudiante por clase. (Uno a uno).",
+    "%create.teacher.price.help_text.private_class.description.text": "Son aquellas en las que te enfocas 100% en un solo estudiante por clase. (Uno a uno).",
     "%create.teacher.price.help_text.group_class.title.text": "Clases grupales",
-    "%create.teacher.price.help_text.group_class.description.text": "Son aquellas en las que te enfocaras en varios estudiantes por clase.",
+    "%create.teacher.price.help_text.group_class.description.text": "Son aquellas en las que te enfocas en varios estudiantes por clase.",
     "%create.teacher.price.validation.message.text": "Es necesario que escojas un tipo de clase",
 
     "__8. TEACHER AVATAR PHOTO SECTION__": "",
