@@ -3,7 +3,7 @@
     var dataConfig = {
         currentYear: '2017',
         baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
-        domain: 'http://www.waysily.com',
+        domain: 'www.waysily.com',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',
         mixpanelTokenDEV: 'eda475bf46e7f01e417a4ed1d9cc3e58',
