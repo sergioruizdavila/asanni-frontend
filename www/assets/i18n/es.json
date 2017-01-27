@@ -15,7 +15,8 @@
     "%global.start.button.text": "Empecemos",
     "%global.go.button.text": "¡Vamos!",
     "%global.close_information.button.text": "Cerrar Información",
-    "%global.join.button.text": "únete ahora",
+    "%global.join.button.text": "únete",
+    "%global.join_now.button.text": "únete ahora",
 
     "%global.more.label.text": "+ Más",
     "%global.age.text": "años",
@@ -50,6 +51,11 @@
     "%header.join.teacher.tooltip.first_part.text.legacy": "Un profesor en Waysily gana",
     "%header.join.teacher.tooltip.first_part.text": "Un profesor privado gana",
     "%header.join.teacher.tooltip.second_part.text": "en promedio",
+
+    "__FLOAT MESSAGE BAR__": "",
+    "%message.bar.text_block.first_part.label.text.bkp": "Tienes una recomendación de",
+    "%message.bar.text_block.first_part.label.text": "Tienes una recomendación.",
+    "%message.bar.text_block.second_part.label.text": "Esta será visible a todos cuando te unas como profesor.",
 
     "__NOTIFICATION__": "",
     "%notification.success.text": "Guardado Exitoso!",
@@ -90,6 +96,13 @@
     "%modal.certificate.form.date_received.text": "Fecha de recepción",
     "%modal.certificate.form.description.text": "¿Que aprendiste?",
     "%modal.certificate.form.description.placeholder.text": "p.ej. Aprendí a fondo el idioma, su historia y gramática. Además, aprendí la metodología adecuada para enseñar.",
+
+    "%modal.recommend.teacher.title.text": "desea que formes parte de la comunidad más grande de profesores y escuelas de idiomas.",
+    "%modal.recommend.teacher.description.text": "escribió la siguiente recomendación y te calificó como tutor de idiomas:",
+    "%modal.recommend.teacher.invitation.message.first_part.text": "En Waysily crearás una reputación como profesor de idiomas recibiendo recomendaciones de tus estudiantes. Podrás hacerte visible a 6000+ estudiantes que viajan a tu país cada año, y ganar aproximadamente",
+    "%modal.recommend.teacher.invitation.message.third_part.text": "a la semana por hacer lo que mejor sabes hacer:",
+    "%modal.recommend.teacher.invitation.message.teach.label.text": "enseñar",
+    "%modal.recommend.teacher.create_profile.label.text": "¡Crea tu perfil, es gratis!",
 
     "__LANDING PAGE__": "",
     "%landing.header.join.label.text": "Unirse como:",
@@ -389,9 +402,9 @@
     "%create.teacher.price.help_text.title.text": "Ponle precio a tu trabajo",
     "%create.teacher.price.help_text.description.text": "Asígnale el precio a tu hora de enseñanza (en dólares). En promedio un profesor que dicta clases a un viajero en tu país está cobrando 20 USD / hora. Todo depende de tu experiencia y la reputación que construyas en Waysily.",
     "%create.teacher.price.help_text.private_class.title.text": "Clases privadas",
-    "%create.teacher.price.help_text.private_class.description.text": "Son aquellas en las que te enfocaras 100% en un solo estudiante por clase. (Uno a uno).",
+    "%create.teacher.price.help_text.private_class.description.text": "Son aquellas en las que te enfocas 100% en un solo estudiante por clase. (Uno a uno).",
     "%create.teacher.price.help_text.group_class.title.text": "Clases grupales",
-    "%create.teacher.price.help_text.group_class.description.text": "Son aquellas en las que te enfocaras en varios estudiantes por clase.",
+    "%create.teacher.price.help_text.group_class.description.text": "Son aquellas en las que te enfocas en varios estudiantes por clase.",
     "%create.teacher.price.validation.message.text": "Es necesario que escojas un tipo de clase",
 
     "__8. TEACHER AVATAR PHOTO SECTION__": "",

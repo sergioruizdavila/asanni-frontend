@@ -15,7 +15,8 @@
     "%global.start.button.text": "Let's Start",
     "%global.go.button.text": "Let's Go!",
     "%global.close_information.button.text": "Close information",
-    "%global.join.button.text": "join now",
+    "%global.join.button.text": "join",
+    "%global.join_now.button.text": "join now",
 
     "%global.more.label.text": "+ More",
     "%global.age.text": "years old",
@@ -50,6 +51,11 @@
     "%header.join.teacher.tooltip.first_part.text.legacy": "A teacher on Waysily earns",
     "%header.join.teacher.tooltip.first_part.text": "A private teacher earns",
     "%header.join.teacher.tooltip.second_part.text": "on average",
+
+    "__FLOAT MESSAGE BAR__": "",
+    "%message.bar.text_block.first_part.label.text.bkp": "You have a recommendation from",
+    "%message.bar.text_block.first_part.label.text": "You have a recommendation.",
+    "%message.bar.text_block.second_part.label.text": "This will be visible to everyone when you join as a teacher.",
 
     "__NOTIFICATION__": "",
     "%notification.success.text": "Successfully saved!",
@@ -90,6 +96,13 @@
     "%modal.certificate.form.date_received.text": "Date Received",
     "%modal.certificate.form.description.text": "What did you learn?",
     "%modal.certificate.form.description.placeholder.text": "e.g. I learned in depth the language, its history and grammar. I also learned the proper methodology for teaching.",
+
+    "%modal.recommend.teacher.title.text": "wants you to be part of the biggest community of teachers and language schools.",
+    "%modal.recommend.teacher.description.text": "wrote the following recommendation and rating you as language tutor:",
+    "%modal.recommend.teacher.invitation.message.first_part.text": "Being part of Waysily, you will create a reputation as teacher receiving recommendations from your students. Also, you can become visible to 6000+ students who travel to your country every year, and earn approximately",
+    "%modal.recommend.teacher.invitation.message.third_part.text": "a week for doing what you do best:",
+    "%modal.recommend.teacher.invitation.message.teach.label.text": "Teach",
+    "%modal.recommend.teacher.create_profile.label.text": "Create your profile, it's free!",
 
     "__LANDING PAGE__": "",
     "%landing.header.join.label.text": "Join as:",

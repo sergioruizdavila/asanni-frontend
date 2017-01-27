@@ -46,6 +46,7 @@ module app.models.user {
         private about: string;
         private location: Location;
         private status: string;
+        private createdAt: string;
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -68,6 +69,7 @@ module app.models.user {
             this.about = obj.about || '';
             this.location = new Location(obj.location);
             this.status = obj.status || 'NW';
+            this.createdAt = obj.createdAt || '';
 
         }
 
@@ -190,6 +192,10 @@ module app.models.user {
         set Status(status: string) {
             if (status === undefined) { throw 'Please supply status value'; }
             this.status = status;
+        }
+
+        get CreatedAt() {
+            return this.createdAt;
         }
 
     }

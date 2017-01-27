@@ -1,0 +1,27 @@
+/*************************/
+/*       VARIABLES       */
+/*************************/
+
+
+
+/**********************************************************/
+/*            RECOMMENDATION FROM STUDENT MODAL           */
+/**********************************************************/
+
+.modalRecommendTeacher {
+    &__content {
+        padding-left: 30px;
+        padding-right: 30px;
+
+        h3 {
+            line-height: 30px;
+        }
+
+        .recommendation-block {
+            padding-top: 8px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+        }
+    }
+}

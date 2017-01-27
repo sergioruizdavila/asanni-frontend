@@ -1,0 +1,39 @@
+<!----------------------------------------------------------------------------->
+<!--                     FLOAT MESSAGE BAR COMPONENT                         -->
+<!----------------------------------------------------------------------------->
+
+<div class="ma-floatBar ma-floatBar--border-primary">
+
+    <div class="row">
+
+        <div class="col-xs-12 text-center">
+
+            <! message block >
+            <p class="ma-floatBar__text
+                      ma-p ma-p--default
+                      margin-reset space-right-2">
+                <span translate>
+                    %message.bar.text_block.first_part.label.text
+                </span>
+                <span class="underline underline--primary hidden">
+                    Karlu
+                </span>
+                <span translate>
+                    %message.bar.text_block.second_part.label.text
+                </span>
+            </p>
+
+            <! button block >
+            <button class="ma-floatBar__button
+                           ma-btn ma-btn--secondary
+                           ma-btn--small text-uppercase"
+                    ng-click="vm._join()"
+                    translate>
+                %global.join.button.text
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

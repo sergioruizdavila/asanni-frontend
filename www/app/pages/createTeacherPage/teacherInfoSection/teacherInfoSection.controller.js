@@ -5,9 +5,11 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherInfoSectionController = (function () {
-                function TeacherInfoSectionController(getDataFromJson, functionsUtilService, $state, $filter, $scope) {
+                function TeacherInfoSectionController(getDataFromJson, functionsUtilService, localStorage, dataConfig, $state, $filter, $scope) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
+                    this.localStorage = localStorage;
+                    this.dataConfig = dataConfig;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
@@ -191,6 +193,7 @@ var app;
                 TeacherInfoSectionController.prototype._setDataModelFromForm = function () {
                     var dateFormatted = this.functionsUtilService.joinDate(this.dateObject.day.value, this.dateObject.month.code, this.dateObject.year.value);
                     var sexCode = this.sexObject.sex.code;
+                    var recommended = this.localStorage.getItem(this.dataConfig.earlyIdLocalStorage);
                     this.$scope.$parent.vm.teacherData.FirstName = this.form.firstName;
                     this.$scope.$parent.vm.teacherData.LastName = this.form.lastName;
                     this.$scope.$parent.vm.teacherData.Email = this.form.email;
@@ -199,6 +202,7 @@ var app;
                     this.$scope.$parent.vm.teacherData.BirthDate = dateFormatted;
                     this.$scope.$parent.vm.teacherData.Born = this.form.born;
                     this.$scope.$parent.vm.teacherData.About = this.form.about;
+                    this.$scope.$parent.vm.teacherData.Recommended = recommended ? recommended : null;
                 };
                 TeacherInfoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
@@ -222,6 +226,8 @@ var app;
             TeacherInfoSectionController.$inject = [
                 'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
+                'mainApp.localStorageService',
+                'dataConfig',
                 '$state',
                 '$filter',
                 '$scope'

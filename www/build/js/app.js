@@ -31,7 +31,8 @@
         'mainApp.components.rating',
         'mainApp.components.map',
         'mainApp.components.modal',
-        'mainApp.components.footer'
+        'mainApp.components.footer',
+        'mainApp.components.floatMessageBar'
     ])
         .config(config);
     function config($locationProvider, $urlRouterProvider, $translateProvider) {
@@ -67,20 +68,24 @@
     var dataConfig = {
         currentYear: '2017',
         baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
+        domain: 'http://www.waysily.com',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
-        mixpanelToken: '86a48c88274599c662ad64edb74b12da',
+        mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',
+        mixpanelTokenDEV: 'eda475bf46e7f01e417a4ed1d9cc3e58',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
         modalLanguagesTmpl: 'components/modal/modalLanguages/modalLanguages.html',
         modalExperienceTmpl: 'components/modal/modalExperience/modalExperience.html',
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
+        modalRecommendTeacherTmpl: 'components/modal/modalRecommendTeacher/modalRecommendTeacher.html',
         bucketS3: 'waysily-img/teachers-avatar-prd',
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
         userId: '',
-        teacherIdLocalStorage: 'waysily.teacher_id'
+        teacherIdLocalStorage: 'waysily.teacher_id',
+        earlyIdLocalStorage: 'waysily.early_id'
     };
     angular
         .module('mainApp')
@@ -96,16 +101,24 @@
         'dataConfig',
         '$http'];
     function run($rootScope, dataConfig, $http) {
-        mixpanel.init(dataConfig.mixpanelToken, {
-            loaded: function (mixpanel) {
-                var first_visit = mixpanel.get_property("First visit");
-                var current_date = moment().format('MMMM Do YYYY, h:mm:ss a');
-                if (first_visit == null) {
-                    mixpanel.register_once({ "First visit": current_date });
-                    mixpanel.track("Visit");
+        var productionHost = dataConfig.domain;
+        var mixpanelTokenDEV = dataConfig.mixpanelTokenDEV;
+        var mixpanelTokenPRD = dataConfig.mixpanelTokenPRD;
+        if (window.location.hostname.toLowerCase().search(productionHost) < 0) {
+            mixpanel.init(mixpanelTokenDEV);
+        }
+        else {
+            mixpanel.init(mixpanelTokenPRD, {
+                loaded: function (mixpanel) {
+                    var first_visit = mixpanel.get_property("First visit");
+                    var current_date = moment().format('MMMM Do YYYY, h:mm:ss a');
+                    if (first_visit == null) {
+                        mixpanel.register_once({ "First visit": current_date });
+                        mixpanel.track("Visit");
+                    }
                 }
-            }
-        });
+            });
+        }
         dataConfig.userId = 'id1234';
     }
 })();
@@ -814,6 +827,16 @@ var app;
                     });
                     return promise;
                 };
+                FeedbackService.prototype.getEarlyById = function (id) {
+                    var url = 'early/';
+                    return this.restApi.show({ url: url, id: id }).$promise
+                        .then(function (data) {
+                        return data;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                };
                 return FeedbackService;
             }());
             FeedbackService.serviceId = 'mainApp.models.feedback.FeedbackService';
@@ -857,6 +880,7 @@ var app;
                     this.about = obj.about || '';
                     this.location = new Location(obj.location);
                     this.status = obj.status || 'NW';
+                    this.createdAt = obj.createdAt || '';
                 }
                 Object.defineProperty(User.prototype, "Id", {
                     get: function () {
@@ -1023,6 +1047,13 @@ var app;
                             throw 'Please supply status value';
                         }
                         this.status = status;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(User.prototype, "CreatedAt", {
+                    get: function () {
+                        return this.createdAt;
                     },
                     enumerable: true,
                     configurable: true
@@ -1376,7 +1407,7 @@ var app;
                     console.log('student service instanced');
                 }
                 StudentService.prototype.getStudentById = function (id) {
-                    var url = 'students/';
+                    var url = 'students';
                     return this.restApi.show({ url: url, id: id }).$promise
                         .then(function (data) {
                         return data;
@@ -1386,8 +1417,18 @@ var app;
                     });
                 };
                 StudentService.prototype.getAllStudents = function () {
-                    var url = 'students/';
+                    var url = 'students';
                     return this.restApi.query({ url: url }).$promise
+                        .then(function (data) {
+                        return data;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                };
+                StudentService.prototype.getRatingByEarlyid = function (id) {
+                    var url = 'ratings';
+                    return this.restApi.show({ url: url, id: id }).$promise
                         .then(function (data) {
                         return data;
                     }).catch(function (err) {
@@ -1633,6 +1674,19 @@ var app;
                         }
                     });
                 };
+                Object.defineProperty(Teacher.prototype, "Recommended", {
+                    get: function () {
+                        return this.recommended;
+                    },
+                    set: function (recommended) {
+                        if (recommended === undefined) {
+                            throw 'Please supply recommended early id';
+                        }
+                        this.recommended = recommended;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 return Teacher;
             }(app.models.user.User));
             teacher.Teacher = Teacher;
@@ -2256,6 +2310,7 @@ var app;
                     this.teachingValue = obj.teachingValue || 0;
                     this.communicationValue = obj.communicationValue || 0;
                     this.review = obj.review || '';
+                    this.createdAt = obj.createdAt || '';
                 }
                 Object.defineProperty(Rating.prototype, "Id", {
                     get: function () {
@@ -2331,6 +2386,13 @@ var app;
                             throw 'Please supply review value';
                         }
                         this.review = review;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Rating.prototype, "CreatedAt", {
+                    get: function () {
+                        return this.createdAt;
                     },
                     enumerable: true,
                     configurable: true
@@ -2809,6 +2871,77 @@ var components;
     })(footer = components.footer || (components.footer = {}));
 })(components || (components = {}));
 //# sourceMappingURL=footer.directive.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.components.floatMessageBar', [])
+        .config(config);
+    function config() { }
+})();
+//# sourceMappingURL=floatMessageBar.config.js.map
+var components;
+(function (components) {
+    var floatMessageBar;
+    (function (floatMessageBar) {
+        'use strict';
+        var MaFloatMessageBar = (function () {
+            function MaFloatMessageBar() {
+                this.bindToController = true;
+                this.controller = FloatMessageBarController.controllerId;
+                this.controllerAs = 'vm';
+                this.restrict = 'E';
+                this.scope = true;
+                this.templateUrl = 'components/floatMessageBar/floatMessageBar.html';
+                console.log('maFloatMessageBar directive constructor');
+            }
+            MaFloatMessageBar.prototype.link = function ($scope, elm, attr) {
+                console.log('maFloatMessageBar link function');
+            };
+            MaFloatMessageBar.instance = function () {
+                return new MaFloatMessageBar();
+            };
+            return MaFloatMessageBar;
+        }());
+        MaFloatMessageBar.directiveId = 'maFloatMessageBar';
+        angular
+            .module('mainApp.components.floatMessageBar')
+            .directive(MaFloatMessageBar.directiveId, MaFloatMessageBar.instance);
+        var FloatMessageBarController = (function () {
+            function FloatMessageBarController(dataConfig, $filter, $scope, $rootScope, $state) {
+                this.dataConfig = dataConfig;
+                this.$filter = $filter;
+                this.$scope = $scope;
+                this.$rootScope = $rootScope;
+                this.$state = $state;
+                this.init();
+            }
+            FloatMessageBarController.prototype.init = function () {
+                this.activate();
+            };
+            FloatMessageBarController.prototype.activate = function () {
+                console.log('floatMessageBar controller actived');
+            };
+            FloatMessageBarController.prototype._join = function () {
+                var CREATE_TEACHER = 'page.createTeacherPage.start';
+                mixpanel.track("Click on join as a teacher from floatMessageBar");
+                this.$state.go(CREATE_TEACHER, { reload: true });
+            };
+            return FloatMessageBarController;
+        }());
+        FloatMessageBarController.controllerId = 'mainApp.components.floatMessageBar.FloatMessageBarController';
+        FloatMessageBarController.$inject = [
+            'dataConfig',
+            '$filter',
+            '$scope',
+            '$rootScope',
+            '$state'
+        ];
+        floatMessageBar.FloatMessageBarController = FloatMessageBarController;
+        angular.module('mainApp.components.floatMessageBar')
+            .controller(FloatMessageBarController.controllerId, FloatMessageBarController);
+    })(floatMessageBar = components.floatMessageBar || (components.floatMessageBar = {}));
+})(components || (components = {}));
+//# sourceMappingURL=floatMessageBar.directive.js.map
 (function () {
     'use strict';
     angular
@@ -3774,7 +3907,7 @@ var components;
                     if (formValid) {
                         var self_1 = this;
                         this.sending = true;
-                        mixpanel.track("Click on Notify button", {
+                        mixpanel.track("Click on Join as a Student button", {
                             "name": '*',
                             "email": this.form.email,
                             "comment": '*'
@@ -3816,6 +3949,71 @@ var components;
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
 //# sourceMappingURL=modalSignUp.controller.js.map
+var components;
+(function (components) {
+    var modal;
+    (function (modal) {
+        var modalRecommendTeacher;
+        (function (modalRecommendTeacher) {
+            var ModalRecommendTeacherController = (function () {
+                function ModalRecommendTeacherController($uibModalInstance, dataSetModal, localStorage, StudentService, $state, dataConfig, $timeout, $filter, $rootScope) {
+                    this.$uibModalInstance = $uibModalInstance;
+                    this.dataSetModal = dataSetModal;
+                    this.localStorage = localStorage;
+                    this.StudentService = StudentService;
+                    this.$state = $state;
+                    this.dataConfig = dataConfig;
+                    this.$timeout = $timeout;
+                    this.$filter = $filter;
+                    this.$rootScope = $rootScope;
+                    this._init();
+                }
+                ModalRecommendTeacherController.prototype._init = function () {
+                    var self = this;
+                    this.activate();
+                };
+                ModalRecommendTeacherController.prototype.activate = function () {
+                    var self = this;
+                    console.log('modalRecommendTeacher controller actived');
+                    this.StudentService.getRatingByEarlyid(this.dataSetModal.earlyId).then(function (response) {
+                        if (response.id) {
+                            self.rating = new app.models.teacher.Rating(response);
+                        }
+                    });
+                };
+                ModalRecommendTeacherController.prototype._join = function () {
+                    var CREATE_TEACHER = 'page.createTeacherPage.start';
+                    mixpanel.track("Click on join as a teacher from recommendation modal");
+                    this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, this.dataSetModal.earlyId);
+                    this.$uibModalInstance.close();
+                    this.$state.go(CREATE_TEACHER, { reload: true });
+                };
+                ModalRecommendTeacherController.prototype.close = function () {
+                    mixpanel.track("Click on Close recommend teacher modal button");
+                    this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, this.dataSetModal.earlyId);
+                    this.$rootScope.activeMessageBar = true;
+                    this.$uibModalInstance.close();
+                };
+                return ModalRecommendTeacherController;
+            }());
+            ModalRecommendTeacherController.controllerId = 'mainApp.components.modal.ModalRecommendTeacherController';
+            ModalRecommendTeacherController.$inject = [
+                '$uibModalInstance',
+                'dataSetModal',
+                'mainApp.localStorageService',
+                'mainApp.models.student.StudentService',
+                '$state',
+                'dataConfig',
+                '$timeout',
+                '$filter',
+                '$rootScope'
+            ];
+            angular.module('mainApp.components.modal')
+                .controller(ModalRecommendTeacherController.controllerId, ModalRecommendTeacherController);
+        })(modalRecommendTeacher = modal.modalRecommendTeacher || (modal.modalRecommendTeacher = {}));
+    })(modal = components.modal || (components.modal = {}));
+})(components || (components = {}));
+//# sourceMappingURL=modalRecommendTeacher.controller.js.map
 (function () {
     'use strict';
     angular
@@ -3840,7 +4038,11 @@ var app;
         var main;
         (function (main) {
             var MainController = (function () {
-                function MainController() {
+                function MainController($state, $rootScope, localStorage, dataConfig) {
+                    this.$state = $state;
+                    this.$rootScope = $rootScope;
+                    this.localStorage = localStorage;
+                    this.dataConfig = dataConfig;
                     this.init();
                 }
                 MainController.prototype.init = function () {
@@ -3848,11 +4050,25 @@ var app;
                 };
                 MainController.prototype.activate = function () {
                     var self = this;
+                    var earlyId = this.localStorage.getItem(this.dataConfig.earlyIdLocalStorage);
+                    var currentState = this.$state.current.name;
+                    if (currentState.indexOf('page.createTeacherPage') !== -1) {
+                        this.$rootScope.activeMessageBar = false;
+                    }
+                    else {
+                        this.$rootScope.activeMessageBar = earlyId ? true : false;
+                    }
                     console.log('main controller actived');
                 };
                 return MainController;
             }());
             MainController.controllerId = 'mainApp.pages.main.MainController';
+            MainController.$inject = [
+                '$state',
+                '$rootScope',
+                'mainApp.localStorageService',
+                'dataConfig'
+            ];
             main.MainController = MainController;
             angular
                 .module('mainApp.pages.main')
@@ -4153,6 +4369,26 @@ var app;
                 }
             },
             parent: 'page',
+            cache: false,
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = false;
+                    $rootScope.activeFooter = true;
+                }]
+        })
+            .state('page.landingPage.recommendation', {
+            url: '/main/recommendation/:id',
+            views: {
+                'container': {
+                    templateUrl: 'app/pages/landingPage/landingPage.html',
+                    controller: 'mainApp.pages.landingPage.LandingPageController',
+                    controllerAs: 'vm'
+                }
+            },
+            parent: 'page',
+            params: {
+                id: null
+            },
+            cache: false,
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
                     $rootScope.activeFooter = true;
@@ -4168,8 +4404,9 @@ var app;
         var landingPage;
         (function (landingPage) {
             var LandingPageController = (function () {
-                function LandingPageController($state, dataConfig, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson) {
+                function LandingPageController($state, $stateParams, dataConfig, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope, localStorage) {
                     this.$state = $state;
+                    this.$stateParams = $stateParams;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
                     this.messageUtil = messageUtil;
@@ -4177,6 +4414,8 @@ var app;
                     this.LandingPageService = LandingPageService;
                     this.FeedbackService = FeedbackService;
                     this.getDataFromJson = getDataFromJson;
+                    this.$rootScope = $rootScope;
+                    this.localStorage = localStorage;
                     this._init();
                 }
                 LandingPageController.prototype._init = function () {
@@ -4213,6 +4452,23 @@ var app;
                     var self = this;
                     console.log('landingPage controller actived');
                     mixpanel.track("Enter: Main Landing Page");
+                    if (this.$stateParams.id) {
+                        var options = {
+                            animation: false,
+                            backdrop: 'static',
+                            keyboard: false,
+                            templateUrl: this.dataConfig.modalRecommendTeacherTmpl,
+                            controller: 'mainApp.components.modal.ModalRecommendTeacherController as vm',
+                            resolve: {
+                                dataSetModal: function () {
+                                    return {
+                                        earlyId: self.$stateParams.id
+                                    };
+                                }
+                            }
+                        };
+                        var modalInstance = this.$uibModal.open(options);
+                    }
                 };
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
@@ -4312,13 +4568,16 @@ var app;
             }());
             LandingPageController.controllerId = 'mainApp.pages.landingPage.LandingPageController';
             LandingPageController.$inject = ['$state',
+                '$stateParams',
                 'dataConfig',
                 '$uibModal',
                 'mainApp.core.util.messageUtilService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.pages.landingPage.LandingPageService',
                 'mainApp.models.feedback.FeedbackService',
-                'mainApp.core.util.GetDataStaticJsonService'];
+                'mainApp.core.util.GetDataStaticJsonService',
+                '$rootScope',
+                'mainApp.localStorageService'];
             landingPage.LandingPageController = LandingPageController;
             angular
                 .module('mainApp.pages.landingPage')
@@ -5320,6 +5579,7 @@ var app;
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
                     $rootScope.activeFooter = false;
+                    $rootScope.activeMessageBar = false;
                 }]
         });
     }
@@ -5548,9 +5808,11 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherInfoSectionController = (function () {
-                function TeacherInfoSectionController(getDataFromJson, functionsUtilService, $state, $filter, $scope) {
+                function TeacherInfoSectionController(getDataFromJson, functionsUtilService, localStorage, dataConfig, $state, $filter, $scope) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
+                    this.localStorage = localStorage;
+                    this.dataConfig = dataConfig;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
@@ -5734,6 +5996,7 @@ var app;
                 TeacherInfoSectionController.prototype._setDataModelFromForm = function () {
                     var dateFormatted = this.functionsUtilService.joinDate(this.dateObject.day.value, this.dateObject.month.code, this.dateObject.year.value);
                     var sexCode = this.sexObject.sex.code;
+                    var recommended = this.localStorage.getItem(this.dataConfig.earlyIdLocalStorage);
                     this.$scope.$parent.vm.teacherData.FirstName = this.form.firstName;
                     this.$scope.$parent.vm.teacherData.LastName = this.form.lastName;
                     this.$scope.$parent.vm.teacherData.Email = this.form.email;
@@ -5742,6 +6005,7 @@ var app;
                     this.$scope.$parent.vm.teacherData.BirthDate = dateFormatted;
                     this.$scope.$parent.vm.teacherData.Born = this.form.born;
                     this.$scope.$parent.vm.teacherData.About = this.form.about;
+                    this.$scope.$parent.vm.teacherData.Recommended = recommended ? recommended : null;
                 };
                 TeacherInfoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
@@ -5765,6 +6029,8 @@ var app;
             TeacherInfoSectionController.$inject = [
                 'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
+                'mainApp.localStorageService',
+                'dataConfig',
                 '$state',
                 '$filter',
                 '$scope'
@@ -7365,6 +7631,7 @@ var app;
                 };
                 TeacherFinishSectionController.prototype._finishProcess = function () {
                     this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
+                    this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, '');
                     mixpanel.track("Finish Process: Create Teacher", {
                         "id": this.$scope.$parent.vm.teacherData.Id,
                         "name": this.$scope.$parent.vm.teacherData.FirstName + ' ' + this.$scope.$parent.vm.teacherData.LastName,

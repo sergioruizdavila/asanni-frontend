@@ -11,7 +11,7 @@ var app;
                     console.log('student service instanced');
                 }
                 StudentService.prototype.getStudentById = function (id) {
-                    var url = 'students/';
+                    var url = 'students';
                     return this.restApi.show({ url: url, id: id }).$promise
                         .then(function (data) {
                         return data;
@@ -21,8 +21,18 @@ var app;
                     });
                 };
                 StudentService.prototype.getAllStudents = function () {
-                    var url = 'students/';
+                    var url = 'students';
                     return this.restApi.query({ url: url }).$promise
+                        .then(function (data) {
+                        return data;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
+                    });
+                };
+                StudentService.prototype.getRatingByEarlyid = function (id) {
+                    var url = 'ratings';
+                    return this.restApi.show({ url: url, id: id }).$promise
                         .then(function (data) {
                         return data;
                     }).catch(function (err) {

@@ -222,6 +222,19 @@ var app;
                         }
                     });
                 };
+                Object.defineProperty(Teacher.prototype, "Recommended", {
+                    get: function () {
+                        return this.recommended;
+                    },
+                    set: function (recommended) {
+                        if (recommended === undefined) {
+                            throw 'Please supply recommended early id';
+                        }
+                        this.recommended = recommended;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 return Teacher;
             }(app.models.user.User));
             teacher.Teacher = Teacher;
@@ -845,6 +858,7 @@ var app;
                     this.teachingValue = obj.teachingValue || 0;
                     this.communicationValue = obj.communicationValue || 0;
                     this.review = obj.review || '';
+                    this.createdAt = obj.createdAt || '';
                 }
                 Object.defineProperty(Rating.prototype, "Id", {
                     get: function () {
@@ -920,6 +934,13 @@ var app;
                             throw 'Please supply review value';
                         }
                         this.review = review;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Rating.prototype, "CreatedAt", {
+                    get: function () {
+                        return this.createdAt;
                     },
                     enumerable: true,
                     configurable: true

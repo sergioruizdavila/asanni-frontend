@@ -5,8 +5,9 @@ var app;
         var landingPage;
         (function (landingPage) {
             var LandingPageController = (function () {
-                function LandingPageController($state, dataConfig, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson) {
+                function LandingPageController($state, $stateParams, dataConfig, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope, localStorage) {
                     this.$state = $state;
+                    this.$stateParams = $stateParams;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
                     this.messageUtil = messageUtil;
@@ -14,6 +15,8 @@ var app;
                     this.LandingPageService = LandingPageService;
                     this.FeedbackService = FeedbackService;
                     this.getDataFromJson = getDataFromJson;
+                    this.$rootScope = $rootScope;
+                    this.localStorage = localStorage;
                     this._init();
                 }
                 LandingPageController.prototype._init = function () {
@@ -50,6 +53,23 @@ var app;
                     var self = this;
                     console.log('landingPage controller actived');
                     mixpanel.track("Enter: Main Landing Page");
+                    if (this.$stateParams.id) {
+                        var options = {
+                            animation: false,
+                            backdrop: 'static',
+                            keyboard: false,
+                            templateUrl: this.dataConfig.modalRecommendTeacherTmpl,
+                            controller: 'mainApp.components.modal.ModalRecommendTeacherController as vm',
+                            resolve: {
+                                dataSetModal: function () {
+                                    return {
+                                        earlyId: self.$stateParams.id
+                                    };
+                                }
+                            }
+                        };
+                        var modalInstance = this.$uibModal.open(options);
+                    }
                 };
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
@@ -149,13 +169,16 @@ var app;
             }());
             LandingPageController.controllerId = 'mainApp.pages.landingPage.LandingPageController';
             LandingPageController.$inject = ['$state',
+                '$stateParams',
                 'dataConfig',
                 '$uibModal',
                 'mainApp.core.util.messageUtilService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.pages.landingPage.LandingPageService',
                 'mainApp.models.feedback.FeedbackService',
-                'mainApp.core.util.GetDataStaticJsonService'];
+                'mainApp.core.util.GetDataStaticJsonService',
+                '$rootScope',
+                'mainApp.localStorageService'];
             landingPage.LandingPageController = LandingPageController;
             angular
                 .module('mainApp.pages.landingPage')

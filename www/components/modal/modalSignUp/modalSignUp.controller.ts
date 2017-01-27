@@ -147,7 +147,7 @@ module components.modal.modalSignUp {
 
                 this.sending = true;
 
-                mixpanel.track("Click on Notify button", {
+                mixpanel.track("Click on Join as a Student button", {
                     "name": '*',
                     "email": this.form.email,
                     "comment": '*'

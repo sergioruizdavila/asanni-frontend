@@ -176,31 +176,31 @@
                 type="video/mp4" src="../../../assets/videos/hero-video-2.mp4">
     </video-->
 
-		<div class="ma-hero__wrapper text-center">
+	<div class="ma-hero__wrapper text-center">
 
-			<h1 class="ma-hero__wrapper__title text-shadow animated fadeIn"
-                translate>
-                %landing.puv
-            </h1>
-            <h2 class="ma-hero__wrapper__description text-shadow
-                       animated fadeIn" translate>
-                %landing.puv.description
-            </h2>
+		<h1 class="ma-hero__wrapper__title text-shadow animated fadeIn"
+            translate>
+            %landing.puv
+        </h1>
+        <h2 class="ma-hero__wrapper__description text-shadow
+                   animated fadeIn" translate>
+            %landing.puv.description
+        </h2>
 
-			<div class="ma-hero__wrapper__btn-container">
-                <a class="ma-btn ma-btn--primary ma-btn--large"
-                   ui-sref="page.searchPage" href translate>
-                   %landing.explore.button.text
-                </a>
-			</div>
-
-            <div class="hidden-xs ma-hero__wrapper__go-down row">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-                    <i class="material-icons md-48 md-light"
-                       ng-click="vm.goDown()">keyboard_arrow_down</i>
-                </div>
-            </div>
+		<div class="ma-hero__wrapper__btn-container">
+            <a class="ma-btn ma-btn--primary ma-btn--large"
+               ui-sref="page.searchPage" href translate>
+               %landing.explore.button.text
+            </a>
 		</div>
+
+        <div class="hidden-xs ma-hero__wrapper__go-down row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                <i class="material-icons md-48 md-light"
+                   ng-click="vm.goDown()">keyboard_arrow_down</i>
+            </div>
+        </div>
+	</div>
 
 	</section>
     <!--                          END: HERO BLOCK                            -->
@@ -230,7 +230,6 @@
             <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8 text-center">
                 <p class="ma-p ma-p--large">
                     <span translate>%landing.mission.description.text</span>
-                    <!-- TODO: Validar si el texto de 'Gratis' va con nosotros -->
                     <div class="ma-label
                                 ma-label--simple
                                 ma-label--simple--large
@@ -520,8 +519,8 @@
                                          ma-btn--onlyIcon--large"
                                   ng-click="vm._createEarlyAdopter()"
                                   ng-disabled="vm.infoNewUser.disabled">
-                              <i  ng-show="vm.infoNewUser.sent"
-                                  class="fa fa-paper-plane" aria-hidden="true"></i>
+                              <i ng-show="vm.infoNewUser.sent"
+                                 class="fa fa-paper-plane" aria-hidden="true"></i>
                               <i ng-show="vm.infoNewUser.sending"
                                  class="fa fa-cog fa-spin fa-fw"></i>
                               <span class="sr-only" translate>

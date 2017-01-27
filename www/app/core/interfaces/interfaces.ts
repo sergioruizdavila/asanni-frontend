@@ -12,6 +12,19 @@ module app.core.interfaces {
         language_doc: angular.translate.ITranslateProvider;
         activeHeader: boolean;
         activeFooter: boolean;
+        activeMessageBar: boolean;
+    }
+
+    //TODO: Remover cuando ya no sea necesario
+    /***********************************/
+    /*   EARLY ADOPTER DATA INTERFACE  */
+    /***********************************/
+    export interface IEarlyAdopterData {
+        id: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        comment: string;
     }
 
     /*******************************/

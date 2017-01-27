@@ -30,8 +30,7 @@ module components.modal.modalLanguages {
     }
 
     interface IDataSet {
-        type: string;
-        list: Array<app.core.interfaces.IKeyValue>;
+        data: app.core.interfaces.IEarlyAdopterData;
     }
 
 

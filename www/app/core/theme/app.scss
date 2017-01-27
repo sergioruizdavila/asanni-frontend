@@ -31,6 +31,8 @@
 @import 'components/footer';
 // forms Style
 @import 'components/forms';
+// float bar Style
+@import 'components/floatBar';
 // header Style
 @import 'components/header';
 // hero Style
@@ -111,3 +113,5 @@
 @import '../../pages/teacherProfilePage/teacherProfilePage';
 // add meeting Point Modals Style
 @import '../../../components/modal/modalMeetingPoint/modalMeetingPoint';
+// recommend Teacher Modals Style
+@import '../../../components/modal/modalRecommendTeacher/modalRecommendTeacher';

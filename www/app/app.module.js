@@ -31,7 +31,8 @@
         'mainApp.components.rating',
         'mainApp.components.map',
         'mainApp.components.modal',
-        'mainApp.components.footer'
+        'mainApp.components.footer',
+        'mainApp.components.floatMessageBar'
     ])
         .config(config);
     function config($locationProvider, $urlRouterProvider, $translateProvider) {

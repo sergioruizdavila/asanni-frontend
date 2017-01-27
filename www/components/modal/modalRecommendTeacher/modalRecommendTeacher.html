@@ -1,0 +1,175 @@
+<!----------------------------------------------------------------------------->
+<!--                     RECOMMENDATION FROM STUDENT MODAL                   -->
+<!----------------------------------------------------------------------------->
+
+<div class="ma-box modalRecommendTeacher">
+
+    <!--                              CONTENT                                -->
+    <!------------------------------------------------------------------------->
+    <div class="ma-box__content modalRecommendTeacher__content">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <i class="material-icons
+                          md-18
+                          md-dark md-dark--clicked
+                          pull-right"
+                          ng-click="vm.close()">close</i>
+            </div>
+        </div>
+
+        <!--          START: RECOMMENDATION FROM STUDENT BLOCK               -->
+        <section class="space-2">
+
+            <! Waysily Short Logo >
+            <div class="row center-xs space-4">
+                <div class="col-xs-12 text-center">
+                    <i class="ma-logo"></i>
+                </div>
+            </div>
+
+            <! Recommendation title >
+            <div class="row space-4 text-center">
+                <div class="col-xs-12">
+                    <h3 class="margin-reset">
+                        <span class="underline underline--primary">
+                            {{vm.rating.author.FirstName}}
+                        </span>
+                        <span translate>
+                            %modal.recommend.teacher.title.text
+                        </span>
+                    </h3>
+                </div>
+            </div>
+
+            <! Recommendation description >
+            <div class="row space-2">
+                <div class="col-xs-12">
+                    <p class="ma-p ma-p--large">
+                        <span>
+                            {{vm.rating.author.FirstName}}
+                        </span>
+                        <span translate>
+                            %modal.recommend.teacher.description.text
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="ma-separator-dashed-image space-3 hidden"></div>
+
+            <! Comment >
+            <div class="row recommendation-block margin-reset space-3">
+
+                <div class="col-xs-12">
+                    <div class="row margin-reset">
+                        <p class="ma-p ma-p--default">
+                            {{vm.rating.Review}}
+                        </p>
+                    </div>
+                    <div class="row margin-reset">
+                        <div class="col-xs-6 padding-reset">
+                            <div class="pull-left">
+                                <p class="ma-p ma-p--default text-italic strong">
+                                    - {{vm.rating.author.FirstName}} {{vm.rating.author.LastName}}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="pull-right">
+                                <p class="ma-label
+                                          ma-label--simple
+                                          ma-label--simple--medium
+                                          ma-label--simple--primary
+                                          margin-reset">
+                                    {{ vm.rating.createdAt | yearMonthFormatFilter }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <! Rate Detail >
+            <div class="row space-5">
+
+                <div class="col-xs-12 text-center">
+                    <div class="reviews-info-box__content__block">
+                        <h4 translate>
+                            %profile.teacher.review.teaching.label.text
+                        </h4>
+                        <ma-rating ng-if="vm.rating.TeachingValue"
+                                   rating-value="vm.rating.TeachingValue"
+                                   size="tiny"></ma-rating>
+                    </div>
+                    <div class="reviews-info-box__content__block">
+                        <h4 translate>
+                            %profile.teacher.review.communication.label.text
+                        </h4>
+                        <ma-rating ng-if="vm.rating.CommunicationValue"
+                                   rating-value="vm.rating.CommunicationValue"
+                                   size="tiny"></ma-rating>
+                    </div>
+                    <div class="reviews-info-box__content__block"
+                         style="margin-right: 0;">
+                        <h4 translate>
+                            %profile.teacher.review.methodology.label.text
+                        </h4>
+                        <ma-rating ng-if="vm.rating.MethodologyValue"
+                                   rating-value="vm.rating.MethodologyValue"
+                                   size="tiny"></ma-rating>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="ma-separator-dashed-image space-5"></div>
+
+            <! Teacher invitation message >
+            <div class="row space-6">
+                <div class="col-xs-12">
+                    <p class="ma-p ma-p--large text-center">
+                        <span translate>
+                            %modal.recommend.teacher.invitation.message.first_part.text
+                        </span>
+                        <span class="strong strong--primary" translate>
+                            %landing.teacher.explanation_section.description.second_part.text
+                        </span>
+                        <span translate>
+                            %modal.recommend.teacher.invitation.message.third_part.text
+                        </span>
+                        <span class="strong text-capitalize" translate>
+                            %modal.recommend.teacher.invitation.message.teach.label.text
+                        </span>.
+                    </p>
+                </div>
+            </div>
+
+            <! Join Button >
+            <div class="row text-center space-2">
+                <div class="col-xs-12">
+                    <button type="button"
+                            class="ma-btn ma-btn--large
+                                   ma-btn--primary text-uppercase"
+                            ng-click="vm._join()"
+                            translate>
+                        %global.join.button.text
+                    </button>
+                </div>
+            </div>
+
+            <div class="row center-xs">
+                <div class="ma-label
+                            ma-label--simple
+                            ma-label--simple--default
+                            ma-label--simple--primary" translate>
+                    %modal.recommend.teacher.create_profile.label.text
+                </div>
+            </div>
+
+        </section>
+        <!--              END: RECOMMENDATION FROM STUDENT BLOCK             -->
+
+    </div>
+
+</div>
