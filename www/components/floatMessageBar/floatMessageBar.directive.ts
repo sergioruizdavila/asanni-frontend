@@ -61,6 +61,7 @@ module components.floatMessageBar {
     /*********************************************************/
     /*                     CONTROLLER                        */
     /*********************************************************/
+    
     /**
     * FloatMessageBarController
     * @description - FloatMessageBar Controller
