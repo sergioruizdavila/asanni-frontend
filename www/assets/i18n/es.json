@@ -55,7 +55,7 @@
     "__FLOAT MESSAGE BAR__": "",
     "%message.bar.text_block.first_part.label.text.bkp": "Tienes una recomendación de",
     "%message.bar.text_block.first_part.label.text": "Tienes una recomendación.",
-    "%message.bar.text_block.second_part.label.text": "Esta será visible a todos cuando crees tú cuenta como profesor.",
+    "%message.bar.text_block.second_part.label.text": "Esta será visible a todos cuando te unas como profesor.",
 
     "__NOTIFICATION__": "",
     "%notification.success.text": "Guardado Exitoso!",

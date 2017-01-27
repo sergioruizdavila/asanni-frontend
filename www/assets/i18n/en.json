@@ -54,8 +54,8 @@
 
     "__FLOAT MESSAGE BAR__": "",
     "%message.bar.text_block.first_part.label.text.bkp": "You have a recommendation from",
-    "%message.bar.text_block.first_part.label.text": "You have a recommendation",
-    "%message.bar.text_block.second_part.label.text": "Create your profile as a teacher, and it'll be visible to everyone.",
+    "%message.bar.text_block.first_part.label.text": "You have a recommendation.",
+    "%message.bar.text_block.second_part.label.text": "This will be visible to everyone when you join as a teacher.",
 
     "__NOTIFICATION__": "",
     "%notification.success.text": "Successfully saved!",
