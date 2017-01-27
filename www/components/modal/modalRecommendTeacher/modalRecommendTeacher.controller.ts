@@ -42,6 +42,7 @@ module components.modal.modalRecommendTeacher {
             'dataSetModal',
             'mainApp.localStorageService',
             'mainApp.models.student.StudentService',
+            '$state',
             'dataConfig',
             '$timeout',
             '$filter',
@@ -57,6 +58,7 @@ module components.modal.modalRecommendTeacher {
             private dataSetModal: IDataSet,
             private localStorage,
             private StudentService: app.models.student.IStudentService,
+            private $state: ng.ui.IStateService,
             private dataConfig,
             private $timeout: angular.ITimeoutService,
             private $filter: angular.IFilterService,
@@ -97,6 +99,20 @@ module components.modal.modalRecommendTeacher {
         /*            METHODS             */
         /**********************************/
 
+
+        //TODO: Poner descripcion
+        _join(): void {
+            //CONSTANTS
+            const CREATE_TEACHER = 'page.createTeacherPage.start';
+            //MIXPANEL
+            mixpanel.track("Click on join as a teacher from recommendation modal");
+            //Save early id on localStorage to keep it while user navigate waysily
+            this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, this.dataSetModal.earlyId);
+            this.$uibModalInstance.close();
+            // GO TO NEXT STEP
+            this.$state.go(CREATE_TEACHER, {reload: true});
+        }
+
         /**
         * close
         * @description - when user click "X" button, close the modal
@@ -105,6 +121,8 @@ module components.modal.modalRecommendTeacher {
         * @return {void}
         */
         close(): void {
+            //MIXPANEL
+            mixpanel.track("Click on Close recommend teacher modal button");
             //Save early id on localStorage to keep it while user navigate waysily
             this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, this.dataSetModal.earlyId);
             this.$rootScope.activeMessageBar = true;

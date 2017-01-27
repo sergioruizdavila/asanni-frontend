@@ -125,6 +125,16 @@ module components.floatMessageBar {
         /*            METHODS             */
         /**********************************/
 
+        //TODO: Poner descripcion
+        _join(): void {
+            //CONSTANTS
+            const CREATE_TEACHER = 'page.createTeacherPage.start';
+            //MIXPANEL
+            mixpanel.track("Click on join as a teacher from floatMessageBar");
+            // GO TO NEXT STEP
+            this.$state.go(CREATE_TEACHER, {reload: true});
+        }
+
     }
 
     /*-- MODULE DEFINITION --*/

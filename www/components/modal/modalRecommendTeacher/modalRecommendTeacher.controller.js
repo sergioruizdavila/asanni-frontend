@@ -5,11 +5,12 @@ var components;
         var modalRecommendTeacher;
         (function (modalRecommendTeacher) {
             var ModalRecommendTeacherController = (function () {
-                function ModalRecommendTeacherController($uibModalInstance, dataSetModal, localStorage, StudentService, dataConfig, $timeout, $filter, $rootScope) {
+                function ModalRecommendTeacherController($uibModalInstance, dataSetModal, localStorage, StudentService, $state, dataConfig, $timeout, $filter, $rootScope) {
                     this.$uibModalInstance = $uibModalInstance;
                     this.dataSetModal = dataSetModal;
                     this.localStorage = localStorage;
                     this.StudentService = StudentService;
+                    this.$state = $state;
                     this.dataConfig = dataConfig;
                     this.$timeout = $timeout;
                     this.$filter = $filter;
@@ -29,7 +30,15 @@ var components;
                         }
                     });
                 };
+                ModalRecommendTeacherController.prototype._join = function () {
+                    var CREATE_TEACHER = 'page.createTeacherPage.start';
+                    mixpanel.track("Click on join as a teacher from recommendation modal");
+                    this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, this.dataSetModal.earlyId);
+                    this.$uibModalInstance.close();
+                    this.$state.go(CREATE_TEACHER, { reload: true });
+                };
                 ModalRecommendTeacherController.prototype.close = function () {
+                    mixpanel.track("Click on Close recommend teacher modal button");
                     this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, this.dataSetModal.earlyId);
                     this.$rootScope.activeMessageBar = true;
                     this.$uibModalInstance.close();
@@ -42,6 +51,7 @@ var components;
                 'dataSetModal',
                 'mainApp.localStorageService',
                 'mainApp.models.student.StudentService',
+                '$state',
                 'dataConfig',
                 '$timeout',
                 '$filter',

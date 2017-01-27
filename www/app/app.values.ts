@@ -49,7 +49,7 @@ interface IDataConfig {
     // bucketS3: 'waysily-img/teachers-avatar-prd'
     var dataConfig: IDataConfig = {
         currentYear: '2017',
-        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
+        baseUrl: 'http://127.0.0.1:8000/api/v1/',
         domain: 'http://www.waysily.com',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',
