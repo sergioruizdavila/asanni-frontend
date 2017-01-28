@@ -67,7 +67,7 @@
     'use strict';
     var dataConfig = {
         currentYear: '2017',
-        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
+        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
         domain: 'www.waysily.com',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',
@@ -79,7 +79,7 @@
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
         modalRecommendTeacherTmpl: 'components/modal/modalRecommendTeacher/modalRecommendTeacher.html',
-        bucketS3: 'waysily-img/teachers-avatar-prd',
+        bucketS3: 'waysily-img/teachers-avatar-dev',
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
@@ -4024,6 +4024,7 @@ var components;
             .state('page', {
             url: '/page',
             abstract: true,
+            cache: false,
             templateUrl: 'app/pages/main/main.html',
             controller: 'mainApp.pages.main.MainController',
             controllerAs: 'vm'
@@ -4368,7 +4369,6 @@ var app;
                     controllerAs: 'vm'
                 }
             },
-            parent: 'page',
             cache: false,
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
@@ -4384,7 +4384,6 @@ var app;
                     controllerAs: 'vm'
                 }
             },
-            parent: 'page',
             params: {
                 id: null
             },
@@ -5647,6 +5646,7 @@ var app;
                             .then(function (response) {
                             if (response.id) {
                                 self.teacherData = new app.models.teacher.Teacher(response);
+                                self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
                                 self.$scope.$broadcast('Fill Form', self.teacherData);
                             }
                             else {

@@ -60,6 +60,7 @@ var app;
                             .then(function (response) {
                             if (response.id) {
                                 self.teacherData = new app.models.teacher.Teacher(response);
+                                self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
                                 self.$scope.$broadcast('Fill Form', self.teacherData);
                             }
                             else {
