@@ -95,7 +95,8 @@ module app.pages.createTeacherPage {
             'dataConfig',
             '$state',
             '$filter',
-            '$scope'
+            '$scope',
+            '$rootScope'
         ];
 
         /**********************************/
@@ -108,7 +109,8 @@ module app.pages.createTeacherPage {
             private dataConfig: IDataConfig,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
-            private $scope: ITeacherInfoScope) {
+            private $scope: ITeacherInfoScope,
+            private $rootScope: app.core.interfaces.IMainAppRootScope) {
                 this._init();
         }
 
@@ -184,6 +186,11 @@ module app.pages.createTeacherPage {
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
 
+            //FILL FORM FROM ROOTSCOPE TEACHER INFO
+            if(this.$rootScope.teacherData) {
+                this._fillForm(this.$rootScope.teacherData);
+            }
+
         }
 
         /**********************************/
@@ -222,13 +229,41 @@ module app.pages.createTeacherPage {
 
 
         /**
+        * _fillForm
+        * @description - Fill form with teacher data
+        * @use - this._fillForm(data);
+        * @function
+        * @param {app.models.teacher.Teacher} data - Teacher Data
+        * @return {void}
+        */
+        private _fillForm(data: app.models.teacher.Teacher): void {
+            this.form.firstName = data.FirstName;
+            this.form.lastName = data.LastName;
+            this.form.email = data.Email;
+            this.form.phoneNumber = data.PhoneNumber;
+            //Charge Sex on select List
+            this.sexObject.sex.code = data.Sex;
+
+            //Build birthdate (Charge on select List)
+            let date = this.functionsUtilService.splitDate(data.BirthDate);
+            this.dateObject.day.value = parseInt(date.day);
+            this.dateObject.month.code = date.month;
+            this.dateObject.year.value = parseInt(date.year);
+
+            this.form.born = data.Born;
+            this.form.about = data.About;
+        }
+
+
+
+        /**
         * _validateForm
         * @description - Validate each field on form
         * @use - this._validateForm();
         * @function
         * @return {boolean} formValid - return If the complete form is valid or not.
         */
-        _validateForm(): boolean {
+        private _validateForm(): boolean {
             //CONSTANTS
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
@@ -406,17 +441,17 @@ module app.pages.createTeacherPage {
             /*********************************/
 
             // Send data to parent (createTeacherPage)
-            this.$scope.$parent.vm.teacherData.FirstName = this.form.firstName;
-            this.$scope.$parent.vm.teacherData.LastName = this.form.lastName;
-            this.$scope.$parent.vm.teacherData.Email = this.form.email;
-            this.$scope.$parent.vm.teacherData.PhoneNumber = this.form.phoneNumber;
-            this.$scope.$parent.vm.teacherData.Sex = sexCode;
-            this.$scope.$parent.vm.teacherData.BirthDate = dateFormatted;
-            this.$scope.$parent.vm.teacherData.Born = this.form.born;
-            this.$scope.$parent.vm.teacherData.About = this.form.about;
+            this.$rootScope.teacherData.FirstName = this.form.firstName;
+            this.$rootScope.teacherData.LastName = this.form.lastName;
+            this.$rootScope.teacherData.Email = this.form.email;
+            this.$rootScope.teacherData.PhoneNumber = this.form.phoneNumber;
+            this.$rootScope.teacherData.Sex = sexCode;
+            this.$rootScope.teacherData.BirthDate = dateFormatted;
+            this.$rootScope.teacherData.Born = this.form.born;
+            this.$rootScope.teacherData.About = this.form.about;
 
             //If this teacher was recommended by a Student
-            this.$scope.$parent.vm.teacherData.Recommended = recommended ? recommended : null;
+            this.$rootScope.teacherData.Recommended = recommended ? recommended : null;
         }
 
 
@@ -440,21 +475,7 @@ module app.pages.createTeacherPage {
             * @event
             */
             this.$scope.$on('Fill Form', function(event, args: app.models.teacher.Teacher) {
-                self.form.firstName = args.FirstName;
-                self.form.lastName = args.LastName;
-                self.form.email = args.Email;
-                self.form.phoneNumber = args.PhoneNumber;
-                //Charge Sex on select List
-                self.sexObject.sex.code = args.Sex;
-
-                //Build birthdate (Charge on select List)
-                let date = self.functionsUtilService.splitDate(args.BirthDate);
-                self.dateObject.day.value = parseInt(date.day);
-                self.dateObject.month.code = date.month;
-                self.dateObject.year.value = parseInt(date.year);
-
-                self.form.born = args.Born;
-                self.form.about = args.About;
+                self._fillForm(args);
             });
         }
 

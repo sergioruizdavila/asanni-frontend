@@ -78,6 +78,7 @@ module app.pages.createTeacherPage {
             '$state',
             '$filter',
             '$scope',
+            '$rootScope',
             '$timeout'
         ];
 
@@ -90,6 +91,7 @@ module app.pages.createTeacherPage {
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
             private $scope: ITeacherLocationScope,
+            private $rootScope: app.core.interfaces.IMainAppRootScope,
             private $timeout: angular.ITimeoutService) {
                 this._init();
         }
@@ -156,6 +158,11 @@ module app.pages.createTeacherPage {
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
 
+            //FILL FORM FROM ROOTSCOPE TEACHER INFO
+            if(this.$rootScope.teacherData) {
+                this._fillForm(this.$rootScope.teacherData);
+            }
+
         }
 
         /**********************************/
@@ -197,17 +204,51 @@ module app.pages.createTeacherPage {
         * @return void
         */
         goToBack(): void {
-            //Validate data form
-            let formValid = this._validateForm();
-            //If form is valid, save data model
-            if(formValid) {
-                this._setDataModelFromForm();
-                this.$scope.$emit('Save Data');
-                this.$state.go(this.STEP1_STATE, {reload: true});
-            } else {
-                //Go top pages
-                window.scrollTo(0, 0);
-            }
+            this.$state.go(this.STEP1_STATE, {reload: true});
+        }
+
+
+
+        /**
+        * _fillForm
+        * @description - Fill form with teacher data
+        * @use - this._fillForm(data);
+        * @function
+        * @param {app.models.teacher.Teacher} data - Teacher Data
+        * @return {void}
+        */
+        private _fillForm(data: app.models.teacher.Teacher): void {
+            this.form.addressLocation = data.Location.Address;
+            this.form.cityLocation = data.Location.City;
+            this.form.stateLocation = data.Location.State;
+            this.form.zipCodeLocation = data.Location.ZipCode;
+            //Charge Country on select List
+            this.countryObject.code = data.Location.Country;
+            //Current Map Position
+            this.form.positionLocation = new app.models.user.Position(data.Location.Position);
+
+            this.mapConfig = this.functionsUtilService.buildMapConfig(
+                [
+                    {
+                        id: this.form.positionLocation.Id,
+                        location: {
+                            position: {
+                                lat: parseFloat(this.form.positionLocation.Lat),
+                                lng: parseFloat(this.form.positionLocation.Lng)
+                            }
+                        }
+                    }
+                ],
+                'drag-maker-map',
+                {lat: parseFloat(this.form.positionLocation.Lat), lng: parseFloat(this.form.positionLocation.Lng)},
+                null
+            );
+
+            /*
+            * Send event to child (MapController) in order to It draws
+            * each Marker on the Map
+            */
+            this.$scope.$broadcast('BuildMarkers', this.mapConfig);
         }
 
 
@@ -219,7 +260,7 @@ module app.pages.createTeacherPage {
         * @function
         * @return {boolean} formValid - return If the complete form is valid or not.
         */
-        _validateForm(): boolean {
+        private _validateForm(): boolean {
             //CONSTANTS
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
@@ -395,12 +436,12 @@ module app.pages.createTeacherPage {
 
             this.form.countryLocation = countryCode;
             // Send data to parent (createTeacherPage)
-            this.$scope.$parent.vm.teacherData.Location.Country = this.form.countryLocation;
-            this.$scope.$parent.vm.teacherData.Location.Address = this.form.addressLocation;
-            this.$scope.$parent.vm.teacherData.Location.City = this.form.cityLocation;
-            this.$scope.$parent.vm.teacherData.Location.State = this.form.stateLocation;
-            this.$scope.$parent.vm.teacherData.Location.ZipCode = this.form.zipCodeLocation;
-            this.$scope.$parent.vm.teacherData.Location.Position = this.form.positionLocation;
+            this.$rootScope.teacherData.Location.Country = this.form.countryLocation;
+            this.$rootScope.teacherData.Location.Address = this.form.addressLocation;
+            this.$rootScope.teacherData.Location.City = this.form.cityLocation;
+            this.$rootScope.teacherData.Location.State = this.form.stateLocation;
+            this.$rootScope.teacherData.Location.ZipCode = this.form.zipCodeLocation;
+            this.$rootScope.teacherData.Location.Position = this.form.positionLocation;
             //get position on Map
             this.changeMapPosition();
         }
@@ -427,38 +468,7 @@ module app.pages.createTeacherPage {
             * @event
             */
             this.$scope.$on('Fill Form', function(event, args: app.models.teacher.Teacher) {
-                self.form.addressLocation = args.Location.Address;
-                self.form.cityLocation = args.Location.City;
-                self.form.stateLocation = args.Location.State;
-                self.form.zipCodeLocation = args.Location.ZipCode;
-                //Charge Country on select List
-                self.countryObject.code = args.Location.Country;
-                //Current Map Position
-                self.form.positionLocation = new app.models.user.Position(args.Location.Position);
-
-                self.mapConfig = self.functionsUtilService.buildMapConfig(
-                    [
-                        {
-                            id: self.form.positionLocation.Id,
-                            location: {
-                                position: {
-                                    lat: parseFloat(self.form.positionLocation.Lat),
-                                    lng: parseFloat(self.form.positionLocation.Lng)
-                                }
-                            }
-                        }
-                    ],
-                    'drag-maker-map',
-                    {lat: parseFloat(self.form.positionLocation.Lat), lng: parseFloat(self.form.positionLocation.Lng)},
-                    null
-                );
-
-                /*
-                * Send event to child (MapController) in order to It draws
-                * each Marker on the Map
-                */
-                self.$scope.$broadcast('BuildMarkers', self.mapConfig);
-
+                self._fillForm(args);
             });
 
             /**
@@ -472,7 +482,7 @@ module app.pages.createTeacherPage {
             this.$scope.$on('Position', function(event, args) {
                 self.form.positionLocation.Lng = args.lng;
                 self.form.positionLocation.Lat = args.lat;
-                //self.$scope.$parent.vm.teacherData.Location.Position = args;
+                //self.$rootScope.teacherData.Location.Position = args;
             });
         }
 

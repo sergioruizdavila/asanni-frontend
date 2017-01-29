@@ -70,7 +70,8 @@ module app.pages.createTeacherPage {
             'Upload',
             '$state',
             '$filter',
-            '$scope'
+            '$scope',
+            '$rootScope'
         ];
 
         /**********************************/
@@ -85,7 +86,8 @@ module app.pages.createTeacherPage {
             private Upload: IUpload,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
-            private $scope: ITeacherPhotoScope) {
+            private $scope: ITeacherPhotoScope,
+            private $rootScope: app.core.interfaces.IMainAppRootScope) {
                 this._init();
         }
 
@@ -134,6 +136,11 @@ module app.pages.createTeacherPage {
 
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
+
+            //FILL FORM FROM ROOTSCOPE TEACHER INFO
+            if(this.$rootScope.teacherData) {
+                this._fillForm(this.$rootScope.teacherData);
+            }
 
         }
 
@@ -202,46 +209,23 @@ module app.pages.createTeacherPage {
         * @return void
         */
         goToBack(): void {
-            //VARIABLES
-            let self = this;
-            //Validate data form
-            let formValid = this._validateForm();
+            this.$state.go(this.STEP7_STATE, {reload: true});
+        }
 
-            //If form is valid, save data model
-            if(formValid) {
 
-                this.uploading = true;
 
-                // If this.form.avatar exists, resize and upload image
-                if(this.form.avatar) {
-                    this._resizeImage().then(function(result) {
+        /**
+        * _fillForm
+        * @description - Fill form with teacher data
+        * @use - this._fillForm(data);
+        * @function
+        * @param {app.models.teacher.Teacher} data - Teacher Data
+        * @return {void}
+        */
+        private _fillForm(data: app.models.teacher.Teacher): void {
 
-                        self.uploading = false;
+            this.form.thumbnail = data.Avatar;
 
-                        if(result.Location) {
-                            // Save teacher model on DB
-                            self._setDataModelFromForm(result.Location);
-                            self.$scope.$emit('Save Data');
-
-                            // GO TO BACK STEP
-                            self.$state.go(self.STEP7_STATE, {reload: true});
-                        } else {
-                            self.messageUtil.error('');
-                        }
-
-                    });
-
-                // If this.form.avatar not exists, only go to back step
-                } else {
-                    this.$scope.$emit('Save Data');
-                    // GO TO BACK STEP
-                    this.$state.go(this.STEP7_STATE, {reload: true});
-                }
-
-            } else {
-                //Go top pages
-                window.scrollTo(0, 0);
-            }
         }
 
 
@@ -253,7 +237,7 @@ module app.pages.createTeacherPage {
         * @function
         * @return {boolean} formValid - return If the complete form is valid or not.
         */
-        _validateForm(): boolean {
+        private _validateForm(): boolean {
             //CONSTANTS
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
@@ -397,7 +381,7 @@ module app.pages.createTeacherPage {
         private _setDataModelFromForm(avatar): void {
 
             // Send data to parent (createTeacherPage)
-            this.$scope.$parent.vm.teacherData.Avatar = avatar;
+            this.$rootScope.teacherData.Avatar = avatar;
 
         }
 
@@ -423,7 +407,7 @@ module app.pages.createTeacherPage {
             */
             this.$scope.$on('Fill Form', function(event, args: app.models.teacher.Teacher) {
 
-                self.form.thumbnail = args.Avatar;
+                self._fillForm(args);
 
             });
         }

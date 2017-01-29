@@ -5,13 +5,14 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherLanguageSectionController = (function () {
-                function TeacherLanguageSectionController(dataConfig, functionsUtil, getDataFromJson, $state, $filter, $scope, $timeout, $uibModal) {
+                function TeacherLanguageSectionController(dataConfig, functionsUtil, getDataFromJson, $state, $filter, $scope, $rootScope, $timeout, $uibModal) {
                     this.dataConfig = dataConfig;
                     this.functionsUtil = functionsUtil;
                     this.getDataFromJson = getDataFromJson;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this.$timeout = $timeout;
                     this.$uibModal = $uibModal;
                     this._init();
@@ -42,6 +43,9 @@ var app;
                 TeacherLanguageSectionController.prototype.activate = function () {
                     console.log('TeacherLanguageSectionController controller actived');
                     this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
                 };
                 TeacherLanguageSectionController.prototype.goToNext = function () {
                     var CURRENT_STEP = 3;
@@ -56,14 +60,61 @@ var app;
                     }
                 };
                 TeacherLanguageSectionController.prototype.goToBack = function () {
-                    var formValid = this._validateForm();
-                    if (formValid) {
-                        this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data');
-                        this.$state.go(this.STEP2_STATE, { reload: true });
-                    }
-                    else {
-                        window.scrollTo(0, 0);
+                    this.$state.go(this.STEP2_STATE, { reload: true });
+                };
+                TeacherLanguageSectionController.prototype._fillForm = function (data) {
+                    if (this.form.native.length === 0) {
+                        var languageArray = this.getDataFromJson.getLanguagei18n();
+                        for (var i = 0; i < languageArray.length; i++) {
+                            if (data.Languages.Native) {
+                                for (var j = 0; j < data.Languages.Native.length; j++) {
+                                    if (data.Languages.Native[j] == languageArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = parseInt(languageArray[i].code);
+                                        obj.value = languageArray[i].value;
+                                        if (this.form.native == null) {
+                                            this.form.native = [];
+                                            this.form.native.push(obj);
+                                        }
+                                        else {
+                                            this.form.native.push(obj);
+                                        }
+                                    }
+                                }
+                            }
+                            if (data.Languages.Learn) {
+                                for (var j = 0; j < data.Languages.Learn.length; j++) {
+                                    if (data.Languages.Learn[j] == languageArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = parseInt(languageArray[i].code);
+                                        obj.value = languageArray[i].value;
+                                        if (this.form.learn == null) {
+                                            this.form.learn = [];
+                                            this.form.learn.push(obj);
+                                        }
+                                        else {
+                                            this.form.learn.push(obj);
+                                        }
+                                    }
+                                }
+                            }
+                            if (data.Languages.Teach) {
+                                for (var j = 0; j < data.Languages.Teach.length; j++) {
+                                    if (data.Languages.Teach[j] == languageArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = parseInt(languageArray[i].code);
+                                        obj.value = languageArray[i].value;
+                                        if (this.form.teach == null) {
+                                            this.form.teach = [];
+                                            this.form.teach.push(obj);
+                                        }
+                                        else {
+                                            this.form.teach.push(obj);
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 };
                 TeacherLanguageSectionController.prototype._validateForm = function () {
@@ -150,77 +201,27 @@ var app;
                         for (var i = 0; i < this.form.native.length; i++) {
                             native.push(this.form.native[i].key);
                         }
-                        this.$scope.$parent.vm.teacherData.Languages.Native = native;
+                        this.$rootScope.teacherData.Languages.Native = native;
                     }
                     if (this.form.learn) {
                         var learn = [];
                         for (var i = 0; i < this.form.learn.length; i++) {
                             learn.push(this.form.learn[i].key);
                         }
-                        this.$scope.$parent.vm.teacherData.Languages.Learn = learn;
+                        this.$rootScope.teacherData.Languages.Learn = learn;
                     }
                     if (this.form.teach) {
                         var teach = [];
                         for (var i = 0; i < this.form.teach.length; i++) {
                             teach.push(this.form.teach[i].key);
                         }
-                        this.$scope.$parent.vm.teacherData.Languages.Teach = teach;
+                        this.$rootScope.teacherData.Languages.Teach = teach;
                     }
                 };
                 TeacherLanguageSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        var languageArray = self.getDataFromJson.getLanguagei18n();
-                        for (var i = 0; i < languageArray.length; i++) {
-                            if (args.Languages.Native) {
-                                for (var j = 0; j < args.Languages.Native.length; j++) {
-                                    if (args.Languages.Native[j] == languageArray[i].code) {
-                                        var obj = { key: null, value: '' };
-                                        obj.key = parseInt(languageArray[i].code);
-                                        obj.value = languageArray[i].value;
-                                        if (self.form.native == null) {
-                                            self.form.native = [];
-                                            self.form.native.push(obj);
-                                        }
-                                        else {
-                                            self.form.native.push(obj);
-                                        }
-                                    }
-                                }
-                            }
-                            if (args.Languages.Learn) {
-                                for (var j = 0; j < args.Languages.Learn.length; j++) {
-                                    if (args.Languages.Learn[j] == languageArray[i].code) {
-                                        var obj = { key: null, value: '' };
-                                        obj.key = parseInt(languageArray[i].code);
-                                        obj.value = languageArray[i].value;
-                                        if (self.form.learn == null) {
-                                            self.form.learn = [];
-                                            self.form.learn.push(obj);
-                                        }
-                                        else {
-                                            self.form.learn.push(obj);
-                                        }
-                                    }
-                                }
-                            }
-                            if (args.Languages.Teach) {
-                                for (var j = 0; j < args.Languages.Teach.length; j++) {
-                                    if (args.Languages.Teach[j] == languageArray[i].code) {
-                                        var obj = { key: null, value: '' };
-                                        obj.key = parseInt(languageArray[i].code);
-                                        obj.value = languageArray[i].value;
-                                        if (self.form.teach == null) {
-                                            self.form.teach = [];
-                                            self.form.teach.push(obj);
-                                        }
-                                        else {
-                                            self.form.teach.push(obj);
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        self._fillForm(args);
                     });
                 };
                 return TeacherLanguageSectionController;
@@ -233,6 +234,7 @@ var app;
                 '$state',
                 '$filter',
                 '$scope',
+                '$rootScope',
                 '$timeout',
                 '$uibModal'
             ];

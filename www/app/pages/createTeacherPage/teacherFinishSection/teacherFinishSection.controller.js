@@ -5,8 +5,9 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherFinishSectionController = (function () {
-                function TeacherFinishSectionController($scope, $state, dataConfig, functionsUtilService, localStorage) {
+                function TeacherFinishSectionController($scope, $rootScope, $state, dataConfig, functionsUtilService, localStorage) {
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this.$state = $state;
                     this.dataConfig = dataConfig;
                     this.functionsUtilService = functionsUtilService;
@@ -25,9 +26,9 @@ var app;
                     this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
                     this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, '');
                     mixpanel.track("Finish Process: Create Teacher", {
-                        "id": this.$scope.$parent.vm.teacherData.Id,
-                        "name": this.$scope.$parent.vm.teacherData.FirstName + ' ' + this.$scope.$parent.vm.teacherData.LastName,
-                        "email": this.$scope.$parent.vm.teacherData.Email
+                        "id": this.$rootScope.teacherData.Id,
+                        "name": this.$rootScope.teacherData.FirstName + ' ' + this.$rootScope.teacherData.LastName,
+                        "email": this.$rootScope.teacherData.Email
                     });
                     this.$state.go('page.landingPage');
                 };
@@ -36,6 +37,7 @@ var app;
             TeacherFinishSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherFinishSectionController';
             TeacherFinishSectionController.$inject = [
                 '$scope',
+                '$rootScope',
                 '$state',
                 'dataConfig',
                 'mainApp.core.util.FunctionsUtilService',

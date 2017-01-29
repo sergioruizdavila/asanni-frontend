@@ -400,7 +400,7 @@
     "%create.teacher.price.form.group_class.text": "Group Classes",
 
     "%create.teacher.price.help_text.title.text": "Set the price to your work",
-    "%create.teacher.price.help_text.description.text": "Set the price to your teaching time (in dollars). On average a teacher who teaches classes to travelers in your country is earning $ 20 / hour. It all depends on your experience and the reputation you build in Waysily.",
+    "%create.teacher.price.help_text.description.text": "Set the price to your teaching time (in dollars). On average a teacher who teaches to travelers in your country is earning $ 20 / hour. It all depends on your experience and the reputation you build in Waysily.",
     "%create.teacher.price.help_text.private_class.title.text": "Private Classes",
     "%create.teacher.price.help_text.private_class.description.text": "These are the classes in which you focus 100% on one student per class. (1 to 1).",
     "%create.teacher.price.help_text.group_class.title.text": "Group Classes",

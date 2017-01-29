@@ -5,13 +5,14 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherEducationSectionController = (function () {
-                function TeacherEducationSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope, $uibModal) {
+                function TeacherEducationSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope, $rootScope, $uibModal) {
                     this.dataConfig = dataConfig;
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this.$uibModal = $uibModal;
                     this._init();
                 }
@@ -39,6 +40,9 @@ var app;
                 TeacherEducationSectionController.prototype.activate = function () {
                     console.log('TeacherEducationSectionController controller actived');
                     this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
                 };
                 TeacherEducationSectionController.prototype.goToNext = function () {
                     var formValid = this._validateForm();
@@ -51,14 +55,11 @@ var app;
                     }
                 };
                 TeacherEducationSectionController.prototype.goToBack = function () {
-                    var formValid = this._validateForm();
-                    if (formValid) {
-                        this.$scope.$emit('Save Data');
-                        this.$state.go(this.STEP4_STATE, { reload: true });
-                    }
-                    else {
-                        window.scrollTo(0, 0);
-                    }
+                    this.$state.go(this.STEP4_STATE, { reload: true });
+                };
+                TeacherEducationSectionController.prototype._fillForm = function (data) {
+                    this.form.educations = data.Educations;
+                    this.form.certificates = data.Certificates;
                 };
                 TeacherEducationSectionController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
@@ -116,7 +117,7 @@ var app;
                             dataSetModal: function () {
                                 return {
                                     education: self.form.educations[index],
-                                    teacherId: self.$scope.$parent.vm.teacherData.Id
+                                    teacherId: self.$rootScope.teacherData.Id
                                 };
                             }
                         }
@@ -143,7 +144,7 @@ var app;
                             dataSetModal: function () {
                                 return {
                                     certificate: self.form.certificates[index],
-                                    teacherId: self.$scope.$parent.vm.teacherData.Id
+                                    teacherId: self.$rootScope.teacherData.Id
                                 };
                             }
                         }
@@ -161,8 +162,7 @@ var app;
                 TeacherEducationSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self.form.educations = args.Educations;
-                        self.form.certificates = args.Certificates;
+                        self._fillForm(args);
                     });
                 };
                 return TeacherEducationSectionController;
@@ -175,6 +175,7 @@ var app;
                 '$state',
                 '$filter',
                 '$scope',
+                '$rootScope',
                 '$uibModal'
             ];
             createTeacherPage.TeacherEducationSectionController = TeacherEducationSectionController;

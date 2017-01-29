@@ -5,7 +5,7 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherInfoSectionController = (function () {
-                function TeacherInfoSectionController(getDataFromJson, functionsUtilService, localStorage, dataConfig, $state, $filter, $scope) {
+                function TeacherInfoSectionController(getDataFromJson, functionsUtilService, localStorage, dataConfig, $state, $filter, $scope, $rootScope) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.localStorage = localStorage;
@@ -13,6 +13,7 @@ var app;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this._init();
                 }
                 TeacherInfoSectionController.prototype._init = function () {
@@ -61,6 +62,9 @@ var app;
                 TeacherInfoSectionController.prototype.activate = function () {
                     console.log('TeacherInfoSectionController controller actived');
                     this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
                 };
                 TeacherInfoSectionController.prototype.goToNext = function () {
                     var formValid = this._validateForm();
@@ -77,6 +81,19 @@ var app;
                     else {
                         window.scrollTo(0, 0);
                     }
+                };
+                TeacherInfoSectionController.prototype._fillForm = function (data) {
+                    this.form.firstName = data.FirstName;
+                    this.form.lastName = data.LastName;
+                    this.form.email = data.Email;
+                    this.form.phoneNumber = data.PhoneNumber;
+                    this.sexObject.sex.code = data.Sex;
+                    var date = this.functionsUtilService.splitDate(data.BirthDate);
+                    this.dateObject.day.value = parseInt(date.day);
+                    this.dateObject.month.code = date.month;
+                    this.dateObject.year.value = parseInt(date.year);
+                    this.form.born = data.Born;
+                    this.form.about = data.About;
                 };
                 TeacherInfoSectionController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
@@ -194,30 +211,20 @@ var app;
                     var dateFormatted = this.functionsUtilService.joinDate(this.dateObject.day.value, this.dateObject.month.code, this.dateObject.year.value);
                     var sexCode = this.sexObject.sex.code;
                     var recommended = this.localStorage.getItem(this.dataConfig.earlyIdLocalStorage);
-                    this.$scope.$parent.vm.teacherData.FirstName = this.form.firstName;
-                    this.$scope.$parent.vm.teacherData.LastName = this.form.lastName;
-                    this.$scope.$parent.vm.teacherData.Email = this.form.email;
-                    this.$scope.$parent.vm.teacherData.PhoneNumber = this.form.phoneNumber;
-                    this.$scope.$parent.vm.teacherData.Sex = sexCode;
-                    this.$scope.$parent.vm.teacherData.BirthDate = dateFormatted;
-                    this.$scope.$parent.vm.teacherData.Born = this.form.born;
-                    this.$scope.$parent.vm.teacherData.About = this.form.about;
-                    this.$scope.$parent.vm.teacherData.Recommended = recommended ? recommended : null;
+                    this.$rootScope.teacherData.FirstName = this.form.firstName;
+                    this.$rootScope.teacherData.LastName = this.form.lastName;
+                    this.$rootScope.teacherData.Email = this.form.email;
+                    this.$rootScope.teacherData.PhoneNumber = this.form.phoneNumber;
+                    this.$rootScope.teacherData.Sex = sexCode;
+                    this.$rootScope.teacherData.BirthDate = dateFormatted;
+                    this.$rootScope.teacherData.Born = this.form.born;
+                    this.$rootScope.teacherData.About = this.form.about;
+                    this.$rootScope.teacherData.Recommended = recommended ? recommended : null;
                 };
                 TeacherInfoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self.form.firstName = args.FirstName;
-                        self.form.lastName = args.LastName;
-                        self.form.email = args.Email;
-                        self.form.phoneNumber = args.PhoneNumber;
-                        self.sexObject.sex.code = args.Sex;
-                        var date = self.functionsUtilService.splitDate(args.BirthDate);
-                        self.dateObject.day.value = parseInt(date.day);
-                        self.dateObject.month.code = date.month;
-                        self.dateObject.year.value = parseInt(date.year);
-                        self.form.born = args.Born;
-                        self.form.about = args.About;
+                        self._fillForm(args);
                     });
                 };
                 return TeacherInfoSectionController;
@@ -230,7 +237,8 @@ var app;
                 'dataConfig',
                 '$state',
                 '$filter',
-                '$scope'
+                '$scope',
+                '$rootScope'
             ];
             createTeacherPage.TeacherInfoSectionController = TeacherInfoSectionController;
             angular

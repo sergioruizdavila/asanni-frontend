@@ -5,13 +5,14 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherPriceSectionController = (function () {
-                function TeacherPriceSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope) {
+                function TeacherPriceSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope, $rootScope) {
                     this.dataConfig = dataConfig;
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this._init();
                 }
                 TeacherPriceSectionController.prototype._init = function () {
@@ -40,6 +41,9 @@ var app;
                 TeacherPriceSectionController.prototype.activate = function () {
                     console.log('TeacherPriceSectionController controller actived');
                     this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
                 };
                 TeacherPriceSectionController.prototype.changeStatus = function (type) {
                     this.form[type].Active = !this.form[type].Active;
@@ -56,15 +60,11 @@ var app;
                     }
                 };
                 TeacherPriceSectionController.prototype.goToBack = function () {
-                    var formValid = this._validateForm();
-                    if (formValid) {
-                        this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data');
-                        this.$state.go(this.STEP6_STATE, { reload: true });
-                    }
-                    else {
-                        window.scrollTo(0, 0);
-                    }
+                    this.$state.go(this.STEP6_STATE, { reload: true });
+                };
+                TeacherPriceSectionController.prototype._fillForm = function (data) {
+                    this.form.privateClass = data.Price.PrivateClass;
+                    this.form.groupClass = data.Price.GroupClass;
                 };
                 TeacherPriceSectionController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
@@ -123,14 +123,13 @@ var app;
                     }
                 };
                 TeacherPriceSectionController.prototype._setDataModelFromForm = function () {
-                    this.$scope.$parent.vm.teacherData.Price.PrivateClass = this.form.privateClass;
-                    this.$scope.$parent.vm.teacherData.Price.GroupClass = this.form.groupClass;
+                    this.$rootScope.teacherData.Price.PrivateClass = this.form.privateClass;
+                    this.$rootScope.teacherData.Price.GroupClass = this.form.groupClass;
                 };
                 TeacherPriceSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self.form.privateClass = args.Price.PrivateClass;
-                        self.form.groupClass = args.Price.GroupClass;
+                        self._fillForm(args);
                     });
                 };
                 return TeacherPriceSectionController;
@@ -142,7 +141,8 @@ var app;
                 'mainApp.core.util.FunctionsUtilService',
                 '$state',
                 '$filter',
-                '$scope'
+                '$scope',
+                '$rootScope'
             ];
             createTeacherPage.TeacherPriceSectionController = TeacherPriceSectionController;
             angular
