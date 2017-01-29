@@ -24,6 +24,7 @@
                         controllerAs: 'vm'
                     }
                 },
+                parent: 'page',
                 cache: false,
                 onEnter: ['$rootScope', function ($rootScope) {
                     // Show/Hide header & footer
@@ -43,6 +44,7 @@
                 params: {
                     id: null
                 },
+                parent: 'page',
                 cache: false,
                 onEnter: ['$rootScope', function ($rootScope) {
                     // Show/Hide header & footer

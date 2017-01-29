@@ -4024,7 +4024,6 @@ var components;
             .state('page', {
             url: '/page',
             abstract: true,
-            cache: false,
             templateUrl: 'app/pages/main/main.html',
             controller: 'mainApp.pages.main.MainController',
             controllerAs: 'vm'
@@ -4369,6 +4368,7 @@ var app;
                     controllerAs: 'vm'
                 }
             },
+            parent: 'page',
             cache: false,
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
@@ -4387,6 +4387,7 @@ var app;
             params: {
                 id: null
             },
+            parent: 'page',
             cache: false,
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;

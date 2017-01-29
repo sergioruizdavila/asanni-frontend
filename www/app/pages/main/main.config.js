@@ -8,7 +8,6 @@
             .state('page', {
             url: '/page',
             abstract: true,
-            cache: false,
             templateUrl: 'app/pages/main/main.html',
             controller: 'mainApp.pages.main.MainController',
             controllerAs: 'vm'
