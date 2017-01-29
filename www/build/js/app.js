@@ -5610,7 +5610,6 @@ var app;
                 CreateTeacherPageController.prototype._init = function () {
                     var self = this;
                     var currentState = this.$state.current.name;
-                    this.teacherData = new app.models.teacher.Teacher();
                     angular.element(this.$window).bind("scroll", function () {
                         var floatHeader = document.getElementById('header-float');
                         if (floatHeader) {
@@ -5645,9 +5644,8 @@ var app;
                         this.teacherService.getTeacherById(this.$rootScope.teacher_id)
                             .then(function (response) {
                             if (response.id) {
-                                self.teacherData = new app.models.teacher.Teacher(response);
                                 self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
-                                self.$scope.$broadcast('Fill Form', self.teacherData);
+                                self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
                             }
                             else {
                             }
@@ -5659,31 +5657,31 @@ var app;
                     this.$scope.$on('Save Data', function (event, args) {
                         var SUCCESS_MESSAGE = self.$filter('translate')('%notification.success.text');
                         var numStep = args;
-                        if (self.teacherData.Id) {
-                            self.teacherService.updateTeacher(self.teacherData)
+                        if (self.$rootScope.teacherData.Id) {
+                            self.teacherService.updateTeacher(self.$rootScope.teacherData)
                                 .then(function (response) {
                                 if (response.id) {
                                     window.scrollTo(0, 0);
                                     self.messageUtil.success(SUCCESS_MESSAGE);
                                     self.$rootScope.teacher_id = response.id;
                                     self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
-                                    self.teacherData = new app.models.teacher.Teacher(response);
-                                    self.$scope.$broadcast('Fill Form', self.teacherData);
+                                    self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
+                                    self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
                                 }
                                 else {
                                 }
                             });
                         }
                         else {
-                            self.teacherService.createTeacher(self.teacherData)
+                            self.teacherService.createTeacher(self.$rootScope.teacherData)
                                 .then(function (response) {
                                 if (response.id) {
                                     window.scrollTo(0, 0);
                                     self.messageUtil.success(SUCCESS_MESSAGE);
                                     self.$rootScope.teacher_id = response.id;
                                     self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
-                                    self.teacherData = new app.models.teacher.Teacher(response);
-                                    self.$scope.$broadcast('Fill Form', self.teacherData);
+                                    self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
+                                    self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
                                 }
                                 else {
                                 }
@@ -5808,7 +5806,7 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherInfoSectionController = (function () {
-                function TeacherInfoSectionController(getDataFromJson, functionsUtilService, localStorage, dataConfig, $state, $filter, $scope) {
+                function TeacherInfoSectionController(getDataFromJson, functionsUtilService, localStorage, dataConfig, $state, $filter, $scope, $rootScope) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.localStorage = localStorage;
@@ -5816,6 +5814,7 @@ var app;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this._init();
                 }
                 TeacherInfoSectionController.prototype._init = function () {
@@ -5864,6 +5863,9 @@ var app;
                 TeacherInfoSectionController.prototype.activate = function () {
                     console.log('TeacherInfoSectionController controller actived');
                     this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
                 };
                 TeacherInfoSectionController.prototype.goToNext = function () {
                     var formValid = this._validateForm();
@@ -5880,6 +5882,19 @@ var app;
                     else {
                         window.scrollTo(0, 0);
                     }
+                };
+                TeacherInfoSectionController.prototype._fillForm = function (data) {
+                    this.form.firstName = data.FirstName;
+                    this.form.lastName = data.LastName;
+                    this.form.email = data.Email;
+                    this.form.phoneNumber = data.PhoneNumber;
+                    this.sexObject.sex.code = data.Sex;
+                    var date = this.functionsUtilService.splitDate(data.BirthDate);
+                    this.dateObject.day.value = parseInt(date.day);
+                    this.dateObject.month.code = date.month;
+                    this.dateObject.year.value = parseInt(date.year);
+                    this.form.born = data.Born;
+                    this.form.about = data.About;
                 };
                 TeacherInfoSectionController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
@@ -5997,30 +6012,20 @@ var app;
                     var dateFormatted = this.functionsUtilService.joinDate(this.dateObject.day.value, this.dateObject.month.code, this.dateObject.year.value);
                     var sexCode = this.sexObject.sex.code;
                     var recommended = this.localStorage.getItem(this.dataConfig.earlyIdLocalStorage);
-                    this.$scope.$parent.vm.teacherData.FirstName = this.form.firstName;
-                    this.$scope.$parent.vm.teacherData.LastName = this.form.lastName;
-                    this.$scope.$parent.vm.teacherData.Email = this.form.email;
-                    this.$scope.$parent.vm.teacherData.PhoneNumber = this.form.phoneNumber;
-                    this.$scope.$parent.vm.teacherData.Sex = sexCode;
-                    this.$scope.$parent.vm.teacherData.BirthDate = dateFormatted;
-                    this.$scope.$parent.vm.teacherData.Born = this.form.born;
-                    this.$scope.$parent.vm.teacherData.About = this.form.about;
-                    this.$scope.$parent.vm.teacherData.Recommended = recommended ? recommended : null;
+                    this.$rootScope.teacherData.FirstName = this.form.firstName;
+                    this.$rootScope.teacherData.LastName = this.form.lastName;
+                    this.$rootScope.teacherData.Email = this.form.email;
+                    this.$rootScope.teacherData.PhoneNumber = this.form.phoneNumber;
+                    this.$rootScope.teacherData.Sex = sexCode;
+                    this.$rootScope.teacherData.BirthDate = dateFormatted;
+                    this.$rootScope.teacherData.Born = this.form.born;
+                    this.$rootScope.teacherData.About = this.form.about;
+                    this.$rootScope.teacherData.Recommended = recommended ? recommended : null;
                 };
                 TeacherInfoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self.form.firstName = args.FirstName;
-                        self.form.lastName = args.LastName;
-                        self.form.email = args.Email;
-                        self.form.phoneNumber = args.PhoneNumber;
-                        self.sexObject.sex.code = args.Sex;
-                        var date = self.functionsUtilService.splitDate(args.BirthDate);
-                        self.dateObject.day.value = parseInt(date.day);
-                        self.dateObject.month.code = date.month;
-                        self.dateObject.year.value = parseInt(date.year);
-                        self.form.born = args.Born;
-                        self.form.about = args.About;
+                        self._fillForm(args);
                     });
                 };
                 return TeacherInfoSectionController;
@@ -6033,7 +6038,8 @@ var app;
                 'dataConfig',
                 '$state',
                 '$filter',
-                '$scope'
+                '$scope',
+                '$rootScope'
             ];
             createTeacherPage.TeacherInfoSectionController = TeacherInfoSectionController;
             angular
@@ -6071,12 +6077,13 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherLocationSectionController = (function () {
-                function TeacherLocationSectionController(getDataFromJson, functionsUtilService, $state, $filter, $scope, $timeout) {
+                function TeacherLocationSectionController(getDataFromJson, functionsUtilService, $state, $filter, $scope, $rootScope, $timeout) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this.$timeout = $timeout;
                     this._init();
                 }
@@ -6115,6 +6122,9 @@ var app;
                 TeacherLocationSectionController.prototype.activate = function () {
                     console.log('TeacherLocationSectionController controller actived');
                     this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
                 };
                 TeacherLocationSectionController.prototype.goToNext = function () {
                     var CURRENT_STEP = 2;
@@ -6138,6 +6148,26 @@ var app;
                     else {
                         window.scrollTo(0, 0);
                     }
+                };
+                TeacherLocationSectionController.prototype._fillForm = function (data) {
+                    this.form.addressLocation = data.Location.Address;
+                    this.form.cityLocation = data.Location.City;
+                    this.form.stateLocation = data.Location.State;
+                    this.form.zipCodeLocation = data.Location.ZipCode;
+                    this.countryObject.code = data.Location.Country;
+                    this.form.positionLocation = new app.models.user.Position(data.Location.Position);
+                    this.mapConfig = this.functionsUtilService.buildMapConfig([
+                        {
+                            id: this.form.positionLocation.Id,
+                            location: {
+                                position: {
+                                    lat: parseFloat(this.form.positionLocation.Lat),
+                                    lng: parseFloat(this.form.positionLocation.Lng)
+                                }
+                            }
+                        }
+                    ], 'drag-maker-map', { lat: parseFloat(this.form.positionLocation.Lat), lng: parseFloat(this.form.positionLocation.Lng) }, null);
+                    this.$scope.$broadcast('BuildMarkers', this.mapConfig);
                 };
                 TeacherLocationSectionController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
@@ -6239,35 +6269,18 @@ var app;
                 TeacherLocationSectionController.prototype._setDataModelFromForm = function () {
                     var countryCode = this.countryObject.code;
                     this.form.countryLocation = countryCode;
-                    this.$scope.$parent.vm.teacherData.Location.Country = this.form.countryLocation;
-                    this.$scope.$parent.vm.teacherData.Location.Address = this.form.addressLocation;
-                    this.$scope.$parent.vm.teacherData.Location.City = this.form.cityLocation;
-                    this.$scope.$parent.vm.teacherData.Location.State = this.form.stateLocation;
-                    this.$scope.$parent.vm.teacherData.Location.ZipCode = this.form.zipCodeLocation;
-                    this.$scope.$parent.vm.teacherData.Location.Position = this.form.positionLocation;
+                    this.$rootScope.teacherData.Location.Country = this.form.countryLocation;
+                    this.$rootScope.teacherData.Location.Address = this.form.addressLocation;
+                    this.$rootScope.teacherData.Location.City = this.form.cityLocation;
+                    this.$rootScope.teacherData.Location.State = this.form.stateLocation;
+                    this.$rootScope.teacherData.Location.ZipCode = this.form.zipCodeLocation;
+                    this.$rootScope.teacherData.Location.Position = this.form.positionLocation;
                     this.changeMapPosition();
                 };
                 TeacherLocationSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self.form.addressLocation = args.Location.Address;
-                        self.form.cityLocation = args.Location.City;
-                        self.form.stateLocation = args.Location.State;
-                        self.form.zipCodeLocation = args.Location.ZipCode;
-                        self.countryObject.code = args.Location.Country;
-                        self.form.positionLocation = new app.models.user.Position(args.Location.Position);
-                        self.mapConfig = self.functionsUtilService.buildMapConfig([
-                            {
-                                id: self.form.positionLocation.Id,
-                                location: {
-                                    position: {
-                                        lat: parseFloat(self.form.positionLocation.Lat),
-                                        lng: parseFloat(self.form.positionLocation.Lng)
-                                    }
-                                }
-                            }
-                        ], 'drag-maker-map', { lat: parseFloat(self.form.positionLocation.Lat), lng: parseFloat(self.form.positionLocation.Lng) }, null);
-                        self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                        self._fillForm(args);
                     });
                     this.$scope.$on('Position', function (event, args) {
                         self.form.positionLocation.Lng = args.lng;
@@ -6283,6 +6296,7 @@ var app;
                 '$state',
                 '$filter',
                 '$scope',
+                '$rootScope',
                 '$timeout'
             ];
             createTeacherPage.TeacherLocationSectionController = TeacherLocationSectionController;
@@ -6321,13 +6335,14 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherLanguageSectionController = (function () {
-                function TeacherLanguageSectionController(dataConfig, functionsUtil, getDataFromJson, $state, $filter, $scope, $timeout, $uibModal) {
+                function TeacherLanguageSectionController(dataConfig, functionsUtil, getDataFromJson, $state, $filter, $scope, $rootScope, $timeout, $uibModal) {
                     this.dataConfig = dataConfig;
                     this.functionsUtil = functionsUtil;
                     this.getDataFromJson = getDataFromJson;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this.$timeout = $timeout;
                     this.$uibModal = $uibModal;
                     this._init();
@@ -6358,6 +6373,9 @@ var app;
                 TeacherLanguageSectionController.prototype.activate = function () {
                     console.log('TeacherLanguageSectionController controller actived');
                     this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
                 };
                 TeacherLanguageSectionController.prototype.goToNext = function () {
                     var CURRENT_STEP = 3;
@@ -6380,6 +6398,61 @@ var app;
                     }
                     else {
                         window.scrollTo(0, 0);
+                    }
+                };
+                TeacherLanguageSectionController.prototype._fillForm = function (data) {
+                    if (this.form.native.length === 0) {
+                        var languageArray = this.getDataFromJson.getLanguagei18n();
+                        for (var i = 0; i < languageArray.length; i++) {
+                            if (data.Languages.Native) {
+                                for (var j = 0; j < data.Languages.Native.length; j++) {
+                                    if (data.Languages.Native[j] == languageArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = parseInt(languageArray[i].code);
+                                        obj.value = languageArray[i].value;
+                                        if (this.form.native == null) {
+                                            this.form.native = [];
+                                            this.form.native.push(obj);
+                                        }
+                                        else {
+                                            this.form.native.push(obj);
+                                        }
+                                    }
+                                }
+                            }
+                            if (data.Languages.Learn) {
+                                for (var j = 0; j < data.Languages.Learn.length; j++) {
+                                    if (data.Languages.Learn[j] == languageArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = parseInt(languageArray[i].code);
+                                        obj.value = languageArray[i].value;
+                                        if (this.form.learn == null) {
+                                            this.form.learn = [];
+                                            this.form.learn.push(obj);
+                                        }
+                                        else {
+                                            this.form.learn.push(obj);
+                                        }
+                                    }
+                                }
+                            }
+                            if (data.Languages.Teach) {
+                                for (var j = 0; j < data.Languages.Teach.length; j++) {
+                                    if (data.Languages.Teach[j] == languageArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = parseInt(languageArray[i].code);
+                                        obj.value = languageArray[i].value;
+                                        if (this.form.teach == null) {
+                                            this.form.teach = [];
+                                            this.form.teach.push(obj);
+                                        }
+                                        else {
+                                            this.form.teach.push(obj);
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 };
                 TeacherLanguageSectionController.prototype._validateForm = function () {
@@ -6466,77 +6539,27 @@ var app;
                         for (var i = 0; i < this.form.native.length; i++) {
                             native.push(this.form.native[i].key);
                         }
-                        this.$scope.$parent.vm.teacherData.Languages.Native = native;
+                        this.$rootScope.teacherData.Languages.Native = native;
                     }
                     if (this.form.learn) {
                         var learn = [];
                         for (var i = 0; i < this.form.learn.length; i++) {
                             learn.push(this.form.learn[i].key);
                         }
-                        this.$scope.$parent.vm.teacherData.Languages.Learn = learn;
+                        this.$rootScope.teacherData.Languages.Learn = learn;
                     }
                     if (this.form.teach) {
                         var teach = [];
                         for (var i = 0; i < this.form.teach.length; i++) {
                             teach.push(this.form.teach[i].key);
                         }
-                        this.$scope.$parent.vm.teacherData.Languages.Teach = teach;
+                        this.$rootScope.teacherData.Languages.Teach = teach;
                     }
                 };
                 TeacherLanguageSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        var languageArray = self.getDataFromJson.getLanguagei18n();
-                        for (var i = 0; i < languageArray.length; i++) {
-                            if (args.Languages.Native) {
-                                for (var j = 0; j < args.Languages.Native.length; j++) {
-                                    if (args.Languages.Native[j] == languageArray[i].code) {
-                                        var obj = { key: null, value: '' };
-                                        obj.key = parseInt(languageArray[i].code);
-                                        obj.value = languageArray[i].value;
-                                        if (self.form.native == null) {
-                                            self.form.native = [];
-                                            self.form.native.push(obj);
-                                        }
-                                        else {
-                                            self.form.native.push(obj);
-                                        }
-                                    }
-                                }
-                            }
-                            if (args.Languages.Learn) {
-                                for (var j = 0; j < args.Languages.Learn.length; j++) {
-                                    if (args.Languages.Learn[j] == languageArray[i].code) {
-                                        var obj = { key: null, value: '' };
-                                        obj.key = parseInt(languageArray[i].code);
-                                        obj.value = languageArray[i].value;
-                                        if (self.form.learn == null) {
-                                            self.form.learn = [];
-                                            self.form.learn.push(obj);
-                                        }
-                                        else {
-                                            self.form.learn.push(obj);
-                                        }
-                                    }
-                                }
-                            }
-                            if (args.Languages.Teach) {
-                                for (var j = 0; j < args.Languages.Teach.length; j++) {
-                                    if (args.Languages.Teach[j] == languageArray[i].code) {
-                                        var obj = { key: null, value: '' };
-                                        obj.key = parseInt(languageArray[i].code);
-                                        obj.value = languageArray[i].value;
-                                        if (self.form.teach == null) {
-                                            self.form.teach = [];
-                                            self.form.teach.push(obj);
-                                        }
-                                        else {
-                                            self.form.teach.push(obj);
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        self._fillForm(args);
                     });
                 };
                 return TeacherLanguageSectionController;
@@ -6549,6 +6572,7 @@ var app;
                 '$state',
                 '$filter',
                 '$scope',
+                '$rootScope',
                 '$timeout',
                 '$uibModal'
             ];
@@ -6588,13 +6612,14 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherExperienceSectionController = (function () {
-                function TeacherExperienceSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope, $uibModal) {
+                function TeacherExperienceSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope, $rootScope, $uibModal) {
                     this.dataConfig = dataConfig;
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this.$uibModal = $uibModal;
                     this._init();
                 }
@@ -6628,6 +6653,9 @@ var app;
                 TeacherExperienceSectionController.prototype.activate = function () {
                     console.log('TeacherExperienceSectionController controller actived');
                     this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
                 };
                 TeacherExperienceSectionController.prototype.goToNext = function () {
                     var formValid = this._validateForm();
@@ -6668,6 +6696,19 @@ var app;
                         this._hobbyChecked.checked = false;
                         this.form.type = this._professionalChecked.type;
                     }
+                };
+                TeacherExperienceSectionController.prototype._fillForm = function (data) {
+                    this.form.type = data.Type || 'H';
+                    if (this.form.type === 'H') {
+                        this._professionalChecked.checked = false;
+                        this._hobbyChecked.checked = true;
+                    }
+                    else {
+                        this._professionalChecked.checked = true;
+                        this._hobbyChecked.checked = false;
+                    }
+                    this.yearObject.value = data.TeacherSince;
+                    this.form.experiences = data.Experiences;
                 };
                 TeacherExperienceSectionController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
@@ -6724,7 +6765,7 @@ var app;
                             dataSetModal: function () {
                                 return {
                                     experience: self.form.experiences[index],
-                                    teacherId: self.$scope.$parent.vm.teacherData.Id
+                                    teacherId: self.$rootScope.teacherData.Id
                                 };
                             }
                         }
@@ -6740,23 +6781,13 @@ var app;
                     $event.preventDefault();
                 };
                 TeacherExperienceSectionController.prototype._setDataModelFromForm = function () {
-                    this.$scope.$parent.vm.teacherData.Type = this.form.type;
-                    this.$scope.$parent.vm.teacherData.TeacherSince = this.yearObject.value;
+                    this.$rootScope.teacherData.Type = this.form.type;
+                    this.$rootScope.teacherData.TeacherSince = this.yearObject.value;
                 };
                 TeacherExperienceSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self.form.type = args.Type || 'H';
-                        if (self.form.type === 'H') {
-                            self._professionalChecked.checked = false;
-                            self._hobbyChecked.checked = true;
-                        }
-                        else {
-                            self._professionalChecked.checked = true;
-                            self._hobbyChecked.checked = false;
-                        }
-                        self.yearObject.value = args.TeacherSince;
-                        self.form.experiences = args.Experiences;
+                        self._fillForm(args);
                     });
                 };
                 return TeacherExperienceSectionController;
@@ -6769,6 +6800,7 @@ var app;
                 '$state',
                 '$filter',
                 '$scope',
+                '$rootScope',
                 '$uibModal'
             ];
             createTeacherPage.TeacherExperienceSectionController = TeacherExperienceSectionController;
@@ -6807,13 +6839,14 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherEducationSectionController = (function () {
-                function TeacherEducationSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope, $uibModal) {
+                function TeacherEducationSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope, $rootScope, $uibModal) {
                     this.dataConfig = dataConfig;
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this.$uibModal = $uibModal;
                     this._init();
                 }
@@ -6841,6 +6874,9 @@ var app;
                 TeacherEducationSectionController.prototype.activate = function () {
                     console.log('TeacherEducationSectionController controller actived');
                     this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
                 };
                 TeacherEducationSectionController.prototype.goToNext = function () {
                     var formValid = this._validateForm();
@@ -6861,6 +6897,10 @@ var app;
                     else {
                         window.scrollTo(0, 0);
                     }
+                };
+                TeacherEducationSectionController.prototype._fillForm = function (data) {
+                    this.form.educations = data.Educations;
+                    this.form.certificates = data.Certificates;
                 };
                 TeacherEducationSectionController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
@@ -6918,7 +6958,7 @@ var app;
                             dataSetModal: function () {
                                 return {
                                     education: self.form.educations[index],
-                                    teacherId: self.$scope.$parent.vm.teacherData.Id
+                                    teacherId: self.$rootScope.teacherData.Id
                                 };
                             }
                         }
@@ -6945,7 +6985,7 @@ var app;
                             dataSetModal: function () {
                                 return {
                                     certificate: self.form.certificates[index],
-                                    teacherId: self.$scope.$parent.vm.teacherData.Id
+                                    teacherId: self.$rootScope.teacherData.Id
                                 };
                             }
                         }
@@ -6963,8 +7003,7 @@ var app;
                 TeacherEducationSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self.form.educations = args.Educations;
-                        self.form.certificates = args.Certificates;
+                        self._fillForm(args);
                     });
                 };
                 return TeacherEducationSectionController;
@@ -6977,6 +7016,7 @@ var app;
                 '$state',
                 '$filter',
                 '$scope',
+                '$rootScope',
                 '$uibModal'
             ];
             createTeacherPage.TeacherEducationSectionController = TeacherEducationSectionController;
@@ -7015,22 +7055,18 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherMethodSectionController = (function () {
-                function TeacherMethodSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope) {
+                function TeacherMethodSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope, $rootScope) {
                     this.dataConfig = dataConfig;
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this._init();
                 }
                 TeacherMethodSectionController.prototype._init = function () {
-                    if (this.$scope.$parent.vm.teacherData.Type === 'P') {
-                        this.STEP5_STATE = 'page.createTeacherPage.education';
-                    }
-                    else {
-                        this.STEP5_STATE = 'page.createTeacherPage.experience';
-                    }
+                    this.step5State = '';
                     this.STEP7_STATE = 'page.createTeacherPage.price';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.method.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.method.help_text.description.text');
@@ -7055,6 +7091,9 @@ var app;
                 TeacherMethodSectionController.prototype.activate = function () {
                     console.log('TeacherMethodSectionController controller actived');
                     this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
                 };
                 TeacherMethodSectionController.prototype.changeStatus = function () {
                     this.form.immersion.Active = !this.form.immersion.Active;
@@ -7075,10 +7114,37 @@ var app;
                     if (formValid) {
                         this._setDataModelFromForm();
                         this.$scope.$emit('Save Data');
-                        this.$state.go(this.STEP5_STATE, { reload: true });
+                        this.$state.go(this.step5State, { reload: true });
                     }
                     else {
                         window.scrollTo(0, 0);
+                    }
+                };
+                TeacherMethodSectionController.prototype._fillForm = function (data) {
+                    if (data.Type === 'P') {
+                        this.step5State = 'page.createTeacherPage.education';
+                    }
+                    else {
+                        this.step5State = 'page.createTeacherPage.experience';
+                    }
+                    this.form.methodology = data.Methodology;
+                    this.form.immersion = data.Immersion;
+                    if (this.form.immersion.Active) {
+                        if (this.typeOfImmersionOptionBox.length === 0) {
+                            var immersionArray = this.getDataFromJson.getTypeOfImmersioni18n();
+                            var newArray = [];
+                            for (var i = 0; i < immersionArray.length; i++) {
+                                for (var j = 0; j < this.form.immersion.Category.length; j++) {
+                                    if (this.form.immersion.Category[j] === immersionArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = immersionArray[i].code;
+                                        obj.value = immersionArray[i].value;
+                                        this._disableEnableOption(true, obj.key);
+                                        this.typeOfImmersionOptionBox.push(obj);
+                                    }
+                                }
+                            }
+                        }
                     }
                 };
                 TeacherMethodSectionController.prototype._validateForm = function () {
@@ -7142,9 +7208,9 @@ var app;
                 };
                 TeacherMethodSectionController.prototype._setDataModelFromForm = function () {
                     var immersionOptions = this.typeOfImmersionOptionBox;
-                    this.$scope.$parent.vm.teacherData.Methodology = this.form.methodology;
-                    this.$scope.$parent.vm.teacherData.Immersion = this.form.immersion;
-                    this.$scope.$parent.vm.teacherData.Immersion.Category = this.form.immersion.Category;
+                    this.$rootScope.teacherData.Methodology = this.form.methodology;
+                    this.$rootScope.teacherData.Immersion = this.form.immersion;
+                    this.$rootScope.teacherData.Immersion.Category = this.form.immersion.Category;
                 };
                 TeacherMethodSectionController.prototype._disableEnableOption = function (action, key) {
                     for (var i = 0; i < this.typeOfImmersionList.length; i++) {
@@ -7156,23 +7222,7 @@ var app;
                 TeacherMethodSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self.form.methodology = args.Methodology;
-                        self.form.immersion = args.Immersion;
-                        if (self.form.immersion.Active) {
-                            var immersionArray = self.getDataFromJson.getTypeOfImmersioni18n();
-                            var newArray = [];
-                            for (var i = 0; i < immersionArray.length; i++) {
-                                for (var j = 0; j < self.form.immersion.Category.length; j++) {
-                                    if (self.form.immersion.Category[j] === immersionArray[i].code) {
-                                        var obj = { key: null, value: '' };
-                                        obj.key = immersionArray[i].code;
-                                        obj.value = immersionArray[i].value;
-                                        self._disableEnableOption(true, obj.key);
-                                        self.typeOfImmersionOptionBox.push(obj);
-                                    }
-                                }
-                            }
-                        }
+                        self._fillForm(args);
                     });
                 };
                 return TeacherMethodSectionController;
@@ -7184,7 +7234,8 @@ var app;
                 'mainApp.core.util.FunctionsUtilService',
                 '$state',
                 '$filter',
-                '$scope'
+                '$scope',
+                '$rootScope'
             ];
             createTeacherPage.TeacherMethodSectionController = TeacherMethodSectionController;
             angular
@@ -7222,13 +7273,14 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherPriceSectionController = (function () {
-                function TeacherPriceSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope) {
+                function TeacherPriceSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope, $rootScope) {
                     this.dataConfig = dataConfig;
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this._init();
                 }
                 TeacherPriceSectionController.prototype._init = function () {
@@ -7257,6 +7309,9 @@ var app;
                 TeacherPriceSectionController.prototype.activate = function () {
                     console.log('TeacherPriceSectionController controller actived');
                     this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
                 };
                 TeacherPriceSectionController.prototype.changeStatus = function (type) {
                     this.form[type].Active = !this.form[type].Active;
@@ -7282,6 +7337,10 @@ var app;
                     else {
                         window.scrollTo(0, 0);
                     }
+                };
+                TeacherPriceSectionController.prototype._fillForm = function (data) {
+                    this.form.privateClass = data.Price.PrivateClass;
+                    this.form.groupClass = data.Price.GroupClass;
                 };
                 TeacherPriceSectionController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
@@ -7340,14 +7399,13 @@ var app;
                     }
                 };
                 TeacherPriceSectionController.prototype._setDataModelFromForm = function () {
-                    this.$scope.$parent.vm.teacherData.Price.PrivateClass = this.form.privateClass;
-                    this.$scope.$parent.vm.teacherData.Price.GroupClass = this.form.groupClass;
+                    this.$rootScope.teacherData.Price.PrivateClass = this.form.privateClass;
+                    this.$rootScope.teacherData.Price.GroupClass = this.form.groupClass;
                 };
                 TeacherPriceSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self.form.privateClass = args.Price.PrivateClass;
-                        self.form.groupClass = args.Price.GroupClass;
+                        self._fillForm(args);
                     });
                 };
                 return TeacherPriceSectionController;
@@ -7359,7 +7417,8 @@ var app;
                 'mainApp.core.util.FunctionsUtilService',
                 '$state',
                 '$filter',
-                '$scope'
+                '$scope',
+                '$rootScope'
             ];
             createTeacherPage.TeacherPriceSectionController = TeacherPriceSectionController;
             angular
@@ -7397,7 +7456,7 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherPhotoSectionController = (function () {
-                function TeacherPhotoSectionController(dataConfig, getDataFromJson, functionsUtilService, S3UploadService, messageUtil, Upload, $state, $filter, $scope) {
+                function TeacherPhotoSectionController(dataConfig, getDataFromJson, functionsUtilService, S3UploadService, messageUtil, Upload, $state, $filter, $scope, $rootScope) {
                     this.dataConfig = dataConfig;
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
@@ -7407,6 +7466,7 @@ var app;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this._init();
                 }
                 TeacherPhotoSectionController.prototype._init = function () {
@@ -7435,6 +7495,9 @@ var app;
                 TeacherPhotoSectionController.prototype.activate = function () {
                     console.log('TeacherPhotoSectionController controller actived');
                     this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
                 };
                 TeacherPhotoSectionController.prototype.goToNext = function () {
                     var self = this;
@@ -7489,6 +7552,9 @@ var app;
                     else {
                         window.scrollTo(0, 0);
                     }
+                };
+                TeacherPhotoSectionController.prototype._fillForm = function (data) {
+                    this.form.thumbnail = data.Avatar;
                 };
                 TeacherPhotoSectionController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
@@ -7555,12 +7621,12 @@ var app;
                     });
                 };
                 TeacherPhotoSectionController.prototype._setDataModelFromForm = function (avatar) {
-                    this.$scope.$parent.vm.teacherData.Avatar = avatar;
+                    this.$rootScope.teacherData.Avatar = avatar;
                 };
                 TeacherPhotoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self.form.thumbnail = args.Avatar;
+                        self._fillForm(args);
                     });
                 };
                 return TeacherPhotoSectionController;
@@ -7575,7 +7641,8 @@ var app;
                 'Upload',
                 '$state',
                 '$filter',
-                '$scope'
+                '$scope',
+                '$rootScope'
             ];
             createTeacherPage.TeacherPhotoSectionController = TeacherPhotoSectionController;
             angular
@@ -7613,8 +7680,9 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherFinishSectionController = (function () {
-                function TeacherFinishSectionController($scope, $state, dataConfig, functionsUtilService, localStorage) {
+                function TeacherFinishSectionController($scope, $rootScope, $state, dataConfig, functionsUtilService, localStorage) {
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this.$state = $state;
                     this.dataConfig = dataConfig;
                     this.functionsUtilService = functionsUtilService;
@@ -7633,9 +7701,9 @@ var app;
                     this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
                     this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, '');
                     mixpanel.track("Finish Process: Create Teacher", {
-                        "id": this.$scope.$parent.vm.teacherData.Id,
-                        "name": this.$scope.$parent.vm.teacherData.FirstName + ' ' + this.$scope.$parent.vm.teacherData.LastName,
-                        "email": this.$scope.$parent.vm.teacherData.Email
+                        "id": this.$rootScope.teacherData.Id,
+                        "name": this.$rootScope.teacherData.FirstName + ' ' + this.$rootScope.teacherData.LastName,
+                        "email": this.$rootScope.teacherData.Email
                     });
                     this.$state.go('page.landingPage');
                 };
@@ -7644,6 +7712,7 @@ var app;
             TeacherFinishSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherFinishSectionController';
             TeacherFinishSectionController.$inject = [
                 '$scope',
+                '$rootScope',
                 '$state',
                 'dataConfig',
                 'mainApp.core.util.FunctionsUtilService',

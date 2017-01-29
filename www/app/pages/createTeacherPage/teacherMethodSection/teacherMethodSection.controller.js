@@ -5,22 +5,18 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherMethodSectionController = (function () {
-                function TeacherMethodSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope) {
+                function TeacherMethodSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope, $rootScope) {
                     this.dataConfig = dataConfig;
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this._init();
                 }
                 TeacherMethodSectionController.prototype._init = function () {
-                    if (this.$scope.$parent.vm.teacherData.Type === 'P') {
-                        this.STEP5_STATE = 'page.createTeacherPage.education';
-                    }
-                    else {
-                        this.STEP5_STATE = 'page.createTeacherPage.experience';
-                    }
+                    this.step5State = '';
                     this.STEP7_STATE = 'page.createTeacherPage.price';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.method.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.method.help_text.description.text');
@@ -45,6 +41,9 @@ var app;
                 TeacherMethodSectionController.prototype.activate = function () {
                     console.log('TeacherMethodSectionController controller actived');
                     this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
                 };
                 TeacherMethodSectionController.prototype.changeStatus = function () {
                     this.form.immersion.Active = !this.form.immersion.Active;
@@ -65,10 +64,37 @@ var app;
                     if (formValid) {
                         this._setDataModelFromForm();
                         this.$scope.$emit('Save Data');
-                        this.$state.go(this.STEP5_STATE, { reload: true });
+                        this.$state.go(this.step5State, { reload: true });
                     }
                     else {
                         window.scrollTo(0, 0);
+                    }
+                };
+                TeacherMethodSectionController.prototype._fillForm = function (data) {
+                    if (data.Type === 'P') {
+                        this.step5State = 'page.createTeacherPage.education';
+                    }
+                    else {
+                        this.step5State = 'page.createTeacherPage.experience';
+                    }
+                    this.form.methodology = data.Methodology;
+                    this.form.immersion = data.Immersion;
+                    if (this.form.immersion.Active) {
+                        if (this.typeOfImmersionOptionBox.length === 0) {
+                            var immersionArray = this.getDataFromJson.getTypeOfImmersioni18n();
+                            var newArray = [];
+                            for (var i = 0; i < immersionArray.length; i++) {
+                                for (var j = 0; j < this.form.immersion.Category.length; j++) {
+                                    if (this.form.immersion.Category[j] === immersionArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = immersionArray[i].code;
+                                        obj.value = immersionArray[i].value;
+                                        this._disableEnableOption(true, obj.key);
+                                        this.typeOfImmersionOptionBox.push(obj);
+                                    }
+                                }
+                            }
+                        }
                     }
                 };
                 TeacherMethodSectionController.prototype._validateForm = function () {
@@ -132,9 +158,9 @@ var app;
                 };
                 TeacherMethodSectionController.prototype._setDataModelFromForm = function () {
                     var immersionOptions = this.typeOfImmersionOptionBox;
-                    this.$scope.$parent.vm.teacherData.Methodology = this.form.methodology;
-                    this.$scope.$parent.vm.teacherData.Immersion = this.form.immersion;
-                    this.$scope.$parent.vm.teacherData.Immersion.Category = this.form.immersion.Category;
+                    this.$rootScope.teacherData.Methodology = this.form.methodology;
+                    this.$rootScope.teacherData.Immersion = this.form.immersion;
+                    this.$rootScope.teacherData.Immersion.Category = this.form.immersion.Category;
                 };
                 TeacherMethodSectionController.prototype._disableEnableOption = function (action, key) {
                     for (var i = 0; i < this.typeOfImmersionList.length; i++) {
@@ -146,23 +172,7 @@ var app;
                 TeacherMethodSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self.form.methodology = args.Methodology;
-                        self.form.immersion = args.Immersion;
-                        if (self.form.immersion.Active) {
-                            var immersionArray = self.getDataFromJson.getTypeOfImmersioni18n();
-                            var newArray = [];
-                            for (var i = 0; i < immersionArray.length; i++) {
-                                for (var j = 0; j < self.form.immersion.Category.length; j++) {
-                                    if (self.form.immersion.Category[j] === immersionArray[i].code) {
-                                        var obj = { key: null, value: '' };
-                                        obj.key = immersionArray[i].code;
-                                        obj.value = immersionArray[i].value;
-                                        self._disableEnableOption(true, obj.key);
-                                        self.typeOfImmersionOptionBox.push(obj);
-                                    }
-                                }
-                            }
-                        }
+                        self._fillForm(args);
                     });
                 };
                 return TeacherMethodSectionController;
@@ -174,7 +184,8 @@ var app;
                 'mainApp.core.util.FunctionsUtilService',
                 '$state',
                 '$filter',
-                '$scope'
+                '$scope',
+                '$rootScope'
             ];
             createTeacherPage.TeacherMethodSectionController = TeacherMethodSectionController;
             angular

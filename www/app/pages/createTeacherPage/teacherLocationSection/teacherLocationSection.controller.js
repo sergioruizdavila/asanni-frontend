@@ -5,12 +5,13 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherLocationSectionController = (function () {
-                function TeacherLocationSectionController(getDataFromJson, functionsUtilService, $state, $filter, $scope, $timeout) {
+                function TeacherLocationSectionController(getDataFromJson, functionsUtilService, $state, $filter, $scope, $rootScope, $timeout) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this.$timeout = $timeout;
                     this._init();
                 }
@@ -49,6 +50,9 @@ var app;
                 TeacherLocationSectionController.prototype.activate = function () {
                     console.log('TeacherLocationSectionController controller actived');
                     this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
                 };
                 TeacherLocationSectionController.prototype.goToNext = function () {
                     var CURRENT_STEP = 2;
@@ -72,6 +76,26 @@ var app;
                     else {
                         window.scrollTo(0, 0);
                     }
+                };
+                TeacherLocationSectionController.prototype._fillForm = function (data) {
+                    this.form.addressLocation = data.Location.Address;
+                    this.form.cityLocation = data.Location.City;
+                    this.form.stateLocation = data.Location.State;
+                    this.form.zipCodeLocation = data.Location.ZipCode;
+                    this.countryObject.code = data.Location.Country;
+                    this.form.positionLocation = new app.models.user.Position(data.Location.Position);
+                    this.mapConfig = this.functionsUtilService.buildMapConfig([
+                        {
+                            id: this.form.positionLocation.Id,
+                            location: {
+                                position: {
+                                    lat: parseFloat(this.form.positionLocation.Lat),
+                                    lng: parseFloat(this.form.positionLocation.Lng)
+                                }
+                            }
+                        }
+                    ], 'drag-maker-map', { lat: parseFloat(this.form.positionLocation.Lat), lng: parseFloat(this.form.positionLocation.Lng) }, null);
+                    this.$scope.$broadcast('BuildMarkers', this.mapConfig);
                 };
                 TeacherLocationSectionController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
@@ -173,35 +197,18 @@ var app;
                 TeacherLocationSectionController.prototype._setDataModelFromForm = function () {
                     var countryCode = this.countryObject.code;
                     this.form.countryLocation = countryCode;
-                    this.$scope.$parent.vm.teacherData.Location.Country = this.form.countryLocation;
-                    this.$scope.$parent.vm.teacherData.Location.Address = this.form.addressLocation;
-                    this.$scope.$parent.vm.teacherData.Location.City = this.form.cityLocation;
-                    this.$scope.$parent.vm.teacherData.Location.State = this.form.stateLocation;
-                    this.$scope.$parent.vm.teacherData.Location.ZipCode = this.form.zipCodeLocation;
-                    this.$scope.$parent.vm.teacherData.Location.Position = this.form.positionLocation;
+                    this.$rootScope.teacherData.Location.Country = this.form.countryLocation;
+                    this.$rootScope.teacherData.Location.Address = this.form.addressLocation;
+                    this.$rootScope.teacherData.Location.City = this.form.cityLocation;
+                    this.$rootScope.teacherData.Location.State = this.form.stateLocation;
+                    this.$rootScope.teacherData.Location.ZipCode = this.form.zipCodeLocation;
+                    this.$rootScope.teacherData.Location.Position = this.form.positionLocation;
                     this.changeMapPosition();
                 };
                 TeacherLocationSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self.form.addressLocation = args.Location.Address;
-                        self.form.cityLocation = args.Location.City;
-                        self.form.stateLocation = args.Location.State;
-                        self.form.zipCodeLocation = args.Location.ZipCode;
-                        self.countryObject.code = args.Location.Country;
-                        self.form.positionLocation = new app.models.user.Position(args.Location.Position);
-                        self.mapConfig = self.functionsUtilService.buildMapConfig([
-                            {
-                                id: self.form.positionLocation.Id,
-                                location: {
-                                    position: {
-                                        lat: parseFloat(self.form.positionLocation.Lat),
-                                        lng: parseFloat(self.form.positionLocation.Lng)
-                                    }
-                                }
-                            }
-                        ], 'drag-maker-map', { lat: parseFloat(self.form.positionLocation.Lat), lng: parseFloat(self.form.positionLocation.Lng) }, null);
-                        self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                        self._fillForm(args);
                     });
                     this.$scope.$on('Position', function (event, args) {
                         self.form.positionLocation.Lng = args.lng;
@@ -217,6 +224,7 @@ var app;
                 '$state',
                 '$filter',
                 '$scope',
+                '$rootScope',
                 '$timeout'
             ];
             createTeacherPage.TeacherLocationSectionController = TeacherLocationSectionController;

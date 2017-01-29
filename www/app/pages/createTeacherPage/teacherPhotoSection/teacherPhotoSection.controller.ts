@@ -70,7 +70,8 @@ module app.pages.createTeacherPage {
             'Upload',
             '$state',
             '$filter',
-            '$scope'
+            '$scope',
+            '$rootScope'
         ];
 
         /**********************************/
@@ -85,7 +86,8 @@ module app.pages.createTeacherPage {
             private Upload: IUpload,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
-            private $scope: ITeacherPhotoScope) {
+            private $scope: ITeacherPhotoScope,
+            private $rootScope: app.core.interfaces.IMainAppRootScope) {
                 this._init();
         }
 
@@ -134,6 +136,11 @@ module app.pages.createTeacherPage {
 
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
+
+            //FILL FORM FROM ROOTSCOPE TEACHER INFO
+            if(this.$rootScope.teacherData) {
+                this._fillForm(this.$rootScope.teacherData);
+            }
 
         }
 
@@ -247,13 +254,29 @@ module app.pages.createTeacherPage {
 
 
         /**
+        * _fillForm
+        * @description - Fill form with teacher data
+        * @use - this._fillForm(data);
+        * @function
+        * @param {app.models.teacher.Teacher} data - Teacher Data
+        * @return {void}
+        */
+        private _fillForm(data: app.models.teacher.Teacher): void {
+
+            this.form.thumbnail = data.Avatar;
+
+        }
+
+
+
+        /**
         * _validateForm
         * @description - Validate each field on form
         * @use - this._validateForm();
         * @function
         * @return {boolean} formValid - return If the complete form is valid or not.
         */
-        _validateForm(): boolean {
+        private _validateForm(): boolean {
             //CONSTANTS
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
@@ -397,7 +420,7 @@ module app.pages.createTeacherPage {
         private _setDataModelFromForm(avatar): void {
 
             // Send data to parent (createTeacherPage)
-            this.$scope.$parent.vm.teacherData.Avatar = avatar;
+            this.$rootScope.teacherData.Avatar = avatar;
 
         }
 
@@ -423,7 +446,7 @@ module app.pages.createTeacherPage {
             */
             this.$scope.$on('Fill Form', function(event, args: app.models.teacher.Teacher) {
 
-                self.form.thumbnail = args.Avatar;
+                self._fillForm(args);
 
             });
         }

@@ -159,7 +159,7 @@ module components.modal.modalEducation {
         * @function
         * @return {boolean} formValid - return If the complete form is valid or not.
         */
-        _validateForm(): boolean {
+        private _validateForm(): boolean {
             //CONSTANTS
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
@@ -281,7 +281,7 @@ module components.modal.modalEducation {
         * @return {void}
         */
         close(): void {
-            this.$uibModalInstance.close();            
+            this.$uibModalInstance.close();
         }
 
 

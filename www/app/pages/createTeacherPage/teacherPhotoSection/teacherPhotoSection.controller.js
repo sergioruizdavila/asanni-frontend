@@ -5,7 +5,7 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherPhotoSectionController = (function () {
-                function TeacherPhotoSectionController(dataConfig, getDataFromJson, functionsUtilService, S3UploadService, messageUtil, Upload, $state, $filter, $scope) {
+                function TeacherPhotoSectionController(dataConfig, getDataFromJson, functionsUtilService, S3UploadService, messageUtil, Upload, $state, $filter, $scope, $rootScope) {
                     this.dataConfig = dataConfig;
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
@@ -15,6 +15,7 @@ var app;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this._init();
                 }
                 TeacherPhotoSectionController.prototype._init = function () {
@@ -43,6 +44,9 @@ var app;
                 TeacherPhotoSectionController.prototype.activate = function () {
                     console.log('TeacherPhotoSectionController controller actived');
                     this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
                 };
                 TeacherPhotoSectionController.prototype.goToNext = function () {
                     var self = this;
@@ -97,6 +101,9 @@ var app;
                     else {
                         window.scrollTo(0, 0);
                     }
+                };
+                TeacherPhotoSectionController.prototype._fillForm = function (data) {
+                    this.form.thumbnail = data.Avatar;
                 };
                 TeacherPhotoSectionController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
@@ -163,12 +170,12 @@ var app;
                     });
                 };
                 TeacherPhotoSectionController.prototype._setDataModelFromForm = function (avatar) {
-                    this.$scope.$parent.vm.teacherData.Avatar = avatar;
+                    this.$rootScope.teacherData.Avatar = avatar;
                 };
                 TeacherPhotoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self.form.thumbnail = args.Avatar;
+                        self._fillForm(args);
                     });
                 };
                 return TeacherPhotoSectionController;
@@ -183,7 +190,8 @@ var app;
                 'Upload',
                 '$state',
                 '$filter',
-                '$scope'
+                '$scope',
+                '$rootScope'
             ];
             createTeacherPage.TeacherPhotoSectionController = TeacherPhotoSectionController;
             angular

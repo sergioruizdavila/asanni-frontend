@@ -69,6 +69,7 @@ module app.pages.createTeacherPage {
             '$state',
             '$filter',
             '$scope',
+            '$rootScope',
             '$timeout',
             '$uibModal'
         ];
@@ -83,6 +84,7 @@ module app.pages.createTeacherPage {
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
             private $scope: ITeacherLanguageScope,
+            private $rootScope: app.core.interfaces.IMainAppRootScope,
             private $timeout,
             private $uibModal: ng.ui.bootstrap.IModalService) {
                 this._init();
@@ -133,6 +135,11 @@ module app.pages.createTeacherPage {
 
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
+
+            //FILL FORM FROM ROOTSCOPE TEACHER INFO
+            if(this.$rootScope.teacherData) {
+                this._fillForm(this.$rootScope.teacherData);
+            }
 
         }
 
@@ -192,13 +199,94 @@ module app.pages.createTeacherPage {
 
 
         /**
+        * _fillForm
+        * @description - Fill form with teacher data
+        * @use - this._fillForm(data);
+        * @function
+        * @param {app.models.teacher.Teacher} data - Teacher Data
+        * @return {void}
+        */
+        private _fillForm(data: app.models.teacher.Teacher): void {
+
+            // Form is already filled (Just take native because it's required has a native language)
+            if(this.form.native.length === 0) {
+
+                let languageArray = this.getDataFromJson.getLanguagei18n();
+                for (let i = 0; i < languageArray.length; i++) {
+
+                    if(data.Languages.Native) {
+                        // Build user native language list
+                        for (let j = 0; j < data.Languages.Native.length; j++) {
+
+                            if(data.Languages.Native[j] == languageArray[i].code) {
+                                let obj = {key:null, value:''};
+                                obj.key = parseInt(languageArray[i].code);
+                                obj.value = languageArray[i].value;
+                                if(this.form.native == null) {
+                                    this.form.native = [];
+                                    this.form.native.push(obj);
+                                } else {
+                                    this.form.native.push(obj);
+                                }
+                            }
+
+                        }
+                    }
+
+                    if(data.Languages.Learn) {
+                        // Build user learn language list
+                        for (let j = 0; j < data.Languages.Learn.length; j++) {
+
+                            if(data.Languages.Learn[j] == languageArray[i].code) {
+                                let obj = {key:null, value:''};
+                                obj.key = parseInt(languageArray[i].code);
+                                obj.value = languageArray[i].value;
+                                if(this.form.learn == null) {
+                                    this.form.learn = [];
+                                    this.form.learn.push(obj);
+                                } else {
+                                    this.form.learn.push(obj);
+                                }
+                            }
+
+                        }
+                    }
+
+                    if(data.Languages.Teach) {
+                        // Build user teach language list
+                        for (let j = 0; j < data.Languages.Teach.length; j++) {
+
+                            if(data.Languages.Teach[j] == languageArray[i].code) {
+                                let obj = {key:null, value:''};
+                                obj.key = parseInt(languageArray[i].code);
+                                obj.value = languageArray[i].value;
+                                if(this.form.teach == null) {
+                                    this.form.teach = [];
+                                    this.form.teach.push(obj);
+                                } else {
+                                    this.form.teach.push(obj);
+                                }
+                            }
+
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+
+
+
+        /**
         * _validateForm
         * @description - Validate each field on form
         * @use - this._validateForm();
         * @function
         * @return {boolean} formValid - return If the complete form is valid or not.
         */
-        _validateForm(): boolean {
+        private _validateForm(): boolean {
             //CONSTANTS
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
@@ -351,7 +439,7 @@ module app.pages.createTeacherPage {
                 for (let i = 0; i < this.form.native.length; i++) {
                     native.push(this.form.native[i].key);
                 }
-                this.$scope.$parent.vm.teacherData.Languages.Native = native;
+                this.$rootScope.teacherData.Languages.Native = native;
             }
 
             if(this.form.learn) {
@@ -359,7 +447,7 @@ module app.pages.createTeacherPage {
                 for (let i = 0; i < this.form.learn.length; i++) {
                     learn.push(this.form.learn[i].key);
                 }
-                this.$scope.$parent.vm.teacherData.Languages.Learn = learn;
+                this.$rootScope.teacherData.Languages.Learn = learn;
             }
 
             if(this.form.teach) {
@@ -367,7 +455,7 @@ module app.pages.createTeacherPage {
                 for (let i = 0; i < this.form.teach.length; i++) {
                     teach.push(this.form.teach[i].key);
                 }
-                this.$scope.$parent.vm.teacherData.Languages.Teach = teach;
+                this.$rootScope.teacherData.Languages.Teach = teach;
             }
         }
 
@@ -393,67 +481,7 @@ module app.pages.createTeacherPage {
             */
             this.$scope.$on('Fill Form', function(event, args: app.models.teacher.Teacher) {
 
-                let languageArray = self.getDataFromJson.getLanguagei18n();
-                for (let i = 0; i < languageArray.length; i++) {
-
-                    if(args.Languages.Native) {
-                        // Build user native language list
-                        for (let j = 0; j < args.Languages.Native.length; j++) {
-
-                            if(args.Languages.Native[j] == languageArray[i].code) {
-                                let obj = {key:null, value:''};
-                                obj.key = parseInt(languageArray[i].code);
-                                obj.value = languageArray[i].value;
-                                if(self.form.native == null) {
-                                    self.form.native = [];
-                                    self.form.native.push(obj);
-                                } else {
-                                    self.form.native.push(obj);
-                                }
-                            }
-
-                        }
-                    }
-
-                    if(args.Languages.Learn) {
-                        // Build user learn language list
-                        for (let j = 0; j < args.Languages.Learn.length; j++) {
-
-                            if(args.Languages.Learn[j] == languageArray[i].code) {
-                                let obj = {key:null, value:''};
-                                obj.key = parseInt(languageArray[i].code);
-                                obj.value = languageArray[i].value;
-                                if(self.form.learn == null) {
-                                    self.form.learn = [];
-                                    self.form.learn.push(obj);
-                                } else {
-                                    self.form.learn.push(obj);
-                                }
-                            }
-
-                        }
-                    }
-
-                    if(args.Languages.Teach) {
-                        // Build user teach language list
-                        for (let j = 0; j < args.Languages.Teach.length; j++) {
-
-                            if(args.Languages.Teach[j] == languageArray[i].code) {
-                                let obj = {key:null, value:''};
-                                obj.key = parseInt(languageArray[i].code);
-                                obj.value = languageArray[i].value;
-                                if(self.form.teach == null) {
-                                    self.form.teach = [];
-                                    self.form.teach.push(obj);
-                                } else {
-                                    self.form.teach.push(obj);
-                                }
-                            }
-
-                        }
-                    }
-
-                }
+                self._fillForm(args);
 
             });
 

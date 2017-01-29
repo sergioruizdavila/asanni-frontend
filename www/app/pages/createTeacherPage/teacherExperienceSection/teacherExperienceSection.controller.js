@@ -5,13 +5,14 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherExperienceSectionController = (function () {
-                function TeacherExperienceSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope, $uibModal) {
+                function TeacherExperienceSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope, $rootScope, $uibModal) {
                     this.dataConfig = dataConfig;
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this.$uibModal = $uibModal;
                     this._init();
                 }
@@ -45,6 +46,9 @@ var app;
                 TeacherExperienceSectionController.prototype.activate = function () {
                     console.log('TeacherExperienceSectionController controller actived');
                     this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
                 };
                 TeacherExperienceSectionController.prototype.goToNext = function () {
                     var formValid = this._validateForm();
@@ -85,6 +89,19 @@ var app;
                         this._hobbyChecked.checked = false;
                         this.form.type = this._professionalChecked.type;
                     }
+                };
+                TeacherExperienceSectionController.prototype._fillForm = function (data) {
+                    this.form.type = data.Type || 'H';
+                    if (this.form.type === 'H') {
+                        this._professionalChecked.checked = false;
+                        this._hobbyChecked.checked = true;
+                    }
+                    else {
+                        this._professionalChecked.checked = true;
+                        this._hobbyChecked.checked = false;
+                    }
+                    this.yearObject.value = data.TeacherSince;
+                    this.form.experiences = data.Experiences;
                 };
                 TeacherExperienceSectionController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
@@ -141,7 +158,7 @@ var app;
                             dataSetModal: function () {
                                 return {
                                     experience: self.form.experiences[index],
-                                    teacherId: self.$scope.$parent.vm.teacherData.Id
+                                    teacherId: self.$rootScope.teacherData.Id
                                 };
                             }
                         }
@@ -157,23 +174,13 @@ var app;
                     $event.preventDefault();
                 };
                 TeacherExperienceSectionController.prototype._setDataModelFromForm = function () {
-                    this.$scope.$parent.vm.teacherData.Type = this.form.type;
-                    this.$scope.$parent.vm.teacherData.TeacherSince = this.yearObject.value;
+                    this.$rootScope.teacherData.Type = this.form.type;
+                    this.$rootScope.teacherData.TeacherSince = this.yearObject.value;
                 };
                 TeacherExperienceSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self.form.type = args.Type || 'H';
-                        if (self.form.type === 'H') {
-                            self._professionalChecked.checked = false;
-                            self._hobbyChecked.checked = true;
-                        }
-                        else {
-                            self._professionalChecked.checked = true;
-                            self._hobbyChecked.checked = false;
-                        }
-                        self.yearObject.value = args.TeacherSince;
-                        self.form.experiences = args.Experiences;
+                        self._fillForm(args);
                     });
                 };
                 return TeacherExperienceSectionController;
@@ -186,6 +193,7 @@ var app;
                 '$state',
                 '$filter',
                 '$scope',
+                '$rootScope',
                 '$uibModal'
             ];
             createTeacherPage.TeacherExperienceSectionController = TeacherExperienceSectionController;

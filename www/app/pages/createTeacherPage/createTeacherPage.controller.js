@@ -24,7 +24,6 @@ var app;
                 CreateTeacherPageController.prototype._init = function () {
                     var self = this;
                     var currentState = this.$state.current.name;
-                    this.teacherData = new app.models.teacher.Teacher();
                     angular.element(this.$window).bind("scroll", function () {
                         var floatHeader = document.getElementById('header-float');
                         if (floatHeader) {
@@ -59,9 +58,8 @@ var app;
                         this.teacherService.getTeacherById(this.$rootScope.teacher_id)
                             .then(function (response) {
                             if (response.id) {
-                                self.teacherData = new app.models.teacher.Teacher(response);
                                 self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
-                                self.$scope.$broadcast('Fill Form', self.teacherData);
+                                self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
                             }
                             else {
                             }
@@ -73,31 +71,31 @@ var app;
                     this.$scope.$on('Save Data', function (event, args) {
                         var SUCCESS_MESSAGE = self.$filter('translate')('%notification.success.text');
                         var numStep = args;
-                        if (self.teacherData.Id) {
-                            self.teacherService.updateTeacher(self.teacherData)
+                        if (self.$rootScope.teacherData.Id) {
+                            self.teacherService.updateTeacher(self.$rootScope.teacherData)
                                 .then(function (response) {
                                 if (response.id) {
                                     window.scrollTo(0, 0);
                                     self.messageUtil.success(SUCCESS_MESSAGE);
                                     self.$rootScope.teacher_id = response.id;
                                     self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
-                                    self.teacherData = new app.models.teacher.Teacher(response);
-                                    self.$scope.$broadcast('Fill Form', self.teacherData);
+                                    self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
+                                    self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
                                 }
                                 else {
                                 }
                             });
                         }
                         else {
-                            self.teacherService.createTeacher(self.teacherData)
+                            self.teacherService.createTeacher(self.$rootScope.teacherData)
                                 .then(function (response) {
                                 if (response.id) {
                                     window.scrollTo(0, 0);
                                     self.messageUtil.success(SUCCESS_MESSAGE);
                                     self.$rootScope.teacher_id = response.id;
                                     self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
-                                    self.teacherData = new app.models.teacher.Teacher(response);
-                                    self.$scope.$broadcast('Fill Form', self.teacherData);
+                                    self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
+                                    self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
                                 }
                                 else {
                                 }
