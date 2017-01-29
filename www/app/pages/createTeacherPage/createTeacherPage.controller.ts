@@ -9,7 +9,6 @@ module app.pages.createTeacherPage {
     /*           INTERFACES           */
     /**********************************/
     export interface ICreateTeacherPageController {
-        teacherData: app.models.teacher.Teacher;
         progressWidth: string;
         titleSection: string;
         form: ICreateTeacherForm;
@@ -94,7 +93,8 @@ module app.pages.createTeacherPage {
             let currentState = this.$state.current.name;
 
             //Init teacher instance
-            this.teacherData = new app.models.teacher.Teacher();
+            //this.teacherData = new app.models.teacher.Teacher();
+            this.$rootScope.teacherData = new app.models.teacher.Teacher();
 
             // Init header fixed
             //TODO: Remover esto de aqui, y colocarlo en un lugar global, ya que
@@ -111,7 +111,7 @@ module app.pages.createTeacherPage {
                         floatHeaderClasses.add('hidden');
                     }
                 }
-        });
+            });
 
             this.error = {
                 message: ''
@@ -169,8 +169,10 @@ module app.pages.createTeacherPage {
                     function(response) {
                         if(response.id) {
 
-                            self.teacherData = new app.models.teacher.Teacher(response);
-                            self.$scope.$broadcast('Fill Form', self.teacherData);
+                            //self.teacherData = new app.models.teacher.Teacher(response);
+                            //TEST
+                            self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
+                            self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
 
                         } else {
                             //error
@@ -206,9 +208,9 @@ module app.pages.createTeacherPage {
                 let numStep = args;
                 /******************************/
 
-                if(self.teacherData.Id) {
+                if(self.$rootScope.teacherData.Id) {
                     // UPDATE EXISTING TEACHER
-                    self.teacherService.updateTeacher(self.teacherData)
+                    self.teacherService.updateTeacher(self.$rootScope.teacherData)
                     .then(
                         function(response) {
                             if(response.id) {
@@ -221,8 +223,8 @@ module app.pages.createTeacherPage {
                                 self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
 
                                 //Fill Form
-                                self.teacherData = new app.models.teacher.Teacher(response);
-                                self.$scope.$broadcast('Fill Form', self.teacherData);
+                                self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
+                                self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
 
                             } else {
                                 //error
@@ -231,7 +233,7 @@ module app.pages.createTeacherPage {
                     );
                 } else {
                     // CREATE NEW TEACHER
-                    self.teacherService.createTeacher(self.teacherData)
+                    self.teacherService.createTeacher(self.$rootScope.teacherData)
                     .then(
                         function(response) {
                             if(response.id) {
@@ -244,8 +246,8 @@ module app.pages.createTeacherPage {
                                 self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
 
                                 //Fill Form
-                                self.teacherData = new app.models.teacher.Teacher(response);
-                                self.$scope.$broadcast('Fill Form', self.teacherData);
+                                self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
+                                self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
 
                             } else {
                                 //error

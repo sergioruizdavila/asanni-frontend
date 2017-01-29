@@ -14,7 +14,6 @@
                     controllerAs: 'vm'
                 }
             },
-            parent: 'page',
             cache: false,
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
@@ -30,7 +29,6 @@
                     controllerAs: 'vm'
                 }
             },
-            parent: 'page',
             params: {
                 id: null
             },

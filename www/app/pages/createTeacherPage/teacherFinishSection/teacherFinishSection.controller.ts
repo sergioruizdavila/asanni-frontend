@@ -34,6 +34,7 @@ module app.pages.createTeacherPage {
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = [
             '$scope',
+            '$rootScope',
             '$state',
             'dataConfig',
             'mainApp.core.util.FunctionsUtilService',
@@ -45,6 +46,7 @@ module app.pages.createTeacherPage {
         /**********************************/
         constructor(
             private $scope: ITeacherFinishScope,
+            private $rootScope: app.core.interfaces.IMainAppRootScope,
             private $state: ng.ui.IStateService,
             private dataConfig: IDataConfig,
             private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
@@ -85,9 +87,9 @@ module app.pages.createTeacherPage {
             //this.$state.go('page.teacherProfilePage', {id: this.$scope.$parent.vm.teacherData.Id});
             //MIXPANEL
             mixpanel.track("Finish Process: Create Teacher", {
-                "id": this.$scope.$parent.vm.teacherData.Id,
-                "name": this.$scope.$parent.vm.teacherData.FirstName + ' ' + this.$scope.$parent.vm.teacherData.LastName,
-                "email": this.$scope.$parent.vm.teacherData.Email
+                "id": this.$rootScope.teacherData.Id,
+                "name": this.$rootScope.teacherData.FirstName + ' ' + this.$rootScope.teacherData.LastName,
+                "email": this.$rootScope.teacherData.Email
             });
 
             this.$state.go('page.landingPage');

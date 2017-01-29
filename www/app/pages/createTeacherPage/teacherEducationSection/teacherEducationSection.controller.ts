@@ -61,6 +61,7 @@ module app.pages.createTeacherPage {
             '$state',
             '$filter',
             '$scope',
+            '$rootScope',
             '$uibModal'
         ];
 
@@ -74,6 +75,7 @@ module app.pages.createTeacherPage {
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
             private $scope: ITeacherEducationScope,
+            private $rootScope: app.core.interfaces.IMainAppRootScope,
             private $uibModal: ng.ui.bootstrap.IModalService) {
                 this._init();
         }
@@ -120,6 +122,11 @@ module app.pages.createTeacherPage {
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
 
+            //FILL FORM FROM ROOTSCOPE TEACHER INFO
+            if(this.$rootScope.teacherData) {
+                this._fillForm(this.$rootScope.teacherData);
+            }
+
         }
 
         /**********************************/
@@ -157,16 +164,22 @@ module app.pages.createTeacherPage {
         * @return void
         */
         goToBack(): void {
-            //Validate data form
-            let formValid = this._validateForm();
-            //If form is valid, save data model
-            if(formValid) {
-                this.$scope.$emit('Save Data');
-                this.$state.go(this.STEP4_STATE, {reload: true});
-            } else {
-                //Go top pages
-                window.scrollTo(0, 0);
-            }
+            this.$state.go(this.STEP4_STATE, {reload: true});
+        }
+
+
+
+        /**
+        * _fillForm
+        * @description - Fill form with teacher data
+        * @use - this._fillForm(data);
+        * @function
+        * @param {app.models.teacher.Teacher} data - Teacher Data
+        * @return {void}
+        */
+        private _fillForm(data: app.models.teacher.Teacher): void {
+            this.form.educations = data.Educations;
+            this.form.certificates = data.Certificates;
         }
 
 
@@ -178,7 +191,7 @@ module app.pages.createTeacherPage {
         * @function
         * @return {boolean} formValid - return If the complete form is valid or not.
         */
-        _validateForm(): boolean {
+        private _validateForm(): boolean {
             //CONSTANTS
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
@@ -277,7 +290,7 @@ module app.pages.createTeacherPage {
                     dataSetModal: function () {
                         return {
                             education: self.form.educations[index],
-                            teacherId: self.$scope.$parent.vm.teacherData.Id
+                            teacherId: self.$rootScope.teacherData.Id
                         }
                     }
                 }
@@ -320,7 +333,7 @@ module app.pages.createTeacherPage {
                     dataSetModal: function () {
                         return {
                             certificate: self.form.certificates[index],
-                            teacherId: self.$scope.$parent.vm.teacherData.Id
+                            teacherId: self.$rootScope.teacherData.Id
                         }
                     }
                 }
@@ -361,8 +374,7 @@ module app.pages.createTeacherPage {
             * @event
             */
             this.$scope.$on('Fill Form', function(event, args: app.models.teacher.Teacher) {
-                self.form.educations = args.Educations;
-                self.form.certificates = args.Certificates;
+                self._fillForm(args);
             });
         }
 

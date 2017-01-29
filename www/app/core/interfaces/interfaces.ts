@@ -9,6 +9,7 @@ module app.core.interfaces {
     /*******************************/
     export interface IMainAppRootScope extends angular.IRootScopeService {
         teacher_id: string;
+        teacherData: app.models.teacher.Teacher;
         language_doc: angular.translate.ITranslateProvider;
         activeHeader: boolean;
         activeFooter: boolean;

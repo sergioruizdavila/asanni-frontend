@@ -53,7 +53,7 @@ module app.pages.createTeacherPage {
         typeOfImmersionList: Array<ISelectListElementDisabled>;
         typeOfImmersionOptionBox: Array<app.core.interfaces.IKeyValue>;
         typeObject: app.core.interfaces.IDataFromJsonI18n;
-        STEP5_STATE: string;
+        step5State: string;
         STEP7_STATE: string;
         HELP_TEXT_TITLE: string;
         HELP_TEXT_DESCRIPTION: string;
@@ -67,7 +67,8 @@ module app.pages.createTeacherPage {
             'mainApp.core.util.FunctionsUtilService',
             '$state',
             '$filter',
-            '$scope'
+            '$scope',
+            '$rootScope'
         ];
 
         /**********************************/
@@ -79,18 +80,16 @@ module app.pages.createTeacherPage {
             private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
-            private $scope: ITeacherMethodScope) {
+            private $scope: ITeacherMethodScope,
+            private $rootScope: app.core.interfaces.IMainAppRootScope) {
                 this._init();
         }
 
         /*-- INITIALIZE METHOD --*/
         private _init() {
+            //VARIABLES
+            this.step5State = '';
             //CONSTANTS
-            if(this.$scope.$parent.vm.teacherData.Type === 'P'){
-                this.STEP5_STATE = 'page.createTeacherPage.education';
-            } else {
-                this.STEP5_STATE = 'page.createTeacherPage.experience';
-            }
             this.STEP7_STATE = 'page.createTeacherPage.price';
             this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.method.help_text.title.text');
             this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.method.help_text.description.text');
@@ -134,6 +133,11 @@ module app.pages.createTeacherPage {
 
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
+
+            //FILL FORM FROM ROOTSCOPE TEACHER INFO
+            if(this.$rootScope.teacherData) {
+                this._fillForm(this.$rootScope.teacherData);
+            }
 
         }
 
@@ -184,18 +188,58 @@ module app.pages.createTeacherPage {
         * @function
         * @return void
         */
-        goToBack(): void {
-            //Validate data form
-            let formValid = this._validateForm();
-            //If form is valid, save data model
-            if(formValid) {
-                this._setDataModelFromForm();
-                this.$scope.$emit('Save Data');
-                this.$state.go(this.STEP5_STATE, {reload: true});
+        goToBack(): void {            
+            this.$state.go(this.step5State, {reload: true});
+        }
+
+
+
+        /**
+        * _fillForm
+        * @description - Fill form with teacher data
+        * @use - this._fillForm(data);
+        * @function
+        * @param {app.models.teacher.Teacher} data - Teacher Data
+        * @return {void}
+        */
+        private _fillForm(data: app.models.teacher.Teacher): void {
+            //VARIABLES
+            if(data.Type === 'P') {
+                this.step5State = 'page.createTeacherPage.education';
             } else {
-                //Go top pages
-                window.scrollTo(0, 0);
+                this.step5State = 'page.createTeacherPage.experience';
             }
+            this.form.methodology = data.Methodology;
+            this.form.immersion = data.Immersion;
+
+            //Charge immersion type list
+            if(this.form.immersion.Active) {
+
+                // type of immersion list was already filled
+                if(this.typeOfImmersionOptionBox.length === 0) {
+
+                    let immersionArray = this.getDataFromJson.getTypeOfImmersioni18n();
+                    let newArray: Array<app.core.interfaces.IKeyValue> = [];
+
+                    for (let i = 0; i < immersionArray.length; i++) {
+
+                        for (let j = 0; j < this.form.immersion.Category.length; j++) {
+                            if(this.form.immersion.Category[j] === immersionArray[i].code) {
+                                let obj = {key:null, value:''};
+                                obj.key = immersionArray[i].code;
+                                obj.value = immersionArray[i].value;
+                                //Disable immersion option from select list
+                                this._disableEnableOption(true, obj.key);
+                                this.typeOfImmersionOptionBox.push(obj);
+                            }
+                        }
+
+                    }
+
+                }
+
+            }
+
         }
 
 
@@ -207,11 +251,11 @@ module app.pages.createTeacherPage {
         * @function
         * @return {boolean} formValid - return If the complete form is valid or not.
         */
-        _validateForm(): boolean {
+        private _validateForm(): boolean {
             //CONSTANTS
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
-            
+
             /***************************************************/
             //VARIABLES
             let formValid = true;
@@ -343,9 +387,9 @@ module app.pages.createTeacherPage {
             /*********************************/
 
             // Send data to parent (createTeacherPage)
-            this.$scope.$parent.vm.teacherData.Methodology = this.form.methodology;
-            this.$scope.$parent.vm.teacherData.Immersion = this.form.immersion;
-            this.$scope.$parent.vm.teacherData.Immersion.Category = this.form.immersion.Category;
+            this.$rootScope.teacherData.Methodology = this.form.methodology;
+            this.$rootScope.teacherData.Immersion = this.form.immersion;
+            this.$rootScope.teacherData.Immersion.Category = this.form.immersion.Category;
 
         }
 
@@ -390,28 +434,7 @@ module app.pages.createTeacherPage {
             */
             this.$scope.$on('Fill Form', function(event, args: app.models.teacher.Teacher) {
 
-                self.form.methodology = args.Methodology;
-                self.form.immersion = args.Immersion;
-
-                //Charge immersion type list
-                if(self.form.immersion.Active) {
-                    let immersionArray = self.getDataFromJson.getTypeOfImmersioni18n();
-                    let newArray: Array<app.core.interfaces.IKeyValue> = [];
-                    for (let i = 0; i < immersionArray.length; i++) {
-
-                        for (let j = 0; j < self.form.immersion.Category.length; j++) {
-                            if(self.form.immersion.Category[j] === immersionArray[i].code) {
-                                let obj = {key:null, value:''};
-                                obj.key = immersionArray[i].code;
-                                obj.value = immersionArray[i].value;
-                                //Disable immersion option from select list
-                                self._disableEnableOption(true, obj.key);
-                                self.typeOfImmersionOptionBox.push(obj);
-                            }
-                        }
-
-                    }
-                }
+                self._fillForm(args);
 
             });
         }
