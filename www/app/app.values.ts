@@ -49,7 +49,7 @@ interface IDataConfig {
     // bucketS3: 'waysily-img/teachers-avatar-prd'
     var dataConfig: IDataConfig = {
         currentYear: '2017',
-        baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/',
+        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
         domain: 'www.waysily.com',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',
@@ -61,7 +61,7 @@ interface IDataConfig {
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
         modalRecommendTeacherTmpl: 'components/modal/modalRecommendTeacher/modalRecommendTeacher.html',
-        bucketS3: 'waysily-img/teachers-avatar-dev',
+        bucketS3: 'waysily-img/teachers-avatar-prd',
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
