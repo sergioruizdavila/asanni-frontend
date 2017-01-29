@@ -67,15 +67,7 @@ var app;
                     }
                 };
                 TeacherLocationSectionController.prototype.goToBack = function () {
-                    var formValid = this._validateForm();
-                    if (formValid) {
-                        this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data');
-                        this.$state.go(this.STEP1_STATE, { reload: true });
-                    }
-                    else {
-                        window.scrollTo(0, 0);
-                    }
+                    this.$state.go(this.STEP1_STATE, { reload: true });
                 };
                 TeacherLocationSectionController.prototype._fillForm = function (data) {
                     this.form.addressLocation = data.Location.Address;

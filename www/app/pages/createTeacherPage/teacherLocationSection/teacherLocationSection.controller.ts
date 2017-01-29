@@ -204,17 +204,7 @@ module app.pages.createTeacherPage {
         * @return void
         */
         goToBack(): void {
-            //Validate data form
-            let formValid = this._validateForm();
-            //If form is valid, save data model
-            if(formValid) {
-                this._setDataModelFromForm();
-                this.$scope.$emit('Save Data');
-                this.$state.go(this.STEP1_STATE, {reload: true});
-            } else {
-                //Go top pages
-                window.scrollTo(0, 0);
-            }
+            this.$state.go(this.STEP1_STATE, {reload: true});
         }
 
 

@@ -209,46 +209,7 @@ module app.pages.createTeacherPage {
         * @return void
         */
         goToBack(): void {
-            //VARIABLES
-            let self = this;
-            //Validate data form
-            let formValid = this._validateForm();
-
-            //If form is valid, save data model
-            if(formValid) {
-
-                this.uploading = true;
-
-                // If this.form.avatar exists, resize and upload image
-                if(this.form.avatar) {
-                    this._resizeImage().then(function(result) {
-
-                        self.uploading = false;
-
-                        if(result.Location) {
-                            // Save teacher model on DB
-                            self._setDataModelFromForm(result.Location);
-                            self.$scope.$emit('Save Data');
-
-                            // GO TO BACK STEP
-                            self.$state.go(self.STEP7_STATE, {reload: true});
-                        } else {
-                            self.messageUtil.error('');
-                        }
-
-                    });
-
-                // If this.form.avatar not exists, only go to back step
-                } else {
-                    this.$scope.$emit('Save Data');
-                    // GO TO BACK STEP
-                    this.$state.go(this.STEP7_STATE, {reload: true});
-                }
-
-            } else {
-                //Go top pages
-                window.scrollTo(0, 0);
-            }
+            this.$state.go(this.STEP7_STATE, {reload: true});
         }
 
 

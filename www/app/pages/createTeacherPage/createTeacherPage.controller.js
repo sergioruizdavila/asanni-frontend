@@ -24,6 +24,7 @@ var app;
                 CreateTeacherPageController.prototype._init = function () {
                     var self = this;
                     var currentState = this.$state.current.name;
+                    this.$rootScope.teacherData = new app.models.teacher.Teacher();
                     angular.element(this.$window).bind("scroll", function () {
                         var floatHeader = document.getElementById('header-float');
                         if (floatHeader) {

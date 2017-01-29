@@ -5610,6 +5610,7 @@ var app;
                 CreateTeacherPageController.prototype._init = function () {
                     var self = this;
                     var currentState = this.$state.current.name;
+                    this.$rootScope.teacherData = new app.models.teacher.Teacher();
                     angular.element(this.$window).bind("scroll", function () {
                         var floatHeader = document.getElementById('header-float');
                         if (floatHeader) {
@@ -6139,15 +6140,7 @@ var app;
                     }
                 };
                 TeacherLocationSectionController.prototype.goToBack = function () {
-                    var formValid = this._validateForm();
-                    if (formValid) {
-                        this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data');
-                        this.$state.go(this.STEP1_STATE, { reload: true });
-                    }
-                    else {
-                        window.scrollTo(0, 0);
-                    }
+                    this.$state.go(this.STEP1_STATE, { reload: true });
                 };
                 TeacherLocationSectionController.prototype._fillForm = function (data) {
                     this.form.addressLocation = data.Location.Address;
@@ -6390,15 +6383,7 @@ var app;
                     }
                 };
                 TeacherLanguageSectionController.prototype.goToBack = function () {
-                    var formValid = this._validateForm();
-                    if (formValid) {
-                        this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data');
-                        this.$state.go(this.STEP2_STATE, { reload: true });
-                    }
-                    else {
-                        window.scrollTo(0, 0);
-                    }
+                    this.$state.go(this.STEP2_STATE, { reload: true });
                 };
                 TeacherLanguageSectionController.prototype._fillForm = function (data) {
                     if (this.form.native.length === 0) {
@@ -6674,15 +6659,7 @@ var app;
                     }
                 };
                 TeacherExperienceSectionController.prototype.goToBack = function () {
-                    var formValid = this._validateForm();
-                    if (formValid) {
-                        this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data');
-                        this.$state.go(this.STEP3_STATE, { reload: true });
-                    }
-                    else {
-                        window.scrollTo(0, 0);
-                    }
+                    this.$state.go(this.STEP3_STATE, { reload: true });
                 };
                 TeacherExperienceSectionController.prototype._checkType = function (key) {
                     var type = key.type;
@@ -6889,14 +6866,7 @@ var app;
                     }
                 };
                 TeacherEducationSectionController.prototype.goToBack = function () {
-                    var formValid = this._validateForm();
-                    if (formValid) {
-                        this.$scope.$emit('Save Data');
-                        this.$state.go(this.STEP4_STATE, { reload: true });
-                    }
-                    else {
-                        window.scrollTo(0, 0);
-                    }
+                    this.$state.go(this.STEP4_STATE, { reload: true });
                 };
                 TeacherEducationSectionController.prototype._fillForm = function (data) {
                     this.form.educations = data.Educations;
@@ -7110,15 +7080,7 @@ var app;
                     }
                 };
                 TeacherMethodSectionController.prototype.goToBack = function () {
-                    var formValid = this._validateForm();
-                    if (formValid) {
-                        this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data');
-                        this.$state.go(this.step5State, { reload: true });
-                    }
-                    else {
-                        window.scrollTo(0, 0);
-                    }
+                    this.$state.go(this.step5State, { reload: true });
                 };
                 TeacherMethodSectionController.prototype._fillForm = function (data) {
                     if (data.Type === 'P') {
@@ -7328,15 +7290,7 @@ var app;
                     }
                 };
                 TeacherPriceSectionController.prototype.goToBack = function () {
-                    var formValid = this._validateForm();
-                    if (formValid) {
-                        this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data');
-                        this.$state.go(this.STEP6_STATE, { reload: true });
-                    }
-                    else {
-                        window.scrollTo(0, 0);
-                    }
+                    this.$state.go(this.STEP6_STATE, { reload: true });
                 };
                 TeacherPriceSectionController.prototype._fillForm = function (data) {
                     this.form.privateClass = data.Price.PrivateClass;
@@ -7527,31 +7481,7 @@ var app;
                     }
                 };
                 TeacherPhotoSectionController.prototype.goToBack = function () {
-                    var self = this;
-                    var formValid = this._validateForm();
-                    if (formValid) {
-                        this.uploading = true;
-                        if (this.form.avatar) {
-                            this._resizeImage().then(function (result) {
-                                self.uploading = false;
-                                if (result.Location) {
-                                    self._setDataModelFromForm(result.Location);
-                                    self.$scope.$emit('Save Data');
-                                    self.$state.go(self.STEP7_STATE, { reload: true });
-                                }
-                                else {
-                                    self.messageUtil.error('');
-                                }
-                            });
-                        }
-                        else {
-                            this.$scope.$emit('Save Data');
-                            this.$state.go(this.STEP7_STATE, { reload: true });
-                        }
-                    }
-                    else {
-                        window.scrollTo(0, 0);
-                    }
+                    this.$state.go(this.STEP7_STATE, { reload: true });
                 };
                 TeacherPhotoSectionController.prototype._fillForm = function (data) {
                     this.form.thumbnail = data.Avatar;

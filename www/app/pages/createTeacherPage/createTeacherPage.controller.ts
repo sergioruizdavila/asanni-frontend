@@ -94,6 +94,7 @@ module app.pages.createTeacherPage {
 
             //Init teacher instance
             //this.teacherData = new app.models.teacher.Teacher();
+            this.$rootScope.teacherData = new app.models.teacher.Teacher();
 
             // Init header fixed
             //TODO: Remover esto de aqui, y colocarlo en un lugar global, ya que
@@ -110,7 +111,7 @@ module app.pages.createTeacherPage {
                         floatHeaderClasses.add('hidden');
                     }
                 }
-        });
+            });
 
             this.error = {
                 message: ''

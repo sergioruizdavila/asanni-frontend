@@ -55,14 +55,7 @@ var app;
                     }
                 };
                 TeacherEducationSectionController.prototype.goToBack = function () {
-                    var formValid = this._validateForm();
-                    if (formValid) {
-                        this.$scope.$emit('Save Data');
-                        this.$state.go(this.STEP4_STATE, { reload: true });
-                    }
-                    else {
-                        window.scrollTo(0, 0);
-                    }
+                    this.$state.go(this.STEP4_STATE, { reload: true });
                 };
                 TeacherEducationSectionController.prototype._fillForm = function (data) {
                     this.form.educations = data.Educations;

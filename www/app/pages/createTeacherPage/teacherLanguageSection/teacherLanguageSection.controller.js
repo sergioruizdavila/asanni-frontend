@@ -60,15 +60,7 @@ var app;
                     }
                 };
                 TeacherLanguageSectionController.prototype.goToBack = function () {
-                    var formValid = this._validateForm();
-                    if (formValid) {
-                        this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data');
-                        this.$state.go(this.STEP2_STATE, { reload: true });
-                    }
-                    else {
-                        window.scrollTo(0, 0);
-                    }
+                    this.$state.go(this.STEP2_STATE, { reload: true });
                 };
                 TeacherLanguageSectionController.prototype._fillForm = function (data) {
                     if (this.form.native.length === 0) {

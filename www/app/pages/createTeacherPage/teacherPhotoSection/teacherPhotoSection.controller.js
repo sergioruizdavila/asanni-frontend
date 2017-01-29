@@ -76,31 +76,7 @@ var app;
                     }
                 };
                 TeacherPhotoSectionController.prototype.goToBack = function () {
-                    var self = this;
-                    var formValid = this._validateForm();
-                    if (formValid) {
-                        this.uploading = true;
-                        if (this.form.avatar) {
-                            this._resizeImage().then(function (result) {
-                                self.uploading = false;
-                                if (result.Location) {
-                                    self._setDataModelFromForm(result.Location);
-                                    self.$scope.$emit('Save Data');
-                                    self.$state.go(self.STEP7_STATE, { reload: true });
-                                }
-                                else {
-                                    self.messageUtil.error('');
-                                }
-                            });
-                        }
-                        else {
-                            this.$scope.$emit('Save Data');
-                            this.$state.go(this.STEP7_STATE, { reload: true });
-                        }
-                    }
-                    else {
-                        window.scrollTo(0, 0);
-                    }
+                    this.$state.go(this.STEP7_STATE, { reload: true });
                 };
                 TeacherPhotoSectionController.prototype._fillForm = function (data) {
                     this.form.thumbnail = data.Avatar;

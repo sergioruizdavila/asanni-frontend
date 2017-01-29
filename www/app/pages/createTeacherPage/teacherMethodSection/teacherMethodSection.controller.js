@@ -60,15 +60,7 @@ var app;
                     }
                 };
                 TeacherMethodSectionController.prototype.goToBack = function () {
-                    var formValid = this._validateForm();
-                    if (formValid) {
-                        this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data');
-                        this.$state.go(this.step5State, { reload: true });
-                    }
-                    else {
-                        window.scrollTo(0, 0);
-                    }
+                    this.$state.go(this.step5State, { reload: true });
                 };
                 TeacherMethodSectionController.prototype._fillForm = function (data) {
                     if (data.Type === 'P') {

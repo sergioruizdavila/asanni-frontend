@@ -67,15 +67,7 @@ var app;
                     }
                 };
                 TeacherExperienceSectionController.prototype.goToBack = function () {
-                    var formValid = this._validateForm();
-                    if (formValid) {
-                        this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data');
-                        this.$state.go(this.STEP3_STATE, { reload: true });
-                    }
-                    else {
-                        window.scrollTo(0, 0);
-                    }
+                    this.$state.go(this.STEP3_STATE, { reload: true });
                 };
                 TeacherExperienceSectionController.prototype._checkType = function (key) {
                     var type = key.type;
