@@ -4,6 +4,7 @@
         'ngResource',
         'ngCookies',
         'ui.router',
+        'angular-oauth2',
         'pascalprecht.translate',
         'ui.bootstrap',
         'ui.calendar',

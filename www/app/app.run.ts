@@ -42,9 +42,7 @@
                 }
             });
         }
-
-        //TODO: Get these values from the logged user
-        dataConfig.userId = 'id1234';
+        
         //TODO: Descomentar cuando sea necesario, estudiar y aprender a implementar
         //$http.defaults.xsrfHeaderName = 'X-CSRFToken';
         //$http.defaults.xsrfCookieName = 'csrftoken';
@@ -53,6 +51,7 @@
 })();
 
 
+/* localStorage Service */
 
 (function (angular) {
 

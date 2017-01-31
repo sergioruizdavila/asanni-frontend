@@ -8,9 +8,13 @@
 
 /*--  INTERFACE --*/
 interface IDataConfig {
+    debug: boolean;
     currentYear: string;
     baseUrl: string;
     domain: string;
+    https: boolean;
+    autoRefreshTokenIntervalSeconds: number;
+    localOAuth2Key: string;
     googleMapKey: string;
     mixpanelTokenPRD: string;
     mixpanelTokenDEV: string;
@@ -28,12 +32,26 @@ interface IDataConfig {
     userId: string;
     teacherIdLocalStorage: string;
     earlyIdLocalStorage: string;
+    cookieName: string;
 }
 
 /*--  MAIN FUNCTION --*/
 (function (): void {
 
     'use strict';
+
+    /* This must be false in production */
+    let DEBUG = true;
+    /************************************/
+
+    let BASE_URL = 'https://waysily-server.herokuapp.com/api/v1/';
+    let BUCKETS3 = 'waysily-img/teachers-avatar-prd';
+
+    /* Assign Environment values */
+    if(DEBUG) {
+        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
+        BUCKETS3 = 'waysily-img/teachers-avatar-dev';
+    }
 
     // DEV Fake
     // baseUrl: 'http://localhost:3000/'
@@ -48,9 +66,13 @@ interface IDataConfig {
     // baseUrl: 'https://waysily-server.herokuapp.com/api/v1/'
     // bucketS3: 'waysily-img/teachers-avatar-prd'
     var dataConfig: IDataConfig = {
+        debug: DEBUG,
         currentYear: '2017',
-        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
+        baseUrl: BASE_URL,
         domain: 'www.waysily.com',
+        https: false,
+        autoRefreshTokenIntervalSeconds: 300,
+        localOAuth2Key: 'fCY4EWQIPuixOGhA9xRIxzVLNgKJVmG1CVnwXssq',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',
         mixpanelTokenDEV: 'eda475bf46e7f01e417a4ed1d9cc3e58',
@@ -61,18 +83,19 @@ interface IDataConfig {
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
         modalRecommendTeacherTmpl: 'components/modal/modalRecommendTeacher/modalRecommendTeacher.html',
-        bucketS3: 'waysily-img/teachers-avatar-prd',
+        bucketS3: BUCKETS3,
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
         userId: '',
         teacherIdLocalStorage: 'waysily.teacher_id',
-        earlyIdLocalStorage: 'waysily.early_id'
+        earlyIdLocalStorage: 'waysily.early_id',
+        cookieName: 'token'
     };
 
 
     angular
         .module('mainApp')
-        .value('dataConfig', dataConfig);
+        .constant('dataConfig', dataConfig);
 
 })();

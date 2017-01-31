@@ -13,6 +13,7 @@
         'ngResource',
         'ngCookies',
         'ui.router',
+        'angular-oauth2',
         /*3rd Party*/
         'pascalprecht.translate',
         'ui.bootstrap',

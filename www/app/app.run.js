@@ -25,7 +25,6 @@
                 }
             });
         }
-        dataConfig.userId = 'id1234';
     }
 })();
 (function (angular) {

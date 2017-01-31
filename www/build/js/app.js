@@ -2,12 +2,12 @@
     'use strict';
     angular
         .module('mainApp', [
-        'mainApp.auth',
         'mainApp.core',
         'mainApp.core.util',
         'mainApp.localStorage',
         'mainApp.core.restApi',
         'mainApp.core.s3Upload',
+        'mainApp.auth',
         'mainApp.models.feedback',
         'mainApp.models.user',
         'mainApp.models.student',
@@ -34,6 +34,26 @@
         'mainApp.components.footer',
         'mainApp.components.floatMessageBar'
     ])
+        .config(['OAuthProvider', 'dataConfig',
+        function (OAuthProvider, dataConfig) {
+            OAuthProvider.configure({
+                baseUrl: dataConfig.baseUrl,
+                clientId: dataConfig.localOAuth2Key,
+                grantPath: '/oauth2/token/',
+                revokePath: '/oauth2/revoke_token/'
+            });
+        }
+    ])
+        .config(['OAuthTokenProvider', 'dataConfig',
+        function (OAuthTokenProvider, dataConfig) {
+            OAuthTokenProvider.configure({
+                name: dataConfig.cookieName,
+                options: {
+                    secure: dataConfig.https,
+                }
+            });
+        }
+    ])
         .config(config);
     function config($locationProvider, $urlRouterProvider, $translateProvider) {
         $urlRouterProvider.otherwise('/page/main');
@@ -54,6 +74,7 @@
         'ngResource',
         'ngCookies',
         'ui.router',
+        'angular-oauth2',
         'pascalprecht.translate',
         'ui.bootstrap',
         'ui.calendar',
@@ -65,10 +86,21 @@
 //# sourceMappingURL=app.core.module.js.map
 (function () {
     'use strict';
+    var DEBUG = true;
+    var BASE_URL = 'https://waysily-server.herokuapp.com/api/v1/';
+    var BUCKETS3 = 'waysily-img/teachers-avatar-prd';
+    if (DEBUG) {
+        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
+        BUCKETS3 = 'waysily-img/teachers-avatar-dev';
+    }
     var dataConfig = {
+        debug: DEBUG,
         currentYear: '2017',
-        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
+        baseUrl: BASE_URL,
         domain: 'www.waysily.com',
+        https: false,
+        autoRefreshTokenIntervalSeconds: 300,
+        localOAuth2Key: 'fCY4EWQIPuixOGhA9xRIxzVLNgKJVmG1CVnwXssq',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',
         mixpanelTokenDEV: 'eda475bf46e7f01e417a4ed1d9cc3e58',
@@ -79,17 +111,18 @@
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
         modalRecommendTeacherTmpl: 'components/modal/modalRecommendTeacher/modalRecommendTeacher.html',
-        bucketS3: 'waysily-img/teachers-avatar-prd',
+        bucketS3: BUCKETS3,
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
         userId: '',
         teacherIdLocalStorage: 'waysily.teacher_id',
-        earlyIdLocalStorage: 'waysily.early_id'
+        earlyIdLocalStorage: 'waysily.early_id',
+        cookieName: 'token'
     };
     angular
         .module('mainApp')
-        .value('dataConfig', dataConfig);
+        .constant('dataConfig', dataConfig);
 })();
 //# sourceMappingURL=app.values.js.map
 (function () {
@@ -119,7 +152,6 @@
                 }
             });
         }
-        dataConfig.userId = 'id1234';
     }
 })();
 (function (angular) {
@@ -141,29 +173,95 @@ var app;
     (function (auth) {
         'use strict';
         var AuthService = (function () {
-            function AuthService($q, $rootScope, $http) {
+            function AuthService($q, $timeout, $cookies, OAuth, dataConfig) {
                 this.$q = $q;
-                this.$http = $http;
-                console.log('auth service called');
+                this.$timeout = $timeout;
+                this.$cookies = $cookies;
+                this.OAuth = OAuth;
+                this.dataConfig = dataConfig;
+                this.dataConfig.debug && console.log('auth service called');
+                this.autoRefreshTokenInterval = dataConfig.autoRefreshTokenIntervalSeconds * 1000;
+                this.refreshNeeded = true;
             }
-            AuthService.prototype.signUpPassword = function (username, email, password) {
+            AuthService.prototype.isAuthenticated = function () {
+                return this.OAuth.isAuthenticated();
+            };
+            AuthService.prototype.forceLogout = function () {
+                this.dataConfig.debug && console.log("Forcing logout");
+                this.$cookies.remove(this.dataConfig.cookieName);
+            };
+            AuthService.prototype.login = function (user) {
                 var self = this;
-                var userData = {
-                    username: username,
-                    email: email,
-                    password: password
-                };
-                return this.$http.post('http://asanni.herokuapp.com/api/v1/posts/', {
-                    Title: userData.username,
-                    Link: userData.password
+                var deferred = this.$q.defer();
+                this.OAuth.getAccessToken(user, {}).then(function (response) {
+                    self.dataConfig.debug && console.info("Logged in successfuly!");
+                    deferred.resolve(response);
+                }, function (response) {
+                    self.dataConfig.debug && console.error("Error while logging in!");
+                    deferred.reject(response);
                 });
+                return deferred.promise;
+            };
+            AuthService.prototype.logout = function () {
+                var self = this;
+                var deferred = this.$q.defer();
+                this.OAuth.revokeToken().then(function (response) {
+                    self.dataConfig.debug && console.info("Logged out successfuly!");
+                    deferred.resolve(response);
+                }, function (response) {
+                    self.dataConfig.debug && console.error("Error while logging you out!");
+                    self.forceLogout();
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            };
+            AuthService.prototype.refreshToken = function () {
+                var self = this;
+                var deferred = this.$q.defer();
+                if (!this.isAuthenticated()) {
+                    this.dataConfig.debug && console.error('Cannot refresh token if Unauthenticated');
+                    deferred.reject();
+                    return deferred.promise;
+                }
+                this.OAuth.getRefreshToken().then(function (response) {
+                    self.dataConfig.debug && console.info("Access token refreshed");
+                    deferred.resolve(response);
+                }, function (response) {
+                    self.dataConfig.debug && console.error("Error refreshing token ");
+                    self.dataConfig.debug && console.error(response);
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            };
+            AuthService.prototype.autoRefreshToken = function () {
+                var self = this;
+                var deferred = this.$q.defer();
+                if (!this.refreshNeeded) {
+                    deferred.resolve();
+                    return deferred.promise;
+                }
+                this.refreshToken().then(function (response) {
+                    self.refreshNeeded = false;
+                    deferred.resolve(response);
+                }, function (response) {
+                    deferred.reject(response);
+                });
+                this.$timeout(function () {
+                    if (self.isAuthenticated()) {
+                        self.refreshNeeded = true;
+                        self.autoRefreshToken();
+                    }
+                }, self.autoRefreshTokenInterval);
+                return deferred.promise;
             };
             return AuthService;
         }());
         AuthService.serviceId = 'mainApp.auth.AuthService';
         AuthService.$inject = ['$q',
-            '$rootScope',
-            '$http'];
+            '$timeout',
+            '$cookies',
+            'OAuth',
+            'dataConfig'];
         auth.AuthService = AuthService;
         angular
             .module('mainApp.auth', [])

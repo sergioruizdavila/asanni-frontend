@@ -85,7 +85,7 @@ module app.pages.createTeacherPage {
             private $filter: angular.IFilterService,
             private $scope: ITeacherLanguageScope,
             private $rootScope: app.core.interfaces.IMainAppRootScope,
-            private $timeout,
+            private $timeout: angular.ITimeoutService,
             private $uibModal: ng.ui.bootstrap.IModalService) {
                 this._init();
         }
