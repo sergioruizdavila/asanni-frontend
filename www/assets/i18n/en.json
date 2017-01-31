@@ -107,7 +107,7 @@
     "__LANDING PAGE__": "",
     "%landing.header.join.label.text": "Join as:",
     "%landing.puv": "Find a language Teacher / School",
-    "%landing.puv.description": "Waysily is a community-based free platform that helps you find local language tutors / schools.",
+    "%landing.puv.description": "Waysily is a free community-based platform that helps you find local language tutors / schools in your area.",
     "%landing.explore.button.text": "EXPLORE",
 
     "%landing.mission.title.text": "Our mission",
@@ -116,13 +116,13 @@
 
     "%landing.progress.title.text": "Our progress",
 
-    "%landing.recommend.cntry.text": "Which country would you like us to include in Waysily?",
+    "%landing.recommend.cntry.text": "Which country would you like us to include on Waysily?",
     "%landing.recommend.teacher.text.legacy": "Do you know a teacher you would recommend to be part of Waysily?",
     "%landing.recommend.teacher.text": "Would you like to recommend a teacher?",
-    "%landing.recommend.teacher.button.text": "Recommend Teacher",
+    "%landing.recommend.teacher.button.text": "Recommend a Teacher",
     "%landing.recommend.school.text.legacy": "Did you study at any school and you had a great experience there?",
     "%landing.recommend.school.text": "Let us know if you would like us to include a school",
-    "%landing.recommend.school.button.text": "Recommend School",
+    "%landing.recommend.school.button.text": "Recommend a School",
 
     "%landing.get_user.message.success.text": "Thank you!, You’re all set. We’ll be in touch.",
     "%landing.get_user.title.text": "Stay Connected!",
