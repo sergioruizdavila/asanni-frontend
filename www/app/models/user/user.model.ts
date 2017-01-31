@@ -34,6 +34,7 @@ module app.models.user {
 
         /*-- PROPERTIES --*/
         private id: string;
+        private uid: string;
         private avatar: string;
         private username: string;
         private email: string;
@@ -57,6 +58,7 @@ module app.models.user {
 
             //init properties
             this.id = obj.id;
+            this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
             this.avatar = obj.avatar;
             this.username = obj.username || '';
             this.email = obj.email || '';
@@ -84,6 +86,15 @@ module app.models.user {
         set Id(id: string) {
             if (id === undefined) { throw 'Please supply id'; }
             this.id = id;
+        }
+
+        get Uid() {
+            return this.uid;
+        }
+
+        set Uid(uid: string) {
+            if (uid === undefined) { throw 'Please supply user uid'; }
+            this.uid = uid;
         }
 
         get Avatar() {
@@ -210,6 +221,7 @@ module app.models.user {
 
         /*-- PROPERTIES --*/
         private id: number;
+        private uid: string;
         private country: string;
         private address: string;
         private position: Position;
@@ -226,6 +238,7 @@ module app.models.user {
 
             //init properties
             this.id = obj.id;
+            this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
             this.country = obj.country || '';
             this.address = obj.address || '';
             this.position = new Position(obj.position);
@@ -246,6 +259,15 @@ module app.models.user {
         set Id(id: number) {
             if (id === undefined) { throw 'Please supply id'; }
             this.id = id;
+        }
+
+        get Uid() {
+            return this.uid;
+        }
+
+        set Uid(uid: string) {
+            if (uid === undefined) { throw 'Please supply location uid'; }
+            this.uid = uid;
         }
 
         get Country() {
@@ -314,6 +336,7 @@ module app.models.user {
 
         /*-- PROPERTIES --*/
         private id: number;
+        private uid: string;
         private lng: string;
         private lat: string;
 
@@ -326,6 +349,7 @@ module app.models.user {
 
             //init properties
             this.id = obj.id;
+            this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
             this.lng = obj.lng || '';
             this.lat = obj.lat || '';
 
@@ -342,6 +366,15 @@ module app.models.user {
         set Id(id: number) {
             if (id === undefined) { throw 'Please supply id'; }
             this.id = id;
+        }
+
+        get Uid() {
+            return this.uid;
+        }
+
+        set Uid(uid: string) {
+            if (uid === undefined) { throw 'Please supply position uid'; }
+            this.uid = uid;
         }
 
         get Lng() {
