@@ -18,6 +18,7 @@ module app.models.feedback {
 
         /*-- PROPERTIES --*/
         private id: string;
+        private uid: string;
         private nextCountry: string;
 
         /**********************************/
@@ -29,6 +30,7 @@ module app.models.feedback {
 
             //init properties
             this.id = obj.id;
+            this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
             this.nextCountry = obj.nextCountry || '';
 
         }
@@ -39,6 +41,15 @@ module app.models.feedback {
 
         get Id() {
             return this.id;
+        }
+
+        get Uid() {
+            return this.uid;
+        }
+
+        set Uid(uid: string) {
+            if (uid === undefined) { throw 'Please supply next country uid'; }
+            this.uid = uid;
         }
 
         get NextCountry() {

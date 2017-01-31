@@ -233,6 +233,7 @@ module app.models.teacher {
 
         /*-- PROPERTIES --*/
         private id: number;
+        private uid: string;
         private native: Array<string>;
         private learn: Array<string>;
         private teach: Array<string>;
@@ -246,6 +247,7 @@ module app.models.teacher {
 
             //init properties
             this.id = obj.id;
+            this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
             this.native = obj.native || [];
             this.learn = obj.learn || [];
             this.teach = obj.teach || [];
@@ -263,6 +265,15 @@ module app.models.teacher {
         set Id(id: number) {
             if (id === undefined) { throw 'Please supply id'; }
             this.id = id;
+        }
+
+        get Uid() {
+            return this.uid;
+        }
+
+        set Uid(uid: string) {
+            if (uid === undefined) { throw 'Please supply language uid'; }
+            this.uid = uid;
         }
 
         get Native() {
@@ -305,6 +316,7 @@ module app.models.teacher {
 
         /*-- PROPERTIES --*/
         private id: number;
+        private uid: string;
         private position: string;
         private company: string;
         private country: string;
@@ -322,6 +334,7 @@ module app.models.teacher {
 
             //init properties
             this.id = obj.id;
+            this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
             this.position = obj.position || '';
             this.company = obj.company || '';
             this.country = obj.country || '';
@@ -343,6 +356,15 @@ module app.models.teacher {
         set Id(id: number) {
             if (id === undefined) { throw 'Please supply experience id'; }
             this.id = id;
+        }
+
+        get Uid() {
+            return this.uid;
+        }
+
+        set Uid(uid: string) {
+            if (uid === undefined) { throw 'Please supply experience uid'; }
+            this.uid = uid;
         }
 
         get Position() {
@@ -421,6 +443,7 @@ module app.models.teacher {
 
         /*-- PROPERTIES --*/
         private id: number;
+        private uid: string;
         private school: string;
         private degree: string;
         private fieldStudy: string;
@@ -437,6 +460,7 @@ module app.models.teacher {
 
             //init properties
             this.id = obj.id;
+            this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
             this.school = obj.school || '';
             this.degree = obj.degree || '';
             this.fieldStudy = obj.fieldStudy || '';
@@ -457,6 +481,15 @@ module app.models.teacher {
         set Id(id: number) {
             if (id === undefined) { throw 'Please supply experience id'; }
             this.id = id;
+        }
+
+        get Uid() {
+            return this.uid;
+        }
+
+        set Uid(uid: string) {
+            if (uid === undefined) { throw 'Please supply position uid'; }
+            this.uid = uid;
         }
 
         get School() {
@@ -526,6 +559,7 @@ module app.models.teacher {
 
         /*-- PROPERTIES --*/
         private id: number;
+        private uid: string;
         private name: string;
         private institution: string;
         private dateReceived: string;
@@ -540,6 +574,7 @@ module app.models.teacher {
 
             //init properties
             this.id = obj.id;
+            this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
             this.name = obj.name || '';
             this.institution = obj.institution || '';
             this.dateReceived = obj.dateReceived || '';
@@ -558,6 +593,15 @@ module app.models.teacher {
         set Id(id: number) {
             if (id === undefined) { throw 'Please supply experience id'; }
             this.id = id;
+        }
+
+        get Uid() {
+            return this.uid;
+        }
+
+        set Uid(uid: string) {
+            if (uid === undefined) { throw 'Please supply position uid'; }
+            this.uid = uid;
         }
 
         get Name() {
@@ -691,6 +735,7 @@ module app.models.teacher {
 
         /*-- PROPERTIES --*/
         private id: number;
+        private uid: string;
         private category: Array<string>;
 
         /**********************************/
@@ -702,6 +747,7 @@ module app.models.teacher {
 
             //init properties
             this.id = obj.id;
+            this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
             this.category = obj.category || '';
 
         }
@@ -715,8 +761,17 @@ module app.models.teacher {
         }
 
         set Id(id: number) {
-            if (id === undefined) { throw 'Please supply experience id'; }
+            if (id === undefined) { throw 'Please supply type of immersion id'; }
             this.id = id;
+        }
+
+        get Uid() {
+            return this.uid;
+        }
+
+        set Uid(uid: string) {
+            if (uid === undefined) { throw 'Please supply type of immersion uid'; }
+            this.uid = uid;
         }
 
         get Category() {
@@ -881,6 +936,7 @@ module app.models.teacher {
 
         /*-- PROPERTIES --*/
         private id: number;
+        private uid: string;
         private author: app.models.student.Student;
         private methodologyValue: number;
         private teachingValue: number;
@@ -897,6 +953,7 @@ module app.models.teacher {
 
             //init properties
             this.id = obj.id;
+            this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
             this.author = new app.models.student.Student(obj.author);
             this.methodologyValue = obj.methodologyValue || 0;
             this.teachingValue = obj.teachingValue || 0;
@@ -914,8 +971,17 @@ module app.models.teacher {
         }
 
         set Id(id: number) {
-            if (id === undefined) { throw 'Please supply experience id'; }
+            if (id === undefined) { throw 'Please supply rating id'; }
             this.id = id;
+        }
+
+        get Uid() {
+            return this.uid;
+        }
+
+        set Uid(uid: string) {
+            if (uid === undefined) { throw 'Please supply rating uid'; }
+            this.uid = uid;
         }
 
         get Author() {
