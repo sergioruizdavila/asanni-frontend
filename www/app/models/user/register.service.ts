@@ -1,8 +1,6 @@
 /**
- * UserService
- * @description - Services related on User Model.
- * @constructor
- * @param {app.core.restApi.IRestApi} restApi - instance rest Api service.
+ * RegisterService
+ * @description - A service for handling user registration.
  */
 
 module app.models.user {
@@ -12,18 +10,17 @@ module app.models.user {
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
-    export interface IUserService {
-        getUserById: (id: string) => angular.IPromise<any>;
-        getAllUsers: () => angular.IPromise<any>;
+    export interface IRegisterService {
+        //TODO: Poner los metodos aqui
     }
 
 
     /****************************************/
     /*           CLASS DEFINITION           */
     /****************************************/
-    export class UserService implements IUserService {
+    export class RegisterService implements IRegisterService {
 
-        static serviceId = 'mainApp.models.user.UserService';
+        static serviceId = 'mainApp.models.user.RegisterService';
 
         /**********************************/
         /*           PROPERTIES           */
@@ -43,26 +40,19 @@ module app.models.user {
         /**********************************/
         constructor(private restApi: app.core.restApi.IRestApi) {
             //LOG
-            console.log('user service instanced');
+            console.log('register service instanced');
         }
 
         /**********************************/
         /*            METHODS             */
         /**********************************/
 
-        /**
-        * getUserById
-        * @description - get user by Id
-        * @use - this.UserService.getUserById('98d667ae');
-        * @function
-        * @params {string} id - user id
-        * @return {angular.IPromise<any>} promise - return user by Id
-        */
-        getUserById(id): angular.IPromise<any> {
-            //VARIABLES
-            let url = 'users';
 
-            return this.restApi.show({url: url, id: id}).$promise
+        checkEmail(value): angular.IPromise<any> {
+            //VARIABLES
+            let url = '/register/check-email/';
+
+            return this.restApi.create({url: url}, value).$promise
                 .then(
                     function(data) {
                         return data;
@@ -75,18 +65,13 @@ module app.models.user {
                 );
         }
 
-        /**
-        * getAllUsers
-        * @description - get all Users
-        * @function
-        * @return {angular.IPromise<any>} return a promise with
-        * users list
-        */
-        getAllUsers(): angular.IPromise<any> {
-            //VARIABLES
-            let url = 'users';
 
-            return this.restApi.query({url: url}).$promise
+
+        checkUsername(value): angular.IPromise<any> {
+            //VARIABLES
+            let url = '/register/check-username/';
+
+            return this.restApi.create({url: url}, value).$promise
                 .then(
                     function(data) {
                         return data;
@@ -97,6 +82,25 @@ module app.models.user {
                         return err;
                     }
                 );
+        }
+
+
+        register(value): angular.IPromise<any> {
+            //VARIABLES
+            var promise;
+            let url = 'register/';
+            promise = this.restApi.create({url: url}, value)
+                .$promise.then(
+                    function(data) {
+                        return data;
+                    }
+                ).catch(
+                    function(err) {
+                        console.log(err);
+                        return err;
+                    }
+                );
+            return promise;
         }
 
     }
@@ -104,6 +108,6 @@ module app.models.user {
     /*-- MODULE DEFINITION --*/
     angular
         .module('mainApp.models.user', [])
-        .service(UserService.serviceId, UserService);
+        .service(RegisterService.serviceId, RegisterService);
 
 }

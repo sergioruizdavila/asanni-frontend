@@ -5,80 +5,55 @@ var components;
         var modalSignUp;
         (function (modalSignUp) {
             var ModalSignUpController = (function () {
-                function ModalSignUpController($uibModalInstance, functionsUtil, LandingPageService, messageUtil, $filter) {
-                    this.$uibModalInstance = $uibModalInstance;
-                    this.functionsUtil = functionsUtil;
-                    this.LandingPageService = LandingPageService;
+                function ModalSignUpController($scope, $state, RegisterService, messageUtil, functionsUtil, dataConfig, $uibModalInstance) {
+                    this.$scope = $scope;
+                    this.$state = $state;
+                    this.RegisterService = RegisterService;
                     this.messageUtil = messageUtil;
-                    this.$filter = $filter;
+                    this.functionsUtil = functionsUtil;
+                    this.dataConfig = dataConfig;
+                    this.$uibModalInstance = $uibModalInstance;
                     this._init();
                 }
                 ModalSignUpController.prototype._init = function () {
                     var self = this;
-                    this.form = {
-                        email: ''
-                    };
-                    this.sending = false;
-                    this.validate = {
-                        email: { valid: true, message: '' }
-                    };
+                    this.registerData = {};
                     this.activate();
                 };
                 ModalSignUpController.prototype.activate = function () {
                     console.log('modalSignUp controller actived');
                 };
-                ModalSignUpController.prototype._validateForm = function () {
-                    var NULL_ENUM = 2;
-                    var EMPTY_ENUM = 3;
-                    var EMAIL_ENUM = 0;
-                    var formValid = true;
-                    var email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
-                    this.validate.email = this.functionsUtil.validator(this.form.email, email_rules);
-                    if (!this.validate.email.valid) {
-                        formValid = this.validate.email.valid;
-                    }
-                    return formValid;
-                };
-                ModalSignUpController.prototype.save = function () {
-                    var formValid = this._validateForm();
-                    if (formValid) {
-                        var self_1 = this;
-                        this.sending = true;
-                        mixpanel.track("Click on Join as a Student button", {
-                            "name": '*',
-                            "email": this.form.email,
-                            "comment": '*'
-                        });
-                        var userData = {
-                            name: '*',
-                            email: this.form.email,
-                            comment: '*'
-                        };
-                        this.LandingPageService.createEarlyAdopter(userData)
-                            .then(function (response) {
-                            if (response.createdAt) {
-                                self_1.messageUtil.success('¡Gracias!, Ya está todo listo. Te agregaremos a nuestra lista.');
-                                self_1.$uibModalInstance.close();
-                            }
-                            else {
-                                self_1.sending = false;
-                            }
-                        });
-                    }
+                ModalSignUpController.prototype.registerUser = function () {
+                    var self = this;
+                    this.RegisterService.register(this.registerData).then(function (response) {
+                        console.log('Welcome!, Your new account has been successfuly created.');
+                        this.$state.go('/login');
+                    }, function (response) {
+                        self.dataConfig.debug && console.log(JSON.stringify(response));
+                        var errortext = [];
+                        for (var key in response.data) {
+                            var line = key.toUpperCase();
+                            line += ': ';
+                            line += response.data[key];
+                            errortext.push(line);
+                        }
+                        console.error(errortext);
+                    });
                 };
                 ModalSignUpController.prototype.close = function () {
                     this.$uibModalInstance.close();
-                    event.preventDefault();
                 };
                 return ModalSignUpController;
             }());
             ModalSignUpController.controllerId = 'mainApp.components.modal.ModalSignUpController';
             ModalSignUpController.$inject = [
-                '$uibModalInstance',
-                'mainApp.core.util.FunctionsUtilService',
-                'mainApp.pages.landingPage.LandingPageService',
+                '$scope',
+                '$state',
+                'mainApp.models.user.RegisterService',
                 'mainApp.core.util.messageUtilService',
-                '$filter'
+                'mainApp.core.util.FunctionsUtilService',
+                'dataConfig',
+                '$uibModalInstance'
             ];
             angular.module('mainApp.components.modal')
                 .controller(ModalSignUpController.controllerId, ModalSignUpController);

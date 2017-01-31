@@ -11,7 +11,7 @@ var app;
                     console.log('user service instanced');
                 }
                 UserService.prototype.getUserById = function (id) {
-                    var url = 'users/';
+                    var url = 'users';
                     return this.restApi.show({ url: url, id: id }).$promise
                         .then(function (data) {
                         return data;
@@ -21,7 +21,7 @@ var app;
                     });
                 };
                 UserService.prototype.getAllUsers = function () {
-                    var url = 'users/';
+                    var url = 'users';
                     return this.restApi.query({ url: url }).$promise
                         .then(function (data) {
                         return data;

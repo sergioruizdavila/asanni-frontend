@@ -12,8 +12,6 @@ module components.modal.modalSignUp {
     /*           INTERFACES           */
     /**********************************/
     interface IModalSignUpController {
-        form: IModalSignUpForm;
-        validate: IModalSignUpValidate;
         close: () => void;
         activate: () => void;
     }
@@ -38,7 +36,8 @@ module components.modal.modalSignUp {
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
-        form: IModalSignUpForm;
+        //TODO: Renombrar registerData a 'form'
+        registerData: any;
         validate: IModalSignUpValidate;
         sending: boolean;
         defaultConfig: any;
@@ -46,23 +45,28 @@ module components.modal.modalSignUp {
 
         /*-- INJECT DEPENDENCIES --*/
         static $inject = [
-            '$uibModalInstance',
-            'mainApp.core.util.FunctionsUtilService',
-            'mainApp.pages.landingPage.LandingPageService',
+            '$scope',
+            '$state',
+            'mainApp.models.user.RegisterService',
             'mainApp.core.util.messageUtilService',
-            '$filter'
+            'mainApp.core.util.FunctionsUtilService',
+            'dataConfig',
+            '$uibModalInstance'
         ];
 
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
+        //TODO: Asignar tipos remover any
         constructor(
-            private $uibModalInstance: ng.ui.bootstrap.IModalServiceInstance,
-            private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
-            private LandingPageService: app.pages.landingPage.ILandingPageService,
+            private $scope: any,
+            private $state: any,
+            private RegisterService: any,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
-            private $filter: angular.IFilterService) {
+            private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
+            private dataConfig: IDataConfig,
+            private $uibModalInstance: ng.ui.bootstrap.IModalServiceInstance) {
 
             this._init();
 
@@ -74,16 +78,7 @@ module components.modal.modalSignUp {
             let self = this;
 
             //Init form
-            this.form = {
-                email: ''
-            };
-
-            this.sending = false;
-
-            // Build validate object fields
-            this.validate = {
-                email: {valid: true, message: ''}
-            };
+            this.registerData = {};
 
             this.activate();
         }
@@ -98,81 +93,31 @@ module components.modal.modalSignUp {
         /*            METHODS             */
         /**********************************/
 
-
-
-        /**
-        * _validateForm
-        * @description - Validate each field on form
-        * @use - this._validateForm();
-        * @function
-        * @return {boolean} formValid - return If the complete form is valid or not.
-        */
-        private _validateForm(): boolean {
-            //CONSTANTS
-            const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
-            const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
-            const EMAIL_ENUM = app.core.util.functionsUtil.Validation.Email;
-            /***************************************************/
+        registerUser(): void {
             //VARIABLES
-            let formValid = true;
+            let self = this;
 
-            //Validate Email field
-            let email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
-            this.validate.email = this.functionsUtil.validator(this.form.email, email_rules);
-            if(!this.validate.email.valid) {
-                formValid = this.validate.email.valid;
-            }
+            this.RegisterService.register(this.registerData).then(
+                function(response) {
+                    //Success
+                    console.log('Welcome!, Your new account has been successfuly created.');
+                    this.$state.go('/login');
+                },
 
-            return formValid;
-        }
-
-
-
-        /**
-        * save
-        * @description - when user click "Save" button, close the modal and
-        * send the new signUp data
-        * @use - this.save();
-        * @function
-        * @return {void}
-        */
-        save(): void {
-            //Validate data form
-            let formValid = this._validateForm();
-            //If form is valid, save data model
-            if(formValid) {
-                //VARIABLES
-                let self = this;
-                /*********************************/
-
-                this.sending = true;
-
-                mixpanel.track("Click on Join as a Student button", {
-                    "name": '*',
-                    "email": this.form.email,
-                    "comment": '*'
-                });
-
-                let userData = {
-                    name: '*',
-                    email: this.form.email,
-                    comment: '*'
-                };
-
-                this.LandingPageService.createEarlyAdopter(userData)
-                .then(
-                    function(response) {
-                        if(response.createdAt) {
-                            self.messageUtil.success('¡Gracias!, Ya está todo listo. Te agregaremos a nuestra lista.');
-                            self.$uibModalInstance.close();
-                        } else {
-                            self.sending = false;
-                        }
+                function(response) {
+                    //Error
+                    self.dataConfig.debug && console.log(JSON.stringify(response));
+                    var errortext = [];
+                    for (var key in response.data) {
+                        var line = key.toUpperCase();
+                        line += ': '
+                        line += response.data[key];
+                        errortext.push(line);
                     }
-                );
 
-            }
-
+                    console.error(errortext);
+                }
+            );
         }
 
 
@@ -186,7 +131,6 @@ module components.modal.modalSignUp {
         */
         close(): void {
             this.$uibModalInstance.close();
-            event.preventDefault();
         }
 
 
