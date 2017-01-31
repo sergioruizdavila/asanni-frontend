@@ -772,11 +772,25 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('Feedback Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.nextCountry = obj.nextCountry || '';
                 }
                 Object.defineProperty(Feedback.prototype, "Id", {
                     get: function () {
                         return this.id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Feedback.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply next country uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -868,6 +882,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('User Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.avatar = obj.avatar;
                     this.username = obj.username || '';
                     this.email = obj.email || '';
@@ -891,6 +906,19 @@ var app;
                             throw 'Please supply id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(User.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply user uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -1066,6 +1094,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('User Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.country = obj.country || '';
                     this.address = obj.address || '';
                     this.position = new Position(obj.position);
@@ -1082,6 +1111,19 @@ var app;
                             throw 'Please supply id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Location.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply location uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -1172,6 +1214,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('User Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.lng = obj.lng || '';
                     this.lat = obj.lat || '';
                 }
@@ -1184,6 +1227,19 @@ var app;
                             throw 'Please supply id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Position.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply position uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -1695,6 +1751,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('Languages Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.native = obj.native || [];
                     this.learn = obj.learn || [];
                     this.teach = obj.teach || [];
@@ -1708,6 +1765,19 @@ var app;
                             throw 'Please supply id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Language.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply language uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -1759,6 +1829,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('Experience Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.position = obj.position || '';
                     this.company = obj.company || '';
                     this.country = obj.country || '';
@@ -1776,6 +1847,19 @@ var app;
                             throw 'Please supply experience id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Experience.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply experience uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -1879,6 +1963,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('Education Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.school = obj.school || '';
                     this.degree = obj.degree || '';
                     this.fieldStudy = obj.fieldStudy || '';
@@ -1895,6 +1980,19 @@ var app;
                             throw 'Please supply experience id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Education.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply position uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -1985,6 +2083,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('Certificate Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.name = obj.name || '';
                     this.institution = obj.institution || '';
                     this.dateReceived = obj.dateReceived || '';
@@ -1999,6 +2098,19 @@ var app;
                             throw 'Please supply experience id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Certificate.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply position uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -2141,6 +2253,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('TypeOfImmersion Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.category = obj.category || '';
                 }
                 Object.defineProperty(TypeOfImmersion.prototype, "Id", {
@@ -2149,9 +2262,22 @@ var app;
                     },
                     set: function (id) {
                         if (id === undefined) {
-                            throw 'Please supply experience id';
+                            throw 'Please supply type of immersion id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(TypeOfImmersion.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply type of immersion uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -2305,6 +2431,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('Rating Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.author = new app.models.student.Student(obj.author);
                     this.methodologyValue = obj.methodologyValue || 0;
                     this.teachingValue = obj.teachingValue || 0;
@@ -2318,9 +2445,22 @@ var app;
                     },
                     set: function (id) {
                         if (id === undefined) {
-                            throw 'Please supply experience id';
+                            throw 'Please supply rating id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Rating.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply rating uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
