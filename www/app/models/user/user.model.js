@@ -15,6 +15,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('User Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.avatar = obj.avatar;
                     this.username = obj.username || '';
                     this.email = obj.email || '';
@@ -38,6 +39,19 @@ var app;
                             throw 'Please supply id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(User.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply user uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -213,6 +227,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('User Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.country = obj.country || '';
                     this.address = obj.address || '';
                     this.position = new Position(obj.position);
@@ -229,6 +244,19 @@ var app;
                             throw 'Please supply id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Location.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply location uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -319,6 +347,7 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('User Model instanced');
                     this.id = obj.id;
+                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.lng = obj.lng || '';
                     this.lat = obj.lat || '';
                 }
@@ -331,6 +360,19 @@ var app;
                             throw 'Please supply id';
                         }
                         this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Position.prototype, "Uid", {
+                    get: function () {
+                        return this.uid;
+                    },
+                    set: function (uid) {
+                        if (uid === undefined) {
+                            throw 'Please supply position uid';
+                        }
+                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
