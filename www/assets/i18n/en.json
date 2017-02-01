@@ -72,8 +72,8 @@
     "%modal.experience.form.company.placeholder.text": "e.g. Early Birds Institute / Velvet Café",
     "%modal.experience.form.cntry.text": "Country",
     "%modal.experience.form.city.text": "City",
-    "%modal.experience.form.date_start.text": "Date Start",
-    "%modal.experience.form.date_finish.text": "Date Finish",
+    "%modal.experience.form.date_start.text": "Start Date",
+    "%modal.experience.form.date_finish.text": "Finish Date",
     "%modal.experience.form.description.text": "Tell us about your experience",
     "%modal.experience.form.description.placeholder.text": "e.g. I taught people from all over the world, we met in parks and museums to have a complete immersion.",
 
@@ -84,8 +84,8 @@
     "%modal.education.form.school.placeholder.text": "e.g. University of Cambridge / University of Toronto",
     "%modal.education.form.dg.text": "Degree",
     "%modal.education.form.dg.option_list.text": "degree",
-    "%modal.education.form.date_start.text": "Date Start",
-    "%modal.education.form.date_finish.text": "Date Finish",
+    "%modal.education.form.date_start.text": "Start Date",
+    "%modal.education.form.date_finish.text": "Finish Date",
     "%modal.education.form.description.text": "What did you learn?",
     "%modal.education.form.description.placeholder.text": "e.g. I learned in depth the language, its history and grammar. I also learned the proper methodology for teaching.",
 
@@ -263,7 +263,7 @@
 
     "__TEACHER WELCOME SECTION__":"",
     "%create.teacher.welcome.title.text": "Welcome!, The process takes approximately 10 minutes",
-    "%create.teacher.welcome.subtitle.text": "What kind of teachers are part of Waysily?",
+    "%create.teacher.welcome.subtitle.text": "What kind of teachers are you?",
     "%create.teacher.welcome.type.hobby.description.text": "Native or near-native speaker that enjoys teaching informally. 18 years or older.",
     "%create.teacher.welcome.type.professional.description.text": "Working Professional that has been trained in foreign language acquisition.",
 
