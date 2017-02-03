@@ -8,6 +8,8 @@
         'mainApp.core.restApi',
         'mainApp.core.s3Upload',
         'mainApp.auth',
+        'mainApp.register',
+        'mainApp.account',
         'mainApp.models.feedback',
         'mainApp.models.user',
         'mainApp.models.student',
@@ -84,17 +86,16 @@
     ]);
 })();
 //# sourceMappingURL=app.core.module.js.map
+DEBUG = true;
 (function () {
     'use strict';
-    var DEBUG = true;
     var BASE_URL = 'https://waysily-server.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/teachers-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'http://127.0.0.1:8000/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/teachers-avatar-dev';
     }
     var dataConfig = {
-        debug: DEBUG,
         currentYear: '2017',
         baseUrl: BASE_URL,
         domain: 'www.waysily.com',
@@ -110,6 +111,7 @@
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
+        modalLogInTmpl: 'components/modal/modalLogIn/modalLogIn.html',
         modalRecommendTeacherTmpl: 'components/modal/modalRecommendTeacher/modalRecommendTeacher.html',
         bucketS3: BUCKETS3,
         regionS3: 'us-east-1',
@@ -179,7 +181,7 @@ var app;
                 this.$cookies = $cookies;
                 this.OAuth = OAuth;
                 this.dataConfig = dataConfig;
-                this.dataConfig.debug && console.log('auth service called');
+                DEBUG && console.log('auth service called');
                 this.autoRefreshTokenInterval = dataConfig.autoRefreshTokenIntervalSeconds * 1000;
                 this.refreshNeeded = true;
             }
@@ -187,18 +189,18 @@ var app;
                 return this.OAuth.isAuthenticated();
             };
             AuthService.prototype.forceLogout = function () {
-                this.dataConfig.debug && console.log("Forcing logout");
+                DEBUG && console.log("Forcing logout");
                 this.$cookies.remove(this.dataConfig.cookieName);
             };
             AuthService.prototype.login = function (user) {
                 var self = this;
                 var deferred = this.$q.defer();
                 this.OAuth.getAccessToken(user, {}).then(function (response) {
-                    self.dataConfig.debug && console.info("Logged in successfuly!");
+                    DEBUG && console.info("Logged in successfuly!");
                     deferred.resolve(response);
-                }, function (response) {
-                    self.dataConfig.debug && console.error("Error while logging in!");
-                    deferred.reject(response);
+                }, function (error) {
+                    DEBUG && console.error("Error while logging in!");
+                    deferred.resolve(error);
                 });
                 return deferred.promise;
             };
@@ -206,10 +208,10 @@ var app;
                 var self = this;
                 var deferred = this.$q.defer();
                 this.OAuth.revokeToken().then(function (response) {
-                    self.dataConfig.debug && console.info("Logged out successfuly!");
+                    DEBUG && console.info("Logged out successfuly!");
                     deferred.resolve(response);
                 }, function (response) {
-                    self.dataConfig.debug && console.error("Error while logging you out!");
+                    DEBUG && console.error("Error while logging you out!");
                     self.forceLogout();
                     deferred.reject(response);
                 });
@@ -219,16 +221,16 @@ var app;
                 var self = this;
                 var deferred = this.$q.defer();
                 if (!this.isAuthenticated()) {
-                    this.dataConfig.debug && console.error('Cannot refresh token if Unauthenticated');
+                    DEBUG && console.error('Cannot refresh token if Unauthenticated');
                     deferred.reject();
                     return deferred.promise;
                 }
                 this.OAuth.getRefreshToken().then(function (response) {
-                    self.dataConfig.debug && console.info("Access token refreshed");
+                    DEBUG && console.info("Access token refreshed");
                     deferred.resolve(response);
                 }, function (response) {
-                    self.dataConfig.debug && console.error("Error refreshing token ");
-                    self.dataConfig.debug && console.error(response);
+                    DEBUG && console.error("Error refreshing token ");
+                    DEBUG && console.error(response);
                     deferred.reject(response);
                 });
                 return deferred.promise;
@@ -269,6 +271,40 @@ var app;
     })(auth = app.auth || (app.auth = {}));
 })(app || (app = {}));
 //# sourceMappingURL=auth.service.js.map
+var app;
+(function (app) {
+    var account;
+    (function (account) {
+        'use strict';
+        var AccountService = (function () {
+            function AccountService(restApi) {
+                this.restApi = restApi;
+                DEBUG && console.log('account service instanced');
+                this.ACCOUNT_URI = 'account';
+            }
+            AccountService.prototype.getAccount = function () {
+                var url = this.ACCOUNT_URI;
+                return this.restApi.show({ url: url }).$promise
+                    .then(function (response) {
+                    return response;
+                }, function (error) {
+                    DEBUG && console.error(error);
+                    return error;
+                });
+            };
+            return AccountService;
+        }());
+        AccountService.serviceId = 'mainApp.account.AccountService';
+        AccountService.$inject = [
+            'mainApp.core.restApi.restApiService'
+        ];
+        account.AccountService = AccountService;
+        angular
+            .module('mainApp.account', [])
+            .service(AccountService.serviceId, AccountService);
+    })(account = app.account || (app.account = {}));
+})(app || (app = {}));
+//# sourceMappingURL=account.service.js.map
 var app;
 (function (app) {
     var core;
@@ -843,15 +879,6 @@ var app;
                     },
                     response: function (res) {
                         return res;
-                    },
-                    responseError: function (rejection) {
-                        if (rejection.data) {
-                            messageUtil.error(rejection.data.Message);
-                        }
-                        else {
-                            messageUtil.error('');
-                        }
-                        return rejection;
                     }
                 };
             }
@@ -1421,64 +1448,6 @@ var app;
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
 //# sourceMappingURL=user.service.js.map
-var app;
-(function (app) {
-    var models;
-    (function (models) {
-        var user;
-        (function (user) {
-            'use strict';
-            var RegisterService = (function () {
-                function RegisterService(restApi) {
-                    this.restApi = restApi;
-                    console.log('register service instanced');
-                }
-                RegisterService.prototype.checkEmail = function (value) {
-                    var url = '/register/check-email/';
-                    return this.restApi.create({ url: url }, value).$promise
-                        .then(function (data) {
-                        return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
-                    });
-                };
-                RegisterService.prototype.checkUsername = function (value) {
-                    var url = '/register/check-username/';
-                    return this.restApi.create({ url: url }, value).$promise
-                        .then(function (data) {
-                        return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
-                    });
-                };
-                RegisterService.prototype.register = function (value) {
-                    var promise;
-                    var url = 'register/';
-                    promise = this.restApi.create({ url: url }, value)
-                        .$promise.then(function (data) {
-                        return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
-                    });
-                    return promise;
-                };
-                return RegisterService;
-            }());
-            RegisterService.serviceId = 'mainApp.models.user.RegisterService';
-            RegisterService.$inject = [
-                'mainApp.core.restApi.restApiService'
-            ];
-            user.RegisterService = RegisterService;
-            angular
-                .module('mainApp.models.user', [])
-                .service(RegisterService.serviceId, RegisterService);
-        })(user = models.user || (models.user = {}));
-    })(models = app.models || (app.models = {}));
-})(app || (app = {}));
-//# sourceMappingURL=register.service.js.map
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -2711,148 +2680,121 @@ var app;
                 function TeacherService(restApi) {
                     this.restApi = restApi;
                     console.log('teacher service instanced');
+                    this.TEACHER_URI = 'teachers';
+                    this.STATUS_TEACHER_URI = 'teachers?status=';
+                    this.EXPERIENCES_URI = 'experiences';
+                    this.EDUCATIONS_URI = 'educations';
+                    this.CERTIFICATES_URI = 'certificates';
                 }
                 TeacherService.prototype.getTeacherById = function (id) {
-                    var url = 'teachers';
+                    var url = this.TEACHER_URI;
                     return this.restApi.show({ url: url, id: id }).$promise
                         .then(function (data) {
                         return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        return error;
                     });
                 };
                 TeacherService.prototype.getAllTeachersByStatus = function (status) {
-                    var url = 'teachers?status=' + status;
+                    var url = this.STATUS_TEACHER_URI + status;
                     return this.restApi.queryObject({ url: url }).$promise
                         .then(function (data) {
                         return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        return error;
                     });
                 };
                 TeacherService.prototype.getAllTeachers = function () {
-                    var url = 'teachers';
+                    var url = this.TEACHER_URI;
                     return this.restApi.queryObject({ url: url }).$promise
                         .then(function (data) {
                         return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        return error;
                     });
                 };
                 TeacherService.prototype.createTeacher = function (teacher) {
-                    var promise;
-                    var url = 'teachers';
-                    promise = this.restApi.create({ url: url }, teacher)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI;
+                    return this.restApi.create({ url: url }, teacher).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.updateTeacher = function (teacher) {
-                    var promise;
-                    var url = 'teachers';
-                    promise = this.restApi.update({ url: url, id: teacher.Id }, teacher)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI;
+                    return this.restApi.update({ url: url, id: teacher.Id }, teacher).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.createExperience = function (teacherId, experience) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/experiences';
-                    promise = this.restApi.create({ url: url }, experience)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EXPERIENCES_URI;
+                    return this.restApi.create({ url: url }, experience).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.log(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.updateExperience = function (teacherId, experience) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/experiences';
-                    promise = this.restApi.update({ url: url, id: experience.Id }, experience)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EXPERIENCES_URI;
+                    return this.restApi.update({ url: url, id: experience.Id }, experience).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.createEducation = function (teacherId, education) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/educations';
-                    promise = this.restApi.create({ url: url }, education)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EDUCATIONS_URI;
+                    return this.restApi.create({ url: url }, education).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.updateEducation = function (teacherId, education) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/educations';
-                    promise = this.restApi.update({ url: url, id: education.Id }, education)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EDUCATIONS_URI;
+                    return this.restApi.update({ url: url, id: education.Id }, education).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.createCertificate = function (teacherId, certificate) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/certificates';
-                    promise = this.restApi.create({ url: url }, certificate)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.CERTIFICATES_URI;
+                    return this.restApi.create({ url: url }, certificate).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.updateCertificate = function (teacherId, certificate) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/certificates';
-                    promise = this.restApi.update({ url: url, id: certificate.Id }, certificate)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.CERTIFICATES_URI;
+                    return this.restApi.update({ url: url, id: certificate.Id }, certificate).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 return TeacherService;
             }());
@@ -4164,40 +4106,58 @@ var components;
         var modalSignUp;
         (function (modalSignUp) {
             var ModalSignUpController = (function () {
-                function ModalSignUpController($scope, $state, RegisterService, messageUtil, functionsUtil, dataConfig, $uibModalInstance) {
-                    this.$scope = $scope;
-                    this.$state = $state;
+                function ModalSignUpController(RegisterService, messageUtil, dataConfig, $uibModal, $uibModalInstance) {
                     this.RegisterService = RegisterService;
                     this.messageUtil = messageUtil;
-                    this.functionsUtil = functionsUtil;
                     this.dataConfig = dataConfig;
+                    this.$uibModal = $uibModal;
                     this.$uibModalInstance = $uibModalInstance;
                     this._init();
                 }
                 ModalSignUpController.prototype._init = function () {
                     var self = this;
-                    this.registerData = {};
+                    this.form = {
+                        username: '',
+                        email: '',
+                        first_name: '',
+                        last_name: '',
+                        password: ''
+                    };
                     this.activate();
                 };
                 ModalSignUpController.prototype.activate = function () {
-                    console.log('modalSignUp controller actived');
+                    DEBUG && console.log('modalSignUp controller actived');
                 };
                 ModalSignUpController.prototype.registerUser = function () {
                     var self = this;
-                    this.RegisterService.register(this.registerData).then(function (response) {
-                        console.log('Welcome!, Your new account has been successfuly created.');
-                        this.$state.go('/login');
-                    }, function (response) {
-                        self.dataConfig.debug && console.log(JSON.stringify(response));
+                    this.RegisterService.register(this.form).then(function (response) {
+                        DEBUG && console.log('Welcome!, Your new account has been successfuly created.');
+                        self.messageUtil.success('Welcome!, Your new account has been successfuly created.');
+                        self._openLogInModal();
+                    }, function (error) {
+                        DEBUG && console.log(JSON.stringify(error));
                         var errortext = [];
-                        for (var key in response.data) {
+                        for (var key in error.data) {
                             var line = key.toUpperCase();
                             line += ': ';
-                            line += response.data[key];
+                            line += error.data[key];
                             errortext.push(line);
                         }
-                        console.error(errortext);
+                        DEBUG && console.error(errortext);
                     });
+                };
+                ModalSignUpController.prototype._openLogInModal = function () {
+                    mixpanel.track("Click on 'Log in' from signUp modal");
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalLogInTmpl,
+                        controller: 'mainApp.components.modal.ModalLogInController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    this.$uibModalInstance.close();
                 };
                 ModalSignUpController.prototype.close = function () {
                     this.$uibModalInstance.close();
@@ -4206,12 +4166,10 @@ var components;
             }());
             ModalSignUpController.controllerId = 'mainApp.components.modal.ModalSignUpController';
             ModalSignUpController.$inject = [
-                '$scope',
-                '$state',
-                'mainApp.models.user.RegisterService',
+                'mainApp.register.RegisterService',
                 'mainApp.core.util.messageUtilService',
-                'mainApp.core.util.FunctionsUtilService',
                 'dataConfig',
+                '$uibModal',
                 '$uibModalInstance'
             ];
             angular.module('mainApp.components.modal')
@@ -4675,11 +4633,12 @@ var app;
         var landingPage;
         (function (landingPage) {
             var LandingPageController = (function () {
-                function LandingPageController($state, $stateParams, dataConfig, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope, localStorage) {
+                function LandingPageController($state, $stateParams, dataConfig, $uibModal, AuthService, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope, localStorage) {
                     this.$state = $state;
                     this.$stateParams = $stateParams;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
+                    this.AuthService = AuthService;
                     this.messageUtil = messageUtil;
                     this.functionsUtil = functionsUtil;
                     this.LandingPageService = LandingPageService;
@@ -4744,6 +4703,13 @@ var app;
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
                     mixpanel.track("Change Language on landingPage");
+                };
+                LandingPageController.prototype.logout = function () {
+                    this.AuthService.logout().then(function (response) {
+                        alert('Deslogueo exitosamente');
+                    }, function (response) {
+                        console.log('A problem occured while logging you out.');
+                    });
                 };
                 LandingPageController.prototype._sendCountryFeedback = function () {
                     var FEEDBACK_SUCCESS_MESSAGE = '¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.';
@@ -4842,6 +4808,7 @@ var app;
                 '$stateParams',
                 'dataConfig',
                 '$uibModal',
+                'mainApp.auth.AuthService',
                 'mainApp.core.util.messageUtilService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.pages.landingPage.LandingPageService',

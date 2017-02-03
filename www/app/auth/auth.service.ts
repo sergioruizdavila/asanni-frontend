@@ -3,18 +3,18 @@
  * @description - AuthService uses `angular-oauth2` module to provide
  * authentication functionality, as well as automatic refresh of access tokens.
  * @function
- * @param {app.core.firebase.FirebaseFactory} FirebaseFactory - Firebase connections.
- * @param {AngularFireAuthService} $firebaseAuth - AngularFire methods.
  */
 
 module app.auth {
+
     'use strict';
 
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
     export interface IAuthService {
-
+        login:(user: app.core.interfaces.IUserDataAuth) => angular.IPromise<any>;
+        logout:() => angular.IPromise<any>
     }
 
 
@@ -42,13 +42,12 @@ module app.auth {
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        //TODO: Colocar tipos (remove any)
-        constructor(private $q: any,
+        constructor(private $q: angular.IQService,
                     private $timeout: angular.ITimeoutService,
-                    private $cookies: any,
-                    private OAuth: any,
+                    private $cookies: angular.cookies.ICookiesService,
+                    private OAuth: angular.oauth2.IOAuth,
                     private dataConfig: IDataConfig) {
-            this.dataConfig.debug && console.log('auth service called');
+            DEBUG && console.log('auth service called');
             this.autoRefreshTokenInterval = dataConfig.autoRefreshTokenIntervalSeconds * 1000;
             this.refreshNeeded = true;
         }
@@ -57,50 +56,64 @@ module app.auth {
         /*            METHODS             */
         /**********************************/
 
+
         /**
-         *    Verifies if user is authenticated or not based on the `token` cookie.
-         *
-         *    @return {Boolean}
+         * isAuthenticated
+         * @description - Verifies if user is authenticated or not based
+         * on the `token` cookie.
+         * @use - this.AuthService.isAuthenticated();
+         * @function
+         * @return {boolean} boolean - User is authenticated or not
          */
 
-        isAuthenticated(): any {
+        isAuthenticated(): boolean {
             return this.OAuth.isAuthenticated();
         }
 
 
 
         /**
-         *    If logout cannot be performed (if server is down, for example),
-         *    force logout by removing the `token` cookie.
+         * forceLogout
+         * @description - If logout cannot be performed (if server is down,
+         * for example), force logout by removing the `token` cookie.
+         * @use - this.AuthService.isAuthenticated();
+         * @function
+         * @return {void}
          */
 
         forceLogout(): void {
-          this.dataConfig.debug && console.log("Forcing logout");
+          DEBUG && console.log("Forcing logout");
           this.$cookies.remove(this.dataConfig.cookieName);
         }
 
 
 
         /**
-         *    Tries to login a user by by obtaining access and refresh tokens
-         *    and stores them in a cookie.
-         *
-         *    @param  {object} user - Object with `username` and `password` properties.
-         *    @return {promise}       A response promise
+         * login
+         * @description - Tries to login a user by obtaining access and
+         * refresh tokens and stores them in a cookie.
+         * @use - this.AuthService.login(user);
+         * @function
+         * @param  {app.core.IUserDataAuth} user - Object with 'username'
+         * and 'password' properties.
+         * @return {angular.IPromise<any>} promise - return http response with
+         * access token information (access_token, expire_in, refresh_token)
          */
-        login(user): any {
+
+        login(user): angular.IPromise<any> {
             //VARIABLES
             let self = this;
             let deferred = this.$q.defer();
 
+            //NOTE This method can't change to $promise structure, keep this structure
             this.OAuth.getAccessToken(user, {}).then(
                 function(response) {
-                    self.dataConfig.debug && console.info("Logged in successfuly!");
+                    DEBUG && console.info("Logged in successfuly!");
                     deferred.resolve(response);
                 },
-                function(response) {
-                    self.dataConfig.debug && console.error("Error while logging in!");
-                    deferred.reject(response);
+                function(error) {
+                    DEBUG && console.error("Error while logging in!");
+                    deferred.resolve(error);
                 }
             );
 
@@ -110,22 +123,28 @@ module app.auth {
 
 
         /**
-         *    Revokes the `token` and removes the stored `token` from cookies
-         *
-         *    @return {promise} A response promise.
-         */
-        logout(): any {
+         * logout
+         * @description - Revokes the 'token' and removes the stored 'token'
+         * from cookies.
+         * @use - this.AuthService.logout();
+         * @function
+         * @return {angular.IPromise<any>} promise - return http request with
+         * Status Code 200 OK
+        */
+
+        logout(): angular.IPromise<any> {
             //VARIABLES
             let self = this;
             let deferred = this.$q.defer();
 
+            //NOTE This method can't change to $promise structure, keep this structure
             this.OAuth.revokeToken().then(
                 function(response) {
-                    self.dataConfig.debug && console.info("Logged out successfuly!");
+                    DEBUG && console.info("Logged out successfuly!");
                     deferred.resolve(response);
                 },
                 function(response) {
-                    self.dataConfig.debug && console.error("Error while logging you out!");
+                    DEBUG && console.error("Error while logging you out!");
                     // Force logout
                     self.forceLogout();
                     deferred.reject(response);
@@ -138,32 +157,36 @@ module app.auth {
 
 
         /**
-         *    Gets a new access token.
-         *    Should not be called directly, as autoRefreshToken() is used to manage it.
-         *
-         *    @return {promise} A response promise.
+         * refreshToken
+         * @description - Gets a new access token. Should not be called directly,
+         * as autoRefreshToken() is used to manage it.
+         * @use - this.AuthService.autoRefreshToken();
+         * @function
+         * @return {angular.IPromise<any>} promise - return http request with
+         * Status Code 200 OK
          */
 
-        refreshToken(): any {
+        refreshToken(): angular.IPromise<any> {
             //VARIABLES
             let self = this;
             let deferred = this.$q.defer();
 
             if (!this.isAuthenticated()) {
-                this.dataConfig.debug && console.error('Cannot refresh token if Unauthenticated');
+                DEBUG && console.error('Cannot refresh token if Unauthenticated');
                 deferred.reject();
                 return deferred.promise;
             }
 
+            //NOTE This method can't change to $promise structure, keep this structure
             this.OAuth.getRefreshToken().then(
                 function(response) {
                     // Success
-                    self.dataConfig.debug && console.info("Access token refreshed");
+                    DEBUG && console.info("Access token refreshed");
                     deferred.resolve(response);
                 },
                 function(response) {
-                    self.dataConfig.debug && console.error("Error refreshing token ");
-                    self.dataConfig.debug && console.error(response);
+                    DEBUG && console.error("Error refreshing token ");
+                    DEBUG && console.error(response);
                     deferred.reject(response);
                 }
             );
@@ -174,18 +197,21 @@ module app.auth {
 
 
         /**
-         *    A function to automatically refresh the access token as needed.
-         *    It is called before a route change which requires authentication
-         *    using ngRoute's resolve property and stalls the initialization
-         *    of the view until the promise is resolved.
+         * autoRefreshToken
+         * @description - A function to automatically refresh the access token as needed.
+         * It is called before a route change which requires authentication
+         * using ngRoute's resolve property and stalls the initialization
+         * of the view until the promise is resolved.
          *
-         *    Additionally, once called it recursively calls itself every
-         *    `autoRefreshTokenInterval` milliseconds to handle situations
-         *    where an access token might expire and cause a 401, while
-         *    the route doesn't change.
-         *
-         *    @return {promise} A response promise.
+         * Additionally, once called it recursively calls itself every
+         * 'autoRefreshTokenInterval' milliseconds to handle situations
+         * where an access token might expire and cause a 401, while
+         * the route doesn't change.
+         * @use - this.autoRefreshToken();
+         * @function
+         * @return {angular.IPromise<any>} promise
          */
+
         autoRefreshToken(): any {
             //VARIABLES
             let self = this;
@@ -197,6 +223,7 @@ module app.auth {
                 return deferred.promise;
             }
 
+            //NOTE This method can't change to $promise structure, keep this structure
             this.refreshToken().then(
                 function(response) {
                     self.refreshNeeded = false;

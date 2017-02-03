@@ -1,48 +1,50 @@
 /**
- * ModalSignUpController
- * @description - modal User SignUp controller definition, generic modal
- * in order to show user signUp form
+ * ModalLogInController
+ * @description - modal User LogIn controller definition, generic modal
+ * in order to show user logIn form
  * @constructor
+ * @param {ng.ui.bootstrap.IModalServiceInstance} $uibModalInstance - modal boostrap instance
  */
 
-module components.modal.modalSignUp {
+module components.modal.modalLogIn {
 
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
-    interface IModalSignUpController {
+    interface IModalLogInController {
         close: () => void;
         activate: () => void;
     }
 
-    interface IModalSignUpScope extends ng.IScope {
+    interface IModalLogInScope extends ng.IScope {
 
     }
 
-    interface IModalSignUpForm extends app.register.IRegisterUserData {
+    interface IModalLogInForm extends app.core.interfaces.IUserDataAuth {
     }
 
-    interface IModalSignUpValidate {
+    interface IModalLogInValidate {
         email: app.core.util.functionsUtil.IValid;
     }
 
 
-    class ModalSignUpController implements IModalSignUpController {
+    class ModalLogInController implements IModalLogInController {
 
-        static controllerId = 'mainApp.components.modal.ModalSignUpController';
+        static controllerId = 'mainApp.components.modal.ModalLogInController';
 
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
-        form: IModalSignUpForm;
-        validate: IModalSignUpValidate;
+        form: IModalLogInForm;
+        validate: IModalLogInValidate;
         sending: boolean;
-        defaultConfig: any;
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/
         static $inject = [
-            'mainApp.register.RegisterService',
+            '$state',
+            'mainApp.auth.AuthService',
+            'mainApp.account.AccountService',
             'mainApp.core.util.messageUtilService',
             'dataConfig',
             '$uibModal',
@@ -53,8 +55,11 @@ module components.modal.modalSignUp {
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
+        //TODO: Asignar tipos remover any
         constructor(
-            private RegisterService: app.register.IRegisterService,
+            private $state: ng.ui.IStateService,
+            private AuthService: app.auth.IAuthService,
+            private AccountService: app.account.IAccountService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
             private dataConfig: IDataConfig,
             private $uibModal: ng.ui.bootstrap.IModalService,
@@ -73,62 +78,62 @@ module components.modal.modalSignUp {
             this.form = {
                 username: '',
                 email: '',
-                first_name: '',
-                last_name: '',
                 password: ''
             };
 
             this.activate();
         }
 
-        /*-- ACTIVATE METHOD --*/
+        //active function to handle all controller logic
         activate(): void {
             //LOG
-            DEBUG && console.log('modalSignUp controller actived');
+            console.log('modalLogIn controller actived');
         }
 
         /**********************************/
         /*            METHODS             */
         /**********************************/
 
-
         /**
-        * registerUser
-        * @description - Tried to create a new user account
-        * @use - this.registerUser();
+        * login
+        * @description - Tries to login a user by calling login AuthService method
+        * @use - this.login();
         * @function
         * @return {void}
         */
-        registerUser(): void {
+        login(): void {
             //VARIABLES
             let self = this;
-            //TODO: Revisar bien por que aun si falla el registro, esta entrando por el Success
-            this.RegisterService.register(this.form).then(
+            //TODO: Revisar bien por que aun si falla el log in, esta entrando por el Success
+            this.AuthService.login(this.form).then(
 
                 //Success
                 function(response) {
-                    //LOG
-                    DEBUG && console.log('Welcome!, Your new account has been successfuly created.');
-                    //Show LogIn modal in order to allow user log in
-                    self.messageUtil.success('Welcome!, Your new account has been successfuly created.');
-                    self._openLogInModal();
+
+                    self.AccountService.getAccount().then(
+                        function(response) {
+                            DEBUG && console.log('Data User: ', response);
+                            self.$uibModalInstance.close();
+                        }
+                    );
+
                 },
 
-                //Error
-                function(error) {
-                    //LOG
-                    DEBUG && console.log(JSON.stringify(error));
+                // Error
+                function(response) {
 
-                    //Parse Error
-                    var errortext = [];
-                    for (var key in error.data) {
-                        var line = key.toUpperCase();
-                        line += ': '
-                        line += error.data[key];
-                        errortext.push(line);
+                    if (response.status == 401) {
+                        DEBUG && console.log('Incorrect username or password.');
                     }
 
-                    DEBUG && console.error(errortext);
+                    else if (response.status == -1) {
+                        DEBUG && console.log('No response from server.');
+                    }
+
+                    else {
+                        DEBUG && console.log('There was a problem logging you in. Error code: ' + response.status + '.');
+                    }
+
                 }
             );
         }
@@ -136,15 +141,15 @@ module components.modal.modalSignUp {
 
 
         /**
-        * _openLogInModal
+        * _openSignUpModal
         * @description - open Modal in order to Log in action
-        * @use - this._openLogInModal();
+        * @use - this._openSignUpModal();
         * @function
         * @return {void}
         */
-        private _openLogInModal(): void {
+        private _openSignUpModal(): void {
             //MIXPANEL
-            mixpanel.track("Click on 'Log in' from signUp modal");
+            mixpanel.track("Click on 'Sign up' from logIn modal");
 
             //VARIABLES
             let self = this;
@@ -153,8 +158,8 @@ module components.modal.modalSignUp {
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,
-                templateUrl: this.dataConfig.modalLogInTmpl,
-                controller: 'mainApp.components.modal.ModalLogInController as vm'
+                templateUrl: this.dataConfig.modalSignUpTmpl,
+                controller: 'mainApp.components.modal.ModalSignUpController as vm'
             };
 
             var modalInstance = this.$uibModal.open(options);
@@ -179,7 +184,7 @@ module components.modal.modalSignUp {
     }
 
     angular.module('mainApp.components.modal')
-        .controller(ModalSignUpController.controllerId,
-                    ModalSignUpController);
+        .controller(ModalLogInController.controllerId,
+                    ModalLogInController);
 
 }

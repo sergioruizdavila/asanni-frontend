@@ -5,11 +5,12 @@ var app;
         var landingPage;
         (function (landingPage) {
             var LandingPageController = (function () {
-                function LandingPageController($state, $stateParams, dataConfig, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope, localStorage) {
+                function LandingPageController($state, $stateParams, dataConfig, $uibModal, AuthService, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope, localStorage) {
                     this.$state = $state;
                     this.$stateParams = $stateParams;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
+                    this.AuthService = AuthService;
                     this.messageUtil = messageUtil;
                     this.functionsUtil = functionsUtil;
                     this.LandingPageService = LandingPageService;
@@ -74,6 +75,13 @@ var app;
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
                     mixpanel.track("Change Language on landingPage");
+                };
+                LandingPageController.prototype.logout = function () {
+                    this.AuthService.logout().then(function (response) {
+                        alert('Deslogueo exitosamente');
+                    }, function (response) {
+                        console.log('A problem occured while logging you out.');
+                    });
                 };
                 LandingPageController.prototype._sendCountryFeedback = function () {
                     var FEEDBACK_SUCCESS_MESSAGE = '¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.';
@@ -172,6 +180,7 @@ var app;
                 '$stateParams',
                 'dataConfig',
                 '$uibModal',
+                'mainApp.auth.AuthService',
                 'mainApp.core.util.messageUtilService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.pages.landingPage.LandingPageService',

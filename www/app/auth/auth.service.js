@@ -10,7 +10,7 @@ var app;
                 this.$cookies = $cookies;
                 this.OAuth = OAuth;
                 this.dataConfig = dataConfig;
-                this.dataConfig.debug && console.log('auth service called');
+                DEBUG && console.log('auth service called');
                 this.autoRefreshTokenInterval = dataConfig.autoRefreshTokenIntervalSeconds * 1000;
                 this.refreshNeeded = true;
             }
@@ -18,18 +18,18 @@ var app;
                 return this.OAuth.isAuthenticated();
             };
             AuthService.prototype.forceLogout = function () {
-                this.dataConfig.debug && console.log("Forcing logout");
+                DEBUG && console.log("Forcing logout");
                 this.$cookies.remove(this.dataConfig.cookieName);
             };
             AuthService.prototype.login = function (user) {
                 var self = this;
                 var deferred = this.$q.defer();
                 this.OAuth.getAccessToken(user, {}).then(function (response) {
-                    self.dataConfig.debug && console.info("Logged in successfuly!");
+                    DEBUG && console.info("Logged in successfuly!");
                     deferred.resolve(response);
-                }, function (response) {
-                    self.dataConfig.debug && console.error("Error while logging in!");
-                    deferred.reject(response);
+                }, function (error) {
+                    DEBUG && console.error("Error while logging in!");
+                    deferred.resolve(error);
                 });
                 return deferred.promise;
             };
@@ -37,10 +37,10 @@ var app;
                 var self = this;
                 var deferred = this.$q.defer();
                 this.OAuth.revokeToken().then(function (response) {
-                    self.dataConfig.debug && console.info("Logged out successfuly!");
+                    DEBUG && console.info("Logged out successfuly!");
                     deferred.resolve(response);
                 }, function (response) {
-                    self.dataConfig.debug && console.error("Error while logging you out!");
+                    DEBUG && console.error("Error while logging you out!");
                     self.forceLogout();
                     deferred.reject(response);
                 });
@@ -50,16 +50,16 @@ var app;
                 var self = this;
                 var deferred = this.$q.defer();
                 if (!this.isAuthenticated()) {
-                    this.dataConfig.debug && console.error('Cannot refresh token if Unauthenticated');
+                    DEBUG && console.error('Cannot refresh token if Unauthenticated');
                     deferred.reject();
                     return deferred.promise;
                 }
                 this.OAuth.getRefreshToken().then(function (response) {
-                    self.dataConfig.debug && console.info("Access token refreshed");
+                    DEBUG && console.info("Access token refreshed");
                     deferred.resolve(response);
                 }, function (response) {
-                    self.dataConfig.debug && console.error("Error refreshing token ");
-                    self.dataConfig.debug && console.error(response);
+                    DEBUG && console.error("Error refreshing token ");
+                    DEBUG && console.error(response);
                     deferred.reject(response);
                 });
                 return deferred.promise;

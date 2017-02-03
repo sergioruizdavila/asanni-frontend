@@ -1,14 +1,13 @@
+DEBUG = true;
 (function () {
     'use strict';
-    var DEBUG = true;
     var BASE_URL = 'https://waysily-server.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/teachers-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'http://127.0.0.1:8000/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/teachers-avatar-dev';
     }
     var dataConfig = {
-        debug: DEBUG,
         currentYear: '2017',
         baseUrl: BASE_URL,
         domain: 'www.waysily.com',
@@ -24,6 +23,7 @@
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
+        modalLogInTmpl: 'components/modal/modalLogIn/modalLogIn.html',
         modalRecommendTeacherTmpl: 'components/modal/modalRecommendTeacher/modalRecommendTeacher.html',
         bucketS3: BUCKETS3,
         regionS3: 'us-east-1',

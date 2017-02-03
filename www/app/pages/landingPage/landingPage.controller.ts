@@ -76,6 +76,7 @@ module app.pages.landingPage {
                                  '$stateParams',
                                  'dataConfig',
                                  '$uibModal',
+                                 'mainApp.auth.AuthService',
                                  'mainApp.core.util.messageUtilService',
                                  'mainApp.core.util.FunctionsUtilService',
                                  'mainApp.pages.landingPage.LandingPageService',
@@ -92,6 +93,7 @@ module app.pages.landingPage {
             private $stateParams: IParams,
             private dataConfig: IDataConfig,
             private $uibModal: ng.ui.bootstrap.IModalService,
+            private AuthService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private LandingPageService: app.pages.landingPage.ILandingPageService,
@@ -199,6 +201,22 @@ module app.pages.landingPage {
         changeLanguage(): void {
              this.functionsUtil.changeLanguage(this.form.language);
              mixpanel.track("Change Language on landingPage");
+        }
+
+
+        //TODO temporal, remover despues de probar
+        logout(): void {
+            this.AuthService.logout().then(
+                function(response) {
+                    // Success
+                    alert('Deslogueo exitosamente');
+                },
+                function(response) {
+                    // Error
+                    /* This can occur if connection to server is lost or server is down */
+                    console.log('A problem occured while logging you out.');
+                }
+            );
         }
 
 
@@ -335,7 +353,7 @@ module app.pages.landingPage {
         /**
         * _openSignUpModal
         * @description - open Modal in order to add a New Teacher's Experience on Box
-        * @use - this._addEditExperience();
+        * @use - this._openSignUpModal();
         * @function
         * @return {void}
         */

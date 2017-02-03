@@ -5,40 +5,58 @@ var components;
         var modalSignUp;
         (function (modalSignUp) {
             var ModalSignUpController = (function () {
-                function ModalSignUpController($scope, $state, RegisterService, messageUtil, functionsUtil, dataConfig, $uibModalInstance) {
-                    this.$scope = $scope;
-                    this.$state = $state;
+                function ModalSignUpController(RegisterService, messageUtil, dataConfig, $uibModal, $uibModalInstance) {
                     this.RegisterService = RegisterService;
                     this.messageUtil = messageUtil;
-                    this.functionsUtil = functionsUtil;
                     this.dataConfig = dataConfig;
+                    this.$uibModal = $uibModal;
                     this.$uibModalInstance = $uibModalInstance;
                     this._init();
                 }
                 ModalSignUpController.prototype._init = function () {
                     var self = this;
-                    this.registerData = {};
+                    this.form = {
+                        username: '',
+                        email: '',
+                        first_name: '',
+                        last_name: '',
+                        password: ''
+                    };
                     this.activate();
                 };
                 ModalSignUpController.prototype.activate = function () {
-                    console.log('modalSignUp controller actived');
+                    DEBUG && console.log('modalSignUp controller actived');
                 };
                 ModalSignUpController.prototype.registerUser = function () {
                     var self = this;
-                    this.RegisterService.register(this.registerData).then(function (response) {
-                        console.log('Welcome!, Your new account has been successfuly created.');
-                        this.$state.go('/login');
-                    }, function (response) {
-                        self.dataConfig.debug && console.log(JSON.stringify(response));
+                    this.RegisterService.register(this.form).then(function (response) {
+                        DEBUG && console.log('Welcome!, Your new account has been successfuly created.');
+                        self.messageUtil.success('Welcome!, Your new account has been successfuly created.');
+                        self._openLogInModal();
+                    }, function (error) {
+                        DEBUG && console.log(JSON.stringify(error));
                         var errortext = [];
-                        for (var key in response.data) {
+                        for (var key in error.data) {
                             var line = key.toUpperCase();
                             line += ': ';
-                            line += response.data[key];
+                            line += error.data[key];
                             errortext.push(line);
                         }
-                        console.error(errortext);
+                        DEBUG && console.error(errortext);
                     });
+                };
+                ModalSignUpController.prototype._openLogInModal = function () {
+                    mixpanel.track("Click on 'Log in' from signUp modal");
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalLogInTmpl,
+                        controller: 'mainApp.components.modal.ModalLogInController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    this.$uibModalInstance.close();
                 };
                 ModalSignUpController.prototype.close = function () {
                     this.$uibModalInstance.close();
@@ -47,12 +65,10 @@ var components;
             }());
             ModalSignUpController.controllerId = 'mainApp.components.modal.ModalSignUpController';
             ModalSignUpController.$inject = [
-                '$scope',
-                '$state',
-                'mainApp.models.user.RegisterService',
+                'mainApp.register.RegisterService',
                 'mainApp.core.util.messageUtilService',
-                'mainApp.core.util.FunctionsUtilService',
                 'dataConfig',
+                '$uibModal',
                 '$uibModalInstance'
             ];
             angular.module('mainApp.components.modal')

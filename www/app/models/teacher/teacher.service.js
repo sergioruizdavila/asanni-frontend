@@ -9,148 +9,121 @@ var app;
                 function TeacherService(restApi) {
                     this.restApi = restApi;
                     console.log('teacher service instanced');
+                    this.TEACHER_URI = 'teachers';
+                    this.STATUS_TEACHER_URI = 'teachers?status=';
+                    this.EXPERIENCES_URI = 'experiences';
+                    this.EDUCATIONS_URI = 'educations';
+                    this.CERTIFICATES_URI = 'certificates';
                 }
                 TeacherService.prototype.getTeacherById = function (id) {
-                    var url = 'teachers';
+                    var url = this.TEACHER_URI;
                     return this.restApi.show({ url: url, id: id }).$promise
                         .then(function (data) {
                         return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        return error;
                     });
                 };
                 TeacherService.prototype.getAllTeachersByStatus = function (status) {
-                    var url = 'teachers?status=' + status;
+                    var url = this.STATUS_TEACHER_URI + status;
                     return this.restApi.queryObject({ url: url }).$promise
                         .then(function (data) {
                         return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        return error;
                     });
                 };
                 TeacherService.prototype.getAllTeachers = function () {
-                    var url = 'teachers';
+                    var url = this.TEACHER_URI;
                     return this.restApi.queryObject({ url: url }).$promise
                         .then(function (data) {
                         return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        return error;
                     });
                 };
                 TeacherService.prototype.createTeacher = function (teacher) {
-                    var promise;
-                    var url = 'teachers';
-                    promise = this.restApi.create({ url: url }, teacher)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI;
+                    return this.restApi.create({ url: url }, teacher).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.updateTeacher = function (teacher) {
-                    var promise;
-                    var url = 'teachers';
-                    promise = this.restApi.update({ url: url, id: teacher.Id }, teacher)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI;
+                    return this.restApi.update({ url: url, id: teacher.Id }, teacher).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.createExperience = function (teacherId, experience) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/experiences';
-                    promise = this.restApi.create({ url: url }, experience)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EXPERIENCES_URI;
+                    return this.restApi.create({ url: url }, experience).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.log(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.updateExperience = function (teacherId, experience) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/experiences';
-                    promise = this.restApi.update({ url: url, id: experience.Id }, experience)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EXPERIENCES_URI;
+                    return this.restApi.update({ url: url, id: experience.Id }, experience).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.createEducation = function (teacherId, education) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/educations';
-                    promise = this.restApi.create({ url: url }, education)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EDUCATIONS_URI;
+                    return this.restApi.create({ url: url }, education).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.updateEducation = function (teacherId, education) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/educations';
-                    promise = this.restApi.update({ url: url, id: education.Id }, education)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EDUCATIONS_URI;
+                    return this.restApi.update({ url: url, id: education.Id }, education).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.createCertificate = function (teacherId, certificate) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/certificates';
-                    promise = this.restApi.create({ url: url }, certificate)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.CERTIFICATES_URI;
+                    return this.restApi.create({ url: url }, certificate).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.updateCertificate = function (teacherId, certificate) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/certificates';
-                    promise = this.restApi.update({ url: url, id: certificate.Id }, certificate)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.CERTIFICATES_URI;
+                    return this.restApi.update({ url: url, id: certificate.Id }, certificate).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 return TeacherService;
             }());

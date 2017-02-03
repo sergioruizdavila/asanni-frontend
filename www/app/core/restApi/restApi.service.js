@@ -51,15 +51,6 @@ var app;
                     },
                     response: function (res) {
                         return res;
-                    },
-                    responseError: function (rejection) {
-                        if (rejection.data) {
-                            messageUtil.error(rejection.data.Message);
-                        }
-                        else {
-                            messageUtil.error('');
-                        }
-                        return rejection;
                     }
                 };
             }

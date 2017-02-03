@@ -6,9 +6,14 @@
  * @return {void}
  */
 
+ declare var DEBUG: boolean;
+ /* This must be false in production */
+ DEBUG = true;
+ /************************************/
+
+
 /*--  INTERFACE --*/
 interface IDataConfig {
-    debug: boolean;
     currentYear: string;
     baseUrl: string;
     domain: string;
@@ -24,6 +29,7 @@ interface IDataConfig {
     modalEducationTmpl: string;
     modalCertificateTmpl: string;
     modalSignUpTmpl: string;
+    modalLogInTmpl: string;
     modalRecommendTeacherTmpl: string;
     bucketS3: string;
     regionS3: string;
@@ -40,16 +46,12 @@ interface IDataConfig {
 
     'use strict';
 
-    /* This must be false in production */
-    let DEBUG = true;
-    /************************************/
-
     let BASE_URL = 'https://waysily-server.herokuapp.com/api/v1/';
     let BUCKETS3 = 'waysily-img/teachers-avatar-prd';
 
     /* Assign Environment values */
     if(DEBUG) {
-        BASE_URL = 'http://127.0.0.1:8000/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/teachers-avatar-dev';
     }
 
@@ -66,7 +68,6 @@ interface IDataConfig {
     // baseUrl: 'https://waysily-server.herokuapp.com/api/v1/'
     // bucketS3: 'waysily-img/teachers-avatar-prd'
     var dataConfig: IDataConfig = {
-        debug: DEBUG,
         currentYear: '2017',
         baseUrl: BASE_URL,
         domain: 'www.waysily.com',
@@ -82,6 +83,7 @@ interface IDataConfig {
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
+        modalLogInTmpl: 'components/modal/modalLogIn/modalLogIn.html',
         modalRecommendTeacherTmpl: 'components/modal/modalRecommendTeacher/modalRecommendTeacher.html',
         bucketS3: BUCKETS3,
         regionS3: 'us-east-1',

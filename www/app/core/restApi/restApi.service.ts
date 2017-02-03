@@ -79,7 +79,10 @@ module app.core.restApi {
             $httpProvider.interceptors.push('customHttpInterceptor');
         }
 
-        function customHttpInterceptor($q, messageUtil: app.core.util.messageUtil.IMessageUtilService) {
+        function customHttpInterceptor(
+                    $q: angular.IQService,
+                    messageUtil: app.core.util.messageUtil.IMessageUtilService) {
+
             return {
                 request: function(req) {
                     req.url = decodeURIComponent(req.url);
@@ -90,17 +93,9 @@ module app.core.restApi {
                 },
                 response: function (res) {
                     return res;
-                },
-                responseError: function (rejection) {
-                    if(rejection.data){
-                        messageUtil.error(rejection.data.Message);
-                    } else {
-                        messageUtil.error('');
-                    }
-
-                    return rejection;
                 }
             }
+            
         }
 
 

@@ -8,6 +8,8 @@
         'mainApp.core.restApi',
         'mainApp.core.s3Upload',
         'mainApp.auth',
+        'mainApp.register',
+        'mainApp.account',
         'mainApp.models.feedback',
         'mainApp.models.user',
         'mainApp.models.student',
