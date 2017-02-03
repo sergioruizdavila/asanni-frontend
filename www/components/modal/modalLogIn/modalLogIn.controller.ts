@@ -55,7 +55,6 @@ module components.modal.modalLogIn {
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        //TODO: Asignar tipos remover any
         constructor(
             private $state: ng.ui.IStateService,
             private AuthService: app.auth.IAuthService,
@@ -104,24 +103,21 @@ module components.modal.modalLogIn {
         login(): void {
             //VARIABLES
             let self = this;
-            //TODO: Revisar bien por que aun si falla el log in, esta entrando por el Success
+
             this.AuthService.login(this.form).then(
 
                 //Success
                 function(response) {
-
                     self.AccountService.getAccount().then(
                         function(response) {
                             DEBUG && console.log('Data User: ', response);
                             self.$uibModalInstance.close();
                         }
                     );
-
                 },
 
                 // Error
                 function(response) {
-
                     if (response.status == 401) {
                         DEBUG && console.log('Incorrect username or password.');
                     }
@@ -133,7 +129,6 @@ module components.modal.modalLogIn {
                     else {
                         DEBUG && console.log('There was a problem logging you in. Error code: ' + response.status + '.');
                     }
-
                 }
             );
         }

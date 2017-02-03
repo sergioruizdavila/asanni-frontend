@@ -113,7 +113,7 @@ module app.auth {
                 },
                 function(error) {
                     DEBUG && console.error("Error while logging in!");
-                    deferred.resolve(error);
+                    deferred.reject(error);
                 }
             );
 

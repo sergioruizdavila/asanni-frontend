@@ -200,7 +200,7 @@ var app;
                     deferred.resolve(response);
                 }, function (error) {
                     DEBUG && console.error("Error while logging in!");
-                    deferred.resolve(error);
+                    deferred.reject(error);
                 });
                 return deferred.promise;
             };

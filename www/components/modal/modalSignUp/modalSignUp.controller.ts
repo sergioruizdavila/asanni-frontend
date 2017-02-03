@@ -102,7 +102,7 @@ module components.modal.modalSignUp {
         registerUser(): void {
             //VARIABLES
             let self = this;
-            //TODO: Revisar bien por que aun si falla el registro, esta entrando por el Success
+
             this.RegisterService.register(this.form).then(
 
                 //Success
@@ -128,6 +128,7 @@ module components.modal.modalSignUp {
                         errortext.push(line);
                     }
 
+                    //LOG Parsed Error
                     DEBUG && console.error(errortext);
                 }
             );

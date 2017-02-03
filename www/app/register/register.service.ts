@@ -44,6 +44,7 @@ module app.register {
 
         /*-- INJECT DEPENDENCIES --*/
         static $inject = [
+            '$q',
             'mainApp.core.restApi.restApiService'
         ];
 
@@ -51,7 +52,9 @@ module app.register {
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        constructor(private restApi: app.core.restApi.IRestApi) {
+        constructor(
+            private $q: angular.IQService,
+            private restApi: app.core.restApi.IRestApi ) {
             //LOG
             DEBUG && console.log('register service instanced');
 
@@ -134,18 +137,21 @@ module app.register {
         register(userData): angular.IPromise<any> {
             //VARIABLES
             let url = this.REGISTER_URI;
+            let deferred = this.$q.defer();
 
-            return this.restApi.create({url: url}, userData).$promise
+            this.restApi.create({url: url}, userData).$promise
                 .then(
-                    function(data) {
-                        return data;
+                    function(response) {
+                        deferred.resolve(response);
                     },
 
                     function(error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     }
                 );
+
+            return deferred.promise;
         }
 
     }
