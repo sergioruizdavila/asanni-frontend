@@ -39,25 +39,32 @@ module app.pages.teacherLandingPage {
         /**********************************/
         form: ITeacherLandingForm;
         fake: app.models.teacher.Teacher;
+        isAuthenticated: boolean;
         TEACHER_FAKE_TMPL: string;
         private _hoverDetail: Array<boolean>;
         // --------------------------------
 
 
         /*-- INJECT DEPENDENCIES --*/
-        public static $inject = ['mainApp.core.util.FunctionsUtilService',
+        public static $inject = ['$scope',
+                                 'mainApp.core.util.FunctionsUtilService',
+                                 'mainApp.auth.AuthService',
                                  '$state',
                                  'dataConfig',
-                                 '$uibModal'];
+                                 '$uibModal',
+                                 'mainApp.localStorageService'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
+            private $scope: angular.IScope,
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
+            private AuthService: app.auth.IAuthService,
             private $state: ng.ui.IStateService,
             private dataConfig: IDataConfig,
-            private $uibModal: ng.ui.bootstrap.IModalService) {
+            private $uibModal: ng.ui.bootstrap.IModalService,
+            private localStorage) {
 
             this._init();
 
@@ -65,6 +72,10 @@ module app.pages.teacherLandingPage {
 
         /*-- INITIALIZE METHOD --*/
         private _init() {
+
+            //Validate if user is Authenticated
+            this.isAuthenticated = this.AuthService.isAuthenticated();
+
             //Init form
             this.form = {
                 language: this.functionsUtil.getCurrentLanguage() || 'en'
@@ -91,6 +102,9 @@ module app.pages.teacherLandingPage {
 
             //MIXPANEL
             mixpanel.track("Enter: Teacher Landing Page");
+
+            //SUBSCRIBE TO EVENTS
+            this._subscribeToEvents();
 
         }
 
@@ -137,6 +151,34 @@ module app.pages.teacherLandingPage {
             //MIXPANEL
             mixpanel.track("Click on 'Join as Student' teacher landing page header");
 
+        }
+
+
+
+        /**
+         * logout
+         * @description - Log out current logged user (call AuthService to revoke token)
+         * @use - this.logout();
+         * @function
+         * @return {void}
+        */
+
+        logout(): void {
+            //VARIABLES
+            let self = this;
+
+            this.AuthService.logout().then(
+                function(response) {
+                    // Success
+                    self.localStorage.removeItem('currentUser');
+                    window.location.reload();
+                },
+                function(response) {
+                    // Error
+                    /* This can occur if connection to server is lost or server is down */
+                    DEBUG && console.log('A problem occured while logging you out.');
+                }
+            );
         }
 
 
@@ -234,6 +276,32 @@ module app.pages.teacherLandingPage {
                 type: 'new'
             };
             this.$state.go('page.createTeacherPage.start',  params, {reload: true});
+        }
+
+
+
+        /**
+        * _subscribeToEvents
+        * @description - this method subscribes Landing Page to Child's Events
+        * @use - this._subscribeToEvents();
+        * @function
+        * @return {void}
+        */
+        private _subscribeToEvents(): void {
+            // VARIABLES
+            let self = this;
+
+            /**
+            * Is Authenticated event
+            * @description - Parent (LandingPageController) receive Child's
+                             event in order to know if user is authenticated
+            * @event
+            */
+            this.$scope.$on('Is Authenticated', function(event, args) {
+                //Validate if user is Authenticated
+                self.isAuthenticated = self.AuthService.isAuthenticated();
+            });
+
         }
 
     }

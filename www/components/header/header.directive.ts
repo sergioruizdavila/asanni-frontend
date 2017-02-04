@@ -91,18 +91,21 @@ module components.header {
         /**********************************/
         private _slideout: boolean;
         form: IHeaderForm;
+        isAuthenticated: boolean;
         // --------------------------------
 
 
         /*-- INJECT DEPENDENCIES --*/
         static $inject = [
             'mainApp.core.util.FunctionsUtilService',
+            'mainApp.auth.AuthService',
             '$uibModal',
             'dataConfig',
             '$filter',
             '$scope',
             '$rootScope',
-            '$state'
+            '$state',
+            'mainApp.localStorageService'
         ];
 
 
@@ -110,18 +113,24 @@ module components.header {
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
+                    private AuthService: app.auth.IAuthService,
                     private $uibModal: ng.ui.bootstrap.IModalService,
                     private dataConfig: IDataConfig,
                     private $filter: angular.IFilterService,
                     private $scope: angular.IScope,
                     private $rootScope: angular.IRootScopeService,
-                    private $state: ng.ui.IStateService) {
+                    private $state: ng.ui.IStateService,
+                    private localStorage) {
             this.init();
         }
 
 
         /*-- INITIALIZE METHOD --*/
         private init() {
+
+            //Validate if user is Authenticated
+            this.isAuthenticated = this.AuthService.isAuthenticated();
+
             //Init form
             this.form = {
                 language: this.functionsUtil.getCurrentLanguage() || 'en',
@@ -137,6 +146,9 @@ module components.header {
         activate(): void {
             //LOG
             console.log('header controller actived');
+
+            //SUBSCRIBE TO EVENTS
+            this._subscribeToEvents();
         }
 
 
@@ -152,6 +164,34 @@ module components.header {
 
         slideNavMenu(): void {
             this._slideout = !this._slideout;
+        }
+
+
+
+        /**
+         * logout
+         * @description - Log out current logged user (call AuthService to revoke token)
+         * @use - this.logout();
+         * @function
+         * @return {void}
+        */
+
+        logout(): void {
+            //VARIABLES
+            let self = this;
+
+            this.AuthService.logout().then(
+                function(response) {
+                    // Success
+                    self.localStorage.removeItem('currentUser');
+                    window.location.reload();
+                },
+                function(response) {
+                    // Error
+                    /* This can occur if connection to server is lost or server is down */
+                    DEBUG && console.log('A problem occured while logging you out.');
+                }
+            );
         }
 
 
@@ -217,6 +257,32 @@ module components.header {
 
             //MIXPANEL
             mixpanel.track("Click on 'Join as Student' main header");
+        }
+
+
+
+        /**
+        * _subscribeToEvents
+        * @description - this method subscribes HeaderController to Child's Events
+        * @use - this._subscribeToEvents();
+        * @function
+        * @return {void}
+        */
+        private _subscribeToEvents(): void {
+            // VARIABLES
+            let self = this;
+
+            /**
+            * Is Authenticated event
+            * @description - Parent (HeaderController) receive Child's
+                             event in order to know if user is authenticated
+            * @event
+            */
+            this.$scope.$on('Is Authenticated', function(event, args) {
+                //Validate if user is Authenticated
+                self.isAuthenticated = self.AuthService.isAuthenticated();
+            });
+
         }
 
     }

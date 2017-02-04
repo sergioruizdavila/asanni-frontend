@@ -14,6 +14,7 @@ module app.core.interfaces {
         activeHeader: boolean;
         activeFooter: boolean;
         activeMessageBar: boolean;
+        currentUser: any;
     }
 
     //TODO: Remover cuando ya no sea necesario

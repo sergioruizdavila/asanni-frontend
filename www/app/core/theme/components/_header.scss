@@ -120,6 +120,7 @@
 
     }
 
+
     &--transparent {
         background: $header-transparent-background;
         border: $header-transparent-border;
@@ -130,6 +131,14 @@
 
             &--right {
                 padding-right: $header-transparent-block-right-padding;
+            }
+
+            &__btn {
+
+                &:hover {
+                    background-color: transparent;
+                }
+
             }
 
             .ma-select-container {

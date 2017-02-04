@@ -42,10 +42,12 @@ module components.modal.modalLogIn {
 
         /*-- INJECT DEPENDENCIES --*/
         static $inject = [
+            '$rootScope',
             '$state',
             'mainApp.auth.AuthService',
             'mainApp.account.AccountService',
             'mainApp.core.util.messageUtilService',
+            'mainApp.localStorageService',
             'dataConfig',
             '$uibModal',
             '$uibModalInstance'
@@ -56,10 +58,12 @@ module components.modal.modalLogIn {
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
+            private $rootScope: app.core.interfaces.IMainAppRootScope,
             private $state: ng.ui.IStateService,
             private AuthService: app.auth.IAuthService,
             private AccountService: app.account.IAccountService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
+            private localStorage,
             private dataConfig: IDataConfig,
             private $uibModal: ng.ui.bootstrap.IModalService,
             private $uibModalInstance: ng.ui.bootstrap.IModalServiceInstance) {
@@ -110,7 +114,16 @@ module components.modal.modalLogIn {
                 function(response) {
                     self.AccountService.getAccount().then(
                         function(response) {
+                            //LOG
                             DEBUG && console.log('Data User: ', response);
+
+                            //Set logged User data in localStorage
+                            self.localStorage.setItem('currentUser', JSON.stringify(response));
+                            //Set logged User data in $rootScope
+                            //TODO: Crear un modelo: Account, y crear un objeto
+                            // tipo Account: new app.models.Account();
+                            self.$rootScope.currentUser = JSON.parse(self.localStorage.getItem('currentUser'));
+                            //Close modal
                             self.$uibModalInstance.close();
                         }
                     );

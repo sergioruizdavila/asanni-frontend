@@ -78,6 +78,70 @@
 
 
 
+        <!---------------- START: PROFILE IMAGE (MD AND LG SCREEN) ------------>
+        <div ng-if="vm.isAuthenticated"
+             class="ma-header__block
+                    ma-header--transparent__block
+                    pull-right">
+
+            <!-- User menu options dropdown -->
+            <span uib-dropdown on-toggle="toggled(open)">
+                <a id="user-menu-options"
+                   class="ma-header__block__btn
+                          ma-header--transparent__block__btn
+                          link-reset dropdown-toggle"
+                   uib-dropdown-toggle href
+                   aria-haspopup="true" aria-expanded="true">
+                    <div class="ma-photo-profile
+                                ma-photo-profile--tiny
+                                round
+                                ma-header__block__btn__icon
+                                ma-header__block__btn__icon__ma-photo">
+                        <img width="32" height="32"
+                             src="https://a2.muscache.com/im/pictures/27b8a775-011e-4659-a82d-95320b05c1c8.jpg?aki_policy=profile_x_medium" alt="">
+                    </div>
+                </a>
+                <ul class="ma-dropdown
+                           dropdown-menu
+                           dropdown-menu-right"
+                    uib-dropdown-menu
+                    role="menu"
+                    aria-labelledby="user-menu-options">
+                    <li class="ma-dropdown__option">
+                        <a ui-sref="page.userProfilePage({id: '30'})"
+                           class="ma-dropdown__option__btn"
+                           href>
+                           View Profile
+                        </a>
+                    </li>
+                    <li class="ma-dropdown__option">
+                        <a ui-sref="page.userEditProfilePage"
+                           class="ma-dropdown__option__btn"
+                           href>
+                            Edit Profile
+                        </a>
+                    </li>
+                    <li class="ma-dropdown__option hidden">
+                        <a ui-sref="page.userEditAgendaPage"
+                           class="ma-dropdown__option__btn"
+                           href>
+                            Edit Agenda</a>
+                    </li>
+
+                    <li class="ma-dropdown__option last-option">
+                        <a class="ma-dropdown__option__btn"
+                           ng-click="vm.logout()"
+                           href>
+                           Log Out
+                        </a>
+                    </li>
+                </ul>
+            </span>
+        </div>
+        <!--                END: PROFILE IMAGE (MD AND LG SCREEN)            -->
+
+
+
         <!-------------- START: CHANGE LANGUAGE (MD AND LG SCREEN) ------------>
         <div class="ma-header__block
                     ma-header--transparent__block
@@ -125,7 +189,8 @@
                       translate>
                     %landing.header.join.label.text
                 </span>
-                <button class="ma-header--transparent__block__buttons-list__btn
+                <button ng-if="!vm.isAuthenticated"
+                        class="ma-header--transparent__block__buttons-list__btn
                                ma-btn ma-btn--alert ma-btn--default"
                         ng-click="vm._openSignUpModal()" translate>
                     %global.student.text
@@ -147,12 +212,6 @@
                    target="_blank" translate>
                     %global.school.text
                 </a>
-
-                <button class="ma-header--transparent__block__buttons-list__btn
-                               ma-btn ma-btn--alert ma-btn--default"
-                        ng-click="vm.logout()" translate>
-                    Logout
-                </button>
 
             </div>
 

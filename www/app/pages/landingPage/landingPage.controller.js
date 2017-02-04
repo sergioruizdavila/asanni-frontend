@@ -5,7 +5,8 @@ var app;
         var landingPage;
         (function (landingPage) {
             var LandingPageController = (function () {
-                function LandingPageController($state, $stateParams, dataConfig, $uibModal, AuthService, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope, localStorage) {
+                function LandingPageController($scope, $state, $stateParams, dataConfig, $uibModal, AuthService, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope, localStorage) {
+                    this.$scope = $scope;
                     this.$state = $state;
                     this.$stateParams = $stateParams;
                     this.dataConfig = dataConfig;
@@ -21,6 +22,7 @@ var app;
                     this._init();
                 }
                 LandingPageController.prototype._init = function () {
+                    this.isAuthenticated = this.AuthService.isAuthenticated();
                     this.form = {
                         userData: {
                             name: '',
@@ -71,16 +73,19 @@ var app;
                         };
                         var modalInstance = this.$uibModal.open(options);
                     }
+                    this._subscribeToEvents();
                 };
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
                     mixpanel.track("Change Language on landingPage");
                 };
                 LandingPageController.prototype.logout = function () {
+                    var self = this;
                     this.AuthService.logout().then(function (response) {
-                        alert('Deslogueo exitosamente');
+                        self.localStorage.removeItem('currentUser');
+                        window.location.reload();
                     }, function (response) {
-                        console.log('A problem occured while logging you out.');
+                        DEBUG && console.log('A problem occured while logging you out.');
                     });
                 };
                 LandingPageController.prototype._sendCountryFeedback = function () {
@@ -173,10 +178,17 @@ var app;
                     var modalInstance = this.$uibModal.open(options);
                     mixpanel.track("Click on 'Join as Student' landing page header");
                 };
+                LandingPageController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Is Authenticated', function (event, args) {
+                        self.isAuthenticated = self.AuthService.isAuthenticated();
+                    });
+                };
                 return LandingPageController;
             }());
             LandingPageController.controllerId = 'mainApp.pages.landingPage.LandingPageController';
-            LandingPageController.$inject = ['$state',
+            LandingPageController.$inject = ['$scope',
+                '$state',
                 '$stateParams',
                 'dataConfig',
                 '$uibModal',

@@ -6,9 +6,8 @@ var app;
         (function (restApi) {
             'use strict';
             var RestApiService = (function () {
-                function RestApiService($resource, localStorage, dataConfig) {
+                function RestApiService($resource, dataConfig) {
                     this.$resource = $resource;
-                    this.localStorage = localStorage;
                 }
                 RestApiService.Api = function ($resource, dataConfig) {
                     var resource = $resource(dataConfig.baseUrl + ':url/:id', { url: '@url' }, {
@@ -26,7 +25,6 @@ var app;
             RestApiService.serviceId = 'mainApp.core.restApi.restApiService';
             RestApiService.$inject = [
                 '$resource',
-                'mainApp.localStorageService',
                 'dataConfig'
             ];
             restApi.RestApiService = RestApiService;

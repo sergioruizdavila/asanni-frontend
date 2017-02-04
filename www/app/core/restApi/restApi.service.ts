@@ -33,7 +33,6 @@ module app.core.restApi {
         /*-- INJECT DEPENDENCIES--*/
         static $inject = [
             '$resource',
-            'mainApp.localStorageService',
             'dataConfig'
         ];
 
@@ -41,7 +40,6 @@ module app.core.restApi {
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(private $resource: ng.resource.IResourceService,
-                    private localStorage,
                     dataConfig: IDataConfig) {
         }
 
@@ -95,7 +93,7 @@ module app.core.restApi {
                     return res;
                 }
             }
-            
+
         }
 
 

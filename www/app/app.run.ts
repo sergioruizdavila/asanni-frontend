@@ -15,15 +15,19 @@
         .module('mainApp')
         .run(run);
 
-    run.$inject = ['$rootScope',
-                   '$state',
-                   'dataConfig',
-                   'mainApp.auth.AuthService'];
+    run.$inject = [
+                '$rootScope',
+                '$state',
+                'dataConfig',
+                'mainApp.auth.AuthService',
+                'mainApp.localStorageService'
+            ];
 
-    function run($rootScope: ng.IRootScopeService,
+    function run($rootScope: app.core.interfaces.IMainAppRootScope,
                  $state: ng.ui.IStateService,
                  dataConfig: IDataConfig,
-                 AuthService: app.auth.IAuthService): void {
+                 AuthService: app.auth.IAuthService,
+                 localStorage): void {
 
         //VARIABLES
         let productionHost = dataConfig.domain;
@@ -46,6 +50,11 @@
             });
         }
 
+        //Get current authenticated user data from localStorage
+        if (AuthService.isAuthenticated()) {
+            $rootScope.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        }
+
         //Validate each state if require login
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
@@ -53,7 +62,7 @@
                 /* Unauthenticated request to a route requiring auth is
                    redirected to /#/login */
                 event.preventDefault();
-                $state.go('page');
+                $state.go('page.landingPage');
             }
 
         });

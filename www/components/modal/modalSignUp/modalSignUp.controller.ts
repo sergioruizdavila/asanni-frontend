@@ -42,6 +42,7 @@ module components.modal.modalSignUp {
 
         /*-- INJECT DEPENDENCIES --*/
         static $inject = [
+            '$rootScope',
             'mainApp.register.RegisterService',
             'mainApp.core.util.messageUtilService',
             'dataConfig',
@@ -54,6 +55,7 @@ module components.modal.modalSignUp {
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
+            private $rootScope: app.core.interfaces.IMainAppRootScope,
             private RegisterService: app.register.IRegisterService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
             private dataConfig: IDataConfig,
@@ -159,6 +161,15 @@ module components.modal.modalSignUp {
             };
 
             var modalInstance = this.$uibModal.open(options);
+
+            /* When modal is closed,validate if user is Authenticated in order to
+            show current avatar user */
+            modalInstance.result.then(function () {
+                //Validate if user is Authenticated
+                self.$rootScope.$broadcast('Is Authenticated');
+            }, function () {
+                DEBUG && console.info('Modal dismissed at: ' + new Date());
+            });
 
             this.$uibModalInstance.close();
         }

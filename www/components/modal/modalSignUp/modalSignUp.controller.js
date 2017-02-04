@@ -5,7 +5,8 @@ var components;
         var modalSignUp;
         (function (modalSignUp) {
             var ModalSignUpController = (function () {
-                function ModalSignUpController(RegisterService, messageUtil, dataConfig, $uibModal, $uibModalInstance) {
+                function ModalSignUpController($rootScope, RegisterService, messageUtil, dataConfig, $uibModal, $uibModalInstance) {
+                    this.$rootScope = $rootScope;
                     this.RegisterService = RegisterService;
                     this.messageUtil = messageUtil;
                     this.dataConfig = dataConfig;
@@ -56,6 +57,11 @@ var components;
                         controller: 'mainApp.components.modal.ModalLogInController as vm'
                     };
                     var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function () {
+                        self.$rootScope.$broadcast('Is Authenticated');
+                    }, function () {
+                        DEBUG && console.info('Modal dismissed at: ' + new Date());
+                    });
                     this.$uibModalInstance.close();
                 };
                 ModalSignUpController.prototype.close = function () {
@@ -65,6 +71,7 @@ var components;
             }());
             ModalSignUpController.controllerId = 'mainApp.components.modal.ModalSignUpController';
             ModalSignUpController.$inject = [
+                '$rootScope',
                 'mainApp.register.RegisterService',
                 'mainApp.core.util.messageUtilService',
                 'dataConfig',

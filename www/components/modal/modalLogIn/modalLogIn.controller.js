@@ -5,11 +5,13 @@ var components;
         var modalLogIn;
         (function (modalLogIn) {
             var ModalLogInController = (function () {
-                function ModalLogInController($state, AuthService, AccountService, messageUtil, dataConfig, $uibModal, $uibModalInstance) {
+                function ModalLogInController($rootScope, $state, AuthService, AccountService, messageUtil, localStorage, dataConfig, $uibModal, $uibModalInstance) {
+                    this.$rootScope = $rootScope;
                     this.$state = $state;
                     this.AuthService = AuthService;
                     this.AccountService = AccountService;
                     this.messageUtil = messageUtil;
+                    this.localStorage = localStorage;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
                     this.$uibModalInstance = $uibModalInstance;
@@ -32,6 +34,8 @@ var components;
                     this.AuthService.login(this.form).then(function (response) {
                         self.AccountService.getAccount().then(function (response) {
                             DEBUG && console.log('Data User: ', response);
+                            self.localStorage.setItem('currentUser', JSON.stringify(response));
+                            self.$rootScope.currentUser = JSON.parse(self.localStorage.getItem('currentUser'));
                             self.$uibModalInstance.close();
                         });
                     }, function (response) {
@@ -66,10 +70,12 @@ var components;
             }());
             ModalLogInController.controllerId = 'mainApp.components.modal.ModalLogInController';
             ModalLogInController.$inject = [
+                '$rootScope',
                 '$state',
                 'mainApp.auth.AuthService',
                 'mainApp.account.AccountService',
                 'mainApp.core.util.messageUtilService',
+                'mainApp.localStorageService',
                 'dataConfig',
                 '$uibModal',
                 '$uibModalInstance'

@@ -132,11 +132,14 @@ DEBUG = true;
     angular
         .module('mainApp')
         .run(run);
-    run.$inject = ['$rootScope',
+    run.$inject = [
+        '$rootScope',
         '$state',
         'dataConfig',
-        'mainApp.auth.AuthService'];
-    function run($rootScope, $state, dataConfig, AuthService) {
+        'mainApp.auth.AuthService',
+        'mainApp.localStorageService'
+    ];
+    function run($rootScope, $state, dataConfig, AuthService, localStorage) {
         var productionHost = dataConfig.domain;
         var mixpanelTokenDEV = dataConfig.mixpanelTokenDEV;
         var mixpanelTokenPRD = dataConfig.mixpanelTokenPRD;
@@ -155,10 +158,13 @@ DEBUG = true;
                 }
             });
         }
+        if (AuthService.isAuthenticated()) {
+            $rootScope.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        }
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
             if (toState.data.requireLogin && !AuthService.isAuthenticated()) {
                 event.preventDefault();
-                $state.go('page');
+                $state.go('page.landingPage');
             }
         });
     }
@@ -841,9 +847,8 @@ var app;
         (function (restApi) {
             'use strict';
             var RestApiService = (function () {
-                function RestApiService($resource, localStorage, dataConfig) {
+                function RestApiService($resource, dataConfig) {
                     this.$resource = $resource;
-                    this.localStorage = localStorage;
                 }
                 RestApiService.Api = function ($resource, dataConfig) {
                     var resource = $resource(dataConfig.baseUrl + ':url/:id', { url: '@url' }, {
@@ -861,7 +866,6 @@ var app;
             RestApiService.serviceId = 'mainApp.core.restApi.restApiService';
             RestApiService.$inject = [
                 '$resource',
-                'mainApp.localStorageService',
                 'dataConfig'
             ];
             restApi.RestApiService = RestApiService;
@@ -2917,17 +2921,20 @@ var components;
             .module('mainApp.components.header')
             .directive(MaHeader.directiveId, MaHeader.instance);
         var HeaderController = (function () {
-            function HeaderController(functionsUtil, $uibModal, dataConfig, $filter, $scope, $rootScope, $state) {
+            function HeaderController(functionsUtil, AuthService, $uibModal, dataConfig, $filter, $scope, $rootScope, $state, localStorage) {
                 this.functionsUtil = functionsUtil;
+                this.AuthService = AuthService;
                 this.$uibModal = $uibModal;
                 this.dataConfig = dataConfig;
                 this.$filter = $filter;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
                 this.$state = $state;
+                this.localStorage = localStorage;
                 this.init();
             }
             HeaderController.prototype.init = function () {
+                this.isAuthenticated = this.AuthService.isAuthenticated();
                 this.form = {
                     language: this.functionsUtil.getCurrentLanguage() || 'en',
                     whereTo: this.$filter('translate')('%header.search.placeholder.text')
@@ -2937,9 +2944,19 @@ var components;
             };
             HeaderController.prototype.activate = function () {
                 console.log('header controller actived');
+                this._subscribeToEvents();
             };
             HeaderController.prototype.slideNavMenu = function () {
                 this._slideout = !this._slideout;
+            };
+            HeaderController.prototype.logout = function () {
+                var self = this;
+                this.AuthService.logout().then(function (response) {
+                    self.localStorage.removeItem('currentUser');
+                    window.location.reload();
+                }, function (response) {
+                    DEBUG && console.log('A problem occured while logging you out.');
+                });
             };
             HeaderController.prototype.changeLanguage = function () {
                 this.functionsUtil.changeLanguage(this.form.language);
@@ -2967,17 +2984,25 @@ var components;
                 var modalInstance = this.$uibModal.open(options);
                 mixpanel.track("Click on 'Join as Student' main header");
             };
+            HeaderController.prototype._subscribeToEvents = function () {
+                var self = this;
+                this.$scope.$on('Is Authenticated', function (event, args) {
+                    self.isAuthenticated = self.AuthService.isAuthenticated();
+                });
+            };
             return HeaderController;
         }());
         HeaderController.controllerId = 'mainApp.components.header.HeaderController';
         HeaderController.$inject = [
             'mainApp.core.util.FunctionsUtilService',
+            'mainApp.auth.AuthService',
             '$uibModal',
             'dataConfig',
             '$filter',
             '$scope',
             '$rootScope',
-            '$state'
+            '$state',
+            'mainApp.localStorageService'
         ];
         header.HeaderController = HeaderController;
         angular.module('mainApp.components.header')
@@ -4113,7 +4138,8 @@ var components;
         var modalSignUp;
         (function (modalSignUp) {
             var ModalSignUpController = (function () {
-                function ModalSignUpController(RegisterService, messageUtil, dataConfig, $uibModal, $uibModalInstance) {
+                function ModalSignUpController($rootScope, RegisterService, messageUtil, dataConfig, $uibModal, $uibModalInstance) {
+                    this.$rootScope = $rootScope;
                     this.RegisterService = RegisterService;
                     this.messageUtil = messageUtil;
                     this.dataConfig = dataConfig;
@@ -4164,6 +4190,11 @@ var components;
                         controller: 'mainApp.components.modal.ModalLogInController as vm'
                     };
                     var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function () {
+                        self.$rootScope.$broadcast('Is Authenticated');
+                    }, function () {
+                        DEBUG && console.info('Modal dismissed at: ' + new Date());
+                    });
                     this.$uibModalInstance.close();
                 };
                 ModalSignUpController.prototype.close = function () {
@@ -4173,6 +4204,7 @@ var components;
             }());
             ModalSignUpController.controllerId = 'mainApp.components.modal.ModalSignUpController';
             ModalSignUpController.$inject = [
+                '$rootScope',
                 'mainApp.register.RegisterService',
                 'mainApp.core.util.messageUtilService',
                 'dataConfig',
@@ -4501,14 +4533,18 @@ var app;
         var teacherLandingPage;
         (function (teacherLandingPage) {
             var TeacherLandingPageController = (function () {
-                function TeacherLandingPageController(functionsUtil, $state, dataConfig, $uibModal) {
+                function TeacherLandingPageController($scope, functionsUtil, AuthService, $state, dataConfig, $uibModal, localStorage) {
+                    this.$scope = $scope;
                     this.functionsUtil = functionsUtil;
+                    this.AuthService = AuthService;
                     this.$state = $state;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
+                    this.localStorage = localStorage;
                     this._init();
                 }
                 TeacherLandingPageController.prototype._init = function () {
+                    this.isAuthenticated = this.AuthService.isAuthenticated();
                     this.form = {
                         language: this.functionsUtil.getCurrentLanguage() || 'en'
                     };
@@ -4521,6 +4557,7 @@ var app;
                     var self = this;
                     console.log('teacherLandingPage controller actived');
                     mixpanel.track("Enter: Teacher Landing Page");
+                    this._subscribeToEvents();
                 };
                 TeacherLandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
@@ -4537,6 +4574,15 @@ var app;
                     };
                     var modalInstance = this.$uibModal.open(options);
                     mixpanel.track("Click on 'Join as Student' teacher landing page header");
+                };
+                TeacherLandingPageController.prototype.logout = function () {
+                    var self = this;
+                    this.AuthService.logout().then(function (response) {
+                        self.localStorage.removeItem('currentUser');
+                        window.location.reload();
+                    }, function (response) {
+                        DEBUG && console.log('A problem occured while logging you out.');
+                    });
                 };
                 TeacherLandingPageController.prototype._buildFakeTeacher = function () {
                     this.fake = new app.models.teacher.Teacher();
@@ -4579,13 +4625,22 @@ var app;
                     };
                     this.$state.go('page.createTeacherPage.start', params, { reload: true });
                 };
+                TeacherLandingPageController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Is Authenticated', function (event, args) {
+                        self.isAuthenticated = self.AuthService.isAuthenticated();
+                    });
+                };
                 return TeacherLandingPageController;
             }());
             TeacherLandingPageController.controllerId = 'mainApp.pages.teacherLandingPage.TeacherLandingPageController';
-            TeacherLandingPageController.$inject = ['mainApp.core.util.FunctionsUtilService',
+            TeacherLandingPageController.$inject = ['$scope',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.auth.AuthService',
                 '$state',
                 'dataConfig',
-                '$uibModal'];
+                '$uibModal',
+                'mainApp.localStorageService'];
             teacherLandingPage.TeacherLandingPageController = TeacherLandingPageController;
             angular
                 .module('mainApp.pages.teacherLandingPage')
@@ -4649,7 +4704,8 @@ var app;
         var landingPage;
         (function (landingPage) {
             var LandingPageController = (function () {
-                function LandingPageController($state, $stateParams, dataConfig, $uibModal, AuthService, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope, localStorage) {
+                function LandingPageController($scope, $state, $stateParams, dataConfig, $uibModal, AuthService, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope, localStorage) {
+                    this.$scope = $scope;
                     this.$state = $state;
                     this.$stateParams = $stateParams;
                     this.dataConfig = dataConfig;
@@ -4665,6 +4721,7 @@ var app;
                     this._init();
                 }
                 LandingPageController.prototype._init = function () {
+                    this.isAuthenticated = this.AuthService.isAuthenticated();
                     this.form = {
                         userData: {
                             name: '',
@@ -4715,16 +4772,19 @@ var app;
                         };
                         var modalInstance = this.$uibModal.open(options);
                     }
+                    this._subscribeToEvents();
                 };
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
                     mixpanel.track("Change Language on landingPage");
                 };
                 LandingPageController.prototype.logout = function () {
+                    var self = this;
                     this.AuthService.logout().then(function (response) {
-                        alert('Deslogueo exitosamente');
+                        self.localStorage.removeItem('currentUser');
+                        window.location.reload();
                     }, function (response) {
-                        console.log('A problem occured while logging you out.');
+                        DEBUG && console.log('A problem occured while logging you out.');
                     });
                 };
                 LandingPageController.prototype._sendCountryFeedback = function () {
@@ -4817,10 +4877,17 @@ var app;
                     var modalInstance = this.$uibModal.open(options);
                     mixpanel.track("Click on 'Join as Student' landing page header");
                 };
+                LandingPageController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Is Authenticated', function (event, args) {
+                        self.isAuthenticated = self.AuthService.isAuthenticated();
+                    });
+                };
                 return LandingPageController;
             }());
             LandingPageController.controllerId = 'mainApp.pages.landingPage.LandingPageController';
-            LandingPageController.$inject = ['$state',
+            LandingPageController.$inject = ['$scope',
+                '$state',
                 '$stateParams',
                 'dataConfig',
                 '$uibModal',
