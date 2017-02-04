@@ -133,9 +133,10 @@ DEBUG = true;
         .module('mainApp')
         .run(run);
     run.$inject = ['$rootScope',
+        '$state',
         'dataConfig',
-        '$http'];
-    function run($rootScope, dataConfig, $http) {
+        'mainApp.auth.AuthService'];
+    function run($rootScope, $state, dataConfig, AuthService) {
         var productionHost = dataConfig.domain;
         var mixpanelTokenDEV = dataConfig.mixpanelTokenDEV;
         var mixpanelTokenPRD = dataConfig.mixpanelTokenPRD;
@@ -154,6 +155,12 @@ DEBUG = true;
                 }
             });
         }
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+            if (toState.data.requireLogin && !AuthService.isAuthenticated()) {
+                event.preventDefault();
+                $state.go('page');
+            }
+        });
     }
 })();
 (function (angular) {
@@ -4323,6 +4330,9 @@ var app;
                 }
             },
             parent: 'page',
+            data: {
+                requireLogin: true
+            },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
                     $rootScope.activeFooter = true;
@@ -4473,6 +4483,9 @@ var app;
                 }
             },
             parent: 'page',
+            data: {
+                requireLogin: false
+            },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
                     $rootScope.activeFooter = true;
@@ -4598,6 +4611,9 @@ var app;
                 }
             },
             parent: 'page',
+            data: {
+                requireLogin: false
+            },
             cache: false,
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
@@ -4862,78 +4878,6 @@ var app;
 (function () {
     'use strict';
     angular
-        .module('mainApp.pages.signUpPage', [])
-        .config(config);
-    function config($stateProvider) {
-        $stateProvider
-            .state('signUp', {
-            url: '/signUp',
-            views: {
-                'container': {
-                    templateUrl: 'app/pages/signUpPage/signUpPage.html',
-                    controller: 'mainApp.pages.signUpPage.SignUpPageController',
-                    controllerAs: 'vm'
-                }
-            },
-            params: {
-                user: null
-            }
-        });
-    }
-})();
-//# sourceMappingURL=signUpPage.config.js.map
-var app;
-(function (app) {
-    var pages;
-    (function (pages) {
-        var signUpPage;
-        (function (signUpPage) {
-            var SignUpPageController = (function () {
-                function SignUpPageController($state, $filter, $scope, AuthService) {
-                    this.$state = $state;
-                    this.$filter = $filter;
-                    this.$scope = $scope;
-                    this.AuthService = AuthService;
-                    this._init();
-                }
-                SignUpPageController.prototype._init = function () {
-                    this.form = {
-                        username: '',
-                        email: '',
-                        password: ''
-                    };
-                    this.error = {
-                        message: ''
-                    };
-                    this.activate();
-                };
-                SignUpPageController.prototype.activate = function () {
-                    console.log('signUpPage controller actived');
-                };
-                SignUpPageController.prototype.signUp = function () {
-                    var self = this;
-                    this.AuthService.signUpPassword(this.form.username, this.form.email, this.form.password);
-                };
-                return SignUpPageController;
-            }());
-            SignUpPageController.controllerId = 'mainApp.pages.signUpPage.SignUpPageController';
-            SignUpPageController.$inject = [
-                '$state',
-                '$filter',
-                '$scope',
-                'mainApp.auth.AuthService'
-            ];
-            signUpPage.SignUpPageController = SignUpPageController;
-            angular
-                .module('mainApp.pages.signUpPage')
-                .controller(SignUpPageController.controllerId, SignUpPageController);
-        })(signUpPage = pages.signUpPage || (pages.signUpPage = {}));
-    })(pages = app.pages || (app.pages = {}));
-})(app || (app = {}));
-//# sourceMappingURL=signUpPage.controller.js.map
-(function () {
-    'use strict';
-    angular
         .module('mainApp.pages.searchPage', [])
         .config(config);
     function config($stateProvider) {
@@ -4944,8 +4888,16 @@ var app;
                 'container': {
                     templateUrl: 'app/pages/searchPage/searchPage.html',
                     controller: 'mainApp.pages.searchPage.SearchPageController',
-                    controllerAs: 'vm'
+                    controllerAs: 'vm',
+                    resolve: {
+                        waitForAuth: ['mainApp.auth.AuthService', function (AuthService) {
+                                return AuthService.autoRefreshToken();
+                            }]
+                    }
                 }
+            },
+            data: {
+                requireLogin: true
             },
             parent: 'page',
             params: {
@@ -4966,7 +4918,7 @@ var app;
         var searchPage;
         (function (searchPage) {
             var SearchPageController = (function () {
-                function SearchPageController(StudentService, TeacherService, SchoolService, FunctionsUtilService, $state, $stateParams, $filter, $scope, $rootScope, $timeout) {
+                function SearchPageController(StudentService, TeacherService, SchoolService, FunctionsUtilService, $state, $stateParams, $filter, $scope, $rootScope, $timeout, waitForAuth) {
                     this.StudentService = StudentService;
                     this.TeacherService = TeacherService;
                     this.SchoolService = SchoolService;
@@ -5084,7 +5036,8 @@ var app;
                 '$filter',
                 '$scope',
                 '$rootScope',
-                '$timeout'
+                '$timeout',
+                'waitForAuth'
             ];
             searchPage.SearchPageController = SearchPageController;
             angular
@@ -5813,6 +5766,9 @@ var app;
             cache: false,
             params: {
                 type: '',
+            },
+            data: {
+                requireLogin: false
             },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
@@ -7912,6 +7868,9 @@ var app;
                 }
             },
             parent: 'page',
+            data: {
+                requireLogin: false
+            },
             params: {
                 id: null
             },

@@ -18,6 +18,9 @@
             params: {
                 type: '',
             },
+            data: {
+                requireLogin: false
+            },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
                     $rootScope.activeFooter = false;

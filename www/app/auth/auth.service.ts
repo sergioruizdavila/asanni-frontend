@@ -13,8 +13,9 @@ module app.auth {
     /*           INTERFACES           */
     /**********************************/
     export interface IAuthService {
+        isAuthenticated:() => boolean;
         login:(user: app.core.interfaces.IUserDataAuth) => angular.IPromise<any>;
-        logout:() => angular.IPromise<any>
+        logout:() => angular.IPromise<any>;
     }
 
 

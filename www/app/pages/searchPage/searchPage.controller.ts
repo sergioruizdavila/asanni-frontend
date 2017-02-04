@@ -54,7 +54,8 @@ module app.pages.searchPage {
             '$filter',
             '$scope',
             '$rootScope',
-            '$timeout'];
+            '$timeout',
+            'waitForAuth'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -69,7 +70,8 @@ module app.pages.searchPage {
             private $filter: angular.IFilterService,
             private $scope: angular.IScope,
             private $rootScope: angular.IRootScopeService,
-            private $timeout: angular.ITimeoutService) {
+            private $timeout: angular.ITimeoutService,
+            waitForAuth) {
 
             this._init();
 

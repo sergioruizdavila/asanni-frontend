@@ -11,8 +11,16 @@
                 'container': {
                     templateUrl: 'app/pages/searchPage/searchPage.html',
                     controller: 'mainApp.pages.searchPage.SearchPageController',
-                    controllerAs: 'vm'
+                    controllerAs: 'vm',
+                    resolve: {
+                        waitForAuth: ['mainApp.auth.AuthService', function (AuthService) {
+                                return AuthService.autoRefreshToken();
+                            }]
+                    }
                 }
+            },
+            data: {
+                requireLogin: true
             },
             parent: 'page',
             params: {

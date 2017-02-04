@@ -5,7 +5,7 @@ var app;
         var searchPage;
         (function (searchPage) {
             var SearchPageController = (function () {
-                function SearchPageController(StudentService, TeacherService, SchoolService, FunctionsUtilService, $state, $stateParams, $filter, $scope, $rootScope, $timeout) {
+                function SearchPageController(StudentService, TeacherService, SchoolService, FunctionsUtilService, $state, $stateParams, $filter, $scope, $rootScope, $timeout, waitForAuth) {
                     this.StudentService = StudentService;
                     this.TeacherService = TeacherService;
                     this.SchoolService = SchoolService;
@@ -123,7 +123,8 @@ var app;
                 '$filter',
                 '$scope',
                 '$rootScope',
-                '$timeout'
+                '$timeout',
+                'waitForAuth'
             ];
             searchPage.SearchPageController = SearchPageController;
             angular

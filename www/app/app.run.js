@@ -4,9 +4,10 @@
         .module('mainApp')
         .run(run);
     run.$inject = ['$rootScope',
+        '$state',
         'dataConfig',
-        '$http'];
-    function run($rootScope, dataConfig, $http) {
+        'mainApp.auth.AuthService'];
+    function run($rootScope, $state, dataConfig, AuthService) {
         var productionHost = dataConfig.domain;
         var mixpanelTokenDEV = dataConfig.mixpanelTokenDEV;
         var mixpanelTokenPRD = dataConfig.mixpanelTokenPRD;
@@ -25,6 +26,12 @@
                 }
             });
         }
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+            if (toState.data.requireLogin && !AuthService.isAuthenticated()) {
+                event.preventDefault();
+                $state.go('page');
+            }
+        });
     }
 })();
 (function (angular) {

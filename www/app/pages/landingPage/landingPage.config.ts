@@ -25,6 +25,9 @@
                     }
                 },
                 parent: 'page',
+                data: {
+                    requireLogin: false
+                },
                 cache: false,
                 onEnter: ['$rootScope', function ($rootScope) {
                     // Show/Hide header & footer
