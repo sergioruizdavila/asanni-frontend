@@ -4955,16 +4955,11 @@ var app;
                 'container': {
                     templateUrl: 'app/pages/searchPage/searchPage.html',
                     controller: 'mainApp.pages.searchPage.SearchPageController',
-                    controllerAs: 'vm',
-                    resolve: {
-                        waitForAuth: ['mainApp.auth.AuthService', function (AuthService) {
-                                return AuthService.autoRefreshToken();
-                            }]
-                    }
+                    controllerAs: 'vm'
                 }
             },
             data: {
-                requireLogin: true
+                requireLogin: false
             },
             parent: 'page',
             params: {
@@ -4985,7 +4980,7 @@ var app;
         var searchPage;
         (function (searchPage) {
             var SearchPageController = (function () {
-                function SearchPageController(StudentService, TeacherService, SchoolService, FunctionsUtilService, $state, $stateParams, $filter, $scope, $rootScope, $timeout, waitForAuth) {
+                function SearchPageController(StudentService, TeacherService, SchoolService, FunctionsUtilService, $state, $stateParams, $filter, $scope, $rootScope, $timeout) {
                     this.StudentService = StudentService;
                     this.TeacherService = TeacherService;
                     this.SchoolService = SchoolService;
@@ -5103,8 +5098,7 @@ var app;
                 '$filter',
                 '$scope',
                 '$rootScope',
-                '$timeout',
-                'waitForAuth'
+                '$timeout'
             ];
             searchPage.SearchPageController = SearchPageController;
             angular
@@ -5827,7 +5821,12 @@ var app;
                 'container': {
                     templateUrl: 'app/pages/createTeacherPage/createTeacherPage.html',
                     controller: 'mainApp.pages.createTeacherPage.CreateTeacherPageController',
-                    controllerAs: 'vm'
+                    controllerAs: 'vm',
+                    resolve: {
+                        waitForAuth: ['mainApp.auth.AuthService', function (AuthService) {
+                                return AuthService.autoRefreshToken();
+                            }]
+                    }
                 }
             },
             cache: false,
@@ -5835,7 +5834,7 @@ var app;
                 type: '',
             },
             data: {
-                requireLogin: false
+                requireLogin: true
             },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
@@ -5853,7 +5852,7 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var CreateTeacherPageController = (function () {
-                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, messageUtil, localStorage, dataConfig, $state, $stateParams, $filter, $scope, $window, $rootScope, $uibModal) {
+                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, messageUtil, localStorage, dataConfig, $state, $stateParams, $filter, $scope, $window, $rootScope, $uibModal, waitForAuth) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.teacherService = teacherService;
@@ -5968,7 +5967,8 @@ var app;
                 '$scope',
                 '$window',
                 '$rootScope',
-                '$uibModal'
+                '$uibModal',
+                'waitForAuth'
             ];
             createTeacherPage.CreateTeacherPageController = CreateTeacherPageController;
             angular

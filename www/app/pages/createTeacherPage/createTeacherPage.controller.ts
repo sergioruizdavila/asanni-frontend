@@ -60,7 +60,8 @@ module app.pages.createTeacherPage {
             '$scope',
             '$window',
             '$rootScope',
-            '$uibModal'];
+            '$uibModal',
+            'waitForAuth'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -78,7 +79,8 @@ module app.pages.createTeacherPage {
             private $scope: ICreateTeacherScope,
             private $window,
             private $rootScope: app.core.interfaces.IMainAppRootScope,
-            private $uibModal: ng.ui.bootstrap.IModalService) {
+            private $uibModal: ng.ui.bootstrap.IModalService,
+            waitForAuth) {
 
             this._init();
 

@@ -20,7 +20,12 @@
                     'container': {
                         templateUrl: 'app/pages/createTeacherPage/createTeacherPage.html',
                         controller: 'mainApp.pages.createTeacherPage.CreateTeacherPageController',
-                        controllerAs: 'vm'
+                        controllerAs: 'vm',
+                        resolve: {
+                            waitForAuth: ['mainApp.auth.AuthService', function(AuthService) {
+                                return AuthService.autoRefreshToken();
+                            }]
+                        }
                     }
                 },
                 cache: false,
@@ -28,7 +33,7 @@
                     type: '',
                 },
                 data: {
-                    requireLogin: false
+                    requireLogin: true
                 },
                 onEnter: ['$rootScope', function ($rootScope) {
                     // Show/Hide header & footer
