@@ -19,6 +19,10 @@ interface IDataConfig {
     domain: string;
     https: boolean;
     autoRefreshTokenIntervalSeconds: number;
+    usernameMinLength: number;
+    usernameMaxLength: number;
+    passwordMinLength: number;
+    passwordMaxLength: number;
     localOAuth2Key: string;
     googleMapKey: string;
     mixpanelTokenPRD: string;
@@ -73,6 +77,10 @@ interface IDataConfig {
         domain: 'www.waysily.com',
         https: false,
         autoRefreshTokenIntervalSeconds: 300,
+        usernameMinLength: 6,
+        usernameMaxLength: 80,
+        passwordMinLength: 6,
+        passwordMaxLength: 80,
         localOAuth2Key: 'fCY4EWQIPuixOGhA9xRIxzVLNgKJVmG1CVnwXssq',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',

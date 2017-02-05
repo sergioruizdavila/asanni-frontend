@@ -101,6 +101,10 @@ DEBUG = true;
         domain: 'www.waysily.com',
         https: false,
         autoRefreshTokenIntervalSeconds: 300,
+        usernameMinLength: 6,
+        usernameMaxLength: 80,
+        passwordMinLength: 6,
+        passwordMaxLength: 80,
         localOAuth2Key: 'fCY4EWQIPuixOGhA9xRIxzVLNgKJVmG1CVnwXssq',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',
@@ -345,6 +349,22 @@ var app;
                         this.$translate = $translate;
                         console.log('functionsUtil service called');
                     }
+                    FunctionsUtilService.prototype.normalizeString = function (str) {
+                        var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç";
+                        var to = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc";
+                        var mapping = {};
+                        for (var i = 0; i < from.length; i++)
+                            mapping[from.charAt(i)] = to.charAt(i);
+                        var ret = [];
+                        for (var i = 0; i < str.length; i++) {
+                            var c = str.charAt(i);
+                            if (mapping.hasOwnProperty(str.charAt(i)))
+                                ret.push(mapping[c]);
+                            else
+                                ret.push(c);
+                        }
+                        return ret.join('');
+                    };
                     FunctionsUtilService.generateGuid = function () {
                         var fmt = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
                         var guid = fmt.replace(/[xy]/g, function (c) {
@@ -370,6 +390,30 @@ var app;
                     FunctionsUtilService.prototype.getCurrentLanguage = function () {
                         var currentLanguage = this.$translate.use();
                         return currentLanguage;
+                    };
+                    FunctionsUtilService.prototype.generateUsername = function (firstName, lastName) {
+                        var alias = '';
+                        var username = '';
+                        var randomCode = '';
+                        var minLength = this.dataConfig.usernameMinLength;
+                        var maxLength = this.dataConfig.usernameMaxLength;
+                        var ALPHABET = '0123456789';
+                        var ID_LENGTH = 7;
+                        var REMAINDER = maxLength - ID_LENGTH;
+                        var EXTRAS = 2;
+                        firstName = this.normalizeString(firstName);
+                        firstName = firstName.replace(/[^\w\s]/gi, '').replace(/\s/g, '');
+                        lastName = this.normalizeString(lastName);
+                        lastName = lastName.replace(/[^\w\s]/gi, '').replace(/\s/g, '');
+                        if (firstName.length > REMAINDER - EXTRAS) {
+                            firstName = firstName.substring(0, REMAINDER - EXTRAS);
+                        }
+                        alias = (firstName + lastName.substring(0, 1)).toLowerCase();
+                        for (var i = 0; i < ID_LENGTH; i++) {
+                            randomCode += ALPHABET.charAt(Math.floor(Math.random() * ALPHABET.length));
+                        }
+                        username = alias + '-' + randomCode;
+                        return username;
                     };
                     FunctionsUtilService.prototype.changeLanguage = function (language) {
                         this.$translate.use(language);
@@ -4138,9 +4182,10 @@ var components;
         var modalSignUp;
         (function (modalSignUp) {
             var ModalSignUpController = (function () {
-                function ModalSignUpController($rootScope, RegisterService, messageUtil, dataConfig, $uibModal, $uibModalInstance) {
+                function ModalSignUpController($rootScope, RegisterService, functionsUtil, messageUtil, dataConfig, $uibModal, $uibModalInstance) {
                     this.$rootScope = $rootScope;
                     this.RegisterService = RegisterService;
+                    this.functionsUtil = functionsUtil;
                     this.messageUtil = messageUtil;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
@@ -4163,6 +4208,7 @@ var components;
                 };
                 ModalSignUpController.prototype.registerUser = function () {
                     var self = this;
+                    this.form.username = this.functionsUtil.generateUsername(this.form.first_name, this.form.last_name);
                     this.RegisterService.register(this.form).then(function (response) {
                         DEBUG && console.log('Welcome!, Your new account has been successfuly created.');
                         self.messageUtil.success('Welcome!, Your new account has been successfuly created.');
@@ -4206,6 +4252,7 @@ var components;
             ModalSignUpController.$inject = [
                 '$rootScope',
                 'mainApp.register.RegisterService',
+                'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.util.messageUtilService',
                 'dataConfig',
                 '$uibModal',

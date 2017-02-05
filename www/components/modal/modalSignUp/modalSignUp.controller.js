@@ -5,9 +5,10 @@ var components;
         var modalSignUp;
         (function (modalSignUp) {
             var ModalSignUpController = (function () {
-                function ModalSignUpController($rootScope, RegisterService, messageUtil, dataConfig, $uibModal, $uibModalInstance) {
+                function ModalSignUpController($rootScope, RegisterService, functionsUtil, messageUtil, dataConfig, $uibModal, $uibModalInstance) {
                     this.$rootScope = $rootScope;
                     this.RegisterService = RegisterService;
+                    this.functionsUtil = functionsUtil;
                     this.messageUtil = messageUtil;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
@@ -30,6 +31,7 @@ var components;
                 };
                 ModalSignUpController.prototype.registerUser = function () {
                     var self = this;
+                    this.form.username = this.functionsUtil.generateUsername(this.form.first_name, this.form.last_name);
                     this.RegisterService.register(this.form).then(function (response) {
                         DEBUG && console.log('Welcome!, Your new account has been successfuly created.');
                         self.messageUtil.success('Welcome!, Your new account has been successfuly created.');
@@ -73,6 +75,7 @@ var components;
             ModalSignUpController.$inject = [
                 '$rootScope',
                 'mainApp.register.RegisterService',
+                'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.util.messageUtilService',
                 'dataConfig',
                 '$uibModal',

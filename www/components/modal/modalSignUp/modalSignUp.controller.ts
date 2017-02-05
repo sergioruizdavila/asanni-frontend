@@ -44,6 +44,7 @@ module components.modal.modalSignUp {
         static $inject = [
             '$rootScope',
             'mainApp.register.RegisterService',
+            'mainApp.core.util.FunctionsUtilService',
             'mainApp.core.util.messageUtilService',
             'dataConfig',
             '$uibModal',
@@ -57,6 +58,7 @@ module components.modal.modalSignUp {
         constructor(
             private $rootScope: app.core.interfaces.IMainAppRootScope,
             private RegisterService: app.register.IRegisterService,
+            private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
             private dataConfig: IDataConfig,
             private $uibModal: ng.ui.bootstrap.IModalService,
@@ -105,6 +107,10 @@ module components.modal.modalSignUp {
             //VARIABLES
             let self = this;
 
+            //Create a username based on first name and last name
+            this.form.username = this.functionsUtil.generateUsername(this.form.first_name, this.form.last_name);
+
+            //Register current user
             this.RegisterService.register(this.form).then(
 
                 //Success

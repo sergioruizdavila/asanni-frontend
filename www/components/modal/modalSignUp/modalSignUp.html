@@ -47,18 +47,6 @@
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <form class="ma-form ma-form--basic">
 
-                                <! UserName input >
-                                <div class="form-group ma-form-group">
-                                    <label class="sr-only" for="usernameSignUpInput">
-                                        username
-                                    </label>
-                                    <input id="usernameSignUpInput" type="text"
-                                           ng-model="vm.form.username"
-                                           class="ma-input
-                                           ma-input--default
-                                           ma-input--block" placeholder="UserName">
-                                </div>
-
                                 <! Email input >
                                 <div class="form-group ma-form-group">
                                     <label class="sr-only" for="emailSignUpInput">
@@ -77,6 +65,7 @@
                                         First name
                                     </label>
                                     <input id="firstNameSignUpInput" type="text"
+                                           maxlength="30"
                                            ng-model= "vm.form.first_name"
                                            class="ma-input
                                            ma-input--default
@@ -89,6 +78,7 @@
                                         Last name
                                     </label>
                                     <input id="lastNameSignUpInput" type="text"
+                                           maxlength="30"
                                            ng-model= "vm.form.last_name"
                                            class="ma-input
                                            ma-input--default
