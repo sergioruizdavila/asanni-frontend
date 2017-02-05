@@ -31,7 +31,8 @@ var components;
                         email: { valid: true, message: '' },
                         first_name: { valid: true, message: '' },
                         last_name: { valid: true, message: '' },
-                        password: { valid: true, message: '' }
+                        password: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
                     };
                     this.activate();
                 };
@@ -51,12 +52,14 @@ var components;
                             DEBUG && console.log(JSON.stringify(error));
                             var errortext = [];
                             for (var key in error.data) {
-                                var line = key.toUpperCase();
+                                var line = key;
                                 line += ': ';
                                 line += error.data[key];
                                 errortext.push(line);
                             }
                             DEBUG && console.error(errortext);
+                            self.validate.globalValidate.valid = false;
+                            self.validate.globalValidate.message = errortext[0];
                         });
                     }
                 };
@@ -87,6 +90,19 @@ var components;
                         this.validate.password.message = 'Your password must be at least 6 characters. Please try again.';
                     }
                     return formValid;
+                };
+                ModalSignUpController.prototype._checkIfEmailExist = function () {
+                    var self = this;
+                    if (this.form.email) {
+                        this.RegisterService.checkEmail(this.form.email).then(function (response) {
+                            self.validate.email.valid = true;
+                        }, function (error) {
+                            if (error.data.emailExist) {
+                                self.validate.email.valid = false;
+                                self.validate.email.message = 'That email address is already in use. Please log in.';
+                            }
+                        });
+                    }
                 };
                 ModalSignUpController.prototype._openLogInModal = function () {
                     mixpanel.track("Click on 'Log in' from signUp modal");

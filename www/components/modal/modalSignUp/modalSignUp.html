@@ -17,6 +17,17 @@
             </div>
         </div>
 
+        <!-- Global Validate Error Message -->
+        <div class="row ma-large-message
+                    ma-large-message--alert space-3 space-top-3"
+             ng-show="!vm.validate.globalValidate.valid">
+            <div class="col-md-12 text-center">
+                <p class="ma-p ma-p--default ma-p--alert margin-reset">
+                    <span>{{vm.validate.globalValidate.message}}</span>
+                </p>
+            </div>
+        </div>
+
         <!----------------------- START: SIGN UP BLOCK ------------------------>
         <section>
 
@@ -58,6 +69,7 @@
                                                   ma-input--default
                                                   ma-input--block"
                                            ng-class="{'ma-input--invalid': !vm.validate.email.valid}"
+                                           ng-blur="vm._checkIfEmailExist()"
                                            placeholder="Email address">
                                     <p class="ma-p ma-p--small ma-p--alert pull-right"
                                        ng-show="!vm.validate.email.valid">

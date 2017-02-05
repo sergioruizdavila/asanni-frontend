@@ -9,18 +9,23 @@ var app;
                 this.restApi = restApi;
                 DEBUG && console.log('register service instanced');
                 this.REGISTER_URI = 'register';
-                this.REGISTER_CHECK_EMAIL_URI = '/register/check-email/';
-                this.REGISTER_CHECK_USERNAME_URI = '/register/check-username/';
+                this.REGISTER_CHECK_EMAIL_URI = 'register/check-email';
+                this.REGISTER_CHECK_USERNAME_URI = 'register/check-username';
             }
             RegisterService.prototype.checkEmail = function (email) {
                 var url = this.REGISTER_CHECK_EMAIL_URI;
-                return this.restApi.create({ url: url }, email).$promise
-                    .then(function (data) {
-                    return data;
+                var deferred = this.$q.defer();
+                var data = {
+                    email: email
+                };
+                this.restApi.create({ url: url }, data).$promise
+                    .then(function (response) {
+                    deferred.resolve(response);
                 }, function (error) {
                     DEBUG && console.error(error);
-                    return error;
+                    deferred.reject(error);
                 });
+                return deferred.promise;
             };
             RegisterService.prototype.checkUsername = function (username) {
                 var url = this.REGISTER_CHECK_USERNAME_URI;

@@ -60,8 +60,8 @@ module app.register {
 
             //CONSTANTS
             this.REGISTER_URI = 'register';
-            this.REGISTER_CHECK_EMAIL_URI = '/register/check-email/';
-            this.REGISTER_CHECK_USERNAME_URI = '/register/check-username/';
+            this.REGISTER_CHECK_EMAIL_URI = 'register/check-email';
+            this.REGISTER_CHECK_USERNAME_URI = 'register/check-username';
         }
 
         /**********************************/
@@ -80,18 +80,25 @@ module app.register {
         checkEmail(email): angular.IPromise<any> {
             //VARIABLES
             let url = this.REGISTER_CHECK_EMAIL_URI;
+            let deferred = this.$q.defer();
+            let data = {
+                email: email
+            };
 
-            return this.restApi.create({url: url}, email).$promise
+            this.restApi.create({url: url}, data).$promise
                 .then(
-                    function(data) {
-                        return data;
+                    function(response) {
+                        deferred.resolve(response);
                     },
 
                     function(error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     }
                 );
+
+            return deferred.promise;
+
         }
 
 

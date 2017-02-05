@@ -34,6 +34,7 @@ module components.modal.modalSignUp {
         first_name: app.core.util.functionsUtil.IValid;
         last_name: app.core.util.functionsUtil.IValid;
         password: app.core.util.functionsUtil.IValid;
+        globalValidate: app.core.util.functionsUtil.IValid;
     }
 
 
@@ -106,7 +107,8 @@ module components.modal.modalSignUp {
                 email: {valid: true, message: ''},
                 first_name: {valid: true, message: ''},
                 last_name: {valid: true, message: ''},
-                password: {valid: true, message: ''}
+                password: {valid: true, message: ''},
+                globalValidate: {valid: true, message: ''}
             };
 
             this.activate();
@@ -161,7 +163,8 @@ module components.modal.modalSignUp {
                         //Parse Error
                         var errortext = [];
                         for (var key in error.data) {
-                            var line = key.toUpperCase();
+                            //var line = key.toUpperCase();
+                            var line = key;
                             line += ': '
                             line += error.data[key];
                             errortext.push(line);
@@ -169,6 +172,9 @@ module components.modal.modalSignUp {
 
                         //LOG Parsed Error
                         DEBUG && console.error(errortext);
+
+                        self.validate.globalValidate.valid = false;
+                        self.validate.globalValidate.message = errortext[0];
                     }
                 );
             }
@@ -220,10 +226,36 @@ module components.modal.modalSignUp {
             this.validate.password = this.functionsUtil.validator(this.form.password, password_rules);
             if(!this.validate.password.valid) {
                 formValid = this.validate.password.valid;
+                //TODO: Traducir a Español tambien
                 this.validate.password.message = 'Your password must be at least 6 characters. Please try again.';
             }
 
             return formValid;
+        }
+
+
+
+        _checkIfEmailExist(): void {
+            //VARIABLES
+            let self = this;
+
+            if(this.form.email) {
+                this.RegisterService.checkEmail(this.form.email).then(
+
+                    function(response) {
+                        self.validate.email.valid = true;
+                    },
+
+                    function(error) {
+                        if(error.data.emailExist) {
+                            self.validate.email.valid = false;
+                            self.validate.email.message = 'That email address is already in use. Please log in.';
+                        }
+                    }
+
+                );
+            }
+
         }
 
 
