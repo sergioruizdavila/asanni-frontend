@@ -12,6 +12,7 @@ module components.modal.modalSignUp {
     /**********************************/
     interface IModalSignUpController {
         close: () => void;
+        validate: IModalSignUpValidate;
         activate: () => void;
     }
 
@@ -20,10 +21,19 @@ module components.modal.modalSignUp {
     }
 
     interface IModalSignUpForm extends app.register.IRegisterUserData {
+        username: string;
+        email: string;
+        first_name: string;
+        last_name: string;
+        password: string;
     }
 
     interface IModalSignUpValidate {
+        username: app.core.util.functionsUtil.IValid;
         email: app.core.util.functionsUtil.IValid;
+        first_name: app.core.util.functionsUtil.IValid;
+        last_name: app.core.util.functionsUtil.IValid;
+        password: app.core.util.functionsUtil.IValid;
     }
 
 
@@ -36,6 +46,8 @@ module components.modal.modalSignUp {
         /**********************************/
         form: IModalSignUpForm;
         validate: IModalSignUpValidate;
+        passwordMinLength: number;
+        passwordMaxLength: number;
         sending: boolean;
         defaultConfig: any;
         // --------------------------------
@@ -82,6 +94,21 @@ module components.modal.modalSignUp {
                 password: ''
             };
 
+            // Password min length
+            this.passwordMinLength = this.dataConfig.passwordMinLength;
+
+            // Password max length
+            this.passwordMaxLength = this.dataConfig.passwordMaxLength;
+
+            // Build validate object fields
+            this.validate = {
+                username: {valid: true, message: ''},
+                email: {valid: true, message: ''},
+                first_name: {valid: true, message: ''},
+                last_name: {valid: true, message: ''},
+                password: {valid: true, message: ''}
+            };
+
             this.activate();
         }
 
@@ -107,39 +134,96 @@ module components.modal.modalSignUp {
             //VARIABLES
             let self = this;
 
-            //Create a username based on first name and last name
-            this.form.username = this.functionsUtil.generateUsername(this.form.first_name, this.form.last_name);
+            //Validate data form
+            let formValid = this._validateForm();
 
-            //Register current user
-            this.RegisterService.register(this.form).then(
+            if(formValid) {
+                //Create a username based on first name and last name
+                this.form.username = this.functionsUtil.generateUsername(this.form.first_name, this.form.last_name);
 
-                //Success
-                function(response) {
-                    //LOG
-                    DEBUG && console.log('Welcome!, Your new account has been successfuly created.');
-                    //Show LogIn modal in order to allow user log in
-                    self.messageUtil.success('Welcome!, Your new account has been successfuly created.');
-                    self._openLogInModal();
-                },
+                //Register current user
+                this.RegisterService.register(this.form).then(
 
-                //Error
-                function(error) {
-                    //LOG
-                    DEBUG && console.log(JSON.stringify(error));
+                    //Success
+                    function(response) {
+                        //LOG
+                        DEBUG && console.log('Welcome!, Your new account has been successfuly created.');
+                        //Show LogIn modal in order to allow user log in
+                        self.messageUtil.success('Welcome!, Your new account has been successfuly created.');
+                        self._openLogInModal();
+                    },
 
-                    //Parse Error
-                    var errortext = [];
-                    for (var key in error.data) {
-                        var line = key.toUpperCase();
-                        line += ': '
-                        line += error.data[key];
-                        errortext.push(line);
+                    //Error
+                    function(error) {
+                        //LOG
+                        DEBUG && console.log(JSON.stringify(error));
+
+                        //Parse Error
+                        var errortext = [];
+                        for (var key in error.data) {
+                            var line = key.toUpperCase();
+                            line += ': '
+                            line += error.data[key];
+                            errortext.push(line);
+                        }
+
+                        //LOG Parsed Error
+                        DEBUG && console.error(errortext);
                     }
+                );
+            }
 
-                    //LOG Parsed Error
-                    DEBUG && console.error(errortext);
-                }
-            );
+        }
+
+
+
+        /**
+        * _validateForm
+        * @description - Validate each field on form
+        * @use - this._validateForm();
+        * @function
+        * @return {boolean} formValid - return If the complete form is valid or not.
+        */
+        private _validateForm(): boolean {
+            //CONSTANTS
+            const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
+            const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
+            const EMAIL_ENUM = app.core.util.functionsUtil.Validation.Email;
+            /***************************************************/
+
+            //VARIABLES
+            let formValid = true;
+
+            //Validate First Name field
+            let firstName_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.first_name = this.functionsUtil.validator(this.form.first_name, firstName_rules);
+            if(!this.validate.first_name.valid) {
+                formValid = this.validate.first_name.valid;
+            }
+
+            //Validate Last Name field
+            let lastName_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.last_name = this.functionsUtil.validator(this.form.last_name, lastName_rules);
+            if(!this.validate.last_name.valid) {
+                formValid = this.validate.last_name.valid;
+            }
+
+            //Validate Email field
+            let email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
+            this.validate.email = this.functionsUtil.validator(this.form.email, email_rules);
+            if(!this.validate.email.valid) {
+                formValid = this.validate.email.valid;
+            }
+
+            //Validate Password field
+            let password_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.password = this.functionsUtil.validator(this.form.password, password_rules);
+            if(!this.validate.password.valid) {
+                formValid = this.validate.password.valid;
+                this.validate.password.message = 'Your password must be at least 6 characters. Please try again.';
+            }
+
+            return formValid;
         }
 
 

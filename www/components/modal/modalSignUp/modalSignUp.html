@@ -55,8 +55,14 @@
                                     <input id="emailSignUpInput" type="email"
                                            ng-model="vm.form.email"
                                            class="ma-input
-                                           ma-input--default
-                                           ma-input--block" placeholder="Email address">
+                                                  ma-input--default
+                                                  ma-input--block"
+                                           ng-class="{'ma-input--invalid': !vm.validate.email.valid}"
+                                           placeholder="Email address">
+                                    <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                       ng-show="!vm.validate.email.valid">
+                                        <span>{{vm.validate.email.message}}</span>
+                                    </p>
                                 </div>
 
                                 <! First name input >
@@ -68,8 +74,14 @@
                                            maxlength="30"
                                            ng-model= "vm.form.first_name"
                                            class="ma-input
-                                           ma-input--default
-                                           ma-input--block" placeholder="First name">
+                                                  ma-input--default
+                                                  ma-input--block"
+                                           ng-class="{'ma-input--invalid': !vm.validate.first_name.valid}"
+                                           placeholder="First name">
+                                    <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                       ng-show="!vm.validate.first_name.valid">
+                                        <span>{{vm.validate.first_name.message}}</span>
+                                    </p>
                                 </div>
 
                                 <! Last name input >
@@ -81,8 +93,14 @@
                                            maxlength="30"
                                            ng-model= "vm.form.last_name"
                                            class="ma-input
-                                           ma-input--default
-                                           ma-input--block" placeholder="Last name">
+                                                  ma-input--default
+                                                  ma-input--block"
+                                           ng-class="{'ma-input--invalid': !vm.validate.last_name.valid}"
+                                           placeholder="Last name">
+                                    <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                       ng-show="!vm.validate.last_name.valid">
+                                        <span>{{vm.validate.last_name.message}}</span>
+                                    </p>
                                 </div>
 
                                 <! Password input >
@@ -91,10 +109,18 @@
                                         Password
                                     </label>
                                     <input id="passwordSignUpInput" type="password"
+                                           minLength={{vm.passwordMinLength}}
+                                           maxLength={{vm.passwordMaxLength}}
                                            ng-model= "vm.form.password"
                                            class="ma-input
-                                           ma-input--default
-                                           ma-input--block" placeholder="Create password">
+                                                  ma-input--default
+                                                  ma-input--block"
+                                           ng-class="{'ma-input--invalid': !vm.validate.password.valid}"
+                                           placeholder="Create password">
+                                    <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                       ng-show="!vm.validate.password.valid">
+                                        <span>{{vm.validate.password.message}}</span>
+                                    </p>
                                 </div>
 
                                 <! Create account button >
