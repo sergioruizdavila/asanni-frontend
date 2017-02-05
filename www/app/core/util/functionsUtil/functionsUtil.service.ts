@@ -432,6 +432,8 @@ module app.core.util.functionsUtil {
         * (e.g. Null, String, Email, Number, Empty, etc)
         * @return {IValid} obj - object with validation result: valid and message
         */
+        //TODO: Hacer un refactor ya que voy a necesitar validar por min y max,
+        // asi que voy a tener que enviar el min y el max para que aqui lo valide.
         validator(value, validations = []): IValid {
             //CONSTANTS
             const NULL_MESSAGE = this.$filter('translate')('%global.validation.null.message.text');
@@ -502,7 +504,7 @@ module app.core.util.functionsUtil {
                         break;
 
                     case Validation.IsTrue:
-                        if(value !== true){
+                        if(value !== true) {
                             obj.message = TRUE_MESSAGE;
                             obj.valid = false;
                         }
