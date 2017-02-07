@@ -33,7 +33,7 @@ var paths = {
         "www/app/models/feedback/feedback.service.js",
         "www/app/models/user/user.model.js",
         "www/app/models/user/user.service.js",
-        "www/app/models/register/register.service.js",
+        "www/app/register/register.service.js",
         "www/app/models/student/student.model.js",
         "www/app/models/student/student.service.js",
         "www/app/models/teacher/teacher.model.js",
