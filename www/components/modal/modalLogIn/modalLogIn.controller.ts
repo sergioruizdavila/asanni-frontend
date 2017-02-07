@@ -108,40 +108,58 @@ module components.modal.modalLogIn {
             //VARIABLES
             let self = this;
 
-            this.AuthService.login(this.form).then(
-
-                //Success
+            //TODO: Validar bien esto, ya que toco hacer una rosca
+            // rara por que no encontre la forma de que OAuth2 permitiera
+            // loguear con email y no con username.
+            this.AccountService.getUsername(this.form.email).then(
                 function(response) {
-                    self.AccountService.getAccount().then(
-                        function(response) {
-                            //LOG
-                            DEBUG && console.log('Data User: ', response);
 
-                            //Set logged User data in localStorage
-                            self.localStorage.setItem('currentUser', JSON.stringify(response));
-                            //Set logged User data in $rootScope
-                            //TODO: Crear un modelo: Account, y crear un objeto
-                            // tipo Account: new app.models.Account();
-                            self.$rootScope.currentUser = JSON.parse(self.localStorage.getItem('currentUser'));
-                            //Close modal
-                            self.$uibModalInstance.close();
+                    //If username exists, add this field on request to login
+                    if(response.userExist) {
+                        self.form.username = response.username;
+                    } else {
+                        //TODO: Solucion nada optima, no esta bien asignar el email,
+                        // como si fuera el username, solo para que rompa, y devuelva
+                        // error de login, buscar una solucion mejor.
+                        self.form.username = self.form.email;
+                    }
+
+                    self.AuthService.login(self.form).then(
+
+                        //Success
+                        function(response) {
+                            self.AccountService.getAccount().then(
+                                function(response) {
+                                    //LOG
+                                    DEBUG && console.log('Data User: ', response);
+
+                                    //Set logged User data in localStorage
+                                    self.localStorage.setItem('currentUser', JSON.stringify(response));
+                                    //Set logged User data in $rootScope
+                                    //TODO: Crear un modelo: Account, y crear un objeto
+                                    // tipo Account: new app.models.Account();
+                                    self.$rootScope.currentUser = JSON.parse(self.localStorage.getItem('currentUser'));
+                                    //Close modal
+                                    self.$uibModalInstance.close();
+                                }
+                            );
+                        },
+
+                        // Error
+                        function(response) {
+                            if (response.status == 401) {
+                                DEBUG && console.log('Incorrect username or password.');
+                            }
+
+                            else if (response.status == -1) {
+                                DEBUG && console.log('No response from server.');
+                            }
+
+                            else {
+                                DEBUG && console.log('There was a problem logging you in. Error code: ' + response.status + '.');
+                            }
                         }
                     );
-                },
-
-                // Error
-                function(response) {
-                    if (response.status == 401) {
-                        DEBUG && console.log('Incorrect username or password.');
-                    }
-
-                    else if (response.status == -1) {
-                        DEBUG && console.log('No response from server.');
-                    }
-
-                    else {
-                        DEBUG && console.log('There was a problem logging you in. Error code: ' + response.status + '.');
-                    }
                 }
             );
         }
