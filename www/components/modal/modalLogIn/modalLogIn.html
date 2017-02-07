@@ -17,6 +17,17 @@
             </div>
         </div>
 
+        <!-- Global Validate Error Message -->
+        <div class="row ma-large-message
+                    ma-large-message--alert space-3 space-top-3"
+             ng-show="!vm.validate.globalValidate.valid">
+            <div class="col-md-12 text-center">
+                <p class="ma-p ma-p--default ma-p--alert margin-reset">
+                    <span>{{vm.validate.globalValidate.message}}</span>
+                </p>
+            </div>
+        </div>
+
         <!------------------------ START: LOG IN BLOCK ------------------------>
         <section>
 
@@ -55,9 +66,15 @@
                                     <input id="emailAccountInput"
                                            type="email"
                                            ng-model="vm.form.email"
+                                           ng-class="{'ma-input--invalid': !vm.validate.email.valid}"
                                            class="ma-input
-                                           ma-input--large
-                                           ma-input--block" placeholder="Email Address">
+                                                  ma-input--large
+                                                  ma-input--block"
+                                           placeholder="Email Address">
+                                    <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                       ng-show="!vm.validate.email.valid">
+                                       <span>{{vm.validate.email.message}}</span>
+                                    </p>
                                 </div>
 
                                 <! Password input >
@@ -70,6 +87,10 @@
                                            class="ma-input
                                            ma-input--large
                                            ma-input--block" placeholder="Create password">
+                                    <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                       ng-show="!vm.validate.password.valid">
+                                       <span>{{vm.validate.password.message}}</span>
+                                    </p>
                                 </div>
 
                                 <! Log in button >
