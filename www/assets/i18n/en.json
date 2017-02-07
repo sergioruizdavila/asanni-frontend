@@ -35,6 +35,8 @@
     "%global.time.text": "/ week",
     "%global.review.text": "reviews",
     "%global.new.label.text": "new",
+    "%global.signup.label.text": "sign up",
+    "%global.login.label.text": "log in",
 
     "%global.validation.null.message.text": "Required",
     "%global.validation.empty.message.text": "Required",
@@ -48,9 +50,11 @@
     "%header.lang.options.en.text": "English",
     "%header.lang.options.es.text": "Spanish",
     "%header.search.placeholder.text": "Where to?",
-    "%header.join.teacher.tooltip.first_part.text.legacy": "A teacher on Waysily earns",
-    "%header.join.teacher.tooltip.first_part.text": "A private teacher earns",
-    "%header.join.teacher.tooltip.second_part.text": "on average",
+    "%header.join.teacher.tooltip.first_part.text.legacy": "You could earn",
+    "%header.join.teacher.tooltip.first_part.text.legacy2": "A private teacher earns",
+    "%header.join.teacher.tooltip.first_part.text": "You could earn",
+    "%header.join.teacher.tooltip.second_part.text.legacy": "on average",
+    "%header.join.teacher.tooltip.second_part.text": "as a teacher in your country in a week. Join as a teacher.",
 
     "__FLOAT MESSAGE BAR__": "",
     "%message.bar.text_block.first_part.label.text.bkp": "You have a recommendation from",

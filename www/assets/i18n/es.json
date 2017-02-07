@@ -35,6 +35,8 @@
     "%global.time.text": "/ semana",
     "%global.review.text": "evaluaciones",
     "%global.new.label.text": "nuevo",
+    "%global.signup.label.text": "regístrate",
+    "%global.login.label.text": "iniciar sesión",
 
     "%global.validation.null.message.text": "Valor requerido",
     "%global.validation.empty.message.text": "Valor requerido",
@@ -49,8 +51,10 @@
     "%header.lang.options.es.text": "Español",
     "%header.search.placeholder.text": "¿Dónde ir?",
     "%header.join.teacher.tooltip.first_part.text.legacy": "Un profesor en Waysily gana",
-    "%header.join.teacher.tooltip.first_part.text": "Un profesor privado gana",
-    "%header.join.teacher.tooltip.second_part.text": "en promedio",
+    "%header.join.teacher.tooltip.first_part.text.legacy2": "Un profesor privado gana",
+    "%header.join.teacher.tooltip.first_part.text": "Podrías ganar",
+    "%header.join.teacher.tooltip.second_part.text.legacy": "en promedio",
+    "%header.join.teacher.tooltip.second_part.text": "en una semana como profesor en tu país. Únete como profesor.",
 
     "__FLOAT MESSAGE BAR__": "",
     "%message.bar.text_block.first_part.label.text.bkp": "Tienes una recomendación de",
@@ -105,7 +109,8 @@
     "%modal.recommend.teacher.create_profile.label.text": "¡Crea tu perfil, es gratis!",
 
     "__LANDING PAGE__": "",
-    "%landing.header.join.label.text": "Unirse como:",
+    "%landing.header.join.label.text.legacy": "Unirse como:",
+    "%landing.header.join.label.text": "Únete como:",
     "%landing.puv": "Encuentra un Profesor / Escuela de idiomas",
     "%landing.puv.description": "Waysily es una plataforma gratuita basada en la comunidad que te ayuda a encontrar tutores / escuelas locales de idiomas.",
     "%landing.explore.button.text": "EXPLORAR",

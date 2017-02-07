@@ -52,6 +52,7 @@ module app.pages.teacherLandingPage {
                                  '$state',
                                  'dataConfig',
                                  '$uibModal',
+                                 '$rootScope',
                                  'mainApp.localStorageService'];
 
         /**********************************/
@@ -64,6 +65,7 @@ module app.pages.teacherLandingPage {
             private $state: ng.ui.IStateService,
             private dataConfig: IDataConfig,
             private $uibModal: ng.ui.bootstrap.IModalService,
+            private $rootScope: app.core.interfaces.IMainAppRootScope,
             private localStorage) {
 
             this._init();
@@ -150,6 +152,43 @@ module app.pages.teacherLandingPage {
 
             //MIXPANEL
             mixpanel.track("Click on 'Join as Student' teacher landing page header");
+
+        }
+
+
+
+        /**
+        * _openLogInModal
+        * @description - open Modal in order to Log in action
+        * @use - this._openLogInModal();
+        * @function
+        * @return {void}
+        */
+        private _openLogInModal(): void {
+            //MIXPANEL
+            mixpanel.track("Click on 'Log in' from teacher landing page");
+
+            //VARIABLES
+            let self = this;
+            // modal default options
+            let options: ng.ui.bootstrap.IModalSettings = {
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                templateUrl: this.dataConfig.modalLogInTmpl,
+                controller: 'mainApp.components.modal.ModalLogInController as vm'
+            };
+
+            var modalInstance = this.$uibModal.open(options);
+
+            /* When modal is closed,validate if user is Authenticated in order to
+            show current avatar user */
+            modalInstance.result.then(function () {
+                //Validate if user is Authenticated
+                self.$rootScope.$broadcast('Is Authenticated');
+            }, function () {
+                DEBUG && console.info('Modal dismissed at: ' + new Date());
+            });
 
         }
 
