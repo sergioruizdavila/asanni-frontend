@@ -8,7 +8,7 @@
 
  declare var DEBUG: boolean;
  /* This must be false in production */
- DEBUG = false;
+ DEBUG = true;
  /************************************/
 
 
@@ -55,7 +55,7 @@ interface IDataConfig {
 
     /* Assign Environment values */
     if(DEBUG) {
-        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
+        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
         BUCKETS3 = 'waysily-img/teachers-avatar-dev';
     }
 
