@@ -142,11 +142,45 @@
 
 
 
+        <!---------------- START: LOG IN BUTTON (MD AND LG SCREEN) ------------>
+        <div ng-if="!vm.isAuthenticated"
+             class="ma-header__block
+                    ma-header--transparent__block
+                    pull-right">
+            <a href class="ma-header__block__btn
+                           ma-header--transparent__block__btn
+                           ma-header--transparent__block__buttons-list__label
+                           text-shadow link-reset text-capitalize"
+               ng-click="vm._openLogInModal()" translate>
+                %global.login.label.text
+            </a>
+        </div>
+        <!--                END: LOG IN BUTTON (MD AND LG SCREEN)            -->
+
+
+
+        <!--------------- START: SIGN UP BUTTON (MD AND LG SCREEN) ------------>
+        <div ng-if="!vm.isAuthenticated"
+             class="ma-header__block
+                    ma-header--transparent__block
+                    pull-right">
+            <a href class="ma-header__block__btn
+                           ma-header--transparent__block__btn
+                           ma-header--transparent__block__buttons-list__label
+                           text-shadow link-reset text-capitalize"
+               ng-click="vm._openSignUpModal()" translate>
+                %global.signup.label.text
+            </a>
+        </div>
+        <!--               END: SIGN UP BUTTON (MD AND LG SCREEN)            -->
+
+
+
         <!-------------- START: CHANGE LANGUAGE (MD AND LG SCREEN) ------------>
         <div class="ma-header__block
                     ma-header--transparent__block
                     ma-header--transparent__block--right
-                    pull-right">
+                    pull-right hidden">
 
             <!-- Change Language Select Input -->
             <div class="form-group ma-form-group">
@@ -185,18 +219,19 @@
 
             <div class="ma-header--transparent__block__buttons-list">
                 <span class="ma-header--transparent__block__buttons-list__label
-                             text-shadow"
+                             space-right-2 text-shadow"
                       translate>
                     %landing.header.join.label.text
                 </span>
                 <button ng-if="!vm.isAuthenticated"
                         class="ma-header--transparent__block__buttons-list__btn
-                               ma-btn ma-btn--alert ma-btn--default"
+                               ma-btn ma-btn--tertiary ma-btn--default
+                               space-right-1 hidden"
                         ng-click="vm._openSignUpModal()" translate>
                     %global.student.text
                 </button>
                 <a class="ma-header--transparent__block__buttons-list__btn
-                               ma-btn ma-btn--alert ma-btn--default"
+                          ma-btn ma-btn--tertiary ma-btn--default space-right-1"
                     ui-sref="page.teacherLandingPage"
                     uib-tooltip-template="'headerTooltip.tmpl.html'"
                     tooltip-placement="bottom"
@@ -207,7 +242,7 @@
                     %global.teacher.text
                 </a>
                 <a class="ma-header--transparent__block__buttons-list__btn
-                               ma-btn ma-btn--alert ma-btn--default"
+                          ma-btn ma-btn--tertiary ma-btn--default"
                    href="https://waysily.typeform.com/to/jvr0zW"
                    target="_blank" translate>
                     %global.school.text
@@ -610,15 +645,6 @@
     </section>
     <!--                     END: GET EARLY ADOPTERS BLOCK                   -->
 
-    <script type="text/ng-template" id="headerTooltip.tmpl.html">
-      <span translate>%header.join.teacher.tooltip.first_part.text</span>
-      <p class="strong strong--primary margin-reset space-right-1">
-          <span>340</span>
-          <span translate>%global.currency.suffix.text</span>
-          <span translate>%global.time.text</span>
-      </p>
-      <span translate>%header.join.teacher.tooltip.second_part.text</span>
-    </script>
 
 </div>
 <!--                      END: STUDENT LANDING PAGE                          -->

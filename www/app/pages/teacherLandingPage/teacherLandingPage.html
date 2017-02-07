@@ -143,11 +143,45 @@
 
 
 
+        <!---------------- START: LOG IN BUTTON (MD AND LG SCREEN) ------------>
+        <div ng-if="!vm.isAuthenticated"
+             class="ma-header__block
+                    ma-header--transparent__block
+                    pull-right">
+            <a href class="ma-header__block__btn
+                           ma-header--transparent__block__btn
+                           ma-header--transparent__block__buttons-list__label
+                           text-shadow link-reset text-capitalize"
+               ng-click="vm._openLogInModal()" translate>
+                %global.login.label.text
+            </a>
+        </div>
+        <!--                END: LOG IN BUTTON (MD AND LG SCREEN)            -->
+
+
+
+        <!--------------- START: SIGN UP BUTTON (MD AND LG SCREEN) ------------>
+        <div ng-if="!vm.isAuthenticated"
+             class="ma-header__block
+                    ma-header--transparent__block
+                    pull-right">
+            <a href class="ma-header__block__btn
+                           ma-header--transparent__block__btn
+                           ma-header--transparent__block__buttons-list__label
+                           text-shadow link-reset text-capitalize"
+               ng-click="vm._openSignUpModal()" translate>
+                %global.signup.label.text
+            </a>
+        </div>
+        <!--               END: SIGN UP BUTTON (MD AND LG SCREEN)            -->
+
+
+
         <!-------------- START: CHANGE LANGUAGE (MD AND LG SCREEN) ------------>
         <div class="ma-header__block
                     ma-header--transparent__block
                     ma-header--transparent__block--right
-                    pull-right">
+                    pull-right hidden">
 
             <!-- Change Language Select Input -->
             <div class="form-group ma-form-group">
@@ -185,25 +219,28 @@
                     pull-right">
 
             <div class="ma-header--transparent__block__buttons-list">
-                <span class="ma-header--transparent__block__buttons-list__label"
+                <span class="ma-header--transparent__block__buttons-list__label
+                             space-right-2"
                       translate>
                     %landing.header.join.label.text
                 </span>
                 <button ng-if="!vm.isAuthenticated"
                         class="ma-header--transparent__block__buttons-list__btn
-                               ma-btn ma-btn--alert ma-btn--default"
+                               ma-btn ma-btn--tertiary ma-btn--default space-right-1 hidden"
                         ng-click="vm._openSignUpModal()" translate>
                     %global.student.text
                 </button>
-                <a class="ma-header--transparent__block__buttons-list__btn
-                               ma-btn ma-btn--alert ma-btn--default"
-                    ui-sref="page.teacherLandingPage"
-                    href
+                <button class="ma-header--transparent__block__buttons-list__btn
+                          ma-btn ma-btn--default
+                          ma-btn--tertiary ma-btn--tertiary--active
+                          space-right-1"
+                    ng-click="vm._goToTeacherLanding()"
+                    disabled
                     translate>
                     %global.teacher.text
-                </a>
+                </button>
                 <a class="ma-header--transparent__block__buttons-list__btn
-                               ma-btn ma-btn--alert ma-btn--default"
+                          ma-btn ma-btn--tertiary ma-btn--default"
                    href="https://waysily.typeform.com/to/jvr0zW"
                    target="_blank" translate>
                     %global.school.text

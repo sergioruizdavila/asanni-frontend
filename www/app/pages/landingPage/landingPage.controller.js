@@ -178,6 +178,23 @@ var app;
                     var modalInstance = this.$uibModal.open(options);
                     mixpanel.track("Click on 'Join as Student' landing page header");
                 };
+                LandingPageController.prototype._openLogInModal = function () {
+                    mixpanel.track("Click on 'Log in' from landingPage");
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalLogInTmpl,
+                        controller: 'mainApp.components.modal.ModalLogInController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function () {
+                        self.$rootScope.$broadcast('Is Authenticated');
+                    }, function () {
+                        DEBUG && console.info('Modal dismissed at: ' + new Date());
+                    });
+                };
                 LandingPageController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Is Authenticated', function (event, args) {

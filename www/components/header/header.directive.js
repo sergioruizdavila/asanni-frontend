@@ -87,7 +87,24 @@ var components;
                     controller: 'mainApp.components.modal.ModalSignUpController as vm'
                 };
                 var modalInstance = this.$uibModal.open(options);
-                mixpanel.track("Click on 'Join as Student' main header");
+                mixpanel.track("Click on 'Sign Up' from header");
+            };
+            HeaderController.prototype._openLogInModal = function () {
+                mixpanel.track("Click on 'Log In' from header");
+                var self = this;
+                var options = {
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    templateUrl: this.dataConfig.modalLogInTmpl,
+                    controller: 'mainApp.components.modal.ModalLogInController as vm'
+                };
+                var modalInstance = this.$uibModal.open(options);
+                modalInstance.result.then(function () {
+                    self.$rootScope.$broadcast('Is Authenticated');
+                }, function () {
+                    DEBUG && console.info('Modal dismissed at: ' + new Date());
+                });
             };
             HeaderController.prototype._subscribeToEvents = function () {
                 var self = this;

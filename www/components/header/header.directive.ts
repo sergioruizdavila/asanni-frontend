@@ -256,7 +256,44 @@ module components.header {
             var modalInstance = this.$uibModal.open(options);
 
             //MIXPANEL
-            mixpanel.track("Click on 'Join as Student' main header");
+            mixpanel.track("Click on 'Sign Up' from header");
+        }
+
+
+
+        /**
+        * _openLogInModal
+        * @description - open Modal in order to Log in action
+        * @use - this._openLogInModal();
+        * @function
+        * @return {void}
+        */
+        private _openLogInModal(): void {
+            //MIXPANEL
+            mixpanel.track("Click on 'Log In' from header");
+
+            //VARIABLES
+            let self = this;
+            // modal default options
+            let options: ng.ui.bootstrap.IModalSettings = {
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                templateUrl: this.dataConfig.modalLogInTmpl,
+                controller: 'mainApp.components.modal.ModalLogInController as vm'
+            };
+
+            var modalInstance = this.$uibModal.open(options);
+
+            /* When modal is closed,validate if user is Authenticated in order to
+            show current avatar user */
+            modalInstance.result.then(function () {
+                //Validate if user is Authenticated
+                self.$rootScope.$broadcast('Is Authenticated');
+            }, function () {
+                DEBUG && console.info('Modal dismissed at: ' + new Date());
+            });
+
         }
 
 
