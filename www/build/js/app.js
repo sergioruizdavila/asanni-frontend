@@ -3109,10 +3109,10 @@ var components;
                     controller: 'mainApp.components.modal.ModalSignUpController as vm'
                 };
                 var modalInstance = this.$uibModal.open(options);
-                mixpanel.track("Click on 'Join as Student' main header");
+                mixpanel.track("Click on 'Sign Up' from header");
             };
             HeaderController.prototype._openLogInModal = function () {
-                mixpanel.track("Click on 'Log in' from signUp modal");
+                mixpanel.track("Click on 'Log In' from header");
                 var self = this;
                 var options = {
                     animation: false,
@@ -4908,7 +4908,7 @@ var app;
                     mixpanel.track("Click on 'Join as Student' teacher landing page header");
                 };
                 TeacherLandingPageController.prototype._openLogInModal = function () {
-                    mixpanel.track("Click on 'Log in' from landingPage");
+                    mixpanel.track("Click on 'Log in' from teacher landing page");
                     var self = this;
                     var options = {
                         animation: false,
