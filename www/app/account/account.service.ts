@@ -14,6 +14,7 @@ module app.account {
     /**********************************/
     export interface IAccountService {
         getAccount:() => angular.IPromise<any>;
+        getUsername:(email: string) => angular.IPromise<any>;
     }
 
 
@@ -28,11 +29,13 @@ module app.account {
         /*           PROPERTIES           */
         /**********************************/
         ACCOUNT_URI: string;
+        ACCOUNT_GET_USERNAME_URI: string;
         // --------------------------------
 
 
         /*-- INJECT DEPENDENCIES --*/
         static $inject = [
+            '$q',
             'mainApp.core.restApi.restApiService'
         ];
 
@@ -40,12 +43,14 @@ module app.account {
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        constructor(private restApi: app.core.restApi.IRestApi) {
+        constructor(private $q: angular.IQService,
+                    private restApi: app.core.restApi.IRestApi) {
             //LOG
             DEBUG && console.log('account service instanced');
 
             //CONSTANTS
             this.ACCOUNT_URI = 'account';
+            this.ACCOUNT_GET_USERNAME_URI = 'account/username';
         }
 
         /**********************************/
@@ -74,6 +79,40 @@ module app.account {
                         return error;
                     }
                 );
+        }
+
+
+        /**
+        * getUsername
+        * @description - Getting an username with a given email
+        * @use - this.AccountService.getUsername();
+        * @function
+        * @param {string} email - user's email
+        * @return {angular.IPromise<any>} promise
+        */
+
+        getUsername(email): angular.IPromise<any> {
+            //VARIABLES
+            let url = this.ACCOUNT_GET_USERNAME_URI;
+            let deferred = this.$q.defer();
+            let data = {
+                email: email
+            };
+
+            this.restApi.create({url: url}, data).$promise
+                .then(
+                    function(response) {
+                        deferred.resolve(response);
+                    },
+
+                    function(error) {
+                        DEBUG && console.error(error);
+                        deferred.reject(error);
+                    }
+                );
+
+            return deferred.promise;
+
         }
 
     }

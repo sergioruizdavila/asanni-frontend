@@ -31,23 +31,31 @@ var components;
                 };
                 ModalLogInController.prototype.login = function () {
                     var self = this;
-                    this.AuthService.login(this.form).then(function (response) {
-                        self.AccountService.getAccount().then(function (response) {
-                            DEBUG && console.log('Data User: ', response);
-                            self.localStorage.setItem('currentUser', JSON.stringify(response));
-                            self.$rootScope.currentUser = JSON.parse(self.localStorage.getItem('currentUser'));
-                            self.$uibModalInstance.close();
-                        });
-                    }, function (response) {
-                        if (response.status == 401) {
-                            DEBUG && console.log('Incorrect username or password.');
-                        }
-                        else if (response.status == -1) {
-                            DEBUG && console.log('No response from server.');
+                    this.AccountService.getUsername(this.form.email).then(function (response) {
+                        if (response.userExist) {
+                            self.form.username = response.username;
                         }
                         else {
-                            DEBUG && console.log('There was a problem logging you in. Error code: ' + response.status + '.');
+                            self.form.username = self.form.email;
                         }
+                        self.AuthService.login(self.form).then(function (response) {
+                            self.AccountService.getAccount().then(function (response) {
+                                DEBUG && console.log('Data User: ', response);
+                                self.localStorage.setItem('currentUser', JSON.stringify(response));
+                                self.$rootScope.currentUser = JSON.parse(self.localStorage.getItem('currentUser'));
+                                self.$uibModalInstance.close();
+                            });
+                        }, function (response) {
+                            if (response.status == 401) {
+                                DEBUG && console.log('Incorrect username or password.');
+                            }
+                            else if (response.status == -1) {
+                                DEBUG && console.log('No response from server.');
+                            }
+                            else {
+                                DEBUG && console.log('There was a problem logging you in. Error code: ' + response.status + '.');
+                            }
+                        });
                     });
                 };
                 ModalLogInController.prototype._openSignUpModal = function () {
