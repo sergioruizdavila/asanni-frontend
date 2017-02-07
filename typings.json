@@ -15,6 +15,7 @@
     "toastr": "github:DefinitelyTyped/DefinitelyTyped/toastr/toastr.d.ts#87b80408d2f0c3238727f75af67cb4ed54912185"
   },
   "dependencies": {
+    "angular-cookies": "registry:dt/angular-cookies#1.4.0+20161206185711",
     "aws-sdk": "registry:dt/aws-sdk#0.0.0+20161119044246",
     "debug": "registry:npm/debug#2.0.0+20160723033700",
     "ng-file-upload": "registry:dt/ng-file-upload#11.1.1+20161128184045"

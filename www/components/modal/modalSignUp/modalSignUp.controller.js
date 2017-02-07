@@ -5,80 +5,137 @@ var components;
         var modalSignUp;
         (function (modalSignUp) {
             var ModalSignUpController = (function () {
-                function ModalSignUpController($uibModalInstance, functionsUtil, LandingPageService, messageUtil, $filter) {
-                    this.$uibModalInstance = $uibModalInstance;
+                function ModalSignUpController($rootScope, RegisterService, functionsUtil, messageUtil, dataConfig, $uibModal, $uibModalInstance) {
+                    this.$rootScope = $rootScope;
+                    this.RegisterService = RegisterService;
                     this.functionsUtil = functionsUtil;
-                    this.LandingPageService = LandingPageService;
                     this.messageUtil = messageUtil;
-                    this.$filter = $filter;
+                    this.dataConfig = dataConfig;
+                    this.$uibModal = $uibModal;
+                    this.$uibModalInstance = $uibModalInstance;
                     this._init();
                 }
                 ModalSignUpController.prototype._init = function () {
                     var self = this;
                     this.form = {
-                        email: ''
+                        username: '',
+                        email: '',
+                        first_name: '',
+                        last_name: '',
+                        password: ''
                     };
-                    this.sending = false;
+                    this.passwordMinLength = this.dataConfig.passwordMinLength;
+                    this.passwordMaxLength = this.dataConfig.passwordMaxLength;
                     this.validate = {
-                        email: { valid: true, message: '' }
+                        username: { valid: true, message: '' },
+                        email: { valid: true, message: '' },
+                        first_name: { valid: true, message: '' },
+                        last_name: { valid: true, message: '' },
+                        password: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
                     };
                     this.activate();
                 };
                 ModalSignUpController.prototype.activate = function () {
-                    console.log('modalSignUp controller actived');
+                    DEBUG && console.log('modalSignUp controller actived');
+                };
+                ModalSignUpController.prototype.registerUser = function () {
+                    var self = this;
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this.form.username = this.functionsUtil.generateUsername(this.form.first_name, this.form.last_name);
+                        this.RegisterService.register(this.form).then(function (response) {
+                            DEBUG && console.log('Welcome!, Your new account has been successfuly created.');
+                            self.messageUtil.success('Welcome!, Your new account has been successfuly created.');
+                            self._openLogInModal();
+                        }, function (error) {
+                            DEBUG && console.log(JSON.stringify(error));
+                            var errortext = [];
+                            for (var key in error.data) {
+                                var line = key;
+                                line += ': ';
+                                line += error.data[key];
+                                errortext.push(line);
+                            }
+                            DEBUG && console.error(errortext);
+                            self.validate.globalValidate.valid = false;
+                            self.validate.globalValidate.message = errortext[0];
+                        });
+                    }
                 };
                 ModalSignUpController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
                     var EMPTY_ENUM = 3;
                     var EMAIL_ENUM = 0;
                     var formValid = true;
+                    var firstName_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.first_name = this.functionsUtil.validator(this.form.first_name, firstName_rules);
+                    if (!this.validate.first_name.valid) {
+                        formValid = this.validate.first_name.valid;
+                    }
+                    var lastName_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.last_name = this.functionsUtil.validator(this.form.last_name, lastName_rules);
+                    if (!this.validate.last_name.valid) {
+                        formValid = this.validate.last_name.valid;
+                    }
                     var email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
                     this.validate.email = this.functionsUtil.validator(this.form.email, email_rules);
                     if (!this.validate.email.valid) {
                         formValid = this.validate.email.valid;
                     }
+                    var password_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.password = this.functionsUtil.validator(this.form.password, password_rules);
+                    if (!this.validate.password.valid) {
+                        formValid = this.validate.password.valid;
+                        this.validate.password.message = 'Your password must be at least 6 characters. Please try again.';
+                    }
                     return formValid;
                 };
-                ModalSignUpController.prototype.save = function () {
-                    var formValid = this._validateForm();
-                    if (formValid) {
-                        var self_1 = this;
-                        this.sending = true;
-                        mixpanel.track("Click on Join as a Student button", {
-                            "name": '*',
-                            "email": this.form.email,
-                            "comment": '*'
-                        });
-                        var userData = {
-                            name: '*',
-                            email: this.form.email,
-                            comment: '*'
-                        };
-                        this.LandingPageService.createEarlyAdopter(userData)
-                            .then(function (response) {
-                            if (response.createdAt) {
-                                self_1.messageUtil.success('¡Gracias!, Ya está todo listo. Te agregaremos a nuestra lista.');
-                                self_1.$uibModalInstance.close();
-                            }
-                            else {
-                                self_1.sending = false;
+                ModalSignUpController.prototype._checkIfEmailExist = function () {
+                    var self = this;
+                    if (this.form.email) {
+                        this.RegisterService.checkEmail(this.form.email).then(function (response) {
+                            self.validate.email.valid = true;
+                        }, function (error) {
+                            if (error.data.emailExist) {
+                                self.validate.email.valid = false;
+                                self.validate.email.message = 'That email address is already in use. Please log in.';
                             }
                         });
                     }
                 };
+                ModalSignUpController.prototype._openLogInModal = function () {
+                    mixpanel.track("Click on 'Log in' from signUp modal");
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalLogInTmpl,
+                        controller: 'mainApp.components.modal.ModalLogInController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function () {
+                        self.$rootScope.$broadcast('Is Authenticated');
+                    }, function () {
+                        DEBUG && console.info('Modal dismissed at: ' + new Date());
+                    });
+                    this.$uibModalInstance.close();
+                };
                 ModalSignUpController.prototype.close = function () {
                     this.$uibModalInstance.close();
-                    event.preventDefault();
                 };
                 return ModalSignUpController;
             }());
             ModalSignUpController.controllerId = 'mainApp.components.modal.ModalSignUpController';
             ModalSignUpController.$inject = [
-                '$uibModalInstance',
+                '$rootScope',
+                'mainApp.register.RegisterService',
                 'mainApp.core.util.FunctionsUtilService',
-                'mainApp.pages.landingPage.LandingPageService',
                 'mainApp.core.util.messageUtilService',
-                '$filter'
+                'dataConfig',
+                '$uibModal',
+                '$uibModalInstance'
             ];
             angular.module('mainApp.components.modal')
                 .controller(ModalSignUpController.controllerId, ModalSignUpController);

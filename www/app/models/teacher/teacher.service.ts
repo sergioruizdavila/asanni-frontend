@@ -44,7 +44,11 @@ module app.models.teacher {
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
-
+        TEACHER_URI: string;
+        STATUS_TEACHER_URI: string;
+        EXPERIENCES_URI: string;
+        EDUCATIONS_URI: string;
+        CERTIFICATES_URI: string;
         // --------------------------------
 
 
@@ -60,6 +64,13 @@ module app.models.teacher {
         constructor(private restApi: app.core.restApi.IRestApi) {
             //LOG
             console.log('teacher service instanced');
+
+            //CONSTANTS
+            this.TEACHER_URI = 'teachers';
+            this.STATUS_TEACHER_URI = 'teachers?status=';
+            this.EXPERIENCES_URI = 'experiences';
+            this.EDUCATIONS_URI = 'educations';
+            this.CERTIFICATES_URI = 'certificates';
         }
 
         /**********************************/
@@ -76,20 +87,21 @@ module app.models.teacher {
         */
         getTeacherById(id): angular.IPromise<any> {
             //VARIABLES
-            let url = 'teachers';
+            let url = this.TEACHER_URI;
 
             return this.restApi.show({url: url, id: id}).$promise
                 .then(
                     function(data) {
                         return data;
-                    }
-                ).catch(
-                    function(err) {
-                        console.log(err);
-                        return err;
+                    },
+                    function(error) {
+                        DEBUG && console.error(error);
+                        return error;
                     }
                 );
         }
+
+
 
         /**
         * getAllTeachersByStatus
@@ -99,19 +111,19 @@ module app.models.teacher {
         */
         getAllTeachersByStatus(status): angular.IPromise<any> {
             //VARIABLES
-            let url = 'teachers?status=' + status;
+            let url = this.STATUS_TEACHER_URI + status;
 
             return this.restApi.queryObject({url: url}).$promise
                 .then(
                     function(data) {
                         return data;
-                    }
-                ).catch(
-                    function(err) {
-                        console.log(err);
-                        return err;
+                    },
+                    function(error) {
+                        DEBUG && console.error(error);
+                        return error;
                     }
                 );
+
         }
 
 
@@ -124,17 +136,16 @@ module app.models.teacher {
         */
         getAllTeachers(): angular.IPromise<any> {
             //VARIABLES
-            let url = 'teachers';
+            let url = this.TEACHER_URI;
 
             return this.restApi.queryObject({url: url}).$promise
                 .then(
                     function(data) {
                         return data;
-                    }
-                ).catch(
-                    function(err) {
-                        console.log(err);
-                        return err;
+                    },
+                    function(error) {
+                        DEBUG && console.error(error);
+                        return error;
                     }
                 );
         }
@@ -150,23 +161,19 @@ module app.models.teacher {
         * @return {object} response - Returns response about If request was success or error.
         */
         createTeacher(teacher): ng.IPromise<any> {
-            var promise;
-            let url = 'teachers';
-            promise = this.restApi.create({ url: url }, teacher)
-                .$promise.then(
+            //VARIABLES
+            let url = this.TEACHER_URI;
+
+            return this.restApi.create({ url: url }, teacher).$promise
+                .then(
                     function (response) {
                         return response;
-                    }, function (error) {
+                    },
+                    function (error) {
+                        DEBUG && console.error(error);
                         return error;
                     }
-                ).catch(
-                    function(err) {
-                        console.log(err);
-                        return err;
-                    }
                 );
-
-            return promise;
         }
 
 
@@ -180,23 +187,19 @@ module app.models.teacher {
         * @return {object} response - Returns response about If request was success or error.
         */
         updateTeacher(teacher): ng.IPromise<any> {
-            var promise;
-            let url = 'teachers';
-            promise = this.restApi.update({ url: url, id: teacher.Id }, teacher)
-                .$promise.then(
+            //VARIABLES
+            let url = this.TEACHER_URI;
+
+            return this.restApi.update({ url: url, id: teacher.Id }, teacher).$promise
+                .then(
                     function (response) {
                         return response;
-                    }, function (error) {
+                    },
+                    function (error) {
+                        DEBUG && console.error(error);
                         return error;
                     }
-                ).catch(
-                    function(err) {
-                        console.log(err);
-                        return err;
-                    }
                 );
-
-            return promise;
         }
 
 
@@ -211,23 +214,19 @@ module app.models.teacher {
         * @return {object} response - Returns response about If request was success or error.
         */
         createExperience(teacherId, experience): angular.IPromise<any> {
-            var promise;
-            let url = 'teachers/' + teacherId + '/experiences';
-            promise = this.restApi.create({ url: url }, experience)
-                .$promise.then(
+            //VARIABLES
+            let url = this.TEACHER_URI + '/' + teacherId + '/' + this.EXPERIENCES_URI;
+
+            return this.restApi.create({ url: url }, experience).$promise
+                .then(
                     function (response) {
                         return response;
-                    }, function (error) {
+                    },
+                    function (error) {
+                        DEBUG && console.log(error);
                         return error;
                     }
-                ).catch(
-                    function(err) {
-                        console.log(err);
-                        return err;
-                    }
                 );
-
-            return promise;
         }
 
 
@@ -242,23 +241,19 @@ module app.models.teacher {
         * @return {object} response - Returns response about If request was success or error.
         */
         updateExperience(teacherId, experience): ng.IPromise<any> {
-            var promise;
-            let url = 'teachers/' + teacherId + '/experiences';
-            promise = this.restApi.update({ url: url, id: experience.Id }, experience)
-                .$promise.then(
+            //VARIABLES
+            let url = this.TEACHER_URI + '/' + teacherId + '/' + this.EXPERIENCES_URI;
+
+            return this.restApi.update({ url: url, id: experience.Id }, experience).$promise
+                .then(
                     function (response) {
                         return response;
-                    }, function (error) {
+                    },
+                    function (error) {
+                        DEBUG && console.error(error);
                         return error;
                     }
-                ).catch(
-                    function(err) {
-                        console.log(err);
-                        return err;
-                    }
                 );
-
-            return promise;
         }
 
 
@@ -273,23 +268,19 @@ module app.models.teacher {
         * @return {object} response - Returns response about If request was success or error.
         */
         createEducation(teacherId, education): angular.IPromise<any> {
-            var promise;
-            let url = 'teachers/' + teacherId + '/educations';
-            promise = this.restApi.create({ url: url }, education)
-                .$promise.then(
+            //VARIABLES
+            let url = this.TEACHER_URI + '/' + teacherId + '/' + this.EDUCATIONS_URI;
+
+            return this.restApi.create({ url: url }, education).$promise
+                .then(
                     function (response) {
                         return response;
-                    }, function (error) {
+                    },
+                    function (error) {
+                        DEBUG && console.error(error);
                         return error;
                     }
-                ).catch(
-                    function(err) {
-                        console.log(err);
-                        return err;
-                    }
                 );
-
-            return promise;
         }
 
 
@@ -304,23 +295,19 @@ module app.models.teacher {
         * @return {object} response - Returns response about If request was success or error.
         */
         updateEducation(teacherId, education): ng.IPromise<any> {
-            var promise;
-            let url = 'teachers/' + teacherId + '/educations';
-            promise = this.restApi.update({ url: url, id: education.Id }, education)
-                .$promise.then(
+            //VARIABLES
+            let url = this.TEACHER_URI + '/' + teacherId + '/' + this.EDUCATIONS_URI;
+
+            return this.restApi.update({ url: url, id: education.Id }, education).$promise
+                .then(
                     function (response) {
                         return response;
-                    }, function (error) {
+                    },
+                    function (error) {
+                        DEBUG && console.error(error);
                         return error;
                     }
-                ).catch(
-                    function(err) {
-                        console.log(err);
-                        return err;
-                    }
                 );
-
-            return promise;
         }
 
 
@@ -335,23 +322,19 @@ module app.models.teacher {
         * @return {object} response - Returns response about If request was success or error.
         */
         createCertificate(teacherId, certificate): angular.IPromise<any> {
-            var promise;
-            let url = 'teachers/' + teacherId + '/certificates';
-            promise = this.restApi.create({ url: url }, certificate)
-                .$promise.then(
+            //VARIABLES
+            let url = this.TEACHER_URI + '/' + teacherId + '/' + this.CERTIFICATES_URI;
+
+            return this.restApi.create({ url: url }, certificate).$promise
+                .then(
                     function (response) {
                         return response;
-                    }, function (error) {
+                    },
+                    function (error) {
+                        DEBUG && console.error(error);
                         return error;
                     }
-                ).catch(
-                    function(err) {
-                        console.log(err);
-                        return err;
-                    }
                 );
-
-            return promise;
         }
 
 
@@ -366,23 +349,19 @@ module app.models.teacher {
         * @return {object} response - Returns response about If request was success or error.
         */
         updateCertificate(teacherId, certificate): ng.IPromise<any> {
-            var promise;
-            let url = 'teachers/' + teacherId + '/certificates';
-            promise = this.restApi.update({ url: url, id: certificate.Id }, certificate)
-                .$promise.then(
+            //VARIABLES
+            let url = this.TEACHER_URI + '/' + teacherId + '/' + this.CERTIFICATES_URI;
+
+            return this.restApi.update({ url: url, id: certificate.Id }, certificate).$promise
+                .then(
                     function (response) {
                         return response;
-                    }, function (error) {
+                    },
+                    function (error) {
+                        DEBUG && console.error(error);
                         return error;
                     }
-                ).catch(
-                    function(err) {
-                        console.log(err);
-                        return err;
-                    }
                 );
-
-            return promise;
         }
 
 

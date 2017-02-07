@@ -14,6 +14,9 @@
                     controllerAs: 'vm'
                 }
             },
+            data: {
+                requireLogin: false
+            },
             parent: 'page',
             params: {
                 country: null

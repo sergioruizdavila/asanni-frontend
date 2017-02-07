@@ -6,11 +6,24 @@
  * @return {void}
  */
 
+ declare var DEBUG: boolean;
+ /* This must be false in production */
+ DEBUG = false;
+ /************************************/
+
+
 /*--  INTERFACE --*/
 interface IDataConfig {
     currentYear: string;
     baseUrl: string;
     domain: string;
+    https: boolean;
+    autoRefreshTokenIntervalSeconds: number;
+    usernameMinLength: number;
+    usernameMaxLength: number;
+    passwordMinLength: number;
+    passwordMaxLength: number;
+    localOAuth2Key: string;
     googleMapKey: string;
     mixpanelTokenPRD: string;
     mixpanelTokenDEV: string;
@@ -20,6 +33,7 @@ interface IDataConfig {
     modalEducationTmpl: string;
     modalCertificateTmpl: string;
     modalSignUpTmpl: string;
+    modalLogInTmpl: string;
     modalRecommendTeacherTmpl: string;
     bucketS3: string;
     regionS3: string;
@@ -28,12 +42,22 @@ interface IDataConfig {
     userId: string;
     teacherIdLocalStorage: string;
     earlyIdLocalStorage: string;
+    cookieName: string;
 }
 
 /*--  MAIN FUNCTION --*/
 (function (): void {
 
     'use strict';
+
+    let BASE_URL = 'https://waysily-server.herokuapp.com/api/v1/';
+    let BUCKETS3 = 'waysily-img/teachers-avatar-prd';
+
+    /* Assign Environment values */
+    if(DEBUG) {
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
+        BUCKETS3 = 'waysily-img/teachers-avatar-dev';
+    }
 
     // DEV Fake
     // baseUrl: 'http://localhost:3000/'
@@ -49,8 +73,15 @@ interface IDataConfig {
     // bucketS3: 'waysily-img/teachers-avatar-prd'
     var dataConfig: IDataConfig = {
         currentYear: '2017',
-        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
+        baseUrl: BASE_URL,
         domain: 'www.waysily.com',
+        https: false,
+        autoRefreshTokenIntervalSeconds: 300,
+        usernameMinLength: 6,
+        usernameMaxLength: 80,
+        passwordMinLength: 6,
+        passwordMaxLength: 80,
+        localOAuth2Key: 'fCY4EWQIPuixOGhA9xRIxzVLNgKJVmG1CVnwXssq',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',
         mixpanelTokenDEV: 'eda475bf46e7f01e417a4ed1d9cc3e58',
@@ -60,19 +91,21 @@ interface IDataConfig {
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
+        modalLogInTmpl: 'components/modal/modalLogIn/modalLogIn.html',
         modalRecommendTeacherTmpl: 'components/modal/modalRecommendTeacher/modalRecommendTeacher.html',
-        bucketS3: 'waysily-img/teachers-avatar-prd',
+        bucketS3: BUCKETS3,
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
         userId: '',
         teacherIdLocalStorage: 'waysily.teacher_id',
-        earlyIdLocalStorage: 'waysily.early_id'
+        earlyIdLocalStorage: 'waysily.early_id',
+        cookieName: 'token'
     };
 
 
     angular
         .module('mainApp')
-        .value('dataConfig', dataConfig);
+        .constant('dataConfig', dataConfig);
 
 })();

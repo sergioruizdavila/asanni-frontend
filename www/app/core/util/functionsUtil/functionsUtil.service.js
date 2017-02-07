@@ -25,6 +25,22 @@ var app;
                         this.$translate = $translate;
                         console.log('functionsUtil service called');
                     }
+                    FunctionsUtilService.prototype.normalizeString = function (str) {
+                        var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç";
+                        var to = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc";
+                        var mapping = {};
+                        for (var i = 0; i < from.length; i++)
+                            mapping[from.charAt(i)] = to.charAt(i);
+                        var ret = [];
+                        for (var i = 0; i < str.length; i++) {
+                            var c = str.charAt(i);
+                            if (mapping.hasOwnProperty(str.charAt(i)))
+                                ret.push(mapping[c]);
+                            else
+                                ret.push(c);
+                        }
+                        return ret.join('');
+                    };
                     FunctionsUtilService.generateGuid = function () {
                         var fmt = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
                         var guid = fmt.replace(/[xy]/g, function (c) {
@@ -50,6 +66,30 @@ var app;
                     FunctionsUtilService.prototype.getCurrentLanguage = function () {
                         var currentLanguage = this.$translate.use();
                         return currentLanguage;
+                    };
+                    FunctionsUtilService.prototype.generateUsername = function (firstName, lastName) {
+                        var alias = '';
+                        var username = '';
+                        var randomCode = '';
+                        var minLength = this.dataConfig.usernameMinLength;
+                        var maxLength = this.dataConfig.usernameMaxLength;
+                        var ALPHABET = '0123456789';
+                        var ID_LENGTH = 7;
+                        var REMAINDER = maxLength - ID_LENGTH;
+                        var EXTRAS = 2;
+                        firstName = this.normalizeString(firstName);
+                        firstName = firstName.replace(/[^\w\s]/gi, '').replace(/\s/g, '');
+                        lastName = this.normalizeString(lastName);
+                        lastName = lastName.replace(/[^\w\s]/gi, '').replace(/\s/g, '');
+                        if (firstName.length > REMAINDER - EXTRAS) {
+                            firstName = firstName.substring(0, REMAINDER - EXTRAS);
+                        }
+                        alias = (firstName + lastName.substring(0, 1)).toLowerCase();
+                        for (var i = 0; i < ID_LENGTH; i++) {
+                            randomCode += ALPHABET.charAt(Math.floor(Math.random() * ALPHABET.length));
+                        }
+                        username = alias + '-' + randomCode;
+                        return username;
                     };
                     FunctionsUtilService.prototype.changeLanguage = function (language) {
                         this.$translate.use(language);

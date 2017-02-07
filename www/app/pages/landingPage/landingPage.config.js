@@ -15,6 +15,9 @@
                 }
             },
             parent: 'page',
+            data: {
+                requireLogin: false
+            },
             cache: false,
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;

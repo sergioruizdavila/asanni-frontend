@@ -66,16 +66,19 @@ module app.pages.landingPage {
         infoCountry: IFormStatus;
         infoNewUser: IFormStatus;
         validate: ILandingValidate;
+        isAuthenticated: boolean;
         countryObject: app.core.interfaces.IDataFromJsonI18n;
         listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
         // --------------------------------
 
 
         /*-- INJECT DEPENDENCIES --*/
-        public static $inject = ['$state',
+        public static $inject = ['$scope',
+                                 '$state',
                                  '$stateParams',
                                  'dataConfig',
                                  '$uibModal',
+                                 'mainApp.auth.AuthService',
                                  'mainApp.core.util.messageUtilService',
                                  'mainApp.core.util.FunctionsUtilService',
                                  'mainApp.pages.landingPage.LandingPageService',
@@ -88,10 +91,12 @@ module app.pages.landingPage {
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
+            private $scope: angular.IScope,
             private $state: ng.ui.IStateService,
             private $stateParams: IParams,
             private dataConfig: IDataConfig,
             private $uibModal: ng.ui.bootstrap.IModalService,
+            private AuthService: app.auth.IAuthService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private LandingPageService: app.pages.landingPage.ILandingPageService,
@@ -106,6 +111,10 @@ module app.pages.landingPage {
 
         /*-- INITIALIZE METHOD --*/
         private _init() {
+
+            //Validate if user is Authenticated
+            this.isAuthenticated = this.AuthService.isAuthenticated();
+
             //Init form
             this.form = {
                 userData: {
@@ -182,6 +191,9 @@ module app.pages.landingPage {
                 var modalInstance = this.$uibModal.open(options);
             }
 
+            //SUBSCRIBE TO EVENTS
+            this._subscribeToEvents();
+
         }
 
         /**********************************/
@@ -199,6 +211,34 @@ module app.pages.landingPage {
         changeLanguage(): void {
              this.functionsUtil.changeLanguage(this.form.language);
              mixpanel.track("Change Language on landingPage");
+        }
+
+
+
+        /**
+         * logout
+         * @description - Log out current logged user (call AuthService to revoke token)
+         * @use - this.logout();
+         * @function
+         * @return {void}
+        */
+
+        logout(): void {
+            //VARIABLES
+            let self = this;
+
+            this.AuthService.logout().then(
+                function(response) {
+                    // Success
+                    self.localStorage.removeItem('currentUser');
+                    window.location.reload();
+                },
+                function(response) {
+                    // Error
+                    /* This can occur if connection to server is lost or server is down */
+                    DEBUG && console.log('A problem occured while logging you out.');
+                }
+            );
         }
 
 
@@ -335,7 +375,7 @@ module app.pages.landingPage {
         /**
         * _openSignUpModal
         * @description - open Modal in order to add a New Teacher's Experience on Box
-        * @use - this._addEditExperience();
+        * @use - this._openSignUpModal();
         * @function
         * @return {void}
         */
@@ -353,6 +393,32 @@ module app.pages.landingPage {
             var modalInstance = this.$uibModal.open(options);
 
             mixpanel.track("Click on 'Join as Student' landing page header");
+        }
+
+
+
+        /**
+        * _subscribeToEvents
+        * @description - this method subscribes Landing Page to Child's Events
+        * @use - this._subscribeToEvents();
+        * @function
+        * @return {void}
+        */
+        private _subscribeToEvents(): void {
+            // VARIABLES
+            let self = this;
+
+            /**
+            * Is Authenticated event
+            * @description - Parent (LandingPageController) receive Child's
+                             event in order to know if user is authenticated
+            * @event
+            */
+            this.$scope.$on('Is Authenticated', function(event, args) {
+                //Validate if user is Authenticated
+                self.isAuthenticated = self.AuthService.isAuthenticated();
+            });
+
         }
 
     }

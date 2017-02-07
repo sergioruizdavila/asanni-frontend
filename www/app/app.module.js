@@ -2,12 +2,14 @@
     'use strict';
     angular
         .module('mainApp', [
-        'mainApp.auth',
         'mainApp.core',
         'mainApp.core.util',
         'mainApp.localStorage',
         'mainApp.core.restApi',
         'mainApp.core.s3Upload',
+        'mainApp.auth',
+        'mainApp.register',
+        'mainApp.account',
         'mainApp.models.feedback',
         'mainApp.models.user',
         'mainApp.models.student',
@@ -33,6 +35,26 @@
         'mainApp.components.modal',
         'mainApp.components.footer',
         'mainApp.components.floatMessageBar'
+    ])
+        .config(['OAuthProvider', 'dataConfig',
+        function (OAuthProvider, dataConfig) {
+            OAuthProvider.configure({
+                baseUrl: dataConfig.baseUrl,
+                clientId: dataConfig.localOAuth2Key,
+                grantPath: '/oauth2/token/',
+                revokePath: '/oauth2/revoke_token/'
+            });
+        }
+    ])
+        .config(['OAuthTokenProvider', 'dataConfig',
+        function (OAuthTokenProvider, dataConfig) {
+            OAuthTokenProvider.configure({
+                name: dataConfig.cookieName,
+                options: {
+                    secure: dataConfig.https,
+                }
+            });
+        }
     ])
         .config(config);
     function config($locationProvider, $urlRouterProvider, $translateProvider) {

@@ -1,6 +1,13 @@
 /**
 * config()
 * @description - search page config file
+* @note - If requireLogin is true, this state must have 'resolve' function,
+* If requireLogin is false, this state must not have 'resolve' function:
+* resolve: {
+    waitForAuth: ['mainApp.auth.AuthService', function(AuthService) {
+        return AuthService.autoRefreshToken();
+    }]
+* }
 */
 
 
@@ -23,6 +30,9 @@
                         controller: 'mainApp.pages.searchPage.SearchPageController',
                         controllerAs: 'vm'
                     }
+                },
+                data: {
+                    requireLogin: false
                 },
                 parent: 'page',
                 params: {

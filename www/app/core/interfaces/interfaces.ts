@@ -14,6 +14,7 @@ module app.core.interfaces {
         activeHeader: boolean;
         activeFooter: boolean;
         activeMessageBar: boolean;
+        currentUser: any;
     }
 
     //TODO: Remover cuando ya no sea necesario
@@ -103,4 +104,59 @@ module app.core.interfaces {
         textsList?: Array<string>;
     }
 
+}
+
+
+/******************************************************************************/
+
+
+/**
+ * Nowday there is not a angular-oauth2 definition, here is a basic
+ * created by cskiwi on gitHub
+ * @reference https://github.com/oauthjs/angular-oauth2/issues/91
+ */
+
+declare namespace angular.oauth2 {
+    /*
+     * IOAuth
+     */
+
+     interface IOAuthConfig {
+        baseUrl: string;
+        clientId: string;
+        clientSecret?: string;
+        grantPath?: string;
+        revokePath?: string;
+    }
+    interface IOAuthProvider {
+        configure(params: IOAuthConfig): IOAuthConfig;
+    }
+
+    interface IData {
+        username: string;
+        password: string;
+    }
+
+    interface IOAuth {
+        isAuthenticated(): boolean;
+        getAccessToken(data: IData, options?: any): angular.IPromise<string>;
+        getRefreshToken(data?: IData, options?: any): angular.IPromise<string>;
+        revokeToken(data?: IData, options?: any): angular.IPromise<string>;
+    }
+
+    /*
+     * IOAuthToken
+     */
+    interface IOAuthTokenConfig {
+        name: string;
+        options: IOAuthTokenOptions;
+    }
+
+    interface IOAuthTokenOptions {
+        secure: boolean;
+    }
+
+    interface IOAuthTokenProvider {
+        configure(params: IOAuthTokenConfig): IOAuthTokenConfig;
+    }
 }

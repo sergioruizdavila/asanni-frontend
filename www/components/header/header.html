@@ -170,7 +170,8 @@
 
 
         <!---------------- START: PROFILE IMAGE (MD AND LG SCREEN) ------------>
-        <div class="ma-header__block pull-right hidden">
+        <div ng-if="vm.isAuthenticated"
+             class="ma-header__block pull-right">
 
             <!-- User menu options dropdown -->
             <span uib-dropdown on-toggle="toggled(open)">
@@ -208,7 +209,7 @@
                             Edit Profile
                         </a>
                     </li>
-                    <li class="ma-dropdown__option">
+                    <li class="ma-dropdown__option hidden">
                         <a ui-sref="page.userEditAgendaPage"
                            class="ma-dropdown__option__btn"
                            href>
@@ -217,6 +218,7 @@
 
                     <li class="ma-dropdown__option last-option">
                         <a class="ma-dropdown__option__btn"
+                           ng-click="vm.logout()"
                            href>
                            Log Out
                         </a>
@@ -316,7 +318,8 @@
                       translate>
                     %landing.header.join.label.text
                 </span>
-                <button class="ma-header--transparent__block__buttons-list__btn
+                <button ng-if="!vm.isAuthenticated"
+                        class="ma-header--transparent__block__buttons-list__btn
                                ma-btn ma-btn--alert ma-btn--default"
                         ng-click="vm._openSignUpModal()" translate>
                     %global.student.text
@@ -347,21 +350,21 @@
 
         <style media="screen">
 
-        .ma-dropdown li > a {
+        .ma-header__block__search-wrapper .ma-dropdown li > a {
             font-size: 20px;
         }
 
-        .ma-dropdown li > a.disabled {
+        .ma-header__block__search-wrapper .ma-dropdown li > a.disabled {
             font-size: 20px;
             color: #CCC;
             cursor: no-drop;
         }
 
-        .ma-dropdown li > a.disabled .ma-p {
+        .ma-header__block__search-wrapper .ma-dropdown li > a.disabled .ma-p {
             color: #CCC;
         }
 
-        .ma-dropdown li > a.disabled:hover {
+        .ma-header__block__search-wrapper .ma-dropdown li > a.disabled:hover {
             color: #CCC;
             text-decoration: none;
             background-color: transparent;

@@ -17,20 +17,21 @@
             </div>
         </div>
 
-        <!--------------------- START: GET EARLY ADOPTERS BLOCK ------------------->
-        <section class="space-8">
-            <!-- large error message -->
-            <div class="row ma-large-message
-                        ma-large-message--alert space-2 space-top-2"
-                 ng-show="!vm.validate.email.valid">
-                <div class="col-md-12 text-center">
-                    <p class="ma-p ma-p--default ma-p--alert margin-reset">
-                        <span translate>
-                            %global.validation.email.message.text
-                        </span>
-                    </p>
-                </div>
+        <!-- Global Validate Error Message -->
+        <div class="row ma-large-message
+                    ma-large-message--alert space-3 space-top-3"
+             ng-show="!vm.validate.globalValidate.valid">
+            <div class="col-md-12 text-center">
+                <p class="ma-p ma-p--default ma-p--alert margin-reset">
+                    <span>{{vm.validate.globalValidate.message}}</span>
+                </p>
             </div>
+        </div>
+
+        <!----------------------- START: SIGN UP BLOCK ------------------------>
+        <section>
+
+            <! Logo >
             <div class="row center-xs space-2">
                 <div class="col-xs-12 text-center">
                     <i class="ma-logo
@@ -38,6 +39,8 @@
                               ma-logo--primary-short--default"></i>
                 </div>
             </div>
+
+            <! Welcome message >
             <div class="row center-xs space-3">
                 <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
                 <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8 text-center">
@@ -47,60 +50,107 @@
                 </div>
                 <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
             </div>
-            <div class="row center-xs space-2">
-                <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
-                <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8 text-center">
-                    <p class="ma-p ma-p--large" translate>
-                        %landing.get_user.description.text
-                    </p>
-                </div>
-                <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
-            </div>
 
+            <! SignUp Form >
             <div class="row center-xs space-2">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
                     <div class="row middle-xs">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <form class="form-inline">
-                              <div class="form-group space-right-1">
-                                <label class="sr-only" for="exampleInputAmount"
-                                        translate>
-                                    %landing.get_user.input_email.placeholder.text
-                                </label>
-                                <div class="input-group">
-                                  <input class="ma-input
-                                                ma-input--large
-                                                ma-input--border-round"
-                                         type="text"
-                                         ng-model="vm.form.email"
-                                         ng-class="{'ma-input--invalid': !vm.validate.email.valid}"
-                                         translate
-                                         translate-attr-placeholder="%landing.get_user.input_email.placeholder.text"
-                                         name="" value="">
+                            <form class="ma-form ma-form--basic">
+
+                                <! Email input >
+                                <div class="form-group ma-form-group">
+                                    <label class="sr-only" for="emailSignUpInput">
+                                        Email address
+                                    </label>
+                                    <input id="emailSignUpInput" type="email"
+                                           ng-model="vm.form.email"
+                                           class="ma-input
+                                                  ma-input--default
+                                                  ma-input--block"
+                                           ng-class="{'ma-input--invalid': !vm.validate.email.valid}"
+                                           ng-blur="vm._checkIfEmailExist()"
+                                           placeholder="Email address">
+                                    <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                       ng-show="!vm.validate.email.valid">
+                                        <span>{{vm.validate.email.message}}</span>
+                                    </p>
                                 </div>
-                              </div>
-                              <!-- Send Button -->
-                              <button class="ma-btn
-                                             ma-btn--primary
-                                             ma-btn--large
-                                             ma-btn--onlyIcon
-                                             ma-btn--onlyIcon--large"
-                                      ng-click="vm.save()"
-                                      ng-disabled="vm.sending">
-                                  <i  ng-show="!vm.sending"
-                                      class="fa fa-paper-plane" aria-hidden="true"></i>
-                                  <i ng-show="vm.sending"
-                                     class="fa fa-cog fa-spin fa-fw"></i>
-                                  <span class="sr-only" translate>
-                                      %global.loading.text
-                                  </span>
-                              </button>
+
+                                <! First name input >
+                                <div class="form-group ma-form-group">
+                                    <label class="sr-only" for="firstNameSignUpInput">
+                                        First name
+                                    </label>
+                                    <input id="firstNameSignUpInput" type="text"
+                                           maxlength="30"
+                                           ng-model= "vm.form.first_name"
+                                           class="ma-input
+                                                  ma-input--default
+                                                  ma-input--block"
+                                           ng-class="{'ma-input--invalid': !vm.validate.first_name.valid}"
+                                           placeholder="First name">
+                                    <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                       ng-show="!vm.validate.first_name.valid">
+                                        <span>{{vm.validate.first_name.message}}</span>
+                                    </p>
+                                </div>
+
+                                <! Last name input >
+                                <div class="form-group ma-form-group">
+                                    <label class="sr-only" for="lastNameSignUpInput">
+                                        Last name
+                                    </label>
+                                    <input id="lastNameSignUpInput" type="text"
+                                           maxlength="30"
+                                           ng-model= "vm.form.last_name"
+                                           class="ma-input
+                                                  ma-input--default
+                                                  ma-input--block"
+                                           ng-class="{'ma-input--invalid': !vm.validate.last_name.valid}"
+                                           placeholder="Last name">
+                                    <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                       ng-show="!vm.validate.last_name.valid">
+                                        <span>{{vm.validate.last_name.message}}</span>
+                                    </p>
+                                </div>
+
+                                <! Password input >
+                                <div class="form-group ma-form-group">
+                                    <label class="sr-only" for="passwordSignUpInput">
+                                        Password
+                                    </label>
+                                    <input id="passwordSignUpInput" type="password"
+                                           minLength={{vm.passwordMinLength}}
+                                           maxLength={{vm.passwordMaxLength}}
+                                           ng-model= "vm.form.password"
+                                           class="ma-input
+                                                  ma-input--default
+                                                  ma-input--block"
+                                           ng-class="{'ma-input--invalid': !vm.validate.password.valid}"
+                                           placeholder="Create password">
+                                    <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                       ng-show="!vm.validate.password.valid">
+                                        <span>{{vm.validate.password.message}}</span>
+                                    </p>
+                                </div>
+
+                                <! Create account button >
+                                <button class="ma-btn
+                                                ma-btn--primary
+                                                ma-btn--large
+                                                ma-btn--block"
+                                        ng-click="vm.registerUser()">
+                                    Create account
+                                </button>
+
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <! Button help text >
             <div class="row center-xs">
                 <div class="ma-label
                             ma-label--simple
@@ -110,8 +160,25 @@
                 </div>
             </div>
 
+
+            <div class="ma-separator-dashed-image space-top-5 space-3"></div>
+
+
+            <! Log in section >
+            <div class="row">
+                <div class="col-xs-12">
+                    <! Log in button >
+                    <button class="ma-btn
+                                   ma-btn--secondary
+                                   ma-btn--default pull-right"
+                            ng-click="vm._openLogInModal()">
+                        Log in
+                    </button>
+                </div>
+            </div>
+
         </section>
-        <!--                     END: GET EARLY ADOPTERS BLOCK                   -->
+        <!--                      END: SIGN UP BLOCK                         -->
 
     </div>
 

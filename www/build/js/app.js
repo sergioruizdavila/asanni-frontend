@@ -2,12 +2,14 @@
     'use strict';
     angular
         .module('mainApp', [
-        'mainApp.auth',
         'mainApp.core',
         'mainApp.core.util',
         'mainApp.localStorage',
         'mainApp.core.restApi',
         'mainApp.core.s3Upload',
+        'mainApp.auth',
+        'mainApp.register',
+        'mainApp.account',
         'mainApp.models.feedback',
         'mainApp.models.user',
         'mainApp.models.student',
@@ -34,6 +36,26 @@
         'mainApp.components.footer',
         'mainApp.components.floatMessageBar'
     ])
+        .config(['OAuthProvider', 'dataConfig',
+        function (OAuthProvider, dataConfig) {
+            OAuthProvider.configure({
+                baseUrl: dataConfig.baseUrl,
+                clientId: dataConfig.localOAuth2Key,
+                grantPath: '/oauth2/token/',
+                revokePath: '/oauth2/revoke_token/'
+            });
+        }
+    ])
+        .config(['OAuthTokenProvider', 'dataConfig',
+        function (OAuthTokenProvider, dataConfig) {
+            OAuthTokenProvider.configure({
+                name: dataConfig.cookieName,
+                options: {
+                    secure: dataConfig.https,
+                }
+            });
+        }
+    ])
         .config(config);
     function config($locationProvider, $urlRouterProvider, $translateProvider) {
         $urlRouterProvider.otherwise('/page/main');
@@ -54,6 +76,7 @@
         'ngResource',
         'ngCookies',
         'ui.router',
+        'angular-oauth2',
         'pascalprecht.translate',
         'ui.bootstrap',
         'ui.calendar',
@@ -63,12 +86,26 @@
     ]);
 })();
 //# sourceMappingURL=app.core.module.js.map
+DEBUG = false;
 (function () {
     'use strict';
+    var BASE_URL = 'https://waysily-server.herokuapp.com/api/v1/';
+    var BUCKETS3 = 'waysily-img/teachers-avatar-prd';
+    if (DEBUG) {
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
+        BUCKETS3 = 'waysily-img/teachers-avatar-dev';
+    }
     var dataConfig = {
         currentYear: '2017',
-        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
+        baseUrl: BASE_URL,
         domain: 'www.waysily.com',
+        https: false,
+        autoRefreshTokenIntervalSeconds: 300,
+        usernameMinLength: 6,
+        usernameMaxLength: 80,
+        passwordMinLength: 6,
+        passwordMaxLength: 80,
+        localOAuth2Key: 'fCY4EWQIPuixOGhA9xRIxzVLNgKJVmG1CVnwXssq',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',
         mixpanelTokenDEV: 'eda475bf46e7f01e417a4ed1d9cc3e58',
@@ -78,18 +115,20 @@
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
+        modalLogInTmpl: 'components/modal/modalLogIn/modalLogIn.html',
         modalRecommendTeacherTmpl: 'components/modal/modalRecommendTeacher/modalRecommendTeacher.html',
-        bucketS3: 'waysily-img/teachers-avatar-prd',
+        bucketS3: BUCKETS3,
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
         userId: '',
         teacherIdLocalStorage: 'waysily.teacher_id',
-        earlyIdLocalStorage: 'waysily.early_id'
+        earlyIdLocalStorage: 'waysily.early_id',
+        cookieName: 'token'
     };
     angular
         .module('mainApp')
-        .value('dataConfig', dataConfig);
+        .constant('dataConfig', dataConfig);
 })();
 //# sourceMappingURL=app.values.js.map
 (function () {
@@ -97,10 +136,14 @@
     angular
         .module('mainApp')
         .run(run);
-    run.$inject = ['$rootScope',
+    run.$inject = [
+        '$rootScope',
+        '$state',
         'dataConfig',
-        '$http'];
-    function run($rootScope, dataConfig, $http) {
+        'mainApp.auth.AuthService',
+        'mainApp.localStorageService'
+    ];
+    function run($rootScope, $state, dataConfig, AuthService, localStorage) {
         var productionHost = dataConfig.domain;
         var mixpanelTokenDEV = dataConfig.mixpanelTokenDEV;
         var mixpanelTokenPRD = dataConfig.mixpanelTokenPRD;
@@ -119,7 +162,15 @@
                 }
             });
         }
-        dataConfig.userId = 'id1234';
+        if (AuthService.isAuthenticated()) {
+            $rootScope.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        }
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+            if (toState.data.requireLogin && !AuthService.isAuthenticated()) {
+                event.preventDefault();
+                $state.go('page.landingPage');
+            }
+        });
     }
 })();
 (function (angular) {
@@ -141,29 +192,95 @@ var app;
     (function (auth) {
         'use strict';
         var AuthService = (function () {
-            function AuthService($q, $rootScope, $http) {
+            function AuthService($q, $timeout, $cookies, OAuth, dataConfig) {
                 this.$q = $q;
-                this.$http = $http;
-                console.log('auth service called');
+                this.$timeout = $timeout;
+                this.$cookies = $cookies;
+                this.OAuth = OAuth;
+                this.dataConfig = dataConfig;
+                DEBUG && console.log('auth service called');
+                this.autoRefreshTokenInterval = dataConfig.autoRefreshTokenIntervalSeconds * 1000;
+                this.refreshNeeded = true;
             }
-            AuthService.prototype.signUpPassword = function (username, email, password) {
+            AuthService.prototype.isAuthenticated = function () {
+                return this.OAuth.isAuthenticated();
+            };
+            AuthService.prototype.forceLogout = function () {
+                DEBUG && console.log("Forcing logout");
+                this.$cookies.remove(this.dataConfig.cookieName);
+            };
+            AuthService.prototype.login = function (user) {
                 var self = this;
-                var userData = {
-                    username: username,
-                    email: email,
-                    password: password
-                };
-                return this.$http.post('http://asanni.herokuapp.com/api/v1/posts/', {
-                    Title: userData.username,
-                    Link: userData.password
+                var deferred = this.$q.defer();
+                this.OAuth.getAccessToken(user, {}).then(function (response) {
+                    DEBUG && console.info("Logged in successfuly!");
+                    deferred.resolve(response);
+                }, function (error) {
+                    DEBUG && console.error("Error while logging in!");
+                    deferred.reject(error);
                 });
+                return deferred.promise;
+            };
+            AuthService.prototype.logout = function () {
+                var self = this;
+                var deferred = this.$q.defer();
+                this.OAuth.revokeToken().then(function (response) {
+                    DEBUG && console.info("Logged out successfuly!");
+                    deferred.resolve(response);
+                }, function (response) {
+                    DEBUG && console.error("Error while logging you out!");
+                    self.forceLogout();
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            };
+            AuthService.prototype.refreshToken = function () {
+                var self = this;
+                var deferred = this.$q.defer();
+                if (!this.isAuthenticated()) {
+                    DEBUG && console.error('Cannot refresh token if Unauthenticated');
+                    deferred.reject();
+                    return deferred.promise;
+                }
+                this.OAuth.getRefreshToken().then(function (response) {
+                    DEBUG && console.info("Access token refreshed");
+                    deferred.resolve(response);
+                }, function (response) {
+                    DEBUG && console.error("Error refreshing token ");
+                    DEBUG && console.error(response);
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            };
+            AuthService.prototype.autoRefreshToken = function () {
+                var self = this;
+                var deferred = this.$q.defer();
+                if (!this.refreshNeeded) {
+                    deferred.resolve();
+                    return deferred.promise;
+                }
+                this.refreshToken().then(function (response) {
+                    self.refreshNeeded = false;
+                    deferred.resolve(response);
+                }, function (response) {
+                    deferred.reject(response);
+                });
+                this.$timeout(function () {
+                    if (self.isAuthenticated()) {
+                        self.refreshNeeded = true;
+                        self.autoRefreshToken();
+                    }
+                }, self.autoRefreshTokenInterval);
+                return deferred.promise;
             };
             return AuthService;
         }());
         AuthService.serviceId = 'mainApp.auth.AuthService';
         AuthService.$inject = ['$q',
-            '$rootScope',
-            '$http'];
+            '$timeout',
+            '$cookies',
+            'OAuth',
+            'dataConfig'];
         auth.AuthService = AuthService;
         angular
             .module('mainApp.auth', [])
@@ -171,6 +288,58 @@ var app;
     })(auth = app.auth || (app.auth = {}));
 })(app || (app = {}));
 //# sourceMappingURL=auth.service.js.map
+var app;
+(function (app) {
+    var account;
+    (function (account) {
+        'use strict';
+        var AccountService = (function () {
+            function AccountService($q, restApi) {
+                this.$q = $q;
+                this.restApi = restApi;
+                DEBUG && console.log('account service instanced');
+                this.ACCOUNT_URI = 'account';
+                this.ACCOUNT_GET_USERNAME_URI = 'account/username';
+            }
+            AccountService.prototype.getAccount = function () {
+                var url = this.ACCOUNT_URI;
+                return this.restApi.show({ url: url }).$promise
+                    .then(function (response) {
+                    return response;
+                }, function (error) {
+                    DEBUG && console.error(error);
+                    return error;
+                });
+            };
+            AccountService.prototype.getUsername = function (email) {
+                var url = this.ACCOUNT_GET_USERNAME_URI;
+                var deferred = this.$q.defer();
+                var data = {
+                    email: email
+                };
+                this.restApi.create({ url: url }, data).$promise
+                    .then(function (response) {
+                    deferred.resolve(response);
+                }, function (error) {
+                    DEBUG && console.error(error);
+                    deferred.reject(error);
+                });
+                return deferred.promise;
+            };
+            return AccountService;
+        }());
+        AccountService.serviceId = 'mainApp.account.AccountService';
+        AccountService.$inject = [
+            '$q',
+            'mainApp.core.restApi.restApiService'
+        ];
+        account.AccountService = AccountService;
+        angular
+            .module('mainApp.account', [])
+            .service(AccountService.serviceId, AccountService);
+    })(account = app.account || (app.account = {}));
+})(app || (app = {}));
+//# sourceMappingURL=account.service.js.map
 var app;
 (function (app) {
     var core;
@@ -198,6 +367,22 @@ var app;
                         this.$translate = $translate;
                         console.log('functionsUtil service called');
                     }
+                    FunctionsUtilService.prototype.normalizeString = function (str) {
+                        var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç";
+                        var to = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc";
+                        var mapping = {};
+                        for (var i = 0; i < from.length; i++)
+                            mapping[from.charAt(i)] = to.charAt(i);
+                        var ret = [];
+                        for (var i = 0; i < str.length; i++) {
+                            var c = str.charAt(i);
+                            if (mapping.hasOwnProperty(str.charAt(i)))
+                                ret.push(mapping[c]);
+                            else
+                                ret.push(c);
+                        }
+                        return ret.join('');
+                    };
                     FunctionsUtilService.generateGuid = function () {
                         var fmt = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
                         var guid = fmt.replace(/[xy]/g, function (c) {
@@ -223,6 +408,30 @@ var app;
                     FunctionsUtilService.prototype.getCurrentLanguage = function () {
                         var currentLanguage = this.$translate.use();
                         return currentLanguage;
+                    };
+                    FunctionsUtilService.prototype.generateUsername = function (firstName, lastName) {
+                        var alias = '';
+                        var username = '';
+                        var randomCode = '';
+                        var minLength = this.dataConfig.usernameMinLength;
+                        var maxLength = this.dataConfig.usernameMaxLength;
+                        var ALPHABET = '0123456789';
+                        var ID_LENGTH = 7;
+                        var REMAINDER = maxLength - ID_LENGTH;
+                        var EXTRAS = 2;
+                        firstName = this.normalizeString(firstName);
+                        firstName = firstName.replace(/[^\w\s]/gi, '').replace(/\s/g, '');
+                        lastName = this.normalizeString(lastName);
+                        lastName = lastName.replace(/[^\w\s]/gi, '').replace(/\s/g, '');
+                        if (firstName.length > REMAINDER - EXTRAS) {
+                            firstName = firstName.substring(0, REMAINDER - EXTRAS);
+                        }
+                        alias = (firstName + lastName.substring(0, 1)).toLowerCase();
+                        for (var i = 0; i < ID_LENGTH; i++) {
+                            randomCode += ALPHABET.charAt(Math.floor(Math.random() * ALPHABET.length));
+                        }
+                        username = alias + '-' + randomCode;
+                        return username;
                     };
                     FunctionsUtilService.prototype.changeLanguage = function (language) {
                         this.$translate.use(language);
@@ -624,6 +833,73 @@ var app;
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
 //# sourceMappingURL=app.filter.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.core.restApi', [])
+        .config(config);
+    function config() {
+    }
+})();
+//# sourceMappingURL=restApi.config.js.map
+var app;
+(function (app) {
+    var core;
+    (function (core) {
+        var restApi;
+        (function (restApi) {
+            'use strict';
+            var RestApiService = (function () {
+                function RestApiService($resource, dataConfig) {
+                    this.$resource = $resource;
+                }
+                RestApiService.Api = function ($resource, dataConfig) {
+                    var resource = $resource(dataConfig.baseUrl + ':url/:id', { url: '@url' }, {
+                        show: { method: 'GET', params: { id: '@id' } },
+                        query: { method: 'GET', isArray: true },
+                        queryObject: { method: 'GET', isArray: false },
+                        create: { method: 'POST' },
+                        update: { method: 'PUT', params: { id: '@id' } },
+                        remove: { method: 'DELETE', params: { id: '@id' } }
+                    });
+                    return resource;
+                };
+                return RestApiService;
+            }());
+            RestApiService.serviceId = 'mainApp.core.restApi.restApiService';
+            RestApiService.$inject = [
+                '$resource',
+                'dataConfig'
+            ];
+            restApi.RestApiService = RestApiService;
+            angular
+                .module('mainApp.core.restApi')
+                .factory(RestApiService.serviceId, RestApiService.Api)
+                .factory('customHttpInterceptor', customHttpInterceptor)
+                .config(configApi);
+            configApi.$inject = ['$httpProvider'];
+            customHttpInterceptor.$inject = ['$q', 'mainApp.core.util.messageUtilService'];
+            function configApi($httpProvider) {
+                $httpProvider.interceptors.push('customHttpInterceptor');
+            }
+            function customHttpInterceptor($q, messageUtil) {
+                return {
+                    request: function (req) {
+                        req.url = decodeURIComponent(req.url);
+                        return req;
+                    },
+                    requestError: function (rejection) {
+                        return rejection;
+                    },
+                    response: function (res) {
+                        return res;
+                    }
+                };
+            }
+        })(restApi = core.restApi || (core.restApi = {}));
+    })(core = app.core || (app.core = {}));
+})(app || (app = {}));
+//# sourceMappingURL=restApi.service.js.map
 var app;
 (function (app) {
     var core;
@@ -683,84 +959,6 @@ var app;
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
 //# sourceMappingURL=s3Upload.service.js.map
-(function () {
-    'use strict';
-    angular
-        .module('mainApp.core.restApi', [])
-        .config(config);
-    function config() {
-    }
-})();
-//# sourceMappingURL=restApi.config.js.map
-var app;
-(function (app) {
-    var core;
-    (function (core) {
-        var restApi;
-        (function (restApi) {
-            'use strict';
-            var RestApiService = (function () {
-                function RestApiService($resource, localStorage, dataConfig) {
-                    this.$resource = $resource;
-                    this.localStorage = localStorage;
-                }
-                RestApiService.Api = function ($resource, dataConfig) {
-                    var resource = $resource(dataConfig.baseUrl + ':url/:id', { url: '@url' }, {
-                        show: { method: 'GET', params: { id: '@id' } },
-                        query: { method: 'GET', isArray: true },
-                        queryObject: { method: 'GET', isArray: false },
-                        create: { method: 'POST' },
-                        update: { method: 'PUT', params: { id: '@id' } },
-                        remove: { method: 'DELETE', params: { id: '@id' } }
-                    });
-                    return resource;
-                };
-                return RestApiService;
-            }());
-            RestApiService.serviceId = 'mainApp.core.restApi.restApiService';
-            RestApiService.$inject = [
-                '$resource',
-                'mainApp.localStorageService',
-                'dataConfig'
-            ];
-            restApi.RestApiService = RestApiService;
-            angular
-                .module('mainApp.core.restApi')
-                .factory(RestApiService.serviceId, RestApiService.Api)
-                .factory('customHttpInterceptor', customHttpInterceptor)
-                .config(configApi);
-            configApi.$inject = ['$httpProvider'];
-            customHttpInterceptor.$inject = ['$q', 'mainApp.core.util.messageUtilService'];
-            function configApi($httpProvider) {
-                $httpProvider.interceptors.push('customHttpInterceptor');
-            }
-            function customHttpInterceptor($q, messageUtil) {
-                return {
-                    request: function (req) {
-                        req.url = decodeURIComponent(req.url);
-                        return req;
-                    },
-                    requestError: function (rejection) {
-                        return rejection;
-                    },
-                    response: function (res) {
-                        return res;
-                    },
-                    responseError: function (rejection) {
-                        if (rejection.data) {
-                            messageUtil.error(rejection.data.Message);
-                        }
-                        else {
-                            messageUtil.error('');
-                        }
-                        return rejection;
-                    }
-                };
-            }
-        })(restApi = core.restApi || (core.restApi = {}));
-    })(core = app.core || (app.core = {}));
-})(app || (app = {}));
-//# sourceMappingURL=restApi.service.js.map
 var app;
 (function (app) {
     var models;
@@ -1290,7 +1488,7 @@ var app;
                     console.log('user service instanced');
                 }
                 UserService.prototype.getUserById = function (id) {
-                    var url = 'users/';
+                    var url = 'users';
                     return this.restApi.show({ url: url, id: id }).$promise
                         .then(function (data) {
                         return data;
@@ -1300,7 +1498,7 @@ var app;
                     });
                 };
                 UserService.prototype.getAllUsers = function () {
-                    var url = 'users/';
+                    var url = 'users';
                     return this.restApi.query({ url: url }).$promise
                         .then(function (data) {
                         return data;
@@ -2555,148 +2753,121 @@ var app;
                 function TeacherService(restApi) {
                     this.restApi = restApi;
                     console.log('teacher service instanced');
+                    this.TEACHER_URI = 'teachers';
+                    this.STATUS_TEACHER_URI = 'teachers?status=';
+                    this.EXPERIENCES_URI = 'experiences';
+                    this.EDUCATIONS_URI = 'educations';
+                    this.CERTIFICATES_URI = 'certificates';
                 }
                 TeacherService.prototype.getTeacherById = function (id) {
-                    var url = 'teachers';
+                    var url = this.TEACHER_URI;
                     return this.restApi.show({ url: url, id: id }).$promise
                         .then(function (data) {
                         return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        return error;
                     });
                 };
                 TeacherService.prototype.getAllTeachersByStatus = function (status) {
-                    var url = 'teachers?status=' + status;
+                    var url = this.STATUS_TEACHER_URI + status;
                     return this.restApi.queryObject({ url: url }).$promise
                         .then(function (data) {
                         return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        return error;
                     });
                 };
                 TeacherService.prototype.getAllTeachers = function () {
-                    var url = 'teachers';
+                    var url = this.TEACHER_URI;
                     return this.restApi.queryObject({ url: url }).$promise
                         .then(function (data) {
                         return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        return error;
                     });
                 };
                 TeacherService.prototype.createTeacher = function (teacher) {
-                    var promise;
-                    var url = 'teachers';
-                    promise = this.restApi.create({ url: url }, teacher)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI;
+                    return this.restApi.create({ url: url }, teacher).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.updateTeacher = function (teacher) {
-                    var promise;
-                    var url = 'teachers';
-                    promise = this.restApi.update({ url: url, id: teacher.Id }, teacher)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI;
+                    return this.restApi.update({ url: url, id: teacher.Id }, teacher).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.createExperience = function (teacherId, experience) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/experiences';
-                    promise = this.restApi.create({ url: url }, experience)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EXPERIENCES_URI;
+                    return this.restApi.create({ url: url }, experience).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.log(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.updateExperience = function (teacherId, experience) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/experiences';
-                    promise = this.restApi.update({ url: url, id: experience.Id }, experience)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EXPERIENCES_URI;
+                    return this.restApi.update({ url: url, id: experience.Id }, experience).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.createEducation = function (teacherId, education) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/educations';
-                    promise = this.restApi.create({ url: url }, education)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EDUCATIONS_URI;
+                    return this.restApi.create({ url: url }, education).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.updateEducation = function (teacherId, education) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/educations';
-                    promise = this.restApi.update({ url: url, id: education.Id }, education)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EDUCATIONS_URI;
+                    return this.restApi.update({ url: url, id: education.Id }, education).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.createCertificate = function (teacherId, certificate) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/certificates';
-                    promise = this.restApi.create({ url: url }, certificate)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.CERTIFICATES_URI;
+                    return this.restApi.create({ url: url }, certificate).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 TeacherService.prototype.updateCertificate = function (teacherId, certificate) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/certificates';
-                    promise = this.restApi.update({ url: url, id: certificate.Id }, certificate)
-                        .$promise.then(function (response) {
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.CERTIFICATES_URI;
+                    return this.restApi.update({ url: url, id: certificate.Id }, certificate).$promise
+                        .then(function (response) {
                         return response;
                     }, function (error) {
+                        DEBUG && console.error(error);
                         return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
                     });
-                    return promise;
                 };
                 return TeacherService;
             }());
@@ -2812,17 +2983,20 @@ var components;
             .module('mainApp.components.header')
             .directive(MaHeader.directiveId, MaHeader.instance);
         var HeaderController = (function () {
-            function HeaderController(functionsUtil, $uibModal, dataConfig, $filter, $scope, $rootScope, $state) {
+            function HeaderController(functionsUtil, AuthService, $uibModal, dataConfig, $filter, $scope, $rootScope, $state, localStorage) {
                 this.functionsUtil = functionsUtil;
+                this.AuthService = AuthService;
                 this.$uibModal = $uibModal;
                 this.dataConfig = dataConfig;
                 this.$filter = $filter;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
                 this.$state = $state;
+                this.localStorage = localStorage;
                 this.init();
             }
             HeaderController.prototype.init = function () {
+                this.isAuthenticated = this.AuthService.isAuthenticated();
                 this.form = {
                     language: this.functionsUtil.getCurrentLanguage() || 'en',
                     whereTo: this.$filter('translate')('%header.search.placeholder.text')
@@ -2832,9 +3006,19 @@ var components;
             };
             HeaderController.prototype.activate = function () {
                 console.log('header controller actived');
+                this._subscribeToEvents();
             };
             HeaderController.prototype.slideNavMenu = function () {
                 this._slideout = !this._slideout;
+            };
+            HeaderController.prototype.logout = function () {
+                var self = this;
+                this.AuthService.logout().then(function (response) {
+                    self.localStorage.removeItem('currentUser');
+                    window.location.reload();
+                }, function (response) {
+                    DEBUG && console.log('A problem occured while logging you out.');
+                });
             };
             HeaderController.prototype.changeLanguage = function () {
                 this.functionsUtil.changeLanguage(this.form.language);
@@ -2862,17 +3046,25 @@ var components;
                 var modalInstance = this.$uibModal.open(options);
                 mixpanel.track("Click on 'Join as Student' main header");
             };
+            HeaderController.prototype._subscribeToEvents = function () {
+                var self = this;
+                this.$scope.$on('Is Authenticated', function (event, args) {
+                    self.isAuthenticated = self.AuthService.isAuthenticated();
+                });
+            };
             return HeaderController;
         }());
         HeaderController.controllerId = 'mainApp.components.header.HeaderController';
         HeaderController.$inject = [
             'mainApp.core.util.FunctionsUtilService',
+            'mainApp.auth.AuthService',
             '$uibModal',
             'dataConfig',
             '$filter',
             '$scope',
             '$rootScope',
-            '$state'
+            '$state',
+            'mainApp.localStorageService'
         ];
         header.HeaderController = HeaderController;
         angular.module('mainApp.components.header')
@@ -4008,29 +4200,219 @@ var components;
         var modalSignUp;
         (function (modalSignUp) {
             var ModalSignUpController = (function () {
-                function ModalSignUpController($uibModalInstance, functionsUtil, LandingPageService, messageUtil, $filter) {
-                    this.$uibModalInstance = $uibModalInstance;
+                function ModalSignUpController($rootScope, RegisterService, functionsUtil, messageUtil, dataConfig, $uibModal, $uibModalInstance) {
+                    this.$rootScope = $rootScope;
+                    this.RegisterService = RegisterService;
                     this.functionsUtil = functionsUtil;
-                    this.LandingPageService = LandingPageService;
                     this.messageUtil = messageUtil;
-                    this.$filter = $filter;
+                    this.dataConfig = dataConfig;
+                    this.$uibModal = $uibModal;
+                    this.$uibModalInstance = $uibModalInstance;
                     this._init();
                 }
                 ModalSignUpController.prototype._init = function () {
                     var self = this;
                     this.form = {
-                        email: ''
+                        username: '',
+                        email: '',
+                        first_name: '',
+                        last_name: '',
+                        password: ''
                     };
-                    this.sending = false;
+                    this.passwordMinLength = this.dataConfig.passwordMinLength;
+                    this.passwordMaxLength = this.dataConfig.passwordMaxLength;
                     this.validate = {
-                        email: { valid: true, message: '' }
+                        username: { valid: true, message: '' },
+                        email: { valid: true, message: '' },
+                        first_name: { valid: true, message: '' },
+                        last_name: { valid: true, message: '' },
+                        password: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
                     };
                     this.activate();
                 };
                 ModalSignUpController.prototype.activate = function () {
-                    console.log('modalSignUp controller actived');
+                    DEBUG && console.log('modalSignUp controller actived');
+                };
+                ModalSignUpController.prototype.registerUser = function () {
+                    var self = this;
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this.form.username = this.functionsUtil.generateUsername(this.form.first_name, this.form.last_name);
+                        this.RegisterService.register(this.form).then(function (response) {
+                            DEBUG && console.log('Welcome!, Your new account has been successfuly created.');
+                            self.messageUtil.success('Welcome!, Your new account has been successfuly created.');
+                            self._openLogInModal();
+                        }, function (error) {
+                            DEBUG && console.log(JSON.stringify(error));
+                            var errortext = [];
+                            for (var key in error.data) {
+                                var line = key;
+                                line += ': ';
+                                line += error.data[key];
+                                errortext.push(line);
+                            }
+                            DEBUG && console.error(errortext);
+                            self.validate.globalValidate.valid = false;
+                            self.validate.globalValidate.message = errortext[0];
+                        });
+                    }
                 };
                 ModalSignUpController.prototype._validateForm = function () {
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
+                    var EMAIL_ENUM = 0;
+                    var formValid = true;
+                    var firstName_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.first_name = this.functionsUtil.validator(this.form.first_name, firstName_rules);
+                    if (!this.validate.first_name.valid) {
+                        formValid = this.validate.first_name.valid;
+                    }
+                    var lastName_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.last_name = this.functionsUtil.validator(this.form.last_name, lastName_rules);
+                    if (!this.validate.last_name.valid) {
+                        formValid = this.validate.last_name.valid;
+                    }
+                    var email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
+                    this.validate.email = this.functionsUtil.validator(this.form.email, email_rules);
+                    if (!this.validate.email.valid) {
+                        formValid = this.validate.email.valid;
+                    }
+                    var password_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.password = this.functionsUtil.validator(this.form.password, password_rules);
+                    if (!this.validate.password.valid) {
+                        formValid = this.validate.password.valid;
+                        this.validate.password.message = 'Your password must be at least 6 characters. Please try again.';
+                    }
+                    return formValid;
+                };
+                ModalSignUpController.prototype._checkIfEmailExist = function () {
+                    var self = this;
+                    if (this.form.email) {
+                        this.RegisterService.checkEmail(this.form.email).then(function (response) {
+                            self.validate.email.valid = true;
+                        }, function (error) {
+                            if (error.data.emailExist) {
+                                self.validate.email.valid = false;
+                                self.validate.email.message = 'That email address is already in use. Please log in.';
+                            }
+                        });
+                    }
+                };
+                ModalSignUpController.prototype._openLogInModal = function () {
+                    mixpanel.track("Click on 'Log in' from signUp modal");
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalLogInTmpl,
+                        controller: 'mainApp.components.modal.ModalLogInController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function () {
+                        self.$rootScope.$broadcast('Is Authenticated');
+                    }, function () {
+                        DEBUG && console.info('Modal dismissed at: ' + new Date());
+                    });
+                    this.$uibModalInstance.close();
+                };
+                ModalSignUpController.prototype.close = function () {
+                    this.$uibModalInstance.close();
+                };
+                return ModalSignUpController;
+            }());
+            ModalSignUpController.controllerId = 'mainApp.components.modal.ModalSignUpController';
+            ModalSignUpController.$inject = [
+                '$rootScope',
+                'mainApp.register.RegisterService',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.core.util.messageUtilService',
+                'dataConfig',
+                '$uibModal',
+                '$uibModalInstance'
+            ];
+            angular.module('mainApp.components.modal')
+                .controller(ModalSignUpController.controllerId, ModalSignUpController);
+        })(modalSignUp = modal.modalSignUp || (modal.modalSignUp = {}));
+    })(modal = components.modal || (components.modal = {}));
+})(components || (components = {}));
+//# sourceMappingURL=modalSignUp.controller.js.map
+var components;
+(function (components) {
+    var modal;
+    (function (modal) {
+        var modalLogIn;
+        (function (modalLogIn) {
+            var ModalLogInController = (function () {
+                function ModalLogInController($rootScope, $state, AuthService, AccountService, functionsUtil, messageUtil, localStorage, dataConfig, $uibModal, $uibModalInstance) {
+                    this.$rootScope = $rootScope;
+                    this.$state = $state;
+                    this.AuthService = AuthService;
+                    this.AccountService = AccountService;
+                    this.functionsUtil = functionsUtil;
+                    this.messageUtil = messageUtil;
+                    this.localStorage = localStorage;
+                    this.dataConfig = dataConfig;
+                    this.$uibModal = $uibModal;
+                    this.$uibModalInstance = $uibModalInstance;
+                    this._init();
+                }
+                ModalLogInController.prototype._init = function () {
+                    var self = this;
+                    this.form = {
+                        username: '',
+                        email: '',
+                        password: ''
+                    };
+                    this.validate = {
+                        username: { valid: true, message: '' },
+                        email: { valid: true, message: '' },
+                        password: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                ModalLogInController.prototype.activate = function () {
+                    console.log('modalLogIn controller actived');
+                };
+                ModalLogInController.prototype.login = function () {
+                    var self = this;
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this.AccountService.getUsername(this.form.email).then(function (response) {
+                            if (response.userExist) {
+                                self.form.username = response.username;
+                            }
+                            else {
+                                self.form.username = self.form.email;
+                            }
+                            self.AuthService.login(self.form).then(function (response) {
+                                self.AccountService.getAccount().then(function (response) {
+                                    DEBUG && console.log('Data User: ', response);
+                                    self.localStorage.setItem('currentUser', JSON.stringify(response));
+                                    self.$rootScope.currentUser = JSON.parse(self.localStorage.getItem('currentUser'));
+                                    self.$uibModalInstance.close();
+                                });
+                            }, function (response) {
+                                if (response.status == 401) {
+                                    DEBUG && console.log('Incorrect username or password.');
+                                    self.validate.globalValidate.valid = false;
+                                    self.validate.globalValidate.message = 'Incorrect username or password.';
+                                }
+                                else if (response.status == -1) {
+                                    DEBUG && console.log('No response from server. Try again, please');
+                                    self.messageUtil.error('No response from server. Try again, please');
+                                }
+                                else {
+                                    DEBUG && console.log('There was a problem logging you in. Error code: ' + response.status + '.');
+                                    self.messageUtil.error('There was a problem logging you in. Error code: ' + response.status + '.');
+                                }
+                            });
+                        });
+                    }
+                };
+                ModalLogInController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
                     var EMPTY_ENUM = 3;
                     var EMAIL_ENUM = 0;
@@ -4040,55 +4422,50 @@ var components;
                     if (!this.validate.email.valid) {
                         formValid = this.validate.email.valid;
                     }
+                    var password_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.password = this.functionsUtil.validator(this.form.password, password_rules);
+                    if (!this.validate.password.valid) {
+                        formValid = this.validate.password.valid;
+                    }
                     return formValid;
                 };
-                ModalSignUpController.prototype.save = function () {
-                    var formValid = this._validateForm();
-                    if (formValid) {
-                        var self_1 = this;
-                        this.sending = true;
-                        mixpanel.track("Click on Join as a Student button", {
-                            "name": '*',
-                            "email": this.form.email,
-                            "comment": '*'
-                        });
-                        var userData = {
-                            name: '*',
-                            email: this.form.email,
-                            comment: '*'
-                        };
-                        this.LandingPageService.createEarlyAdopter(userData)
-                            .then(function (response) {
-                            if (response.createdAt) {
-                                self_1.messageUtil.success('¡Gracias!, Ya está todo listo. Te agregaremos a nuestra lista.');
-                                self_1.$uibModalInstance.close();
-                            }
-                            else {
-                                self_1.sending = false;
-                            }
-                        });
-                    }
-                };
-                ModalSignUpController.prototype.close = function () {
+                ModalLogInController.prototype._openSignUpModal = function () {
+                    mixpanel.track("Click on 'Sign up' from logIn modal");
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalSignUpTmpl,
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
                     this.$uibModalInstance.close();
-                    event.preventDefault();
                 };
-                return ModalSignUpController;
+                ModalLogInController.prototype.close = function () {
+                    this.$uibModalInstance.close();
+                };
+                return ModalLogInController;
             }());
-            ModalSignUpController.controllerId = 'mainApp.components.modal.ModalSignUpController';
-            ModalSignUpController.$inject = [
-                '$uibModalInstance',
+            ModalLogInController.controllerId = 'mainApp.components.modal.ModalLogInController';
+            ModalLogInController.$inject = [
+                '$rootScope',
+                '$state',
+                'mainApp.auth.AuthService',
+                'mainApp.account.AccountService',
                 'mainApp.core.util.FunctionsUtilService',
-                'mainApp.pages.landingPage.LandingPageService',
                 'mainApp.core.util.messageUtilService',
-                '$filter'
+                'mainApp.localStorageService',
+                'dataConfig',
+                '$uibModal',
+                '$uibModalInstance'
             ];
             angular.module('mainApp.components.modal')
-                .controller(ModalSignUpController.controllerId, ModalSignUpController);
-        })(modalSignUp = modal.modalSignUp || (modal.modalSignUp = {}));
+                .controller(ModalLogInController.controllerId, ModalLogInController);
+        })(modalLogIn = modal.modalLogIn || (modal.modalLogIn = {}));
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
-//# sourceMappingURL=modalSignUp.controller.js.map
+//# sourceMappingURL=modalLogIn.controller.js.map
 var components;
 (function (components) {
     var modal;
@@ -4234,6 +4611,9 @@ var app;
                 }
             },
             parent: 'page',
+            data: {
+                requireLogin: true
+            },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
                     $rootScope.activeFooter = true;
@@ -4384,6 +4764,9 @@ var app;
                 }
             },
             parent: 'page',
+            data: {
+                requireLogin: false
+            },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
                     $rootScope.activeFooter = true;
@@ -4399,14 +4782,18 @@ var app;
         var teacherLandingPage;
         (function (teacherLandingPage) {
             var TeacherLandingPageController = (function () {
-                function TeacherLandingPageController(functionsUtil, $state, dataConfig, $uibModal) {
+                function TeacherLandingPageController($scope, functionsUtil, AuthService, $state, dataConfig, $uibModal, localStorage) {
+                    this.$scope = $scope;
                     this.functionsUtil = functionsUtil;
+                    this.AuthService = AuthService;
                     this.$state = $state;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
+                    this.localStorage = localStorage;
                     this._init();
                 }
                 TeacherLandingPageController.prototype._init = function () {
+                    this.isAuthenticated = this.AuthService.isAuthenticated();
                     this.form = {
                         language: this.functionsUtil.getCurrentLanguage() || 'en'
                     };
@@ -4419,6 +4806,7 @@ var app;
                     var self = this;
                     console.log('teacherLandingPage controller actived');
                     mixpanel.track("Enter: Teacher Landing Page");
+                    this._subscribeToEvents();
                 };
                 TeacherLandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
@@ -4435,6 +4823,15 @@ var app;
                     };
                     var modalInstance = this.$uibModal.open(options);
                     mixpanel.track("Click on 'Join as Student' teacher landing page header");
+                };
+                TeacherLandingPageController.prototype.logout = function () {
+                    var self = this;
+                    this.AuthService.logout().then(function (response) {
+                        self.localStorage.removeItem('currentUser');
+                        window.location.reload();
+                    }, function (response) {
+                        DEBUG && console.log('A problem occured while logging you out.');
+                    });
                 };
                 TeacherLandingPageController.prototype._buildFakeTeacher = function () {
                     this.fake = new app.models.teacher.Teacher();
@@ -4477,13 +4874,22 @@ var app;
                     };
                     this.$state.go('page.createTeacherPage.start', params, { reload: true });
                 };
+                TeacherLandingPageController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Is Authenticated', function (event, args) {
+                        self.isAuthenticated = self.AuthService.isAuthenticated();
+                    });
+                };
                 return TeacherLandingPageController;
             }());
             TeacherLandingPageController.controllerId = 'mainApp.pages.teacherLandingPage.TeacherLandingPageController';
-            TeacherLandingPageController.$inject = ['mainApp.core.util.FunctionsUtilService',
+            TeacherLandingPageController.$inject = ['$scope',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.auth.AuthService',
                 '$state',
                 'dataConfig',
-                '$uibModal'];
+                '$uibModal',
+                'mainApp.localStorageService'];
             teacherLandingPage.TeacherLandingPageController = TeacherLandingPageController;
             angular
                 .module('mainApp.pages.teacherLandingPage')
@@ -4509,6 +4915,9 @@ var app;
                 }
             },
             parent: 'page',
+            data: {
+                requireLogin: false
+            },
             cache: false,
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
@@ -4544,11 +4953,13 @@ var app;
         var landingPage;
         (function (landingPage) {
             var LandingPageController = (function () {
-                function LandingPageController($state, $stateParams, dataConfig, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope, localStorage) {
+                function LandingPageController($scope, $state, $stateParams, dataConfig, $uibModal, AuthService, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope, localStorage) {
+                    this.$scope = $scope;
                     this.$state = $state;
                     this.$stateParams = $stateParams;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
+                    this.AuthService = AuthService;
                     this.messageUtil = messageUtil;
                     this.functionsUtil = functionsUtil;
                     this.LandingPageService = LandingPageService;
@@ -4559,6 +4970,7 @@ var app;
                     this._init();
                 }
                 LandingPageController.prototype._init = function () {
+                    this.isAuthenticated = this.AuthService.isAuthenticated();
                     this.form = {
                         userData: {
                             name: '',
@@ -4609,10 +5021,20 @@ var app;
                         };
                         var modalInstance = this.$uibModal.open(options);
                     }
+                    this._subscribeToEvents();
                 };
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
                     mixpanel.track("Change Language on landingPage");
+                };
+                LandingPageController.prototype.logout = function () {
+                    var self = this;
+                    this.AuthService.logout().then(function (response) {
+                        self.localStorage.removeItem('currentUser');
+                        window.location.reload();
+                    }, function (response) {
+                        DEBUG && console.log('A problem occured while logging you out.');
+                    });
                 };
                 LandingPageController.prototype._sendCountryFeedback = function () {
                     var FEEDBACK_SUCCESS_MESSAGE = '¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.';
@@ -4704,13 +5126,21 @@ var app;
                     var modalInstance = this.$uibModal.open(options);
                     mixpanel.track("Click on 'Join as Student' landing page header");
                 };
+                LandingPageController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Is Authenticated', function (event, args) {
+                        self.isAuthenticated = self.AuthService.isAuthenticated();
+                    });
+                };
                 return LandingPageController;
             }());
             LandingPageController.controllerId = 'mainApp.pages.landingPage.LandingPageController';
-            LandingPageController.$inject = ['$state',
+            LandingPageController.$inject = ['$scope',
+                '$state',
                 '$stateParams',
                 'dataConfig',
                 '$uibModal',
+                'mainApp.auth.AuthService',
                 'mainApp.core.util.messageUtilService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.pages.landingPage.LandingPageService',
@@ -4764,78 +5194,6 @@ var app;
 (function () {
     'use strict';
     angular
-        .module('mainApp.pages.signUpPage', [])
-        .config(config);
-    function config($stateProvider) {
-        $stateProvider
-            .state('signUp', {
-            url: '/signUp',
-            views: {
-                'container': {
-                    templateUrl: 'app/pages/signUpPage/signUpPage.html',
-                    controller: 'mainApp.pages.signUpPage.SignUpPageController',
-                    controllerAs: 'vm'
-                }
-            },
-            params: {
-                user: null
-            }
-        });
-    }
-})();
-//# sourceMappingURL=signUpPage.config.js.map
-var app;
-(function (app) {
-    var pages;
-    (function (pages) {
-        var signUpPage;
-        (function (signUpPage) {
-            var SignUpPageController = (function () {
-                function SignUpPageController($state, $filter, $scope, AuthService) {
-                    this.$state = $state;
-                    this.$filter = $filter;
-                    this.$scope = $scope;
-                    this.AuthService = AuthService;
-                    this._init();
-                }
-                SignUpPageController.prototype._init = function () {
-                    this.form = {
-                        username: '',
-                        email: '',
-                        password: ''
-                    };
-                    this.error = {
-                        message: ''
-                    };
-                    this.activate();
-                };
-                SignUpPageController.prototype.activate = function () {
-                    console.log('signUpPage controller actived');
-                };
-                SignUpPageController.prototype.signUp = function () {
-                    var self = this;
-                    this.AuthService.signUpPassword(this.form.username, this.form.email, this.form.password);
-                };
-                return SignUpPageController;
-            }());
-            SignUpPageController.controllerId = 'mainApp.pages.signUpPage.SignUpPageController';
-            SignUpPageController.$inject = [
-                '$state',
-                '$filter',
-                '$scope',
-                'mainApp.auth.AuthService'
-            ];
-            signUpPage.SignUpPageController = SignUpPageController;
-            angular
-                .module('mainApp.pages.signUpPage')
-                .controller(SignUpPageController.controllerId, SignUpPageController);
-        })(signUpPage = pages.signUpPage || (pages.signUpPage = {}));
-    })(pages = app.pages || (app.pages = {}));
-})(app || (app = {}));
-//# sourceMappingURL=signUpPage.controller.js.map
-(function () {
-    'use strict';
-    angular
         .module('mainApp.pages.searchPage', [])
         .config(config);
     function config($stateProvider) {
@@ -4848,6 +5206,9 @@ var app;
                     controller: 'mainApp.pages.searchPage.SearchPageController',
                     controllerAs: 'vm'
                 }
+            },
+            data: {
+                requireLogin: false
             },
             parent: 'page',
             params: {
@@ -5709,12 +6070,20 @@ var app;
                 'container': {
                     templateUrl: 'app/pages/createTeacherPage/createTeacherPage.html',
                     controller: 'mainApp.pages.createTeacherPage.CreateTeacherPageController',
-                    controllerAs: 'vm'
+                    controllerAs: 'vm',
+                    resolve: {
+                        waitForAuth: ['mainApp.auth.AuthService', function (AuthService) {
+                                return AuthService.autoRefreshToken();
+                            }]
+                    }
                 }
             },
             cache: false,
             params: {
                 type: '',
+            },
+            data: {
+                requireLogin: true
             },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
@@ -5732,7 +6101,7 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var CreateTeacherPageController = (function () {
-                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, messageUtil, localStorage, dataConfig, $state, $stateParams, $filter, $scope, $window, $rootScope, $uibModal) {
+                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, messageUtil, localStorage, dataConfig, $state, $stateParams, $filter, $scope, $window, $rootScope, $uibModal, waitForAuth) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.teacherService = teacherService;
@@ -5847,7 +6216,8 @@ var app;
                 '$scope',
                 '$window',
                 '$rootScope',
-                '$uibModal'
+                '$uibModal',
+                'waitForAuth'
             ];
             createTeacherPage.CreateTeacherPageController = CreateTeacherPageController;
             angular
@@ -7814,6 +8184,9 @@ var app;
                 }
             },
             parent: 'page',
+            data: {
+                requireLogin: false
+            },
             params: {
                 id: null
             },

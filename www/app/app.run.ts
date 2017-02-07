@@ -15,19 +15,26 @@
         .module('mainApp')
         .run(run);
 
-    run.$inject = ['$rootScope',
-                   'dataConfig',
-                   '$http'];
+    run.$inject = [
+                '$rootScope',
+                '$state',
+                'dataConfig',
+                'mainApp.auth.AuthService',
+                'mainApp.localStorageService'
+            ];
 
-    function run($rootScope: ng.IRootScopeService,
+    function run($rootScope: app.core.interfaces.IMainAppRootScope,
+                 $state: ng.ui.IStateService,
                  dataConfig: IDataConfig,
-                 $http: any): void {
+                 AuthService: app.auth.IAuthService,
+                 localStorage): void {
 
         //VARIABLES
         let productionHost = dataConfig.domain;
         let mixpanelTokenDEV = dataConfig.mixpanelTokenDEV;
         let mixpanelTokenPRD = dataConfig.mixpanelTokenPRD;
 
+        //Change MixPanel Environment dynamically
         if (window.location.hostname.toLowerCase().search(productionHost) < 0) {
             mixpanel.init(mixpanelTokenDEV);
         } else {
@@ -43,16 +50,28 @@
             });
         }
 
-        //TODO: Get these values from the logged user
-        dataConfig.userId = 'id1234';
-        //TODO: Descomentar cuando sea necesario, estudiar y aprender a implementar
-        //$http.defaults.xsrfHeaderName = 'X-CSRFToken';
-        //$http.defaults.xsrfCookieName = 'csrftoken';
+        //Get current authenticated user data from localStorage
+        if (AuthService.isAuthenticated()) {
+            $rootScope.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        }
+
+        //Validate each state if require login
+        $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+
+            if(toState.data.requireLogin && !AuthService.isAuthenticated()) {
+                /* Unauthenticated request to a route requiring auth is
+                   redirected to /#/login */
+                event.preventDefault();
+                $state.go('page.landingPage');
+            }
+
+        });
     }
 
 })();
 
 
+/* localStorage Service */
 
 (function (angular) {
 
