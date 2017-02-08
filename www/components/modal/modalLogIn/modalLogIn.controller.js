@@ -34,7 +34,7 @@ var components;
                     this.activate();
                 };
                 ModalLogInController.prototype.activate = function () {
-                    console.log('modalLogIn controller actived');
+                    DEBUG && console.log('modalLogIn controller actived');
                 };
                 ModalLogInController.prototype.login = function () {
                     var self = this;
@@ -89,12 +89,26 @@ var components;
                     }
                     return formValid;
                 };
+                ModalLogInController.prototype._openForgotPasswordModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        size: 'sm',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalForgotPasswordTmpl,
+                        controller: 'mainApp.components.modal.ModalForgotPasswordController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    this.$uibModalInstance.close();
+                };
                 ModalLogInController.prototype._openSignUpModal = function () {
                     mixpanel.track("Click on 'Sign up' from logIn modal");
                     var self = this;
                     var options = {
                         animation: false,
                         backdrop: 'static',
+                        size: 'sm',
                         keyboard: false,
                         templateUrl: this.dataConfig.modalSignUpTmpl,
                         controller: 'mainApp.components.modal.ModalSignUpController as vm'

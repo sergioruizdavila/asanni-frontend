@@ -65,7 +65,7 @@
             prefix: prefix,
             suffix: suffix
         });
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.preferredLanguage('es');
         $translateProvider.useCookieStorage();
     }
 })();
@@ -116,6 +116,7 @@ DEBUG = true;
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
         modalLogInTmpl: 'components/modal/modalLogIn/modalLogIn.html',
+        modalForgotPasswordTmpl: 'components/modal/modalForgotPassword/modalForgotPassword.html',
         modalRecommendTeacherTmpl: 'components/modal/modalRecommendTeacher/modalRecommendTeacher.html',
         bucketS3: BUCKETS3,
         regionS3: 'us-east-1',
@@ -3105,6 +3106,7 @@ var components;
                     animation: false,
                     backdrop: 'static',
                     keyboard: false,
+                    size: 'sm',
                     templateUrl: this.dataConfig.modalSignUpTmpl,
                     controller: 'mainApp.components.modal.ModalSignUpController as vm'
                 };
@@ -3118,6 +3120,7 @@ var components;
                     animation: false,
                     backdrop: 'static',
                     keyboard: false,
+                    size: 'sm',
                     templateUrl: this.dataConfig.modalLogInTmpl,
                     controller: 'mainApp.components.modal.ModalLogInController as vm'
                 };
@@ -4388,6 +4391,7 @@ var components;
                         animation: false,
                         backdrop: 'static',
                         keyboard: false,
+                        size: 'sm',
                         templateUrl: this.dataConfig.modalLogInTmpl,
                         controller: 'mainApp.components.modal.ModalLogInController as vm'
                     };
@@ -4456,7 +4460,7 @@ var components;
                     this.activate();
                 };
                 ModalLogInController.prototype.activate = function () {
-                    console.log('modalLogIn controller actived');
+                    DEBUG && console.log('modalLogIn controller actived');
                 };
                 ModalLogInController.prototype.login = function () {
                     var self = this;
@@ -4511,12 +4515,26 @@ var components;
                     }
                     return formValid;
                 };
+                ModalLogInController.prototype._openForgotPasswordModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        size: 'sm',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalForgotPasswordTmpl,
+                        controller: 'mainApp.components.modal.ModalForgotPasswordController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    this.$uibModalInstance.close();
+                };
                 ModalLogInController.prototype._openSignUpModal = function () {
                     mixpanel.track("Click on 'Sign up' from logIn modal");
                     var self = this;
                     var options = {
                         animation: false,
                         backdrop: 'static',
+                        size: 'sm',
                         keyboard: false,
                         templateUrl: this.dataConfig.modalSignUpTmpl,
                         controller: 'mainApp.components.modal.ModalSignUpController as vm'
@@ -4901,6 +4919,7 @@ var app;
                         animation: false,
                         backdrop: 'static',
                         keyboard: false,
+                        size: 'sm',
                         templateUrl: this.dataConfig.modalSignUpTmpl,
                         controller: 'mainApp.components.modal.ModalSignUpController as vm'
                     };
@@ -4914,6 +4933,7 @@ var app;
                         animation: false,
                         backdrop: 'static',
                         keyboard: false,
+                        size: 'sm',
                         templateUrl: this.dataConfig.modalLogInTmpl,
                         controller: 'mainApp.components.modal.ModalLogInController as vm'
                     };
@@ -5221,6 +5241,7 @@ var app;
                         animation: false,
                         backdrop: 'static',
                         keyboard: false,
+                        size: 'sm',
                         templateUrl: this.dataConfig.modalSignUpTmpl,
                         controller: 'mainApp.components.modal.ModalSignUpController as vm'
                     };
@@ -5234,6 +5255,7 @@ var app;
                         animation: false,
                         backdrop: 'static',
                         keyboard: false,
+                        size: 'sm',
                         templateUrl: this.dataConfig.modalLogInTmpl,
                         controller: 'mainApp.components.modal.ModalLogInController as vm'
                     };

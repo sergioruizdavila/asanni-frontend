@@ -107,7 +107,7 @@ module components.modal.modalLogIn {
         //active function to handle all controller logic
         activate(): void {
             //LOG
-            console.log('modalLogIn controller actived');
+            DEBUG && console.log('modalLogIn controller actived');
         }
 
         /**********************************/
@@ -234,6 +234,33 @@ module components.modal.modalLogIn {
 
 
         /**
+        * _openForgotPasswordModal
+        * @description - open Modal in order to recover password
+        * @use - this._openForgotPasswordModal();
+        * @function
+        * @return {void}
+        */
+        private _openForgotPasswordModal(): void {
+            //VARIABLES
+            let self = this;
+            // modal default options
+            let options: ng.ui.bootstrap.IModalSettings = {
+                animation: false,
+                backdrop: 'static',
+                size: 'sm',
+                keyboard: false,
+                templateUrl: this.dataConfig.modalForgotPasswordTmpl,
+                controller: 'mainApp.components.modal.ModalForgotPasswordController as vm'
+            };
+
+            var modalInstance = this.$uibModal.open(options);
+
+            this.$uibModalInstance.close();
+        }
+
+
+
+        /**
         * _openSignUpModal
         * @description - open Modal in order to Log in action
         * @use - this._openSignUpModal();
@@ -250,6 +277,7 @@ module components.modal.modalLogIn {
             let options: ng.ui.bootstrap.IModalSettings = {
                 animation: false,
                 backdrop: 'static',
+                size: 'sm',
                 keyboard: false,
                 templateUrl: this.dataConfig.modalSignUpTmpl,
                 controller: 'mainApp.components.modal.ModalSignUpController as vm'

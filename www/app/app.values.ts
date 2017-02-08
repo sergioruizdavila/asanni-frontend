@@ -34,6 +34,7 @@ interface IDataConfig {
     modalCertificateTmpl: string;
     modalSignUpTmpl: string;
     modalLogInTmpl: string;
+    modalForgotPasswordTmpl: string;
     modalRecommendTeacherTmpl: string;
     bucketS3: string;
     regionS3: string;
@@ -92,6 +93,7 @@ interface IDataConfig {
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
         modalLogInTmpl: 'components/modal/modalLogIn/modalLogIn.html',
+        modalForgotPasswordTmpl: 'components/modal/modalForgotPassword/modalForgotPassword.html',
         modalRecommendTeacherTmpl: 'components/modal/modalRecommendTeacher/modalRecommendTeacher.html',
         bucketS3: BUCKETS3,
         regionS3: 'us-east-1',

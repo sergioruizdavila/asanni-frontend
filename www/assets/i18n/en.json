@@ -19,6 +19,7 @@
     "%global.join_now.button.text": "join now",
 
     "%global.more.label.text": "+ More",
+    "%global.email.label.text": "Email Address",
     "%global.age.text": "years old",
     "%global.teacher.text": "Teacher",
     "%global.teachers.text": "Teachers",
@@ -66,6 +67,19 @@
     "%notification.error.server.text": "Server error occurred, try again please",
 
     "__MODALS__": "",
+    "%modal.signup.title.text": "Join the community",
+    "%modal.signup.form.password.text": "Create Password",
+    "%modal.signup.button.text": "Create account",
+    "%modal.signup.help_text.login_button.text": "Already a member?",
+
+    "%modal.login.title.text": "Log in to Waysily",
+    "%modal.login.form.password.text": "Password",
+    "%modal.login.forget_password.link.text": "Can’t log in?",
+    "%modal.login.help_text.signup_button.text": "Not yet a member?",
+
+    "%modal.forgot_password.description.text": "Enter the email address associated with your account. We’ll email you instructions on how to log in.",
+    "%modal.forgot_password.send.button.text": "Send instructions",
+
     "%modal.lang.title.text": "Add New Languages",
     "%modal.lang.help_text.text": "Select one or more languages.",
 
@@ -109,6 +123,7 @@
     "%modal.recommend.teacher.create_profile.label.text": "Create your profile, it's free!",
 
     "__LANDING PAGE__": "",
+    "legacy": "",
     "%landing.header.join.label.text": "Join as:",
     "%landing.puv": "Find a language Teacher / School",
     "%landing.puv.description": "Waysily is a free community-based platform that helps you find local language tutors / schools in your area.",
@@ -277,7 +292,7 @@
     "%create.teacher.basic_info.title.text": "Step 1 -  Basic Information",
     "%create.teacher.basic_info.form.first_name.text": "First Name",
     "%create.teacher.basic_info.form.last_name.text": "Last Name",
-    "%create.teacher.basic_info.form.email.text": "Email",
+    "%create.teacher.basic_info.form.email.text": "Email Address",
     "%create.teacher.basic_info.form.phone_number.text": "Phone Number",
     "%create.teacher.basic_info.form.phone_number.placeholder.text": "e.g. 3052345678",
     "%create.teacher.basic_info.form.i_am.text": "I am",
