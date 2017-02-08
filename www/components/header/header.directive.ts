@@ -249,6 +249,7 @@ module components.header {
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,
+                size: 'sm',
                 templateUrl: this.dataConfig.modalSignUpTmpl,
                 controller: 'mainApp.components.modal.ModalSignUpController as vm'
             };
