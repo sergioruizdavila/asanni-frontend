@@ -18,7 +18,7 @@
 
         <!--------------------- START: TEACHER AVATAR BLOCK ------------------->
         <div class="search-result__teacher__block__avatar
-                    row text-center space-2">
+                    row text-center space-1">
 
             <div class="col-xs-12 col-md-12">
 
@@ -68,14 +68,33 @@
 
 
 
-        <!----------------- START: TEACHER CITY - COUNTRY BLOCK --------------->
-        <div class="row text-center space-1">
+        <!--------------- START: TEACHER CITY - COUNTRY BORN BLOCK ------------>
+        <div class="row text-center">
 
             <div class="col-xs-12 col-md-12">
 
                 <p class="ma-p ma-p--default margin-reset">
                     <span>
-                        <i class="material-icons md-12">public</i>
+                        <i class="material-icons md-12">room</i>
+                    </span>
+                    {{item.location.city}}, {{ item.location.country | getI18nFilter:'country' }}
+                </p>
+
+            </div>
+
+        </div>
+        <!--              END: TEACHER CITY - COUNTRY BORN BLOCK             -->
+
+
+
+        <!----------- START: TEACHER CITY - COUNTRY (LOCATION) BLOCK ---------->
+        <div class="row text-center space-1">
+
+            <div class="col-xs-12 col-md-12">
+
+                <p class="ma-p ma-p--small margin-reset">
+                    <span>
+                        <i class="material-icons md-12">child_friendly</i>
                     </span>
                     {{item.born}}
                 </p>
@@ -83,7 +102,7 @@
             </div>
 
         </div>
-        <!--                 END: TEACHER CITY - COUNTRY BLOCK               -->
+        <!--           END: TEACHER CITY - COUNTRY (LOCATION) BLOCK          -->
 
 
 
@@ -91,7 +110,7 @@
         <div class="row text-center">
 
             <div class="col-xs-12 col-md-12"
-                 ng-class="{'space-6' : item.ratings.length == 0}">
+                 ng-class="{'space-4' : item.ratings.length == 0}">
                 <ma-rating ng-if="item.ratings.length > 0"
                            rating-value="vm._ratingAverage(item.ratings)"
                            size="small">
@@ -109,7 +128,7 @@
 
         </div>
 
-        <div class="row text-center space-3" ng-if="item.ratings.length > 0">
+        <div class="row text-center space-2" ng-if="item.ratings.length > 0">
             <div class="col-xs-12 col-md-12">
                 <p class="ma-p ma-p--small margin-reset">
                     <span>{{item.ratings.length}}</span>
