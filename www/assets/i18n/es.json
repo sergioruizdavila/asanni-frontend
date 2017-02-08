@@ -19,6 +19,7 @@
     "%global.join_now.button.text": "únete ahora",
 
     "%global.more.label.text": "+ Más",
+    "%global.email.label.text": "Correo Electrónico",
     "%global.age.text": "años",
     "%global.teacher.text": "Profesor",
     "%global.teachers.text": "Profesores",
@@ -66,6 +67,16 @@
     "%notification.error.server.text": "Estamos teniendo un problema, por favor intentelo nuevamente",
 
     "__MODALS__": "",
+    "%modal.signup.title.text": "Únete a la comunidad",
+    "%modal.signup.form.password.text": "Establece una contraseña",
+    "%modal.signup.button.text": "Crear una cuenta",
+    "%modal.signup.help_text.login_button.text": "¿Ya eres miembro?",
+
+    "%modal.login.title.text": "Inicia sesión en Waysily",
+    "%modal.login.form.password.text": "Contraseña",
+    "%modal.login.forget_password.link.text": "¿No consigues iniciar sesión?",
+    "%modal.login.help_text.signup_button.text": "¿Todavía no eres miembro?",
+
     "%modal.lang.title.text": "Agregar un nuevo idioma",
     "%modal.lang.help_text.text": "Selecciona uno o más idiomas.",
 

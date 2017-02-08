@@ -95,6 +95,7 @@ var components;
                     var options = {
                         animation: false,
                         backdrop: 'static',
+                        size: 'sm',
                         keyboard: false,
                         templateUrl: this.dataConfig.modalSignUpTmpl,
                         controller: 'mainApp.components.modal.ModalSignUpController as vm'

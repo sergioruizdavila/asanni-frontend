@@ -280,6 +280,7 @@ module components.header {
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,
+                size: 'sm',
                 templateUrl: this.dataConfig.modalLogInTmpl,
                 controller: 'mainApp.components.modal.ModalLogInController as vm'
             };

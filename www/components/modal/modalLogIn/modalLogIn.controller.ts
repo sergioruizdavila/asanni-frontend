@@ -250,6 +250,7 @@ module components.modal.modalLogIn {
             let options: ng.ui.bootstrap.IModalSettings = {
                 animation: false,
                 backdrop: 'static',
+                size: 'sm',
                 keyboard: false,
                 templateUrl: this.dataConfig.modalSignUpTmpl,
                 controller: 'mainApp.components.modal.ModalSignUpController as vm'
