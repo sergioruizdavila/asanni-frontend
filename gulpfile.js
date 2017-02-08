@@ -58,6 +58,7 @@ var paths = {
         "www/components/modal/modalCertificate/modalCertificate.controller.js",
         "www/components/modal/modalSignUp/modalSignUp.controller.js",
         "www/components/modal/modalLogIn/modalLogIn.controller.js",
+        "www/components/modal/modalForgotPassword/modalForgotPassword.controller.js",
         "www/components/modal/modalRecommendTeacher/modalRecommendTeacher.controller.js",
         "www/app/pages/main/main.config.js",
         "www/app/pages/main/main.controller.js",

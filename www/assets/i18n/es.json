@@ -77,6 +77,9 @@
     "%modal.login.forget_password.link.text": "¿No consigues iniciar sesión?",
     "%modal.login.help_text.signup_button.text": "¿Todavía no eres miembro?",
 
+    "%modal.forgot_password.description.text": "Introduce la dirección de correo electrónico asociada a tu cuenta para que podamos enviarte instrucciones para iniciar sesión.",
+    "%modal.forgot_password.send.button.text": "Enviar instrucciones",
+
     "%modal.lang.title.text": "Agregar un nuevo idioma",
     "%modal.lang.help_text.text": "Selecciona uno o más idiomas.",
 

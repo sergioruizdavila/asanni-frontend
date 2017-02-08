@@ -77,6 +77,9 @@
     "%modal.login.forget_password.link.text": "Can’t log in?",
     "%modal.login.help_text.signup_button.text": "Not yet a member?",
 
+    "%modal.forgot_password.description.text": "Enter the email address associated with your account. We’ll email you instructions on how to log in.",
+    "%modal.forgot_password.send.button.text": "Send instructions",
+
     "%modal.lang.title.text": "Add New Languages",
     "%modal.lang.help_text.text": "Select one or more languages.",
 
