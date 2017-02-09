@@ -190,6 +190,7 @@ var app;
                     Validation[Validation["IsNotZero"] = 5] = "IsNotZero";
                     Validation[Validation["Defined"] = 6] = "Defined";
                     Validation[Validation["IsTrue"] = 7] = "IsTrue";
+                    Validation[Validation["IsNotNaN"] = 8] = "IsNotNaN";
                 })(Validation = functionsUtil.Validation || (functionsUtil.Validation = {}));
                 var FunctionsUtilService = (function () {
                     function FunctionsUtilService($filter, dataConfig, $translate) {
@@ -296,6 +297,7 @@ var app;
                         var NUMBER_MESSAGE = this.$filter('translate')('%global.validation.number.message.text');
                         var EMAIL_MESSAGE = this.$filter('translate')('%global.validation.email.message.text');
                         var TRUE_MESSAGE = this.$filter('translate')('%global.validation.true.message.text');
+                        var NAN_MESSAGE = this.$filter('translate')('%global.validation.number.message.text');
                         var obj = { valid: true, message: 'ok' };
                         for (var i = 0; i < validations.length; i++) {
                             switch (validations[i]) {
@@ -345,6 +347,12 @@ var app;
                                 case 7:
                                     if (value !== true) {
                                         obj.message = TRUE_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                case 8:
+                                    if (isNaN(value)) {
+                                        obj.message = NAN_MESSAGE;
                                         obj.valid = false;
                                     }
                                     break;
@@ -6032,17 +6040,19 @@ var app;
                     this.form.phoneNumber = data.PhoneNumber;
                     this.sexObject.sex.code = data.Sex;
                     var date = this.functionsUtilService.splitDate(data.BirthDate);
-                    this.dateObject.day.value = parseInt(date.day);
-                    this.dateObject.month.code = date.month;
-                    this.dateObject.year.value = parseInt(date.year);
+                    this.dateObject.day.value = date.day ? parseInt(date.day) : '';
+                    this.dateObject.month.code = date.month !== 'Invalid date' ? date.month : '';
+                    this.dateObject.year.value = date.year ? parseInt(date.year) : '';
                     this.form.born = data.Born;
                     this.form.about = data.About;
                 };
                 TeacherInfoSectionController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
+                    var NAN_ENUM = 8;
                     var EMPTY_ENUM = 3;
                     var EMAIL_ENUM = 0;
                     var NUMBER_ENUM = 4;
+                    var BIRTHDATE_MESSAGE = this.$filter('translate')('%create.teacher.basic_info.form.birthdate.validation.message.text');
                     var formValid = true;
                     var firstName_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.firstName = this.functionsUtilService.validator(this.form.firstName, firstName_rules);
@@ -6071,26 +6081,32 @@ var app;
                     if (!this.validate.sex.valid) {
                         formValid = this.validate.sex.valid;
                     }
-                    var day_birthdate_rules = [NULL_ENUM, EMPTY_ENUM];
+                    var day_birthdate_rules = [NULL_ENUM, EMPTY_ENUM, NAN_ENUM];
                     this.validate.birthDate.day = this.functionsUtilService.validator(this.dateObject.day.value, day_birthdate_rules);
                     if (!this.validate.birthDate.day.valid) {
                         formValid = this.validate.birthDate.day.valid;
                         this.validate.birthDate.valid = this.validate.birthDate.day.valid;
-                        this.validate.birthDate.message = this.validate.birthDate.day.message;
+                        this.validate.birthDate.message = BIRTHDATE_MESSAGE;
                     }
                     var month_birthdate_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.birthDate.month = this.functionsUtilService.validator(this.dateObject.month.code, month_birthdate_rules);
                     if (!this.validate.birthDate.month.valid) {
                         formValid = this.validate.birthDate.month.valid;
                         this.validate.birthDate.valid = this.validate.birthDate.month.valid;
-                        this.validate.birthDate.message = this.validate.birthDate.month.message;
+                        this.validate.birthDate.message = BIRTHDATE_MESSAGE;
                     }
-                    var year_birthdate_rules = [NULL_ENUM, EMPTY_ENUM];
+                    var year_birthdate_rules = [NULL_ENUM, EMPTY_ENUM, NAN_ENUM];
                     this.validate.birthDate.year = this.functionsUtilService.validator(this.dateObject.year.value, year_birthdate_rules);
                     if (!this.validate.birthDate.year.valid) {
                         formValid = this.validate.birthDate.year.valid;
                         this.validate.birthDate.valid = this.validate.birthDate.year.valid;
-                        this.validate.birthDate.message = this.validate.birthDate.year.message;
+                        this.validate.birthDate.message = BIRTHDATE_MESSAGE;
+                    }
+                    if (this.validate.birthDate.day.valid &&
+                        this.validate.birthDate.month.valid &&
+                        this.validate.birthDate.year.valid) {
+                        this.validate.birthDate.valid = true;
+                        this.validate.birthDate.message = '';
                     }
                     var born_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.born = this.functionsUtilService.validator(this.form.born, born_rules);

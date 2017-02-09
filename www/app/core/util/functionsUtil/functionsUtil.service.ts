@@ -48,7 +48,8 @@ module app.core.util.functionsUtil {
         Number = 4,
         IsNotZero = 5,
         Defined = 6,
-        IsTrue = 7
+        IsTrue = 7,
+        IsNotNaN = 8
     }
 
     /****************************************/
@@ -352,6 +353,7 @@ module app.core.util.functionsUtil {
             const NUMBER_MESSAGE = this.$filter('translate')('%global.validation.number.message.text');
             const EMAIL_MESSAGE = this.$filter('translate')('%global.validation.email.message.text');
             const TRUE_MESSAGE = this.$filter('translate')('%global.validation.true.message.text');
+            const NAN_MESSAGE = this.$filter('translate')('%global.validation.number.message.text');
             /*******************************/
             //VARIABLES
             let obj = {valid: true, message: 'ok'};
@@ -414,6 +416,13 @@ module app.core.util.functionsUtil {
                     case Validation.IsTrue:
                         if(value !== true){
                             obj.message = TRUE_MESSAGE;
+                            obj.valid = false;
+                        }
+                        break;
+
+                    case Validation.IsNotNaN:
+                        if(isNaN(value)){
+                            obj.message = NAN_MESSAGE;
                             obj.valid = false;
                         }
                         break;
