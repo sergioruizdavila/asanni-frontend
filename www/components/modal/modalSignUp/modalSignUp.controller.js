@@ -95,11 +95,17 @@ var components;
                     var self = this;
                     if (this.form.email) {
                         this.RegisterService.checkEmail(this.form.email).then(function (response) {
-                            self.validate.email.valid = true;
-                        }, function (error) {
-                            if (error.data.emailExist) {
-                                self.validate.email.valid = false;
-                                self.validate.email.message = 'That email address is already in use. Please log in.';
+                            if (response.data) {
+                                if (!response.data.emailExist) {
+                                    self.validate.email.valid = true;
+                                }
+                                else {
+                                    self.validate.email.valid = false;
+                                    self.validate.email.message = 'That email address is already in use. Please log in.';
+                                }
+                            }
+                            else if (response.email) {
+                                self.validate.email.valid = true;
                             }
                         });
                     }

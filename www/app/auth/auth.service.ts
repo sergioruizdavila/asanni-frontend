@@ -16,6 +16,7 @@ module app.auth {
         isAuthenticated:() => boolean;
         login:(user: app.core.interfaces.IUserDataAuth) => angular.IPromise<any>;
         logout:() => angular.IPromise<any>;
+        resetPassword:(email: string) => angular.IPromise<any>;
     }
 
 
@@ -29,6 +30,8 @@ module app.auth {
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
+        AUTH_RESET_PASSWORD_URI: string;
+        AUTH_CONFIRM_RESET_PASSWORD_URI: string;
         autoRefreshTokenInterval: number;
         refreshNeeded: boolean;
         // --------------------------------
@@ -38,6 +41,7 @@ module app.auth {
                           '$timeout',
                           '$cookies',
                           'OAuth',
+                          'mainApp.core.restApi.restApiService',
                           'dataConfig'];
 
         /**********************************/
@@ -47,8 +51,15 @@ module app.auth {
                     private $timeout: angular.ITimeoutService,
                     private $cookies: angular.cookies.ICookiesService,
                     private OAuth: angular.oauth2.IOAuth,
+                    private restApi: app.core.restApi.IRestApi,
                     private dataConfig: IDataConfig) {
+            //LOG
             DEBUG && console.log('auth service called');
+
+            //CONSTANTS
+            this.AUTH_RESET_PASSWORD_URI = 'rest-auth/password/reset/';
+            this.AUTH_CONFIRM_RESET_PASSWORD_URI = 'rest-auth/password/reset/confirm/';
+
             this.autoRefreshTokenInterval = dataConfig.autoRefreshTokenIntervalSeconds * 1000;
             this.refreshNeeded = true;
         }
@@ -85,6 +96,82 @@ module app.auth {
         forceLogout(): void {
           DEBUG && console.log("Forcing logout");
           this.$cookies.remove(this.dataConfig.cookieName);
+        }
+
+
+
+        /**
+         * resetPassword
+         * @description - reset password given a email value
+         * @use - this.AuthService.resetPassword('sergio@gmail.com');
+         * @function
+         * @return {angular.IPromise<any>} promise - return http request with
+         * Status Code 200 OK
+        */
+
+        resetPassword(email): angular.IPromise<any> {
+            //VARIABLES
+            let url = this.AUTH_RESET_PASSWORD_URI;
+            let deferred = this.$q.defer();
+            let data = {
+                email: email
+            };
+
+            this.restApi.create({url: url}, data).$promise
+                .then(
+                    function(response) {
+                        deferred.resolve(response);
+                    },
+
+                    function(error) {
+                        DEBUG && console.error(error);
+                        deferred.reject(error);
+                    }
+                );
+
+            return deferred.promise;
+        }
+
+
+
+        /**
+         * confirmResetPassword
+         * @description - send confirmation to reset password given a new password
+         * @use - this.AuthService.confirmResetPassword({
+                    uid: 'MQ',
+                    token: '4jf-2632ecc2e516fc2686bc',
+                    new_password1: 'test2017',
+                    new_password2: 'test2017'
+                  });
+         * @function
+         * @return {angular.IPromise<any>} promise - return http request with
+         * Status Code 200 OK
+        */
+
+        confirmResetPassword(uid, token, newPassword1, newPassword2): angular.IPromise<any> {
+            //VARIABLES
+            let url = this.AUTH_CONFIRM_RESET_PASSWORD_URI;
+            let deferred = this.$q.defer();
+            let data = {
+                uid: uid,
+                token: token,
+                new_password1: newPassword1,
+                new_password2: newPassword2
+            };
+
+            this.restApi.create({url: url}, data).$promise
+                .then(
+                    function(response) {
+                        deferred.resolve(response);
+                    },
+
+                    function(error) {
+                        DEBUG && console.error(error);
+                        deferred.reject(error);
+                    }
+                );
+
+            return deferred.promise;
         }
 
 

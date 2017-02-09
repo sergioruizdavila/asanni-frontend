@@ -93,7 +93,9 @@ module app.register {
 
                     function(error) {
                         DEBUG && console.error(error);
-                        deferred.reject(error);
+                        /* We can not reject request because in some cases Status
+                        400 is success for us */
+                        deferred.resolve(error);
                     }
                 );
 
