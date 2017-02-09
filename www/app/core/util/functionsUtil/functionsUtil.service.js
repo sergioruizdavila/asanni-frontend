@@ -17,6 +17,7 @@ var app;
                     Validation[Validation["IsNotZero"] = 5] = "IsNotZero";
                     Validation[Validation["Defined"] = 6] = "Defined";
                     Validation[Validation["IsTrue"] = 7] = "IsTrue";
+                    Validation[Validation["IsNotNaN"] = 8] = "IsNotNaN";
                 })(Validation = functionsUtil.Validation || (functionsUtil.Validation = {}));
                 var FunctionsUtilService = (function () {
                     function FunctionsUtilService($filter, dataConfig, $translate) {
@@ -163,6 +164,7 @@ var app;
                         var NUMBER_MESSAGE = this.$filter('translate')('%global.validation.number.message.text');
                         var EMAIL_MESSAGE = this.$filter('translate')('%global.validation.email.message.text');
                         var TRUE_MESSAGE = this.$filter('translate')('%global.validation.true.message.text');
+                        var NAN_MESSAGE = this.$filter('translate')('%global.validation.number.message.text');
                         var obj = { valid: true, message: 'ok' };
                         for (var i = 0; i < validations.length; i++) {
                             switch (validations[i]) {
@@ -212,6 +214,12 @@ var app;
                                 case 7:
                                     if (value !== true) {
                                         obj.message = TRUE_MESSAGE;
+                                        obj.valid = false;
+                                    }
+                                    break;
+                                case 8:
+                                    if (isNaN(value)) {
+                                        obj.message = NAN_MESSAGE;
                                         obj.valid = false;
                                     }
                                     break;

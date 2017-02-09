@@ -299,6 +299,7 @@
     "%create.teacher.basic_info.form.gender.text": "Sex",
     "%create.teacher.basic_info.form.birthdate.text": "Birth Date",
     "%create.teacher.basic_info.form.mth_birthdate.text": "Month",
+    "%create.teacher.basic_info.form.birthdate.validation.message.text": "Select your birth date to continue",
     "%create.teacher.basic_info.form.born.text": "Where you born?",
     "%create.teacher.basic_info.form.born.placeholder.text": "e.g. Medellín, Colombia / Lisboa, Portugal",
     "%create.teacher.basic_info.form.about.text": "Describe Yourself",
