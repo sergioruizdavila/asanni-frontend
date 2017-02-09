@@ -67,6 +67,8 @@ var paths = {
         "www/app/pages/studentLandingPage/studentLandingPage.service.js",
         "www/app/pages/teacherLandingPage/teacherLandingPage.config.js",
         "www/app/pages/teacherLandingPage/teacherLandingPage.controller.js",
+        "www/app/pages/resetPasswordPage/resetPasswordPage.config.js",
+        "www/app/pages/resetPasswordPage/resetPasswordPage.controller.js",
         "www/app/pages/landingPage/landingPage.config.js",
         "www/app/pages/landingPage/landingPage.controller.js",
         "www/app/pages/landingPage/landingPage.service.js",

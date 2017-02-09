@@ -19,6 +19,7 @@
         'mainApp.pages.studentLandingPage',
         'mainApp.pages.teacherLandingPage',
         'mainApp.pages.landingPage',
+        'mainApp.pages.resetPasswordPage',
         'mainApp.pages.searchPage',
         'mainApp.pages.createTeacherPage',
         'mainApp.pages.teacherProfilePage',
@@ -6679,11 +6680,6 @@ var app;
                 TeacherInfoSectionController.prototype.goToNext = function () {
                     var formValid = this._validateForm();
                     if (formValid) {
-                        mixpanel.track("Enter: Basic Info on Create Teacher", {
-                            "name": this.form.firstName + ' ' + this.form.lastName,
-                            "email": this.form.email,
-                            "phone": this.form.phoneNumber
-                        });
                         this._setDataModelFromForm();
                         this.$scope.$emit('Save Data');
                         this.$state.go(this.STEP2_STATE, { reload: true });
@@ -6830,6 +6826,11 @@ var app;
                     this.$rootScope.teacherData.Born = this.form.born;
                     this.$rootScope.teacherData.About = this.form.about;
                     this.$rootScope.teacherData.Recommended = recommended ? recommended : null;
+                    mixpanel.track("Enter: Basic Info on Create Teacher", {
+                        "name": this.$rootScope.teacherData.FirstName + ' ' + this.$rootScope.teacherData.LastName,
+                        "email": this.$rootScope.teacherData.Email,
+                        "phone": this.$rootScope.teacherData.PhoneNumber
+                    });
                 };
                 TeacherInfoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
