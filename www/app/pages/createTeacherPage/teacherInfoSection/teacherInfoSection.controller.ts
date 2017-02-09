@@ -240,9 +240,9 @@ module app.pages.createTeacherPage {
 
             //Build birthdate (Charge on select List)
             let date = this.functionsUtilService.splitDate(data.BirthDate);
-            this.dateObject.day.value = parseInt(date.day);
-            this.dateObject.month.code = date.month;
-            this.dateObject.year.value = parseInt(date.year);
+            this.dateObject.day.value = date.day ? parseInt(date.day) : '';
+            this.dateObject.month.code = date.month !== 'Invalid date' ? date.month : '';
+            this.dateObject.year.value = date.year ? parseInt(date.year) : '';
 
             this.form.born = data.Born;
             this.form.about = data.About;
@@ -260,9 +260,11 @@ module app.pages.createTeacherPage {
         private _validateForm(): boolean {
             //CONSTANTS
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
+            const NAN_ENUM = app.core.util.functionsUtil.Validation.IsNotNaN;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
             const EMAIL_ENUM = app.core.util.functionsUtil.Validation.Email;
             const NUMBER_ENUM = app.core.util.functionsUtil.Validation.Number;
+            const BIRTHDATE_MESSAGE = this.$filter('translate')('%create.teacher.basic_info.form.birthdate.validation.message.text');
 
             /***************************************************/
             //VARIABLES
@@ -306,12 +308,12 @@ module app.pages.createTeacherPage {
             }
 
             //Validate 'Day' Birth Date fields
-            let day_birthdate_rules = [NULL_ENUM, EMPTY_ENUM];
+            let day_birthdate_rules = [NULL_ENUM, EMPTY_ENUM, NAN_ENUM];
             this.validate.birthDate.day = this.functionsUtilService.validator(this.dateObject.day.value, day_birthdate_rules);
             if(!this.validate.birthDate.day.valid) {
                 formValid = this.validate.birthDate.day.valid;
                 this.validate.birthDate.valid = this.validate.birthDate.day.valid;
-                this.validate.birthDate.message = this.validate.birthDate.day.message;
+                this.validate.birthDate.message = BIRTHDATE_MESSAGE;
             }
 
             //Validate 'Month' Birth Date fields
@@ -320,16 +322,24 @@ module app.pages.createTeacherPage {
             if(!this.validate.birthDate.month.valid) {
                 formValid = this.validate.birthDate.month.valid;
                 this.validate.birthDate.valid = this.validate.birthDate.month.valid;
-                this.validate.birthDate.message = this.validate.birthDate.month.message;
+                this.validate.birthDate.message = BIRTHDATE_MESSAGE;
             }
 
             //Validate 'Year' Birth Date fields
-            let year_birthdate_rules = [NULL_ENUM, EMPTY_ENUM];
+            let year_birthdate_rules = [NULL_ENUM, EMPTY_ENUM, NAN_ENUM];
             this.validate.birthDate.year = this.functionsUtilService.validator(this.dateObject.year.value, year_birthdate_rules);
             if(!this.validate.birthDate.year.valid) {
                 formValid = this.validate.birthDate.year.valid;
                 this.validate.birthDate.valid = this.validate.birthDate.year.valid;
-                this.validate.birthDate.message = this.validate.birthDate.year.message;
+                this.validate.birthDate.message = BIRTHDATE_MESSAGE;
+            }
+
+            //Clean error message if birthdate is valid
+            if(this.validate.birthDate.day.valid &&
+               this.validate.birthDate.month.valid &&
+               this.validate.birthDate.year.valid) {
+                   this.validate.birthDate.valid = true;
+                   this.validate.birthDate.message = '';
             }
 
             //Validate Born field
