@@ -87,8 +87,8 @@
                     $urlRouterProvider: angular.ui.IUrlRouterProvider,
                     $translateProvider: angular.translate.ITranslateProvider) {
 
-        /*$locationProvider.html5Mode(true);
-        $locationProvider.hashPrefix('!');*/
+        $locationProvider.html5Mode(true);
+        //$locationProvider.hashPrefix('!');
 
         $urlRouterProvider.otherwise('/page/main');
         //$urlRouterProvider.otherwise('/page/landing/student');

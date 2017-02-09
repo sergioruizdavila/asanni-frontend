@@ -142,7 +142,8 @@ var paths = {
 gulp.task('webserver', function() {
   connect.server({
     root: 'www',
-    livereload: true
+    livereload: true,
+    fallback: 'www/index.html'
   });
 });
 
