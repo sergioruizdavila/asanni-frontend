@@ -615,4 +615,5 @@ module app.core.util.functionsUtil {
     .module('mainApp.core.util', [])
     .service(FunctionsUtilService.serviceId, FunctionsUtilService);
 
+
 }
