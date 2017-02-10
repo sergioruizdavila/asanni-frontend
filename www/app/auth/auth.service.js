@@ -50,10 +50,15 @@ var app;
                 };
                 this.restApi.create({ url: url }, data).$promise
                     .then(function (response) {
-                    deferred.resolve(response);
+                    deferred.resolve(response.detail);
                 }, function (error) {
                     DEBUG && console.error(error);
-                    deferred.reject(error);
+                    if (error.data) {
+                        deferred.reject(error.data.token[0]);
+                    }
+                    else {
+                        deferred.reject(error);
+                    }
                 });
                 return deferred.promise;
             };

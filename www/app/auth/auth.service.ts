@@ -17,6 +17,10 @@ module app.auth {
         login:(user: app.core.interfaces.IUserDataAuth) => angular.IPromise<any>;
         logout:() => angular.IPromise<any>;
         resetPassword:(email: string) => angular.IPromise<any>;
+        confirmResetPassword: (uid: string,
+                               token: string,
+                               newPassword1: string,
+                               newPassword2: string) => angular.IPromise<any>
     }
 
 
@@ -162,12 +166,17 @@ module app.auth {
             this.restApi.create({url: url}, data).$promise
                 .then(
                     function(response) {
-                        deferred.resolve(response);
+                        deferred.resolve(response.detail);
                     },
 
                     function(error) {
                         DEBUG && console.error(error);
-                        deferred.reject(error);
+                        if(error.data){
+                            deferred.reject(error.data.token[0]);
+                        } else {
+                            deferred.reject(error);
+                        }
+
                     }
                 );
 

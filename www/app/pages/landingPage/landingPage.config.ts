@@ -28,6 +28,9 @@
                 data: {
                     requireLogin: false
                 },
+                params: {
+                    showLogin: false,
+                },
                 cache: false,
                 onEnter: ['$rootScope', function ($rootScope) {
                     // Show/Hide header & footer
