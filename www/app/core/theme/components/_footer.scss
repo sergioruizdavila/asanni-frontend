@@ -7,6 +7,10 @@
    background-color: #F4F4F4;
    color: #FFF;
    border-top: 1px solid #dce0e0;
+   width: 100%;
+   position: absolute;
+   bottom: 0;
+   left: 0;
 
    &__options-list {
        display: inline-block;

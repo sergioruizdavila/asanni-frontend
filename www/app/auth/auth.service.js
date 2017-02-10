@@ -4,13 +4,16 @@ var app;
     (function (auth) {
         'use strict';
         var AuthService = (function () {
-            function AuthService($q, $timeout, $cookies, OAuth, dataConfig) {
+            function AuthService($q, $timeout, $cookies, OAuth, restApi, dataConfig) {
                 this.$q = $q;
                 this.$timeout = $timeout;
                 this.$cookies = $cookies;
                 this.OAuth = OAuth;
+                this.restApi = restApi;
                 this.dataConfig = dataConfig;
                 DEBUG && console.log('auth service called');
+                this.AUTH_RESET_PASSWORD_URI = 'rest-auth/password/reset/';
+                this.AUTH_CONFIRM_RESET_PASSWORD_URI = 'rest-auth/password/reset/confirm/';
                 this.autoRefreshTokenInterval = dataConfig.autoRefreshTokenIntervalSeconds * 1000;
                 this.refreshNeeded = true;
             }
@@ -20,6 +23,44 @@ var app;
             AuthService.prototype.forceLogout = function () {
                 DEBUG && console.log("Forcing logout");
                 this.$cookies.remove(this.dataConfig.cookieName);
+            };
+            AuthService.prototype.resetPassword = function (email) {
+                var url = this.AUTH_RESET_PASSWORD_URI;
+                var deferred = this.$q.defer();
+                var data = {
+                    email: email
+                };
+                this.restApi.create({ url: url }, data).$promise
+                    .then(function (response) {
+                    deferred.resolve(response);
+                }, function (error) {
+                    DEBUG && console.error(error);
+                    deferred.reject(error);
+                });
+                return deferred.promise;
+            };
+            AuthService.prototype.confirmResetPassword = function (uid, token, newPassword1, newPassword2) {
+                var url = this.AUTH_CONFIRM_RESET_PASSWORD_URI;
+                var deferred = this.$q.defer();
+                var data = {
+                    uid: uid,
+                    token: token,
+                    new_password1: newPassword1,
+                    new_password2: newPassword2
+                };
+                this.restApi.create({ url: url }, data).$promise
+                    .then(function (response) {
+                    deferred.resolve(response.detail);
+                }, function (error) {
+                    DEBUG && console.error(error);
+                    if (error.data) {
+                        deferred.reject(error.data.token[0]);
+                    }
+                    else {
+                        deferred.reject(error);
+                    }
+                });
+                return deferred.promise;
             };
             AuthService.prototype.login = function (user) {
                 var self = this;
@@ -92,6 +133,7 @@ var app;
             '$timeout',
             '$cookies',
             'OAuth',
+            'mainApp.core.restApi.restApiService',
             'dataConfig'];
         auth.AuthService = AuthService;
         angular

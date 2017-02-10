@@ -73,6 +73,9 @@ var app;
                         };
                         var modalInstance = this.$uibModal.open(options);
                     }
+                    if (this.$stateParams.showLogin) {
+                        this._openLogInModal();
+                    }
                     this._subscribeToEvents();
                 };
                 LandingPageController.prototype.changeLanguage = function () {

@@ -19,6 +19,7 @@
         'mainApp.pages.studentLandingPage',
         'mainApp.pages.teacherLandingPage',
         'mainApp.pages.landingPage',
+        'mainApp.pages.resetPasswordPage',
         'mainApp.pages.searchPage',
         'mainApp.pages.createTeacherPage',
         'mainApp.pages.teacherProfilePage',
@@ -58,6 +59,7 @@
     ])
         .config(config);
     function config($locationProvider, $urlRouterProvider, $translateProvider) {
+        $locationProvider.html5Mode(true);
         $urlRouterProvider.otherwise('/page/main');
         var prefix = 'assets/i18n/';
         var suffix = '.json';

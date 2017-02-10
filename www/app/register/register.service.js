@@ -23,7 +23,7 @@ var app;
                     deferred.resolve(response);
                 }, function (error) {
                     DEBUG && console.error(error);
-                    deferred.reject(error);
+                    deferred.resolve(error);
                 });
                 return deferred.promise;
             };

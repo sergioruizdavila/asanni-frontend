@@ -38,7 +38,7 @@
                 onEnter: ['$rootScope', function ($rootScope) {
                     // Show/Hide header & footer
                     $rootScope.activeHeader = false;
-                    $rootScope.activeFooter = false;
+                    $rootScope.activeFooter = true;
                     $rootScope.activeMessageBar = false;
                 }]
             });

@@ -22,6 +22,7 @@ module app.pages.landingPage {
     /********************************/
     export interface IParams extends ng.ui.IStateParamsService {
         id: string;
+        showLogin: boolean;
     }
 
     export interface ILandingForm {
@@ -189,6 +190,11 @@ module app.pages.landingPage {
 
                 // Open Teacher Recommendation Modal
                 var modalInstance = this.$uibModal.open(options);
+            }
+
+            // Launch Login modal
+            if(this.$stateParams.showLogin) {
+                this._openLogInModal();
             }
 
             //SUBSCRIBE TO EVENTS

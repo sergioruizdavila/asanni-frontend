@@ -19,6 +19,7 @@
         'mainApp.pages.studentLandingPage',
         'mainApp.pages.teacherLandingPage',
         'mainApp.pages.landingPage',
+        'mainApp.pages.resetPasswordPage',
         'mainApp.pages.searchPage',
         'mainApp.pages.createTeacherPage',
         'mainApp.pages.teacherProfilePage',
@@ -58,6 +59,7 @@
     ])
         .config(config);
     function config($locationProvider, $urlRouterProvider, $translateProvider) {
+        $locationProvider.html5Mode(true);
         $urlRouterProvider.otherwise('/page/main');
         var prefix = 'assets/i18n/';
         var suffix = '.json';
@@ -193,13 +195,16 @@ var app;
     (function (auth) {
         'use strict';
         var AuthService = (function () {
-            function AuthService($q, $timeout, $cookies, OAuth, dataConfig) {
+            function AuthService($q, $timeout, $cookies, OAuth, restApi, dataConfig) {
                 this.$q = $q;
                 this.$timeout = $timeout;
                 this.$cookies = $cookies;
                 this.OAuth = OAuth;
+                this.restApi = restApi;
                 this.dataConfig = dataConfig;
                 DEBUG && console.log('auth service called');
+                this.AUTH_RESET_PASSWORD_URI = 'rest-auth/password/reset/';
+                this.AUTH_CONFIRM_RESET_PASSWORD_URI = 'rest-auth/password/reset/confirm/';
                 this.autoRefreshTokenInterval = dataConfig.autoRefreshTokenIntervalSeconds * 1000;
                 this.refreshNeeded = true;
             }
@@ -209,6 +214,44 @@ var app;
             AuthService.prototype.forceLogout = function () {
                 DEBUG && console.log("Forcing logout");
                 this.$cookies.remove(this.dataConfig.cookieName);
+            };
+            AuthService.prototype.resetPassword = function (email) {
+                var url = this.AUTH_RESET_PASSWORD_URI;
+                var deferred = this.$q.defer();
+                var data = {
+                    email: email
+                };
+                this.restApi.create({ url: url }, data).$promise
+                    .then(function (response) {
+                    deferred.resolve(response);
+                }, function (error) {
+                    DEBUG && console.error(error);
+                    deferred.reject(error);
+                });
+                return deferred.promise;
+            };
+            AuthService.prototype.confirmResetPassword = function (uid, token, newPassword1, newPassword2) {
+                var url = this.AUTH_CONFIRM_RESET_PASSWORD_URI;
+                var deferred = this.$q.defer();
+                var data = {
+                    uid: uid,
+                    token: token,
+                    new_password1: newPassword1,
+                    new_password2: newPassword2
+                };
+                this.restApi.create({ url: url }, data).$promise
+                    .then(function (response) {
+                    deferred.resolve(response.detail);
+                }, function (error) {
+                    DEBUG && console.error(error);
+                    if (error.data) {
+                        deferred.reject(error.data.token[0]);
+                    }
+                    else {
+                        deferred.reject(error);
+                    }
+                });
+                return deferred.promise;
             };
             AuthService.prototype.login = function (user) {
                 var self = this;
@@ -281,6 +324,7 @@ var app;
             '$timeout',
             '$cookies',
             'OAuth',
+            'mainApp.core.restApi.restApiService',
             'dataConfig'];
         auth.AuthService = AuthService;
         angular
@@ -760,6 +804,8 @@ var app;
                         toastr.error(message);
                     };
                     messageUtilService.prototype.info = function (message) {
+                        toastr.options.closeButton = true;
+                        toastr.options.timeOut = 10000;
                         toastr.info(message);
                     };
                     messageUtilService.instance = function ($filter) {
@@ -1555,7 +1601,7 @@ var app;
                     deferred.resolve(response);
                 }, function (error) {
                     DEBUG && console.error(error);
-                    deferred.reject(error);
+                    deferred.resolve(error);
                 });
                 return deferred.promise;
             };
@@ -4383,11 +4429,17 @@ var components;
                     var self = this;
                     if (this.form.email) {
                         this.RegisterService.checkEmail(this.form.email).then(function (response) {
-                            self.validate.email.valid = true;
-                        }, function (error) {
-                            if (error.data.emailExist) {
-                                self.validate.email.valid = false;
-                                self.validate.email.message = 'That email address is already in use. Please log in.';
+                            if (response.data) {
+                                if (!response.data.emailExist) {
+                                    self.validate.email.valid = true;
+                                }
+                                else {
+                                    self.validate.email.valid = false;
+                                    self.validate.email.message = 'That email address is already in use. Please log in.';
+                                }
+                            }
+                            else if (response.email) {
+                                self.validate.email.valid = true;
                             }
                         });
                     }
@@ -4581,30 +4633,24 @@ var components;
         var modalForgotPassword;
         (function (modalForgotPassword) {
             var ModalForgotPasswordController = (function () {
-                function ModalForgotPasswordController($rootScope, $state, AuthService, AccountService, functionsUtil, messageUtil, localStorage, dataConfig, $uibModal, $uibModalInstance) {
+                function ModalForgotPasswordController($rootScope, AuthService, functionsUtil, messageUtil, RegisterService, $uibModal, $uibModalInstance, dataConfig) {
                     this.$rootScope = $rootScope;
-                    this.$state = $state;
                     this.AuthService = AuthService;
-                    this.AccountService = AccountService;
                     this.functionsUtil = functionsUtil;
                     this.messageUtil = messageUtil;
-                    this.localStorage = localStorage;
-                    this.dataConfig = dataConfig;
+                    this.RegisterService = RegisterService;
                     this.$uibModal = $uibModal;
                     this.$uibModalInstance = $uibModalInstance;
+                    this.dataConfig = dataConfig;
                     this._init();
                 }
                 ModalForgotPasswordController.prototype._init = function () {
                     var self = this;
                     this.form = {
-                        username: '',
-                        email: '',
-                        password: ''
+                        email: ''
                     };
                     this.validate = {
-                        username: { valid: true, message: '' },
                         email: { valid: true, message: '' },
-                        password: { valid: true, message: '' },
                         globalValidate: { valid: true, message: '' }
                     };
                     this.activate();
@@ -4624,6 +4670,52 @@ var components;
                     }
                     return formValid;
                 };
+                ModalForgotPasswordController.prototype._sendInstructions = function () {
+                    var self = this;
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this.RegisterService.checkEmail(this.form.email).then(function (response) {
+                            var emailExist = true;
+                            if (response.data) {
+                                emailExist = response.data.emailExist || true;
+                            }
+                            else {
+                                emailExist = false;
+                            }
+                            self.validate.globalValidate.valid = emailExist;
+                            if (!emailExist) {
+                                self.validate.globalValidate.message = 'No account exists for ' + self.form.email + '. Maybe you signed up using a different/incorrect e-mail address';
+                            }
+                            else {
+                                self.AuthService.resetPassword(self.form.email).then(function (response) {
+                                    self.messageUtil.info('A link to reset your password has been sent to ' + self.form.email);
+                                    self._openLogInModal();
+                                }, function (error) {
+                                    DEBUG && console.error(error);
+                                });
+                            }
+                        });
+                    }
+                };
+                ModalForgotPasswordController.prototype._openLogInModal = function () {
+                    mixpanel.track("Click on 'Log in' from signUp modal");
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        size: 'sm',
+                        templateUrl: this.dataConfig.modalLogInTmpl,
+                        controller: 'mainApp.components.modal.ModalLogInController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function () {
+                        self.$rootScope.$broadcast('Is Authenticated');
+                    }, function () {
+                        DEBUG && console.info('Modal dismissed at: ' + new Date());
+                    });
+                    this.$uibModalInstance.close();
+                };
                 ModalForgotPasswordController.prototype.close = function () {
                     this.$uibModalInstance.close();
                 };
@@ -4632,15 +4724,13 @@ var components;
             ModalForgotPasswordController.controllerId = 'mainApp.components.modal.ModalForgotPasswordController';
             ModalForgotPasswordController.$inject = [
                 '$rootScope',
-                '$state',
                 'mainApp.auth.AuthService',
-                'mainApp.account.AccountService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.util.messageUtilService',
-                'mainApp.localStorageService',
-                'dataConfig',
+                'mainApp.register.RegisterService',
                 '$uibModal',
-                '$uibModalInstance'
+                '$uibModalInstance',
+                'dataConfig'
             ];
             angular.module('mainApp.components.modal')
                 .controller(ModalForgotPasswordController.controllerId, ModalForgotPasswordController);
@@ -5104,6 +5194,131 @@ var app;
 (function () {
     'use strict';
     angular
+        .module('mainApp.pages.resetPasswordPage', [])
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.resetPasswordPage', {
+            url: '/users/password/edit/:uid/:token',
+            views: {
+                'container': {
+                    templateUrl: 'app/pages/resetPasswordPage/resetPasswordPage.html',
+                    controller: 'mainApp.pages.resetPasswordPage.ResetPasswordPageController',
+                    controllerAs: 'vm'
+                }
+            },
+            parent: 'page',
+            data: {
+                requireLogin: false
+            },
+            params: {
+                uid: null,
+                token: null
+            },
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = true;
+                    $rootScope.activeFooter = true;
+                    $rootScope.activeMessageBar = false;
+                }]
+        });
+    }
+})();
+//# sourceMappingURL=resetPasswordPage.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var resetPasswordPage;
+        (function (resetPasswordPage) {
+            var ResetPasswordPageController = (function () {
+                function ResetPasswordPageController($state, $stateParams, AuthService, functionsUtil, messageUtil) {
+                    this.$state = $state;
+                    this.$stateParams = $stateParams;
+                    this.AuthService = AuthService;
+                    this.functionsUtil = functionsUtil;
+                    this.messageUtil = messageUtil;
+                    this._init();
+                }
+                ResetPasswordPageController.prototype._init = function () {
+                    var self = this;
+                    this.uid = this.$stateParams.uid;
+                    this.token = this.$stateParams.token;
+                    this.form = {
+                        newPassword1: '',
+                        newPassword2: ''
+                    };
+                    this.validate = {
+                        newPassword1: { valid: true, message: '' },
+                        newPassword2: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                ResetPasswordPageController.prototype.activate = function () {
+                    var self = this;
+                    console.log('resetPasswordPage controller actived');
+                };
+                ResetPasswordPageController.prototype._validateForm = function () {
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
+                    var formValid = true;
+                    var password_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.newPassword1 = this.functionsUtil.validator(this.form.newPassword1, password_rules);
+                    if (!this.validate.newPassword1.valid) {
+                        formValid = this.validate.newPassword1.valid;
+                    }
+                    this.validate.newPassword2 = this.functionsUtil.validator(this.form.newPassword2, password_rules);
+                    if (!this.validate.newPassword2.valid) {
+                        formValid = this.validate.newPassword2.valid;
+                    }
+                    if (this.form.newPassword1 !== this.form.newPassword2) {
+                        formValid = false;
+                        this.validate.globalValidate.valid = false;
+                        this.validate.globalValidate.message = 'Your new passwords did not match. Please try again.';
+                    }
+                    return formValid;
+                };
+                ResetPasswordPageController.prototype._changePassword = function () {
+                    var self = this;
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this.AuthService.confirmResetPassword(self.uid, self.token, self.form.newPassword1, self.form.newPassword2).then(function (response) {
+                            DEBUG && console.log(response);
+                            self.messageUtil.success('Cambio exitoso!. Prueba iniciar sesión ahora.');
+                            self.$state.go('page.landingPage', { showLogin: true }, { reload: true });
+                        }, function (error) {
+                            DEBUG && console.log(error);
+                            if (error === 'Invalid value') {
+                                self.validate.globalValidate.valid = false;
+                                self.validate.globalValidate.message = 'El link que te enviamos al correo ya expiro, es necesario que solicites uno nuevo.';
+                            }
+                            else {
+                                self.messageUtil.error('');
+                            }
+                        });
+                    }
+                };
+                return ResetPasswordPageController;
+            }());
+            ResetPasswordPageController.controllerId = 'mainApp.pages.resetPasswordPage.ResetPasswordPageController';
+            ResetPasswordPageController.$inject = [
+                '$state',
+                '$stateParams',
+                'mainApp.auth.AuthService',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.core.util.messageUtilService'
+            ];
+            resetPasswordPage.ResetPasswordPageController = ResetPasswordPageController;
+            angular
+                .module('mainApp.pages.resetPasswordPage')
+                .controller(ResetPasswordPageController.controllerId, ResetPasswordPageController);
+        })(resetPasswordPage = pages.resetPasswordPage || (pages.resetPasswordPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=resetPasswordPage.controller.js.map
+(function () {
+    'use strict';
+    angular
         .module('mainApp.pages.landingPage', [])
         .config(config);
     function config($stateProvider) {
@@ -5120,6 +5335,9 @@ var app;
             parent: 'page',
             data: {
                 requireLogin: false
+            },
+            params: {
+                showLogin: false,
             },
             cache: false,
             onEnter: ['$rootScope', function ($rootScope) {
@@ -5223,6 +5441,9 @@ var app;
                             }
                         };
                         var modalInstance = this.$uibModal.open(options);
+                    }
+                    if (this.$stateParams.showLogin) {
+                        this._openLogInModal();
                     }
                     this._subscribeToEvents();
                 };
@@ -6309,7 +6530,7 @@ var app;
             },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
-                    $rootScope.activeFooter = false;
+                    $rootScope.activeFooter = true;
                     $rootScope.activeMessageBar = false;
                 }]
         });
@@ -6604,11 +6825,6 @@ var app;
                 TeacherInfoSectionController.prototype.goToNext = function () {
                     var formValid = this._validateForm();
                     if (formValid) {
-                        mixpanel.track("Enter: Basic Info on Create Teacher", {
-                            "name": this.form.firstName + ' ' + this.form.lastName,
-                            "email": this.form.email,
-                            "phone": this.form.phoneNumber
-                        });
                         this._setDataModelFromForm();
                         this.$scope.$emit('Save Data');
                         this.$state.go(this.STEP2_STATE, { reload: true });
@@ -6763,6 +6979,11 @@ var app;
                     this.$rootScope.teacherData.Born = this.form.born;
                     this.$rootScope.teacherData.About = this.form.about;
                     this.$rootScope.teacherData.Recommended = recommended ? recommended : null;
+                    mixpanel.track("Enter: Basic Info on Create Teacher", {
+                        "name": this.$rootScope.teacherData.FirstName + ' ' + this.$rootScope.teacherData.LastName,
+                        "email": this.$rootScope.teacherData.Email,
+                        "phone": this.$rootScope.teacherData.PhoneNumber
+                    });
                 };
                 TeacherInfoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
