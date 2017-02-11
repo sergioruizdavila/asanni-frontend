@@ -64,6 +64,7 @@ var components;
                                     self._openLogInModal();
                                 }, function (error) {
                                     DEBUG && console.error(error);
+                                    self.messageUtil.error('');
                                 });
                             }
                         });
