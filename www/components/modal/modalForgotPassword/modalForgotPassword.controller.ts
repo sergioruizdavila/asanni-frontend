@@ -182,6 +182,7 @@ module components.modal.modalForgotPassword {
                                 //Error
                                 function(error) {
                                     DEBUG && console.error(error);
+                                    self.messageUtil.error('');
                                 }
                             );
                         }
