@@ -156,7 +156,8 @@ gulp.task('serveprod', function() {
   connect.server({
     root: 'www',
     port: process.env.PORT || 5000, // localhost:5000
-    livereload: false
+    livereload: false,
+    fallback: 'www/index.html'
   });
 });
 
