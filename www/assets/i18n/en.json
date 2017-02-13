@@ -19,6 +19,7 @@
     "%global.join_now.button.text": "join now",
 
     "%global.more.label.text": "+ More",
+    "%global.email.label.text": "Email Address",
     "%global.age.text": "years old",
     "%global.teacher.text": "Teacher",
     "%global.teachers.text": "Teachers",
@@ -35,6 +36,8 @@
     "%global.time.text": "/ week",
     "%global.review.text": "reviews",
     "%global.new.label.text": "new",
+    "%global.signup.label.text": "sign up",
+    "%global.login.label.text": "log in",
 
     "%global.validation.null.message.text": "Required",
     "%global.validation.empty.message.text": "Required",
@@ -48,9 +51,11 @@
     "%header.lang.options.en.text": "English",
     "%header.lang.options.es.text": "Spanish",
     "%header.search.placeholder.text": "Where to?",
-    "%header.join.teacher.tooltip.first_part.text.legacy": "A teacher on Waysily earns",
-    "%header.join.teacher.tooltip.first_part.text": "A private teacher earns",
-    "%header.join.teacher.tooltip.second_part.text": "on average",
+    "%header.join.teacher.tooltip.first_part.text.legacy": "You could earn",
+    "%header.join.teacher.tooltip.first_part.text.legacy2": "A private teacher earns",
+    "%header.join.teacher.tooltip.first_part.text": "You could earn",
+    "%header.join.teacher.tooltip.second_part.text.legacy": "on average",
+    "%header.join.teacher.tooltip.second_part.text": "as a teacher in your country in a week. Join as a teacher.",
 
     "__FLOAT MESSAGE BAR__": "",
     "%message.bar.text_block.first_part.label.text.bkp": "You have a recommendation from",
@@ -62,6 +67,19 @@
     "%notification.error.server.text": "Server error occurred, try again please",
 
     "__MODALS__": "",
+    "%modal.signup.title.text": "Join the community",
+    "%modal.signup.form.password.text": "Create Password",
+    "%modal.signup.button.text": "Create account",
+    "%modal.signup.help_text.login_button.text": "Already a member?",
+
+    "%modal.login.title.text": "Log in to Waysily",
+    "%modal.login.form.password.text": "Password",
+    "%modal.login.forget_password.link.text": "Can’t log in?",
+    "%modal.login.help_text.signup_button.text": "Not yet a member?",
+
+    "%modal.forgot_password.description.text": "Enter the email address associated with your account. We’ll email you instructions on how to log in.",
+    "%modal.forgot_password.send.button.text": "Send instructions",
+
     "%modal.lang.title.text": "Add New Languages",
     "%modal.lang.help_text.text": "Select one or more languages.",
 
@@ -72,8 +90,8 @@
     "%modal.experience.form.company.placeholder.text": "e.g. Early Birds Institute / Velvet Café",
     "%modal.experience.form.cntry.text": "Country",
     "%modal.experience.form.city.text": "City",
-    "%modal.experience.form.date_start.text": "Start Date",
-    "%modal.experience.form.date_finish.text": "Finish Date",
+    "%modal.experience.form.date_start.text": "Date Start",
+    "%modal.experience.form.date_finish.text": "Date Finish",
     "%modal.experience.form.description.text": "Tell us about your experience",
     "%modal.experience.form.description.placeholder.text": "e.g. I taught people from all over the world, we met in parks and museums to have a complete immersion.",
 
@@ -84,8 +102,8 @@
     "%modal.education.form.school.placeholder.text": "e.g. University of Cambridge / University of Toronto",
     "%modal.education.form.dg.text": "Degree",
     "%modal.education.form.dg.option_list.text": "degree",
-    "%modal.education.form.date_start.text": "Start Date",
-    "%modal.education.form.date_finish.text": "Finish Date",
+    "%modal.education.form.date_start.text": "Date Start",
+    "%modal.education.form.date_finish.text": "Date Finish",
     "%modal.education.form.description.text": "What did you learn?",
     "%modal.education.form.description.placeholder.text": "e.g. I learned in depth the language, its history and grammar. I also learned the proper methodology for teaching.",
 
@@ -105,6 +123,7 @@
     "%modal.recommend.teacher.create_profile.label.text": "Create your profile, it's free!",
 
     "__LANDING PAGE__": "",
+    "legacy": "",
     "%landing.header.join.label.text": "Join as:",
     "%landing.puv": "Find a language Teacher / School",
     "%landing.puv.description": "Waysily is a free community-based platform that helps you find local language tutors / schools in your area.",
@@ -263,7 +282,7 @@
 
     "__TEACHER WELCOME SECTION__":"",
     "%create.teacher.welcome.title.text": "Welcome!, The process takes approximately 10 minutes",
-    "%create.teacher.welcome.subtitle.text": "What kind of teachers are you?",
+    "%create.teacher.welcome.subtitle.text": "What kind of teacher are you?",
     "%create.teacher.welcome.type.hobby.description.text": "Native or near-native speaker that enjoys teaching informally. 18 years or older.",
     "%create.teacher.welcome.type.professional.description.text": "Working Professional that has been trained in foreign language acquisition.",
 
@@ -273,7 +292,7 @@
     "%create.teacher.basic_info.title.text": "Step 1 -  Basic Information",
     "%create.teacher.basic_info.form.first_name.text": "First Name",
     "%create.teacher.basic_info.form.last_name.text": "Last Name",
-    "%create.teacher.basic_info.form.email.text": "Email",
+    "%create.teacher.basic_info.form.email.text": "Email Address",
     "%create.teacher.basic_info.form.phone_number.text": "Phone Number",
     "%create.teacher.basic_info.form.phone_number.placeholder.text": "e.g. 3052345678",
     "%create.teacher.basic_info.form.i_am.text": "I am",

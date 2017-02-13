@@ -5,11 +5,13 @@ var app;
         var landingPage;
         (function (landingPage) {
             var LandingPageController = (function () {
-                function LandingPageController($state, $stateParams, dataConfig, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope, localStorage) {
+                function LandingPageController($scope, $state, $stateParams, dataConfig, $uibModal, AuthService, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope, localStorage) {
+                    this.$scope = $scope;
                     this.$state = $state;
                     this.$stateParams = $stateParams;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
+                    this.AuthService = AuthService;
                     this.messageUtil = messageUtil;
                     this.functionsUtil = functionsUtil;
                     this.LandingPageService = LandingPageService;
@@ -20,6 +22,7 @@ var app;
                     this._init();
                 }
                 LandingPageController.prototype._init = function () {
+                    this.isAuthenticated = this.AuthService.isAuthenticated();
                     this.form = {
                         userData: {
                             name: '',
@@ -70,10 +73,23 @@ var app;
                         };
                         var modalInstance = this.$uibModal.open(options);
                     }
+                    if (this.$stateParams.showLogin) {
+                        this._openLogInModal();
+                    }
+                    this._subscribeToEvents();
                 };
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
                     mixpanel.track("Change Language on landingPage");
+                };
+                LandingPageController.prototype.logout = function () {
+                    var self = this;
+                    this.AuthService.logout().then(function (response) {
+                        self.localStorage.removeItem('currentUser');
+                        window.location.reload();
+                    }, function (response) {
+                        DEBUG && console.log('A problem occured while logging you out.');
+                    });
                 };
                 LandingPageController.prototype._sendCountryFeedback = function () {
                     var FEEDBACK_SUCCESS_MESSAGE = '¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.';
@@ -159,19 +175,46 @@ var app;
                         animation: false,
                         backdrop: 'static',
                         keyboard: false,
+                        size: 'sm',
                         templateUrl: this.dataConfig.modalSignUpTmpl,
                         controller: 'mainApp.components.modal.ModalSignUpController as vm'
                     };
                     var modalInstance = this.$uibModal.open(options);
                     mixpanel.track("Click on 'Join as Student' landing page header");
                 };
+                LandingPageController.prototype._openLogInModal = function () {
+                    mixpanel.track("Click on 'Log in' from landingPage");
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        size: 'sm',
+                        templateUrl: this.dataConfig.modalLogInTmpl,
+                        controller: 'mainApp.components.modal.ModalLogInController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function () {
+                        self.$rootScope.$broadcast('Is Authenticated');
+                    }, function () {
+                        DEBUG && console.info('Modal dismissed at: ' + new Date());
+                    });
+                };
+                LandingPageController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Is Authenticated', function (event, args) {
+                        self.isAuthenticated = self.AuthService.isAuthenticated();
+                    });
+                };
                 return LandingPageController;
             }());
             LandingPageController.controllerId = 'mainApp.pages.landingPage.LandingPageController';
-            LandingPageController.$inject = ['$state',
+            LandingPageController.$inject = ['$scope',
+                '$state',
                 '$stateParams',
                 'dataConfig',
                 '$uibModal',
+                'mainApp.auth.AuthService',
                 'mainApp.core.util.messageUtilService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.pages.landingPage.LandingPageService',

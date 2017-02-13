@@ -60,7 +60,7 @@ module app.models.user {
         */
         getUserById(id): angular.IPromise<any> {
             //VARIABLES
-            let url = 'users/';
+            let url = 'users';
 
             return this.restApi.show({url: url, id: id}).$promise
                 .then(
@@ -84,7 +84,7 @@ module app.models.user {
         */
         getAllUsers(): angular.IPromise<any> {
             //VARIABLES
-            let url = 'users/';
+            let url = 'users';
 
             return this.restApi.query({url: url}).$promise
                 .then(

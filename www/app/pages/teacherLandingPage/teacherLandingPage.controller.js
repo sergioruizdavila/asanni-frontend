@@ -5,14 +5,19 @@ var app;
         var teacherLandingPage;
         (function (teacherLandingPage) {
             var TeacherLandingPageController = (function () {
-                function TeacherLandingPageController(functionsUtil, $state, dataConfig, $uibModal) {
+                function TeacherLandingPageController($scope, functionsUtil, AuthService, $state, dataConfig, $uibModal, $rootScope, localStorage) {
+                    this.$scope = $scope;
                     this.functionsUtil = functionsUtil;
+                    this.AuthService = AuthService;
                     this.$state = $state;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
+                    this.$rootScope = $rootScope;
+                    this.localStorage = localStorage;
                     this._init();
                 }
                 TeacherLandingPageController.prototype._init = function () {
+                    this.isAuthenticated = this.AuthService.isAuthenticated();
                     this.form = {
                         language: this.functionsUtil.getCurrentLanguage() || 'en'
                     };
@@ -25,6 +30,7 @@ var app;
                     var self = this;
                     console.log('teacherLandingPage controller actived');
                     mixpanel.track("Enter: Teacher Landing Page");
+                    this._subscribeToEvents();
                 };
                 TeacherLandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
@@ -36,11 +42,39 @@ var app;
                         animation: false,
                         backdrop: 'static',
                         keyboard: false,
+                        size: 'sm',
                         templateUrl: this.dataConfig.modalSignUpTmpl,
                         controller: 'mainApp.components.modal.ModalSignUpController as vm'
                     };
                     var modalInstance = this.$uibModal.open(options);
                     mixpanel.track("Click on 'Join as Student' teacher landing page header");
+                };
+                TeacherLandingPageController.prototype._openLogInModal = function () {
+                    mixpanel.track("Click on 'Log in' from teacher landing page");
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        size: 'sm',
+                        templateUrl: this.dataConfig.modalLogInTmpl,
+                        controller: 'mainApp.components.modal.ModalLogInController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function () {
+                        self.$rootScope.$broadcast('Is Authenticated');
+                    }, function () {
+                        DEBUG && console.info('Modal dismissed at: ' + new Date());
+                    });
+                };
+                TeacherLandingPageController.prototype.logout = function () {
+                    var self = this;
+                    this.AuthService.logout().then(function (response) {
+                        self.localStorage.removeItem('currentUser');
+                        window.location.reload();
+                    }, function (response) {
+                        DEBUG && console.log('A problem occured while logging you out.');
+                    });
                 };
                 TeacherLandingPageController.prototype._buildFakeTeacher = function () {
                     this.fake = new app.models.teacher.Teacher();
@@ -83,13 +117,23 @@ var app;
                     };
                     this.$state.go('page.createTeacherPage.start', params, { reload: true });
                 };
+                TeacherLandingPageController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Is Authenticated', function (event, args) {
+                        self.isAuthenticated = self.AuthService.isAuthenticated();
+                    });
+                };
                 return TeacherLandingPageController;
             }());
             TeacherLandingPageController.controllerId = 'mainApp.pages.teacherLandingPage.TeacherLandingPageController';
-            TeacherLandingPageController.$inject = ['mainApp.core.util.FunctionsUtilService',
+            TeacherLandingPageController.$inject = ['$scope',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.auth.AuthService',
                 '$state',
                 'dataConfig',
-                '$uibModal'];
+                '$uibModal',
+                '$rootScope',
+                'mainApp.localStorageService'];
             teacherLandingPage.TeacherLandingPageController = TeacherLandingPageController;
             angular
                 .module('mainApp.pages.teacherLandingPage')

@@ -197,6 +197,42 @@
 .space-left-12 {
     margin-left: 72px;
 }
+.space-13 {
+    margin-bottom: 78px;
+}
+.space-top-13 {
+    margin-top: 78px;
+}
+.space-right-13 {
+    margin-right: 78px;
+}
+.space-left-13 {
+    margin-left: 78px;
+}
+.space-14 {
+    margin-bottom: 84px;
+}
+.space-top-14 {
+    margin-top: 84px;
+}
+.space-right-14 {
+    margin-right: 84px;
+}
+.space-left-14 {
+    margin-left: 84px;
+}
+.space-15 {
+    margin-bottom: 90px;
+}
+.space-top-15 {
+    margin-top: 90px;
+}
+.space-right-15 {
+    margin-right: 90px;
+}
+.space-left-15 {
+    margin-left: 90px;
+}
 
 .padding-reset {
     padding: 0;
@@ -338,6 +374,7 @@ body.mainApp {
     line-height: $global-lineheight;
     color: $body-font-color;
     overflow-x: hidden;
+    height: 100%;
 
     .row:before {
         display: inherit;
@@ -393,6 +430,11 @@ body.mainApp {
     .footer-separator {
         display: block;
         height: 20px;
+    }
+
+    .app_content {
+        min-height: 100%;
+        position: relative;
     }
 
 

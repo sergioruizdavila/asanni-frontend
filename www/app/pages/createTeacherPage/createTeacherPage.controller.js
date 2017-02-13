@@ -5,7 +5,7 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var CreateTeacherPageController = (function () {
-                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, messageUtil, localStorage, dataConfig, $state, $stateParams, $filter, $scope, $window, $rootScope, $uibModal) {
+                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, messageUtil, localStorage, dataConfig, $state, $stateParams, $filter, $scope, $window, $rootScope, $uibModal, waitForAuth) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
                     this.teacherService = teacherService;
@@ -120,7 +120,8 @@ var app;
                 '$scope',
                 '$window',
                 '$rootScope',
-                '$uibModal'
+                '$uibModal',
+                'waitForAuth'
             ];
             createTeacherPage.CreateTeacherPageController = CreateTeacherPageController;
             angular
