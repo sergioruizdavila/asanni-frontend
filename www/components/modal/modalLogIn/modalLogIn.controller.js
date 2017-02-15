@@ -50,8 +50,9 @@ var components;
                             self.AuthService.login(self.form).then(function (response) {
                                 self.AccountService.getAccount().then(function (response) {
                                     DEBUG && console.log('Data User: ', response);
-                                    self.localStorage.setItem('currentUser', JSON.stringify(response));
-                                    self.$rootScope.currentUser = JSON.parse(self.localStorage.getItem('currentUser'));
+                                    self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
+                                    self.$rootScope.userData = response;
+                                    self.$rootScope.profileData = new app.models.user.Profile(response);
                                     self.$uibModalInstance.close();
                                 });
                             }, function (response) {

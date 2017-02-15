@@ -26,11 +26,11 @@ module app.pages.studentLandingPage {
     }
 
     export interface IStudentLandingForm {
-        userData: IUserData;
+        userData: IUserDataStudentLanding;
         language: string;
     }
 
-    export interface IUserData {
+    export interface IUserDataStudentLanding {
         name: string;
         comment: string;
         email: string;

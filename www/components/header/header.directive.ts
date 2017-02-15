@@ -183,7 +183,7 @@ module components.header {
             this.AuthService.logout().then(
                 function(response) {
                     // Success
-                    self.localStorage.removeItem('currentUser');
+                    self.localStorage.removeItem(self.dataConfig.userDataLocalStorage);
                     window.location.reload();
                 },
                 function(response) {

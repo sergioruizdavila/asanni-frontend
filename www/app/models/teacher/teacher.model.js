@@ -1,57 +1,92 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var app;
 (function (app) {
     var models;
     (function (models) {
         var teacher;
         (function (teacher) {
-            var Teacher = (function (_super) {
-                __extends(Teacher, _super);
+            var Teacher = (function () {
                 function Teacher(obj) {
                     if (obj === void 0) { obj = {}; }
-                    var _this;
                     console.log('Teacher Model instanced');
-                    _this = _super.call(this, obj) || this;
-                    _this.languages = new Language(obj.languages);
-                    _this.type = obj.type || '';
-                    _this.teacherSince = obj.teacherSince || '';
-                    _this.methodology = obj.methodology || '';
-                    _this.immersion = new Immersion(obj.immersion);
-                    _this.price = new Price(obj.price);
+                    if (obj === null)
+                        obj = {};
+                    this.id = obj.id || '';
+                    this.profileId = obj.profileId || '';
+                    this.location = new app.models.user.Location(obj.location);
+                    this.languages = new Language(obj.languages);
+                    this.type = obj.type || '';
+                    this.teacherSince = obj.teacherSince || '';
+                    this.methodology = obj.methodology || '';
+                    this.immersion = new Immersion(obj.immersion);
+                    this.price = new Price(obj.price);
                     if (obj != {}) {
-                        _this.experiences = [];
+                        this.experiences = [];
                         for (var key in obj.experiences) {
                             var experienceInstance = new Experience(obj.experiences[key]);
-                            _this.addExperience(experienceInstance);
+                            this.addExperience(experienceInstance);
                         }
-                        _this.educations = [];
+                        this.educations = [];
                         for (var key in obj.educations) {
                             var educationInstance = new Education(obj.educations[key]);
-                            _this.addEducation(educationInstance);
+                            this.addEducation(educationInstance);
                         }
-                        _this.certificates = [];
+                        this.certificates = [];
                         for (var key in obj.certificates) {
                             var certificateInstance = new Certificate(obj.certificates[key]);
-                            _this.addCertificate(certificateInstance);
+                            this.addCertificate(certificateInstance);
                         }
-                        _this.ratings = [];
+                        this.ratings = [];
                         for (var key in obj.ratings) {
                             var ratingInstance = new Rating(obj.ratings[key]);
-                            _this.addRating(ratingInstance);
+                            this.addRating(ratingInstance);
                         }
                     }
                     else {
-                        _this.experiences = [];
-                        _this.educations = [];
-                        _this.certificates = [];
-                        _this.ratings = [];
+                        this.experiences = [];
+                        this.educations = [];
+                        this.certificates = [];
+                        this.ratings = [];
                     }
-                    return _this;
                 }
+                Object.defineProperty(Teacher.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply id of teacher';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Teacher.prototype, "ProfileId", {
+                    get: function () {
+                        return this.profileId;
+                    },
+                    set: function (profileId) {
+                        if (profileId === undefined) {
+                            throw 'Please supply user profile id';
+                        }
+                        this.profileId = profileId;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Teacher.prototype, "Location", {
+                    get: function () {
+                        return this.location;
+                    },
+                    set: function (location) {
+                        if (location === undefined) {
+                            throw 'Please supply profile location';
+                        }
+                        this.location = location;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 Object.defineProperty(Teacher.prototype, "Languages", {
                     get: function () {
                         return this.languages;
@@ -236,12 +271,14 @@ var app;
                     configurable: true
                 });
                 return Teacher;
-            }(app.models.user.User));
+            }());
             teacher.Teacher = Teacher;
             var Language = (function () {
                 function Language(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Languages Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.native = obj.native || [];
@@ -320,6 +357,8 @@ var app;
                 function Experience(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Experience Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.position = obj.position || '';
@@ -454,6 +493,8 @@ var app;
                 function Education(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Education Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.school = obj.school || '';
@@ -574,6 +615,8 @@ var app;
                 function Certificate(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Certificate Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.name = obj.name || '';
@@ -666,6 +709,8 @@ var app;
                 function Immersion(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Certificate Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.active = obj.active || false;
@@ -744,6 +789,8 @@ var app;
                 function TypeOfImmersion(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('TypeOfImmersion Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.category = obj.category || '';
@@ -794,6 +841,8 @@ var app;
                 function Price(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Price of Teacher Class Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.privateClass = new TypeOfPrice(obj.privateClass);
@@ -858,6 +907,8 @@ var app;
                 function TypeOfPrice(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('TypeOfPrice Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.active = obj.active || false;
@@ -922,6 +973,8 @@ var app;
                 function Rating(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Rating Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.author = new app.models.student.Student(obj.author);

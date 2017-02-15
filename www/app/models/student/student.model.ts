@@ -14,9 +14,10 @@ module app.models.student {
     /*           CLASS DEFINITION           */
     /****************************************/
 
-    export class Student extends app.models.user.User {
+    export class Student {
 
         /*-- PROPERTIES --*/
+        private id: string;
         private school: string;
         private occupation: string;
         private fluent_in: Array<string>;
@@ -31,7 +32,7 @@ module app.models.student {
             console.log('Student Model instanced');
 
             //init properties
-            super(obj);
+            this.id = obj.id || '';
             this.school = obj.school || '';
             this.occupation = obj.occupation || '';
             this.fluent_in = obj.fluent_in || '';
@@ -43,6 +44,15 @@ module app.models.student {
         /**********************************/
         /*             METHODS            */
         /**********************************/
+
+        get Id() {
+            return this.id;
+        }
+
+        set Id(id: string) {
+            if (id === undefined) { throw 'Please supply id'; }
+            this.id = id;
+        }
 
         get School() {
             return this.school;

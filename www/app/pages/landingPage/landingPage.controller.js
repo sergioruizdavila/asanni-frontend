@@ -85,7 +85,7 @@ var app;
                 LandingPageController.prototype.logout = function () {
                     var self = this;
                     this.AuthService.logout().then(function (response) {
-                        self.localStorage.removeItem('currentUser');
+                        self.localStorage.removeItem(self.dataConfig.userDataLocalStorage);
                         window.location.reload();
                     }, function (response) {
                         DEBUG && console.log('A problem occured while logging you out.');

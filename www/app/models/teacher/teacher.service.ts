@@ -14,6 +14,7 @@ module app.models.teacher {
     /**********************************/
     export interface ITeacherService {
         getTeacherById: (id: string) => angular.IPromise<any>;
+        getTeacherByProfileId: (profileId: string) => angular.IPromise<any>;
         getAllTeachers: () => angular.IPromise<any>;
         getAllTeachersByStatus: (status) => angular.IPromise<any>;
         createTeacher: (teacher: app.models.teacher.Teacher) => angular.IPromise<any>;
@@ -45,6 +46,7 @@ module app.models.teacher {
         /*           PROPERTIES           */
         /**********************************/
         TEACHER_URI: string;
+        PROFILE_TEACHER_URI: string;
         STATUS_TEACHER_URI: string;
         EXPERIENCES_URI: string;
         EDUCATIONS_URI: string;
@@ -54,19 +56,23 @@ module app.models.teacher {
 
         /*-- INJECT DEPENDENCIES --*/
         static $inject = [
-            'mainApp.core.restApi.restApiService'
+            'mainApp.core.restApi.restApiService',
+            '$q'
         ];
 
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        constructor(private restApi: app.core.restApi.IRestApi) {
+        constructor(
+            private restApi: app.core.restApi.IRestApi,
+            private $q: angular.IQService) {
             //LOG
             console.log('teacher service instanced');
 
             //CONSTANTS
             this.TEACHER_URI = 'teachers';
+            this.PROFILE_TEACHER_URI = 'teachers?profileId=';
             this.STATUS_TEACHER_URI = 'teachers?status=';
             this.EXPERIENCES_URI = 'experiences';
             this.EDUCATIONS_URI = 'educations';
@@ -80,7 +86,7 @@ module app.models.teacher {
         /**
         * getTeacherById
         * @description - get teacher by Id
-        * @use - this.TeacherService.getUserById('98d667ae');
+        * @use - this.TeacherService.getTeacherById('98d667ae');
         * @function
         * @params {string} id - user id
         * @return {angular.IPromise<any>} promise - return teacher by Id
@@ -88,17 +94,53 @@ module app.models.teacher {
         getTeacherById(id): angular.IPromise<any> {
             //VARIABLES
             let url = this.TEACHER_URI;
+            let deferred = this.$q.defer();
 
-            return this.restApi.show({url: url, id: id}).$promise
+            this.restApi.show({url: url, id: id}).$promise
                 .then(
-                    function(data) {
-                        return data;
+                    function(response) {
+                        deferred.resolve(response);
                     },
                     function(error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     }
                 );
+
+            return deferred.promise;
+        }
+
+
+
+        /**
+        * getTeacherByProfileId
+        * @description - get teacher by user profile id filter value
+        * @function
+        * @return {angular.IPromise<any>} return a promise with user profile teacher data
+        */
+        getTeacherByProfileId(profileId): angular.IPromise<any> {
+            //VARIABLES
+            let url = this.PROFILE_TEACHER_URI + profileId;
+            let deferred = this.$q.defer();
+
+            this.restApi.queryObject({url: url}).$promise
+                .then(
+                    function(response) {
+                        if(response.results) {
+                            let res = response.results[0] ? response.results[0] : '';
+                            deferred.resolve(res);
+                        } else {
+                            DEBUG && console.error(response);
+                            deferred.reject(response);
+                        }
+                    },
+                    function(error) {
+                        DEBUG && console.error(error);
+                        deferred.reject(error);
+                    }
+                );
+
+            return deferred.promise;
         }
 
 
@@ -112,18 +154,20 @@ module app.models.teacher {
         getAllTeachersByStatus(status): angular.IPromise<any> {
             //VARIABLES
             let url = this.STATUS_TEACHER_URI + status;
+            let deferred = this.$q.defer();
 
-            return this.restApi.queryObject({url: url}).$promise
+            this.restApi.queryObject({url: url}).$promise
                 .then(
-                    function(data) {
-                        return data;
+                    function(response) {
+                        deferred.resolve(response);
                     },
                     function(error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     }
                 );
 
+            return deferred.promise;
         }
 
 
@@ -137,17 +181,20 @@ module app.models.teacher {
         getAllTeachers(): angular.IPromise<any> {
             //VARIABLES
             let url = this.TEACHER_URI;
+            let deferred = this.$q.defer();
 
-            return this.restApi.queryObject({url: url}).$promise
+            this.restApi.queryObject({url: url}).$promise
                 .then(
-                    function(data) {
-                        return data;
+                    function(response) {
+                        deferred.resolve(response);
                     },
                     function(error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     }
                 );
+
+            return deferred.promise;
         }
 
 
@@ -163,17 +210,20 @@ module app.models.teacher {
         createTeacher(teacher): ng.IPromise<any> {
             //VARIABLES
             let url = this.TEACHER_URI;
+            let deferred = this.$q.defer();
 
-            return this.restApi.create({ url: url }, teacher).$promise
+            this.restApi.create({ url: url }, teacher).$promise
                 .then(
                     function (response) {
-                        return response;
+                        deferred.resolve(response);
                     },
                     function (error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     }
                 );
+
+            return deferred.promise;
         }
 
 
@@ -189,17 +239,20 @@ module app.models.teacher {
         updateTeacher(teacher): ng.IPromise<any> {
             //VARIABLES
             let url = this.TEACHER_URI;
+            let deferred = this.$q.defer();
 
-            return this.restApi.update({ url: url, id: teacher.Id }, teacher).$promise
+            this.restApi.update({ url: url, id: teacher.Id }, teacher).$promise
                 .then(
                     function (response) {
-                        return response;
+                        deferred.resolve(response);
                     },
                     function (error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     }
                 );
+
+            return deferred.promise;
         }
 
 
@@ -216,17 +269,20 @@ module app.models.teacher {
         createExperience(teacherId, experience): angular.IPromise<any> {
             //VARIABLES
             let url = this.TEACHER_URI + '/' + teacherId + '/' + this.EXPERIENCES_URI;
+            let deferred = this.$q.defer();
 
-            return this.restApi.create({ url: url }, experience).$promise
+            this.restApi.create({ url: url }, experience).$promise
                 .then(
                     function (response) {
-                        return response;
+                        deferred.resolve(response);
                     },
                     function (error) {
                         DEBUG && console.log(error);
-                        return error;
+                        deferred.reject(error);
                     }
                 );
+
+            return deferred.promise;
         }
 
 
@@ -243,17 +299,20 @@ module app.models.teacher {
         updateExperience(teacherId, experience): ng.IPromise<any> {
             //VARIABLES
             let url = this.TEACHER_URI + '/' + teacherId + '/' + this.EXPERIENCES_URI;
+            let deferred = this.$q.defer();
 
-            return this.restApi.update({ url: url, id: experience.Id }, experience).$promise
+            this.restApi.update({ url: url, id: experience.Id }, experience).$promise
                 .then(
                     function (response) {
-                        return response;
+                        deferred.resolve(response);
                     },
                     function (error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     }
                 );
+
+            return deferred.promise;
         }
 
 
@@ -270,17 +329,20 @@ module app.models.teacher {
         createEducation(teacherId, education): angular.IPromise<any> {
             //VARIABLES
             let url = this.TEACHER_URI + '/' + teacherId + '/' + this.EDUCATIONS_URI;
+            let deferred = this.$q.defer();
 
-            return this.restApi.create({ url: url }, education).$promise
+            this.restApi.create({ url: url }, education).$promise
                 .then(
                     function (response) {
-                        return response;
+                        deferred.resolve(response);
                     },
                     function (error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     }
                 );
+
+            return deferred.promise;
         }
 
 
@@ -297,17 +359,20 @@ module app.models.teacher {
         updateEducation(teacherId, education): ng.IPromise<any> {
             //VARIABLES
             let url = this.TEACHER_URI + '/' + teacherId + '/' + this.EDUCATIONS_URI;
+            let deferred = this.$q.defer();
 
-            return this.restApi.update({ url: url, id: education.Id }, education).$promise
+            this.restApi.update({ url: url, id: education.Id }, education).$promise
                 .then(
                     function (response) {
-                        return response;
+                        deferred.resolve(response);
                     },
                     function (error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     }
                 );
+
+            return deferred.promise;
         }
 
 
@@ -324,17 +389,20 @@ module app.models.teacher {
         createCertificate(teacherId, certificate): angular.IPromise<any> {
             //VARIABLES
             let url = this.TEACHER_URI + '/' + teacherId + '/' + this.CERTIFICATES_URI;
+            let deferred = this.$q.defer();
 
-            return this.restApi.create({ url: url }, certificate).$promise
+            this.restApi.create({ url: url }, certificate).$promise
                 .then(
                     function (response) {
-                        return response;
+                        deferred.resolve(response);
                     },
                     function (error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     }
                 );
+
+            return deferred.promise;
         }
 
 
@@ -351,19 +419,21 @@ module app.models.teacher {
         updateCertificate(teacherId, certificate): ng.IPromise<any> {
             //VARIABLES
             let url = this.TEACHER_URI + '/' + teacherId + '/' + this.CERTIFICATES_URI;
+            let deferred = this.$q.defer();
 
-            return this.restApi.update({ url: url, id: certificate.Id }, certificate).$promise
+            this.restApi.update({ url: url, id: certificate.Id }, certificate).$promise
                 .then(
                     function (response) {
-                        return response;
+                        deferred.resolve(response);
                     },
                     function (error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     }
                 );
-        }
 
+            return deferred.promise;
+        }
 
 
     }

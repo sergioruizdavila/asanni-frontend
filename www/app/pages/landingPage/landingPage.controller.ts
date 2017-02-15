@@ -26,12 +26,12 @@ module app.pages.landingPage {
     }
 
     export interface ILandingForm {
-        userData: IUserData;
+        userData: IUserDataLanding;
         language: string;
         feedback: app.models.feedback.Feedback;
     }
 
-    export interface IUserData {
+    export interface IUserDataLanding {
         name: string;
         email: string;
         comment: string;
@@ -236,7 +236,7 @@ module app.pages.landingPage {
             this.AuthService.logout().then(
                 function(response) {
                     // Success
-                    self.localStorage.removeItem('currentUser');
+                    self.localStorage.removeItem(self.dataConfig.userDataLocalStorage);
                     window.location.reload();
                 },
                 function(response) {

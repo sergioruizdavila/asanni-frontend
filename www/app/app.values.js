@@ -4,7 +4,7 @@ DEBUG = true;
     var BASE_URL = 'https://waysily-server.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/teachers-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/teachers-avatar-dev';
     }
     var dataConfig = {
@@ -35,7 +35,9 @@ DEBUG = true;
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
         userId: '',
+        userDataLocalStorage: 'waysily.userData',
         teacherIdLocalStorage: 'waysily.teacher_id',
+        teacherDataLocalStorage: 'waysily.teacherData',
         earlyIdLocalStorage: 'waysily.early_id',
         cookieName: 'token'
     };

@@ -21,7 +21,7 @@ module components.modal.modalLogIn {
 
     }
 
-    interface IModalLogInForm extends app.core.interfaces.IUserDataAuth {
+    interface IModalLogInForm {
         username: string;
         email: string;
         password: string;
@@ -155,11 +155,11 @@ module components.modal.modalLogIn {
                                         DEBUG && console.log('Data User: ', response);
 
                                         //Set logged User data in localStorage
-                                        self.localStorage.setItem('currentUser', JSON.stringify(response));
+                                        self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
                                         //Set logged User data in $rootScope
-                                        //TODO: Crear un modelo: Account, y crear un objeto
-                                        // tipo Account: new app.models.Account();
-                                        self.$rootScope.currentUser = JSON.parse(self.localStorage.getItem('currentUser'));
+                                        self.$rootScope.userData = response;
+                                        self.$rootScope.profileData = new app.models.user.Profile(response);
+                                        //self.$rootScope.profileData = JSON.parse(self.localStorage.getItem('userData'));
                                         //Close modal
                                         self.$uibModalInstance.close();
                                     }

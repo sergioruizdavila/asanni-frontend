@@ -8,13 +8,27 @@ module app.core.interfaces {
     /*     ROOTSCOPE INTERFACE     */
     /*******************************/
     export interface IMainAppRootScope extends angular.IRootScopeService {
+        userData: IUserData;
+        profileData: app.models.user.Profile;
         teacher_id: string;
         teacherData: app.models.teacher.Teacher;
         language_doc: angular.translate.ITranslateProvider;
         activeHeader: boolean;
         activeFooter: boolean;
         activeMessageBar: boolean;
-        currentUser: any;
+    }
+
+    /***********************************/
+    /*         USER DATA MODEL         */
+    /***********************************/
+    export interface IUserData {
+        id: string;
+        username: string;
+        email: string;
+        password: string;
+        firstName: string;
+        lastName: string;
+        groups: Array<string>;
     }
 
     //TODO: Remover cuando ya no sea necesario

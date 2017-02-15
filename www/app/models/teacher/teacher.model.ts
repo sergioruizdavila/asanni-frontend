@@ -13,9 +13,12 @@ module app.models.teacher {
     /*           TEACHER CLASS DEFINITION           */
     /************************************************/
 
-    export class Teacher extends app.models.user.User {
+    export class Teacher {
 
         /*-- PROPERTIES --*/
+        private id: string;
+        private profileId: string;
+        private location: app.models.user.Location;
         private languages: Language;
         private type: string;
         private teacherSince: string;
@@ -35,8 +38,12 @@ module app.models.teacher {
             //LOG
             console.log('Teacher Model instanced');
 
+            if(obj === null) obj = {};
+
             //init properties
-            super(obj);
+            this.id = obj.id || '';
+            this.profileId = obj.profileId || '';
+            this.location = new app.models.user.Location(obj.location);
             this.languages = new Language(obj.languages);
             this.type = obj.type || '';
             this.teacherSince = obj.teacherSince || '';
@@ -82,6 +89,33 @@ module app.models.teacher {
         /**********************************/
         /*             METHODS            */
         /**********************************/
+
+        get Id() {
+            return this.id;
+        }
+
+        set Id(id: string) {
+            if (id === undefined) { throw 'Please supply id of teacher'; }
+            this.id = id;
+        }
+
+        get ProfileId() {
+            return this.profileId;
+        }
+
+        set ProfileId(profileId: string) {
+            if (profileId === undefined) { throw 'Please supply user profile id'; }
+            this.profileId = profileId;
+        }
+
+        get Location() {
+            return this.location;
+        }
+
+        set Location(location: app.models.user.Location) {
+            if (location === undefined) { throw 'Please supply profile location'; }
+            this.location = location;
+        }
 
         get Languages() {
             return this.languages;
@@ -245,6 +279,8 @@ module app.models.teacher {
             //LOG
             console.log('Languages Model instanced');
 
+            if(obj === null) obj = {};
+
             //init properties
             this.id = obj.id;
             this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
@@ -331,6 +367,8 @@ module app.models.teacher {
         constructor(obj: any = {}) {
             //LOG
             console.log('Experience Model instanced');
+
+            if(obj === null) obj = {};
 
             //init properties
             this.id = obj.id;
@@ -458,6 +496,8 @@ module app.models.teacher {
             //LOG
             console.log('Education Model instanced');
 
+            if(obj === null) obj = {};
+
             //init properties
             this.id = obj.id;
             this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
@@ -572,6 +612,8 @@ module app.models.teacher {
             //LOG
             console.log('Certificate Model instanced');
 
+            if(obj === null) obj = {};
+
             //init properties
             this.id = obj.id;
             this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
@@ -665,6 +707,8 @@ module app.models.teacher {
             //LOG
             console.log('Certificate Model instanced');
 
+            if(obj === null) obj = {};
+
             //init properties
             this.id = obj.id;
             this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
@@ -745,6 +789,8 @@ module app.models.teacher {
             //LOG
             console.log('TypeOfImmersion Model instanced');
 
+            if(obj === null) obj = {};
+
             //init properties
             this.id = obj.id;
             this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
@@ -805,6 +851,8 @@ module app.models.teacher {
         constructor(obj: any = {}) {
             //LOG
             console.log('Price of Teacher Class Model instanced');
+
+            if(obj === null) obj = {};
 
             //init properties
             this.id = obj.id;
@@ -876,6 +924,8 @@ module app.models.teacher {
         constructor(obj: any = {}) {
             //LOG
             console.log('TypeOfPrice Model instanced');
+
+            if(obj === null) obj = {};
 
             //init properties
             this.id = obj.id;
@@ -950,6 +1000,8 @@ module app.models.teacher {
         constructor(obj: any = {}) {
             //LOG
             console.log('Rating Model instanced');
+
+            if(obj === null) obj = {};
 
             //init properties
             this.id = obj.id;

@@ -23,12 +23,13 @@ var app;
                     mixpanel.track("Enter: Finish Create Teacher Process");
                 };
                 TeacherFinishSectionController.prototype._finishProcess = function () {
-                    this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
-                    this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, '');
+                    this.localStorage.removeItem(this.dataConfig.teacherIdLocalStorage);
+                    this.localStorage.removeItem(this.dataConfig.earlyIdLocalStorage);
+                    this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
                     mixpanel.track("Finish Process: Create Teacher", {
                         "id": this.$rootScope.teacherData.Id,
-                        "name": this.$rootScope.teacherData.FirstName + ' ' + this.$rootScope.teacherData.LastName,
-                        "email": this.$rootScope.teacherData.Email
+                        "name": this.$rootScope.profileData.FirstName + ' ' + this.$rootScope.profileData.LastName,
+                        "email": this.$rootScope.profileData.Email
                     });
                     this.$state.go('page.landingPage');
                 };
