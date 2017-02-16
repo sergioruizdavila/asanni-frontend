@@ -2,8 +2,6 @@
  * run() run low-level functionality
  * such as authorization, get user info, roles, etc.
  *
- * @param {scope} $rootScope
- * @param {ICurrentUser} currentUser
  * @return {void}
  */
 
@@ -52,7 +50,9 @@
 
         //Get current authenticated user data from localStorage
         if (AuthService.isAuthenticated()) {
-            $rootScope.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            //VARIABLES
+            let userAccountInfo = JSON.parse(localStorage.getItem(dataConfig.userDataLocalStorage));
+            $rootScope.userData = userAccountInfo;
         }
 
         //Validate each state if require login
@@ -60,7 +60,7 @@
 
             if(toState.data.requireLogin && !AuthService.isAuthenticated()) {
                 /* Unauthenticated request to a route requiring auth is
-                   redirected to /#/login */
+                   redirected to main page (page.landingPage) */
                 event.preventDefault();
                 $state.go('page.landingPage');
             }

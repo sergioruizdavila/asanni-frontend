@@ -94,7 +94,7 @@ DEBUG = true;
     var BASE_URL = 'https://waysily-server.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/teachers-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/teachers-avatar-dev';
     }
     var dataConfig = {
@@ -125,7 +125,8 @@ DEBUG = true;
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
         userId: '',
-        teacherIdLocalStorage: 'waysily.teacher_id',
+        userDataLocalStorage: 'waysily.userData',
+        teacherDataLocalStorage: 'waysily.teacherData',
         earlyIdLocalStorage: 'waysily.early_id',
         cookieName: 'token'
     };
@@ -166,7 +167,8 @@ DEBUG = true;
             });
         }
         if (AuthService.isAuthenticated()) {
-            $rootScope.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            var userAccountInfo = JSON.parse(localStorage.getItem(dataConfig.userDataLocalStorage));
+            $rootScope.userData = userAccountInfo;
         }
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
             if (toState.data.requireLogin && !AuthService.isAuthenticated()) {
@@ -195,13 +197,14 @@ var app;
     (function (auth) {
         'use strict';
         var AuthService = (function () {
-            function AuthService($q, $timeout, $cookies, OAuth, restApi, dataConfig) {
+            function AuthService($q, $timeout, $cookies, OAuth, restApi, dataConfig, localStorage) {
                 this.$q = $q;
                 this.$timeout = $timeout;
                 this.$cookies = $cookies;
                 this.OAuth = OAuth;
                 this.restApi = restApi;
                 this.dataConfig = dataConfig;
+                this.localStorage = localStorage;
                 DEBUG && console.log('auth service called');
                 this.AUTH_RESET_PASSWORD_URI = 'rest-auth/password/reset/';
                 this.AUTH_CONFIRM_RESET_PASSWORD_URI = 'rest-auth/password/reset/confirm/';
@@ -214,6 +217,8 @@ var app;
             AuthService.prototype.forceLogout = function () {
                 DEBUG && console.log("Forcing logout");
                 this.$cookies.remove(this.dataConfig.cookieName);
+                this.localStorage.removeItem(this.dataConfig.userDataLocalStorage);
+                this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
             };
             AuthService.prototype.resetPassword = function (email) {
                 var url = this.AUTH_RESET_PASSWORD_URI;
@@ -270,6 +275,8 @@ var app;
                 var deferred = this.$q.defer();
                 this.OAuth.revokeToken().then(function (response) {
                     DEBUG && console.info("Logged out successfuly!");
+                    self.localStorage.removeItem(self.dataConfig.userDataLocalStorage);
+                    self.localStorage.removeItem(self.dataConfig.teacherDataLocalStorage);
                     deferred.resolve(response);
                 }, function (response) {
                     DEBUG && console.error("Error while logging you out!");
@@ -325,7 +332,8 @@ var app;
             '$cookies',
             'OAuth',
             'mainApp.core.restApi.restApiService',
-            'dataConfig'];
+            'dataConfig',
+            'mainApp.localStorageService'];
         auth.AuthService = AuthService;
         angular
             .module('mainApp.auth', [])
@@ -1130,223 +1138,199 @@ var app;
                 Status[Status["validated"] = 1] = "validated";
                 Status[Status["verified"] = 2] = "verified";
             })(Status = user.Status || (user.Status = {}));
-            var User = (function () {
-                function User(obj) {
+            var Profile = (function () {
+                function Profile(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('User Model instanced');
-                    this.id = obj.id;
-                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
-                    this.avatar = obj.avatar;
+                    DEBUG && console.log('Profile Model instanced');
+                    if (obj === null)
+                        obj = {};
+                    this.userId = obj.userId || '';
+                    this.avatar = obj.avatar || '';
                     this.username = obj.username || '';
                     this.email = obj.email || '';
                     this.phoneNumber = obj.phoneNumber || '';
                     this.firstName = obj.firstName || '';
                     this.lastName = obj.lastName || '';
-                    this.sex = obj.sex || '';
+                    this.gender = obj.gender || '';
                     this.birthDate = obj.birthDate || '';
                     this.born = obj.born || '';
                     this.about = obj.about || '';
-                    this.location = new Location(obj.location);
                     this.status = obj.status || 'NW';
                     this.createdAt = obj.createdAt || '';
                 }
-                Object.defineProperty(User.prototype, "Id", {
+                Object.defineProperty(Profile.prototype, "UserId", {
                     get: function () {
-                        return this.id;
+                        return this.userId;
                     },
-                    set: function (id) {
-                        if (id === undefined) {
-                            throw 'Please supply id';
+                    set: function (userId) {
+                        if (userId === undefined) {
+                            throw 'Please supply profile userId';
                         }
-                        this.id = id;
+                        this.userId = userId;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Uid", {
-                    get: function () {
-                        return this.uid;
-                    },
-                    set: function (uid) {
-                        if (uid === undefined) {
-                            throw 'Please supply user uid';
-                        }
-                        this.uid = uid;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "Avatar", {
+                Object.defineProperty(Profile.prototype, "Avatar", {
                     get: function () {
                         return this.avatar;
                     },
                     set: function (avatar) {
                         if (avatar === undefined) {
-                            throw 'Please supply avatar';
+                            throw 'Please supply profile avatar';
                         }
                         this.avatar = avatar;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Username", {
+                Object.defineProperty(Profile.prototype, "Username", {
                     get: function () {
                         return this.username;
                     },
                     set: function (username) {
                         if (username === undefined) {
-                            throw 'Please supply username';
+                            throw 'Please supply profile username';
                         }
                         this.username = username;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Email", {
+                Object.defineProperty(Profile.prototype, "Email", {
                     get: function () {
                         return this.email;
                     },
                     set: function (email) {
                         if (email === undefined) {
-                            throw 'Please supply email';
+                            throw 'Please supply profile email';
                         }
                         this.email = email;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "PhoneNumber", {
+                Object.defineProperty(Profile.prototype, "PhoneNumber", {
                     get: function () {
                         return this.phoneNumber;
                     },
                     set: function (phoneNumber) {
                         if (phoneNumber === undefined) {
-                            throw 'Please supply phone number';
+                            throw 'Please supply profile phone number';
                         }
                         this.phoneNumber = phoneNumber;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "FirstName", {
+                Object.defineProperty(Profile.prototype, "FirstName", {
                     get: function () {
                         return this.firstName;
                     },
                     set: function (firstName) {
                         if (firstName === undefined) {
-                            throw 'Please supply first name';
+                            throw 'Please supply profile first name';
                         }
                         this.firstName = firstName;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "LastName", {
+                Object.defineProperty(Profile.prototype, "LastName", {
                     get: function () {
                         return this.lastName;
                     },
                     set: function (lastName) {
                         if (lastName === undefined) {
-                            throw 'Please supply last name';
+                            throw 'Please supply profile last name';
                         }
                         this.lastName = lastName;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Sex", {
+                Object.defineProperty(Profile.prototype, "Gender", {
                     get: function () {
-                        return this.sex;
+                        return this.gender;
                     },
-                    set: function (sex) {
-                        if (sex === undefined) {
-                            throw 'Please supply sex';
+                    set: function (gender) {
+                        if (gender === undefined) {
+                            throw 'Please supply profile gender';
                         }
-                        this.sex = sex;
+                        this.gender = gender;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "BirthDate", {
+                Object.defineProperty(Profile.prototype, "BirthDate", {
                     get: function () {
                         return this.birthDate;
                     },
                     set: function (birthDate) {
                         if (birthDate === undefined) {
-                            throw 'Please supply birth date';
+                            throw 'Please supply profile birth date';
                         }
                         this.birthDate = birthDate;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Born", {
+                Object.defineProperty(Profile.prototype, "Born", {
                     get: function () {
                         return this.born;
                     },
                     set: function (born) {
                         if (born === undefined) {
-                            throw 'Please supply born';
+                            throw 'Please supply profile born';
                         }
                         this.born = born;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "About", {
+                Object.defineProperty(Profile.prototype, "About", {
                     get: function () {
                         return this.about;
                     },
                     set: function (about) {
                         if (about === undefined) {
-                            throw 'Please supply location';
+                            throw 'Please supply profile location';
                         }
                         this.about = about;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Location", {
-                    get: function () {
-                        return this.location;
-                    },
-                    set: function (location) {
-                        if (location === undefined) {
-                            throw 'Please supply location';
-                        }
-                        this.location = location;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "Status", {
+                Object.defineProperty(Profile.prototype, "Status", {
                     get: function () {
                         return this.status;
                     },
                     set: function (status) {
                         if (status === undefined) {
-                            throw 'Please supply status value';
+                            throw 'Please supply profile status value';
                         }
                         this.status = status;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "CreatedAt", {
+                Object.defineProperty(Profile.prototype, "CreatedAt", {
                     get: function () {
                         return this.createdAt;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                return User;
+                return Profile;
             }());
-            user.User = User;
+            user.Profile = Profile;
             var Location = (function () {
                 function Location(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('User Model instanced');
-                    this.id = obj.id;
+                    DEBUG && console.log('Location Model instanced');
+                    if (obj === null)
+                        obj = {};
+                    this.id = obj.id || '';
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.country = obj.country || '';
                     this.address = obj.address || '';
@@ -1465,8 +1449,10 @@ var app;
             var Position = (function () {
                 function Position(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('User Model instanced');
-                    this.id = obj.id;
+                    DEBUG && console.log('Position Model instanced');
+                    if (obj === null)
+                        obj = {};
+                    this.id = obj.id || '';
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.lng = obj.lng || '';
                     this.lat = obj.lat || '';
@@ -1535,25 +1521,26 @@ var app;
     var models;
     (function (models) {
         var user;
-        (function (user) {
+        (function (user_1) {
             'use strict';
             var UserService = (function () {
                 function UserService(restApi) {
                     this.restApi = restApi;
                     console.log('user service instanced');
+                    this.USER_URI = 'users';
                 }
-                UserService.prototype.getUserById = function (id) {
-                    var url = 'users';
+                UserService.prototype.getUserProfileById = function (id) {
+                    var url = this.USER_URI;
                     return this.restApi.show({ url: url, id: id }).$promise
-                        .then(function (data) {
-                        return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                        .then(function (response) {
+                        return response;
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        return error;
                     });
                 };
-                UserService.prototype.getAllUsers = function () {
-                    var url = 'users';
+                UserService.prototype.getAllUsersProfile = function () {
+                    var url = this.USER_URI;
                     return this.restApi.query({ url: url }).$promise
                         .then(function (data) {
                         return data;
@@ -1562,13 +1549,23 @@ var app;
                         return err;
                     });
                 };
+                UserService.prototype.updateUserProfile = function (profile) {
+                    var url = this.USER_URI;
+                    return this.restApi.update({ url: url, id: profile.userId }, profile).$promise
+                        .then(function (response) {
+                        return response;
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        return error;
+                    });
+                };
                 return UserService;
             }());
             UserService.serviceId = 'mainApp.models.user.UserService';
             UserService.$inject = [
                 'mainApp.core.restApi.restApiService'
             ];
-            user.UserService = UserService;
+            user_1.UserService = UserService;
             angular
                 .module('mainApp.models.user', [])
                 .service(UserService.serviceId, UserService);
@@ -1641,31 +1638,36 @@ var app;
     })(register = app.register || (app.register = {}));
 })(app || (app = {}));
 //# sourceMappingURL=register.service.js.map
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var app;
 (function (app) {
     var models;
     (function (models) {
         var student;
         (function (student) {
-            var Student = (function (_super) {
-                __extends(Student, _super);
+            var Student = (function () {
                 function Student(obj) {
                     if (obj === void 0) { obj = {}; }
-                    var _this;
                     console.log('Student Model instanced');
-                    _this = _super.call(this, obj) || this;
-                    _this.school = obj.school || '';
-                    _this.occupation = obj.occupation || '';
-                    _this.fluent_in = obj.fluent_in || '';
-                    _this.learning = obj.learning || '';
-                    _this.interests = obj.interests || '';
-                    return _this;
+                    this.id = obj.id || '';
+                    this.school = obj.school || '';
+                    this.occupation = obj.occupation || '';
+                    this.fluent_in = obj.fluent_in || '';
+                    this.learning = obj.learning || '';
+                    this.interests = obj.interests || '';
                 }
+                Object.defineProperty(Student.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 Object.defineProperty(Student.prototype, "School", {
                     get: function () {
                         return this.school;
@@ -1762,7 +1764,7 @@ var app;
                     });
                 };
                 return Student;
-            }(app.models.user.User));
+            }());
             student.Student = Student;
         })(student = models.student || (models.student = {}));
     })(models = app.models || (app.models = {}));
@@ -1824,60 +1826,95 @@ var app;
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
 //# sourceMappingURL=student.service.js.map
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var app;
 (function (app) {
     var models;
     (function (models) {
         var teacher;
         (function (teacher) {
-            var Teacher = (function (_super) {
-                __extends(Teacher, _super);
+            var Teacher = (function () {
                 function Teacher(obj) {
                     if (obj === void 0) { obj = {}; }
-                    var _this;
                     console.log('Teacher Model instanced');
-                    _this = _super.call(this, obj) || this;
-                    _this.languages = new Language(obj.languages);
-                    _this.type = obj.type || '';
-                    _this.teacherSince = obj.teacherSince || '';
-                    _this.methodology = obj.methodology || '';
-                    _this.immersion = new Immersion(obj.immersion);
-                    _this.price = new Price(obj.price);
+                    if (obj === null)
+                        obj = {};
+                    this.id = obj.id || '';
+                    this.profileId = obj.profileId || '';
+                    this.location = new app.models.user.Location(obj.location);
+                    this.languages = new Language(obj.languages);
+                    this.type = obj.type || '';
+                    this.teacherSince = obj.teacherSince || '';
+                    this.methodology = obj.methodology || '';
+                    this.immersion = new Immersion(obj.immersion);
+                    this.price = new Price(obj.price);
                     if (obj != {}) {
-                        _this.experiences = [];
+                        this.experiences = [];
                         for (var key in obj.experiences) {
                             var experienceInstance = new Experience(obj.experiences[key]);
-                            _this.addExperience(experienceInstance);
+                            this.addExperience(experienceInstance);
                         }
-                        _this.educations = [];
+                        this.educations = [];
                         for (var key in obj.educations) {
                             var educationInstance = new Education(obj.educations[key]);
-                            _this.addEducation(educationInstance);
+                            this.addEducation(educationInstance);
                         }
-                        _this.certificates = [];
+                        this.certificates = [];
                         for (var key in obj.certificates) {
                             var certificateInstance = new Certificate(obj.certificates[key]);
-                            _this.addCertificate(certificateInstance);
+                            this.addCertificate(certificateInstance);
                         }
-                        _this.ratings = [];
+                        this.ratings = [];
                         for (var key in obj.ratings) {
                             var ratingInstance = new Rating(obj.ratings[key]);
-                            _this.addRating(ratingInstance);
+                            this.addRating(ratingInstance);
                         }
                     }
                     else {
-                        _this.experiences = [];
-                        _this.educations = [];
-                        _this.certificates = [];
-                        _this.ratings = [];
+                        this.experiences = [];
+                        this.educations = [];
+                        this.certificates = [];
+                        this.ratings = [];
                     }
-                    return _this;
                 }
+                Object.defineProperty(Teacher.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply id of teacher';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Teacher.prototype, "ProfileId", {
+                    get: function () {
+                        return this.profileId;
+                    },
+                    set: function (profileId) {
+                        if (profileId === undefined) {
+                            throw 'Please supply user profile id';
+                        }
+                        this.profileId = profileId;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Teacher.prototype, "Location", {
+                    get: function () {
+                        return this.location;
+                    },
+                    set: function (location) {
+                        if (location === undefined) {
+                            throw 'Please supply profile location';
+                        }
+                        this.location = location;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 Object.defineProperty(Teacher.prototype, "Languages", {
                     get: function () {
                         return this.languages;
@@ -2062,12 +2099,14 @@ var app;
                     configurable: true
                 });
                 return Teacher;
-            }(app.models.user.User));
+            }());
             teacher.Teacher = Teacher;
             var Language = (function () {
                 function Language(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Languages Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.native = obj.native || [];
@@ -2146,6 +2185,8 @@ var app;
                 function Experience(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Experience Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.position = obj.position || '';
@@ -2280,6 +2321,8 @@ var app;
                 function Education(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Education Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.school = obj.school || '';
@@ -2400,6 +2443,8 @@ var app;
                 function Certificate(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Certificate Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.name = obj.name || '';
@@ -2492,6 +2537,8 @@ var app;
                 function Immersion(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Certificate Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.active = obj.active || false;
@@ -2570,6 +2617,8 @@ var app;
                 function TypeOfImmersion(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('TypeOfImmersion Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.category = obj.category || '';
@@ -2620,6 +2669,8 @@ var app;
                 function Price(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Price of Teacher Class Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.privateClass = new TypeOfPrice(obj.privateClass);
@@ -2684,6 +2735,8 @@ var app;
                 function TypeOfPrice(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('TypeOfPrice Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.active = obj.active || false;
@@ -2748,6 +2801,8 @@ var app;
                 function Rating(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Rating Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.author = new app.models.student.Student(obj.author);
@@ -2870,10 +2925,12 @@ var app;
         (function (teacher_1) {
             'use strict';
             var TeacherService = (function () {
-                function TeacherService(restApi) {
+                function TeacherService(restApi, $q) {
                     this.restApi = restApi;
+                    this.$q = $q;
                     console.log('teacher service instanced');
                     this.TEACHER_URI = 'teachers';
+                    this.PROFILE_TEACHER_URI = 'teachers?profileId=';
                     this.STATUS_TEACHER_URI = 'teachers?status=';
                     this.EXPERIENCES_URI = 'experiences';
                     this.EDUCATIONS_URI = 'educations';
@@ -2881,119 +2938,161 @@ var app;
                 }
                 TeacherService.prototype.getTeacherById = function (id) {
                     var url = this.TEACHER_URI;
-                    return this.restApi.show({ url: url, id: id }).$promise
-                        .then(function (data) {
-                        return data;
+                    var deferred = this.$q.defer();
+                    this.restApi.show({ url: url, id: id }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     });
+                    return deferred.promise;
+                };
+                TeacherService.prototype.getTeacherByProfileId = function (profileId) {
+                    var url = this.PROFILE_TEACHER_URI + profileId;
+                    var deferred = this.$q.defer();
+                    this.restApi.queryObject({ url: url }).$promise
+                        .then(function (response) {
+                        if (response.results) {
+                            var res = response.results[0] ? response.results[0] : '';
+                            deferred.resolve(res);
+                        }
+                        else {
+                            DEBUG && console.error(response);
+                            deferred.reject(response);
+                        }
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
                 };
                 TeacherService.prototype.getAllTeachersByStatus = function (status) {
                     var url = this.STATUS_TEACHER_URI + status;
-                    return this.restApi.queryObject({ url: url }).$promise
-                        .then(function (data) {
-                        return data;
+                    var deferred = this.$q.defer();
+                    this.restApi.queryObject({ url: url }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     });
+                    return deferred.promise;
                 };
                 TeacherService.prototype.getAllTeachers = function () {
                     var url = this.TEACHER_URI;
-                    return this.restApi.queryObject({ url: url }).$promise
-                        .then(function (data) {
-                        return data;
+                    var deferred = this.$q.defer();
+                    this.restApi.queryObject({ url: url }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     });
+                    return deferred.promise;
                 };
                 TeacherService.prototype.createTeacher = function (teacher) {
                     var url = this.TEACHER_URI;
-                    return this.restApi.create({ url: url }, teacher).$promise
+                    var deferred = this.$q.defer();
+                    this.restApi.create({ url: url }, teacher).$promise
                         .then(function (response) {
-                        return response;
+                        deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     });
+                    return deferred.promise;
                 };
                 TeacherService.prototype.updateTeacher = function (teacher) {
                     var url = this.TEACHER_URI;
-                    return this.restApi.update({ url: url, id: teacher.Id }, teacher).$promise
+                    var deferred = this.$q.defer();
+                    this.restApi.update({ url: url, id: teacher.Id }, teacher).$promise
                         .then(function (response) {
-                        return response;
+                        deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     });
+                    return deferred.promise;
                 };
                 TeacherService.prototype.createExperience = function (teacherId, experience) {
                     var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EXPERIENCES_URI;
-                    return this.restApi.create({ url: url }, experience).$promise
+                    var deferred = this.$q.defer();
+                    this.restApi.create({ url: url }, experience).$promise
                         .then(function (response) {
-                        return response;
+                        deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.log(error);
-                        return error;
+                        deferred.reject(error);
                     });
+                    return deferred.promise;
                 };
                 TeacherService.prototype.updateExperience = function (teacherId, experience) {
                     var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EXPERIENCES_URI;
-                    return this.restApi.update({ url: url, id: experience.Id }, experience).$promise
+                    var deferred = this.$q.defer();
+                    this.restApi.update({ url: url, id: experience.Id }, experience).$promise
                         .then(function (response) {
-                        return response;
+                        deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     });
+                    return deferred.promise;
                 };
                 TeacherService.prototype.createEducation = function (teacherId, education) {
                     var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EDUCATIONS_URI;
-                    return this.restApi.create({ url: url }, education).$promise
+                    var deferred = this.$q.defer();
+                    this.restApi.create({ url: url }, education).$promise
                         .then(function (response) {
-                        return response;
+                        deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     });
+                    return deferred.promise;
                 };
                 TeacherService.prototype.updateEducation = function (teacherId, education) {
                     var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EDUCATIONS_URI;
-                    return this.restApi.update({ url: url, id: education.Id }, education).$promise
+                    var deferred = this.$q.defer();
+                    this.restApi.update({ url: url, id: education.Id }, education).$promise
                         .then(function (response) {
-                        return response;
+                        deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     });
+                    return deferred.promise;
                 };
                 TeacherService.prototype.createCertificate = function (teacherId, certificate) {
                     var url = this.TEACHER_URI + '/' + teacherId + '/' + this.CERTIFICATES_URI;
-                    return this.restApi.create({ url: url }, certificate).$promise
+                    var deferred = this.$q.defer();
+                    this.restApi.create({ url: url }, certificate).$promise
                         .then(function (response) {
-                        return response;
+                        deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     });
+                    return deferred.promise;
                 };
                 TeacherService.prototype.updateCertificate = function (teacherId, certificate) {
                     var url = this.TEACHER_URI + '/' + teacherId + '/' + this.CERTIFICATES_URI;
-                    return this.restApi.update({ url: url, id: certificate.Id }, certificate).$promise
+                    var deferred = this.$q.defer();
+                    this.restApi.update({ url: url, id: certificate.Id }, certificate).$promise
                         .then(function (response) {
-                        return response;
+                        deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
-                        return error;
+                        deferred.reject(error);
                     });
+                    return deferred.promise;
                 };
                 return TeacherService;
             }());
             TeacherService.serviceId = 'mainApp.models.teacher.TeacherService';
             TeacherService.$inject = [
-                'mainApp.core.restApi.restApiService'
+                'mainApp.core.restApi.restApiService',
+                '$q'
             ];
             teacher_1.TeacherService = TeacherService;
             angular
@@ -3134,7 +3233,6 @@ var components;
             HeaderController.prototype.logout = function () {
                 var self = this;
                 this.AuthService.logout().then(function (response) {
-                    self.localStorage.removeItem('currentUser');
                     window.location.reload();
                 }, function (response) {
                     DEBUG && console.log('A problem occured while logging you out.');
@@ -3162,7 +3260,14 @@ var components;
                     keyboard: false,
                     size: 'sm',
                     templateUrl: this.dataConfig.modalSignUpTmpl,
-                    controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                    controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                    resolve: {
+                        dataSetModal: function () {
+                            return {
+                                hasNextStep: false
+                            };
+                        }
+                    }
                 };
                 var modalInstance = this.$uibModal.open(options);
                 mixpanel.track("Click on 'Sign Up' from header");
@@ -3176,7 +3281,14 @@ var components;
                     keyboard: false,
                     size: 'sm',
                     templateUrl: this.dataConfig.modalLogInTmpl,
-                    controller: 'mainApp.components.modal.ModalLogInController as vm'
+                    controller: 'mainApp.components.modal.ModalLogInController as vm',
+                    resolve: {
+                        dataSetModal: function () {
+                            return {
+                                hasNextStep: false
+                            };
+                        }
+                    }
                 };
                 var modalInstance = this.$uibModal.open(options);
                 modalInstance.result.then(function () {
@@ -4339,11 +4451,12 @@ var components;
         var modalSignUp;
         (function (modalSignUp) {
             var ModalSignUpController = (function () {
-                function ModalSignUpController($rootScope, RegisterService, functionsUtil, messageUtil, dataConfig, $uibModal, $uibModalInstance) {
+                function ModalSignUpController($rootScope, RegisterService, functionsUtil, messageUtil, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
                     this.$rootScope = $rootScope;
                     this.RegisterService = RegisterService;
                     this.functionsUtil = functionsUtil;
                     this.messageUtil = messageUtil;
+                    this.dataSetModal = dataSetModal;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
                     this.$uibModalInstance = $uibModalInstance;
@@ -4453,11 +4566,18 @@ var components;
                         keyboard: false,
                         size: 'sm',
                         templateUrl: this.dataConfig.modalLogInTmpl,
-                        controller: 'mainApp.components.modal.ModalLogInController as vm'
+                        controller: 'mainApp.components.modal.ModalLogInController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: self.dataSetModal.hasNextStep
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     modalInstance.result.then(function () {
-                        self.$rootScope.$broadcast('Is Authenticated');
+                        self.$rootScope.$broadcast('Is Authenticated', self.dataSetModal.hasNextStep);
                     }, function () {
                         DEBUG && console.info('Modal dismissed at: ' + new Date());
                     });
@@ -4474,6 +4594,7 @@ var components;
                 'mainApp.register.RegisterService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.util.messageUtilService',
+                'dataSetModal',
                 'dataConfig',
                 '$uibModal',
                 '$uibModalInstance'
@@ -4491,7 +4612,7 @@ var components;
         var modalLogIn;
         (function (modalLogIn) {
             var ModalLogInController = (function () {
-                function ModalLogInController($rootScope, $state, AuthService, AccountService, functionsUtil, messageUtil, localStorage, dataConfig, $uibModal, $uibModalInstance) {
+                function ModalLogInController($rootScope, $state, AuthService, AccountService, functionsUtil, messageUtil, localStorage, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
                     this.$rootScope = $rootScope;
                     this.$state = $state;
                     this.AuthService = AuthService;
@@ -4499,6 +4620,7 @@ var components;
                     this.functionsUtil = functionsUtil;
                     this.messageUtil = messageUtil;
                     this.localStorage = localStorage;
+                    this.dataSetModal = dataSetModal;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
                     this.$uibModalInstance = $uibModalInstance;
@@ -4536,8 +4658,9 @@ var components;
                             self.AuthService.login(self.form).then(function (response) {
                                 self.AccountService.getAccount().then(function (response) {
                                     DEBUG && console.log('Data User: ', response);
-                                    self.localStorage.setItem('currentUser', JSON.stringify(response));
-                                    self.$rootScope.currentUser = JSON.parse(self.localStorage.getItem('currentUser'));
+                                    self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
+                                    self.$rootScope.userData = response;
+                                    self.$rootScope.profileData = new app.models.user.Profile(response);
                                     self.$uibModalInstance.close();
                                 });
                             }, function (response) {
@@ -4583,7 +4706,14 @@ var components;
                         size: 'sm',
                         keyboard: false,
                         templateUrl: this.dataConfig.modalForgotPasswordTmpl,
-                        controller: 'mainApp.components.modal.ModalForgotPasswordController as vm'
+                        controller: 'mainApp.components.modal.ModalForgotPasswordController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: self.dataSetModal.hasNextStep
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     this.$uibModalInstance.close();
@@ -4597,7 +4727,14 @@ var components;
                         size: 'sm',
                         keyboard: false,
                         templateUrl: this.dataConfig.modalSignUpTmpl,
-                        controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: self.dataSetModal.hasNextStep
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     this.$uibModalInstance.close();
@@ -4616,6 +4753,7 @@ var components;
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.util.messageUtilService',
                 'mainApp.localStorageService',
+                'dataSetModal',
                 'dataConfig',
                 '$uibModal',
                 '$uibModalInstance'
@@ -4707,7 +4845,14 @@ var components;
                         keyboard: false,
                         size: 'sm',
                         templateUrl: this.dataConfig.modalLogInTmpl,
-                        controller: 'mainApp.components.modal.ModalLogInController as vm'
+                        controller: 'mainApp.components.modal.ModalLogInController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     modalInstance.result.then(function () {
@@ -5086,15 +5231,30 @@ var app;
                     this.functionsUtil.changeLanguage(this.form.language);
                     mixpanel.track("Change Language on teacherLandingPage");
                 };
-                TeacherLandingPageController.prototype._openSignUpModal = function () {
+                TeacherLandingPageController.prototype._openSignUpModal = function (event) {
                     var self = this;
+                    var hasNextStep = false;
+                    if (this.isAuthenticated) {
+                        this.goToCreate();
+                        return;
+                    }
+                    if (event.target.id === 'hero-go-to-button') {
+                        hasNextStep = true;
+                    }
                     var options = {
                         animation: false,
                         backdrop: 'static',
                         keyboard: false,
                         size: 'sm',
                         templateUrl: this.dataConfig.modalSignUpTmpl,
-                        controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: hasNextStep
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     mixpanel.track("Click on 'Join as Student' teacher landing page header");
@@ -5108,11 +5268,18 @@ var app;
                         keyboard: false,
                         size: 'sm',
                         templateUrl: this.dataConfig.modalLogInTmpl,
-                        controller: 'mainApp.components.modal.ModalLogInController as vm'
+                        controller: 'mainApp.components.modal.ModalLogInController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     modalInstance.result.then(function () {
-                        self.$rootScope.$broadcast('Is Authenticated');
+                        self.$rootScope.$broadcast('Is Authenticated', false);
                     }, function () {
                         DEBUG && console.info('Modal dismissed at: ' + new Date());
                     });
@@ -5120,29 +5287,29 @@ var app;
                 TeacherLandingPageController.prototype.logout = function () {
                     var self = this;
                     this.AuthService.logout().then(function (response) {
-                        self.localStorage.removeItem('currentUser');
                         window.location.reload();
                     }, function (response) {
                         DEBUG && console.log('A problem occured while logging you out.');
                     });
                 };
                 TeacherLandingPageController.prototype._buildFakeTeacher = function () {
-                    this.fake = new app.models.teacher.Teacher();
-                    this.fake.Id = '1';
-                    this.fake.FirstName = 'Dianne';
-                    this.fake.Born = 'New York, United States';
-                    this.fake.Avatar = 'https://waysily-img.s3.amazonaws.com/b3605bad-0924-4bc1-98c8-676c664acd9d-example.jpeg';
-                    this.fake.Methodology = 'I can customize the lessons to fit your needs. I teach conversational English to intermediate and advanced students with a focus on grammar, pronunciation, vocabulary and clear fluency and Business English with a focus on formal English in a business setting (role-play), business journal articles, and technical, industry based vocabulary';
-                    this.fake.TeacherSince = '2013';
-                    this.fake.Type = 'H';
-                    this.fake.Languages.Native = ['6'];
-                    this.fake.Languages.Teach = ['6', '8'];
-                    this.fake.Languages.Learn = ['8', '7'];
-                    this.fake.Immersion.Active = true;
-                    this.fake.Price.PrivateClass.Active = true;
-                    this.fake.Price.PrivateClass.HourPrice = 20.00;
-                    this.fake.Price.GroupClass.Active = true;
-                    this.fake.Price.GroupClass.HourPrice = 15.00;
+                    this.profileFake = new app.models.user.Profile();
+                    this.teacherFake = new app.models.teacher.Teacher();
+                    this.profileFake.UserId = '1';
+                    this.profileFake.FirstName = 'Dianne';
+                    this.profileFake.Born = 'New York, United States';
+                    this.profileFake.Avatar = 'https://waysily-img.s3.amazonaws.com/b3605bad-0924-4bc1-98c8-676c664acd9d-example.jpeg';
+                    this.teacherFake.Methodology = 'I can customize the lessons to fit your needs. I teach conversational English to intermediate and advanced students with a focus on grammar, pronunciation, vocabulary and clear fluency and Business English with a focus on formal English in a business setting (role-play), business journal articles, and technical, industry based vocabulary';
+                    this.teacherFake.TeacherSince = '2013';
+                    this.teacherFake.Type = 'H';
+                    this.teacherFake.Languages.Native = ['6'];
+                    this.teacherFake.Languages.Teach = ['6', '8'];
+                    this.teacherFake.Languages.Learn = ['8', '7'];
+                    this.teacherFake.Immersion.Active = true;
+                    this.teacherFake.Price.PrivateClass.Active = true;
+                    this.teacherFake.Price.PrivateClass.HourPrice = 20.00;
+                    this.teacherFake.Price.GroupClass.Active = true;
+                    this.teacherFake.Price.GroupClass.HourPrice = 15.00;
                 };
                 TeacherLandingPageController.prototype._hoverEvent = function (id, status) {
                     var args = { id: id, status: status };
@@ -5171,6 +5338,9 @@ var app;
                     var self = this;
                     this.$scope.$on('Is Authenticated', function (event, args) {
                         self.isAuthenticated = self.AuthService.isAuthenticated();
+                        if (self.isAuthenticated && args) {
+                            self.goToCreate();
+                        }
                     });
                 };
                 return TeacherLandingPageController;
@@ -5455,7 +5625,6 @@ var app;
                 LandingPageController.prototype.logout = function () {
                     var self = this;
                     this.AuthService.logout().then(function (response) {
-                        self.localStorage.removeItem('currentUser');
                         window.location.reload();
                     }, function (response) {
                         DEBUG && console.log('A problem occured while logging you out.');
@@ -5547,7 +5716,14 @@ var app;
                         keyboard: false,
                         size: 'sm',
                         templateUrl: this.dataConfig.modalSignUpTmpl,
-                        controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     mixpanel.track("Click on 'Join as Student' landing page header");
@@ -5561,7 +5737,14 @@ var app;
                         keyboard: false,
                         size: 'sm',
                         templateUrl: this.dataConfig.modalLogInTmpl,
-                        controller: 'mainApp.components.modal.ModalLogInController as vm'
+                        controller: 'mainApp.components.modal.ModalLogInController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     modalInstance.result.then(function () {
@@ -5953,8 +6136,8 @@ var app;
                 UserProfilePageController.prototype.activate = function () {
                     var self = this;
                     console.log('userProfilePage controller actived');
-                    this.UserService.getUserById(this.$stateParams.id).then(function (response) {
-                        self.data = new app.models.user.User(response);
+                    this.UserService.getUserProfileById(this.$stateParams.id).then(function (response) {
+                        self.data = new app.models.user.Profile(response);
                     });
                 };
                 UserProfilePageController.prototype.onTimeSet = function (newDate, oldDate) {
@@ -6545,9 +6728,10 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var CreateTeacherPageController = (function () {
-                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, messageUtil, localStorage, dataConfig, $state, $stateParams, $filter, $scope, $window, $rootScope, $uibModal, waitForAuth) {
+                function CreateTeacherPageController(getDataFromJson, functionsUtilService, userService, teacherService, messageUtil, localStorage, dataConfig, $state, $stateParams, $filter, $scope, $window, $rootScope, $uibModal, waitForAuth) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
+                    this.userService = userService;
                     this.teacherService = teacherService;
                     this.messageUtil = messageUtil;
                     this.localStorage = localStorage;
@@ -6563,8 +6747,10 @@ var app;
                 }
                 CreateTeacherPageController.prototype._init = function () {
                     var self = this;
+                    var loggedUserId = this.$rootScope.userData.id;
                     var currentState = this.$state.current.name;
                     this.$rootScope.teacherData = new app.models.teacher.Teacher();
+                    this.$rootScope.teacherData.ProfileId = loggedUserId;
                     angular.element(this.$window).bind("scroll", function () {
                         var floatHeader = document.getElementById('header-float');
                         if (floatHeader) {
@@ -6588,27 +6774,57 @@ var app;
                     mixpanel.track("Enter: Create Teacher Page");
                     this._subscribeToEvents();
                     if (this.$stateParams.type === 'new') {
-                        this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
+                        this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
                     }
+                    this.fillFormWithProfileData();
                     this.fillFormWithTeacherData();
                 };
-                CreateTeacherPageController.prototype.fillFormWithTeacherData = function () {
+                CreateTeacherPageController.prototype.fillFormWithProfileData = function () {
                     var self = this;
-                    this.$rootScope.teacher_id = this.localStorage.getItem(this.dataConfig.teacherIdLocalStorage);
-                    if (this.$rootScope.teacher_id) {
-                        this.teacherService.getTeacherById(this.$rootScope.teacher_id)
+                    var userId = this.$rootScope.userData.id;
+                    if (userId) {
+                        this.userService.getUserProfileById(userId)
                             .then(function (response) {
-                            if (response.id) {
-                                self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
-                                self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
-                            }
-                            else {
+                            if (response.userId) {
+                                self.$rootScope.profileData = new app.models.user.Profile(response);
+                                self.$scope.$broadcast('Fill User Profile Form', self.$rootScope.profileData);
                             }
                         });
                     }
                 };
+                CreateTeacherPageController.prototype.fillFormWithTeacherData = function () {
+                    var self = this;
+                    var userId = this.$rootScope.userData.id;
+                    this.teacherService.getTeacherByProfileId(userId).then(function (response) {
+                        if (response.id) {
+                            self.localStorage.setItem(self.dataConfig.teacherDataLocalStorage, JSON.stringify(response));
+                            self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
+                            self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
+                        }
+                        else {
+                            self.localStorage.removeItem(self.dataConfig.teacherDataLocalStorage);
+                        }
+                    });
+                };
                 CreateTeacherPageController.prototype._subscribeToEvents = function () {
                     var self = this;
+                    this.$scope.$on('Save Profile Data', function (event, args) {
+                        var SUCCESS_MESSAGE = self.$filter('translate')('%notification.success.text');
+                        var userId = self.$rootScope.profileData.UserId;
+                        if (userId) {
+                            self.userService.updateUserProfile(self.$rootScope.profileData)
+                                .then(function (response) {
+                                if (response.userId) {
+                                    window.scrollTo(0, 0);
+                                    self.messageUtil.success(SUCCESS_MESSAGE);
+                                    self.$rootScope.profileData = new app.models.user.Profile(response);
+                                    self.$scope.$broadcast('Fill User Profile Form', self.$rootScope.profileData);
+                                }
+                            }, function (error) {
+                                DEBUG && console.error(error);
+                            });
+                        }
+                    });
                     this.$scope.$on('Save Data', function (event, args) {
                         var SUCCESS_MESSAGE = self.$filter('translate')('%notification.success.text');
                         var numStep = args;
@@ -6618,12 +6834,9 @@ var app;
                                 if (response.id) {
                                     window.scrollTo(0, 0);
                                     self.messageUtil.success(SUCCESS_MESSAGE);
-                                    self.$rootScope.teacher_id = response.id;
-                                    self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
+                                    self.localStorage.setItem(self.dataConfig.teacherDataLocalStorage, JSON.stringify(response));
                                     self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
                                     self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
-                                }
-                                else {
                                 }
                             });
                         }
@@ -6633,12 +6846,9 @@ var app;
                                 if (response.id) {
                                     window.scrollTo(0, 0);
                                     self.messageUtil.success(SUCCESS_MESSAGE);
-                                    self.$rootScope.teacher_id = response.id;
-                                    self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
+                                    self.localStorage.setItem(self.dataConfig.teacherDataLocalStorage, JSON.stringify(response));
                                     self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
                                     self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
-                                }
-                                else {
                                 }
                             });
                         }
@@ -6650,6 +6860,7 @@ var app;
             CreateTeacherPageController.$inject = [
                 'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
+                'mainApp.models.user.UserService',
                 'mainApp.models.teacher.TeacherService',
                 'mainApp.core.util.messageUtilService',
                 'mainApp.localStorageService',
@@ -6785,9 +6996,6 @@ var app;
                     this.sexObject = { sex: { code: '', value: '' } };
                     this.dateObject = { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } };
                     this.form = {
-                        firstName: '',
-                        lastName: '',
-                        email: '',
                         phoneNumber: '',
                         sex: '',
                         birthDate: '',
@@ -6799,9 +7007,6 @@ var app;
                     this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
                     this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
                     this.validate = {
-                        firstName: { valid: true, message: '' },
-                        lastName: { valid: true, message: '' },
-                        email: { valid: true, message: '' },
                         phoneNumber: { valid: true, message: '' },
                         sex: { valid: true, message: '' },
                         birthDate: {
@@ -6817,17 +7022,17 @@ var app;
                     this.activate();
                 };
                 TeacherInfoSectionController.prototype.activate = function () {
-                    console.log('TeacherInfoSectionController controller actived');
+                    DEBUG && console.log('TeacherInfoSectionController controller actived');
                     this._subscribeToEvents();
-                    if (this.$rootScope.teacherData) {
-                        this._fillForm(this.$rootScope.teacherData);
+                    if (this.$rootScope.profileData) {
+                        this._fillForm(this.$rootScope.profileData);
                     }
                 };
                 TeacherInfoSectionController.prototype.goToNext = function () {
                     var formValid = this._validateForm();
                     if (formValid) {
                         this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data');
+                        this.$scope.$emit('Save Profile Data');
                         this.$state.go(this.STEP2_STATE, { reload: true });
                     }
                     else {
@@ -6835,11 +7040,8 @@ var app;
                     }
                 };
                 TeacherInfoSectionController.prototype._fillForm = function (data) {
-                    this.form.firstName = data.FirstName;
-                    this.form.lastName = data.LastName;
-                    this.form.email = data.Email;
                     this.form.phoneNumber = data.PhoneNumber;
-                    this.sexObject.sex.code = data.Sex;
+                    this.sexObject.sex.code = data.Gender;
                     var date = this.functionsUtilService.splitDate(data.BirthDate);
                     this.dateObject.day.value = date.day ? parseInt(date.day) : '';
                     this.dateObject.month.code = date.month !== 'Invalid date' ? date.month : '';
@@ -6855,21 +7057,6 @@ var app;
                     var NUMBER_ENUM = 4;
                     var BIRTHDATE_MESSAGE = this.$filter('translate')('%create.teacher.basic_info.form.birthdate.validation.message.text');
                     var formValid = true;
-                    var firstName_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.firstName = this.functionsUtilService.validator(this.form.firstName, firstName_rules);
-                    if (!this.validate.firstName.valid) {
-                        formValid = this.validate.firstName.valid;
-                    }
-                    var lastName_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.lastName = this.functionsUtilService.validator(this.form.lastName, lastName_rules);
-                    if (!this.validate.lastName.valid) {
-                        formValid = this.validate.lastName.valid;
-                    }
-                    var email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
-                    this.validate.email = this.functionsUtilService.validator(this.form.email, email_rules);
-                    if (!this.validate.email.valid) {
-                        formValid = this.validate.email.valid;
-                    }
                     var phoneNumber_rules = [NULL_ENUM, EMPTY_ENUM, NUMBER_ENUM];
                     var onlyNum = this.form.phoneNumber.replace(/\D+/g, "");
                     onlyNum = parseInt(onlyNum) || '';
@@ -6969,26 +7156,23 @@ var app;
                 };
                 TeacherInfoSectionController.prototype._setDataModelFromForm = function () {
                     var dateFormatted = this.functionsUtilService.joinDate(this.dateObject.day.value, this.dateObject.month.code, this.dateObject.year.value);
-                    var sexCode = this.sexObject.sex.code;
+                    var genderCode = this.sexObject.sex.code;
                     var recommended = this.localStorage.getItem(this.dataConfig.earlyIdLocalStorage);
-                    this.$rootScope.teacherData.FirstName = this.form.firstName;
-                    this.$rootScope.teacherData.LastName = this.form.lastName;
-                    this.$rootScope.teacherData.Email = this.form.email;
-                    this.$rootScope.teacherData.PhoneNumber = this.form.phoneNumber;
-                    this.$rootScope.teacherData.Sex = sexCode;
-                    this.$rootScope.teacherData.BirthDate = dateFormatted;
-                    this.$rootScope.teacherData.Born = this.form.born;
-                    this.$rootScope.teacherData.About = this.form.about;
+                    this.$rootScope.profileData.PhoneNumber = this.form.phoneNumber;
+                    this.$rootScope.profileData.Gender = genderCode;
+                    this.$rootScope.profileData.BirthDate = dateFormatted;
+                    this.$rootScope.profileData.Born = this.form.born;
+                    this.$rootScope.profileData.About = this.form.about;
                     this.$rootScope.teacherData.Recommended = recommended ? recommended : null;
                     mixpanel.track("Enter: Basic Info on Create Teacher", {
-                        "name": this.$rootScope.teacherData.FirstName + ' ' + this.$rootScope.teacherData.LastName,
-                        "email": this.$rootScope.teacherData.Email,
-                        "phone": this.$rootScope.teacherData.PhoneNumber
+                        "name": this.$rootScope.profileData.FirstName + ' ' + this.$rootScope.profileData.LastName,
+                        "email": this.$rootScope.profileData.Email,
+                        "phone": this.$rootScope.profileData.PhoneNumber
                     });
                 };
                 TeacherInfoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
-                    this.$scope.$on('Fill Form', function (event, args) {
+                    this.$scope.$on('Fill User Profile Form', function (event, args) {
                         self._fillForm(args);
                     });
                 };
@@ -8410,10 +8594,10 @@ var app;
                     this.activate();
                 };
                 TeacherPhotoSectionController.prototype.activate = function () {
-                    console.log('TeacherPhotoSectionController controller actived');
+                    DEBUG && console.log('TeacherPhotoSectionController controller actived');
                     this._subscribeToEvents();
-                    if (this.$rootScope.teacherData) {
-                        this._fillForm(this.$rootScope.teacherData);
+                    if (this.$rootScope.profileData) {
+                        this._fillForm(this.$rootScope.profileData);
                     }
                 };
                 TeacherPhotoSectionController.prototype.goToNext = function () {
@@ -8426,7 +8610,7 @@ var app;
                                 self.uploading = false;
                                 if (result.Location) {
                                     self._setDataModelFromForm(result.Location);
-                                    self.$scope.$emit('Save Data');
+                                    self.$scope.$emit('Save Profile Data');
                                     self.$state.go(self.FINAL_STEP_STATE, { reload: true });
                                 }
                                 else {
@@ -8435,7 +8619,7 @@ var app;
                             });
                         }
                         else {
-                            this.$scope.$emit('Save Data');
+                            this.$scope.$emit('Save Profile Data');
                             this.$state.go(this.FINAL_STEP_STATE, { reload: true });
                         }
                     }
@@ -8514,11 +8698,11 @@ var app;
                     });
                 };
                 TeacherPhotoSectionController.prototype._setDataModelFromForm = function (avatar) {
-                    this.$rootScope.teacherData.Avatar = avatar;
+                    this.$rootScope.profileData.Avatar = avatar;
                 };
                 TeacherPhotoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
-                    this.$scope.$on('Fill Form', function (event, args) {
+                    this.$scope.$on('Fill User Profile Form', function (event, args) {
                         self._fillForm(args);
                     });
                 };
@@ -8591,12 +8775,12 @@ var app;
                     mixpanel.track("Enter: Finish Create Teacher Process");
                 };
                 TeacherFinishSectionController.prototype._finishProcess = function () {
-                    this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
-                    this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, '');
+                    this.localStorage.removeItem(this.dataConfig.earlyIdLocalStorage);
+                    this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
                     mixpanel.track("Finish Process: Create Teacher", {
                         "id": this.$rootScope.teacherData.Id,
-                        "name": this.$rootScope.teacherData.FirstName + ' ' + this.$rootScope.teacherData.LastName,
-                        "email": this.$rootScope.teacherData.Email
+                        "name": this.$rootScope.profileData.FirstName + ' ' + this.$rootScope.profileData.LastName,
+                        "email": this.$rootScope.profileData.Email
                     });
                     this.$state.go('page.landingPage');
                 };

@@ -50,6 +50,7 @@ module app.pages.createTeacherPage {
         public static $inject = [
             'mainApp.core.util.GetDataStaticJsonService',
             'mainApp.core.util.FunctionsUtilService',
+            'mainApp.models.user.UserService',
             'mainApp.models.teacher.TeacherService',
             'mainApp.core.util.messageUtilService',
             'mainApp.localStorageService',
@@ -69,6 +70,7 @@ module app.pages.createTeacherPage {
         constructor(
             private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
             private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
+            private userService: app.models.user.IUserService,
             private teacherService: app.models.teacher.ITeacherService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
             private localStorage,
@@ -90,13 +92,15 @@ module app.pages.createTeacherPage {
         private _init() {
             //VARIABLES
             let self = this;
+            let loggedUserId = this.$rootScope.userData.id;
 
             //Get current state
             let currentState = this.$state.current.name;
 
             //Init teacher instance
-            //this.teacherData = new app.models.teacher.Teacher();
             this.$rootScope.teacherData = new app.models.teacher.Teacher();
+            //Connect with user logged
+            this.$rootScope.teacherData.ProfileId = loggedUserId;
 
             // Init header fixed
             //TODO: Remover esto de aqui, y colocarlo en un lugar global, ya que
@@ -139,8 +143,12 @@ module app.pages.createTeacherPage {
             // If come from landing page in order to create a new teacher:
             // remove teacher id on localStorage
             if(this.$stateParams.type === 'new') {
-                this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
+                //TODO: testear muy bien el proceso de recomendar un profesor, ya que cambio mucho todo.
+                this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
             }
+
+            //Charge user profile data
+            this.fillFormWithProfileData();
 
             //Charge teacher data if teacher entity exist on DB
             this.fillFormWithTeacherData();
@@ -153,6 +161,34 @@ module app.pages.createTeacherPage {
 
 
         /**
+        * fillFormWithProfileData
+        * @description - get user profile data from DB, and fill each field on form.
+        * @function
+        * @return void
+        */
+        fillFormWithProfileData(): void {
+            // VARIABLES
+            let self = this;
+            let userId = this.$rootScope.userData.id;
+
+            if(userId) {
+                // GET USER PROFILE DATA
+                this.userService.getUserProfileById(userId)
+                .then(
+                    function(response) {
+
+                        if(response.userId) {
+                            self.$rootScope.profileData = new app.models.user.Profile(response);
+                            self.$scope.$broadcast('Fill User Profile Form', self.$rootScope.profileData);
+                        }
+
+                    }
+                );
+            }
+        }
+
+
+        /**
         * fillFormWithTeacherData
         * @description - get teacher data from DB, and fill each field on form.
         * @function
@@ -161,27 +197,28 @@ module app.pages.createTeacherPage {
         fillFormWithTeacherData(): void {
             // VARIABLES
             let self = this;
+            let userId = this.$rootScope.userData.id;
 
-            this.$rootScope.teacher_id = this.localStorage.getItem(this.dataConfig.teacherIdLocalStorage);
+            //Get teacher info by user logged Id
+            this.teacherService.getTeacherByProfileId(userId).then(
 
-            if(this.$rootScope.teacher_id) {
-                // GET TEACHER DATA
-                this.teacherService.getTeacherById(this.$rootScope.teacher_id)
-                .then(
-                    function(response) {
-                        if(response.id) {
+                function(response) {
 
-                            //self.teacherData = new app.models.teacher.Teacher(response);
-                            //TEST
-                            self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
-                            self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
+                    if(response.id) {
 
-                        } else {
-                            //error
-                        }
+                        self.localStorage.setItem(self.dataConfig.teacherDataLocalStorage, JSON.stringify(response));
+                        self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
+                        self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
+
+                    } else {
+                        //Remove teacherData in localStorage in order to be sure it's not junk data
+                        self.localStorage.removeItem(self.dataConfig.teacherDataLocalStorage);
                     }
-                );
-            }
+
+                }
+
+            );
+
         }
 
 
@@ -196,6 +233,42 @@ module app.pages.createTeacherPage {
         private _subscribeToEvents(): void {
             // VARIABLES
             let self = this;
+
+            /**
+            * Save User Profile Data event
+            * @description - Parent (CreateTeacherPageController) receive Child's
+                             event in order to save user profile data on BD
+            * @event
+            */
+            this.$scope.$on('Save Profile Data', function(event, args){
+                //CONSTANTS
+                const SUCCESS_MESSAGE = self.$filter('translate')('%notification.success.text');
+                //VARIABLES
+                let userId = self.$rootScope.profileData.UserId;
+                /**************************************************************/
+
+                if(userId) {
+                    self.userService.updateUserProfile(self.$rootScope.profileData)
+                    .then(
+                        function(response) {
+                            if(response.userId) {
+                                //Go top pages
+                                window.scrollTo(0, 0);
+                                //Show message
+                                self.messageUtil.success(SUCCESS_MESSAGE);
+
+                                //Fill Form
+                                self.$rootScope.profileData = new app.models.user.Profile(response);
+                                self.$scope.$broadcast('Fill User Profile Form', self.$rootScope.profileData);
+                            }
+                        },
+                        function(error) {
+                            DEBUG && console.error(error);
+                        }
+                    );
+                }
+            });
+
 
             /**
             * Save Data event
@@ -220,16 +293,13 @@ module app.pages.createTeacherPage {
                                 window.scrollTo(0, 0);
                                 //Show message
                                 self.messageUtil.success(SUCCESS_MESSAGE);
-                                //Save teacher id
-                                self.$rootScope.teacher_id = response.id;
-                                self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
+                                //Save teacher data in localStorage
+                                self.localStorage.setItem(self.dataConfig.teacherDataLocalStorage, JSON.stringify(response));
 
                                 //Fill Form
                                 self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
                                 self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
 
-                            } else {
-                                //error
                             }
                         }
                     );
@@ -243,16 +313,13 @@ module app.pages.createTeacherPage {
                                 window.scrollTo(0, 0);
                                 //Show message
                                 self.messageUtil.success(SUCCESS_MESSAGE);
-                                //Save teacher id
-                                self.$rootScope.teacher_id = response.id;
-                                self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
+                                //Save teacher data in localStorage
+                                self.localStorage.setItem(self.dataConfig.teacherDataLocalStorage, JSON.stringify(response));
 
                                 //Fill Form
                                 self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
                                 self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
 
-                            } else {
-                                //error
                             }
                         }
                     );

@@ -13,8 +13,9 @@ module app.models.user {
     /*           INTERFACES           */
     /**********************************/
     export interface IUserService {
-        getUserById: (id: string) => angular.IPromise<any>;
-        getAllUsers: () => angular.IPromise<any>;
+        getUserProfileById: (id: string) => angular.IPromise<any>;
+        getAllUsersProfile: () => angular.IPromise<any>;
+        updateUserProfile: (user: app.models.user.Profile) => angular.IPromise<any>;
     }
 
 
@@ -28,7 +29,7 @@ module app.models.user {
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
-
+        USER_URI: string;
         // --------------------------------
 
 
@@ -44,6 +45,8 @@ module app.models.user {
         constructor(private restApi: app.core.restApi.IRestApi) {
             //LOG
             console.log('user service instanced');
+            //CONSTANTS
+            this.USER_URI = 'users';
         }
 
         /**********************************/
@@ -51,18 +54,43 @@ module app.models.user {
         /**********************************/
 
         /**
-        * getUserById
+        * getUserProfileById
         * @description - get user by Id
-        * @use - this.UserService.getUserById('98d667ae');
+        * @use - this.UserService.getUserProfileById('98d667ae');
         * @function
         * @params {string} id - user id
-        * @return {angular.IPromise<any>} promise - return user by Id
+        * @return {angular.IPromise<any>} promise - return user profile by Id
         */
-        getUserById(id): angular.IPromise<any> {
+        getUserProfileById(id): angular.IPromise<any> {
             //VARIABLES
-            let url = 'users';
+            let url = this.USER_URI;
 
             return this.restApi.show({url: url, id: id}).$promise
+                .then(
+                    function (response) {
+                        return response;
+                    },
+                    function (error) {
+                        DEBUG && console.error(error);
+                        return error;
+                    }
+                );
+        }
+
+
+
+        /**
+        * getAllUsersProfile
+        * @description - get all Users Profiles
+        * @function
+        * @return {angular.IPromise<any>} return a promise with
+        * users list
+        */
+        getAllUsersProfile(): angular.IPromise<any> {
+            //VARIABLES
+            let url = this.USER_URI;
+
+            return this.restApi.query({url: url}).$promise
                 .then(
                     function(data) {
                         return data;
@@ -75,26 +103,28 @@ module app.models.user {
                 );
         }
 
-        /**
-        * getAllUsers
-        * @description - get all Users
-        * @function
-        * @return {angular.IPromise<any>} return a promise with
-        * users list
-        */
-        getAllUsers(): angular.IPromise<any> {
-            //VARIABLES
-            let url = 'users';
 
-            return this.restApi.query({url: url}).$promise
+
+        /**
+        * updateUserProfile
+        * @description - update User information entity on DB
+        * @function
+        * @params {app.models.user.Profile} user - user profile Object
+        * @return {promise} promise - Return a promise of "Updated User Profile".
+        * @return {object} response - Returns response about If request was success or error.
+        */
+        updateUserProfile(profile): ng.IPromise<any> {
+            //VARIABLES
+            let url = this.USER_URI;
+
+            return this.restApi.update({ url: url, id: profile.userId }, profile).$promise
                 .then(
-                    function(data) {
-                        return data;
-                    }
-                ).catch(
-                    function(err) {
-                        console.log(err);
-                        return err;
+                    function (response) {
+                        return response;
+                    },
+                    function (error) {
+                        DEBUG && console.error(error);
+                        return error;
                     }
                 );
         }

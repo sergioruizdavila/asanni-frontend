@@ -26,12 +26,12 @@ module app.pages.landingPage {
     }
 
     export interface ILandingForm {
-        userData: IUserData;
+        userData: IUserDataLanding;
         language: string;
         feedback: app.models.feedback.Feedback;
     }
 
-    export interface IUserData {
+    export interface IUserDataLanding {
         name: string;
         email: string;
         comment: string;
@@ -236,7 +236,6 @@ module app.pages.landingPage {
             this.AuthService.logout().then(
                 function(response) {
                     // Success
-                    self.localStorage.removeItem('currentUser');
                     window.location.reload();
                 },
                 function(response) {
@@ -394,7 +393,15 @@ module app.pages.landingPage {
                 keyboard: false,
                 size:'sm',
                 templateUrl: this.dataConfig.modalSignUpTmpl,
-                controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            hasNextStep: false
+                        }
+                    }
+                }
             };
 
             var modalInstance = this.$uibModal.open(options);
@@ -424,7 +431,15 @@ module app.pages.landingPage {
                 keyboard: false,
                 size: 'sm',
                 templateUrl: this.dataConfig.modalLogInTmpl,
-                controller: 'mainApp.components.modal.ModalLogInController as vm'
+                controller: 'mainApp.components.modal.ModalLogInController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            hasNextStep: false
+                        }
+                    }
+                }
             };
 
             var modalInstance = this.$uibModal.open(options);

@@ -7,14 +7,14 @@
 <div id="teacher-container-example"
      class="search-result__teacher__block
             ma-box"
-     ng-mouseover="vm._hoverEvent(vm.fake.id, true)"
-     ng-mouseleave="vm._hoverEvent(vm.fake.id, false)"
-     ng-class="{ 'search-result__teacher__block--selected': vm._hoverDetail[vm.fake.id] }"
+     ng-mouseover="vm._hoverEvent(vm.profileFake.id, true)"
+     ng-mouseleave="vm._hoverEvent(vm.profileFake.id, false)"
+     ng-class="{ 'search-result__teacher__block--selected': vm._hoverDetail[vm.profileFake.id] }"
      ng-click="vm.goToCreate()">
 
 
     <!------------------- START: TEACHER INFO BLOCK (MAIN FACE) --------------->
-    <div class="ma-box__content" ng-hide="vm._hoverDetail[vm.fake.id]">
+    <div class="ma-box__content" ng-hide="vm._hoverDetail[vm.profileFake.id]">
 
         <!--------------------- START: TEACHER AVATAR BLOCK ------------------->
         <div class="search-result__teacher__block__avatar
@@ -31,8 +31,8 @@
                                     round">
                             <img width="170"
                                  height="170"
-                                 ng-src="{{vm.fake.avatar}}"
-                                 alt="{{vm.fake.firstName}}">
+                                 ng-src="{{vm.profileFake.avatar}}"
+                                 alt="{{vm.profileFake.firstName}}">
                         </div>
                         <div class="ma-icon-container
                                     ma-icon-container--white
@@ -66,7 +66,7 @@
             <div class="col-xs-12 col-md-12">
 
                 <h3 class="margin-reset">
-                    {{vm.fake.firstName}}
+                    {{vm.profileFake.firstName}}
                     <div class="ma-icon-container
                                 ma-icon-container--white
                                 ma-icon-container--small round" style="display:inline-block;">
@@ -90,7 +90,7 @@
             <div class="col-xs-12 col-md-12">
 
                 <p class="ma-p ma-p--default margin-reset">
-                    {{vm.fake.born}}
+                    {{vm.profileFake.born}}
                 </p>
 
             </div>
@@ -148,7 +148,7 @@
                     </div>
                 </div>
 
-                <div class="row" ng-repeat="language in vm.fake.languages.teach track by $index"
+                <div class="row" ng-repeat="language in vm.teacherFake.languages.teach track by $index"
                      ng-if="$index < 3">
                     <div class="col-xs-12 col-md-12">
                         <p class="ma-p ma-p--default text-truncate margin-reset">
@@ -157,7 +157,7 @@
                     </div>
                 </div>
 
-                <div class="row" ng-if="vm.fake.languages.teach.length > 3">
+                <div class="row" ng-if="vm.teacherFake.languages.teach.length > 3">
                     <div class="col-xs-12 col-md-12">
                         <p class="ma-p ma-p--default
                                   ma-p--info text-truncate margin-reset"
@@ -180,7 +180,7 @@
                     </div>
                 </div>
 
-                <div class="row" ng-repeat="language in vm.fake.languages.learn track by $index"
+                <div class="row" ng-repeat="language in vm.teacherFake.languages.learn track by $index"
                      ng-if="$index < 3">
                     <div class="col-xs-12 col-md-12">
                         <p class="ma-p ma-p--default text-truncate margin-reset">
@@ -189,7 +189,7 @@
                     </div>
                 </div>
 
-                <div class="row" ng-if="vm.fake.languages.learn.length > 3">
+                <div class="row" ng-if="vm.teacherFake.languages.learn.length > 3">
                     <div class="col-xs-12 col-md-12">
                         <p class="ma-p ma-p--default
                                   ma-p--info text-truncate margin-reset"
@@ -209,14 +209,14 @@
 
 
     <!------------------- START: TEACHER INFO BLOCK (FLIP FACE) --------------->
-    <div class="ma-box__content" ng-show="vm._hoverDetail[vm.fake.id]">
+    <div class="ma-box__content" ng-show="vm._hoverDetail[vm.profileFake.id]">
 
 
         <!---------------------- START: NATIVE INFO BLOCK --------------------->
         <div class="search-result__teacher__block__native
                     row text-center
                     space-1"
-             ng-class="{'search-result__teacher__block__native--noNative': !vm._assignNativeClass(vm.fake.languages)}">
+             ng-class="{'search-result__teacher__block__native--noNative': !vm._assignNativeClass(vm.teacherFake.languages)}">
 
             <div class="col-xs-12 col-md-12">
 
@@ -242,7 +242,7 @@
                             ma-label--box--alert-secondary
                             ma-label--box--default
                             ma-label--box--block">
-                    {{ vm.fake.type | getTypeOfTeacherFilter }}
+                    {{ vm.teacherFake.type | getTypeOfTeacherFilter }}
                 </div>
 
             </div>
@@ -262,7 +262,7 @@
                         %search.container.teacher.since.title.text
                     </span>
                     <span>
-                        {{vm.fake.teacherSince}}
+                        {{vm.teacherFake.teacherSince}}
                     </span>
                 </h4>
 
@@ -276,7 +276,7 @@
         <!-------------------- START: TEACHER IMMERSION BLOCK ----------------->
         <div class="search-result__teacher__block__immersion
                     row text-center space-1"
-             ng-class="{'search-result__teacher__block__immersion--NoImmersion': !vm.fake.immersion.active}">
+             ng-class="{'search-result__teacher__block__immersion--NoImmersion': !vm.teacherFake.immersion.active}">
             <div class="col-xs-1"></div>
 
             <div class="col-xs-10">
@@ -288,11 +288,11 @@
                     </div>
                     <div class="col-md-4 text-right">
                         <i class="material-icons md-primary md-36"
-                           ng-if="vm.fake.immersion.active">
+                           ng-if="vm.teacherFake.immersion.active">
                             check
                         </i>
                         <i class="material-icons md-dark md-36"
-                           ng-if="!vm.fake.immersion.active">
+                           ng-if="!vm.teacherFake.immersion.active">
                             clear
                         </i>
                     </div>
@@ -325,7 +325,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
                         <p class="ma-p ma-p--large margin-reset"
-                           ng-class="{'ma-p--disable-line-through': !vm.fake.price.privateClass.active}"
+                           ng-class="{'ma-p--disable-line-through': !vm.teacherFake.price.privateClass.active}"
                            translate>
                             %search.container.teacher.price.private.title.text
                         </p>
@@ -336,13 +336,13 @@
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
                         <p class="ma-p ma-p--info ma-p--large margin-reset"
-                           ng-if="vm.fake.price.privateClass.active">
+                           ng-if="vm.teacherFake.price.privateClass.active">
                             <strong>
-                                ${{vm.fake.price.privateClass.hourPrice}} / hr
+                                ${{vm.teacherFake.price.privateClass.hourPrice}} / hr
                             </strong>
                         </p>
                         <i class="material-icons md-30"
-                           ng-if="!vm.fake.price.privateClass.active">
+                           ng-if="!vm.teacherFake.price.privateClass.active">
                             event_busy
                         </i>
                     </div>
@@ -357,7 +357,7 @@
                     <div class="col-xs-12 col-md-12">
                         <p class="ma-p ma-p--large
                                   margin-reset"
-                           ng-class="{'ma-p--disable-line-through': !vm.fake.price.groupClass.active}"
+                           ng-class="{'ma-p--disable-line-through': !vm.teacherFake.price.groupClass.active}"
                            translate>
                             %search.container.teacher.price.group.title.text
                         </p>
@@ -368,13 +368,13 @@
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
                         <p class="ma-p ma-p--info ma-p--large margin-reset"
-                           ng-if="vm.fake.price.groupClass.active">
+                           ng-if="vm.teacherFake.price.groupClass.active">
                             <strong>
-                                ${{vm.fake.price.groupClass.hourPrice}} / hr
+                                ${{vm.teacherFake.price.groupClass.hourPrice}} / hr
                             </strong>
                         </p>
                         <i class="material-icons md-30"
-                           ng-if="!vm.fake.price.groupClass.active">
+                           ng-if="!vm.teacherFake.price.groupClass.active">
                             event_busy
                         </i>
                     </div>
@@ -386,7 +386,7 @@
     </div>
 
     <div class="search-result__teacher__block__methodology
-                ma-box__footer" ng-show="vm._hoverDetail[vm.fake.id]">
+                ma-box__footer" ng-show="vm._hoverDetail[vm.profileFake.id]">
 
         <!-------------------- START: METHODOLOGY INFO BLOCK ------------------>
         <div class="row text-center">
@@ -406,7 +406,7 @@
             <div class="col-xs-12 col-md-12">
 
                 <p class="ma-p ma-p--small margin-reset">
-                    {{vm.fake.methodology}}
+                    {{vm.teacherFake.methodology}}
                 </p>
 
             </div>

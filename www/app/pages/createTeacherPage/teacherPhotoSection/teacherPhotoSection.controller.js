@@ -42,10 +42,10 @@ var app;
                     this.activate();
                 };
                 TeacherPhotoSectionController.prototype.activate = function () {
-                    console.log('TeacherPhotoSectionController controller actived');
+                    DEBUG && console.log('TeacherPhotoSectionController controller actived');
                     this._subscribeToEvents();
-                    if (this.$rootScope.teacherData) {
-                        this._fillForm(this.$rootScope.teacherData);
+                    if (this.$rootScope.profileData) {
+                        this._fillForm(this.$rootScope.profileData);
                     }
                 };
                 TeacherPhotoSectionController.prototype.goToNext = function () {
@@ -58,7 +58,7 @@ var app;
                                 self.uploading = false;
                                 if (result.Location) {
                                     self._setDataModelFromForm(result.Location);
-                                    self.$scope.$emit('Save Data');
+                                    self.$scope.$emit('Save Profile Data');
                                     self.$state.go(self.FINAL_STEP_STATE, { reload: true });
                                 }
                                 else {
@@ -67,7 +67,7 @@ var app;
                             });
                         }
                         else {
-                            this.$scope.$emit('Save Data');
+                            this.$scope.$emit('Save Profile Data');
                             this.$state.go(this.FINAL_STEP_STATE, { reload: true });
                         }
                     }
@@ -146,11 +146,11 @@ var app;
                     });
                 };
                 TeacherPhotoSectionController.prototype._setDataModelFromForm = function (avatar) {
-                    this.$rootScope.teacherData.Avatar = avatar;
+                    this.$rootScope.profileData.Avatar = avatar;
                 };
                 TeacherPhotoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
-                    this.$scope.$on('Fill Form', function (event, args) {
+                    this.$scope.$on('Fill User Profile Form', function (event, args) {
                         self._fillForm(args);
                     });
                 };

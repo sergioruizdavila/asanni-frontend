@@ -21,7 +21,7 @@ module components.modal.modalLogIn {
 
     }
 
-    interface IModalLogInForm extends app.core.interfaces.IUserDataAuth {
+    interface IModalLogInForm {
         username: string;
         email: string;
         password: string;
@@ -56,6 +56,7 @@ module components.modal.modalLogIn {
             'mainApp.core.util.FunctionsUtilService',
             'mainApp.core.util.messageUtilService',
             'mainApp.localStorageService',
+            'dataSetModal',
             'dataConfig',
             '$uibModal',
             '$uibModalInstance'
@@ -73,6 +74,7 @@ module components.modal.modalLogIn {
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
             private localStorage,
+            private dataSetModal: app.core.interfaces.IDataSet,
             private dataConfig: IDataConfig,
             private $uibModal: ng.ui.bootstrap.IModalService,
             private $uibModalInstance: ng.ui.bootstrap.IModalServiceInstance) {
@@ -155,11 +157,11 @@ module components.modal.modalLogIn {
                                         DEBUG && console.log('Data User: ', response);
 
                                         //Set logged User data in localStorage
-                                        self.localStorage.setItem('currentUser', JSON.stringify(response));
+                                        self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
                                         //Set logged User data in $rootScope
-                                        //TODO: Crear un modelo: Account, y crear un objeto
-                                        // tipo Account: new app.models.Account();
-                                        self.$rootScope.currentUser = JSON.parse(self.localStorage.getItem('currentUser'));
+                                        self.$rootScope.userData = response;
+                                        self.$rootScope.profileData = new app.models.user.Profile(response);
+                                        //self.$rootScope.profileData = JSON.parse(self.localStorage.getItem('userData'));
                                         //Close modal
                                         self.$uibModalInstance.close();
                                     }
@@ -250,7 +252,15 @@ module components.modal.modalLogIn {
                 size: 'sm',
                 keyboard: false,
                 templateUrl: this.dataConfig.modalForgotPasswordTmpl,
-                controller: 'mainApp.components.modal.ModalForgotPasswordController as vm'
+                controller: 'mainApp.components.modal.ModalForgotPasswordController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            hasNextStep: self.dataSetModal.hasNextStep
+                        }
+                    }
+                }
             };
 
             var modalInstance = this.$uibModal.open(options);
@@ -280,7 +290,15 @@ module components.modal.modalLogIn {
                 size: 'sm',
                 keyboard: false,
                 templateUrl: this.dataConfig.modalSignUpTmpl,
-                controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            hasNextStep: self.dataSetModal.hasNextStep
+                        }
+                    }
+                }
             };
 
             var modalInstance = this.$uibModal.open(options);

@@ -169,7 +169,7 @@
                            ma-header--transparent__block__btn
                            ma-header--transparent__block__buttons-list__label
                            text-shadow link-reset text-capitalize"
-               ng-click="vm._openSignUpModal()" translate>
+               ng-click="vm._openSignUpModal($event)" translate>
                 %global.signup.label.text
             </a>
         </div>
@@ -227,7 +227,7 @@
                 <button ng-if="!vm.isAuthenticated"
                         class="ma-header--transparent__block__buttons-list__btn
                                ma-btn ma-btn--tertiary ma-btn--default space-right-1 hidden"
-                        ng-click="vm._openSignUpModal()" translate>
+                        ng-click="vm._openSignUpModal($event)" translate>
                     %global.student.text
                 </button>
                 <button class="ma-header--transparent__block__buttons-list__btn
@@ -287,8 +287,9 @@
                 </h2>
 
         		<div class="ma-hero__wrapper__btn-container">
-                    <button class="ma-btn ma-btn--primary text-uppercase ma-btn--large"
-                            ng-click="vm.goToCreate()" translate>
+                    <button id="hero-go-to-button"
+                            class="ma-btn ma-btn--primary text-uppercase ma-btn--large"
+                            ng-click="vm._openSignUpModal($event)" translate>
                        %global.go.button.text
                    </button>
         		</div>
@@ -658,12 +659,14 @@
         <div class="col-xs-10 col-sm-8">
             <div class="row start-xs text-center">
                 <div class="col-xs-12">
-                    <button type="button"
+                    <!-- NOTE: Don´t change this id. it's connected with _openSignUpModal $event -->
+                    <button id="hero-go-to-button"
+                            type="button"
                             class="ma-btn
                                     ma-btn--large
                                     ma-btn--primary
                                     text-uppercase"
-                            ng-click="vm.goToCreate()" translate>
+                            ng-click="vm._openSignUpModal($event)" translate>
                         %global.join_now.button.text
                     </button>
                 </div>

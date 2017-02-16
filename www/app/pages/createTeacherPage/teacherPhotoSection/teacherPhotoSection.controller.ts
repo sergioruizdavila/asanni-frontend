@@ -1,4 +1,4 @@
-/**
+ /**
  * TeacherPhotoSectionController
  * @description - Teacher Photo Section Controller (create teacher)
  */
@@ -132,14 +132,14 @@ module app.pages.createTeacherPage {
         /*-- ACTIVATE METHOD --*/
         activate(): void {
             //LOG
-            console.log('TeacherPhotoSectionController controller actived');
+            DEBUG && console.log('TeacherPhotoSectionController controller actived');
 
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
 
             //FILL FORM FROM ROOTSCOPE TEACHER INFO
-            if(this.$rootScope.teacherData) {
-                this._fillForm(this.$rootScope.teacherData);
+            if(this.$rootScope.profileData) {
+                this._fillForm(this.$rootScope.profileData);
             }
 
         }
@@ -176,7 +176,7 @@ module app.pages.createTeacherPage {
                         if(result.Location) {
                             // Save teacher model on DB
                             self._setDataModelFromForm(result.Location);
-                            self.$scope.$emit('Save Data');
+                            self.$scope.$emit('Save Profile Data');
 
                             // GO TO NEXT STEP
                             self.$state.go(self.FINAL_STEP_STATE, {reload: true});
@@ -188,7 +188,7 @@ module app.pages.createTeacherPage {
 
                 // If this.form.avatar not exists, only go to next step
                 } else {
-                    this.$scope.$emit('Save Data');
+                    this.$scope.$emit('Save Profile Data');
                     // GO TO NEXT STEP
                     this.$state.go(this.FINAL_STEP_STATE, {reload: true});
                 }
@@ -219,10 +219,10 @@ module app.pages.createTeacherPage {
         * @description - Fill form with teacher data
         * @use - this._fillForm(data);
         * @function
-        * @param {app.models.teacher.Teacher} data - Teacher Data
+        * @param {app.models.user.Profile} data - User Profile Data
         * @return {void}
         */
-        private _fillForm(data: app.models.teacher.Teacher): void {
+        private _fillForm(data: app.models.user.Profile): void {
 
             this.form.thumbnail = data.Avatar;
 
@@ -381,7 +381,7 @@ module app.pages.createTeacherPage {
         private _setDataModelFromForm(avatar): void {
 
             // Send data to parent (createTeacherPage)
-            this.$rootScope.teacherData.Avatar = avatar;
+            this.$rootScope.profileData.Avatar = avatar;
 
         }
 
@@ -405,11 +405,11 @@ module app.pages.createTeacherPage {
             * Child fill the form's field
             * @event
             */
-            this.$scope.$on('Fill Form', function(event, args: app.models.teacher.Teacher) {
-
-                self._fillForm(args);
-
-            });
+            this.$scope.$on('Fill User Profile Form',
+                function(event, args: app.models.user.Profile) {
+                    self._fillForm(args);
+                }
+            );
         }
 
     }

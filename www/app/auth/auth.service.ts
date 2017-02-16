@@ -46,7 +46,8 @@ module app.auth {
                           '$cookies',
                           'OAuth',
                           'mainApp.core.restApi.restApiService',
-                          'dataConfig'];
+                          'dataConfig',
+                          'mainApp.localStorageService'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -56,7 +57,8 @@ module app.auth {
                     private $cookies: angular.cookies.ICookiesService,
                     private OAuth: angular.oauth2.IOAuth,
                     private restApi: app.core.restApi.IRestApi,
-                    private dataConfig: IDataConfig) {
+                    private dataConfig: IDataConfig,
+                    private localStorage) {
             //LOG
             DEBUG && console.log('auth service called');
 
@@ -100,6 +102,9 @@ module app.auth {
         forceLogout(): void {
           DEBUG && console.log("Forcing logout");
           this.$cookies.remove(this.dataConfig.cookieName);
+          //Clean localStorage Values
+          this.localStorage.removeItem(this.dataConfig.userDataLocalStorage);
+          this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
         }
 
 
@@ -238,6 +243,10 @@ module app.auth {
             this.OAuth.revokeToken().then(
                 function(response) {
                     DEBUG && console.info("Logged out successfuly!");
+                    //Clean localStorage Values
+                    self.localStorage.removeItem(self.dataConfig.userDataLocalStorage);
+                    self.localStorage.removeItem(self.dataConfig.teacherDataLocalStorage);
+
                     deferred.resolve(response);
                 },
                 function(response) {

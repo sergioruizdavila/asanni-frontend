@@ -30,7 +30,8 @@
             });
         }
         if (AuthService.isAuthenticated()) {
-            $rootScope.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            var userAccountInfo = JSON.parse(localStorage.getItem(dataConfig.userDataLocalStorage));
+            $rootScope.userData = userAccountInfo;
         }
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
             if (toState.data.requireLogin && !AuthService.isAuthenticated()) {

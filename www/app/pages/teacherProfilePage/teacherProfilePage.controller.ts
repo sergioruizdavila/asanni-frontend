@@ -62,7 +62,7 @@ module app.pages.teacherProfilePage {
         /*-- INITIALIZE METHOD --*/
         private _init() {
 
-            //Init teacher data
+            //Init profile teacher data
             this.data = null;
 
             //Init loading

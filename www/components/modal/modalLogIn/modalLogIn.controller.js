@@ -5,7 +5,7 @@ var components;
         var modalLogIn;
         (function (modalLogIn) {
             var ModalLogInController = (function () {
-                function ModalLogInController($rootScope, $state, AuthService, AccountService, functionsUtil, messageUtil, localStorage, dataConfig, $uibModal, $uibModalInstance) {
+                function ModalLogInController($rootScope, $state, AuthService, AccountService, functionsUtil, messageUtil, localStorage, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
                     this.$rootScope = $rootScope;
                     this.$state = $state;
                     this.AuthService = AuthService;
@@ -13,6 +13,7 @@ var components;
                     this.functionsUtil = functionsUtil;
                     this.messageUtil = messageUtil;
                     this.localStorage = localStorage;
+                    this.dataSetModal = dataSetModal;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
                     this.$uibModalInstance = $uibModalInstance;
@@ -50,8 +51,9 @@ var components;
                             self.AuthService.login(self.form).then(function (response) {
                                 self.AccountService.getAccount().then(function (response) {
                                     DEBUG && console.log('Data User: ', response);
-                                    self.localStorage.setItem('currentUser', JSON.stringify(response));
-                                    self.$rootScope.currentUser = JSON.parse(self.localStorage.getItem('currentUser'));
+                                    self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
+                                    self.$rootScope.userData = response;
+                                    self.$rootScope.profileData = new app.models.user.Profile(response);
                                     self.$uibModalInstance.close();
                                 });
                             }, function (response) {
@@ -97,7 +99,14 @@ var components;
                         size: 'sm',
                         keyboard: false,
                         templateUrl: this.dataConfig.modalForgotPasswordTmpl,
-                        controller: 'mainApp.components.modal.ModalForgotPasswordController as vm'
+                        controller: 'mainApp.components.modal.ModalForgotPasswordController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: self.dataSetModal.hasNextStep
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     this.$uibModalInstance.close();
@@ -111,7 +120,14 @@ var components;
                         size: 'sm',
                         keyboard: false,
                         templateUrl: this.dataConfig.modalSignUpTmpl,
-                        controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: self.dataSetModal.hasNextStep
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     this.$uibModalInstance.close();
@@ -130,6 +146,7 @@ var components;
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.util.messageUtilService',
                 'mainApp.localStorageService',
+                'dataSetModal',
                 'dataConfig',
                 '$uibModal',
                 '$uibModalInstance'

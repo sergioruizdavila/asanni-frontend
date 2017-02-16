@@ -183,7 +183,6 @@ module components.modal.modalForgotPassword {
                                 function(error) {
                                     DEBUG && console.error(error);
                                     self.messageUtil.error('');
-                                    
                                 }
                             );
                         }
@@ -218,7 +217,15 @@ module components.modal.modalForgotPassword {
                 keyboard: false,
                 size: 'sm',
                 templateUrl: this.dataConfig.modalLogInTmpl,
-                controller: 'mainApp.components.modal.ModalLogInController as vm'
+                controller: 'mainApp.components.modal.ModalLogInController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            hasNextStep: false
+                        }
+                    }
+                }
             };
 
             var modalInstance = this.$uibModal.open(options);

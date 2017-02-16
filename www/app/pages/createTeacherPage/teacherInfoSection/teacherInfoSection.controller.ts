@@ -33,9 +33,6 @@ module app.pages.createTeacherPage {
     }
 
     export interface ITeacherInfoForm {
-        firstName: string;
-        lastName: string;
-        email: string;
         phoneNumber: string;
         sex: string;
         birthDate: string;
@@ -44,9 +41,6 @@ module app.pages.createTeacherPage {
     }
 
     interface ITeacherInfoValidate {
-        firstName: app.core.util.functionsUtil.IValid;
-        lastName: app.core.util.functionsUtil.IValid;
-        email: app.core.util.functionsUtil.IValid;
         phoneNumber: app.core.util.functionsUtil.IValid;
         sex: app.core.util.functionsUtil.IValid;
         birthDate: IBirthdateValidate;
@@ -139,9 +133,6 @@ module app.pages.createTeacherPage {
 
             //Init form
             this.form = {
-                firstName: '',
-                lastName: '',
-                email: '',
                 phoneNumber: '',
                 sex: '',
                 birthDate: '',
@@ -159,9 +150,6 @@ module app.pages.createTeacherPage {
 
             // Build validate object fields
             this.validate = {
-                firstName: {valid: true, message: ''},
-                lastName: {valid: true, message: ''},
-                email: {valid: true, message: ''},
                 phoneNumber: {valid: true, message: ''},
                 sex: {valid: true, message: ''},
                 birthDate: {
@@ -181,14 +169,14 @@ module app.pages.createTeacherPage {
         /*-- ACTIVATE METHOD --*/
         activate(): void {
             //LOG
-            console.log('TeacherInfoSectionController controller actived');
+            DEBUG && console.log('TeacherInfoSectionController controller actived');
 
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
 
-            //FILL FORM FROM ROOTSCOPE TEACHER INFO
-            if(this.$rootScope.teacherData) {
-                this._fillForm(this.$rootScope.teacherData);
+            //FILL FORM FROM ROOTSCOPE USER PROFILE INFO
+            if(this.$rootScope.profileData) {
+                this._fillForm(this.$rootScope.profileData);
             }
 
         }
@@ -210,7 +198,7 @@ module app.pages.createTeacherPage {
 
             if(formValid) {
                 this._setDataModelFromForm();
-                this.$scope.$emit('Save Data');
+                this.$scope.$emit('Save Profile Data');
                 // GO TO NEXT STEP
                 this.$state.go(this.STEP2_STATE, {reload: true});
             } else {
@@ -230,13 +218,10 @@ module app.pages.createTeacherPage {
         * @param {app.models.teacher.Teacher} data - Teacher Data
         * @return {void}
         */
-        private _fillForm(data: app.models.teacher.Teacher): void {
-            this.form.firstName = data.FirstName;
-            this.form.lastName = data.LastName;
-            this.form.email = data.Email;
+        private _fillForm(data: app.models.user.Profile): void {
             this.form.phoneNumber = data.PhoneNumber;
             //Charge Sex on select List
-            this.sexObject.sex.code = data.Sex;
+            this.sexObject.sex.code = data.Gender;
 
             //Build birthdate (Charge on select List)
             let date = this.functionsUtilService.splitDate(data.BirthDate);
@@ -269,27 +254,6 @@ module app.pages.createTeacherPage {
             /***************************************************/
             //VARIABLES
             let formValid = true;
-
-            //Validate First Name field
-            let firstName_rules = [NULL_ENUM, EMPTY_ENUM];
-            this.validate.firstName = this.functionsUtilService.validator(this.form.firstName, firstName_rules);
-            if(!this.validate.firstName.valid) {
-                formValid = this.validate.firstName.valid;
-            }
-
-            //Validate Last Name field
-            let lastName_rules = [NULL_ENUM, EMPTY_ENUM];
-            this.validate.lastName = this.functionsUtilService.validator(this.form.lastName, lastName_rules);
-            if(!this.validate.lastName.valid) {
-                formValid = this.validate.lastName.valid;
-            }
-
-            //Validate Email field
-            let email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
-            this.validate.email = this.functionsUtilService.validator(this.form.email, email_rules);
-            if(!this.validate.email.valid) {
-                formValid = this.validate.email.valid;
-            }
 
             //Validate Phone Number field
             let phoneNumber_rules = [NULL_ENUM, EMPTY_ENUM, NUMBER_ENUM];
@@ -440,28 +404,25 @@ module app.pages.createTeacherPage {
                                     this.dateObject.day.value,
                                     this.dateObject.month.code,
                                     this.dateObject.year.value);
-            let sexCode = this.sexObject.sex.code;
+            let genderCode = this.sexObject.sex.code;
             let recommended = this.localStorage.getItem(this.dataConfig.earlyIdLocalStorage);
             /*********************************/
 
             // Send data to parent (createTeacherPage)
-            this.$rootScope.teacherData.FirstName = this.form.firstName;
-            this.$rootScope.teacherData.LastName = this.form.lastName;
-            this.$rootScope.teacherData.Email = this.form.email;
-            this.$rootScope.teacherData.PhoneNumber = this.form.phoneNumber;
-            this.$rootScope.teacherData.Sex = sexCode;
-            this.$rootScope.teacherData.BirthDate = dateFormatted;
-            this.$rootScope.teacherData.Born = this.form.born;
-            this.$rootScope.teacherData.About = this.form.about;
+            this.$rootScope.profileData.PhoneNumber = this.form.phoneNumber;
+            this.$rootScope.profileData.Gender = genderCode;
+            this.$rootScope.profileData.BirthDate = dateFormatted;
+            this.$rootScope.profileData.Born = this.form.born;
+            this.$rootScope.profileData.About = this.form.about;
 
             //If this teacher was recommended by a Student
             this.$rootScope.teacherData.Recommended = recommended ? recommended : null;
 
             //MIXPANEL
             mixpanel.track("Enter: Basic Info on Create Teacher", {
-                "name": this.$rootScope.teacherData.FirstName + ' ' + this.$rootScope.teacherData.LastName,
-                "email": this.$rootScope.teacherData.Email,
-                "phone": this.$rootScope.teacherData.PhoneNumber
+                "name": this.$rootScope.profileData.FirstName + ' ' + this.$rootScope.profileData.LastName,
+                "email": this.$rootScope.profileData.Email,
+                "phone": this.$rootScope.profileData.PhoneNumber
             });
         }
 
@@ -481,13 +442,15 @@ module app.pages.createTeacherPage {
             /**
             * Fill Form event
             * @parent - CreateTeacherPageController
-            * @description - Parent send markers teacher data in order to
+            * @description - Parent send user profile data in order to
             * Child fill the form's field
             * @event
             */
-            this.$scope.$on('Fill Form', function(event, args: app.models.teacher.Teacher) {
-                self._fillForm(args);
-            });
+            this.$scope.$on('Fill User Profile Form',
+                function(event, args: app.models.user.Profile) {
+                    self._fillForm(args);
+                }
+            );
         }
 
     }

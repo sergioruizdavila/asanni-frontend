@@ -38,7 +38,8 @@ module app.pages.teacherLandingPage {
         /*           PROPERTIES           */
         /**********************************/
         form: ITeacherLandingForm;
-        fake: app.models.teacher.Teacher;
+        profileFake: app.models.user.Profile;
+        teacherFake: app.models.teacher.Teacher;
         isAuthenticated: boolean;
         TEACHER_FAKE_TMPL: string;
         private _hoverDetail: Array<boolean>;
@@ -134,11 +135,24 @@ module app.pages.teacherLandingPage {
         * @description - open Modal in order to add a New Teacher's Experience on Box
         * @use - this._addEditExperience();
         * @function
+        * @param {ng.IAngularEvent} event - to identify if click come from hero and bottom button page
         * @return {void}
         */
 
-        private _openSignUpModal(): void {
+        private _openSignUpModal(event): void {
             let self = this;
+            let hasNextStep = false;
+
+            //If user is logged, go to createTeacher page
+            if(this.isAuthenticated){
+                this.goToCreate();
+                return
+            }
+
+            // get if come from create teacher button
+            if(event.target.id === 'hero-go-to-button') {
+                hasNextStep = true;
+            }
             // modal default options
             let options: ng.ui.bootstrap.IModalSettings = {
                 animation: false,
@@ -146,7 +160,15 @@ module app.pages.teacherLandingPage {
                 keyboard: false,
                 size: 'sm',
                 templateUrl: this.dataConfig.modalSignUpTmpl,
-                controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            hasNextStep: hasNextStep
+                        }
+                    }
+                }
             };
 
             var modalInstance = this.$uibModal.open(options);
@@ -165,6 +187,7 @@ module app.pages.teacherLandingPage {
         * @function
         * @return {void}
         */
+
         private _openLogInModal(): void {
             //MIXPANEL
             mixpanel.track("Click on 'Log in' from teacher landing page");
@@ -178,7 +201,15 @@ module app.pages.teacherLandingPage {
                 keyboard: false,
                 size: 'sm',
                 templateUrl: this.dataConfig.modalLogInTmpl,
-                controller: 'mainApp.components.modal.ModalLogInController as vm'
+                controller: 'mainApp.components.modal.ModalLogInController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            hasNextStep: false
+                        }
+                    }
+                }
             };
 
             var modalInstance = this.$uibModal.open(options);
@@ -187,7 +218,7 @@ module app.pages.teacherLandingPage {
             show current avatar user */
             modalInstance.result.then(function () {
                 //Validate if user is Authenticated
-                self.$rootScope.$broadcast('Is Authenticated');
+                self.$rootScope.$broadcast('Is Authenticated', false);
             }, function () {
                 DEBUG && console.info('Modal dismissed at: ' + new Date());
             });
@@ -211,7 +242,6 @@ module app.pages.teacherLandingPage {
             this.AuthService.logout().then(
                 function(response) {
                     // Success
-                    self.localStorage.removeItem('currentUser');
                     window.location.reload();
                 },
                 function(response) {
@@ -233,23 +263,25 @@ module app.pages.teacherLandingPage {
         */
 
         private _buildFakeTeacher(): void {
-            this.fake = new app.models.teacher.Teacher();
 
-            this.fake.Id = '1';
-            this.fake.FirstName = 'Dianne';
-            this.fake.Born = 'New York, United States';
-            this.fake.Avatar = 'https://waysily-img.s3.amazonaws.com/b3605bad-0924-4bc1-98c8-676c664acd9d-example.jpeg';
-            this.fake.Methodology = 'I can customize the lessons to fit your needs. I teach conversational English to intermediate and advanced students with a focus on grammar, pronunciation, vocabulary and clear fluency and Business English with a focus on formal English in a business setting (role-play), business journal articles, and technical, industry based vocabulary';
-            this.fake.TeacherSince = '2013';
-            this.fake.Type = 'H';
-            this.fake.Languages.Native = ['6'];
-            this.fake.Languages.Teach = ['6', '8'];
-            this.fake.Languages.Learn = ['8','7'];
-            this.fake.Immersion.Active = true;
-            this.fake.Price.PrivateClass.Active = true;
-            this.fake.Price.PrivateClass.HourPrice = 20.00;
-            this.fake.Price.GroupClass.Active = true;
-            this.fake.Price.GroupClass.HourPrice = 15.00;
+            this.profileFake = new app.models.user.Profile();
+            this.teacherFake = new app.models.teacher.Teacher();
+
+            this.profileFake.UserId = '1';
+            this.profileFake.FirstName = 'Dianne';
+            this.profileFake.Born = 'New York, United States';
+            this.profileFake.Avatar = 'https://waysily-img.s3.amazonaws.com/b3605bad-0924-4bc1-98c8-676c664acd9d-example.jpeg';
+            this.teacherFake.Methodology = 'I can customize the lessons to fit your needs. I teach conversational English to intermediate and advanced students with a focus on grammar, pronunciation, vocabulary and clear fluency and Business English with a focus on formal English in a business setting (role-play), business journal articles, and technical, industry based vocabulary';
+            this.teacherFake.TeacherSince = '2013';
+            this.teacherFake.Type = 'H';
+            this.teacherFake.Languages.Native = ['6'];
+            this.teacherFake.Languages.Teach = ['6', '8'];
+            this.teacherFake.Languages.Learn = ['8','7'];
+            this.teacherFake.Immersion.Active = true;
+            this.teacherFake.Price.PrivateClass.Active = true;
+            this.teacherFake.Price.PrivateClass.HourPrice = 20.00;
+            this.teacherFake.Price.GroupClass.Active = true;
+            this.teacherFake.Price.GroupClass.HourPrice = 15.00;
 
         }
 
@@ -328,6 +360,7 @@ module app.pages.teacherLandingPage {
         * @function
         * @return {void}
         */
+
         private _subscribeToEvents(): void {
             // VARIABLES
             let self = this;
@@ -341,6 +374,10 @@ module app.pages.teacherLandingPage {
             this.$scope.$on('Is Authenticated', function(event, args) {
                 //Validate if user is Authenticated
                 self.isAuthenticated = self.AuthService.isAuthenticated();
+                // If user is authenticated, go to create teacher process
+                if(self.isAuthenticated && args) {
+                    self.goToCreate();
+                }
             });
 
         }

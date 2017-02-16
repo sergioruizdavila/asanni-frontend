@@ -28,9 +28,6 @@ var app;
                     this.sexObject = { sex: { code: '', value: '' } };
                     this.dateObject = { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } };
                     this.form = {
-                        firstName: '',
-                        lastName: '',
-                        email: '',
                         phoneNumber: '',
                         sex: '',
                         birthDate: '',
@@ -42,9 +39,6 @@ var app;
                     this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
                     this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
                     this.validate = {
-                        firstName: { valid: true, message: '' },
-                        lastName: { valid: true, message: '' },
-                        email: { valid: true, message: '' },
                         phoneNumber: { valid: true, message: '' },
                         sex: { valid: true, message: '' },
                         birthDate: {
@@ -60,17 +54,17 @@ var app;
                     this.activate();
                 };
                 TeacherInfoSectionController.prototype.activate = function () {
-                    console.log('TeacherInfoSectionController controller actived');
+                    DEBUG && console.log('TeacherInfoSectionController controller actived');
                     this._subscribeToEvents();
-                    if (this.$rootScope.teacherData) {
-                        this._fillForm(this.$rootScope.teacherData);
+                    if (this.$rootScope.profileData) {
+                        this._fillForm(this.$rootScope.profileData);
                     }
                 };
                 TeacherInfoSectionController.prototype.goToNext = function () {
                     var formValid = this._validateForm();
                     if (formValid) {
                         this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data');
+                        this.$scope.$emit('Save Profile Data');
                         this.$state.go(this.STEP2_STATE, { reload: true });
                     }
                     else {
@@ -78,11 +72,8 @@ var app;
                     }
                 };
                 TeacherInfoSectionController.prototype._fillForm = function (data) {
-                    this.form.firstName = data.FirstName;
-                    this.form.lastName = data.LastName;
-                    this.form.email = data.Email;
                     this.form.phoneNumber = data.PhoneNumber;
-                    this.sexObject.sex.code = data.Sex;
+                    this.sexObject.sex.code = data.Gender;
                     var date = this.functionsUtilService.splitDate(data.BirthDate);
                     this.dateObject.day.value = date.day ? parseInt(date.day) : '';
                     this.dateObject.month.code = date.month !== 'Invalid date' ? date.month : '';
@@ -98,21 +89,6 @@ var app;
                     var NUMBER_ENUM = 4;
                     var BIRTHDATE_MESSAGE = this.$filter('translate')('%create.teacher.basic_info.form.birthdate.validation.message.text');
                     var formValid = true;
-                    var firstName_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.firstName = this.functionsUtilService.validator(this.form.firstName, firstName_rules);
-                    if (!this.validate.firstName.valid) {
-                        formValid = this.validate.firstName.valid;
-                    }
-                    var lastName_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.lastName = this.functionsUtilService.validator(this.form.lastName, lastName_rules);
-                    if (!this.validate.lastName.valid) {
-                        formValid = this.validate.lastName.valid;
-                    }
-                    var email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
-                    this.validate.email = this.functionsUtilService.validator(this.form.email, email_rules);
-                    if (!this.validate.email.valid) {
-                        formValid = this.validate.email.valid;
-                    }
                     var phoneNumber_rules = [NULL_ENUM, EMPTY_ENUM, NUMBER_ENUM];
                     var onlyNum = this.form.phoneNumber.replace(/\D+/g, "");
                     onlyNum = parseInt(onlyNum) || '';
@@ -212,26 +188,23 @@ var app;
                 };
                 TeacherInfoSectionController.prototype._setDataModelFromForm = function () {
                     var dateFormatted = this.functionsUtilService.joinDate(this.dateObject.day.value, this.dateObject.month.code, this.dateObject.year.value);
-                    var sexCode = this.sexObject.sex.code;
+                    var genderCode = this.sexObject.sex.code;
                     var recommended = this.localStorage.getItem(this.dataConfig.earlyIdLocalStorage);
-                    this.$rootScope.teacherData.FirstName = this.form.firstName;
-                    this.$rootScope.teacherData.LastName = this.form.lastName;
-                    this.$rootScope.teacherData.Email = this.form.email;
-                    this.$rootScope.teacherData.PhoneNumber = this.form.phoneNumber;
-                    this.$rootScope.teacherData.Sex = sexCode;
-                    this.$rootScope.teacherData.BirthDate = dateFormatted;
-                    this.$rootScope.teacherData.Born = this.form.born;
-                    this.$rootScope.teacherData.About = this.form.about;
+                    this.$rootScope.profileData.PhoneNumber = this.form.phoneNumber;
+                    this.$rootScope.profileData.Gender = genderCode;
+                    this.$rootScope.profileData.BirthDate = dateFormatted;
+                    this.$rootScope.profileData.Born = this.form.born;
+                    this.$rootScope.profileData.About = this.form.about;
                     this.$rootScope.teacherData.Recommended = recommended ? recommended : null;
                     mixpanel.track("Enter: Basic Info on Create Teacher", {
-                        "name": this.$rootScope.teacherData.FirstName + ' ' + this.$rootScope.teacherData.LastName,
-                        "email": this.$rootScope.teacherData.Email,
-                        "phone": this.$rootScope.teacherData.PhoneNumber
+                        "name": this.$rootScope.profileData.FirstName + ' ' + this.$rootScope.profileData.LastName,
+                        "email": this.$rootScope.profileData.Email,
+                        "phone": this.$rootScope.profileData.PhoneNumber
                     });
                 };
                 TeacherInfoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
-                    this.$scope.$on('Fill Form', function (event, args) {
+                    this.$scope.$on('Fill User Profile Form', function (event, args) {
                         self._fillForm(args);
                     });
                 };

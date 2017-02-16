@@ -48,7 +48,7 @@ module app.pages.userProfilePage {
         form: IUserProfileForm;
         error: IUserProfileError;
         mapConfig: components.map.IMapConfig;
-        data: app.models.user.User;
+        data: app.models.user.Profile;
         // --------------------------------
 
 
@@ -114,10 +114,10 @@ module app.pages.userProfilePage {
             let self = this;
             //LOG
             console.log('userProfilePage controller actived');
-            // Get User information
-            this.UserService.getUserById(this.$stateParams.id).then(
+            // Get User profile information
+            this.UserService.getUserProfileById(this.$stateParams.id).then(
                 function(response) {
-                    self.data = new app.models.user.User(response);
+                    self.data = new app.models.user.Profile(response);
                 }
             );
         }

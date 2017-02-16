@@ -30,22 +30,20 @@ module app.models.user {
     /*          USER CLASS DEFINITION       */
     /****************************************/
 
-    export class User {
+    export class Profile {
 
         /*-- PROPERTIES --*/
-        private id: string;
-        private uid: string;
+        private userId: string;
         private avatar: string;
         private username: string;
         private email: string;
         private phoneNumber: string;
         private firstName: string;
         private lastName: string;
-        private sex: string;
+        private gender: string;
         private birthDate: string;
         private born: string;
         private about: string;
-        private location: Location;
         private status: string;
         private createdAt: string;
 
@@ -54,22 +52,22 @@ module app.models.user {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('User Model instanced');
+            DEBUG && console.log('Profile Model instanced');
+
+            if(obj === null) obj = {};
 
             //init properties
-            this.id = obj.id;
-            this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
-            this.avatar = obj.avatar;
+            this.userId = obj.userId || '';
+            this.avatar = obj.avatar || '';
             this.username = obj.username || '';
             this.email = obj.email || '';
             this.phoneNumber = obj.phoneNumber || '';
             this.firstName = obj.firstName || '';
             this.lastName = obj.lastName || '';
-            this.sex = obj.sex || '';
+            this.gender = obj.gender || '';
             this.birthDate = obj.birthDate || '';
             this.born = obj.born || '';
             this.about = obj.about || '';
-            this.location = new Location(obj.location);
             this.status = obj.status || 'NW';
             this.createdAt = obj.createdAt || '';
 
@@ -79,22 +77,13 @@ module app.models.user {
         /*             METHODS            */
         /**********************************/
 
-        get Id() {
-            return this.id;
+        get UserId() {
+            return this.userId;
         }
 
-        set Id(id: string) {
-            if (id === undefined) { throw 'Please supply id'; }
-            this.id = id;
-        }
-
-        get Uid() {
-            return this.uid;
-        }
-
-        set Uid(uid: string) {
-            if (uid === undefined) { throw 'Please supply user uid'; }
-            this.uid = uid;
+        set UserId(userId: string) {
+            if (userId === undefined) { throw 'Please supply profile userId'; }
+            this.userId = userId;
         }
 
         get Avatar() {
@@ -102,7 +91,7 @@ module app.models.user {
         }
 
         set Avatar(avatar: string) {
-            if (avatar === undefined) { throw 'Please supply avatar'; }
+            if (avatar === undefined) { throw 'Please supply profile avatar'; }
             this.avatar = avatar;
         }
 
@@ -111,7 +100,7 @@ module app.models.user {
         }
 
         set Username(username: string) {
-            if (username === undefined) { throw 'Please supply username'; }
+            if (username === undefined) { throw 'Please supply profile username'; }
             this.username = username;
         }
 
@@ -120,7 +109,7 @@ module app.models.user {
         }
 
         set Email(email: string) {
-            if (email === undefined) { throw 'Please supply email'; }
+            if (email === undefined) { throw 'Please supply profile email'; }
             this.email = email;
         }
 
@@ -129,7 +118,7 @@ module app.models.user {
         }
 
         set PhoneNumber(phoneNumber: string) {
-            if (phoneNumber === undefined) { throw 'Please supply phone number'; }
+            if (phoneNumber === undefined) { throw 'Please supply profile phone number'; }
             this.phoneNumber = phoneNumber;
         }
 
@@ -138,7 +127,7 @@ module app.models.user {
         }
 
         set FirstName(firstName: string) {
-            if (firstName === undefined) { throw 'Please supply first name'; }
+            if (firstName === undefined) { throw 'Please supply profile first name'; }
             this.firstName = firstName;
         }
 
@@ -147,17 +136,17 @@ module app.models.user {
         }
 
         set LastName(lastName: string) {
-            if (lastName === undefined) { throw 'Please supply last name'; }
+            if (lastName === undefined) { throw 'Please supply profile last name'; }
             this.lastName = lastName;
         }
 
-        get Sex() {
-            return this.sex;
+        get Gender() {
+            return this.gender;
         }
 
-        set Sex(sex: string) {
-            if (sex === undefined) { throw 'Please supply sex'; }
-            this.sex = sex;
+        set Gender(gender: string) {
+            if (gender === undefined) { throw 'Please supply profile gender'; }
+            this.gender = gender;
         }
 
         get BirthDate() {
@@ -165,7 +154,7 @@ module app.models.user {
         }
 
         set BirthDate(birthDate: string) {
-            if (birthDate === undefined) { throw 'Please supply birth date'; }
+            if (birthDate === undefined) { throw 'Please supply profile birth date'; }
             this.birthDate = birthDate;
         }
 
@@ -174,7 +163,7 @@ module app.models.user {
         }
 
         set Born(born: string) {
-            if (born === undefined) { throw 'Please supply born'; }
+            if (born === undefined) { throw 'Please supply profile born'; }
             this.born = born;
         }
 
@@ -183,17 +172,8 @@ module app.models.user {
         }
 
         set About(about: string) {
-            if (about === undefined) { throw 'Please supply location'; }
+            if (about === undefined) { throw 'Please supply profile location'; }
             this.about = about;
-        }
-
-        get Location() {
-            return this.location;
-        }
-
-        set Location(location: Location) {
-            if (location === undefined) { throw 'Please supply location'; }
-            this.location = location;
         }
 
         get Status() {
@@ -201,7 +181,7 @@ module app.models.user {
         }
 
         set Status(status: string) {
-            if (status === undefined) { throw 'Please supply status value'; }
+            if (status === undefined) { throw 'Please supply profile status value'; }
             this.status = status;
         }
 
@@ -234,10 +214,12 @@ module app.models.user {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('User Model instanced');
+            DEBUG && console.log('Location Model instanced');
+
+            if(obj === null) obj = {};
 
             //init properties
-            this.id = obj.id;
+            this.id = obj.id || '';
             this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
             this.country = obj.country || '';
             this.address = obj.address || '';
@@ -345,10 +327,12 @@ module app.models.user {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('User Model instanced');
+            DEBUG && console.log('Position Model instanced');
+
+            if(obj === null) obj = {};
 
             //init properties
-            this.id = obj.id;
+            this.id = obj.id || '';
             this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
             this.lng = obj.lng || '';
             this.lat = obj.lat || '';
