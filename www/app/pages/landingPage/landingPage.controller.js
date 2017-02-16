@@ -85,7 +85,6 @@ var app;
                 LandingPageController.prototype.logout = function () {
                     var self = this;
                     this.AuthService.logout().then(function (response) {
-                        self.localStorage.removeItem(self.dataConfig.userDataLocalStorage);
                         window.location.reload();
                     }, function (response) {
                         DEBUG && console.log('A problem occured while logging you out.');
@@ -177,7 +176,14 @@ var app;
                         keyboard: false,
                         size: 'sm',
                         templateUrl: this.dataConfig.modalSignUpTmpl,
-                        controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     mixpanel.track("Click on 'Join as Student' landing page header");
@@ -191,7 +197,14 @@ var app;
                         keyboard: false,
                         size: 'sm',
                         templateUrl: this.dataConfig.modalLogInTmpl,
-                        controller: 'mainApp.components.modal.ModalLogInController as vm'
+                        controller: 'mainApp.components.modal.ModalLogInController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     modalInstance.result.then(function () {

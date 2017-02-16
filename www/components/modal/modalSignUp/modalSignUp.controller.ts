@@ -37,7 +37,6 @@ module components.modal.modalSignUp {
         globalValidate: app.core.util.functionsUtil.IValid;
     }
 
-
     class ModalSignUpController implements IModalSignUpController {
 
         static controllerId = 'mainApp.components.modal.ModalSignUpController';
@@ -59,6 +58,7 @@ module components.modal.modalSignUp {
             'mainApp.register.RegisterService',
             'mainApp.core.util.FunctionsUtilService',
             'mainApp.core.util.messageUtilService',
+            'dataSetModal',
             'dataConfig',
             '$uibModal',
             '$uibModalInstance'
@@ -73,6 +73,7 @@ module components.modal.modalSignUp {
             private RegisterService: app.register.IRegisterService,
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
+            private dataSetModal: app.core.interfaces.IDataSet,
             private dataConfig: IDataConfig,
             private $uibModal: ng.ui.bootstrap.IModalService,
             private $uibModalInstance: ng.ui.bootstrap.IModalServiceInstance) {
@@ -235,7 +236,14 @@ module components.modal.modalSignUp {
 
 
 
-        _checkIfEmailExist(): void {
+        /**
+        * _checkIfEmailExist
+        * @description - Check if email given exists
+        * @use - this._checkIfEmailExist();
+        * @function
+        * @return {void}
+        */
+        private _checkIfEmailExist(): void {
             //VARIABLES
             let self = this;
 
@@ -282,7 +290,15 @@ module components.modal.modalSignUp {
                 keyboard: false,
                 size: 'sm',
                 templateUrl: this.dataConfig.modalLogInTmpl,
-                controller: 'mainApp.components.modal.ModalLogInController as vm'
+                controller: 'mainApp.components.modal.ModalLogInController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            hasNextStep: self.dataSetModal.hasNextStep
+                        }
+                    }
+                }
             };
 
             var modalInstance = this.$uibModal.open(options);
@@ -290,8 +306,10 @@ module components.modal.modalSignUp {
             /* When modal is closed,validate if user is Authenticated in order to
             show current avatar user */
             modalInstance.result.then(function () {
+
                 //Validate if user is Authenticated
-                self.$rootScope.$broadcast('Is Authenticated');
+                self.$rootScope.$broadcast('Is Authenticated', self.dataSetModal.hasNextStep);
+
             }, function () {
                 DEBUG && console.info('Modal dismissed at: ' + new Date());
             });

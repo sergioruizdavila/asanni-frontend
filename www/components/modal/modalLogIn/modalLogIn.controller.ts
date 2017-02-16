@@ -56,6 +56,7 @@ module components.modal.modalLogIn {
             'mainApp.core.util.FunctionsUtilService',
             'mainApp.core.util.messageUtilService',
             'mainApp.localStorageService',
+            'dataSetModal',
             'dataConfig',
             '$uibModal',
             '$uibModalInstance'
@@ -73,6 +74,7 @@ module components.modal.modalLogIn {
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
             private localStorage,
+            private dataSetModal: app.core.interfaces.IDataSet,
             private dataConfig: IDataConfig,
             private $uibModal: ng.ui.bootstrap.IModalService,
             private $uibModalInstance: ng.ui.bootstrap.IModalServiceInstance) {
@@ -250,7 +252,15 @@ module components.modal.modalLogIn {
                 size: 'sm',
                 keyboard: false,
                 templateUrl: this.dataConfig.modalForgotPasswordTmpl,
-                controller: 'mainApp.components.modal.ModalForgotPasswordController as vm'
+                controller: 'mainApp.components.modal.ModalForgotPasswordController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            hasNextStep: self.dataSetModal.hasNextStep
+                        }
+                    }
+                }
             };
 
             var modalInstance = this.$uibModal.open(options);
@@ -280,7 +290,15 @@ module components.modal.modalLogIn {
                 size: 'sm',
                 keyboard: false,
                 templateUrl: this.dataConfig.modalSignUpTmpl,
-                controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            hasNextStep: self.dataSetModal.hasNextStep
+                        }
+                    }
+                }
             };
 
             var modalInstance = this.$uibModal.open(options);

@@ -51,7 +51,7 @@ var app;
                     mixpanel.track("Enter: Create Teacher Page");
                     this._subscribeToEvents();
                     if (this.$stateParams.type === 'new') {
-                        this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
+                        this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
                     }
                     this.fillFormWithProfileData();
                     this.fillFormWithTeacherData();
@@ -77,6 +77,9 @@ var app;
                             self.localStorage.setItem(self.dataConfig.teacherDataLocalStorage, JSON.stringify(response));
                             self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
                             self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
+                        }
+                        else {
+                            self.localStorage.removeItem(self.dataConfig.teacherDataLocalStorage);
                         }
                     });
                 };
@@ -108,8 +111,6 @@ var app;
                                 if (response.id) {
                                     window.scrollTo(0, 0);
                                     self.messageUtil.success(SUCCESS_MESSAGE);
-                                    self.$rootScope.teacher_id = response.id;
-                                    self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
                                     self.localStorage.setItem(self.dataConfig.teacherDataLocalStorage, JSON.stringify(response));
                                     self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
                                     self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
@@ -122,8 +123,6 @@ var app;
                                 if (response.id) {
                                     window.scrollTo(0, 0);
                                     self.messageUtil.success(SUCCESS_MESSAGE);
-                                    self.$rootScope.teacher_id = response.id;
-                                    self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
                                     self.localStorage.setItem(self.dataConfig.teacherDataLocalStorage, JSON.stringify(response));
                                     self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
                                     self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);

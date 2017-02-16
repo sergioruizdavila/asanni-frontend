@@ -36,7 +36,6 @@ DEBUG = true;
         secretAccessKeyS3: 'IJj19ZHkpn3MZi147rGx4ZxHch6rhpakYLJ0JDEZ',
         userId: '',
         userDataLocalStorage: 'waysily.userData',
-        teacherIdLocalStorage: 'waysily.teacher_id',
         teacherDataLocalStorage: 'waysily.teacherData',
         earlyIdLocalStorage: 'waysily.early_id',
         cookieName: 'token'

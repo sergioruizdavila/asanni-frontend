@@ -135,11 +135,24 @@ module app.pages.teacherLandingPage {
         * @description - open Modal in order to add a New Teacher's Experience on Box
         * @use - this._addEditExperience();
         * @function
+        * @param {ng.IAngularEvent} event - to identify if click come from hero and bottom button page
         * @return {void}
         */
 
-        private _openSignUpModal(): void {
+        private _openSignUpModal(event): void {
             let self = this;
+            let hasNextStep = false;
+
+            //If user is logged, go to createTeacher page
+            if(this.isAuthenticated){
+                this.goToCreate();
+                return
+            }
+
+            // get if come from create teacher button
+            if(event.target.id === 'hero-go-to-button') {
+                hasNextStep = true;
+            }
             // modal default options
             let options: ng.ui.bootstrap.IModalSettings = {
                 animation: false,
@@ -147,7 +160,15 @@ module app.pages.teacherLandingPage {
                 keyboard: false,
                 size: 'sm',
                 templateUrl: this.dataConfig.modalSignUpTmpl,
-                controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            hasNextStep: hasNextStep
+                        }
+                    }
+                }
             };
 
             var modalInstance = this.$uibModal.open(options);
@@ -166,7 +187,7 @@ module app.pages.teacherLandingPage {
         * @function
         * @return {void}
         */
-        
+
         private _openLogInModal(): void {
             //MIXPANEL
             mixpanel.track("Click on 'Log in' from teacher landing page");
@@ -180,7 +201,15 @@ module app.pages.teacherLandingPage {
                 keyboard: false,
                 size: 'sm',
                 templateUrl: this.dataConfig.modalLogInTmpl,
-                controller: 'mainApp.components.modal.ModalLogInController as vm'
+                controller: 'mainApp.components.modal.ModalLogInController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            hasNextStep: false
+                        }
+                    }
+                }
             };
 
             var modalInstance = this.$uibModal.open(options);
@@ -189,7 +218,7 @@ module app.pages.teacherLandingPage {
             show current avatar user */
             modalInstance.result.then(function () {
                 //Validate if user is Authenticated
-                self.$rootScope.$broadcast('Is Authenticated');
+                self.$rootScope.$broadcast('Is Authenticated', false);
             }, function () {
                 DEBUG && console.info('Modal dismissed at: ' + new Date());
             });
@@ -213,7 +242,6 @@ module app.pages.teacherLandingPage {
             this.AuthService.logout().then(
                 function(response) {
                     // Success
-                    self.localStorage.removeItem(self.dataConfig.userDataLocalStorage);
                     window.location.reload();
                 },
                 function(response) {
@@ -346,6 +374,10 @@ module app.pages.teacherLandingPage {
             this.$scope.$on('Is Authenticated', function(event, args) {
                 //Validate if user is Authenticated
                 self.isAuthenticated = self.AuthService.isAuthenticated();
+                // If user is authenticated, go to create teacher process
+                if(self.isAuthenticated && args) {
+                    self.goToCreate();
+                }
             });
 
         }

@@ -4,13 +4,14 @@ var app;
     (function (auth) {
         'use strict';
         var AuthService = (function () {
-            function AuthService($q, $timeout, $cookies, OAuth, restApi, dataConfig) {
+            function AuthService($q, $timeout, $cookies, OAuth, restApi, dataConfig, localStorage) {
                 this.$q = $q;
                 this.$timeout = $timeout;
                 this.$cookies = $cookies;
                 this.OAuth = OAuth;
                 this.restApi = restApi;
                 this.dataConfig = dataConfig;
+                this.localStorage = localStorage;
                 DEBUG && console.log('auth service called');
                 this.AUTH_RESET_PASSWORD_URI = 'rest-auth/password/reset/';
                 this.AUTH_CONFIRM_RESET_PASSWORD_URI = 'rest-auth/password/reset/confirm/';
@@ -23,6 +24,8 @@ var app;
             AuthService.prototype.forceLogout = function () {
                 DEBUG && console.log("Forcing logout");
                 this.$cookies.remove(this.dataConfig.cookieName);
+                this.localStorage.removeItem(this.dataConfig.userDataLocalStorage);
+                this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
             };
             AuthService.prototype.resetPassword = function (email) {
                 var url = this.AUTH_RESET_PASSWORD_URI;
@@ -79,6 +82,8 @@ var app;
                 var deferred = this.$q.defer();
                 this.OAuth.revokeToken().then(function (response) {
                     DEBUG && console.info("Logged out successfuly!");
+                    self.localStorage.removeItem(self.dataConfig.userDataLocalStorage);
+                    self.localStorage.removeItem(self.dataConfig.teacherDataLocalStorage);
                     deferred.resolve(response);
                 }, function (response) {
                     DEBUG && console.error("Error while logging you out!");
@@ -134,7 +139,8 @@ var app;
             '$cookies',
             'OAuth',
             'mainApp.core.restApi.restApiService',
-            'dataConfig'];
+            'dataConfig',
+            'mainApp.localStorageService'];
         auth.AuthService = AuthService;
         angular
             .module('mainApp.auth', [])

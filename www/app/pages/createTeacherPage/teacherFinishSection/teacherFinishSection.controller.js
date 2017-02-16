@@ -23,7 +23,6 @@ var app;
                     mixpanel.track("Enter: Finish Create Teacher Process");
                 };
                 TeacherFinishSectionController.prototype._finishProcess = function () {
-                    this.localStorage.removeItem(this.dataConfig.teacherIdLocalStorage);
                     this.localStorage.removeItem(this.dataConfig.earlyIdLocalStorage);
                     this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
                     mixpanel.track("Finish Process: Create Teacher", {

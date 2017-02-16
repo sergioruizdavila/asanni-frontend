@@ -79,7 +79,14 @@ var components;
                         keyboard: false,
                         size: 'sm',
                         templateUrl: this.dataConfig.modalLogInTmpl,
-                        controller: 'mainApp.components.modal.ModalLogInController as vm'
+                        controller: 'mainApp.components.modal.ModalLogInController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     modalInstance.result.then(function () {

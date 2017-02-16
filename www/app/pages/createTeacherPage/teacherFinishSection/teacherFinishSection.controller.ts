@@ -78,8 +78,6 @@ module app.pages.createTeacherPage {
         /**********************************/
 
         _finishProcess() {
-            //Remove teacher id in localStorage
-            this.localStorage.removeItem(this.dataConfig.teacherIdLocalStorage);
             //Remove early adopter id in localStorage
             this.localStorage.removeItem(this.dataConfig.earlyIdLocalStorage);
             //Remove teacher data in localStorage

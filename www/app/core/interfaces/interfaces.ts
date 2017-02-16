@@ -106,6 +106,13 @@ module app.core.interfaces {
         class: string;
     }
 
+    /************************************/
+    /*  SIGNUP AND LOGIN DATASET MODAL  */
+    /************************************/
+    export interface IDataSet {
+        hasNextStep: boolean;
+    }
+
 
     /////////////////////////////////
 

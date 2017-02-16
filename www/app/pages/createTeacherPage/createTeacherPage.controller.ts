@@ -143,7 +143,8 @@ module app.pages.createTeacherPage {
             // If come from landing page in order to create a new teacher:
             // remove teacher id on localStorage
             if(this.$stateParams.type === 'new') {
-                this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
+                //TODO: testear muy bien el proceso de recomendar un profesor, ya que cambio mucho todo.
+                this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
             }
 
             //Charge user profile data
@@ -209,6 +210,9 @@ module app.pages.createTeacherPage {
                         self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
                         self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
 
+                    } else {
+                        //Remove teacherData in localStorage in order to be sure it's not junk data
+                        self.localStorage.removeItem(self.dataConfig.teacherDataLocalStorage);
                     }
 
                 }
@@ -289,9 +293,7 @@ module app.pages.createTeacherPage {
                                 window.scrollTo(0, 0);
                                 //Show message
                                 self.messageUtil.success(SUCCESS_MESSAGE);
-                                //Save teacher id
-                                self.$rootScope.teacher_id = response.id;
-                                self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
+                                //Save teacher data in localStorage
                                 self.localStorage.setItem(self.dataConfig.teacherDataLocalStorage, JSON.stringify(response));
 
                                 //Fill Form
@@ -311,9 +313,7 @@ module app.pages.createTeacherPage {
                                 window.scrollTo(0, 0);
                                 //Show message
                                 self.messageUtil.success(SUCCESS_MESSAGE);
-                                //Save teacher id
-                                self.$rootScope.teacher_id = response.id;
-                                self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
+                                //Save teacher data in localStorage
                                 self.localStorage.setItem(self.dataConfig.teacherDataLocalStorage, JSON.stringify(response));
 
                                 //Fill Form

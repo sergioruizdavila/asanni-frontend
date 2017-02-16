@@ -5,11 +5,12 @@ var components;
         var modalSignUp;
         (function (modalSignUp) {
             var ModalSignUpController = (function () {
-                function ModalSignUpController($rootScope, RegisterService, functionsUtil, messageUtil, dataConfig, $uibModal, $uibModalInstance) {
+                function ModalSignUpController($rootScope, RegisterService, functionsUtil, messageUtil, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
                     this.$rootScope = $rootScope;
                     this.RegisterService = RegisterService;
                     this.functionsUtil = functionsUtil;
                     this.messageUtil = messageUtil;
+                    this.dataSetModal = dataSetModal;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
                     this.$uibModalInstance = $uibModalInstance;
@@ -119,11 +120,18 @@ var components;
                         keyboard: false,
                         size: 'sm',
                         templateUrl: this.dataConfig.modalLogInTmpl,
-                        controller: 'mainApp.components.modal.ModalLogInController as vm'
+                        controller: 'mainApp.components.modal.ModalLogInController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: self.dataSetModal.hasNextStep
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     modalInstance.result.then(function () {
-                        self.$rootScope.$broadcast('Is Authenticated');
+                        self.$rootScope.$broadcast('Is Authenticated', self.dataSetModal.hasNextStep);
                     }, function () {
                         DEBUG && console.info('Modal dismissed at: ' + new Date());
                     });
@@ -140,6 +148,7 @@ var components;
                 'mainApp.register.RegisterService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.util.messageUtilService',
+                'dataSetModal',
                 'dataConfig',
                 '$uibModal',
                 '$uibModalInstance'

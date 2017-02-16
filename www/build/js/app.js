@@ -126,7 +126,6 @@ DEBUG = true;
         secretAccessKeyS3: 'IJj19ZHkpn3MZi147rGx4ZxHch6rhpakYLJ0JDEZ',
         userId: '',
         userDataLocalStorage: 'waysily.userData',
-        teacherIdLocalStorage: 'waysily.teacher_id',
         teacherDataLocalStorage: 'waysily.teacherData',
         earlyIdLocalStorage: 'waysily.early_id',
         cookieName: 'token'
@@ -198,13 +197,14 @@ var app;
     (function (auth) {
         'use strict';
         var AuthService = (function () {
-            function AuthService($q, $timeout, $cookies, OAuth, restApi, dataConfig) {
+            function AuthService($q, $timeout, $cookies, OAuth, restApi, dataConfig, localStorage) {
                 this.$q = $q;
                 this.$timeout = $timeout;
                 this.$cookies = $cookies;
                 this.OAuth = OAuth;
                 this.restApi = restApi;
                 this.dataConfig = dataConfig;
+                this.localStorage = localStorage;
                 DEBUG && console.log('auth service called');
                 this.AUTH_RESET_PASSWORD_URI = 'rest-auth/password/reset/';
                 this.AUTH_CONFIRM_RESET_PASSWORD_URI = 'rest-auth/password/reset/confirm/';
@@ -217,6 +217,8 @@ var app;
             AuthService.prototype.forceLogout = function () {
                 DEBUG && console.log("Forcing logout");
                 this.$cookies.remove(this.dataConfig.cookieName);
+                this.localStorage.removeItem(this.dataConfig.userDataLocalStorage);
+                this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
             };
             AuthService.prototype.resetPassword = function (email) {
                 var url = this.AUTH_RESET_PASSWORD_URI;
@@ -273,6 +275,8 @@ var app;
                 var deferred = this.$q.defer();
                 this.OAuth.revokeToken().then(function (response) {
                     DEBUG && console.info("Logged out successfuly!");
+                    self.localStorage.removeItem(self.dataConfig.userDataLocalStorage);
+                    self.localStorage.removeItem(self.dataConfig.teacherDataLocalStorage);
                     deferred.resolve(response);
                 }, function (response) {
                     DEBUG && console.error("Error while logging you out!");
@@ -328,7 +332,8 @@ var app;
             '$cookies',
             'OAuth',
             'mainApp.core.restApi.restApiService',
-            'dataConfig'];
+            'dataConfig',
+            'mainApp.localStorageService'];
         auth.AuthService = AuthService;
         angular
             .module('mainApp.auth', [])
@@ -3228,7 +3233,6 @@ var components;
             HeaderController.prototype.logout = function () {
                 var self = this;
                 this.AuthService.logout().then(function (response) {
-                    self.localStorage.removeItem(self.dataConfig.userDataLocalStorage);
                     window.location.reload();
                 }, function (response) {
                     DEBUG && console.log('A problem occured while logging you out.');
@@ -3256,7 +3260,14 @@ var components;
                     keyboard: false,
                     size: 'sm',
                     templateUrl: this.dataConfig.modalSignUpTmpl,
-                    controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                    controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                    resolve: {
+                        dataSetModal: function () {
+                            return {
+                                hasNextStep: false
+                            };
+                        }
+                    }
                 };
                 var modalInstance = this.$uibModal.open(options);
                 mixpanel.track("Click on 'Sign Up' from header");
@@ -3270,7 +3281,14 @@ var components;
                     keyboard: false,
                     size: 'sm',
                     templateUrl: this.dataConfig.modalLogInTmpl,
-                    controller: 'mainApp.components.modal.ModalLogInController as vm'
+                    controller: 'mainApp.components.modal.ModalLogInController as vm',
+                    resolve: {
+                        dataSetModal: function () {
+                            return {
+                                hasNextStep: false
+                            };
+                        }
+                    }
                 };
                 var modalInstance = this.$uibModal.open(options);
                 modalInstance.result.then(function () {
@@ -4433,11 +4451,12 @@ var components;
         var modalSignUp;
         (function (modalSignUp) {
             var ModalSignUpController = (function () {
-                function ModalSignUpController($rootScope, RegisterService, functionsUtil, messageUtil, dataConfig, $uibModal, $uibModalInstance) {
+                function ModalSignUpController($rootScope, RegisterService, functionsUtil, messageUtil, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
                     this.$rootScope = $rootScope;
                     this.RegisterService = RegisterService;
                     this.functionsUtil = functionsUtil;
                     this.messageUtil = messageUtil;
+                    this.dataSetModal = dataSetModal;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
                     this.$uibModalInstance = $uibModalInstance;
@@ -4547,11 +4566,18 @@ var components;
                         keyboard: false,
                         size: 'sm',
                         templateUrl: this.dataConfig.modalLogInTmpl,
-                        controller: 'mainApp.components.modal.ModalLogInController as vm'
+                        controller: 'mainApp.components.modal.ModalLogInController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: self.dataSetModal.hasNextStep
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     modalInstance.result.then(function () {
-                        self.$rootScope.$broadcast('Is Authenticated');
+                        self.$rootScope.$broadcast('Is Authenticated', self.dataSetModal.hasNextStep);
                     }, function () {
                         DEBUG && console.info('Modal dismissed at: ' + new Date());
                     });
@@ -4568,6 +4594,7 @@ var components;
                 'mainApp.register.RegisterService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.util.messageUtilService',
+                'dataSetModal',
                 'dataConfig',
                 '$uibModal',
                 '$uibModalInstance'
@@ -4585,7 +4612,7 @@ var components;
         var modalLogIn;
         (function (modalLogIn) {
             var ModalLogInController = (function () {
-                function ModalLogInController($rootScope, $state, AuthService, AccountService, functionsUtil, messageUtil, localStorage, dataConfig, $uibModal, $uibModalInstance) {
+                function ModalLogInController($rootScope, $state, AuthService, AccountService, functionsUtil, messageUtil, localStorage, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
                     this.$rootScope = $rootScope;
                     this.$state = $state;
                     this.AuthService = AuthService;
@@ -4593,6 +4620,7 @@ var components;
                     this.functionsUtil = functionsUtil;
                     this.messageUtil = messageUtil;
                     this.localStorage = localStorage;
+                    this.dataSetModal = dataSetModal;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
                     this.$uibModalInstance = $uibModalInstance;
@@ -4678,7 +4706,14 @@ var components;
                         size: 'sm',
                         keyboard: false,
                         templateUrl: this.dataConfig.modalForgotPasswordTmpl,
-                        controller: 'mainApp.components.modal.ModalForgotPasswordController as vm'
+                        controller: 'mainApp.components.modal.ModalForgotPasswordController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: self.dataSetModal.hasNextStep
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     this.$uibModalInstance.close();
@@ -4692,7 +4727,14 @@ var components;
                         size: 'sm',
                         keyboard: false,
                         templateUrl: this.dataConfig.modalSignUpTmpl,
-                        controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: self.dataSetModal.hasNextStep
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     this.$uibModalInstance.close();
@@ -4711,6 +4753,7 @@ var components;
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.util.messageUtilService',
                 'mainApp.localStorageService',
+                'dataSetModal',
                 'dataConfig',
                 '$uibModal',
                 '$uibModalInstance'
@@ -4802,7 +4845,14 @@ var components;
                         keyboard: false,
                         size: 'sm',
                         templateUrl: this.dataConfig.modalLogInTmpl,
-                        controller: 'mainApp.components.modal.ModalLogInController as vm'
+                        controller: 'mainApp.components.modal.ModalLogInController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     modalInstance.result.then(function () {
@@ -5181,15 +5231,30 @@ var app;
                     this.functionsUtil.changeLanguage(this.form.language);
                     mixpanel.track("Change Language on teacherLandingPage");
                 };
-                TeacherLandingPageController.prototype._openSignUpModal = function () {
+                TeacherLandingPageController.prototype._openSignUpModal = function (event) {
                     var self = this;
+                    var hasNextStep = false;
+                    if (this.isAuthenticated) {
+                        this.goToCreate();
+                        return;
+                    }
+                    if (event.target.id === 'hero-go-to-button') {
+                        hasNextStep = true;
+                    }
                     var options = {
                         animation: false,
                         backdrop: 'static',
                         keyboard: false,
                         size: 'sm',
                         templateUrl: this.dataConfig.modalSignUpTmpl,
-                        controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: hasNextStep
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     mixpanel.track("Click on 'Join as Student' teacher landing page header");
@@ -5203,11 +5268,18 @@ var app;
                         keyboard: false,
                         size: 'sm',
                         templateUrl: this.dataConfig.modalLogInTmpl,
-                        controller: 'mainApp.components.modal.ModalLogInController as vm'
+                        controller: 'mainApp.components.modal.ModalLogInController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     modalInstance.result.then(function () {
-                        self.$rootScope.$broadcast('Is Authenticated');
+                        self.$rootScope.$broadcast('Is Authenticated', false);
                     }, function () {
                         DEBUG && console.info('Modal dismissed at: ' + new Date());
                     });
@@ -5215,7 +5287,6 @@ var app;
                 TeacherLandingPageController.prototype.logout = function () {
                     var self = this;
                     this.AuthService.logout().then(function (response) {
-                        self.localStorage.removeItem(self.dataConfig.userDataLocalStorage);
                         window.location.reload();
                     }, function (response) {
                         DEBUG && console.log('A problem occured while logging you out.');
@@ -5267,6 +5338,9 @@ var app;
                     var self = this;
                     this.$scope.$on('Is Authenticated', function (event, args) {
                         self.isAuthenticated = self.AuthService.isAuthenticated();
+                        if (self.isAuthenticated && args) {
+                            self.goToCreate();
+                        }
                     });
                 };
                 return TeacherLandingPageController;
@@ -5551,7 +5625,6 @@ var app;
                 LandingPageController.prototype.logout = function () {
                     var self = this;
                     this.AuthService.logout().then(function (response) {
-                        self.localStorage.removeItem(self.dataConfig.userDataLocalStorage);
                         window.location.reload();
                     }, function (response) {
                         DEBUG && console.log('A problem occured while logging you out.');
@@ -5643,7 +5716,14 @@ var app;
                         keyboard: false,
                         size: 'sm',
                         templateUrl: this.dataConfig.modalSignUpTmpl,
-                        controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     mixpanel.track("Click on 'Join as Student' landing page header");
@@ -5657,7 +5737,14 @@ var app;
                         keyboard: false,
                         size: 'sm',
                         templateUrl: this.dataConfig.modalLogInTmpl,
-                        controller: 'mainApp.components.modal.ModalLogInController as vm'
+                        controller: 'mainApp.components.modal.ModalLogInController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
                     modalInstance.result.then(function () {
@@ -6687,7 +6774,7 @@ var app;
                     mixpanel.track("Enter: Create Teacher Page");
                     this._subscribeToEvents();
                     if (this.$stateParams.type === 'new') {
-                        this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
+                        this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
                     }
                     this.fillFormWithProfileData();
                     this.fillFormWithTeacherData();
@@ -6713,6 +6800,9 @@ var app;
                             self.localStorage.setItem(self.dataConfig.teacherDataLocalStorage, JSON.stringify(response));
                             self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
                             self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
+                        }
+                        else {
+                            self.localStorage.removeItem(self.dataConfig.teacherDataLocalStorage);
                         }
                     });
                 };
@@ -6744,8 +6834,6 @@ var app;
                                 if (response.id) {
                                     window.scrollTo(0, 0);
                                     self.messageUtil.success(SUCCESS_MESSAGE);
-                                    self.$rootScope.teacher_id = response.id;
-                                    self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
                                     self.localStorage.setItem(self.dataConfig.teacherDataLocalStorage, JSON.stringify(response));
                                     self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
                                     self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
@@ -6758,8 +6846,6 @@ var app;
                                 if (response.id) {
                                     window.scrollTo(0, 0);
                                     self.messageUtil.success(SUCCESS_MESSAGE);
-                                    self.$rootScope.teacher_id = response.id;
-                                    self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
                                     self.localStorage.setItem(self.dataConfig.teacherDataLocalStorage, JSON.stringify(response));
                                     self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
                                     self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
@@ -8689,7 +8775,6 @@ var app;
                     mixpanel.track("Enter: Finish Create Teacher Process");
                 };
                 TeacherFinishSectionController.prototype._finishProcess = function () {
-                    this.localStorage.removeItem(this.dataConfig.teacherIdLocalStorage);
                     this.localStorage.removeItem(this.dataConfig.earlyIdLocalStorage);
                     this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
                     mixpanel.track("Finish Process: Create Teacher", {
