@@ -5,11 +5,14 @@ var components;
         var modalSignUp;
         (function (modalSignUp) {
             var ModalSignUpController = (function () {
-                function ModalSignUpController($rootScope, RegisterService, functionsUtil, messageUtil, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
+                function ModalSignUpController($rootScope, AuthService, AccountService, RegisterService, functionsUtil, messageUtil, localStorage, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
                     this.$rootScope = $rootScope;
+                    this.AuthService = AuthService;
+                    this.AccountService = AccountService;
                     this.RegisterService = RegisterService;
                     this.functionsUtil = functionsUtil;
                     this.messageUtil = messageUtil;
+                    this.localStorage = localStorage;
                     this.dataSetModal = dataSetModal;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
@@ -47,8 +50,7 @@ var components;
                         this.form.username = this.functionsUtil.generateUsername(this.form.first_name, this.form.last_name);
                         this.RegisterService.register(this.form).then(function (response) {
                             DEBUG && console.log('Welcome!, Your new account has been successfuly created.');
-                            self.messageUtil.success('Welcome!, Your new account has been successfuly created.');
-                            self._openLogInModal();
+                            self._loginAfterRegister(response.username, response.email, response.password);
                         }, function (error) {
                             DEBUG && console.log(JSON.stringify(error));
                             var errortext = [];
@@ -137,6 +139,54 @@ var components;
                     });
                     this.$uibModalInstance.close();
                 };
+                ModalSignUpController.prototype._loginAfterRegister = function (username, email, password) {
+                    var self = this;
+                    var userData = {
+                        username: username,
+                        email: email,
+                        password: password
+                    };
+                    this.AuthService.login(userData).then(function (response) {
+                        self.AccountService.getAccount().then(function (response) {
+                            DEBUG && console.log('Data User: ', response);
+                            self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
+                            self.$rootScope.userData = response;
+                            response.userId = response.id;
+                            self.$rootScope.profileData = new app.models.user.Profile(response);
+                            self.$rootScope.$broadcast('Is Authenticated', self.dataSetModal.hasNextStep);
+                            if (!self.dataSetModal.hasNextStep) {
+                                self._openWelcomeModal();
+                            }
+                            self.$uibModalInstance.close();
+                        });
+                    }, function (response) {
+                        if (response.status == 401) {
+                            DEBUG && console.log('Incorrect username or password.');
+                            self.validate.globalValidate.valid = false;
+                            self.validate.globalValidate.message = 'Incorrect username or password.';
+                        }
+                        else if (response.status == -1) {
+                            DEBUG && console.log('No response from server. Try again, please');
+                            self.messageUtil.error('No response from server. Try again, please');
+                        }
+                        else {
+                            DEBUG && console.log('There was a problem logging you in. Error code: ' + response.status + '.');
+                            self.messageUtil.error('There was a problem logging you in. Error code: ' + response.status + '.');
+                        }
+                    });
+                };
+                ModalSignUpController.prototype._openWelcomeModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: true,
+                        backdrop: 'static',
+                        keyboard: false,
+                        size: 'sm',
+                        templateUrl: this.dataConfig.modalWelcomeTmpl,
+                        controller: 'mainApp.components.modal.ModalWelcomeController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                };
                 ModalSignUpController.prototype.close = function () {
                     this.$uibModalInstance.close();
                 };
@@ -145,9 +195,12 @@ var components;
             ModalSignUpController.controllerId = 'mainApp.components.modal.ModalSignUpController';
             ModalSignUpController.$inject = [
                 '$rootScope',
+                'mainApp.auth.AuthService',
+                'mainApp.account.AccountService',
                 'mainApp.register.RegisterService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.util.messageUtilService',
+                'mainApp.localStorageService',
                 'dataSetModal',
                 'dataConfig',
                 '$uibModal',

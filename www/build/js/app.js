@@ -94,7 +94,7 @@ DEBUG = true;
     var BASE_URL = 'https://waysily-server.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/teachers-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/teachers-avatar-dev';
     }
     var dataConfig = {
@@ -111,6 +111,10 @@ DEBUG = true;
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',
         mixpanelTokenDEV: 'eda475bf46e7f01e417a4ed1d9cc3e58',
+        modalWelcomeTmpl: 'components/modal/modalCreateUser/modalWelcome/modalWelcome.html',
+        modalBornTmpl: 'components/modal/modalCreateUser/modalBorn/modalBorn.html',
+        modalBasicInfoTmpl: 'components/modal/modalCreateUser/modalBasicInfo/modalBasicInfo.html',
+        modalFinishTmpl: 'components/modal/modalCreateUser/modalFinish/modalFinish.html',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
         modalLanguagesTmpl: 'components/modal/modalLanguages/modalLanguages.html',
         modalExperienceTmpl: 'components/modal/modalExperience/modalExperience.html',
@@ -1153,7 +1157,8 @@ var app;
                     this.lastName = obj.lastName || '';
                     this.gender = obj.gender || '';
                     this.birthDate = obj.birthDate || '';
-                    this.born = obj.born || '';
+                    this.bornCountry = obj.bornCountry || '';
+                    this.bornCity = obj.bornCity || '';
                     this.about = obj.about || '';
                     this.status = obj.status || 'NW';
                     this.createdAt = obj.createdAt || '';
@@ -1187,12 +1192,6 @@ var app;
                 Object.defineProperty(Profile.prototype, "Username", {
                     get: function () {
                         return this.username;
-                    },
-                    set: function (username) {
-                        if (username === undefined) {
-                            throw 'Please supply profile username';
-                        }
-                        this.username = username;
                     },
                     enumerable: true,
                     configurable: true
@@ -1275,15 +1274,28 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(Profile.prototype, "Born", {
+                Object.defineProperty(Profile.prototype, "BornCountry", {
                     get: function () {
-                        return this.born;
+                        return this.bornCountry;
                     },
-                    set: function (born) {
-                        if (born === undefined) {
-                            throw 'Please supply profile born';
+                    set: function (bornCountry) {
+                        if (bornCountry === undefined) {
+                            throw 'Please supply profile born country';
                         }
-                        this.born = born;
+                        this.bornCountry = bornCountry;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "BornCity", {
+                    get: function () {
+                        return this.bornCity;
+                    },
+                    set: function (bornCity) {
+                        if (bornCity === undefined) {
+                            throw 'Please supply profile born city';
+                        }
+                        this.bornCity = bornCity;
                     },
                     enumerable: true,
                     configurable: true
@@ -3911,6 +3923,318 @@ var components;
 (function (components) {
     var modal;
     (function (modal) {
+        var modalWelcome;
+        (function (modalWelcome) {
+            var ModalWelcomeController = (function () {
+                function ModalWelcomeController($uibModalInstance, dataConfig, $uibModal) {
+                    this.$uibModalInstance = $uibModalInstance;
+                    this.dataConfig = dataConfig;
+                    this.$uibModal = $uibModal;
+                    this._init();
+                }
+                ModalWelcomeController.prototype._init = function () {
+                    var self = this;
+                    this.activate();
+                };
+                ModalWelcomeController.prototype.activate = function () {
+                    DEBUG && console.log('modalWelcome controller actived');
+                };
+                ModalWelcomeController.prototype._openBornModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        size: 'sm',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalBornTmpl,
+                        controller: 'mainApp.components.modal.ModalBornController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    this.$uibModalInstance.close();
+                };
+                ModalWelcomeController.prototype.close = function () {
+                    this.$uibModalInstance.close();
+                };
+                return ModalWelcomeController;
+            }());
+            ModalWelcomeController.controllerId = 'mainApp.components.modal.ModalWelcomeController';
+            ModalWelcomeController.$inject = [
+                '$uibModalInstance',
+                'dataConfig',
+                '$uibModal'
+            ];
+            angular.module('mainApp.components.modal')
+                .controller(ModalWelcomeController.controllerId, ModalWelcomeController);
+        })(modalWelcome = modal.modalWelcome || (modal.modalWelcome = {}));
+    })(modal = components.modal || (components.modal = {}));
+})(components || (components = {}));
+//# sourceMappingURL=modalWelcome.controller.js.map
+var components;
+(function (components) {
+    var modal;
+    (function (modal) {
+        var modalBorn;
+        (function (modalBorn) {
+            var ModalBornController = (function () {
+                function ModalBornController(userService, getDataFromJson, functionsUtilService, $uibModalInstance, dataConfig, $filter, $uibModal, $rootScope) {
+                    this.userService = userService;
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
+                    this.$uibModalInstance = $uibModalInstance;
+                    this.dataConfig = dataConfig;
+                    this.$filter = $filter;
+                    this.$uibModal = $uibModal;
+                    this.$rootScope = $rootScope;
+                    this._init();
+                }
+                ModalBornController.prototype._init = function () {
+                    var self = this;
+                    this.form = {
+                        country: '',
+                        city: '',
+                        birthDate: ''
+                    };
+                    this.dateObject = { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } };
+                    this.countryObject = { code: '', value: '' };
+                    this.listCountries = this.getDataFromJson.getCountryi18n();
+                    this.listMonths = this.getDataFromJson.getMonthi18n();
+                    this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
+                    this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 2017);
+                    this.validate = {
+                        birthDate: {
+                            day: { valid: true, message: '' },
+                            month: { valid: true, message: '' },
+                            year: { valid: true, message: '' },
+                            valid: true,
+                            message: ''
+                        },
+                        country: { valid: true, message: '' },
+                        city: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                ModalBornController.prototype.activate = function () {
+                    DEBUG && console.log('modalBorn controller actived');
+                };
+                ModalBornController.prototype._openBasicInfoModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        size: 'sm',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalBasicInfoTmpl,
+                        controller: 'mainApp.components.modal.ModalBasicInfoController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    this.$uibModalInstance.close();
+                };
+                ModalBornController.prototype._validateForm = function () {
+                    var NULL_ENUM = 2;
+                    var NAN_ENUM = 8;
+                    var EMPTY_ENUM = 3;
+                    var NUMBER_ENUM = 4;
+                    var BIRTHDATE_MESSAGE = this.$filter('translate')('%create.teacher.basic_info.form.birthdate.validation.message.text');
+                    var formValid = true;
+                    this.validate.birthDate.valid = true;
+                    var day_birthdate_rules = [NULL_ENUM, EMPTY_ENUM, NAN_ENUM];
+                    this.validate.birthDate.day = this.functionsUtilService.validator(this.dateObject.day.value, day_birthdate_rules);
+                    if (!this.validate.birthDate.day.valid) {
+                        formValid = this.validate.birthDate.day.valid;
+                        this.validate.birthDate.valid = this.validate.birthDate.day.valid;
+                        this.validate.birthDate.message = BIRTHDATE_MESSAGE;
+                    }
+                    var month_birthdate_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.birthDate.month = this.functionsUtilService.validator(this.dateObject.month.code, month_birthdate_rules);
+                    if (!this.validate.birthDate.month.valid) {
+                        formValid = this.validate.birthDate.month.valid;
+                        this.validate.birthDate.valid = this.validate.birthDate.month.valid;
+                        this.validate.birthDate.message = BIRTHDATE_MESSAGE;
+                    }
+                    var year_birthdate_rules = [NULL_ENUM, EMPTY_ENUM, NAN_ENUM];
+                    this.validate.birthDate.year = this.functionsUtilService.validator(this.dateObject.year.value, year_birthdate_rules);
+                    if (!this.validate.birthDate.year.valid) {
+                        formValid = this.validate.birthDate.year.valid;
+                        this.validate.birthDate.valid = this.validate.birthDate.year.valid;
+                        this.validate.birthDate.message = BIRTHDATE_MESSAGE;
+                    }
+                    var country_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.country = this.functionsUtilService.validator(this.countryObject.code, country_rules);
+                    if (!this.validate.country.valid) {
+                        formValid = this.validate.country.valid;
+                    }
+                    var city_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.city = this.functionsUtilService.validator(this.form.city, city_rules);
+                    if (!this.validate.city.valid) {
+                        formValid = this.validate.city.valid;
+                    }
+                    return formValid;
+                };
+                ModalBornController.prototype._parseData = function () {
+                    var dateFormatted = this.functionsUtilService.joinDate(this.dateObject.day.value, this.dateObject.month.code, this.dateObject.year.value);
+                    var countryCode = this.countryObject.code;
+                    this.form.country = countryCode;
+                    this.$rootScope.profileData.BirthDate = dateFormatted;
+                    this.$rootScope.profileData.BornCountry = this.form.country;
+                    this.$rootScope.profileData.BornCity = this.form.city;
+                };
+                ModalBornController.prototype._goToNext = function () {
+                    var self = this;
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this._parseData();
+                        this.userService.updateUserProfile(this.$rootScope.profileData)
+                            .then(function (response) {
+                            if (response.userId) {
+                                self._openBasicInfoModal();
+                            }
+                        });
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                ModalBornController.prototype.close = function () {
+                    this.$uibModalInstance.close();
+                };
+                return ModalBornController;
+            }());
+            ModalBornController.controllerId = 'mainApp.components.modal.ModalBornController';
+            ModalBornController.$inject = [
+                'mainApp.models.user.UserService',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                '$uibModalInstance',
+                'dataConfig',
+                '$filter',
+                '$uibModal',
+                '$rootScope'
+            ];
+            angular.module('mainApp.components.modal')
+                .controller(ModalBornController.controllerId, ModalBornController);
+        })(modalBorn = modal.modalBorn || (modal.modalBorn = {}));
+    })(modal = components.modal || (components.modal = {}));
+})(components || (components = {}));
+//# sourceMappingURL=modalBorn.controller.js.map
+var components;
+(function (components) {
+    var modal;
+    (function (modal) {
+        var modalBasicInfo;
+        (function (modalBasicInfo) {
+            var ModalBasicInfoController = (function () {
+                function ModalBasicInfoController(userService, getDataFromJson, functionsUtilService, $uibModalInstance, dataConfig, $filter, $uibModal, $rootScope) {
+                    this.userService = userService;
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
+                    this.$uibModalInstance = $uibModalInstance;
+                    this.dataConfig = dataConfig;
+                    this.$filter = $filter;
+                    this.$uibModal = $uibModal;
+                    this.$rootScope = $rootScope;
+                    this._init();
+                }
+                ModalBasicInfoController.prototype._init = function () {
+                    var self = this;
+                    this.genderObject = { gender: { code: '', value: '' } };
+                    this.listGenders = this.getDataFromJson.getSexi18n();
+                    this.form = {
+                        phoneNumber: '',
+                        gender: '',
+                        about: ''
+                    };
+                    this.validate = {
+                        phoneNumber: { valid: true, message: '' },
+                        gender: { valid: true, message: '' },
+                        about: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                ModalBasicInfoController.prototype.activate = function () {
+                    DEBUG && console.log('modalBasicInfo controller actived');
+                };
+                ModalBasicInfoController.prototype._openFinishModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        size: 'sm',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalFinishTmpl,
+                        controller: 'mainApp.components.modal.ModalFinishController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    this.$uibModalInstance.close();
+                };
+                ModalBasicInfoController.prototype._validateForm = function () {
+                    var NULL_ENUM = 2;
+                    var NAN_ENUM = 8;
+                    var EMPTY_ENUM = 3;
+                    var NUMBER_ENUM = 4;
+                    var BIRTHDATE_MESSAGE = this.$filter('translate')('%create.teacher.basic_info.form.birthdate.validation.message.text');
+                    var formValid = true;
+                    var phoneNumber_rules = [NUMBER_ENUM];
+                    var onlyNum = this.form.phoneNumber.replace(/\D+/g, "");
+                    onlyNum = parseInt(onlyNum) || NaN;
+                    this.validate.phoneNumber = this.functionsUtilService.validator(onlyNum, phoneNumber_rules);
+                    if (!this.validate.phoneNumber.valid) {
+                        formValid = this.validate.phoneNumber.valid;
+                    }
+                    var gender_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.gender = this.functionsUtilService.validator(this.genderObject.gender.code, gender_rules);
+                    if (!this.validate.gender.valid) {
+                        formValid = this.validate.gender.valid;
+                    }
+                    return formValid;
+                };
+                ModalBasicInfoController.prototype._parseData = function () {
+                    var genderCode = this.genderObject.gender.code;
+                    this.$rootScope.profileData.PhoneNumber = this.form.phoneNumber;
+                    this.$rootScope.profileData.Gender = genderCode;
+                    this.$rootScope.profileData.About = this.form.about;
+                };
+                ModalBasicInfoController.prototype._goToNext = function () {
+                    var self = this;
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this._parseData();
+                        this.userService.updateUserProfile(this.$rootScope.profileData)
+                            .then(function (response) {
+                            if (response.userId) {
+                                self._openFinishModal();
+                            }
+                        });
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                ModalBasicInfoController.prototype.close = function () {
+                    this.$uibModalInstance.close();
+                };
+                return ModalBasicInfoController;
+            }());
+            ModalBasicInfoController.controllerId = 'mainApp.components.modal.ModalBasicInfoController';
+            ModalBasicInfoController.$inject = [
+                'mainApp.models.user.UserService',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                '$uibModalInstance',
+                'dataConfig',
+                '$filter',
+                '$uibModal',
+                '$rootScope'
+            ];
+            angular.module('mainApp.components.modal')
+                .controller(ModalBasicInfoController.controllerId, ModalBasicInfoController);
+        })(modalBasicInfo = modal.modalBasicInfo || (modal.modalBasicInfo = {}));
+    })(modal = components.modal || (components.modal = {}));
+})(components || (components = {}));
+//# sourceMappingURL=modalBasicInfo.controller.js.map
+var components;
+(function (components) {
+    var modal;
+    (function (modal) {
         var modalMeetingPoint;
         (function (modalMeetingPoint) {
             var ModalMeetingPointController = (function () {
@@ -4451,11 +4775,14 @@ var components;
         var modalSignUp;
         (function (modalSignUp) {
             var ModalSignUpController = (function () {
-                function ModalSignUpController($rootScope, RegisterService, functionsUtil, messageUtil, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
+                function ModalSignUpController($rootScope, AuthService, AccountService, RegisterService, functionsUtil, messageUtil, localStorage, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
                     this.$rootScope = $rootScope;
+                    this.AuthService = AuthService;
+                    this.AccountService = AccountService;
                     this.RegisterService = RegisterService;
                     this.functionsUtil = functionsUtil;
                     this.messageUtil = messageUtil;
+                    this.localStorage = localStorage;
                     this.dataSetModal = dataSetModal;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
@@ -4493,8 +4820,7 @@ var components;
                         this.form.username = this.functionsUtil.generateUsername(this.form.first_name, this.form.last_name);
                         this.RegisterService.register(this.form).then(function (response) {
                             DEBUG && console.log('Welcome!, Your new account has been successfuly created.');
-                            self.messageUtil.success('Welcome!, Your new account has been successfuly created.');
-                            self._openLogInModal();
+                            self._loginAfterRegister(response.username, response.email, response.password);
                         }, function (error) {
                             DEBUG && console.log(JSON.stringify(error));
                             var errortext = [];
@@ -4583,6 +4909,54 @@ var components;
                     });
                     this.$uibModalInstance.close();
                 };
+                ModalSignUpController.prototype._loginAfterRegister = function (username, email, password) {
+                    var self = this;
+                    var userData = {
+                        username: username,
+                        email: email,
+                        password: password
+                    };
+                    this.AuthService.login(userData).then(function (response) {
+                        self.AccountService.getAccount().then(function (response) {
+                            DEBUG && console.log('Data User: ', response);
+                            self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
+                            self.$rootScope.userData = response;
+                            response.userId = response.id;
+                            self.$rootScope.profileData = new app.models.user.Profile(response);
+                            self.$rootScope.$broadcast('Is Authenticated', self.dataSetModal.hasNextStep);
+                            if (!self.dataSetModal.hasNextStep) {
+                                self._openWelcomeModal();
+                            }
+                            self.$uibModalInstance.close();
+                        });
+                    }, function (response) {
+                        if (response.status == 401) {
+                            DEBUG && console.log('Incorrect username or password.');
+                            self.validate.globalValidate.valid = false;
+                            self.validate.globalValidate.message = 'Incorrect username or password.';
+                        }
+                        else if (response.status == -1) {
+                            DEBUG && console.log('No response from server. Try again, please');
+                            self.messageUtil.error('No response from server. Try again, please');
+                        }
+                        else {
+                            DEBUG && console.log('There was a problem logging you in. Error code: ' + response.status + '.');
+                            self.messageUtil.error('There was a problem logging you in. Error code: ' + response.status + '.');
+                        }
+                    });
+                };
+                ModalSignUpController.prototype._openWelcomeModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: true,
+                        backdrop: 'static',
+                        keyboard: false,
+                        size: 'sm',
+                        templateUrl: this.dataConfig.modalWelcomeTmpl,
+                        controller: 'mainApp.components.modal.ModalWelcomeController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                };
                 ModalSignUpController.prototype.close = function () {
                     this.$uibModalInstance.close();
                 };
@@ -4591,9 +4965,12 @@ var components;
             ModalSignUpController.controllerId = 'mainApp.components.modal.ModalSignUpController';
             ModalSignUpController.$inject = [
                 '$rootScope',
+                'mainApp.auth.AuthService',
+                'mainApp.account.AccountService',
                 'mainApp.register.RegisterService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.util.messageUtilService',
+                'mainApp.localStorageService',
                 'dataSetModal',
                 'dataConfig',
                 '$uibModal',
@@ -4660,6 +5037,7 @@ var components;
                                     DEBUG && console.log('Data User: ', response);
                                     self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
                                     self.$rootScope.userData = response;
+                                    response.userId = response.id;
                                     self.$rootScope.profileData = new app.models.user.Profile(response);
                                     self.$uibModalInstance.close();
                                 });
@@ -5297,7 +5675,8 @@ var app;
                     this.teacherFake = new app.models.teacher.Teacher();
                     this.profileFake.UserId = '1';
                     this.profileFake.FirstName = 'Dianne';
-                    this.profileFake.Born = 'New York, United States';
+                    this.profileFake.BornCity = 'New York';
+                    this.profileFake.BornCountry = 'United States';
                     this.profileFake.Avatar = 'https://waysily-img.s3.amazonaws.com/b3605bad-0924-4bc1-98c8-676c664acd9d-example.jpeg';
                     this.teacherFake.Methodology = 'I can customize the lessons to fit your needs. I teach conversational English to intermediate and advanced students with a focus on grammar, pronunciation, vocabulary and clear fluency and Business English with a focus on formal English in a business setting (role-play), business journal articles, and technical, industry based vocabulary';
                     this.teacherFake.TeacherSince = '2013';
@@ -6993,19 +7372,22 @@ var app;
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
                     };
+                    this.countryObject = { code: '', value: '' };
                     this.sexObject = { sex: { code: '', value: '' } };
                     this.dateObject = { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } };
                     this.form = {
                         phoneNumber: '',
                         sex: '',
                         birthDate: '',
-                        born: '',
+                        bornCountry: '',
+                        bornCity: '',
                         about: ''
                     };
                     this.listMonths = this.getDataFromJson.getMonthi18n();
                     this.listSexs = this.getDataFromJson.getSexi18n();
                     this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
                     this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
+                    this.listCountries = this.getDataFromJson.getCountryi18n();
                     this.validate = {
                         phoneNumber: { valid: true, message: '' },
                         sex: { valid: true, message: '' },
@@ -7016,7 +7398,8 @@ var app;
                             valid: true,
                             message: ''
                         },
-                        born: { valid: true, message: '' },
+                        bornCountry: { valid: true, message: '' },
+                        bornCity: { valid: true, message: '' },
                         about: { valid: true, message: '' }
                     };
                     this.activate();
@@ -7046,7 +7429,8 @@ var app;
                     this.dateObject.day.value = date.day ? parseInt(date.day) : '';
                     this.dateObject.month.code = date.month !== 'Invalid date' ? date.month : '';
                     this.dateObject.year.value = date.year ? parseInt(date.year) : '';
-                    this.form.born = data.Born;
+                    this.countryObject.code = data.BornCountry;
+                    this.form.bornCity = data.BornCity;
                     this.form.about = data.About;
                 };
                 TeacherInfoSectionController.prototype._validateForm = function () {
@@ -7096,10 +7480,15 @@ var app;
                         this.validate.birthDate.valid = true;
                         this.validate.birthDate.message = '';
                     }
-                    var born_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.born = this.functionsUtilService.validator(this.form.born, born_rules);
-                    if (!this.validate.born.valid) {
-                        formValid = this.validate.born.valid;
+                    var country_born_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.bornCountry = this.functionsUtilService.validator(this.countryObject.code, country_born_rules);
+                    if (!this.validate.bornCountry.valid) {
+                        formValid = this.validate.bornCountry.valid;
+                    }
+                    var city_born_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.bornCity = this.functionsUtilService.validator(this.form.bornCity, city_born_rules);
+                    if (!this.validate.bornCity.valid) {
+                        formValid = this.validate.bornCity.valid;
                     }
                     return formValid;
                 };
@@ -7157,11 +7546,14 @@ var app;
                 TeacherInfoSectionController.prototype._setDataModelFromForm = function () {
                     var dateFormatted = this.functionsUtilService.joinDate(this.dateObject.day.value, this.dateObject.month.code, this.dateObject.year.value);
                     var genderCode = this.sexObject.sex.code;
+                    var countryCode = this.countryObject.code;
                     var recommended = this.localStorage.getItem(this.dataConfig.earlyIdLocalStorage);
+                    this.form.bornCountry = countryCode;
                     this.$rootScope.profileData.PhoneNumber = this.form.phoneNumber;
                     this.$rootScope.profileData.Gender = genderCode;
                     this.$rootScope.profileData.BirthDate = dateFormatted;
-                    this.$rootScope.profileData.Born = this.form.born;
+                    this.$rootScope.profileData.BornCountry = this.form.bornCountry;
+                    this.$rootScope.profileData.BornCity = this.form.bornCity;
                     this.$rootScope.profileData.About = this.form.about;
                     this.$rootScope.teacherData.Recommended = recommended ? recommended : null;
                     mixpanel.track("Enter: Basic Info on Create Teacher", {

@@ -53,6 +53,7 @@ var components;
                                     DEBUG && console.log('Data User: ', response);
                                     self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
                                     self.$rootScope.userData = response;
+                                    response.userId = response.id;
                                     self.$rootScope.profileData = new app.models.user.Profile(response);
                                     self.$uibModalInstance.close();
                                 });

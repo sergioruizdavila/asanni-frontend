@@ -157,6 +157,10 @@
         }
     }
 
+    &--block {
+        width: 100%;
+    }
+
     .ma-select {
         -webkit-appearance: none;
         -moz-appearance:    none;
@@ -182,6 +186,10 @@
             padding: 15px;
             padding-right: $select-padding;
             font-size: $input-font-size-large;
+        }
+
+        &--block {
+            width: 100%;
         }
 
         &--invalid {

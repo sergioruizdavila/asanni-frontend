@@ -125,7 +125,20 @@ module app.core.interfaces {
         textsList?: Array<string>;
     }
 
+
+    /********************************/
+    /*    BIRTHDATE VALIDATE FORM   */
+    /********************************/
+    export interface IBirthdateValidate {
+        day: app.core.util.functionsUtil.IValid,
+        month: app.core.util.functionsUtil.IValid,
+        year: app.core.util.functionsUtil.IValid,
+        valid: boolean,
+        message: string
+    }
+
 }
+
 
 
 /******************************************************************************/

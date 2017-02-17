@@ -160,8 +160,10 @@ module components.modal.modalLogIn {
                                         self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
                                         //Set logged User data in $rootScope
                                         self.$rootScope.userData = response;
+                                        /* NOTE: We received 'id' not 'userId' from this endpoint
+                                            that's why we have to parse 'id' to 'userId'*/
+                                        response.userId = response.id;
                                         self.$rootScope.profileData = new app.models.user.Profile(response);
-                                        //self.$rootScope.profileData = JSON.parse(self.localStorage.getItem('userData'));
                                         //Close modal
                                         self.$uibModalInstance.close();
                                     }
