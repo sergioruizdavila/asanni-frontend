@@ -396,7 +396,7 @@ module components.modal.modalSignUp {
                 function(response) {
                     //loading Off
                     self.saving = false;
-                    
+
                     if (response.status == 401) {
                         //TODO: Traducir mensaje a español
                         DEBUG && console.log('Incorrect username or password.');

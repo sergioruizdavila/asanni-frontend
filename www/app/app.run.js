@@ -8,9 +8,10 @@
         '$state',
         'dataConfig',
         'mainApp.auth.AuthService',
+        'mainApp.models.user.UserService',
         'mainApp.localStorageService'
     ];
-    function run($rootScope, $state, dataConfig, AuthService, localStorage) {
+    function run($rootScope, $state, dataConfig, AuthService, userService, localStorage) {
         var productionHost = dataConfig.domain;
         var mixpanelTokenDEV = dataConfig.mixpanelTokenDEV;
         var mixpanelTokenPRD = dataConfig.mixpanelTokenPRD;
@@ -32,6 +33,11 @@
         if (AuthService.isAuthenticated()) {
             var userAccountInfo = JSON.parse(localStorage.getItem(dataConfig.userDataLocalStorage));
             $rootScope.userData = userAccountInfo;
+            userService.getUserProfileById($rootScope.userData.id).then(function (response) {
+                if (response.userId) {
+                    $rootScope.profileData = new app.models.user.Profile(response);
+                }
+            });
         }
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
             if (toState.data.requireLogin && !AuthService.isAuthenticated()) {

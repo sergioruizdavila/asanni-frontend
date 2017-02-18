@@ -53,6 +53,7 @@ module components.modal.modalLogIn {
             '$state',
             'mainApp.auth.AuthService',
             'mainApp.account.AccountService',
+            'mainApp.models.user.UserService',
             'mainApp.core.util.FunctionsUtilService',
             'mainApp.core.util.messageUtilService',
             'mainApp.localStorageService',
@@ -71,6 +72,7 @@ module components.modal.modalLogIn {
             private $state: ng.ui.IStateService,
             private AuthService: app.auth.IAuthService,
             private AccountService: app.account.IAccountService,
+            private userService: app.models.user.IUserService,
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
             private localStorage,
@@ -136,10 +138,7 @@ module components.modal.modalLogIn {
             let formValid = this._validateForm();
 
             if(formValid) {
-
-                //TODO: Validar bien esto, ya que toco hacer una rosca
-                // rara por que no encontre la forma de que OAuth2 permitiera
-                // loguear con email y no con username.
+                //get username given an user email
                 this.AccountService.getUsername(this.form.email).then(
                     function(response) {
 
@@ -169,12 +168,18 @@ module components.modal.modalLogIn {
                                         self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
                                         //Set logged User data in $rootScope
                                         self.$rootScope.userData = response;
-                                        /* NOTE: We received 'id' not 'userId' from this endpoint
-                                            that's why we have to parse 'id' to 'userId'*/
-                                        response.userId = response.id;
-                                        self.$rootScope.profileData = new app.models.user.Profile(response);
-                                        //Close modal
-                                        self.$uibModalInstance.close();
+
+                                        self.userService.getUserProfileById(response.id).then(
+                                            function(response) {
+                                                if(response.userId) {
+                                                    self.$rootScope.profileData = new app.models.user.Profile(response);
+                                                }
+
+                                                //Close modal
+                                                self.$uibModalInstance.close();
+                                            }
+                                        );
+
                                     }
                                 );
                             },
@@ -183,7 +188,7 @@ module components.modal.modalLogIn {
                             function(response) {
                                 //loading Off
                                 self.saving = false;
-                                
+
                                 if (response.status == 401) {
                                     //TODO: Traducir mensaje a español
                                     DEBUG && console.log('Incorrect username or password.');
