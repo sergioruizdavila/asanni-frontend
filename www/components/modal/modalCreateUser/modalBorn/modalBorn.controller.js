@@ -21,7 +21,7 @@ var components;
                     this.form = {
                         country: '',
                         city: '',
-                        birthDate: ''
+                        birthDate: null
                     };
                     this.dateObject = { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } };
                     this.countryObject = { code: '', value: '' };

@@ -134,7 +134,7 @@ module app.pages.createTeacherPage {
             this.form = {
                 phoneNumber: '',
                 sex: '',
-                birthDate: '',
+                birthDate: null,
                 bornCountry: '',
                 bornCity: '',
                 about: ''

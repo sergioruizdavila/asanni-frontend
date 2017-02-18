@@ -31,7 +31,7 @@ var app;
                     this.form = {
                         phoneNumber: '',
                         sex: '',
-                        birthDate: '',
+                        birthDate: null,
                         bornCountry: '',
                         bornCity: '',
                         about: ''

@@ -91,7 +91,7 @@ module components.modal.modalBorn {
             this.form = {
                 country: '',
                 city: '',
-                birthDate: ''
+                birthDate: null
             };
 
             // Birthdate Select List Structure
