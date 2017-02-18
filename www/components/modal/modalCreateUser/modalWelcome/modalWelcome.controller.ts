@@ -10,7 +10,6 @@ module components.modal.modalWelcome {
     /*           INTERFACES           */
     /**********************************/
     interface IModalWelcomeController {
-        close: () => void;
         activate: () => void;
     }
 
@@ -64,13 +63,13 @@ module components.modal.modalWelcome {
 
 
         /**
-        * _openBornModal
-        * @description - open Modal in order to ask user born info
-        * @use - this._openBornModal();
+        * _openPhotoModal
+        * @description - open Modal in order to upload a user avatar image
+        * @use - this._openPhotoModal();
         * @function
         * @return {void}
         */
-        private _openBornModal(): void {
+        private _openPhotoModal(): void {
             //VARIABLES
             let self = this;
             // modal default options
@@ -79,28 +78,14 @@ module components.modal.modalWelcome {
                 backdrop: 'static',
                 size: 'sm',
                 keyboard: false,
-                templateUrl: this.dataConfig.modalBornTmpl,
-                controller: 'mainApp.components.modal.ModalBornController as vm'
+                templateUrl: this.dataConfig.modalPhotoTmpl,
+                controller: 'mainApp.components.modal.ModalPhotoController as vm'
             };
 
             var modalInstance = this.$uibModal.open(options);
 
             this.$uibModalInstance.close();
         }
-
-
-
-        /**
-        * close
-        * @description - when user click "X" button, close the modal
-        * @use - this.close();
-        * @function
-        * @return {void}
-        */
-        close(): void {
-            this.$uibModalInstance.close();
-        }
-
 
     }
 

@@ -79,7 +79,7 @@
                                 </div>
 
                                 <! Password input >
-                                <div class="form-group ma-form-group">
+                                <div class="form-group ma-form-group clearfix">
                                     <label class="sr-only"
                                            for="passwordAccountInput"
                                            translate>
@@ -93,7 +93,9 @@
                                                   ma-input--block"
                                            translate
                                            translate-attr-placeholder="%modal.login.form.password.text">
-                                    <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                    <p class="ma-p
+                                              ma-p--small ma-p--alert
+                                              margin-reset pull-right"
                                        ng-show="!vm.validate.password.valid">
                                        <span>{{vm.validate.password.message}}</span>
                                     </p>
@@ -117,8 +119,15 @@
                                                 ma-btn--large
                                                 ma-btn--block text-capitalize"
                                         ng-click="vm.login()"
-                                        translate>
-                                    %global.login.label.text
+                                        ng-disabled="vm.saving">
+                                    <span ng-class="{'hidden' : vm.saving}"
+                                          translate>
+                                        %global.login.label.text
+                                    </span>
+                                    <span ng-class="{'hidden' : !vm.saving}"
+                                          translate>
+                                        %global.loading.text
+                                    </span>
                                 </button>
 
                             </form>

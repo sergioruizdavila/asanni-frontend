@@ -52,6 +52,7 @@ var paths = {
         "www/components/map/map.directive.js",
         "www/components/modal/modal.config.js",
         "www/components/modal/modalCreateUser/modalWelcome/modalWelcome.controller.js",
+        "www/components/modal/modalCreateUser/modalPhoto/modalPhoto.controller.js",
         "www/components/modal/modalCreateUser/modalBorn/modalBorn.controller.js",
         "www/components/modal/modalCreateUser/modalBasicInfo/modalBasicInfo.controller.js",
         "www/components/modal/modalCreateUser/modalFinish/modalFinish.controller.js",

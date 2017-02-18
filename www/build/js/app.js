@@ -113,6 +113,7 @@ DEBUG = true;
         mixpanelTokenDEV: 'eda475bf46e7f01e417a4ed1d9cc3e58',
         modalWelcomeTmpl: 'components/modal/modalCreateUser/modalWelcome/modalWelcome.html',
         modalBornTmpl: 'components/modal/modalCreateUser/modalBorn/modalBorn.html',
+        modalPhotoTmpl: 'components/modal/modalCreateUser/modalPhoto/modalPhoto.html',
         modalBasicInfoTmpl: 'components/modal/modalCreateUser/modalBasicInfo/modalBasicInfo.html',
         modalFinishTmpl: 'components/modal/modalCreateUser/modalFinish/modalFinish.html',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
@@ -1156,7 +1157,7 @@ var app;
                     this.firstName = obj.firstName || '';
                     this.lastName = obj.lastName || '';
                     this.gender = obj.gender || '';
-                    this.birthDate = obj.birthDate || '';
+                    this.birthDate = obj.birthDate || null;
                     this.bornCountry = obj.bornCountry || '';
                     this.bornCity = obj.bornCity || '';
                     this.about = obj.about || '';
@@ -3939,20 +3940,17 @@ var components;
                 ModalWelcomeController.prototype.activate = function () {
                     DEBUG && console.log('modalWelcome controller actived');
                 };
-                ModalWelcomeController.prototype._openBornModal = function () {
+                ModalWelcomeController.prototype._openPhotoModal = function () {
                     var self = this;
                     var options = {
                         animation: false,
                         backdrop: 'static',
                         size: 'sm',
                         keyboard: false,
-                        templateUrl: this.dataConfig.modalBornTmpl,
-                        controller: 'mainApp.components.modal.ModalBornController as vm'
+                        templateUrl: this.dataConfig.modalPhotoTmpl,
+                        controller: 'mainApp.components.modal.ModalPhotoController as vm'
                     };
                     var modalInstance = this.$uibModal.open(options);
-                    this.$uibModalInstance.close();
-                };
-                ModalWelcomeController.prototype.close = function () {
                     this.$uibModalInstance.close();
                 };
                 return ModalWelcomeController;
@@ -4798,6 +4796,7 @@ var components;
                         last_name: '',
                         password: ''
                     };
+                    this.saving = false;
                     this.passwordMinLength = this.dataConfig.passwordMinLength;
                     this.passwordMaxLength = this.dataConfig.passwordMaxLength;
                     this.validate = {
@@ -4815,6 +4814,7 @@ var components;
                 };
                 ModalSignUpController.prototype.registerUser = function () {
                     var self = this;
+                    this.saving = true;
                     var formValid = this._validateForm();
                     if (formValid) {
                         this.form.username = this.functionsUtil.generateUsername(this.form.first_name, this.form.last_name);
@@ -4823,6 +4823,7 @@ var components;
                             self._loginAfterRegister(response.username, response.email, response.password);
                         }, function (error) {
                             DEBUG && console.log(JSON.stringify(error));
+                            self.saving = false;
                             var errortext = [];
                             for (var key in error.data) {
                                 var line = key;
@@ -4834,6 +4835,9 @@ var components;
                             self.validate.globalValidate.valid = false;
                             self.validate.globalValidate.message = errortext[0];
                         });
+                    }
+                    else {
+                        this.saving = false;
                     }
                 };
                 ModalSignUpController.prototype._validateForm = function () {
@@ -4919,6 +4923,7 @@ var components;
                     this.AuthService.login(userData).then(function (response) {
                         self.AccountService.getAccount().then(function (response) {
                             DEBUG && console.log('Data User: ', response);
+                            self.saving = false;
                             self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
                             self.$rootScope.userData = response;
                             response.userId = response.id;
@@ -4930,6 +4935,7 @@ var components;
                             self.$uibModalInstance.close();
                         });
                     }, function (response) {
+                        self.saving = false;
                         if (response.status == 401) {
                             DEBUG && console.log('Incorrect username or password.');
                             self.validate.globalValidate.valid = false;
@@ -5005,6 +5011,7 @@ var components;
                 }
                 ModalLogInController.prototype._init = function () {
                     var self = this;
+                    this.saving = false;
                     this.form = {
                         username: '',
                         email: '',
@@ -5023,6 +5030,7 @@ var components;
                 };
                 ModalLogInController.prototype.login = function () {
                     var self = this;
+                    this.saving = true;
                     var formValid = this._validateForm();
                     if (formValid) {
                         this.AccountService.getUsername(this.form.email).then(function (response) {
@@ -5035,6 +5043,7 @@ var components;
                             self.AuthService.login(self.form).then(function (response) {
                                 self.AccountService.getAccount().then(function (response) {
                                     DEBUG && console.log('Data User: ', response);
+                                    self.saving = false;
                                     self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
                                     self.$rootScope.userData = response;
                                     response.userId = response.id;
@@ -5042,6 +5051,7 @@ var components;
                                     self.$uibModalInstance.close();
                                 });
                             }, function (response) {
+                                self.saving = false;
                                 if (response.status == 401) {
                                     DEBUG && console.log('Incorrect username or password.');
                                     self.validate.globalValidate.valid = false;
@@ -5057,6 +5067,9 @@ var components;
                                 }
                             });
                         });
+                    }
+                    else {
+                        this.saving = false;
                     }
                 };
                 ModalLogInController.prototype._validateForm = function () {
@@ -8949,9 +8962,7 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherPhotoSectionController = (function () {
-                function TeacherPhotoSectionController(dataConfig, getDataFromJson, functionsUtilService, S3UploadService, messageUtil, Upload, $state, $filter, $scope, $rootScope) {
-                    this.dataConfig = dataConfig;
-                    this.getDataFromJson = getDataFromJson;
+                function TeacherPhotoSectionController(functionsUtilService, S3UploadService, messageUtil, Upload, $state, $filter, $scope, $rootScope) {
                     this.functionsUtilService = functionsUtilService;
                     this.S3UploadService = S3UploadService;
                     this.messageUtil = messageUtil;
@@ -9102,8 +9113,6 @@ var app;
             }());
             TeacherPhotoSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherPhotoSectionController';
             TeacherPhotoSectionController.$inject = [
-                'dataConfig',
-                'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.s3Upload.S3UploadService',
                 'mainApp.core.util.messageUtilService',

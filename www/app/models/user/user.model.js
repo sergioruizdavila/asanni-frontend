@@ -24,7 +24,7 @@ var app;
                     this.firstName = obj.firstName || '';
                     this.lastName = obj.lastName || '';
                     this.gender = obj.gender || '';
-                    this.birthDate = obj.birthDate || '';
+                    this.birthDate = obj.birthDate || null;
                     this.bornCountry = obj.bornCountry || '';
                     this.bornCity = obj.bornCity || '';
                     this.about = obj.about || '';

@@ -18,20 +18,17 @@ var components;
                 ModalWelcomeController.prototype.activate = function () {
                     DEBUG && console.log('modalWelcome controller actived');
                 };
-                ModalWelcomeController.prototype._openBornModal = function () {
+                ModalWelcomeController.prototype._openPhotoModal = function () {
                     var self = this;
                     var options = {
                         animation: false,
                         backdrop: 'static',
                         size: 'sm',
                         keyboard: false,
-                        templateUrl: this.dataConfig.modalBornTmpl,
-                        controller: 'mainApp.components.modal.ModalBornController as vm'
+                        templateUrl: this.dataConfig.modalPhotoTmpl,
+                        controller: 'mainApp.components.modal.ModalPhotoController as vm'
                     };
                     var modalInstance = this.$uibModal.open(options);
-                    this.$uibModalInstance.close();
-                };
-                ModalWelcomeController.prototype.close = function () {
                     this.$uibModalInstance.close();
                 };
                 return ModalWelcomeController;

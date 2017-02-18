@@ -4,6 +4,7 @@
 
     "__BUTTONS__": "",
     "%global.save.button.text": "Save",
+    "%global.saving.button.text": "Saving...",
     "%global.next.button.text": "Next",
     "%global.finish.button.text": "Finish",
     "%global.back.button.text": "Back",
@@ -12,6 +13,7 @@
     "%global.add.button.text": "+ Add",
     "%global.add_more.button.text": "+ Add More",
     "%global.upload_file.button.text": "Upload a file from your computer",
+    "%global.uploading.button.text": "Uploading...",
     "%global.start.button.text": "Let's Start",
     "%global.go.button.text": "Let's Go!",
     "%global.close_information.button.text": "Close information",

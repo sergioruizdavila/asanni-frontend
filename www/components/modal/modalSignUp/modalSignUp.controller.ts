@@ -48,7 +48,7 @@ module components.modal.modalSignUp {
         validate: IModalSignUpValidate;
         passwordMinLength: number;
         passwordMaxLength: number;
-        sending: boolean;
+        saving: boolean;
         defaultConfig: any;
         // --------------------------------
 
@@ -102,6 +102,9 @@ module components.modal.modalSignUp {
                 password: ''
             };
 
+            // Init saving loading
+            this.saving = false;
+
             // Password min length
             this.passwordMinLength = this.dataConfig.passwordMinLength;
 
@@ -143,6 +146,9 @@ module components.modal.modalSignUp {
             //VARIABLES
             let self = this;
 
+            //loading On
+            this.saving = true;
+
             //Validate data form
             let formValid = this._validateForm();
 
@@ -170,6 +176,9 @@ module components.modal.modalSignUp {
                         //LOG
                         DEBUG && console.log(JSON.stringify(error));
 
+                        //loading Off
+                        self.saving = false;
+
                         //Parse Error
                         var errortext = [];
                         for (var key in error.data) {
@@ -187,6 +196,10 @@ module components.modal.modalSignUp {
                         self.validate.globalValidate.message = errortext[0];
                     }
                 );
+
+            } else {
+                //loading Off
+                this.saving = false;
             }
 
         }
@@ -353,6 +366,9 @@ module components.modal.modalSignUp {
                             //LOG
                             DEBUG && console.log('Data User: ', response);
 
+                            //loading Off
+                            self.saving = false;
+
                             //Set logged User data in localStorage
                             self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
                             //Set logged User data in $rootScope
@@ -378,6 +394,9 @@ module components.modal.modalSignUp {
 
                 // Error
                 function(response) {
+                    //loading Off
+                    self.saving = false;
+                    
                     if (response.status == 401) {
                         //TODO: Traducir mensaje a español
                         DEBUG && console.log('Incorrect username or password.');

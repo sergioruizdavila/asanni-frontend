@@ -28,6 +28,7 @@ interface IDataConfig {
     mixpanelTokenPRD: string;
     mixpanelTokenDEV: string;
     modalWelcomeTmpl: string;
+    modalPhotoTmpl: string;
     modalBornTmpl: string;
     modalBasicInfoTmpl: string;
     modalFinishTmpl: string;
@@ -93,6 +94,7 @@ interface IDataConfig {
         mixpanelTokenDEV: 'eda475bf46e7f01e417a4ed1d9cc3e58',
         modalWelcomeTmpl: 'components/modal/modalCreateUser/modalWelcome/modalWelcome.html',
         modalBornTmpl: 'components/modal/modalCreateUser/modalBorn/modalBorn.html',
+        modalPhotoTmpl: 'components/modal/modalCreateUser/modalPhoto/modalPhoto.html',
         modalBasicInfoTmpl: 'components/modal/modalCreateUser/modalBasicInfo/modalBasicInfo.html',
         modalFinishTmpl: 'components/modal/modalCreateUser/modalFinish/modalFinish.html',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',

@@ -21,6 +21,7 @@ var components;
                 }
                 ModalLogInController.prototype._init = function () {
                     var self = this;
+                    this.saving = false;
                     this.form = {
                         username: '',
                         email: '',
@@ -39,6 +40,7 @@ var components;
                 };
                 ModalLogInController.prototype.login = function () {
                     var self = this;
+                    this.saving = true;
                     var formValid = this._validateForm();
                     if (formValid) {
                         this.AccountService.getUsername(this.form.email).then(function (response) {
@@ -51,6 +53,7 @@ var components;
                             self.AuthService.login(self.form).then(function (response) {
                                 self.AccountService.getAccount().then(function (response) {
                                     DEBUG && console.log('Data User: ', response);
+                                    self.saving = false;
                                     self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
                                     self.$rootScope.userData = response;
                                     response.userId = response.id;
@@ -58,6 +61,7 @@ var components;
                                     self.$uibModalInstance.close();
                                 });
                             }, function (response) {
+                                self.saving = false;
                                 if (response.status == 401) {
                                     DEBUG && console.log('Incorrect username or password.');
                                     self.validate.globalValidate.valid = false;
@@ -73,6 +77,9 @@ var components;
                                 }
                             });
                         });
+                    }
+                    else {
+                        this.saving = false;
                     }
                 };
                 ModalLogInController.prototype._validateForm = function () {

@@ -28,6 +28,7 @@ var components;
                         last_name: '',
                         password: ''
                     };
+                    this.saving = false;
                     this.passwordMinLength = this.dataConfig.passwordMinLength;
                     this.passwordMaxLength = this.dataConfig.passwordMaxLength;
                     this.validate = {
@@ -45,6 +46,7 @@ var components;
                 };
                 ModalSignUpController.prototype.registerUser = function () {
                     var self = this;
+                    this.saving = true;
                     var formValid = this._validateForm();
                     if (formValid) {
                         this.form.username = this.functionsUtil.generateUsername(this.form.first_name, this.form.last_name);
@@ -53,6 +55,7 @@ var components;
                             self._loginAfterRegister(response.username, response.email, response.password);
                         }, function (error) {
                             DEBUG && console.log(JSON.stringify(error));
+                            self.saving = false;
                             var errortext = [];
                             for (var key in error.data) {
                                 var line = key;
@@ -64,6 +67,9 @@ var components;
                             self.validate.globalValidate.valid = false;
                             self.validate.globalValidate.message = errortext[0];
                         });
+                    }
+                    else {
+                        this.saving = false;
                     }
                 };
                 ModalSignUpController.prototype._validateForm = function () {
@@ -149,6 +155,7 @@ var components;
                     this.AuthService.login(userData).then(function (response) {
                         self.AccountService.getAccount().then(function (response) {
                             DEBUG && console.log('Data User: ', response);
+                            self.saving = false;
                             self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
                             self.$rootScope.userData = response;
                             response.userId = response.id;
@@ -160,6 +167,7 @@ var components;
                             self.$uibModalInstance.close();
                         });
                     }, function (response) {
+                        self.saving = false;
                         if (response.status == 401) {
                             DEBUG && console.log('Incorrect username or password.');
                             self.validate.globalValidate.valid = false;
