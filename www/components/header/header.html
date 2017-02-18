@@ -69,7 +69,11 @@
                             <div class="ma-photo-profile
                                         ma-photo-profile--tiny
                                         round">
-                                <img width="32" height="32" src="https://a2.muscache.com/im/pictures/27b8a775-011e-4659-a82d-95320b05c1c8.jpg?aki_policy=profile_x_medium" alt="">
+                                <img width="32"
+                                     height="32"
+                                     ng-show="vm.$rootScope.profileData.avatar"
+                                     ng-src="{{vm.$rootScope.profileData.avatar}}"
+                                     alt="{{vm.$rootScope.profileData.firstName}}">
                             </div>
                             <div class="ma-label
                                         ma-label--simple
@@ -185,8 +189,11 @@
                                 round
                                 ma-header__block__btn__icon
                                 ma-header__block__btn__icon__ma-photo">
-                        <img width="32" height="32"
-                             src="https://a2.muscache.com/im/pictures/27b8a775-011e-4659-a82d-95320b05c1c8.jpg?aki_policy=profile_x_medium" alt="">
+                        <img width="32"
+                             height="32"
+                             ng-show="{{vm.$rootScope.profileData.avatar}}"
+                             ng-src="{{vm.$rootScope.profileData.avatar}}"
+                             alt="{{vm.$rootScope.profileData.firstName}}">
                     </div>
                 </a>
                 <ul class="ma-dropdown

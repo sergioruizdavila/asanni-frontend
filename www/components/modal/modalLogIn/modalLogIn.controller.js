@@ -5,11 +5,12 @@ var components;
         var modalLogIn;
         (function (modalLogIn) {
             var ModalLogInController = (function () {
-                function ModalLogInController($rootScope, $state, AuthService, AccountService, functionsUtil, messageUtil, localStorage, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
+                function ModalLogInController($rootScope, $state, AuthService, AccountService, userService, functionsUtil, messageUtil, localStorage, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
                     this.$rootScope = $rootScope;
                     this.$state = $state;
                     this.AuthService = AuthService;
                     this.AccountService = AccountService;
+                    this.userService = userService;
                     this.functionsUtil = functionsUtil;
                     this.messageUtil = messageUtil;
                     this.localStorage = localStorage;
@@ -56,9 +57,12 @@ var components;
                                     self.saving = false;
                                     self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
                                     self.$rootScope.userData = response;
-                                    response.userId = response.id;
-                                    self.$rootScope.profileData = new app.models.user.Profile(response);
-                                    self.$uibModalInstance.close();
+                                    self.userService.getUserProfileById(response.id).then(function (response) {
+                                        if (response.userId) {
+                                            self.$rootScope.profileData = new app.models.user.Profile(response);
+                                        }
+                                        self.$uibModalInstance.close();
+                                    });
                                 });
                             }, function (response) {
                                 self.saving = false;
@@ -151,6 +155,7 @@ var components;
                 '$state',
                 'mainApp.auth.AuthService',
                 'mainApp.account.AccountService',
+                'mainApp.models.user.UserService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.util.messageUtilService',
                 'mainApp.localStorageService',

@@ -18,6 +18,7 @@
                 '$state',
                 'dataConfig',
                 'mainApp.auth.AuthService',
+                'mainApp.models.user.UserService',
                 'mainApp.localStorageService'
             ];
 
@@ -25,6 +26,7 @@
                  $state: ng.ui.IStateService,
                  dataConfig: IDataConfig,
                  AuthService: app.auth.IAuthService,
+                 userService: app.models.user.IUserService,
                  localStorage): void {
 
         //VARIABLES
@@ -53,6 +55,14 @@
             //VARIABLES
             let userAccountInfo = JSON.parse(localStorage.getItem(dataConfig.userDataLocalStorage));
             $rootScope.userData = userAccountInfo;
+            //Get user profile data and save in $rootScope
+            userService.getUserProfileById($rootScope.userData.id).then(
+                function(response) {
+                    if(response.userId) {
+                        $rootScope.profileData = new app.models.user.Profile(response);
+                    }
+                }
+            );
         }
 
         //Validate each state if require login
@@ -64,7 +74,6 @@
                 event.preventDefault();
                 $state.go('page.landingPage');
             }
-
         });
     }
 
