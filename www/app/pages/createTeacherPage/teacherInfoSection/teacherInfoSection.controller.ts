@@ -36,24 +36,18 @@ module app.pages.createTeacherPage {
         phoneNumber: string;
         sex: string;
         birthDate: string;
-        born: string;
+        bornCountry: string;
+        bornCity: string;
         about: string;
     }
 
     interface ITeacherInfoValidate {
         phoneNumber: app.core.util.functionsUtil.IValid;
         sex: app.core.util.functionsUtil.IValid;
-        birthDate: IBirthdateValidate;
-        born: app.core.util.functionsUtil.IValid;
+        birthDate: app.core.interfaces.IBirthdateValidate;
+        bornCountry: app.core.util.functionsUtil.IValid;
+        bornCity: app.core.util.functionsUtil.IValid;
         about: app.core.util.functionsUtil.IValid;
-    }
-
-    interface IBirthdateValidate {
-        day: app.core.util.functionsUtil.IValid,
-        month: app.core.util.functionsUtil.IValid,
-        year: app.core.util.functionsUtil.IValid,
-        valid: boolean,
-        message: string
     }
 
     /****************************************/
@@ -73,6 +67,8 @@ module app.pages.createTeacherPage {
         listSexs: Array<app.core.interfaces.IDataFromJsonI18n>;
         listDays: Array<app.core.interfaces.ISelectListElement>;
         listYears: Array<app.core.interfaces.ISelectListElement>;
+        listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
+        countryObject: app.core.interfaces.IDataFromJsonI18n;
         dateObject: IBirthdateForm;
         sexObject: ISexForm;
         STEP2_STATE: string;
@@ -125,6 +121,9 @@ module app.pages.createTeacherPage {
                 description: this.HELP_TEXT_DESCRIPTION
             };
 
+            // Country Select List Structure
+            this.countryObject = {code: '', value: ''};
+
             // Sex Select List Structure
             this.sexObject = {sex: {code:'', value:''}};
 
@@ -135,8 +134,9 @@ module app.pages.createTeacherPage {
             this.form = {
                 phoneNumber: '',
                 sex: '',
-                birthDate: '',
-                born: '',
+                birthDate: null,
+                bornCountry: '',
+                bornCity: '',
                 about: ''
             };
 
@@ -147,6 +147,8 @@ module app.pages.createTeacherPage {
             this.listSexs = this.getDataFromJson.getSexi18n();
             this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
             this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
+            // Build Countries select lists
+            this.listCountries = this.getDataFromJson.getCountryi18n();
 
             // Build validate object fields
             this.validate = {
@@ -159,7 +161,8 @@ module app.pages.createTeacherPage {
                     valid: true,
                     message: ''
                 },
-                born: {valid: true, message: ''},
+                bornCountry: {valid: true, message: ''},
+                bornCity: {valid: true, message: ''},
                 about: {valid: true, message: ''}
             };
 
@@ -229,7 +232,9 @@ module app.pages.createTeacherPage {
             this.dateObject.month.code = date.month !== 'Invalid date' ? date.month : '';
             this.dateObject.year.value = date.year ? parseInt(date.year) : '';
 
-            this.form.born = data.Born;
+            //Charge Country on select List
+            this.countryObject.code = data.BornCountry;
+            this.form.bornCity = data.BornCity;
             this.form.about = data.About;
         }
 
@@ -306,11 +311,18 @@ module app.pages.createTeacherPage {
                    this.validate.birthDate.message = '';
             }
 
-            //Validate Born field
-            let born_rules = [NULL_ENUM, EMPTY_ENUM];
-            this.validate.born = this.functionsUtilService.validator(this.form.born, born_rules);
-            if(!this.validate.born.valid) {
-                formValid = this.validate.born.valid;
+            //Validate Country field
+            let country_born_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.bornCountry = this.functionsUtilService.validator(this.countryObject.code, country_born_rules);
+            if(!this.validate.bornCountry.valid) {
+                formValid = this.validate.bornCountry.valid;
+            }
+
+            //Validate City Born field
+            let city_born_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.bornCity = this.functionsUtilService.validator(this.form.bornCity, city_born_rules);
+            if(!this.validate.bornCity.valid) {
+                formValid = this.validate.bornCity.valid;
             }
 
             return formValid;
@@ -405,14 +417,17 @@ module app.pages.createTeacherPage {
                                     this.dateObject.month.code,
                                     this.dateObject.year.value);
             let genderCode = this.sexObject.sex.code;
+            let countryCode = this.countryObject.code;
             let recommended = this.localStorage.getItem(this.dataConfig.earlyIdLocalStorage);
             /*********************************/
 
+            this.form.bornCountry = countryCode;
             // Send data to parent (createTeacherPage)
             this.$rootScope.profileData.PhoneNumber = this.form.phoneNumber;
             this.$rootScope.profileData.Gender = genderCode;
             this.$rootScope.profileData.BirthDate = dateFormatted;
-            this.$rootScope.profileData.Born = this.form.born;
+            this.$rootScope.profileData.BornCountry = this.form.bornCountry;
+            this.$rootScope.profileData.BornCity = this.form.bornCity;
             this.$rootScope.profileData.About = this.form.about;
 
             //If this teacher was recommended by a Student

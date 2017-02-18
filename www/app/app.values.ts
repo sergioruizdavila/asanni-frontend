@@ -27,6 +27,11 @@ interface IDataConfig {
     googleMapKey: string;
     mixpanelTokenPRD: string;
     mixpanelTokenDEV: string;
+    modalWelcomeTmpl: string;
+    modalPhotoTmpl: string;
+    modalBornTmpl: string;
+    modalBasicInfoTmpl: string;
+    modalFinishTmpl: string;
     modalMeetingPointTmpl: string;
     modalLanguagesTmpl: string;
     modalExperienceTmpl: string;
@@ -87,6 +92,11 @@ interface IDataConfig {
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',
         mixpanelTokenDEV: 'eda475bf46e7f01e417a4ed1d9cc3e58',
+        modalWelcomeTmpl: 'components/modal/modalCreateUser/modalWelcome/modalWelcome.html',
+        modalBornTmpl: 'components/modal/modalCreateUser/modalBorn/modalBorn.html',
+        modalPhotoTmpl: 'components/modal/modalCreateUser/modalPhoto/modalPhoto.html',
+        modalBasicInfoTmpl: 'components/modal/modalCreateUser/modalBasicInfo/modalBasicInfo.html',
+        modalFinishTmpl: 'components/modal/modalCreateUser/modalFinish/modalFinish.html',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
         modalLanguagesTmpl: 'components/modal/modalLanguages/modalLanguages.html',
         modalExperienceTmpl: 'components/modal/modalExperience/modalExperience.html',

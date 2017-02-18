@@ -22,15 +22,10 @@ module app.pages.createTeacherPage {
         vm: ICreateTeacherPageController;
     }
 
-    export interface ITeacherPhotoForm {
+    interface ITeacherPhotoForm {
         avatar: File;
         croppedDataUrl: string;
         thumbnail: string;
-    }
-
-    export interface IUpload extends angular.angularFileUpload.IUploadService {
-        dataUrltoBlob: (dataUrl: string, name: string) => File;
-        urlToBlob: (url: string) => angular.IPromise<any>;
     }
 
     interface ITeacherPhotoValidate {
@@ -61,9 +56,7 @@ module app.pages.createTeacherPage {
 
 
         /*-- INJECT DEPENDENCIES --*/
-        public static $inject = [
-            'dataConfig',
-            'mainApp.core.util.GetDataStaticJsonService',
+        public static $inject = [            
             'mainApp.core.util.FunctionsUtilService',
             'mainApp.core.s3Upload.S3UploadService',
             'mainApp.core.util.messageUtilService',
@@ -78,12 +71,10 @@ module app.pages.createTeacherPage {
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
-            private dataConfig: IDataConfig,
-            private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
             private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
             private S3UploadService: app.core.s3Upload.IS3UploadService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
-            private Upload: IUpload,
+            private Upload: app.core.interfaces.IUpload,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
             private $scope: ITeacherPhotoScope,

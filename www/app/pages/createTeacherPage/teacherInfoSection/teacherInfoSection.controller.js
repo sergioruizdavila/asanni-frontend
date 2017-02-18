@@ -25,19 +25,22 @@ var app;
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
                     };
+                    this.countryObject = { code: '', value: '' };
                     this.sexObject = { sex: { code: '', value: '' } };
                     this.dateObject = { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } };
                     this.form = {
                         phoneNumber: '',
                         sex: '',
-                        birthDate: '',
-                        born: '',
+                        birthDate: null,
+                        bornCountry: '',
+                        bornCity: '',
                         about: ''
                     };
                     this.listMonths = this.getDataFromJson.getMonthi18n();
                     this.listSexs = this.getDataFromJson.getSexi18n();
                     this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
                     this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
+                    this.listCountries = this.getDataFromJson.getCountryi18n();
                     this.validate = {
                         phoneNumber: { valid: true, message: '' },
                         sex: { valid: true, message: '' },
@@ -48,7 +51,8 @@ var app;
                             valid: true,
                             message: ''
                         },
-                        born: { valid: true, message: '' },
+                        bornCountry: { valid: true, message: '' },
+                        bornCity: { valid: true, message: '' },
                         about: { valid: true, message: '' }
                     };
                     this.activate();
@@ -78,7 +82,8 @@ var app;
                     this.dateObject.day.value = date.day ? parseInt(date.day) : '';
                     this.dateObject.month.code = date.month !== 'Invalid date' ? date.month : '';
                     this.dateObject.year.value = date.year ? parseInt(date.year) : '';
-                    this.form.born = data.Born;
+                    this.countryObject.code = data.BornCountry;
+                    this.form.bornCity = data.BornCity;
                     this.form.about = data.About;
                 };
                 TeacherInfoSectionController.prototype._validateForm = function () {
@@ -128,10 +133,15 @@ var app;
                         this.validate.birthDate.valid = true;
                         this.validate.birthDate.message = '';
                     }
-                    var born_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.born = this.functionsUtilService.validator(this.form.born, born_rules);
-                    if (!this.validate.born.valid) {
-                        formValid = this.validate.born.valid;
+                    var country_born_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.bornCountry = this.functionsUtilService.validator(this.countryObject.code, country_born_rules);
+                    if (!this.validate.bornCountry.valid) {
+                        formValid = this.validate.bornCountry.valid;
+                    }
+                    var city_born_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.bornCity = this.functionsUtilService.validator(this.form.bornCity, city_born_rules);
+                    if (!this.validate.bornCity.valid) {
+                        formValid = this.validate.bornCity.valid;
                     }
                     return formValid;
                 };
@@ -189,11 +199,14 @@ var app;
                 TeacherInfoSectionController.prototype._setDataModelFromForm = function () {
                     var dateFormatted = this.functionsUtilService.joinDate(this.dateObject.day.value, this.dateObject.month.code, this.dateObject.year.value);
                     var genderCode = this.sexObject.sex.code;
+                    var countryCode = this.countryObject.code;
                     var recommended = this.localStorage.getItem(this.dataConfig.earlyIdLocalStorage);
+                    this.form.bornCountry = countryCode;
                     this.$rootScope.profileData.PhoneNumber = this.form.phoneNumber;
                     this.$rootScope.profileData.Gender = genderCode;
                     this.$rootScope.profileData.BirthDate = dateFormatted;
-                    this.$rootScope.profileData.Born = this.form.born;
+                    this.$rootScope.profileData.BornCountry = this.form.bornCountry;
+                    this.$rootScope.profileData.BornCity = this.form.bornCity;
                     this.$rootScope.profileData.About = this.form.about;
                     this.$rootScope.teacherData.Recommended = recommended ? recommended : null;
                     mixpanel.track("Enter: Basic Info on Create Teacher", {

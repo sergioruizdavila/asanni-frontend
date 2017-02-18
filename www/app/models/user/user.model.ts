@@ -42,7 +42,8 @@ module app.models.user {
         private lastName: string;
         private gender: string;
         private birthDate: string;
-        private born: string;
+        private bornCountry: string;
+        private bornCity: string;
         private about: string;
         private status: string;
         private createdAt: string;
@@ -65,8 +66,9 @@ module app.models.user {
             this.firstName = obj.firstName || '';
             this.lastName = obj.lastName || '';
             this.gender = obj.gender || '';
-            this.birthDate = obj.birthDate || '';
-            this.born = obj.born || '';
+            this.birthDate = obj.birthDate || null;
+            this.bornCountry = obj.bornCountry || '';
+            this.bornCity = obj.bornCity || '';
             this.about = obj.about || '';
             this.status = obj.status || 'NW';
             this.createdAt = obj.createdAt || '';
@@ -97,11 +99,6 @@ module app.models.user {
 
         get Username() {
             return this.username;
-        }
-
-        set Username(username: string) {
-            if (username === undefined) { throw 'Please supply profile username'; }
-            this.username = username;
         }
 
         get Email() {
@@ -158,13 +155,22 @@ module app.models.user {
             this.birthDate = birthDate;
         }
 
-        get Born() {
-            return this.born;
+        get BornCountry() {
+            return this.bornCountry;
         }
 
-        set Born(born: string) {
-            if (born === undefined) { throw 'Please supply profile born'; }
-            this.born = born;
+        set BornCountry(bornCountry: string) {
+            if (bornCountry === undefined) { throw 'Please supply profile born country'; }
+            this.bornCountry = bornCountry;
+        }
+
+        get BornCity() {
+            return this.bornCity;
+        }
+
+        set BornCity(bornCity: string) {
+            if (bornCity === undefined) { throw 'Please supply profile born city'; }
+            this.bornCity = bornCity;
         }
 
         get About() {

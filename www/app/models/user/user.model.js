@@ -24,8 +24,9 @@ var app;
                     this.firstName = obj.firstName || '';
                     this.lastName = obj.lastName || '';
                     this.gender = obj.gender || '';
-                    this.birthDate = obj.birthDate || '';
-                    this.born = obj.born || '';
+                    this.birthDate = obj.birthDate || null;
+                    this.bornCountry = obj.bornCountry || '';
+                    this.bornCity = obj.bornCity || '';
                     this.about = obj.about || '';
                     this.status = obj.status || 'NW';
                     this.createdAt = obj.createdAt || '';
@@ -59,12 +60,6 @@ var app;
                 Object.defineProperty(Profile.prototype, "Username", {
                     get: function () {
                         return this.username;
-                    },
-                    set: function (username) {
-                        if (username === undefined) {
-                            throw 'Please supply profile username';
-                        }
-                        this.username = username;
                     },
                     enumerable: true,
                     configurable: true
@@ -147,15 +142,28 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(Profile.prototype, "Born", {
+                Object.defineProperty(Profile.prototype, "BornCountry", {
                     get: function () {
-                        return this.born;
+                        return this.bornCountry;
                     },
-                    set: function (born) {
-                        if (born === undefined) {
-                            throw 'Please supply profile born';
+                    set: function (bornCountry) {
+                        if (bornCountry === undefined) {
+                            throw 'Please supply profile born country';
                         }
-                        this.born = born;
+                        this.bornCountry = bornCountry;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "BornCity", {
+                    get: function () {
+                        return this.bornCity;
+                    },
+                    set: function (bornCity) {
+                        if (bornCity === undefined) {
+                            throw 'Please supply profile born city';
+                        }
+                        this.bornCity = bornCity;
                     },
                     enumerable: true,
                     configurable: true

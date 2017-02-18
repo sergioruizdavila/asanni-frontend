@@ -113,6 +113,14 @@ module app.core.interfaces {
         hasNextStep: boolean;
     }
 
+    /************************************/
+    /*      UPLOAD FILE INTERFACE       */
+    /************************************/
+    export interface IUpload extends angular.angularFileUpload.IUploadService {
+        dataUrltoBlob: (dataUrl: string, name: string) => File;
+        urlToBlob: (url: string) => angular.IPromise<any>;
+    }
+
 
     /////////////////////////////////
 
@@ -125,7 +133,20 @@ module app.core.interfaces {
         textsList?: Array<string>;
     }
 
+
+    /********************************/
+    /*    BIRTHDATE VALIDATE FORM   */
+    /********************************/
+    export interface IBirthdateValidate {
+        day: app.core.util.functionsUtil.IValid,
+        month: app.core.util.functionsUtil.IValid,
+        year: app.core.util.functionsUtil.IValid,
+        valid: boolean,
+        message: string
+    }
+
 }
+
 
 
 /******************************************************************************/

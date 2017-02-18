@@ -5,9 +5,7 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherPhotoSectionController = (function () {
-                function TeacherPhotoSectionController(dataConfig, getDataFromJson, functionsUtilService, S3UploadService, messageUtil, Upload, $state, $filter, $scope, $rootScope) {
-                    this.dataConfig = dataConfig;
-                    this.getDataFromJson = getDataFromJson;
+                function TeacherPhotoSectionController(functionsUtilService, S3UploadService, messageUtil, Upload, $state, $filter, $scope, $rootScope) {
                     this.functionsUtilService = functionsUtilService;
                     this.S3UploadService = S3UploadService;
                     this.messageUtil = messageUtil;
@@ -158,8 +156,6 @@ var app;
             }());
             TeacherPhotoSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherPhotoSectionController';
             TeacherPhotoSectionController.$inject = [
-                'dataConfig',
-                'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.s3Upload.S3UploadService',
                 'mainApp.core.util.messageUtilService',

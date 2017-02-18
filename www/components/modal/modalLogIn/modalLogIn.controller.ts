@@ -44,7 +44,7 @@ module components.modal.modalLogIn {
         /**********************************/
         form: IModalLogInForm;
         validate: IModalLogInValidate;
-        sending: boolean;
+        saving: boolean;
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/
@@ -88,6 +88,9 @@ module components.modal.modalLogIn {
             //VARIABLES
             let self = this;
 
+            // Init saving loading
+            this.saving = false;
+
             //Init form
             this.form = {
                 username: '',
@@ -127,6 +130,9 @@ module components.modal.modalLogIn {
             //VARIABLES
             let self = this;
 
+            //loading On
+            this.saving = true;
+
             let formValid = this._validateForm();
 
             if(formValid) {
@@ -156,12 +162,17 @@ module components.modal.modalLogIn {
                                         //LOG
                                         DEBUG && console.log('Data User: ', response);
 
+                                        //loading Off
+                                        self.saving = false;
+
                                         //Set logged User data in localStorage
                                         self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
                                         //Set logged User data in $rootScope
                                         self.$rootScope.userData = response;
+                                        /* NOTE: We received 'id' not 'userId' from this endpoint
+                                            that's why we have to parse 'id' to 'userId'*/
+                                        response.userId = response.id;
                                         self.$rootScope.profileData = new app.models.user.Profile(response);
-                                        //self.$rootScope.profileData = JSON.parse(self.localStorage.getItem('userData'));
                                         //Close modal
                                         self.$uibModalInstance.close();
                                     }
@@ -170,6 +181,9 @@ module components.modal.modalLogIn {
 
                             // Error
                             function(response) {
+                                //loading Off
+                                self.saving = false;
+                                
                                 if (response.status == 401) {
                                     //TODO: Traducir mensaje a español
                                     DEBUG && console.log('Incorrect username or password.');
@@ -193,6 +207,9 @@ module components.modal.modalLogIn {
                     }
                 );
 
+            } else {
+                //loading Off
+                this.saving = false;
             }
 
         }

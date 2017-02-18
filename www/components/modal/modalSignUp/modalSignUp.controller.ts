@@ -48,16 +48,19 @@ module components.modal.modalSignUp {
         validate: IModalSignUpValidate;
         passwordMinLength: number;
         passwordMaxLength: number;
-        sending: boolean;
+        saving: boolean;
         defaultConfig: any;
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/
         static $inject = [
             '$rootScope',
+            'mainApp.auth.AuthService',
+            'mainApp.account.AccountService',
             'mainApp.register.RegisterService',
             'mainApp.core.util.FunctionsUtilService',
             'mainApp.core.util.messageUtilService',
+            'mainApp.localStorageService',
             'dataSetModal',
             'dataConfig',
             '$uibModal',
@@ -70,9 +73,12 @@ module components.modal.modalSignUp {
         /**********************************/
         constructor(
             private $rootScope: app.core.interfaces.IMainAppRootScope,
+            private AuthService: app.auth.IAuthService,
+            private AccountService: app.account.IAccountService,
             private RegisterService: app.register.IRegisterService,
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
+            private localStorage,
             private dataSetModal: app.core.interfaces.IDataSet,
             private dataConfig: IDataConfig,
             private $uibModal: ng.ui.bootstrap.IModalService,
@@ -95,6 +101,9 @@ module components.modal.modalSignUp {
                 last_name: '',
                 password: ''
             };
+
+            // Init saving loading
+            this.saving = false;
 
             // Password min length
             this.passwordMinLength = this.dataConfig.passwordMinLength;
@@ -137,6 +146,9 @@ module components.modal.modalSignUp {
             //VARIABLES
             let self = this;
 
+            //loading On
+            this.saving = true;
+
             //Validate data form
             let formValid = this._validateForm();
 
@@ -148,18 +160,24 @@ module components.modal.modalSignUp {
                 this.RegisterService.register(this.form).then(
 
                     //Success
-                    function(response) {
+                    function(response: app.core.interfaces.IUserDataAuth) {
                         //LOG
                         DEBUG && console.log('Welcome!, Your new account has been successfuly created.');
-                        //Show LogIn modal in order to allow user log in
-                        self.messageUtil.success('Welcome!, Your new account has been successfuly created.');
-                        self._openLogInModal();
+                        //Log user signed up
+                        self._loginAfterRegister(
+                            response.username,
+                            response.email,
+                            response.password
+                        );
                     },
 
                     //Error
                     function(error) {
                         //LOG
                         DEBUG && console.log(JSON.stringify(error));
+
+                        //loading Off
+                        self.saving = false;
 
                         //Parse Error
                         var errortext = [];
@@ -178,6 +196,10 @@ module components.modal.modalSignUp {
                         self.validate.globalValidate.message = errortext[0];
                     }
                 );
+
+            } else {
+                //loading Off
+                this.saving = false;
             }
 
         }
@@ -315,6 +337,114 @@ module components.modal.modalSignUp {
             });
 
             this.$uibModalInstance.close();
+        }
+
+
+
+        /**
+        * _loginAfterRegister
+        * @description - Tries to login a user after a successful sign up
+        * @use - this._loginAfterRegister();
+        * @function
+        * @return {void}
+        */
+        private _loginAfterRegister(username, email, password): void {
+            //VARIABLES
+            let self = this;
+            let userData = {
+                username: username,
+                email: email,
+                password: password
+            };
+
+            this.AuthService.login(userData).then(
+
+                //Success
+                function(response) {
+                    self.AccountService.getAccount().then(
+                        function(response) {
+                            //LOG
+                            DEBUG && console.log('Data User: ', response);
+
+                            //loading Off
+                            self.saving = false;
+
+                            //Set logged User data in localStorage
+                            self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
+                            //Set logged User data in $rootScope
+                            self.$rootScope.userData = response;
+                            /* NOTE: We received 'id' not 'userId' from this endpoint
+                                that's why we have to parse 'id' to 'userId'*/
+                            response.userId = response.id;
+                            self.$rootScope.profileData = new app.models.user.Profile(response);
+
+                            //Validate if user is Authenticated
+                            self.$rootScope.$broadcast('Is Authenticated', self.dataSetModal.hasNextStep);
+
+                            if(!self.dataSetModal.hasNextStep) {
+                                //Open Welcome Modal
+                                self._openWelcomeModal();
+                            }
+
+                            self.$uibModalInstance.close();
+
+                        }
+                    );
+                },
+
+                // Error
+                function(response) {
+                    //loading Off
+                    self.saving = false;
+                    
+                    if (response.status == 401) {
+                        //TODO: Traducir mensaje a español
+                        DEBUG && console.log('Incorrect username or password.');
+                        self.validate.globalValidate.valid = false;
+                        self.validate.globalValidate.message = 'Incorrect username or password.';
+                    }
+
+                    else if (response.status == -1) {
+                        //TODO: Traducir mensaje a español
+                        DEBUG && console.log('No response from server. Try again, please');
+                        self.messageUtil.error('No response from server. Try again, please');
+                    }
+
+                    else {
+                        //TODO: Traducir mensaje a español
+                        DEBUG && console.log('There was a problem logging you in. Error code: ' + response.status + '.');
+                        self.messageUtil.error('There was a problem logging you in. Error code: ' + response.status + '.');
+                    }
+                }
+            );
+
+        }
+
+
+
+        /**
+        * _openWelcomeModal
+        * @description - open welcome Modal after a success signUp and log In
+        * @use - this._openWelcomeModal();
+        * @function
+        * @return {void}
+        */
+        private _openWelcomeModal(): void {
+
+            //VARIABLES
+            let self = this;
+            // modal default options
+            let options: ng.ui.bootstrap.IModalSettings = {
+                animation: true,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'sm',
+                templateUrl: this.dataConfig.modalWelcomeTmpl,
+                controller: 'mainApp.components.modal.ModalWelcomeController as vm'
+            };
+
+            var modalInstance = this.$uibModal.open(options);
+
         }
 
 

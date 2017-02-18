@@ -1,0 +1,224 @@
+<!----------------------------------------------------------------------------->
+<!--                         USER BORN INFORMATION MODAL                     -->
+<!----------------------------------------------------------------------------->
+
+<div class="ma-box">
+
+    <!--                              CONTENT                                -->
+    <!------------------------------------------------------------------------->
+    <div class="ma-box__content">
+
+        <!----------------- START: USER BORN INFORMATION BLOCK ---------------->
+        <section>
+
+            <! Progress circles >
+            <div class="row center-xs space-3 space-top-2">
+                <div class="col-xs-12">
+                    <i class="material-icons md-18
+                              md-dark md-inactive space-right-1">
+                        radio_button_unchecked
+                    </i>
+                    <i class="material-icons md-18
+                              md-dark md-inactive space-right-1">
+                        lens
+                    </i>
+                    <i class="material-icons md-18
+                              md-dark md-inactive">
+                        radio_button_unchecked
+                    </i>
+                </div>
+            </div>
+
+            <! Welcome message >
+            <div class="row center-xs space-5">
+                <div class="col-xs-12 text-center">
+                    <h3 class="margin-reset" translate>
+                        Información sobre ti
+                    </h3>
+                </div>
+            </div>
+
+            <! Welcome description >
+            <!--div class="row center-xs space-7">
+                <div class="col-xs-12 text-center">
+                    <p class="ma-p ma-p--large margin-reset" translate>
+                        We want to create a real community with real teachers
+                        and real students. That's why you'll have to confirm a
+                        few, quick details to active your account.
+                    </p>
+                </div>
+            </div-->
+
+            <! Form >
+            <form class="ma-form ma-form--basic">
+
+                <! User birthdate >
+                <div class="form-group ma-form-group">
+                    <label for="user-birthdate-month">
+                        <span translate>
+                            %create.teacher.basic_info.form.birthdate.text
+                        </span>
+                        <span class="strong strong--alert">*</span>
+                        <i class="material-icons md-18
+                                  md-primary md-primary--clicked
+                                  pull-right"
+                           style="position: relative;
+                                  top: 5px;">
+                            lightbulb_outline
+                        </i>
+                    </label>
+
+                    <div class="row margin-reset">
+                        <div class="col-xs-4 padding-reset">
+                            <!-- Month -->
+                            <div class="ma-select-container
+                                        ma-select-container--default
+                                        ma-select-container--block">
+                                <select id="user-birthdate-month"
+                                        class="ma-input ma-select
+                                               ma-select--default
+                                               ma-select--block"
+                                        ng-model="vm.dateObject.month"
+                                        ng-options="month.value | translate for month in vm.listMonths track by month.code"
+                                        ng-class="{'ma-input--invalid': !vm.validate.birthDate.month.valid}"
+                                        name="user[month]" class="form-control">
+                                        <option value="" disabled selected translate>
+                                            %create.teacher.basic_info.form.mth_birthdate.text
+                                        </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <!-- Day -->
+                            <div class="ma-select-container
+                                        ma-select-container--default
+                                        ma-select-container--block">
+                                <select id="user-birthdate-day"
+                                        class="ma-input ma-select
+                                               ma-select--default
+                                               ma-select--block"
+                                        ng-model="vm.dateObject.day"
+                                        ng-options="day.value for day in vm.listDays track by day.value"
+                                        ng-class="{'ma-input--invalid': !vm.validate.birthDate.day.valid}"
+                                        name="user[day]" class="form-control">
+                                        <option value="" disabled selected>
+                                            day
+                                        </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 padding-reset">
+                            <!-- Year -->
+                            <div class="ma-select-container
+                                        ma-select-container--default
+                                        ma-select-container--block">
+                                <select id="user-birthdate-year"
+                                        class="ma-input ma-select
+                                               ma-select--default"
+                                        ng-model="vm.dateObject.year"
+                                        ng-options="year.value for year in vm.listYears | orderBy:'value':true track by year.value"
+                                        ng-class="{'ma-input--invalid': !vm.validate.birthDate.year.valid}"
+                                        name="user[year]" class="form-control">
+                                        <option value="" disabled selected>
+                                            year
+                                        </option>
+                                </select>
+                            </div>
+                        </div>
+                        <p class="ma-p ma-p--small ma-p--alert margin-reset"
+                            ng-show="!vm.validate.birthDate.valid">
+                            <span>{{vm.validate.birthDate.message}}</span>
+                        </p>
+                    </div>
+
+                </div>
+
+                <! User country born >
+                <div class="form-group ma-form-group">
+                    <label for="user-country-born">
+                        <span translate>
+                            Pais de nacimiento
+                        </span>
+                        <span class="strong strong--alert">*</span>
+                        <i class="material-icons md-18
+                                  md-primary md-primary--clicked
+                                  pull-right"
+                           style="position: relative;
+                                  top: 5px;">
+                            lightbulb_outline
+                        </i>
+                    </label>
+
+                    <div class="ma-select-container
+                                ma-select-container--default
+                                ma-select-container--block">
+                        <select id="user-country-born"
+                                class="ma-input ma-select
+                                       ma-select--default
+                                       ma-select--block"
+                                ng-model="vm.countryObject"
+                                ng-options="country.value | translate for country in vm.listCountries track by country.code"
+                                ng-class="{'ma-input--invalid': !vm.validate.country.valid}"
+                                name="user[country]" class="form-control">
+                                <option value="" disabled selected translate>
+                                    %create.teacher.location.form.cntry.option_list.text
+                                </option>
+                        </select>
+                        <p class="ma-p ma-p--small ma-p--alert pull-right margin-reset"
+                            ng-show="!vm.validate.country.valid">
+                            <span>{{vm.validate.country.message}}</span>
+                        </p>
+                    </div>
+                </div>
+
+                <! User city born >
+                <div class="form-group ma-form-group clearfix">
+                    <label for="user-city-born">
+                        <span translate>
+                            Ciudad de nacimiento
+                        </span>
+                        <span class="strong strong--alert">*</span>
+                        <i class="material-icons md-18
+                                  md-primary md-primary--clicked
+                                  pull-right"
+                           style="position: relative;
+                                  top: 5px;">
+                            lightbulb_outline
+                        </i>
+                    </label>
+                    <input id="user-city-born"
+                           type="text"
+                           ng-model="vm.form.city"
+                           class="ma-input ma-input--default"
+                           ng-class="{'ma-input--invalid': !vm.validate.city.valid}">
+                    <p class="ma-p ma-p--small ma-p--alert pull-right margin-reset"
+                      ng-show="!vm.validate.city.valid">
+                       <span>{{vm.validate.city.message}}</span>
+                    </p>
+                </div>
+
+            </form>
+
+
+            <div class="ma-separator-dashed-image space-top-5 space-3"></div>
+
+
+            <! Next Button >
+            <div class="row middle-xs">
+                <div class="col-xs-12 text-right">
+                    <button class="ma-btn
+                                   ma-btn--secondary
+                                   ma-btn--default"
+                            ng-click="vm._goToNext()"
+                            translate>
+                        %global.next.button.text
+                    </button>
+                </div>
+            </div>
+
+        </section>
+        <!--                 END: USER BORN INFORMATION BLOCK                -->
+
+    </div>
+
+</div>

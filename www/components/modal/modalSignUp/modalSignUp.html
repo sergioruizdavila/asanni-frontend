@@ -149,8 +149,15 @@
                                                 ma-btn--large
                                                 ma-btn--block"
                                         ng-click="vm.registerUser()"
-                                        translate>
-                                    %modal.signup.button.text
+                                        ng-disabled="vm.saving">
+                                    <span ng-class="{'hidden' : vm.saving}"
+                                          translate>
+                                        %modal.signup.button.text
+                                    </span>
+                                    <span ng-class="{'hidden' : !vm.saving}"
+                                          translate>
+                                        %global.saving.button.text
+                                    </span>
                                 </button>
 
                             </form>
