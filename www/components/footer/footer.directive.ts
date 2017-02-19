@@ -68,12 +68,12 @@ module components.footer {
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
-    export interface IFooterController {
+    interface IFooterController {
         activate: () => void;
     }
 
-    export interface IFooterScope extends angular.IScope {
-
+    interface IFooterForm {
+        language: app.core.interfaces.IKeyValue;
     }
 
     /****************************************/
@@ -86,19 +86,41 @@ module components.footer {
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
-        
+        form: IFooterForm;
+        assignFlag: string;
         // --------------------------------
+
+        /*-- INJECT DEPENDENCIES --*/
+        static $inject = [
+            'mainApp.core.util.FunctionsUtilService'
+        ];
 
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        constructor() {
+        constructor(
+            private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService
+        ) {
             this.init();
         }
 
         /*-- INITIALIZE METHOD --*/
         private init() {
+            //VARIABLES
+            let currentLanguageCode = this.functionsUtil.getCurrentLanguage() || 'en';
+            let languageLabel = '%header.lang.options.'+ currentLanguageCode +'.text';
+            //Init form
+            this.form = {
+                language: {
+                    key: currentLanguageCode,
+                    value: languageLabel
+                }
+            };
+
+            //Init flag class
+            this.assignFlag = 'ma-flag--default--flag-' + this.form.language.key;
+
             this.activate();
         }
 
@@ -111,6 +133,21 @@ module components.footer {
         /**********************************/
         /*            METHODS             */
         /**********************************/
+
+        /**
+        * changeLanguage
+        * @description - open Modal in order to add a New Teacher's Experience on Box
+        * @use - this._addEditExperience();
+        * @function
+        * @return {void}
+        */
+
+        changeLanguage(code): void {
+            this.functionsUtil.changeLanguage(code);
+            this.form.language.key = code;
+            this.form.language.value = '%header.lang.options.' + code + '.text';
+            this.assignFlag = 'ma-flag--default--flag-' + code;
+        }
 
 
     }

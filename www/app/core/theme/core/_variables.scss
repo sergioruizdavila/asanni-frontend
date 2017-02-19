@@ -11,6 +11,7 @@
 //   5. Buttons
 //   6. DateTime Picker
 //   7. Dropdown
+//   8. Flags
 //   8. Form
 //   9. Header
 //   10. Header - Blocks (Tabs)
@@ -79,6 +80,7 @@ $global-logo-primary-short-file: "waysily-logo-primary-short.svg";
 $global-logo-secondary-short-file: "waysily-logo-secondary-short.svg";
 $global-photo-default-file: "waysily-photo-default.jpg";
 $global-badge-file: "waysily-badge-teacher.svg";
+$global-flags-file: "waysily-countries-flags.svg";
 
 $body-background: #fafafa;
 
@@ -280,6 +282,11 @@ $dropdown-option-button-font-weight-hover: 400;
 $dropdown-option-button-margin-left-hover: 5px;
 
 $dropdown-lastOption-button-font-size: 14px;
+
+// 3. Flags
+// ---------
+$flags-path: $global-image-path + '/' + $global-flags-file;
+
 
 // 3. Form
 // ---------

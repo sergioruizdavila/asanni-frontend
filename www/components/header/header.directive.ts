@@ -75,7 +75,7 @@ module components.header {
     }
 
     interface IHeaderForm {
-        language: string;
+        language: IKeyValue;
         whereTo: string;
     }
 
