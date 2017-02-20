@@ -5,6 +5,7 @@
     "__BUTTONS__": "",
     "%global.save.button.text": "Guardar",
     "%global.saving.button.text": "Guardando...",
+    "%global.save_continue.button.text": "guardar y continuar",
     "%global.next.button.text": "Siguiente",
     "%global.finish.button.text": "Terminar",
     "%global.back.button.text": "Volver",
@@ -19,6 +20,7 @@
     "%global.close_information.button.text": "Cerrar Información",
     "%global.join.button.text": "únete",
     "%global.join_now.button.text": "únete ahora",
+    "%global.sending.button.text": "enviando...",
 
     "%global.more.label.text": "+ Más",
     "%global.email.label.text": "Correo Electrónico",
@@ -40,6 +42,8 @@
     "%global.new.label.text": "nuevo",
     "%global.signup.label.text": "regístrate",
     "%global.login.label.text": "iniciar sesión",
+    "%global.new_password.label.text": "nueva contraseña",
+    "%global.confirm_password.label.text": "confirmar contraseña",
 
     "%global.validation.null.message.text": "Valor requerido",
     "%global.validation.empty.message.text": "Valor requerido",
@@ -73,6 +77,8 @@
     "%modal.signup.form.password.text": "Establece una contraseña",
     "%modal.signup.button.text": "Crear una cuenta",
     "%modal.signup.help_text.login_button.text": "¿Ya eres miembro?",
+    "%modal.signup.error.short_password.text": "Tu contraseña debe tener al menos 8 caracteres. Vuelve a intentarlo.",
+    "%modal.signup.error.email_taken.text": "Esta dirección de correo electrónico ya está en uso. Por favor iniciar sesión.",
 
     "%modal.login.title.text": "Inicia sesión en Waysily",
     "%modal.login.form.password.text": "Contraseña",
@@ -81,6 +87,9 @@
 
     "%modal.forgot_password.description.text": "Introduce la dirección de correo electrónico asociada a tu cuenta para que podamos enviarte instrucciones para iniciar sesión.",
     "%modal.forgot_password.send.button.text": "Enviar instrucciones",
+    "%modal.forgot_password.no_account_exists.part1.text": "No existe ninguna cuenta para",
+    "%modal.forgot_password.no_account_exists.part2.text": ". Tal vez usted se inscribió utilizando una dirección de correo electrónico diferente ó incorrecta",
+    "%modal.forgot_password.sent_link.text": "Se ha enviado un enlace para restablecer tu contraseña a ",
 
     "%modal.lang.title.text": "Agregar un nuevo idioma",
     "%modal.lang.help_text.text": "Selecciona uno o más idiomas.",
@@ -242,11 +251,16 @@
     "%landing.student.notify_block.description.text": "Sé el primero en saber cuándo este listo.",
     "%landing.student.input_email.placeholder.text": "Correo electrónico",
     "%landing.student.notify_block.send_button.text": "NOTIFICARME",
-    "%landing.student.notify_block.send_button.loading.text": "ENVIANDO...",
     "%landing.student.add_comment.button.text": "+ Agregar un comentario",
     "%landing.student.input_comment.placeholder.text": "¿Tienes dudas?, ¿Quieres saber más de Waysily?, escríbenos.",
     "%landing.student.input_name.placeholder.text": "Tu nombre",
     "%landing.student.notify_block.success_msg.text": "Ya está todo listo. Estaremos en contacto.",
+
+    "__RESET PASSWORD PAGE__": "",
+    "%recover.password.title.text": "restablece tu contraseña",
+    "%recover.password.not_match.text": "Tus nuevas contraseñas no coinciden. Por favor, inténtalo de nuevo.",
+    "%recover.password.success.text": "Cambio exitoso!. Prueba iniciar sesión ahora.",
+    "%recover.password.link_expired.text": "El link que te enviamos al correo electrónico ya expiró, es necesario que solicites uno nuevo.",
 
     "__SEARCH PAGE__": "",
     "%search.container.teacher.lang.teach.title.text": "Enseña",
@@ -448,6 +462,11 @@
     "__9. TEACHER FINISH SECTION__": "",
     "%create.teacher.finish.title.text": "¡Tu inscripción fue exitosa!",
     "%create.teacher.finish.description.text": "Verificaremos tu información y te notificaremos cuando ya seas visible en el mapa de Waysily.",
+
+    "__ERROR MESSAGES__": "",
+    "%error.server_error.text": "No hay respuesta del servidor. Por favor, inténtalo de nuevo",
+    "%error.server_error_code.text": "Se produjo un error al iniciar sesión. Código de error: ",
+    "%error.username_password_wrong.text": "Nombre de usuario o contraseña incorrecta.",
 
     "__FOOTER__": "",
     "%footer.contact_us.title.text": "Contáctanos",

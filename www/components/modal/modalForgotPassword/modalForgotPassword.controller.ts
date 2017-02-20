@@ -50,6 +50,7 @@ module components.modal.modalForgotPassword {
             'mainApp.core.util.FunctionsUtilService',
             'mainApp.core.util.messageUtilService',
             'mainApp.register.RegisterService',
+            '$filter',
             '$uibModal',
             '$uibModalInstance',
             'dataConfig'
@@ -65,6 +66,7 @@ module components.modal.modalForgotPassword {
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
             private RegisterService: app.register.IRegisterService,
+            private $filter: angular.IFilterService,
             private $uibModal: ng.ui.bootstrap.IModalService,
             private $uibModalInstance: ng.ui.bootstrap.IModalServiceInstance,
             private dataConfig: IDataConfig) {
@@ -77,6 +79,9 @@ module components.modal.modalForgotPassword {
         private _init() {
             //VARIABLES
             let self = this;
+
+            // Init sending loading
+            this.sending = false;
 
             //Init form
             this.form = {
@@ -141,12 +146,20 @@ module components.modal.modalForgotPassword {
         * @return {void}
         */
         private _sendInstructions(): void {
+            //CONSTANTS
+            const NO_ACCOUNT_EXISTS_1 = this.$filter('translate')('%modal.forgot_password.no_account_exists.part1.text');
+            const NO_ACCOUNT_EXISTS_2 = this.$filter('translate')('%modal.forgot_password.no_account_exists.part2.text');
+            const SENT_LINK = this.$filter('translate')('%modal.forgot_password.sent_link.text');
+
             //VARIABLES
             let self = this;
 
             let formValid = this._validateForm();
 
             if(formValid) {
+
+                //loading On
+                this.sending = true;
 
                 //Validate if given email is in DB
                 this.RegisterService.checkEmail(this.form.email).then(
@@ -166,21 +179,26 @@ module components.modal.modalForgotPassword {
                         self.validate.globalValidate.valid = emailExist;
 
                         if(!emailExist) {
-                            self.validate.globalValidate.message = 'No account exists for ' + self.form.email + '. Maybe you signed up using a different/incorrect e-mail address';
+                            //loading Off
+                            self.sending = false;
+                            self.validate.globalValidate.message = NO_ACCOUNT_EXISTS_1 + self.form.email + NO_ACCOUNT_EXISTS_2;
                         } else {
                             //Send instructions to reset password
                             self.AuthService.resetPassword(self.form.email).then(
 
                                 //Success
                                 function(response) {
-                                    //TODO: Traducir al español
-                                    self.messageUtil.info('A link to reset your password has been sent to ' + self.form.email);
+                                    //loading Off
+                                    self.sending = false;
+                                    self.messageUtil.info(SENT_LINK + self.form.email);
                                     //Open Log In modal to prepare user to log in
                                     self._openLogInModal();
                                 },
 
                                 //Error
                                 function(error) {
+                                    //loading Off
+                                    self.sending = false;
                                     DEBUG && console.error(error);
                                     self.messageUtil.error('');
                                 }

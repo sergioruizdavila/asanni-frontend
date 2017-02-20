@@ -5,7 +5,7 @@ var components;
         var modalLogIn;
         (function (modalLogIn) {
             var ModalLogInController = (function () {
-                function ModalLogInController($rootScope, $state, AuthService, AccountService, userService, functionsUtil, messageUtil, localStorage, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
+                function ModalLogInController($rootScope, $state, AuthService, AccountService, userService, functionsUtil, messageUtil, $filter, localStorage, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
                     this.$rootScope = $rootScope;
                     this.$state = $state;
                     this.AuthService = AuthService;
@@ -13,6 +13,7 @@ var components;
                     this.userService = userService;
                     this.functionsUtil = functionsUtil;
                     this.messageUtil = messageUtil;
+                    this.$filter = $filter;
                     this.localStorage = localStorage;
                     this.dataSetModal = dataSetModal;
                     this.dataConfig = dataConfig;
@@ -40,6 +41,9 @@ var components;
                     DEBUG && console.log('modalLogIn controller actived');
                 };
                 ModalLogInController.prototype.login = function () {
+                    var USERNAME_PASSWORD_WRONG = this.$filter('translate')('%error.username_password_wrong.text');
+                    var SERVER_ERROR = this.$filter('translate')('%error.server_error.text');
+                    var SERVER_CODE_ERROR = this.$filter('translate')('%error.server_error_code.text');
                     var self = this;
                     this.saving = true;
                     var formValid = this._validateForm();
@@ -67,17 +71,17 @@ var components;
                             }, function (response) {
                                 self.saving = false;
                                 if (response.status == 401) {
-                                    DEBUG && console.log('Incorrect username or password.');
+                                    DEBUG && console.log(USERNAME_PASSWORD_WRONG);
                                     self.validate.globalValidate.valid = false;
-                                    self.validate.globalValidate.message = 'Incorrect username or password.';
+                                    self.validate.globalValidate.message = USERNAME_PASSWORD_WRONG;
                                 }
                                 else if (response.status == -1) {
-                                    DEBUG && console.log('No response from server. Try again, please');
-                                    self.messageUtil.error('No response from server. Try again, please');
+                                    DEBUG && console.log(SERVER_ERROR);
+                                    self.messageUtil.error(SERVER_ERROR);
                                 }
                                 else {
-                                    DEBUG && console.log('There was a problem logging you in. Error code: ' + response.status + '.');
-                                    self.messageUtil.error('There was a problem logging you in. Error code: ' + response.status + '.');
+                                    DEBUG && console.log(SERVER_CODE_ERROR + response.status);
+                                    self.messageUtil.error(SERVER_CODE_ERROR + response.status);
                                 }
                             });
                         });
@@ -158,6 +162,7 @@ var components;
                 'mainApp.models.user.UserService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.util.messageUtilService',
+                '$filter',
                 'mainApp.localStorageService',
                 'dataSetModal',
                 'dataConfig',

@@ -4,7 +4,7 @@ DEBUG = true;
     var BASE_URL = 'https://waysily-server.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/teachers-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/teachers-avatar-dev';
     }
     var dataConfig = {
@@ -13,9 +13,9 @@ DEBUG = true;
         domain: 'www.waysily.com',
         https: false,
         autoRefreshTokenIntervalSeconds: 300,
-        usernameMinLength: 6,
+        usernameMinLength: 8,
         usernameMaxLength: 80,
-        passwordMinLength: 6,
+        passwordMinLength: 8,
         passwordMaxLength: 80,
         localOAuth2Key: 'fCY4EWQIPuixOGhA9xRIxzVLNgKJVmG1CVnwXssq',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',

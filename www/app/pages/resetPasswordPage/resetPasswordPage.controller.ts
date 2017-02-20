@@ -47,12 +47,14 @@ module app.pages.resetPasswordPage {
         token: string;
         form: IResetPasswordForm;
         validate: IResetPasswordValidate;
+        saving: boolean;
         // --------------------------------
 
 
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = [
             '$state',
+            '$filter',
             '$stateParams',
             'mainApp.auth.AuthService',
             'mainApp.core.util.FunctionsUtilService',
@@ -64,6 +66,7 @@ module app.pages.resetPasswordPage {
         /**********************************/
         constructor(
             private $state: ng.ui.IStateService,
+            private $filter: angular.IFilterService,
             private $stateParams: IResetPasswordParams,
             private AuthService: app.auth.IAuthService,
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
@@ -78,6 +81,9 @@ module app.pages.resetPasswordPage {
         private _init() {
             //VARIABLES
             let self = this;
+
+            // Init saving loading
+            this.saving = false;
 
             this.uid = this.$stateParams.uid;
 
@@ -125,6 +131,7 @@ module app.pages.resetPasswordPage {
             //CONSTANTS
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
+            const PASSWORD_MESSAGE = this.$filter('translate')('%recover.password.not_match.text');
             /***************************************************/
 
             //VARIABLES
@@ -147,7 +154,7 @@ module app.pages.resetPasswordPage {
             if(this.form.newPassword1 !== this.form.newPassword2) {
                 formValid = false;
                 this.validate.globalValidate.valid = false;
-                this.validate.globalValidate.message = 'Your new passwords did not match. Please try again.';
+                this.validate.globalValidate.message = PASSWORD_MESSAGE;
             }
 
             return formValid;
@@ -163,12 +170,19 @@ module app.pages.resetPasswordPage {
         * @return {void}
         */
         private _changePassword(): void {
+            //CONSTANTS
+            const SUCCESS_CHANGE_PROCESS = this.$filter('translate')('%recover.password.success.text');
+            const LINK_EXPIRED = this.$filter('translate')('%recover.password.link_expired.text');
+
             //VARIABLES
             let self = this;
 
             let formValid = this._validateForm();
 
             if(formValid) {
+
+                //loading On
+                this.saving = true;
 
                 this.AuthService.confirmResetPassword(
                     self.uid,
@@ -183,18 +197,20 @@ module app.pages.resetPasswordPage {
                                 algo más complejo, por ahora solo lo direccionó al
                                 main, y lo invito a loguearse.
                             */
-                            //TODO: Traducir
-                            self.messageUtil.success('Cambio exitoso!. Prueba iniciar sesión ahora.');
+                            //loading Off
+                            self.saving = false;
+                            self.messageUtil.success(SUCCESS_CHANGE_PROCESS);
                             self.$state.go('page.landingPage',{showLogin: true}, {reload: true});
                         },
 
                         //Error
                         function(error) {
                             DEBUG && console.log(error);
+                            //loading Off
+                            self.saving = false;
                             if(error === 'Invalid value') {
                                 self.validate.globalValidate.valid = false;
-                                //TODO: Traducir
-                                self.validate.globalValidate.message = 'El link que te enviamos al correo ya expiro, es necesario que solicites uno nuevo.';
+                                self.validate.globalValidate.message = LINK_EXPIRED;
                             } else {
                                 self.messageUtil.error('');
                             }

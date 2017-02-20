@@ -78,6 +78,29 @@
                                     </p>
                                 </div>
 
+                                <! Password input >
+                                <div class="form-group ma-form-group">
+                                    <label class="sr-only"
+                                           for="passwordSignUpInput"
+                                           translate>
+                                        %modal.signup.form.password.text
+                                    </label>
+                                    <input id="passwordSignUpInput" type="password"
+                                           minLength="{{vm.passwordMinLength}}"
+                                           maxLength="{{vm.passwordMaxLength}}"
+                                           ng-model= "vm.form.password"
+                                           class="ma-input
+                                                  ma-input--default
+                                                  ma-input--block"
+                                           ng-class="{'ma-input--invalid': !vm.validate.password.valid}"
+                                           translate
+                                           translate-attr-placeholder="%modal.signup.form.password.text">
+                                    <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                       ng-show="!vm.validate.password.valid">
+                                        <span>{{vm.validate.password.message}}</span>
+                                    </p>
+                                </div>
+
                                 <! First name input >
                                 <div class="form-group ma-form-group">
                                     <label class="sr-only"
@@ -117,29 +140,6 @@
                                     <p class="ma-p ma-p--small ma-p--alert pull-right"
                                        ng-show="!vm.validate.last_name.valid">
                                         <span>{{vm.validate.last_name.message}}</span>
-                                    </p>
-                                </div>
-
-                                <! Password input >
-                                <div class="form-group ma-form-group">
-                                    <label class="sr-only"
-                                           for="passwordSignUpInput"
-                                           translate>
-                                        %modal.signup.form.password.text
-                                    </label>
-                                    <input id="passwordSignUpInput" type="password"
-                                           minLength={{vm.passwordMinLength}}
-                                           maxLength={{vm.passwordMaxLength}}
-                                           ng-model= "vm.form.password"
-                                           class="ma-input
-                                                  ma-input--default
-                                                  ma-input--block"
-                                           ng-class="{'ma-input--invalid': !vm.validate.password.valid}"
-                                           translate
-                                           translate-attr-placeholder="%modal.signup.form.password.text">
-                                    <p class="ma-p ma-p--small ma-p--alert pull-right"
-                                       ng-show="!vm.validate.password.valid">
-                                        <span>{{vm.validate.password.message}}</span>
                                     </p>
                                 </div>
 

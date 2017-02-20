@@ -5,13 +5,14 @@ var components;
         var modalSignUp;
         (function (modalSignUp) {
             var ModalSignUpController = (function () {
-                function ModalSignUpController($rootScope, AuthService, AccountService, RegisterService, functionsUtil, messageUtil, localStorage, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
+                function ModalSignUpController($rootScope, AuthService, AccountService, RegisterService, functionsUtil, messageUtil, $filter, localStorage, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
                     this.$rootScope = $rootScope;
                     this.AuthService = AuthService;
                     this.AccountService = AccountService;
                     this.RegisterService = RegisterService;
                     this.functionsUtil = functionsUtil;
                     this.messageUtil = messageUtil;
+                    this.$filter = $filter;
                     this.localStorage = localStorage;
                     this.dataSetModal = dataSetModal;
                     this.dataConfig = dataConfig;
@@ -76,6 +77,7 @@ var components;
                     var NULL_ENUM = 2;
                     var EMPTY_ENUM = 3;
                     var EMAIL_ENUM = 0;
+                    var PASSWORD_MESSAGE = this.$filter('translate')('%modal.signup.error.short_password.text');
                     var formValid = true;
                     var firstName_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.first_name = this.functionsUtil.validator(this.form.first_name, firstName_rules);
@@ -96,11 +98,12 @@ var components;
                     this.validate.password = this.functionsUtil.validator(this.form.password, password_rules);
                     if (!this.validate.password.valid) {
                         formValid = this.validate.password.valid;
-                        this.validate.password.message = 'Your password must be at least 6 characters. Please try again.';
+                        this.validate.password.message = PASSWORD_MESSAGE;
                     }
                     return formValid;
                 };
                 ModalSignUpController.prototype._checkIfEmailExist = function () {
+                    var EMAIL_TAKEN_MESSAGE = this.$filter('translate')('%modal.signup.error.email_taken.text');
                     var self = this;
                     if (this.form.email) {
                         this.RegisterService.checkEmail(this.form.email).then(function (response) {
@@ -110,7 +113,7 @@ var components;
                                 }
                                 else {
                                     self.validate.email.valid = false;
-                                    self.validate.email.message = 'That email address is already in use. Please log in.';
+                                    self.validate.email.message = EMAIL_TAKEN_MESSAGE;
                                 }
                             }
                             else if (response.email) {
@@ -146,6 +149,9 @@ var components;
                     this.$uibModalInstance.close();
                 };
                 ModalSignUpController.prototype._loginAfterRegister = function (username, email, password) {
+                    var USERNAME_PASSWORD_WRONG = this.$filter('translate')('%error.username_password_wrong.text');
+                    var SERVER_ERROR = this.$filter('translate')('%error.server_error.text');
+                    var SERVER_CODE_ERROR = this.$filter('translate')('%error.server_error_code.text');
                     var self = this;
                     var userData = {
                         username: username,
@@ -169,17 +175,17 @@ var components;
                     }, function (response) {
                         self.saving = false;
                         if (response.status == 401) {
-                            DEBUG && console.log('Incorrect username or password.');
+                            DEBUG && console.log(USERNAME_PASSWORD_WRONG);
                             self.validate.globalValidate.valid = false;
-                            self.validate.globalValidate.message = 'Incorrect username or password.';
+                            self.validate.globalValidate.message = USERNAME_PASSWORD_WRONG;
                         }
                         else if (response.status == -1) {
-                            DEBUG && console.log('No response from server. Try again, please');
-                            self.messageUtil.error('No response from server. Try again, please');
+                            DEBUG && console.log(SERVER_ERROR);
+                            self.messageUtil.error(SERVER_ERROR);
                         }
                         else {
-                            DEBUG && console.log('There was a problem logging you in. Error code: ' + response.status + '.');
-                            self.messageUtil.error('There was a problem logging you in. Error code: ' + response.status + '.');
+                            DEBUG && console.log(SERVER_CODE_ERROR + response.status);
+                            self.messageUtil.error(SERVER_CODE_ERROR + response.status);
                         }
                     });
                 };
@@ -208,6 +214,7 @@ var components;
                 'mainApp.register.RegisterService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.util.messageUtilService',
+                '$filter',
                 'mainApp.localStorageService',
                 'dataSetModal',
                 'dataConfig',

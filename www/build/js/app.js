@@ -94,7 +94,7 @@ DEBUG = true;
     var BASE_URL = 'https://waysily-server.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/teachers-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/teachers-avatar-dev';
     }
     var dataConfig = {
@@ -103,9 +103,9 @@ DEBUG = true;
         domain: 'www.waysily.com',
         https: false,
         autoRefreshTokenIntervalSeconds: 300,
-        usernameMinLength: 6,
+        usernameMinLength: 8,
         usernameMaxLength: 80,
-        passwordMinLength: 6,
+        passwordMinLength: 8,
         passwordMaxLength: 80,
         localOAuth2Key: 'fCY4EWQIPuixOGhA9xRIxzVLNgKJVmG1CVnwXssq',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
@@ -4963,13 +4963,14 @@ var components;
         var modalSignUp;
         (function (modalSignUp) {
             var ModalSignUpController = (function () {
-                function ModalSignUpController($rootScope, AuthService, AccountService, RegisterService, functionsUtil, messageUtil, localStorage, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
+                function ModalSignUpController($rootScope, AuthService, AccountService, RegisterService, functionsUtil, messageUtil, $filter, localStorage, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
                     this.$rootScope = $rootScope;
                     this.AuthService = AuthService;
                     this.AccountService = AccountService;
                     this.RegisterService = RegisterService;
                     this.functionsUtil = functionsUtil;
                     this.messageUtil = messageUtil;
+                    this.$filter = $filter;
                     this.localStorage = localStorage;
                     this.dataSetModal = dataSetModal;
                     this.dataConfig = dataConfig;
@@ -5034,6 +5035,7 @@ var components;
                     var NULL_ENUM = 2;
                     var EMPTY_ENUM = 3;
                     var EMAIL_ENUM = 0;
+                    var PASSWORD_MESSAGE = this.$filter('translate')('%modal.signup.error.short_password.text');
                     var formValid = true;
                     var firstName_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.first_name = this.functionsUtil.validator(this.form.first_name, firstName_rules);
@@ -5054,11 +5056,12 @@ var components;
                     this.validate.password = this.functionsUtil.validator(this.form.password, password_rules);
                     if (!this.validate.password.valid) {
                         formValid = this.validate.password.valid;
-                        this.validate.password.message = 'Your password must be at least 6 characters. Please try again.';
+                        this.validate.password.message = PASSWORD_MESSAGE;
                     }
                     return formValid;
                 };
                 ModalSignUpController.prototype._checkIfEmailExist = function () {
+                    var EMAIL_TAKEN_MESSAGE = this.$filter('translate')('%modal.signup.error.email_taken.text');
                     var self = this;
                     if (this.form.email) {
                         this.RegisterService.checkEmail(this.form.email).then(function (response) {
@@ -5068,7 +5071,7 @@ var components;
                                 }
                                 else {
                                     self.validate.email.valid = false;
-                                    self.validate.email.message = 'That email address is already in use. Please log in.';
+                                    self.validate.email.message = EMAIL_TAKEN_MESSAGE;
                                 }
                             }
                             else if (response.email) {
@@ -5104,6 +5107,9 @@ var components;
                     this.$uibModalInstance.close();
                 };
                 ModalSignUpController.prototype._loginAfterRegister = function (username, email, password) {
+                    var USERNAME_PASSWORD_WRONG = this.$filter('translate')('%error.username_password_wrong.text');
+                    var SERVER_ERROR = this.$filter('translate')('%error.server_error.text');
+                    var SERVER_CODE_ERROR = this.$filter('translate')('%error.server_error_code.text');
                     var self = this;
                     var userData = {
                         username: username,
@@ -5127,17 +5133,17 @@ var components;
                     }, function (response) {
                         self.saving = false;
                         if (response.status == 401) {
-                            DEBUG && console.log('Incorrect username or password.');
+                            DEBUG && console.log(USERNAME_PASSWORD_WRONG);
                             self.validate.globalValidate.valid = false;
-                            self.validate.globalValidate.message = 'Incorrect username or password.';
+                            self.validate.globalValidate.message = USERNAME_PASSWORD_WRONG;
                         }
                         else if (response.status == -1) {
-                            DEBUG && console.log('No response from server. Try again, please');
-                            self.messageUtil.error('No response from server. Try again, please');
+                            DEBUG && console.log(SERVER_ERROR);
+                            self.messageUtil.error(SERVER_ERROR);
                         }
                         else {
-                            DEBUG && console.log('There was a problem logging you in. Error code: ' + response.status + '.');
-                            self.messageUtil.error('There was a problem logging you in. Error code: ' + response.status + '.');
+                            DEBUG && console.log(SERVER_CODE_ERROR + response.status);
+                            self.messageUtil.error(SERVER_CODE_ERROR + response.status);
                         }
                     });
                 };
@@ -5166,6 +5172,7 @@ var components;
                 'mainApp.register.RegisterService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.util.messageUtilService',
+                '$filter',
                 'mainApp.localStorageService',
                 'dataSetModal',
                 'dataConfig',
@@ -5185,7 +5192,7 @@ var components;
         var modalLogIn;
         (function (modalLogIn) {
             var ModalLogInController = (function () {
-                function ModalLogInController($rootScope, $state, AuthService, AccountService, userService, functionsUtil, messageUtil, localStorage, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
+                function ModalLogInController($rootScope, $state, AuthService, AccountService, userService, functionsUtil, messageUtil, $filter, localStorage, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
                     this.$rootScope = $rootScope;
                     this.$state = $state;
                     this.AuthService = AuthService;
@@ -5193,6 +5200,7 @@ var components;
                     this.userService = userService;
                     this.functionsUtil = functionsUtil;
                     this.messageUtil = messageUtil;
+                    this.$filter = $filter;
                     this.localStorage = localStorage;
                     this.dataSetModal = dataSetModal;
                     this.dataConfig = dataConfig;
@@ -5220,6 +5228,9 @@ var components;
                     DEBUG && console.log('modalLogIn controller actived');
                 };
                 ModalLogInController.prototype.login = function () {
+                    var USERNAME_PASSWORD_WRONG = this.$filter('translate')('%error.username_password_wrong.text');
+                    var SERVER_ERROR = this.$filter('translate')('%error.server_error.text');
+                    var SERVER_CODE_ERROR = this.$filter('translate')('%error.server_error_code.text');
                     var self = this;
                     this.saving = true;
                     var formValid = this._validateForm();
@@ -5247,17 +5258,17 @@ var components;
                             }, function (response) {
                                 self.saving = false;
                                 if (response.status == 401) {
-                                    DEBUG && console.log('Incorrect username or password.');
+                                    DEBUG && console.log(USERNAME_PASSWORD_WRONG);
                                     self.validate.globalValidate.valid = false;
-                                    self.validate.globalValidate.message = 'Incorrect username or password.';
+                                    self.validate.globalValidate.message = USERNAME_PASSWORD_WRONG;
                                 }
                                 else if (response.status == -1) {
-                                    DEBUG && console.log('No response from server. Try again, please');
-                                    self.messageUtil.error('No response from server. Try again, please');
+                                    DEBUG && console.log(SERVER_ERROR);
+                                    self.messageUtil.error(SERVER_ERROR);
                                 }
                                 else {
-                                    DEBUG && console.log('There was a problem logging you in. Error code: ' + response.status + '.');
-                                    self.messageUtil.error('There was a problem logging you in. Error code: ' + response.status + '.');
+                                    DEBUG && console.log(SERVER_CODE_ERROR + response.status);
+                                    self.messageUtil.error(SERVER_CODE_ERROR + response.status);
                                 }
                             });
                         });
@@ -5338,6 +5349,7 @@ var components;
                 'mainApp.models.user.UserService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.util.messageUtilService',
+                '$filter',
                 'mainApp.localStorageService',
                 'dataSetModal',
                 'dataConfig',
@@ -5357,12 +5369,13 @@ var components;
         var modalForgotPassword;
         (function (modalForgotPassword) {
             var ModalForgotPasswordController = (function () {
-                function ModalForgotPasswordController($rootScope, AuthService, functionsUtil, messageUtil, RegisterService, $uibModal, $uibModalInstance, dataConfig) {
+                function ModalForgotPasswordController($rootScope, AuthService, functionsUtil, messageUtil, RegisterService, $filter, $uibModal, $uibModalInstance, dataConfig) {
                     this.$rootScope = $rootScope;
                     this.AuthService = AuthService;
                     this.functionsUtil = functionsUtil;
                     this.messageUtil = messageUtil;
                     this.RegisterService = RegisterService;
+                    this.$filter = $filter;
                     this.$uibModal = $uibModal;
                     this.$uibModalInstance = $uibModalInstance;
                     this.dataConfig = dataConfig;
@@ -5370,6 +5383,7 @@ var components;
                 }
                 ModalForgotPasswordController.prototype._init = function () {
                     var self = this;
+                    this.sending = false;
                     this.form = {
                         email: ''
                     };
@@ -5395,9 +5409,13 @@ var components;
                     return formValid;
                 };
                 ModalForgotPasswordController.prototype._sendInstructions = function () {
+                    var NO_ACCOUNT_EXISTS_1 = this.$filter('translate')('%modal.forgot_password.no_account_exists.part1.text');
+                    var NO_ACCOUNT_EXISTS_2 = this.$filter('translate')('%modal.forgot_password.no_account_exists.part2.text');
+                    var SENT_LINK = this.$filter('translate')('%modal.forgot_password.sent_link.text');
                     var self = this;
                     var formValid = this._validateForm();
                     if (formValid) {
+                        this.sending = true;
                         this.RegisterService.checkEmail(this.form.email).then(function (response) {
                             var emailExist = true;
                             if (response.data) {
@@ -5408,13 +5426,16 @@ var components;
                             }
                             self.validate.globalValidate.valid = emailExist;
                             if (!emailExist) {
-                                self.validate.globalValidate.message = 'No account exists for ' + self.form.email + '. Maybe you signed up using a different/incorrect e-mail address';
+                                self.sending = false;
+                                self.validate.globalValidate.message = NO_ACCOUNT_EXISTS_1 + self.form.email + NO_ACCOUNT_EXISTS_2;
                             }
                             else {
                                 self.AuthService.resetPassword(self.form.email).then(function (response) {
-                                    self.messageUtil.info('A link to reset your password has been sent to ' + self.form.email);
+                                    self.sending = false;
+                                    self.messageUtil.info(SENT_LINK + self.form.email);
                                     self._openLogInModal();
                                 }, function (error) {
+                                    self.sending = false;
                                     DEBUG && console.error(error);
                                     self.messageUtil.error('');
                                 });
@@ -5460,6 +5481,7 @@ var components;
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.util.messageUtilService',
                 'mainApp.register.RegisterService',
+                '$filter',
                 '$uibModal',
                 '$uibModalInstance',
                 'dataConfig'
@@ -5989,8 +6011,9 @@ var app;
         var resetPasswordPage;
         (function (resetPasswordPage) {
             var ResetPasswordPageController = (function () {
-                function ResetPasswordPageController($state, $stateParams, AuthService, functionsUtil, messageUtil) {
+                function ResetPasswordPageController($state, $filter, $stateParams, AuthService, functionsUtil, messageUtil) {
                     this.$state = $state;
+                    this.$filter = $filter;
                     this.$stateParams = $stateParams;
                     this.AuthService = AuthService;
                     this.functionsUtil = functionsUtil;
@@ -5999,6 +6022,7 @@ var app;
                 }
                 ResetPasswordPageController.prototype._init = function () {
                     var self = this;
+                    this.saving = false;
                     this.uid = this.$stateParams.uid;
                     this.token = this.$stateParams.token;
                     this.form = {
@@ -6019,6 +6043,7 @@ var app;
                 ResetPasswordPageController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
                     var EMPTY_ENUM = 3;
+                    var PASSWORD_MESSAGE = this.$filter('translate')('%recover.password.not_match.text');
                     var formValid = true;
                     var password_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.newPassword1 = this.functionsUtil.validator(this.form.newPassword1, password_rules);
@@ -6032,23 +6057,28 @@ var app;
                     if (this.form.newPassword1 !== this.form.newPassword2) {
                         formValid = false;
                         this.validate.globalValidate.valid = false;
-                        this.validate.globalValidate.message = 'Your new passwords did not match. Please try again.';
+                        this.validate.globalValidate.message = PASSWORD_MESSAGE;
                     }
                     return formValid;
                 };
                 ResetPasswordPageController.prototype._changePassword = function () {
+                    var SUCCESS_CHANGE_PROCESS = this.$filter('translate')('%recover.password.success.text');
+                    var LINK_EXPIRED = this.$filter('translate')('%recover.password.link_expired.text');
                     var self = this;
                     var formValid = this._validateForm();
                     if (formValid) {
+                        this.saving = true;
                         this.AuthService.confirmResetPassword(self.uid, self.token, self.form.newPassword1, self.form.newPassword2).then(function (response) {
                             DEBUG && console.log(response);
-                            self.messageUtil.success('Cambio exitoso!. Prueba iniciar sesión ahora.');
+                            self.saving = false;
+                            self.messageUtil.success(SUCCESS_CHANGE_PROCESS);
                             self.$state.go('page.landingPage', { showLogin: true }, { reload: true });
                         }, function (error) {
                             DEBUG && console.log(error);
+                            self.saving = false;
                             if (error === 'Invalid value') {
                                 self.validate.globalValidate.valid = false;
-                                self.validate.globalValidate.message = 'El link que te enviamos al correo ya expiro, es necesario que solicites uno nuevo.';
+                                self.validate.globalValidate.message = LINK_EXPIRED;
                             }
                             else {
                                 self.messageUtil.error('');
@@ -6061,6 +6091,7 @@ var app;
             ResetPasswordPageController.controllerId = 'mainApp.pages.resetPasswordPage.ResetPasswordPageController';
             ResetPasswordPageController.$inject = [
                 '$state',
+                '$filter',
                 '$stateParams',
                 'mainApp.auth.AuthService',
                 'mainApp.core.util.FunctionsUtilService',

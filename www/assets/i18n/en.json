@@ -5,6 +5,7 @@
     "__BUTTONS__": "",
     "%global.save.button.text": "Save",
     "%global.saving.button.text": "Saving...",
+    "%global.save_continue.button.text": "save & continue",
     "%global.next.button.text": "Next",
     "%global.finish.button.text": "Finish",
     "%global.back.button.text": "Back",
@@ -19,6 +20,7 @@
     "%global.close_information.button.text": "Close information",
     "%global.join.button.text": "join",
     "%global.join_now.button.text": "join now",
+    "%global.sending.button.text": "sending...",
 
     "%global.more.label.text": "+ More",
     "%global.email.label.text": "Email Address",
@@ -40,6 +42,8 @@
     "%global.new.label.text": "new",
     "%global.signup.label.text": "sign up",
     "%global.login.label.text": "log in",
+    "%global.new_password.label.text": "new password",
+    "%global.confirm_password.label.text": "confirm password",
 
     "%global.validation.null.message.text": "Required",
     "%global.validation.empty.message.text": "Required",
@@ -73,6 +77,8 @@
     "%modal.signup.form.password.text": "Create Password",
     "%modal.signup.button.text": "Create account",
     "%modal.signup.help_text.login_button.text": "Already a member?",
+    "%modal.signup.error.short_password.text": "Your password must be at least 8 characters. Please try again.",
+    "%modal.signup.error.email_taken.text": "That email address is already in use. Please log in.",
 
     "%modal.login.title.text": "Log in to Waysily",
     "%modal.login.form.password.text": "Password",
@@ -81,6 +87,9 @@
 
     "%modal.forgot_password.description.text": "Enter the email address associated with your account. We’ll email you instructions on how to log in.",
     "%modal.forgot_password.send.button.text": "Send instructions",
+    "%modal.forgot_password.no_account_exists.part1.text": "No account exists for",
+    "%modal.forgot_password.no_account_exists.part2.text": ". Maybe you signed up using a different/incorrect e-mail address",
+    "%modal.forgot_password.sent_link.text": "A link to reset your password has been sent to ",
 
     "%modal.lang.title.text": "Add New Languages",
     "%modal.lang.help_text.text": "Select one or more languages.",
@@ -242,11 +251,16 @@
     "%landing.student.notify_block.description.text": "Be the first to know when it's ready.",
     "%landing.student.input_email.placeholder.text": "Email",
     "%landing.student.notify_block.send_button.text": "NOTIFY ME",
-    "%landing.student.notify_block.send_button.loading.text": "SENDING...",
     "%landing.student.add_comment.button.text": "+ Add a comment",
     "%landing.student.input_comment.placeholder.text": "Do you want to know more about Waysily?. Any doubts?, write us.",
     "%landing.student.input_name.placeholder.text": "Your name",
     "%landing.student.notify_block.success_msg.text": "You’re all set. We’ll be in touch.",
+
+    "__RESET PASSWORD PAGE__": "",
+    "%recover.password.title.text": "reset your password",
+    "%recover.password.not_match.text": "Your new passwords did not match. Please try again.",
+    "%recover.password.success.text": "Successful change!. Try signing in now.",
+    "%recover.password.link_expired.text": "The link that we sent to your email already expired, it is necessary that you request a new one.",
 
     "__SEARCH PAGE__": "",
     "%search.container.teacher.lang.teach.title.text": "Teach",
@@ -448,6 +462,11 @@
     "__9. TEACHER FINISH SECTION__": "",
     "%create.teacher.finish.title.text": "Your registration was successful!",
     "%create.teacher.finish.description.text": "We'll check your information and we'll notify you when you are already visible on the map of Waysily.",
+
+    "__ERROR MESSAGES__": "",
+    "%error.server_error.text": "No response from server. Try again, please",
+    "%error.server_error_code.text": "There was a problem logging you in. Error code: ",
+    "%error.username_password_wrong.text": "Incorrect username or password.",
 
     "__FOOTER__": "",
     "%footer.contact_us.title.text": "Contact us",
