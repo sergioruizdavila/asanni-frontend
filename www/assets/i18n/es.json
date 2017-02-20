@@ -87,7 +87,7 @@
 
     "%modal.forgot_password.description.text": "Introduce la dirección de correo electrónico asociada a tu cuenta para que podamos enviarte instrucciones para iniciar sesión.",
     "%modal.forgot_password.send.button.text": "Enviar instrucciones",
-    "%modal.forgot_password.no_account_exists.part1.text": "No existe ninguna cuenta para",
+    "%modal.forgot_password.no_account_exists.part1.text": "No existe ninguna cuenta para ",
     "%modal.forgot_password.no_account_exists.part2.text": ". Tal vez usted se inscribió utilizando una dirección de correo electrónico diferente ó incorrecta",
     "%modal.forgot_password.sent_link.text": "Se ha enviado un enlace para restablecer tu contraseña a ",
 

@@ -87,7 +87,7 @@
 
     "%modal.forgot_password.description.text": "Enter the email address associated with your account. We’ll email you instructions on how to log in.",
     "%modal.forgot_password.send.button.text": "Send instructions",
-    "%modal.forgot_password.no_account_exists.part1.text": "No account exists for",
+    "%modal.forgot_password.no_account_exists.part1.text": "No account exists for ",
     "%modal.forgot_password.no_account_exists.part2.text": ". Maybe you signed up using a different/incorrect e-mail address",
     "%modal.forgot_password.sent_link.text": "A link to reset your password has been sent to ",
 
