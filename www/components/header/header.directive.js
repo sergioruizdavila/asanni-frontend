@@ -41,7 +41,6 @@ var components;
             HeaderController.prototype.init = function () {
                 this.isAuthenticated = this.AuthService.isAuthenticated();
                 this.form = {
-                    language: this.functionsUtil.getCurrentLanguage() || 'en',
                     whereTo: this.$filter('translate')('%header.search.placeholder.text')
                 };
                 this._slideout = false;
@@ -61,10 +60,6 @@ var components;
                 }, function (response) {
                     DEBUG && console.log('A problem occured while logging you out.');
                 });
-            };
-            HeaderController.prototype.changeLanguage = function () {
-                this.functionsUtil.changeLanguage(this.form.language);
-                mixpanel.track("Change Language on header");
             };
             HeaderController.prototype.search = function (country) {
                 var currentState = this.$state.current.name;

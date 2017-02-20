@@ -93,7 +93,9 @@ var app;
                         return username;
                     };
                     FunctionsUtilService.prototype.changeLanguage = function (language) {
-                        this.$translate.use(language);
+                        return this.$translate.use(language).then(function (data) {
+                            return data;
+                        });
                     };
                     FunctionsUtilService.prototype.joinDate = function (day, month, year) {
                         var newDate = year + '-' + month + '-' + day;

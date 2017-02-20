@@ -100,7 +100,7 @@ module app.pages.createTeacherPage {
             //Init teacher instance
             this.$rootScope.teacherData = new app.models.teacher.Teacher();
             //Connect with user logged
-            this.$rootScope.teacherData.ProfileId = loggedUserId;
+            this.$rootScope.teacherData.Profile.UserId = loggedUserId;
 
             // Init header fixed
             //TODO: Remover esto de aqui, y colocarlo en un lugar global, ya que

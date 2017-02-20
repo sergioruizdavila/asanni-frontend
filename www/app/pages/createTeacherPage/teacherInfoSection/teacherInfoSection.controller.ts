@@ -430,6 +430,9 @@ module app.pages.createTeacherPage {
             this.$rootScope.profileData.BornCity = this.form.bornCity;
             this.$rootScope.profileData.About = this.form.about;
 
+            //Save profile data on teacher data models
+            this.$rootScope.teacherData.Profile = this.$rootScope.profileData;
+
             //If this teacher was recommended by a Student
             this.$rootScope.teacherData.Recommended = recommended ? recommended : null;
 

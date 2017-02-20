@@ -75,7 +75,6 @@ module components.header {
     }
 
     interface IHeaderForm {
-        language: IKeyValue;
         whereTo: string;
     }
 
@@ -133,7 +132,6 @@ module components.header {
 
             //Init form
             this.form = {
-                language: this.functionsUtil.getCurrentLanguage() || 'en',
                 whereTo: this.$filter('translate')('%header.search.placeholder.text')
             };
 
@@ -191,21 +189,6 @@ module components.header {
                     DEBUG && console.log('A problem occured while logging you out.');
                 }
             );
-        }
-
-
-
-        /**
-        * changeLanguage
-        * @description - open Modal in order to add a New Teacher's Experience on Box
-        * @use - this._addEditExperience();
-        * @function
-        * @return {void}
-        */
-
-        changeLanguage(): void {
-            this.functionsUtil.changeLanguage(this.form.language);
-            mixpanel.track("Change Language on header");
         }
 
 

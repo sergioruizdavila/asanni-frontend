@@ -23,7 +23,7 @@ module app.core.util.functionsUtil {
         ageFormat: (date: any) => string;
         getCurrentLanguage: () => string;
         generateUsername: (firstName: string, lastName: string) => string;
-        changeLanguage: (language: string) => void;
+        changeLanguage: (language: string) => angular.IPromise<string> ;
         joinDate: (day:string, month:string, year:string) => string;
         splitDate: (date:string) => app.core.interfaces.IDateSplitted;
         progress: (currentStep: number, totalSteps: number) => string;
@@ -253,11 +253,15 @@ module app.core.util.functionsUtil {
         * @description - change site language
         * @use - this.FunctionsUtilService.changeLanguage('es');
         * @function
-        * @params {string} language - language code
+        * @params {angular.IPromise<string>} language - language code
         * @return {void}
         */
-        changeLanguage(language): void {
-             this.$translate.use(language);
+        changeLanguage(language): angular.IPromise<string> {
+            return this.$translate.use(language).then(
+                function(data) {
+                    return data;
+                }
+            );
         }
 
 

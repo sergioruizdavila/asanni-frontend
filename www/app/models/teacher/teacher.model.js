@@ -11,7 +11,7 @@ var app;
                     if (obj === null)
                         obj = {};
                     this.id = obj.id || '';
-                    this.profileId = obj.profileId || '';
+                    this.profile = new app.models.user.Profile(obj.profile);
                     this.location = new app.models.user.Location(obj.location);
                     this.languages = new Language(obj.languages);
                     this.type = obj.type || '';
@@ -61,15 +61,15 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(Teacher.prototype, "ProfileId", {
+                Object.defineProperty(Teacher.prototype, "Profile", {
                     get: function () {
-                        return this.profileId;
+                        return this.profile;
                     },
-                    set: function (profileId) {
-                        if (profileId === undefined) {
-                            throw 'Please supply user profile id';
+                    set: function (profile) {
+                        if (profile === undefined) {
+                            throw 'Please supply teacher profile data';
                         }
-                        this.profileId = profileId;
+                        this.profile = profile;
                     },
                     enumerable: true,
                     configurable: true

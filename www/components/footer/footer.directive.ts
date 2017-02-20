@@ -143,10 +143,19 @@ module components.footer {
         */
 
         changeLanguage(code): void {
-            this.functionsUtil.changeLanguage(code);
-            this.form.language.key = code;
-            this.form.language.value = '%header.lang.options.' + code + '.text';
-            this.assignFlag = 'ma-flag--default--flag-' + code;
+            //VARIABLES
+            let self = this;
+
+            this.functionsUtil.changeLanguage(code).then(
+                function(key) {
+                    if(typeof key === 'string') {
+                        self.form.language.key = code;
+                        self.form.language.value = '%header.lang.options.' + code + '.text';
+                        self.assignFlag = 'ma-flag--default--flag-' + code;
+                        window.location.reload();
+                    }
+                }
+            );
         }
 
 

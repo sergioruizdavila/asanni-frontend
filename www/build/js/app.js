@@ -499,7 +499,9 @@ var app;
                         return username;
                     };
                     FunctionsUtilService.prototype.changeLanguage = function (language) {
-                        this.$translate.use(language);
+                        return this.$translate.use(language).then(function (data) {
+                            return data;
+                        });
                     };
                     FunctionsUtilService.prototype.joinDate = function (day, month, year) {
                         var newDate = year + '-' + month + '-' + day;
@@ -1858,7 +1860,7 @@ var app;
                     if (obj === null)
                         obj = {};
                     this.id = obj.id || '';
-                    this.profileId = obj.profileId || '';
+                    this.profile = new app.models.user.Profile(obj.profile);
                     this.location = new app.models.user.Location(obj.location);
                     this.languages = new Language(obj.languages);
                     this.type = obj.type || '';
@@ -1908,15 +1910,15 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(Teacher.prototype, "ProfileId", {
+                Object.defineProperty(Teacher.prototype, "Profile", {
                     get: function () {
-                        return this.profileId;
+                        return this.profile;
                     },
-                    set: function (profileId) {
-                        if (profileId === undefined) {
-                            throw 'Please supply user profile id';
+                    set: function (profile) {
+                        if (profile === undefined) {
+                            throw 'Please supply teacher profile data';
                         }
-                        this.profileId = profileId;
+                        this.profile = profile;
                     },
                     enumerable: true,
                     configurable: true
@@ -3236,7 +3238,6 @@ var components;
             HeaderController.prototype.init = function () {
                 this.isAuthenticated = this.AuthService.isAuthenticated();
                 this.form = {
-                    language: this.functionsUtil.getCurrentLanguage() || 'en',
                     whereTo: this.$filter('translate')('%header.search.placeholder.text')
                 };
                 this._slideout = false;
@@ -3256,10 +3257,6 @@ var components;
                 }, function (response) {
                     DEBUG && console.log('A problem occured while logging you out.');
                 });
-            };
-            HeaderController.prototype.changeLanguage = function () {
-                this.functionsUtil.changeLanguage(this.form.language);
-                mixpanel.track("Change Language on header");
             };
             HeaderController.prototype.search = function (country) {
                 var currentState = this.$state.current.name;
@@ -3475,10 +3472,15 @@ var components;
                 console.log('footer controller actived');
             };
             FooterController.prototype.changeLanguage = function (code) {
-                this.functionsUtil.changeLanguage(code);
-                this.form.language.key = code;
-                this.form.language.value = '%header.lang.options.' + code + '.text';
-                this.assignFlag = 'ma-flag--default--flag-' + code;
+                var self = this;
+                this.functionsUtil.changeLanguage(code).then(function (key) {
+                    if (typeof key === 'string') {
+                        self.form.language.key = code;
+                        self.form.language.value = '%header.lang.options.' + code + '.text';
+                        self.assignFlag = 'ma-flag--default--flag-' + code;
+                        window.location.reload();
+                    }
+                });
             };
             return FooterController;
         }());
@@ -7335,7 +7337,7 @@ var app;
                     var loggedUserId = this.$rootScope.userData.id;
                     var currentState = this.$state.current.name;
                     this.$rootScope.teacherData = new app.models.teacher.Teacher();
-                    this.$rootScope.teacherData.ProfileId = loggedUserId;
+                    this.$rootScope.teacherData.Profile.UserId = loggedUserId;
                     angular.element(this.$window).bind("scroll", function () {
                         var floatHeader = document.getElementById('header-float');
                         if (floatHeader) {
@@ -7761,6 +7763,7 @@ var app;
                     this.$rootScope.profileData.BornCountry = this.form.bornCountry;
                     this.$rootScope.profileData.BornCity = this.form.bornCity;
                     this.$rootScope.profileData.About = this.form.about;
+                    this.$rootScope.teacherData.Profile = this.$rootScope.profileData;
                     this.$rootScope.teacherData.Recommended = recommended ? recommended : null;
                     mixpanel.track("Enter: Basic Info on Create Teacher", {
                         "name": this.$rootScope.profileData.FirstName + ' ' + this.$rootScope.profileData.LastName,
@@ -9479,7 +9482,7 @@ var app;
                 TeacherProfilePageController.prototype.goToConfirm = function () {
                     mixpanel.track("Click on book a class", {
                         "teacher_id": this.data.Id,
-                        "teacher_name": this.data.FirstName + ' ' + this.data.LastName
+                        "teacher_name": this.data.Profile.FirstName + ' ' + this.data.Profile.LastName
                     });
                     var url = 'https://waysily.typeform.com/to/NDPRAb';
                     window.open(url, '_blank');
@@ -9497,7 +9500,7 @@ var app;
                 };
                 TeacherProfilePageController.prototype._assignNativeTooltip = function (language) {
                     var TOOLTIP_TEXT = this.$filter('translate')('%profile.teacher.native.lang.tooltip.text');
-                    var firstName = this.data.FirstName;
+                    var firstName = this.data.Profile.FirstName;
                     var tooltipText = null;
                     var isNative = this._assignNative(language);
                     if (isNative) {
