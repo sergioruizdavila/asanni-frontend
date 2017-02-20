@@ -5,12 +5,13 @@ var components;
         var modalForgotPassword;
         (function (modalForgotPassword) {
             var ModalForgotPasswordController = (function () {
-                function ModalForgotPasswordController($rootScope, AuthService, functionsUtil, messageUtil, RegisterService, $uibModal, $uibModalInstance, dataConfig) {
+                function ModalForgotPasswordController($rootScope, AuthService, functionsUtil, messageUtil, RegisterService, $filter, $uibModal, $uibModalInstance, dataConfig) {
                     this.$rootScope = $rootScope;
                     this.AuthService = AuthService;
                     this.functionsUtil = functionsUtil;
                     this.messageUtil = messageUtil;
                     this.RegisterService = RegisterService;
+                    this.$filter = $filter;
                     this.$uibModal = $uibModal;
                     this.$uibModalInstance = $uibModalInstance;
                     this.dataConfig = dataConfig;
@@ -18,6 +19,7 @@ var components;
                 }
                 ModalForgotPasswordController.prototype._init = function () {
                     var self = this;
+                    this.sending = false;
                     this.form = {
                         email: ''
                     };
@@ -43,9 +45,13 @@ var components;
                     return formValid;
                 };
                 ModalForgotPasswordController.prototype._sendInstructions = function () {
+                    var NO_ACCOUNT_EXISTS_1 = this.$filter('translate')('%modal.forgot_password.no_account_exists.part1.text');
+                    var NO_ACCOUNT_EXISTS_2 = this.$filter('translate')('%modal.forgot_password.no_account_exists.part2.text');
+                    var SENT_LINK = this.$filter('translate')('%modal.forgot_password.sent_link.text');
                     var self = this;
                     var formValid = this._validateForm();
                     if (formValid) {
+                        this.sending = true;
                         this.RegisterService.checkEmail(this.form.email).then(function (response) {
                             var emailExist = true;
                             if (response.data) {
@@ -56,13 +62,16 @@ var components;
                             }
                             self.validate.globalValidate.valid = emailExist;
                             if (!emailExist) {
-                                self.validate.globalValidate.message = 'No account exists for ' + self.form.email + '. Maybe you signed up using a different/incorrect e-mail address';
+                                self.sending = false;
+                                self.validate.globalValidate.message = NO_ACCOUNT_EXISTS_1 + self.form.email + NO_ACCOUNT_EXISTS_2;
                             }
                             else {
                                 self.AuthService.resetPassword(self.form.email).then(function (response) {
-                                    self.messageUtil.info('A link to reset your password has been sent to ' + self.form.email);
+                                    self.sending = false;
+                                    self.messageUtil.info(SENT_LINK + self.form.email);
                                     self._openLogInModal();
                                 }, function (error) {
+                                    self.sending = false;
                                     DEBUG && console.error(error);
                                     self.messageUtil.error('');
                                 });
@@ -108,6 +117,7 @@ var components;
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.util.messageUtilService',
                 'mainApp.register.RegisterService',
+                '$filter',
                 '$uibModal',
                 '$uibModalInstance',
                 'dataConfig'

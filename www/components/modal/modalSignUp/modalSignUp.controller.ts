@@ -60,6 +60,7 @@ module components.modal.modalSignUp {
             'mainApp.register.RegisterService',
             'mainApp.core.util.FunctionsUtilService',
             'mainApp.core.util.messageUtilService',
+            '$filter',
             'mainApp.localStorageService',
             'dataSetModal',
             'dataConfig',
@@ -78,6 +79,7 @@ module components.modal.modalSignUp {
             private RegisterService: app.register.IRegisterService,
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
+            private $filter: angular.IFilterService,
             private localStorage,
             private dataSetModal: app.core.interfaces.IDataSet,
             private dataConfig: IDataConfig,
@@ -218,6 +220,7 @@ module components.modal.modalSignUp {
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
             const EMAIL_ENUM = app.core.util.functionsUtil.Validation.Email;
+            const PASSWORD_MESSAGE = this.$filter('translate')('%modal.signup.error.short_password.text');
             /***************************************************/
 
             //VARIABLES
@@ -249,8 +252,7 @@ module components.modal.modalSignUp {
             this.validate.password = this.functionsUtil.validator(this.form.password, password_rules);
             if(!this.validate.password.valid) {
                 formValid = this.validate.password.valid;
-                //TODO: Traducir a Español tambien
-                this.validate.password.message = 'Your password must be at least 6 characters. Please try again.';
+                this.validate.password.message = PASSWORD_MESSAGE;
             }
 
             return formValid;
@@ -266,6 +268,9 @@ module components.modal.modalSignUp {
         * @return {void}
         */
         private _checkIfEmailExist(): void {
+            //CONSTANTS
+            const EMAIL_TAKEN_MESSAGE = this.$filter('translate')('%modal.signup.error.email_taken.text');
+
             //VARIABLES
             let self = this;
 
@@ -278,7 +283,7 @@ module components.modal.modalSignUp {
                                 self.validate.email.valid = true;
                             } else {
                                 self.validate.email.valid = false;
-                                self.validate.email.message = 'That email address is already in use. Please log in.';
+                                self.validate.email.message = EMAIL_TAKEN_MESSAGE;
                             }
                         } else if(response.email) {
                             self.validate.email.valid = true;
@@ -349,6 +354,11 @@ module components.modal.modalSignUp {
         * @return {void}
         */
         private _loginAfterRegister(username, email, password): void {
+            //CONSTANTS
+            const USERNAME_PASSWORD_WRONG = this.$filter('translate')('%error.username_password_wrong.text');
+            const SERVER_ERROR = this.$filter('translate')('%error.server_error.text');
+            const SERVER_CODE_ERROR = this.$filter('translate')('%error.server_error_code.text');
+
             //VARIABLES
             let self = this;
             let userData = {
@@ -398,22 +408,19 @@ module components.modal.modalSignUp {
                     self.saving = false;
 
                     if (response.status == 401) {
-                        //TODO: Traducir mensaje a español
-                        DEBUG && console.log('Incorrect username or password.');
+                        DEBUG && console.log(USERNAME_PASSWORD_WRONG);
                         self.validate.globalValidate.valid = false;
-                        self.validate.globalValidate.message = 'Incorrect username or password.';
+                        self.validate.globalValidate.message = USERNAME_PASSWORD_WRONG;
                     }
 
                     else if (response.status == -1) {
-                        //TODO: Traducir mensaje a español
-                        DEBUG && console.log('No response from server. Try again, please');
-                        self.messageUtil.error('No response from server. Try again, please');
+                        DEBUG && console.log(SERVER_ERROR);
+                        self.messageUtil.error(SERVER_ERROR);
                     }
 
                     else {
-                        //TODO: Traducir mensaje a español
-                        DEBUG && console.log('There was a problem logging you in. Error code: ' + response.status + '.');
-                        self.messageUtil.error('There was a problem logging you in. Error code: ' + response.status + '.');
+                        DEBUG && console.log(SERVER_CODE_ERROR + response.status);
+                        self.messageUtil.error(SERVER_CODE_ERROR + response.status);
                     }
                 }
             );

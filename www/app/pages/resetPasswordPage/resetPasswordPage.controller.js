@@ -5,8 +5,9 @@ var app;
         var resetPasswordPage;
         (function (resetPasswordPage) {
             var ResetPasswordPageController = (function () {
-                function ResetPasswordPageController($state, $stateParams, AuthService, functionsUtil, messageUtil) {
+                function ResetPasswordPageController($state, $filter, $stateParams, AuthService, functionsUtil, messageUtil) {
                     this.$state = $state;
+                    this.$filter = $filter;
                     this.$stateParams = $stateParams;
                     this.AuthService = AuthService;
                     this.functionsUtil = functionsUtil;
@@ -15,6 +16,7 @@ var app;
                 }
                 ResetPasswordPageController.prototype._init = function () {
                     var self = this;
+                    this.saving = false;
                     this.uid = this.$stateParams.uid;
                     this.token = this.$stateParams.token;
                     this.form = {
@@ -35,6 +37,7 @@ var app;
                 ResetPasswordPageController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
                     var EMPTY_ENUM = 3;
+                    var PASSWORD_MESSAGE = this.$filter('translate')('%recover.password.not_match.text');
                     var formValid = true;
                     var password_rules = [NULL_ENUM, EMPTY_ENUM];
                     this.validate.newPassword1 = this.functionsUtil.validator(this.form.newPassword1, password_rules);
@@ -48,23 +51,28 @@ var app;
                     if (this.form.newPassword1 !== this.form.newPassword2) {
                         formValid = false;
                         this.validate.globalValidate.valid = false;
-                        this.validate.globalValidate.message = 'Your new passwords did not match. Please try again.';
+                        this.validate.globalValidate.message = PASSWORD_MESSAGE;
                     }
                     return formValid;
                 };
                 ResetPasswordPageController.prototype._changePassword = function () {
+                    var SUCCESS_CHANGE_PROCESS = this.$filter('translate')('%recover.password.success.text');
+                    var LINK_EXPIRED = this.$filter('translate')('%recover.password.link_expired.text');
                     var self = this;
                     var formValid = this._validateForm();
                     if (formValid) {
+                        this.saving = true;
                         this.AuthService.confirmResetPassword(self.uid, self.token, self.form.newPassword1, self.form.newPassword2).then(function (response) {
                             DEBUG && console.log(response);
-                            self.messageUtil.success('Cambio exitoso!. Prueba iniciar sesión ahora.');
+                            self.saving = false;
+                            self.messageUtil.success(SUCCESS_CHANGE_PROCESS);
                             self.$state.go('page.landingPage', { showLogin: true }, { reload: true });
                         }, function (error) {
                             DEBUG && console.log(error);
+                            self.saving = false;
                             if (error === 'Invalid value') {
                                 self.validate.globalValidate.valid = false;
-                                self.validate.globalValidate.message = 'El link que te enviamos al correo ya expiro, es necesario que solicites uno nuevo.';
+                                self.validate.globalValidate.message = LINK_EXPIRED;
                             }
                             else {
                                 self.messageUtil.error('');
@@ -77,6 +85,7 @@ var app;
             ResetPasswordPageController.controllerId = 'mainApp.pages.resetPasswordPage.ResetPasswordPageController';
             ResetPasswordPageController.$inject = [
                 '$state',
+                '$filter',
                 '$stateParams',
                 'mainApp.auth.AuthService',
                 'mainApp.core.util.FunctionsUtilService',

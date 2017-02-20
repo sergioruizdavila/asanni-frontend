@@ -56,6 +56,7 @@ module components.modal.modalLogIn {
             'mainApp.models.user.UserService',
             'mainApp.core.util.FunctionsUtilService',
             'mainApp.core.util.messageUtilService',
+            '$filter',
             'mainApp.localStorageService',
             'dataSetModal',
             'dataConfig',
@@ -75,6 +76,7 @@ module components.modal.modalLogIn {
             private userService: app.models.user.IUserService,
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
+            private $filter: angular.IFilterService,
             private localStorage,
             private dataSetModal: app.core.interfaces.IDataSet,
             private dataConfig: IDataConfig,
@@ -129,6 +131,11 @@ module components.modal.modalLogIn {
         * @return {void}
         */
         login(): void {
+            //CONSTANTS
+            const USERNAME_PASSWORD_WRONG = this.$filter('translate')('%error.username_password_wrong.text');
+            const SERVER_ERROR = this.$filter('translate')('%error.server_error.text');
+            const SERVER_CODE_ERROR = this.$filter('translate')('%error.server_error_code.text');
+
             //VARIABLES
             let self = this;
 
@@ -190,22 +197,19 @@ module components.modal.modalLogIn {
                                 self.saving = false;
 
                                 if (response.status == 401) {
-                                    //TODO: Traducir mensaje a español
-                                    DEBUG && console.log('Incorrect username or password.');
+                                    DEBUG && console.log(USERNAME_PASSWORD_WRONG);
                                     self.validate.globalValidate.valid = false;
-                                    self.validate.globalValidate.message = 'Incorrect username or password.';
+                                    self.validate.globalValidate.message = USERNAME_PASSWORD_WRONG;
                                 }
 
                                 else if (response.status == -1) {
-                                    //TODO: Traducir mensaje a español
-                                    DEBUG && console.log('No response from server. Try again, please');
-                                    self.messageUtil.error('No response from server. Try again, please');
+                                    DEBUG && console.log(SERVER_ERROR);
+                                    self.messageUtil.error(SERVER_ERROR);
                                 }
 
                                 else {
-                                    //TODO: Traducir mensaje a español
-                                    DEBUG && console.log('There was a problem logging you in. Error code: ' + response.status + '.');
-                                    self.messageUtil.error('There was a problem logging you in. Error code: ' + response.status + '.');
+                                    DEBUG && console.log(SERVER_CODE_ERROR + response.status);
+                                    self.messageUtil.error(SERVER_CODE_ERROR + response.status);
                                 }
                             }
                         );
