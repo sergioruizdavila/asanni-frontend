@@ -178,8 +178,7 @@
              class="ma-header__block pull-right">
 
             <!-- User menu options dropdown -->
-            <span class="dropup"
-                  uib-dropdown on-toggle="toggled(open)">
+            <span uib-dropdown on-toggle="toggled(open)">
                 <a id="user-menu-options"
                    class="ma-header__block__btn
                           link-reset dropdown-toggle"
@@ -203,13 +202,6 @@
                     uib-dropdown-menu
                     role="menu"
                     aria-labelledby="user-menu-options">
-                    <li class="ma-dropdown__option">
-                        <a ui-sref="page.userProfilePage({id: '30'})"
-                           class="ma-dropdown__option__btn"
-                           href>
-                           View Profile
-                        </a>
-                    </li>
                     <li class="ma-dropdown__option">
                         <a ui-sref="page.userEditProfilePage"
                            class="ma-dropdown__option__btn"

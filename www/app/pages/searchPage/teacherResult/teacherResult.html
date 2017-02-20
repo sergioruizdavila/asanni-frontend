@@ -30,8 +30,8 @@
                                         ma-photo-profile--medium round">
                             <img width="170"
                                  height="170"
-                                 ng-src="{{item.avatar}}"
-                                 alt="{{item.firstName}}">
+                                 ng-src="{{item.profile.avatar}}"
+                                 alt="{{item.profile.firstName}}">
                         </div>
                         <div class="ma-icon-container
                                     ma-icon-container--white
@@ -58,7 +58,7 @@
             <div class="col-xs-12 col-md-12">
 
                 <h3 class="margin-reset">
-                    {{item.firstName}}
+                    {{item.profile.firstName}}
                 </h3>
 
             </div>
@@ -96,7 +96,7 @@
                     <span>
                         <i class="material-icons md-12">child_friendly</i>
                     </span>
-                    {{item.born}}
+                    {{ item.profile.bornCountry | getI18nFilter:'country' }}
                 </p>
 
             </div>

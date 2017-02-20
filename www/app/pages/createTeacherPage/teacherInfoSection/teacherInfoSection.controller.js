@@ -208,6 +208,7 @@ var app;
                     this.$rootScope.profileData.BornCountry = this.form.bornCountry;
                     this.$rootScope.profileData.BornCity = this.form.bornCity;
                     this.$rootScope.profileData.About = this.form.about;
+                    this.$rootScope.teacherData.Profile = this.$rootScope.profileData;
                     this.$rootScope.teacherData.Recommended = recommended ? recommended : null;
                     mixpanel.track("Enter: Basic Info on Create Teacher", {
                         "name": this.$rootScope.profileData.FirstName + ' ' + this.$rootScope.profileData.LastName,

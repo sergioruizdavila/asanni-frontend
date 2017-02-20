@@ -49,7 +49,7 @@ var app;
                 TeacherProfilePageController.prototype.goToConfirm = function () {
                     mixpanel.track("Click on book a class", {
                         "teacher_id": this.data.Id,
-                        "teacher_name": this.data.FirstName + ' ' + this.data.LastName
+                        "teacher_name": this.data.Profile.FirstName + ' ' + this.data.Profile.LastName
                     });
                     var url = 'https://waysily.typeform.com/to/NDPRAb';
                     window.open(url, '_blank');
@@ -67,7 +67,7 @@ var app;
                 };
                 TeacherProfilePageController.prototype._assignNativeTooltip = function (language) {
                     var TOOLTIP_TEXT = this.$filter('translate')('%profile.teacher.native.lang.tooltip.text');
-                    var firstName = this.data.FirstName;
+                    var firstName = this.data.Profile.FirstName;
                     var tooltipText = null;
                     var isNative = this._assignNative(language);
                     if (isNative) {

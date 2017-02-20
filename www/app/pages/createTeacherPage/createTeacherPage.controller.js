@@ -27,7 +27,7 @@ var app;
                     var loggedUserId = this.$rootScope.userData.id;
                     var currentState = this.$state.current.name;
                     this.$rootScope.teacherData = new app.models.teacher.Teacher();
-                    this.$rootScope.teacherData.ProfileId = loggedUserId;
+                    this.$rootScope.teacherData.Profile.UserId = loggedUserId;
                     angular.element(this.$window).bind("scroll", function () {
                         var floatHeader = document.getElementById('header-float');
                         if (floatHeader) {

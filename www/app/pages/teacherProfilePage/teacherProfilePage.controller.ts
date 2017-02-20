@@ -134,7 +134,7 @@ module app.pages.teacherProfilePage {
             //MIXPANEL
             mixpanel.track("Click on book a class", {
                 "teacher_id": this.data.Id,
-                "teacher_name": this.data.FirstName + ' ' + this.data.LastName
+                "teacher_name": this.data.Profile.FirstName + ' ' + this.data.Profile.LastName
             });
 
             var url = 'https://waysily.typeform.com/to/NDPRAb';
@@ -182,7 +182,7 @@ module app.pages.teacherProfilePage {
             //CONSTANTS
             const TOOLTIP_TEXT = this.$filter('translate')('%profile.teacher.native.lang.tooltip.text');
             //VARIABLES
-            let firstName = this.data.FirstName;
+            let firstName = this.data.Profile.FirstName;
             let tooltipText = null;
             let isNative = this._assignNative(language);
 

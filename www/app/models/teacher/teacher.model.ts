@@ -17,7 +17,7 @@ module app.models.teacher {
 
         /*-- PROPERTIES --*/
         private id: string;
-        private profileId: string;
+        private profile: app.models.user.Profile;
         private location: app.models.user.Location;
         private languages: Language;
         private type: string;
@@ -42,7 +42,7 @@ module app.models.teacher {
 
             //init properties
             this.id = obj.id || '';
-            this.profileId = obj.profileId || '';
+            this.profile = new app.models.user.Profile(obj.profile);
             this.location = new app.models.user.Location(obj.location);
             this.languages = new Language(obj.languages);
             this.type = obj.type || '';
@@ -99,13 +99,13 @@ module app.models.teacher {
             this.id = id;
         }
 
-        get ProfileId() {
-            return this.profileId;
+        get Profile() {
+            return this.profile;
         }
 
-        set ProfileId(profileId: string) {
-            if (profileId === undefined) { throw 'Please supply user profile id'; }
-            this.profileId = profileId;
+        set Profile(profile: app.models.user.Profile) {
+            if (profile === undefined) { throw 'Please supply teacher profile data'; }
+            this.profile = profile;
         }
 
         get Location() {
