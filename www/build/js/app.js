@@ -257,15 +257,11 @@ var app;
                 };
                 this.restApi.create({ url: url }, data).$promise
                     .then(function (response) {
+                    DEBUG && console.error(response);
                     deferred.resolve(response.detail);
                 }, function (error) {
                     DEBUG && console.error(error);
-                    if (error.data) {
-                        deferred.reject(error.data.token[0]);
-                    }
-                    else {
-                        deferred.reject(error);
-                    }
+                    deferred.reject(error);
                 });
                 return deferred.promise;
             };
@@ -6064,24 +6060,34 @@ var app;
                 ResetPasswordPageController.prototype._changePassword = function () {
                     var SUCCESS_CHANGE_PROCESS = this.$filter('translate')('%recover.password.success.text');
                     var LINK_EXPIRED = this.$filter('translate')('%recover.password.link_expired.text');
+                    var PASSWORD_COMMON = this.$filter('translate')('%recover.password.password_common.text');
                     var self = this;
                     var formValid = this._validateForm();
                     if (formValid) {
+                        this.validate.globalValidate.valid = true;
                         this.saving = true;
                         this.AuthService.confirmResetPassword(self.uid, self.token, self.form.newPassword1, self.form.newPassword2).then(function (response) {
-                            DEBUG && console.log(response);
                             self.saving = false;
                             self.messageUtil.success(SUCCESS_CHANGE_PROCESS);
                             self.$state.go('page.landingPage', { showLogin: true }, { reload: true });
                         }, function (error) {
-                            DEBUG && console.log(error);
                             self.saving = false;
-                            if (error === 'Invalid value') {
-                                self.validate.globalValidate.valid = false;
-                                self.validate.globalValidate.message = LINK_EXPIRED;
-                            }
-                            else {
-                                self.messageUtil.error('');
+                            self.validate.globalValidate.valid = false;
+                            if (error.data) {
+                                if (error.data.token) {
+                                    if (error.data.token[0] === 'Invalid value') {
+                                        self.validate.globalValidate.message = LINK_EXPIRED;
+                                    }
+                                    else {
+                                        self.messageUtil.error('');
+                                    }
+                                }
+                                else if (error.data.newPassword2) {
+                                    self.validate.globalValidate.message = PASSWORD_COMMON;
+                                }
+                                else {
+                                    self.messageUtil.error('');
+                                }
                             }
                         });
                     }
