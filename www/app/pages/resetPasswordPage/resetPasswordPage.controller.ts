@@ -47,6 +47,8 @@ module app.pages.resetPasswordPage {
         token: string;
         form: IResetPasswordForm;
         validate: IResetPasswordValidate;
+        passwordMinLength: number;
+        passwordMaxLength: number;
         saving: boolean;
         // --------------------------------
 
@@ -54,6 +56,7 @@ module app.pages.resetPasswordPage {
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = [
             '$state',
+            'dataConfig',
             '$filter',
             '$stateParams',
             'mainApp.auth.AuthService',
@@ -66,6 +69,7 @@ module app.pages.resetPasswordPage {
         /**********************************/
         constructor(
             private $state: ng.ui.IStateService,
+            private dataConfig: IDataConfig,
             private $filter: angular.IFilterService,
             private $stateParams: IResetPasswordParams,
             private AuthService: app.auth.IAuthService,
@@ -88,6 +92,12 @@ module app.pages.resetPasswordPage {
             this.uid = this.$stateParams.uid;
 
             this.token = this.$stateParams.token;
+
+            // Password min length
+            this.passwordMinLength = this.dataConfig.passwordMinLength;
+
+            // Password max length
+            this.passwordMaxLength = this.dataConfig.passwordMaxLength;
 
             //Init form
             this.form = {

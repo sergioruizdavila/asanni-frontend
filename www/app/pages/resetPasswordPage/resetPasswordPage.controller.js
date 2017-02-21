@@ -5,8 +5,9 @@ var app;
         var resetPasswordPage;
         (function (resetPasswordPage) {
             var ResetPasswordPageController = (function () {
-                function ResetPasswordPageController($state, $filter, $stateParams, AuthService, functionsUtil, messageUtil) {
+                function ResetPasswordPageController($state, dataConfig, $filter, $stateParams, AuthService, functionsUtil, messageUtil) {
                     this.$state = $state;
+                    this.dataConfig = dataConfig;
                     this.$filter = $filter;
                     this.$stateParams = $stateParams;
                     this.AuthService = AuthService;
@@ -19,6 +20,8 @@ var app;
                     this.saving = false;
                     this.uid = this.$stateParams.uid;
                     this.token = this.$stateParams.token;
+                    this.passwordMinLength = this.dataConfig.passwordMinLength;
+                    this.passwordMaxLength = this.dataConfig.passwordMaxLength;
                     this.form = {
                         newPassword1: '',
                         newPassword2: ''
@@ -95,6 +98,7 @@ var app;
             ResetPasswordPageController.controllerId = 'mainApp.pages.resetPasswordPage.ResetPasswordPageController';
             ResetPasswordPageController.$inject = [
                 '$state',
+                'dataConfig',
                 '$filter',
                 '$stateParams',
                 'mainApp.auth.AuthService',
