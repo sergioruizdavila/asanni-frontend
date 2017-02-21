@@ -169,7 +169,7 @@
                                             ng-class="{'ma-input--invalid': !vm.validate.birthDate.month.valid}"
                                             name="teacher[month]" class="form-control">
                                             <option value="" disabled selected translate>
-                                                %create.teacher.basic_info.form.mth_birthdate.text
+                                                %global.mth.label.text
                                             </option>
                                     </select>
                                 </div>
@@ -185,7 +185,7 @@
                                             ng-class="{'ma-input--invalid': !vm.validate.birthDate.day.valid}"
                                             name="teacher[day]" class="form-control">
                                             <option value="" disabled selected translate>
-                                                day
+                                                %global.day.label.text
                                             </option>
                                     </select>
                                 </div>
@@ -201,7 +201,7 @@
                                             ng-class="{'ma-input--invalid': !vm.validate.birthDate.year.valid}"
                                             name="teacher[year]" class="form-control">
                                             <option value="" disabled selected translate>
-                                                year
+                                                %global.year.label.text
                                             </option>
                                     </select>
                                 </div>
@@ -217,9 +217,10 @@
                         <! Where country born >
                         <div class="form-group ma-form-group ma-form-group--large"
                              ng-mouseover="vm.changeHelpText('born')">
-                            <label class="text-right col-xs-3 col-sm-3"
+                            <label class="text-right
+                                          col-xs-3 col-sm-3"
                                    for="user-country-born" translate>
-                                Pais de nacimiento
+                                %global.cntry_birth.label.text
                             </label>
                             <div class="col-xs-9 col-sm-9">
                                 <div class="ma-select-container
@@ -251,9 +252,10 @@
                                     ma-form-group
                                     ma-form-group--large"
                              ng-mouseover="vm.changeHelpText('born')">
-                            <label class="text-right col-xs-3 col-sm-3"
+                            <label class="text-right col-xs-3
+                                          col-sm-3"
                                    for="teacher-city-born" translate>
-                                   Ciudad de nacimiento
+                                   %global.city_birth.label.text
                             </label>
                             <div class="col-xs-9 col-sm-9">
                                 <input id="teacher-city-born"

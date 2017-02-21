@@ -44,6 +44,12 @@
     "%global.login.label.text": "iniciar sesión",
     "%global.new_password.label.text": "nueva contraseña",
     "%global.confirm_password.label.text": "confirmar contraseña",
+    "%global.preview.label.text": "vista previa",
+    "%global.day.label.text": "día",
+    "%global.year.label.text": "año",
+    "%global.mth.label.text": "mes",
+    "%global.cntry_birth.label.text": "país de nacimiento",
+    "%global.city_birth.label.text": "ciudad de nacimiento",
 
     "%global.validation.null.message.text": "Valor requerido",
     "%global.validation.empty.message.text": "Valor requerido",
@@ -79,6 +85,19 @@
     "%modal.signup.help_text.login_button.text": "¿Ya eres miembro?",
     "%modal.signup.error.short_password.text": "Tu contraseña debe tener al menos 8 caracteres. Vuelve a intentarlo.",
     "%modal.signup.error.email_taken.text": "Esta dirección de correo electrónico ya está en uso. Por favor iniciar sesión.",
+
+    "%modal.welcome.title.text": "¡Te damos la bienvenida a Waysily!",
+    "%modal.welcome.description.text": "Queremos crear una comunidad real con profesores y estudiantes reales. Ese es el motivo por el que tenemos que confirmar una serie de datos para poder activar tu cuenta.",
+
+    "%modal.photo.title.text": "Agrega tu foto de perfil",
+
+    "%modal.born.title.text": "Información sobre ti",
+
+    "%modal.basic_info.title.text": "Un poco más sobre de ti",
+
+    "%modal.finish.title.text": "¡Todo listo!",
+    "%modal.finish.description.text": "Ahora puedes sumergirte en nuevos idiomas y culturas como viajero / estudiante o ganar dinero enseñando un idioma.",
+    "%modal.finish.button.text": "Empieza a explorar",
 
     "%modal.login.title.text": "Inicia sesión en Waysily",
     "%modal.login.form.password.text": "Contraseña",
@@ -311,11 +330,10 @@
     "%create.teacher.basic_info.form.last_name.text": "Apellidos",
     "%create.teacher.basic_info.form.email.text": "Email",
     "%create.teacher.basic_info.form.phone_number.text": "Celular",
-    "%create.teacher.basic_info.form.phone_number.placeholder.text": "p.ej. 3052345678",
+    "%create.teacher.basic_info.form.phone_number.placeholder.text": "p.ej. +57 3052345678",
     "%create.teacher.basic_info.form.i_am.text": "Yo soy",
-    "%create.teacher.basic_info.form.gender.text": "Sexo",
+    "%create.teacher.basic_info.form.gender.text": "género",
     "%create.teacher.basic_info.form.birthdate.text": "Fecha de cumpleaños",
-    "%create.teacher.basic_info.form.mth_birthdate.text": "Mes",
     "%create.teacher.basic_info.form.birthdate.validation.message.text": "Selecciona tu fecha de nacimiento para continuar",
     "%create.teacher.basic_info.form.born.text": "¿Dónde naciste?",
     "%create.teacher.basic_info.form.born.placeholder.text": "p.ej. Medellín / Lisboa / Portland",
@@ -463,6 +481,11 @@
     "__9. TEACHER FINISH SECTION__": "",
     "%create.teacher.finish.title.text": "¡Tu inscripción fue exitosa!",
     "%create.teacher.finish.description.text": "Verificaremos tu información y te notificaremos cuando ya seas visible en el mapa de Waysily.",
+
+    "__TOOLTIPS__": "",
+    "%tooltip.modal_born.birthdate.text": "Para activar tu cuenta, debes ser mayor de 18 años.",
+    "%tooltip.modal_born.cntry_birth.text": "Este campo es requerido ya que asi podemos identificar tu lengua nativa.",
+    "%tooltip.modal_born.city_birth.text": "Este campo es requerido ya que asi podemos identificar tu lengua nativa.",
 
     "__ERROR MESSAGES__": "",
     "%error.server_error.text": "No hay respuesta del servidor. Por favor, inténtalo de nuevo",
