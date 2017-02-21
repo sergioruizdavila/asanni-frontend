@@ -318,7 +318,7 @@
     "%create.teacher.basic_info.form.mth_birthdate.text": "Month",
     "%create.teacher.basic_info.form.birthdate.validation.message.text": "Select your birth date to continue",
     "%create.teacher.basic_info.form.born.text": "Where you born?",
-    "%create.teacher.basic_info.form.born.placeholder.text": "e.g. Medellín, Colombia / Lisboa, Portugal",
+    "%create.teacher.basic_info.form.born.placeholder.text": "e.g. Medellín / Lisboa / Portland",
     "%create.teacher.basic_info.form.about.text": "Describe Yourself",
     "%create.teacher.basic_info.form.about.input.text": "e.g. I enjoy traveling around the world, meeting cultures and learning languages.",
 

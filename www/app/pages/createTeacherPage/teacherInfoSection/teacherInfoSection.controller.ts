@@ -325,6 +325,13 @@ module app.pages.createTeacherPage {
                 formValid = this.validate.bornCity.valid;
             }
 
+            //Validate About me field
+            let about_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.about = this.functionsUtilService.validator(this.form.about, about_rules);
+            if(!this.validate.about.valid) {
+                formValid = this.validate.about.valid;
+            }
+
             return formValid;
         }
 

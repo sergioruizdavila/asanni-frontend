@@ -7739,6 +7739,11 @@ var app;
                     if (!this.validate.bornCity.valid) {
                         formValid = this.validate.bornCity.valid;
                     }
+                    var about_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.about = this.functionsUtilService.validator(this.form.about, about_rules);
+                    if (!this.validate.about.valid) {
+                        formValid = this.validate.about.valid;
+                    }
                     return formValid;
                 };
                 TeacherInfoSectionController.prototype.changeHelpText = function (type) {
