@@ -48,8 +48,8 @@
     "%global.day.label.text": "día",
     "%global.year.label.text": "año",
     "%global.mth.label.text": "mes",
-    "%global.cntry_birth.label.text": "país de nacimiento",
-    "%global.city_birth.label.text": "ciudad de nacimiento",
+    "%global.cntry_birth.label.text": "País de nacimiento",
+    "%global.city_birth.label.text": "Ciudad de nacimiento",
 
     "%global.validation.null.message.text": "Valor requerido",
     "%global.validation.empty.message.text": "Valor requerido",
@@ -486,6 +486,10 @@
     "%tooltip.modal_born.birthdate.text": "Para activar tu cuenta, debes ser mayor de 18 años.",
     "%tooltip.modal_born.cntry_birth.text": "Este campo es requerido ya que asi podemos identificar tu lengua nativa.",
     "%tooltip.modal_born.city_birth.text": "Este campo es requerido ya que asi podemos identificar tu lengua nativa.",
+
+    "%tooltip.modal_basic_info.phone_number.text": "Solo lo compartiremos cuando tengas una reserva confirmada con un profesor",
+    "%tooltip.modal_basic_info.gender.text": "Este campo es requerido ya que asi nuestros usuarios pueden identificarte mejor.",
+    "%tooltip.modal_basic_info.about.text": "Waysily se basa en crear conexiones reales. Ayuda a otros usuarios a conocerte un poco mejor.",
 
     "__ERROR MESSAGES__": "",
     "%error.server_error.text": "No hay respuesta del servidor. Por favor, inténtalo de nuevo",

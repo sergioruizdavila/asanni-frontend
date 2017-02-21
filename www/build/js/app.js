@@ -4290,9 +4290,17 @@ var components;
                     this._init();
                 }
                 ModalBasicInfoController.prototype._init = function () {
+                    var PHONE_NUMBER_TOOLTIP = this.$filter('translate')('%tooltip.modal_basic_info.phone_number.text');
+                    var GENDER_TOOLTIP = this.$filter('translate')('%tooltip.modal_basic_info.gender.text');
+                    var ABOUT_TOOLTIP = this.$filter('translate')('%tooltip.modal_basic_info.about.text');
                     var self = this;
                     this.genderObject = { gender: { code: '', value: '' } };
                     this.listGenders = this.getDataFromJson.getSexi18n();
+                    this.tooltip = {
+                        phoneNumber: PHONE_NUMBER_TOOLTIP,
+                        gender: GENDER_TOOLTIP,
+                        about: ABOUT_TOOLTIP
+                    };
                     this.form = {
                         phoneNumber: '',
                         gender: '',

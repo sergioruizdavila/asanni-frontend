@@ -16,6 +16,12 @@ module components.modal.modalBasicInfo {
         activate: () => void;
     }
 
+    interface IModalBasicInfoTooltip {
+        phoneNumber: string;
+        gender: string;
+        about: string;
+    }
+
     interface IModalBasicInfoForm {
         phoneNumber: string;
         gender: string;
@@ -40,6 +46,7 @@ module components.modal.modalBasicInfo {
         /*           PROPERTIES           */
         /**********************************/
         form: IModalBasicInfoForm;
+        tooltip: IModalBasicInfoTooltip;
         validate: IModalBasicValidate;
         listGenders: Array<app.core.interfaces.IDataFromJsonI18n>;
         genderObject: IGenderForm;
@@ -78,6 +85,10 @@ module components.modal.modalBasicInfo {
 
         /*-- INITIALIZE METHOD --*/
         private _init() {
+            //CONSTANTS
+            const PHONE_NUMBER_TOOLTIP = this.$filter('translate')('%tooltip.modal_basic_info.phone_number.text');
+            const GENDER_TOOLTIP = this.$filter('translate')('%tooltip.modal_basic_info.gender.text');
+            const ABOUT_TOOLTIP = this.$filter('translate')('%tooltip.modal_basic_info.about.text');
             //VARIABLES
             let self = this;
 
@@ -85,6 +96,13 @@ module components.modal.modalBasicInfo {
             this.genderObject = {gender: {code:'', value:''}};
 
             this.listGenders = this.getDataFromJson.getSexi18n();
+
+            //Init tooltip
+            this.tooltip = {
+                phoneNumber: PHONE_NUMBER_TOOLTIP,
+                gender: GENDER_TOOLTIP,
+                about: ABOUT_TOOLTIP
+            };
 
             //Init form
             this.form = {

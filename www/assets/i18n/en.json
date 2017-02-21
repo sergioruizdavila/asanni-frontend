@@ -484,8 +484,12 @@
 
     "__TOOLTIPS__": "",
     "%tooltip.modal_born.birthdate.text": "Para activar tu cuenta, debes ser mayor de 18 años.",
-    "%tooltip.modal_born.cntry_birth.text": "Este campo es requerido ya que ",
-    "%tooltip.modal_born.city_birth.text": "Para activar tu cuenta, debes ser mayor de 18 años. Utilizamos estos datos para realizar estudios.",
+    "%tooltip.modal_born.cntry_birth.text": "Este campo es requerido ya que asi podemos identificar tu lengua nativa.",
+    "%tooltip.modal_born.city_birth.text": "Este campo es requerido ya que asi podemos identificar tu lengua nativa.",
+
+    "%tooltip.modal_basic_info.phone_number.text": "Solo lo compartiremos cuando tengas una reserva confirmada con un profesor",
+    "%tooltip.modal_basic_info.gender.text": "Este campo es requerido ya que asi nuestros usuarios pueden identificarte mejor.",
+    "%tooltip.modal_basic_info.about.text": "Waysily se basa en crear conexiones reales. Ayuda a otros usuarios a conocerte un poco mejor.",
 
     "__ERROR MESSAGES__": "",
     "%error.server_error.text": "No response from server. Try again, please",
