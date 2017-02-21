@@ -261,6 +261,7 @@
     "%recover.password.not_match.text": "Your new passwords did not match. Please try again.",
     "%recover.password.success.text": "Successful change!. Try signing in now.",
     "%recover.password.link_expired.text": "The link that we sent to your email already expired, it is necessary that you request a new one.",
+    "%recover.password.password_common.text": "Your password isn’t strong enough. Try making it longer or adding symbols, like !, #, or %.",
 
     "__SEARCH PAGE__": "",
     "%search.container.teacher.lang.teach.title.text": "Teach",

@@ -173,6 +173,7 @@ module app.pages.resetPasswordPage {
             //CONSTANTS
             const SUCCESS_CHANGE_PROCESS = this.$filter('translate')('%recover.password.success.text');
             const LINK_EXPIRED = this.$filter('translate')('%recover.password.link_expired.text');
+            const PASSWORD_COMMON = this.$filter('translate')('%recover.password.password_common.text');
 
             //VARIABLES
             let self = this;
@@ -180,6 +181,8 @@ module app.pages.resetPasswordPage {
             let formValid = this._validateForm();
 
             if(formValid) {
+
+                this.validate.globalValidate.valid = true;
 
                 //loading On
                 this.saving = true;
@@ -191,12 +194,6 @@ module app.pages.resetPasswordPage {
                     self.form.newPassword2).then(
                         //Success
                         function(response) {
-                            DEBUG && console.log(response);
-                            /* TODO: Lo ideal es que lo loguee de inmediato, pero
-                                como no tengo el email aqui, tendria que implementar
-                                algo más complejo, por ahora solo lo direccionó al
-                                main, y lo invito a loguearse.
-                            */
                             //loading Off
                             self.saving = false;
                             self.messageUtil.success(SUCCESS_CHANGE_PROCESS);
@@ -205,14 +202,21 @@ module app.pages.resetPasswordPage {
 
                         //Error
                         function(error) {
-                            DEBUG && console.log(error);
                             //loading Off
                             self.saving = false;
-                            if(error === 'Invalid value') {
-                                self.validate.globalValidate.valid = false;
-                                self.validate.globalValidate.message = LINK_EXPIRED;
-                            } else {
-                                self.messageUtil.error('');
+                            self.validate.globalValidate.valid = false;
+                            if(error.data) {
+                                if(error.data.token) {
+                                    if(error.data.token[0] === 'Invalid value'){
+                                        self.validate.globalValidate.message = LINK_EXPIRED;
+                                    } else {
+                                        self.messageUtil.error('');
+                                    }
+                                } else if(error.data.newPassword2) {
+                                    self.validate.globalValidate.message = PASSWORD_COMMON;
+                                } else {
+                                    self.messageUtil.error('');
+                                }
                             }
                         }
                     );

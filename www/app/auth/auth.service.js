@@ -53,15 +53,11 @@ var app;
                 };
                 this.restApi.create({ url: url }, data).$promise
                     .then(function (response) {
+                    DEBUG && console.error(response);
                     deferred.resolve(response.detail);
                 }, function (error) {
                     DEBUG && console.error(error);
-                    if (error.data) {
-                        deferred.reject(error.data.token[0]);
-                    }
-                    else {
-                        deferred.reject(error);
-                    }
+                    deferred.reject(error);
                 });
                 return deferred.promise;
             };

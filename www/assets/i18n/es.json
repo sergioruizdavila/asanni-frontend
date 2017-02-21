@@ -261,6 +261,7 @@
     "%recover.password.not_match.text": "Tus nuevas contraseñas no coinciden. Por favor, inténtalo de nuevo.",
     "%recover.password.success.text": "Cambio exitoso!. Prueba iniciar sesión ahora.",
     "%recover.password.link_expired.text": "El link que te enviamos al correo electrónico ya expiró, es necesario que solicites uno nuevo.",
+    "%recover.password.password_common.text": "Tu contraseña no es lo suficientemente segura. Prueba a incluir más caracteres o símbolos como !, # o %.",
 
     "__SEARCH PAGE__": "",
     "%search.container.teacher.lang.teach.title.text": "Enseña",
