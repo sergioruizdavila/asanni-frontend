@@ -1,4 +1,4 @@
-/**
+ /**
  * values() Here we define each core variables
  * such as user logged Id, end points, etc
  *
