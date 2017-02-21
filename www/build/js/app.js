@@ -94,7 +94,7 @@ DEBUG = true;
     var BASE_URL = 'https://waysily-server.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/teachers-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/teachers-avatar-dev';
     }
     var dataConfig = {
@@ -7738,6 +7738,11 @@ var app;
                     this.validate.bornCity = this.functionsUtilService.validator(this.form.bornCity, city_born_rules);
                     if (!this.validate.bornCity.valid) {
                         formValid = this.validate.bornCity.valid;
+                    }
+                    var about_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.about = this.functionsUtilService.validator(this.form.about, about_rules);
+                    if (!this.validate.about.valid) {
+                        formValid = this.validate.about.valid;
                     }
                     return formValid;
                 };

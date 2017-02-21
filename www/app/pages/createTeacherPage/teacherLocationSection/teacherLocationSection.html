@@ -141,6 +141,7 @@
                                        placeholder="House name/number + street/road"
                                        ng-model="vm.form.addressLocation"
                                        ng-blur="vm.changeMapPosition()"
+                                       ng-keyup="vm.changeMapPosition()"
                                        class="ma-input ma-input--large"
                                        ng-class="{'ma-input--invalid': !vm.validate.addressLocation.valid}">
                                 <p class="ma-p ma-p--small ma-p--alert pull-right"

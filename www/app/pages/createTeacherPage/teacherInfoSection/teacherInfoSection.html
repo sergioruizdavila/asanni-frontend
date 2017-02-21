@@ -283,10 +283,15 @@
                                 <textarea id="teacher-about"
                                           name="teacher[about]"
                                           class="ma-input ma-input--large ma-textarea"
+                                          ng-class="{'ma-input--invalid': !vm.validate.about.valid}"
                                           translate
                                           translate-attr-placeholder="%create.teacher.basic_info.form.about.input.text"
                                           ng-model="vm.form.about"
                                           rows="5" cols="40"></textarea>
+                                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                   ng-show="!vm.validate.about.valid">
+                                   <span>{{vm.validate.about.message}}</span>
+                                </p>
                             </div>
                         </div>
 
