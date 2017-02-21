@@ -44,6 +44,12 @@
     "%global.login.label.text": "log in",
     "%global.new_password.label.text": "new password",
     "%global.confirm_password.label.text": "confirm password",
+    "%global.preview.label.text": "preview",
+    "%global.day.label.text": "day",
+    "%global.year.label.text": "year",
+    "%global.mth.label.text": "month",
+    "%global.cntry_birth.label.text": "Country of birth",
+    "%global.city_birth.label.text": "City of birth",
 
     "%global.validation.null.message.text": "Required",
     "%global.validation.empty.message.text": "Required",
@@ -79,6 +85,19 @@
     "%modal.signup.help_text.login_button.text": "Already a member?",
     "%modal.signup.error.short_password.text": "Your password must be at least 8 characters. Please try again.",
     "%modal.signup.error.email_taken.text": "That email address is already in use. Please log in.",
+
+    "%modal.welcome.title.text": "Welcome to Waysily",
+    "%modal.welcome.description.text": "We want to create a real community with real teachers and real students. That's why you'll have to confirm a few, quick details to active your account.",
+
+    "%modal.photo.title.text": "Add your profile photo",
+
+    "%modal.born.title.text": "Information about you",
+
+    "%modal.basic_info.title.text": "A little more about you",
+
+    "%modal.finish.title.text": "You’re all set!",
+    "%modal.finish.description.text": "You can now immerse to new languages and cultures as a traveler/student or earn money by teaching a language.",
+    "%modal.finish.button.text": "Start Exploring",
 
     "%modal.login.title.text": "Log in to Waysily",
     "%modal.login.form.password.text": "Password",
@@ -311,11 +330,10 @@
     "%create.teacher.basic_info.form.last_name.text": "Last Name",
     "%create.teacher.basic_info.form.email.text": "Email Address",
     "%create.teacher.basic_info.form.phone_number.text": "Phone Number",
-    "%create.teacher.basic_info.form.phone_number.placeholder.text": "e.g. 3052345678",
+    "%create.teacher.basic_info.form.phone_number.placeholder.text": "e.g. +57 3052345678",
     "%create.teacher.basic_info.form.i_am.text": "I am",
-    "%create.teacher.basic_info.form.gender.text": "Sex",
+    "%create.teacher.basic_info.form.gender.text": "gender",
     "%create.teacher.basic_info.form.birthdate.text": "Birth Date",
-    "%create.teacher.basic_info.form.mth_birthdate.text": "Month",
     "%create.teacher.basic_info.form.birthdate.validation.message.text": "Select your birth date to continue",
     "%create.teacher.basic_info.form.born.text": "Where you born?",
     "%create.teacher.basic_info.form.born.placeholder.text": "e.g. Medellín / Lisboa / Portland",
@@ -463,6 +481,11 @@
     "__9. TEACHER FINISH SECTION__": "",
     "%create.teacher.finish.title.text": "Your registration was successful!",
     "%create.teacher.finish.description.text": "We'll check your information and we'll notify you when you are already visible on the map of Waysily.",
+
+    "__TOOLTIPS__": "",
+    "%tooltip.modal_born.birthdate.text": "Para activar tu cuenta, debes ser mayor de 18 años.",
+    "%tooltip.modal_born.cntry_birth.text": "Este campo es requerido ya que ",
+    "%tooltip.modal_born.city_birth.text": "Para activar tu cuenta, debes ser mayor de 18 años. Utilizamos estos datos para realizar estudios.",
 
     "__ERROR MESSAGES__": "",
     "%error.server_error.text": "No response from server. Try again, please",

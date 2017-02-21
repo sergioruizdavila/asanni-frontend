@@ -16,6 +16,12 @@ module components.modal.modalBorn {
         activate: () => void;
     }
 
+    interface IModalBornTooltip {
+        birthDate: string;
+        countryBirth: string;
+        cityBirth: string;
+    }
+
     interface IModalBornForm {
         birthDate: string;
         country: string;
@@ -47,6 +53,7 @@ module components.modal.modalBorn {
         listDays: Array<app.core.interfaces.ISelectListElement>;
         listYears: Array<app.core.interfaces.ISelectListElement>;
         dateObject: IBirthdateForm;
+        tooltip: IModalBornTooltip;
         listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
         countryObject: app.core.interfaces.IDataFromJsonI18n;
         // --------------------------------
@@ -84,6 +91,10 @@ module components.modal.modalBorn {
 
         /*-- INITIALIZE METHOD --*/
         private _init() {
+            //CONSTANTS
+            const BIRTHDATE_TOOLTIP = this.$filter('translate')('%tooltip.modal_born.birthdate.text');
+            const COUNTRY_BIRTH_TOOLTIP = this.$filter('translate')('%tooltip.modal_born.cntry_birth.text');
+            const CITY_BIRTH_TOOLTIP = this.$filter('translate')('%tooltip.modal_born.city_birth.text');
             //VARIABLES
             let self = this;
 
@@ -92,6 +103,13 @@ module components.modal.modalBorn {
                 country: '',
                 city: '',
                 birthDate: null
+            };
+
+            //tooltips
+            this.tooltip = {
+                birthDate: BIRTHDATE_TOOLTIP,
+                countryBirth: COUNTRY_BIRTH_TOOLTIP,
+                cityBirth: CITY_BIRTH_TOOLTIP
             };
 
             // Birthdate Select List Structure

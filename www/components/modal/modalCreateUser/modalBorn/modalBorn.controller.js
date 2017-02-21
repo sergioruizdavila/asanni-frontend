@@ -17,11 +17,19 @@ var components;
                     this._init();
                 }
                 ModalBornController.prototype._init = function () {
+                    var BIRTHDATE_TOOLTIP = this.$filter('translate')('%tooltip.modal_born.birthdate.text');
+                    var COUNTRY_BIRTH_TOOLTIP = this.$filter('translate')('%tooltip.modal_born.cntry_birth.text');
+                    var CITY_BIRTH_TOOLTIP = this.$filter('translate')('%tooltip.modal_born.city_birth.text');
                     var self = this;
                     this.form = {
                         country: '',
                         city: '',
                         birthDate: null
+                    };
+                    this.tooltip = {
+                        birthDate: BIRTHDATE_TOOLTIP,
+                        countryBirth: COUNTRY_BIRTH_TOOLTIP,
+                        cityBirth: CITY_BIRTH_TOOLTIP
                     };
                     this.dateObject = { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } };
                     this.countryObject = { code: '', value: '' };
