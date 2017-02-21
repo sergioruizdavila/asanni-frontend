@@ -5,7 +5,7 @@
     "__BUTTONS__": "",
     "%global.save.button.text": "Save",
     "%global.saving.button.text": "Saving...",
-    "%global.save_continue.button.text": "save & continue",
+    "%global.save_continue.button.text": "Save & Continue",
     "%global.next.button.text": "Next",
     "%global.finish.button.text": "Finish",
     "%global.back.button.text": "Back",
