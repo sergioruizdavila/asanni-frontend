@@ -483,13 +483,13 @@
     "%create.teacher.finish.description.text": "We'll check your information and we'll notify you when you are already visible on the map of Waysily.",
 
     "__TOOLTIPS__": "",
-    "%tooltip.modal_born.birthdate.text": "Para activar tu cuenta, debes ser mayor de 18 años.",
-    "%tooltip.modal_born.cntry_birth.text": "Este campo es requerido ya que asi podemos identificar tu lengua nativa.",
-    "%tooltip.modal_born.city_birth.text": "Este campo es requerido ya que asi podemos identificar tu lengua nativa.",
+    "%tooltip.modal_born.birthdate.text": "To activate your account, you must be 18 years of age or older.",
+    "%tooltip.modal_born.cntry_birth.text": "It's important to know your country birth and identify your native language.",
+    "%tooltip.modal_born.city_birth.text": "It's important to know your city birth and identify your native language.",
 
-    "%tooltip.modal_basic_info.phone_number.text": "Solo lo compartiremos cuando tengas una reserva confirmada con un profesor",
-    "%tooltip.modal_basic_info.gender.text": "Este campo es requerido ya que asi nuestros usuarios pueden identificarte mejor.",
-    "%tooltip.modal_basic_info.about.text": "Waysily se basa en crear conexiones reales. Ayuda a otros usuarios a conocerte un poco mejor.",
+    "%tooltip.modal_basic_info.phone_number.text": "We'll just share it when you have a confirmed reservation with a teacher",
+    "%tooltip.modal_basic_info.gender.text": "This field is required since we can identify you better.",
+    "%tooltip.modal_basic_info.about.text": "Waysily is based on creating real connections. We want other users to know a little more about you.",
 
     "__ERROR MESSAGES__": "",
     "%error.server_error.text": "No response from server. Try again, please",
