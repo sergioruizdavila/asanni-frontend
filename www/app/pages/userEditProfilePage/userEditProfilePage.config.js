@@ -11,14 +11,27 @@
                 'container': {
                     templateUrl: 'app/pages/userEditProfilePage/userEditProfilePage.html',
                     controller: 'mainApp.pages.userEditProfilePage.UserEditProfilePageController',
-                    controllerAs: 'vm'
+                    controllerAs: 'vm',
+                    resolve: {
+                        waitForAuth: ['mainApp.auth.AuthService', function (AuthService) {
+                                return AuthService.autoRefreshToken();
+                            }]
+                    }
                 }
             },
-            parent: 'page',
+            cache: false,
             params: {
                 user: null,
-                id: '1'
-            }
+                id: null
+            },
+            data: {
+                requireLogin: true
+            },
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = true;
+                    $rootScope.activeFooter = true;
+                    $rootScope.activeMessageBar = false;
+                }]
         });
     }
 })();
