@@ -94,7 +94,7 @@ DEBUG = true;
     var BASE_URL = 'https://waysily-server.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/teachers-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/teachers-avatar-dev';
     }
     var dataConfig = {
@@ -1165,6 +1165,7 @@ var app;
                     this.bornCountry = obj.bornCountry || '';
                     this.bornCity = obj.bornCity || '';
                     this.about = obj.about || '';
+                    this.languages = new Language(obj.languages);
                     this.status = obj.status || 'NW';
                     this.createdAt = obj.createdAt || '';
                 }
@@ -1305,6 +1306,19 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
+                Object.defineProperty(Profile.prototype, "Languages", {
+                    get: function () {
+                        return this.languages;
+                    },
+                    set: function (languages) {
+                        if (languages === undefined) {
+                            throw 'Please supply languages';
+                        }
+                        this.languages = languages;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 Object.defineProperty(Profile.prototype, "About", {
                     get: function () {
                         return this.about;
@@ -1341,6 +1355,72 @@ var app;
                 return Profile;
             }());
             user.Profile = Profile;
+            var Language = (function () {
+                function Language(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('Languages Model instanced');
+                    if (obj === null)
+                        obj = {};
+                    this.id = obj.id;
+                    this.native = obj.native || [];
+                    this.learn = obj.learn || [];
+                    this.teach = obj.teach || [];
+                }
+                Object.defineProperty(Language.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Language.prototype, "Native", {
+                    get: function () {
+                        return this.native;
+                    },
+                    set: function (native) {
+                        if (native === undefined) {
+                            throw 'Please supply native languages';
+                        }
+                        this.native = native;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Language.prototype, "Learn", {
+                    get: function () {
+                        return this.learn;
+                    },
+                    set: function (learn) {
+                        if (learn === undefined) {
+                            throw 'Please supply learn languages';
+                        }
+                        this.learn = learn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Language.prototype, "Teach", {
+                    get: function () {
+                        return this.teach;
+                    },
+                    set: function (teach) {
+                        if (teach === undefined) {
+                            throw 'Please supply teach languages';
+                        }
+                        this.teach = teach;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Language;
+            }());
+            user.Language = Language;
             var Location = (function () {
                 function Location(obj) {
                     if (obj === void 0) { obj = {}; }
@@ -1858,7 +1938,6 @@ var app;
                     this.id = obj.id || '';
                     this.profile = new app.models.user.Profile(obj.profile);
                     this.location = new app.models.user.Location(obj.location);
-                    this.languages = new Language(obj.languages);
                     this.type = obj.type || '';
                     this.teacherSince = obj.teacherSince || '';
                     this.methodology = obj.methodology || '';
@@ -1928,19 +2007,6 @@ var app;
                             throw 'Please supply profile location';
                         }
                         this.location = location;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(Teacher.prototype, "Languages", {
-                    get: function () {
-                        return this.languages;
-                    },
-                    set: function (languages) {
-                        if (languages === undefined) {
-                            throw 'Please supply languages';
-                        }
-                        this.languages = languages;
                     },
                     enumerable: true,
                     configurable: true
@@ -2118,86 +2184,6 @@ var app;
                 return Teacher;
             }());
             teacher.Teacher = Teacher;
-            var Language = (function () {
-                function Language(obj) {
-                    if (obj === void 0) { obj = {}; }
-                    console.log('Languages Model instanced');
-                    if (obj === null)
-                        obj = {};
-                    this.id = obj.id;
-                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
-                    this.native = obj.native || [];
-                    this.learn = obj.learn || [];
-                    this.teach = obj.teach || [];
-                }
-                Object.defineProperty(Language.prototype, "Id", {
-                    get: function () {
-                        return this.id;
-                    },
-                    set: function (id) {
-                        if (id === undefined) {
-                            throw 'Please supply id';
-                        }
-                        this.id = id;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(Language.prototype, "Uid", {
-                    get: function () {
-                        return this.uid;
-                    },
-                    set: function (uid) {
-                        if (uid === undefined) {
-                            throw 'Please supply language uid';
-                        }
-                        this.uid = uid;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(Language.prototype, "Native", {
-                    get: function () {
-                        return this.native;
-                    },
-                    set: function (native) {
-                        if (native === undefined) {
-                            throw 'Please supply native languages';
-                        }
-                        this.native = native;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(Language.prototype, "Learn", {
-                    get: function () {
-                        return this.learn;
-                    },
-                    set: function (learn) {
-                        if (learn === undefined) {
-                            throw 'Please supply learn languages';
-                        }
-                        this.learn = learn;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(Language.prototype, "Teach", {
-                    get: function () {
-                        return this.teach;
-                    },
-                    set: function (teach) {
-                        if (teach === undefined) {
-                            throw 'Please supply teach languages';
-                        }
-                        this.teach = teach;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                return Language;
-            }());
-            teacher.Language = Language;
             var Experience = (function () {
                 function Experience(obj) {
                     if (obj === void 0) { obj = {}; }
@@ -5920,12 +5906,12 @@ var app;
                     this.profileFake.BornCity = 'New York';
                     this.profileFake.BornCountry = 'United States';
                     this.profileFake.Avatar = 'https://waysily-img.s3.amazonaws.com/b3605bad-0924-4bc1-98c8-676c664acd9d-example.jpeg';
+                    this.profileFake.Languages.Native = ['6'];
+                    this.profileFake.Languages.Teach = ['6', '8'];
+                    this.profileFake.Languages.Learn = ['8', '7'];
                     this.teacherFake.Methodology = 'I can customize the lessons to fit your needs. I teach conversational English to intermediate and advanced students with a focus on grammar, pronunciation, vocabulary and clear fluency and Business English with a focus on formal English in a business setting (role-play), business journal articles, and technical, industry based vocabulary';
                     this.teacherFake.TeacherSince = '2013';
                     this.teacherFake.Type = 'H';
-                    this.teacherFake.Languages.Native = ['6'];
-                    this.teacherFake.Languages.Teach = ['6', '8'];
-                    this.teacherFake.Languages.Learn = ['8', '7'];
                     this.teacherFake.Immersion.Active = true;
                     this.teacherFake.Price.PrivateClass.Active = true;
                     this.teacherFake.Price.PrivateClass.HourPrice = 20.00;
@@ -7471,7 +7457,6 @@ var app;
                     });
                     this.$scope.$on('Save Data', function (event, args) {
                         var SUCCESS_MESSAGE = self.$filter('translate')('%notification.success.text');
-                        var numStep = args;
                         if (self.$rootScope.teacherData.Id) {
                             self.teacherService.updateTeacher(self.$rootScope.teacherData)
                                 .then(function (response) {
@@ -7938,11 +7923,10 @@ var app;
                     }
                 };
                 TeacherLocationSectionController.prototype.goToNext = function () {
-                    var CURRENT_STEP = 2;
                     var formValid = this._validateForm();
                     if (formValid) {
                         this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data', CURRENT_STEP);
+                        this.$scope.$emit('Save Data');
                         this.$state.go(this.STEP3_STATE, { reload: true });
                     }
                     else {
@@ -8176,16 +8160,15 @@ var app;
                 TeacherLanguageSectionController.prototype.activate = function () {
                     console.log('TeacherLanguageSectionController controller actived');
                     this._subscribeToEvents();
-                    if (this.$rootScope.teacherData) {
-                        this._fillForm(this.$rootScope.teacherData);
+                    if (this.$rootScope.profileData) {
+                        this._fillForm(this.$rootScope.profileData);
                     }
                 };
                 TeacherLanguageSectionController.prototype.goToNext = function () {
-                    var CURRENT_STEP = 3;
                     var formValid = this._validateForm();
                     if (formValid) {
                         this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data', CURRENT_STEP);
+                        this.$scope.$emit('Save Profile Data');
                         this.$state.go(this.STEP4_STATE, { reload: true });
                     }
                     else {
@@ -8334,26 +8317,26 @@ var app;
                         for (var i = 0; i < this.form.native.length; i++) {
                             native.push(this.form.native[i].key);
                         }
-                        this.$rootScope.teacherData.Languages.Native = native;
+                        this.$rootScope.profileData.Languages.Native = native;
                     }
                     if (this.form.learn) {
                         var learn = [];
                         for (var i = 0; i < this.form.learn.length; i++) {
                             learn.push(this.form.learn[i].key);
                         }
-                        this.$rootScope.teacherData.Languages.Learn = learn;
+                        this.$rootScope.profileData.Languages.Learn = learn;
                     }
                     if (this.form.teach) {
                         var teach = [];
                         for (var i = 0; i < this.form.teach.length; i++) {
                             teach.push(this.form.teach[i].key);
                         }
-                        this.$rootScope.teacherData.Languages.Teach = teach;
+                        this.$rootScope.profileData.Languages.Teach = teach;
                     }
                 };
                 TeacherLanguageSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
-                    this.$scope.$on('Fill Form', function (event, args) {
+                    this.$scope.$on('Fill User Profile Form', function (event, args) {
                         self._fillForm(args);
                     });
                 };

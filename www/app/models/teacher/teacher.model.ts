@@ -19,7 +19,6 @@ module app.models.teacher {
         private id: string;
         private profile: app.models.user.Profile;
         private location: app.models.user.Location;
-        private languages: Language;
         private type: string;
         private teacherSince: string;
         private experiences: Array<Experience>;
@@ -44,7 +43,6 @@ module app.models.teacher {
             this.id = obj.id || '';
             this.profile = new app.models.user.Profile(obj.profile);
             this.location = new app.models.user.Location(obj.location);
-            this.languages = new Language(obj.languages);
             this.type = obj.type || '';
             this.teacherSince = obj.teacherSince || '';
             this.methodology = obj.methodology || '';
@@ -115,15 +113,6 @@ module app.models.teacher {
         set Location(location: app.models.user.Location) {
             if (location === undefined) { throw 'Please supply profile location'; }
             this.location = location;
-        }
-
-        get Languages() {
-            return this.languages;
-        }
-
-        set Languages(languages: Language) {
-            if (languages === undefined) { throw 'Please supply languages'; }
-            this.languages = languages;
         }
 
         get Type() {
@@ -257,91 +246,6 @@ module app.models.teacher {
         }
 
     }
-
-
-    /************************************************/
-    /*          LANGUAGE CLASS DEFINITION           */
-    /************************************************/
-
-    export class Language {
-
-        /*-- PROPERTIES --*/
-        private id: number;
-        private uid: string;
-        private native: Array<string>;
-        private learn: Array<string>;
-        private teach: Array<string>;
-
-        /**********************************/
-        /*           CONSTRUCTOR          */
-        /**********************************/
-        constructor(obj: any = {}) {
-            //LOG
-            console.log('Languages Model instanced');
-
-            if(obj === null) obj = {};
-
-            //init properties
-            this.id = obj.id;
-            this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
-            this.native = obj.native || [];
-            this.learn = obj.learn || [];
-            this.teach = obj.teach || [];
-
-        }
-
-        /**********************************/
-        /*             METHODS            */
-        /**********************************/
-
-        get Id() {
-            return this.id;
-        }
-
-        set Id(id: number) {
-            if (id === undefined) { throw 'Please supply id'; }
-            this.id = id;
-        }
-
-        get Uid() {
-            return this.uid;
-        }
-
-        set Uid(uid: string) {
-            if (uid === undefined) { throw 'Please supply language uid'; }
-            this.uid = uid;
-        }
-
-        get Native() {
-            return this.native;
-        }
-
-        set Native(native: Array<string>) {
-            if (native === undefined) { throw 'Please supply native languages'; }
-            this.native = native;
-        }
-
-        get Learn() {
-            return this.learn;
-        }
-
-        set Learn(learn: Array<string>) {
-            if (learn === undefined) { throw 'Please supply learn languages'; }
-            this.learn = learn;
-        }
-
-        get Teach() {
-            return this.teach;
-        }
-
-        set Teach(teach: Array<string>) {
-            if (teach === undefined) { throw 'Please supply teach languages'; }
-            this.teach = teach;
-        }
-
-
-    }
-
 
 
     /************************************************/

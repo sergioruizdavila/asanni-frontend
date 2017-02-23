@@ -45,6 +45,7 @@ module app.models.user {
         private bornCountry: string;
         private bornCity: string;
         private about: string;
+        private languages: Language;
         private status: string;
         private createdAt: string;
 
@@ -70,6 +71,7 @@ module app.models.user {
             this.bornCountry = obj.bornCountry || '';
             this.bornCity = obj.bornCity || '';
             this.about = obj.about || '';
+            this.languages = new Language(obj.languages);
             this.status = obj.status || 'NW';
             this.createdAt = obj.createdAt || '';
 
@@ -173,6 +175,15 @@ module app.models.user {
             this.bornCity = bornCity;
         }
 
+        get Languages() {
+            return this.languages;
+        }
+
+        set Languages(languages: Language) {
+            if (languages === undefined) { throw 'Please supply languages'; }
+            this.languages = languages;
+        }
+
         get About() {
             return this.about;
         }
@@ -194,6 +205,80 @@ module app.models.user {
         get CreatedAt() {
             return this.createdAt;
         }
+
+    }
+
+
+
+    /************************************************/
+    /*          LANGUAGE CLASS DEFINITION           */
+    /************************************************/
+
+    export class Language {
+
+        /*-- PROPERTIES --*/
+        private id: number;
+        private native: Array<string>;
+        private learn: Array<string>;
+        private teach: Array<string>;
+
+        /**********************************/
+        /*           CONSTRUCTOR          */
+        /**********************************/
+        constructor(obj: any = {}) {
+            //LOG
+            console.log('Languages Model instanced');
+
+            if(obj === null) obj = {};
+
+            //init properties
+            this.id = obj.id;
+            this.native = obj.native || [];
+            this.learn = obj.learn || [];
+            this.teach = obj.teach || [];
+
+        }
+
+        /**********************************/
+        /*             METHODS            */
+        /**********************************/
+
+        get Id() {
+            return this.id;
+        }
+
+        set Id(id: number) {
+            if (id === undefined) { throw 'Please supply id'; }
+            this.id = id;
+        }
+
+        get Native() {
+            return this.native;
+        }
+
+        set Native(native: Array<string>) {
+            if (native === undefined) { throw 'Please supply native languages'; }
+            this.native = native;
+        }
+
+        get Learn() {
+            return this.learn;
+        }
+
+        set Learn(learn: Array<string>) {
+            if (learn === undefined) { throw 'Please supply learn languages'; }
+            this.learn = learn;
+        }
+
+        get Teach() {
+            return this.teach;
+        }
+
+        set Teach(teach: Array<string>) {
+            if (teach === undefined) { throw 'Please supply teach languages'; }
+            this.teach = teach;
+        }
+
 
     }
 

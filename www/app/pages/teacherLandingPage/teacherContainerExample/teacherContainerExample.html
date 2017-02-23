@@ -148,7 +148,7 @@
                     </div>
                 </div>
 
-                <div class="row" ng-repeat="language in vm.teacherFake.languages.teach track by $index"
+                <div class="row" ng-repeat="language in vm.profileFake.languages.teach track by $index"
                      ng-if="$index < 3">
                     <div class="col-xs-12 col-md-12">
                         <p class="ma-p ma-p--default text-truncate margin-reset">
@@ -157,7 +157,7 @@
                     </div>
                 </div>
 
-                <div class="row" ng-if="vm.teacherFake.languages.teach.length > 3">
+                <div class="row" ng-if="vm.teacherFake.profileFake.teach.length > 3">
                     <div class="col-xs-12 col-md-12">
                         <p class="ma-p ma-p--default
                                   ma-p--info text-truncate margin-reset"
@@ -180,7 +180,7 @@
                     </div>
                 </div>
 
-                <div class="row" ng-repeat="language in vm.teacherFake.languages.learn track by $index"
+                <div class="row" ng-repeat="language in vm.profileFake.languages.learn track by $index"
                      ng-if="$index < 3">
                     <div class="col-xs-12 col-md-12">
                         <p class="ma-p ma-p--default text-truncate margin-reset">
@@ -189,7 +189,7 @@
                     </div>
                 </div>
 
-                <div class="row" ng-if="vm.teacherFake.languages.learn.length > 3">
+                <div class="row" ng-if="vm.profileFake.languages.learn.length > 3">
                     <div class="col-xs-12 col-md-12">
                         <p class="ma-p ma-p--default
                                   ma-p--info text-truncate margin-reset"
@@ -216,7 +216,7 @@
         <div class="search-result__teacher__block__native
                     row text-center
                     space-1"
-             ng-class="{'search-result__teacher__block__native--noNative': !vm._assignNativeClass(vm.teacherFake.languages)}">
+             ng-class="{'search-result__teacher__block__native--noNative': !vm._assignNativeClass(vm.profileFake.languages)}">
 
             <div class="col-xs-12 col-md-12">
 

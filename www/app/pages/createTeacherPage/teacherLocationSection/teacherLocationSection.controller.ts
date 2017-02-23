@@ -176,16 +176,12 @@ module app.pages.createTeacherPage {
         * @return void
         */
         goToNext(): void {
-            //CONSTANTS
-            const CURRENT_STEP = 2;
-            /*********************************/
-
             //Validate data form
             let formValid = this._validateForm();
 
             if(formValid){
                 this._setDataModelFromForm();
-                this.$scope.$emit('Save Data', CURRENT_STEP);
+                this.$scope.$emit('Save Data');
                 // GO TO NEXT STEP
                 this.$state.go(this.STEP3_STATE, {reload: true});
             } else {
