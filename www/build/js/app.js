@@ -94,7 +94,7 @@ DEBUG = true;
     var BASE_URL = 'https://waysily-server.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/teachers-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
+        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
         BUCKETS3 = 'waysily-img/teachers-avatar-dev';
     }
     var dataConfig = {
@@ -9533,7 +9533,7 @@ var app;
                     window.open(url, '_blank');
                 };
                 TeacherProfilePageController.prototype._assignNative = function (language) {
-                    var native = this.data.Languages.Native;
+                    var native = this.data.Profile.Languages.Native;
                     var isNativeOfThisLanguage = false;
                     for (var i = 0; i < native.length; i++) {
                         if (language === native[i]) {

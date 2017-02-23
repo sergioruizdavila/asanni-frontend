@@ -154,7 +154,7 @@ module app.pages.teacherProfilePage {
         */
 
         private _assignNative(language: string): boolean {
-            let native = this.data.Languages.Native;
+            let native = this.data.Profile.Languages.Native;
             let isNativeOfThisLanguage = false;
 
             for (let i = 0; i < native.length; i++) {
