@@ -55,7 +55,7 @@ var app;
                     window.open(url, '_blank');
                 };
                 TeacherProfilePageController.prototype._assignNative = function (language) {
-                    var native = this.data.Languages.Native;
+                    var native = this.data.Profile.Languages.Native;
                     var isNativeOfThisLanguage = false;
                     for (var i = 0; i < native.length; i++) {
                         if (language === native[i]) {
