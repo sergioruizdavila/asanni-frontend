@@ -279,8 +279,6 @@ module app.pages.createTeacherPage {
             this.$scope.$on('Save Data', function(event, args) {
                 //CONSTANTS
                 const SUCCESS_MESSAGE = self.$filter('translate')('%notification.success.text');
-                //VARIABLES
-                let numStep = args;
                 /******************************/
 
                 if(self.$rootScope.teacherData.Id) {
