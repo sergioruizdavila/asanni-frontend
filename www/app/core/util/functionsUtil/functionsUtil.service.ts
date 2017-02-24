@@ -358,10 +358,20 @@ module app.core.util.functionsUtil {
 
             if(dataSet) {
                 for (let i = 0; i < dataSet.length; i++) {
+
+                    let markerPosition = null;
+
+                    if(dataSet[i].profile) {
+                        markerPosition = new app.models.user.Position(dataSet[i].profile.location.position);
+                    } else if(dataSet[i].location) {
+                        markerPosition = new app.models.user.Position(dataSet[i].location.position);
+                    }
+
                     mapConfig.data.markers.push({
                         id: dataSet[i].id,
-                        position: dataSet[i].location.position
+                        position: markerPosition
                     });
+
                 }
             }
 

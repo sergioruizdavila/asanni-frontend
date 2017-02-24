@@ -14,7 +14,7 @@ var app;
                     this._init();
                 }
                 TeacherProfilePageController.prototype._init = function () {
-                    this.data = null;
+                    this.data = new app.models.teacher.Teacher();
                     this.loading = true;
                     this._initNativeTooltip();
                     this.activate();
@@ -27,15 +27,15 @@ var app;
                         self.data = new app.models.teacher.Teacher(response);
                         self.mapConfig = self.functionsUtil.buildMapConfig([
                             {
-                                id: self.data.Location.Position.Id,
+                                id: self.data.Profile.Location.Position.Id,
                                 location: {
                                     position: {
-                                        lat: parseFloat(self.data.Location.Position.Lat),
-                                        lng: parseFloat(self.data.Location.Position.Lng)
+                                        lat: parseFloat(self.data.Profile.Location.Position.Lat),
+                                        lng: parseFloat(self.data.Profile.Location.Position.Lng)
                                     }
                                 }
                             }
-                        ], 'location-circle-map', { lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng) }, null);
+                        ], 'location-circle-map', { lat: parseFloat(self.data.Profile.Location.Position.Lat), lng: parseFloat(self.data.Profile.Location.Position.Lng) }, null);
                         self.loading = false;
                     });
                 };
@@ -55,7 +55,7 @@ var app;
                     window.open(url, '_blank');
                 };
                 TeacherProfilePageController.prototype._assignNative = function (language) {
-                    var native = this.data.Languages.Native;
+                    var native = this.data.Profile.Languages.Native;
                     var isNativeOfThisLanguage = false;
                     for (var i = 0; i < native.length; i++) {
                         if (language === native[i]) {

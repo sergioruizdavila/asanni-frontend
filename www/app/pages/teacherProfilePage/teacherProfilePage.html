@@ -194,7 +194,7 @@
                                                 <span translate>
                                                     %profile.teacher.live_in.label.text
                                                 </span> ·
-                                            </strong> {{vm.data.location.city}}, {{ vm.data.location.country | getI18nFilter:'country' }}
+                                            </strong> {{vm.data.Profile.Location.City}}, {{ vm.data.Profile.Location.Country | getI18nFilter:'country' }}
                                         </p>
                                     </div>
                                 </div>
@@ -256,7 +256,7 @@
                         </h4>
                         <div class="ma-box__content text-center">
                             <div class="row"
-                                 ng-repeat="language in vm.data.languages.teach track by $index">
+                                 ng-repeat="language in vm.data.Profile.Languages.Teach track by $index">
                                 <div class="col-xs-12">
                                     <p tooltip-placement="{{vm.nativeTooltipOptions.placement}}"
                                        tooltip-animation="{{vm.nativeTooltipOptions.animation}}"
@@ -285,7 +285,7 @@
                         </h4>
                         <div class="ma-box__content text-center">
                             <div class="row"
-                                 ng-repeat="language in vm.data.languages.learn track by $index">
+                                 ng-repeat="language in vm.data.Profile.Languages.Learn track by $index">
                                 <div class="col-xs-12">
                                     <p class="ma-p ma-p--default text-truncate">
                                         {{ language | getI18nFilter:'language' }}

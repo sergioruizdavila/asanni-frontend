@@ -159,8 +159,8 @@ module app.pages.createTeacherPage {
             this._subscribeToEvents();
 
             //FILL FORM FROM ROOTSCOPE TEACHER INFO
-            if(this.$rootScope.teacherData) {
-                this._fillForm(this.$rootScope.teacherData);
+            if(this.$rootScope.profileData) {
+                this._fillForm(this.$rootScope.profileData);
             }
 
         }
@@ -176,16 +176,12 @@ module app.pages.createTeacherPage {
         * @return void
         */
         goToNext(): void {
-            //CONSTANTS
-            const CURRENT_STEP = 2;
-            /*********************************/
-
             //Validate data form
             let formValid = this._validateForm();
 
             if(formValid){
                 this._setDataModelFromForm();
-                this.$scope.$emit('Save Data', CURRENT_STEP);
+                this.$scope.$emit('Save Profile Data');
                 // GO TO NEXT STEP
                 this.$state.go(this.STEP3_STATE, {reload: true});
             } else {
@@ -214,10 +210,10 @@ module app.pages.createTeacherPage {
         * @description - Fill form with teacher data
         * @use - this._fillForm(data);
         * @function
-        * @param {app.models.teacher.Teacher} data - Teacher Data
+        * @param {app.models.user.Profile} data - Profile Data
         * @return {void}
         */
-        private _fillForm(data: app.models.teacher.Teacher): void {
+        private _fillForm(data: app.models.user.Profile): void {
             this.form.addressLocation = data.Location.Address;
             this.form.cityLocation = data.Location.City;
             this.form.stateLocation = data.Location.State;
@@ -436,12 +432,12 @@ module app.pages.createTeacherPage {
 
             this.form.countryLocation = countryCode;
             // Send data to parent (createTeacherPage)
-            this.$rootScope.teacherData.Location.Country = this.form.countryLocation;
-            this.$rootScope.teacherData.Location.Address = this.form.addressLocation;
-            this.$rootScope.teacherData.Location.City = this.form.cityLocation;
-            this.$rootScope.teacherData.Location.State = this.form.stateLocation;
-            this.$rootScope.teacherData.Location.ZipCode = this.form.zipCodeLocation;
-            this.$rootScope.teacherData.Location.Position = this.form.positionLocation;
+            this.$rootScope.profileData.Location.Country = this.form.countryLocation;
+            this.$rootScope.profileData.Location.Address = this.form.addressLocation;
+            this.$rootScope.profileData.Location.City = this.form.cityLocation;
+            this.$rootScope.profileData.Location.State = this.form.stateLocation;
+            this.$rootScope.profileData.Location.ZipCode = this.form.zipCodeLocation;
+            this.$rootScope.profileData.Location.Position = this.form.positionLocation;
             //get position on Map
             this.changeMapPosition();
         }
@@ -467,7 +463,7 @@ module app.pages.createTeacherPage {
             * Child fill the form's field
             * @event
             */
-            this.$scope.$on('Fill Form', function(event, args: app.models.teacher.Teacher) {
+            this.$scope.$on('Fill Form', function(event, args: app.models.user.Profile) {
                 self._fillForm(args);
             });
 
@@ -482,7 +478,6 @@ module app.pages.createTeacherPage {
             this.$scope.$on('Position', function(event, args) {
                 self.form.positionLocation.Lng = args.lng;
                 self.form.positionLocation.Lat = args.lat;
-                //self.$rootScope.teacherData.Location.Position = args;
             });
         }
 

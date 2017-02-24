@@ -104,7 +104,6 @@ var app;
                     });
                     this.$scope.$on('Save Data', function (event, args) {
                         var SUCCESS_MESSAGE = self.$filter('translate')('%notification.success.text');
-                        var numStep = args;
                         if (self.$rootScope.teacherData.Id) {
                             self.teacherService.updateTeacher(self.$rootScope.teacherData)
                                 .then(function (response) {

@@ -22,13 +22,6 @@ module app.pages.createTeacherPage {
         vm: ICreateTeacherPageController;
     }
 
-    /********************************/
-    /*    STATEPARAMS INTERFACES    */
-    /********************************/
-    export interface IParams extends ng.ui.IStateParamsService {
-        id: string;
-    }
-
     export interface ITeacherLanguageForm {
         native: Array<app.core.interfaces.IKeyValue>;
         learn: Array<app.core.interfaces.IKeyValue>;
@@ -137,8 +130,8 @@ module app.pages.createTeacherPage {
             this._subscribeToEvents();
 
             //FILL FORM FROM ROOTSCOPE TEACHER INFO
-            if(this.$rootScope.teacherData) {
-                this._fillForm(this.$rootScope.teacherData);
+            if(this.$rootScope.profileData) {
+                this._fillForm(this.$rootScope.profileData);
             }
 
         }
@@ -154,24 +147,18 @@ module app.pages.createTeacherPage {
         * @return void
         */
         goToNext(): void {
-            //CONSTANTS
-            const CURRENT_STEP = 3;
-            /*********************************/
-
             //Validate data form
             let formValid = this._validateForm();
 
             if(formValid) {
                 this._setDataModelFromForm();
-                this.$scope.$emit('Save Data', CURRENT_STEP);
+                this.$scope.$emit('Save Profile Data');
                 // GO TO NEXT STEP
                 this.$state.go(this.STEP4_STATE, {reload: true});
             } else {
                 //Go top pages
                 window.scrollTo(0, 0);
             }
-
-
         }
 
 
@@ -193,10 +180,10 @@ module app.pages.createTeacherPage {
         * @description - Fill form with teacher data
         * @use - this._fillForm(data);
         * @function
-        * @param {app.models.teacher.Teacher} data - Teacher Data
+        * @param {app.models.user.Profile} data - Profile Data
         * @return {void}
         */
-        private _fillForm(data: app.models.teacher.Teacher): void {
+        private _fillForm(data: app.models.user.Profile): void {
 
             // Form is already filled (Just take native because it's required has a native language)
             if(this.form.native.length === 0) {
@@ -429,7 +416,7 @@ module app.pages.createTeacherPage {
                 for (let i = 0; i < this.form.native.length; i++) {
                     native.push(this.form.native[i].key);
                 }
-                this.$rootScope.teacherData.Languages.Native = native;
+                this.$rootScope.profileData.Languages.Native = native;
             }
 
             if(this.form.learn) {
@@ -437,7 +424,7 @@ module app.pages.createTeacherPage {
                 for (let i = 0; i < this.form.learn.length; i++) {
                     learn.push(this.form.learn[i].key);
                 }
-                this.$rootScope.teacherData.Languages.Learn = learn;
+                this.$rootScope.profileData.Languages.Learn = learn;
             }
 
             if(this.form.teach) {
@@ -445,7 +432,7 @@ module app.pages.createTeacherPage {
                 for (let i = 0; i < this.form.teach.length; i++) {
                     teach.push(this.form.teach[i].key);
                 }
-                this.$rootScope.teacherData.Languages.Teach = teach;
+                this.$rootScope.profileData.Languages.Teach = teach;
             }
         }
 
@@ -469,11 +456,11 @@ module app.pages.createTeacherPage {
             * Child fill the form's field
             * @event
             */
-            this.$scope.$on('Fill Form', function(event, args: app.models.teacher.Teacher) {
-
-                self._fillForm(args);
-
-            });
+            this.$scope.$on('Fill User Profile Form',
+                function(event, args: app.models.user.Profile) {
+                    self._fillForm(args);
+                }
+            );
 
         }
 

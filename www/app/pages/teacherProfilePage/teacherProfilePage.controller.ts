@@ -63,7 +63,7 @@ module app.pages.teacherProfilePage {
         private _init() {
 
             //Init profile teacher data
-            this.data = null;
+            this.data = new app.models.teacher.Teacher();
 
             //Init loading
             this.loading = true;
@@ -89,17 +89,17 @@ module app.pages.teacherProfilePage {
                     self.mapConfig = self.functionsUtil.buildMapConfig(
                         [
                             {
-                                id: self.data.Location.Position.Id,
+                                id: self.data.Profile.Location.Position.Id,
                                 location: {
                                     position: {
-                                        lat: parseFloat(self.data.Location.Position.Lat),
-                                        lng: parseFloat(self.data.Location.Position.Lng)
+                                        lat: parseFloat(self.data.Profile.Location.Position.Lat),
+                                        lng: parseFloat(self.data.Profile.Location.Position.Lng)
                                     }
                                 }
                             }
                         ],
                         'location-circle-map',
-                        {lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng)},
+                        {lat: parseFloat(self.data.Profile.Location.Position.Lat), lng: parseFloat(self.data.Profile.Location.Position.Lng)},
                         null
                     );
                     self.loading = false;
@@ -154,7 +154,7 @@ module app.pages.teacherProfilePage {
         */
 
         private _assignNative(language: string): boolean {
-            let native = this.data.Languages.Native;
+            let native = this.data.Profile.Languages.Native;
             let isNativeOfThisLanguage = false;
 
             for (let i = 0; i < native.length; i++) {

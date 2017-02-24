@@ -129,9 +129,16 @@ var app;
                         };
                         if (dataSet) {
                             for (var i = 0; i < dataSet.length; i++) {
+                                var markerPosition = null;
+                                if (dataSet[i].profile) {
+                                    markerPosition = new app.models.user.Position(dataSet[i].profile.location.position);
+                                }
+                                else if (dataSet[i].location) {
+                                    markerPosition = new app.models.user.Position(dataSet[i].location.position);
+                                }
                                 mapConfig.data.markers.push({
                                     id: dataSet[i].id,
-                                    position: dataSet[i].location.position
+                                    position: markerPosition
                                 });
                             }
                         }

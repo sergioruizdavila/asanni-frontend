@@ -28,6 +28,8 @@ var app;
                     this.bornCountry = obj.bornCountry || '';
                     this.bornCity = obj.bornCity || '';
                     this.about = obj.about || '';
+                    this.languages = new Language(obj.languages);
+                    this.location = new Location(obj.location);
                     this.status = obj.status || 'NW';
                     this.createdAt = obj.createdAt || '';
                 }
@@ -168,6 +170,32 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
+                Object.defineProperty(Profile.prototype, "Languages", {
+                    get: function () {
+                        return this.languages;
+                    },
+                    set: function (languages) {
+                        if (languages === undefined) {
+                            throw 'Please supply profile languages';
+                        }
+                        this.languages = languages;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "Location", {
+                    get: function () {
+                        return this.location;
+                    },
+                    set: function (location) {
+                        if (location === undefined) {
+                            throw 'Please supply profile location';
+                        }
+                        this.location = location;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 Object.defineProperty(Profile.prototype, "About", {
                     get: function () {
                         return this.about;
@@ -204,6 +232,72 @@ var app;
                 return Profile;
             }());
             user.Profile = Profile;
+            var Language = (function () {
+                function Language(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('Languages Model instanced');
+                    if (obj === null)
+                        obj = {};
+                    this.id = obj.id;
+                    this.native = obj.native || [];
+                    this.learn = obj.learn || [];
+                    this.teach = obj.teach || [];
+                }
+                Object.defineProperty(Language.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Language.prototype, "Native", {
+                    get: function () {
+                        return this.native;
+                    },
+                    set: function (native) {
+                        if (native === undefined) {
+                            throw 'Please supply native languages';
+                        }
+                        this.native = native;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Language.prototype, "Learn", {
+                    get: function () {
+                        return this.learn;
+                    },
+                    set: function (learn) {
+                        if (learn === undefined) {
+                            throw 'Please supply learn languages';
+                        }
+                        this.learn = learn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Language.prototype, "Teach", {
+                    get: function () {
+                        return this.teach;
+                    },
+                    set: function (teach) {
+                        if (teach === undefined) {
+                            throw 'Please supply teach languages';
+                        }
+                        this.teach = teach;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Language;
+            }());
+            user.Language = Language;
             var Location = (function () {
                 function Location(obj) {
                     if (obj === void 0) { obj = {}; }
