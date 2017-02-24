@@ -531,9 +531,16 @@ var app;
                         };
                         if (dataSet) {
                             for (var i = 0; i < dataSet.length; i++) {
+                                var markerPosition = null;
+                                if (dataSet[i].profile) {
+                                    markerPosition = new app.models.user.Position(dataSet[i].profile.location.position);
+                                }
+                                else if (dataSet[i].location) {
+                                    markerPosition = new app.models.user.Position(dataSet[i].location.position);
+                                }
                                 mapConfig.data.markers.push({
                                     id: dataSet[i].id,
-                                    position: dataSet[i].location.position
+                                    position: markerPosition
                                 });
                             }
                         }
@@ -1166,6 +1173,7 @@ var app;
                     this.bornCity = obj.bornCity || '';
                     this.about = obj.about || '';
                     this.languages = new Language(obj.languages);
+                    this.location = new Location(obj.location);
                     this.status = obj.status || 'NW';
                     this.createdAt = obj.createdAt || '';
                 }
@@ -1312,9 +1320,22 @@ var app;
                     },
                     set: function (languages) {
                         if (languages === undefined) {
-                            throw 'Please supply languages';
+                            throw 'Please supply profile languages';
                         }
                         this.languages = languages;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "Location", {
+                    get: function () {
+                        return this.location;
+                    },
+                    set: function (location) {
+                        if (location === undefined) {
+                            throw 'Please supply profile location';
+                        }
+                        this.location = location;
                     },
                     enumerable: true,
                     configurable: true
@@ -1937,7 +1958,6 @@ var app;
                         obj = {};
                     this.id = obj.id || '';
                     this.profile = new app.models.user.Profile(obj.profile);
-                    this.location = new app.models.user.Location(obj.location);
                     this.type = obj.type || '';
                     this.teacherSince = obj.teacherSince || '';
                     this.methodology = obj.methodology || '';
@@ -1994,19 +2014,6 @@ var app;
                             throw 'Please supply teacher profile data';
                         }
                         this.profile = profile;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(Teacher.prototype, "Location", {
-                    get: function () {
-                        return this.location;
-                    },
-                    set: function (location) {
-                        if (location === undefined) {
-                            throw 'Please supply profile location';
-                        }
-                        this.location = location;
                     },
                     enumerable: true,
                     configurable: true
@@ -7918,15 +7925,15 @@ var app;
                 TeacherLocationSectionController.prototype.activate = function () {
                     console.log('TeacherLocationSectionController controller actived');
                     this._subscribeToEvents();
-                    if (this.$rootScope.teacherData) {
-                        this._fillForm(this.$rootScope.teacherData);
+                    if (this.$rootScope.profileData) {
+                        this._fillForm(this.$rootScope.profileData);
                     }
                 };
                 TeacherLocationSectionController.prototype.goToNext = function () {
                     var formValid = this._validateForm();
                     if (formValid) {
                         this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data');
+                        this.$scope.$emit('Save Profile Data');
                         this.$state.go(this.STEP3_STATE, { reload: true });
                     }
                     else {
@@ -8056,12 +8063,12 @@ var app;
                 TeacherLocationSectionController.prototype._setDataModelFromForm = function () {
                     var countryCode = this.countryObject.code;
                     this.form.countryLocation = countryCode;
-                    this.$rootScope.teacherData.Location.Country = this.form.countryLocation;
-                    this.$rootScope.teacherData.Location.Address = this.form.addressLocation;
-                    this.$rootScope.teacherData.Location.City = this.form.cityLocation;
-                    this.$rootScope.teacherData.Location.State = this.form.stateLocation;
-                    this.$rootScope.teacherData.Location.ZipCode = this.form.zipCodeLocation;
-                    this.$rootScope.teacherData.Location.Position = this.form.positionLocation;
+                    this.$rootScope.profileData.Location.Country = this.form.countryLocation;
+                    this.$rootScope.profileData.Location.Address = this.form.addressLocation;
+                    this.$rootScope.profileData.Location.City = this.form.cityLocation;
+                    this.$rootScope.profileData.Location.State = this.form.stateLocation;
+                    this.$rootScope.profileData.Location.ZipCode = this.form.zipCodeLocation;
+                    this.$rootScope.profileData.Location.Position = this.form.positionLocation;
                     this.changeMapPosition();
                 };
                 TeacherLocationSectionController.prototype._subscribeToEvents = function () {
@@ -9505,15 +9512,15 @@ var app;
                         self.data = new app.models.teacher.Teacher(response);
                         self.mapConfig = self.functionsUtil.buildMapConfig([
                             {
-                                id: self.data.Location.Position.Id,
+                                id: self.data.Profile.Location.Position.Id,
                                 location: {
                                     position: {
-                                        lat: parseFloat(self.data.Location.Position.Lat),
-                                        lng: parseFloat(self.data.Location.Position.Lng)
+                                        lat: parseFloat(self.data.Profile.Location.Position.Lat),
+                                        lng: parseFloat(self.data.Profile.Location.Position.Lng)
                                     }
                                 }
                             }
-                        ], 'location-circle-map', { lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng) }, null);
+                        ], 'location-circle-map', { lat: parseFloat(self.data.Profile.Location.Position.Lat), lng: parseFloat(self.data.Profile.Location.Position.Lng) }, null);
                         self.loading = false;
                     });
                 };

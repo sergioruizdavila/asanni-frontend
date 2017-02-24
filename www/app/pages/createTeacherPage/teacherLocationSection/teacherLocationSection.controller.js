@@ -50,15 +50,15 @@ var app;
                 TeacherLocationSectionController.prototype.activate = function () {
                     console.log('TeacherLocationSectionController controller actived');
                     this._subscribeToEvents();
-                    if (this.$rootScope.teacherData) {
-                        this._fillForm(this.$rootScope.teacherData);
+                    if (this.$rootScope.profileData) {
+                        this._fillForm(this.$rootScope.profileData);
                     }
                 };
                 TeacherLocationSectionController.prototype.goToNext = function () {
                     var formValid = this._validateForm();
                     if (formValid) {
                         this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data');
+                        this.$scope.$emit('Save Profile Data');
                         this.$state.go(this.STEP3_STATE, { reload: true });
                     }
                     else {
@@ -188,12 +188,12 @@ var app;
                 TeacherLocationSectionController.prototype._setDataModelFromForm = function () {
                     var countryCode = this.countryObject.code;
                     this.form.countryLocation = countryCode;
-                    this.$rootScope.teacherData.Location.Country = this.form.countryLocation;
-                    this.$rootScope.teacherData.Location.Address = this.form.addressLocation;
-                    this.$rootScope.teacherData.Location.City = this.form.cityLocation;
-                    this.$rootScope.teacherData.Location.State = this.form.stateLocation;
-                    this.$rootScope.teacherData.Location.ZipCode = this.form.zipCodeLocation;
-                    this.$rootScope.teacherData.Location.Position = this.form.positionLocation;
+                    this.$rootScope.profileData.Location.Country = this.form.countryLocation;
+                    this.$rootScope.profileData.Location.Address = this.form.addressLocation;
+                    this.$rootScope.profileData.Location.City = this.form.cityLocation;
+                    this.$rootScope.profileData.Location.State = this.form.stateLocation;
+                    this.$rootScope.profileData.Location.ZipCode = this.form.zipCodeLocation;
+                    this.$rootScope.profileData.Location.Position = this.form.positionLocation;
                     this.changeMapPosition();
                 };
                 TeacherLocationSectionController.prototype._subscribeToEvents = function () {

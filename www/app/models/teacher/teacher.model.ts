@@ -18,7 +18,6 @@ module app.models.teacher {
         /*-- PROPERTIES --*/
         private id: string;
         private profile: app.models.user.Profile;
-        private location: app.models.user.Location;
         private type: string;
         private teacherSince: string;
         private experiences: Array<Experience>;
@@ -42,7 +41,6 @@ module app.models.teacher {
             //init properties
             this.id = obj.id || '';
             this.profile = new app.models.user.Profile(obj.profile);
-            this.location = new app.models.user.Location(obj.location);
             this.type = obj.type || '';
             this.teacherSince = obj.teacherSince || '';
             this.methodology = obj.methodology || '';
@@ -104,15 +102,6 @@ module app.models.teacher {
         set Profile(profile: app.models.user.Profile) {
             if (profile === undefined) { throw 'Please supply teacher profile data'; }
             this.profile = profile;
-        }
-
-        get Location() {
-            return this.location;
-        }
-
-        set Location(location: app.models.user.Location) {
-            if (location === undefined) { throw 'Please supply profile location'; }
-            this.location = location;
         }
 
         get Type() {

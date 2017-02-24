@@ -12,7 +12,6 @@ var app;
                         obj = {};
                     this.id = obj.id || '';
                     this.profile = new app.models.user.Profile(obj.profile);
-                    this.location = new app.models.user.Location(obj.location);
                     this.type = obj.type || '';
                     this.teacherSince = obj.teacherSince || '';
                     this.methodology = obj.methodology || '';
@@ -69,19 +68,6 @@ var app;
                             throw 'Please supply teacher profile data';
                         }
                         this.profile = profile;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(Teacher.prototype, "Location", {
-                    get: function () {
-                        return this.location;
-                    },
-                    set: function (location) {
-                        if (location === undefined) {
-                            throw 'Please supply profile location';
-                        }
-                        this.location = location;
                     },
                     enumerable: true,
                     configurable: true
