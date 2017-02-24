@@ -46,6 +46,7 @@ module app.models.user {
         private bornCity: string;
         private about: string;
         private languages: Language;
+        private location: Location;
         private status: string;
         private createdAt: string;
 
@@ -72,6 +73,7 @@ module app.models.user {
             this.bornCity = obj.bornCity || '';
             this.about = obj.about || '';
             this.languages = new Language(obj.languages);
+            this.location = new Location(obj.location);
             this.status = obj.status || 'NW';
             this.createdAt = obj.createdAt || '';
 
@@ -180,8 +182,17 @@ module app.models.user {
         }
 
         set Languages(languages: Language) {
-            if (languages === undefined) { throw 'Please supply languages'; }
+            if (languages === undefined) { throw 'Please supply profile languages'; }
             this.languages = languages;
+        }
+
+        get Location() {
+            return this.location;
+        }
+
+        set Location(location: app.models.user.Location) {
+            if (location === undefined) { throw 'Please supply profile location'; }
+            this.location = location;
         }
 
         get About() {

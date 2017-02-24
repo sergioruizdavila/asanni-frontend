@@ -29,6 +29,7 @@ var app;
                     this.bornCity = obj.bornCity || '';
                     this.about = obj.about || '';
                     this.languages = new Language(obj.languages);
+                    this.location = new Location(obj.location);
                     this.status = obj.status || 'NW';
                     this.createdAt = obj.createdAt || '';
                 }
@@ -175,9 +176,22 @@ var app;
                     },
                     set: function (languages) {
                         if (languages === undefined) {
-                            throw 'Please supply languages';
+                            throw 'Please supply profile languages';
                         }
                         this.languages = languages;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "Location", {
+                    get: function () {
+                        return this.location;
+                    },
+                    set: function (location) {
+                        if (location === undefined) {
+                            throw 'Please supply profile location';
+                        }
+                        this.location = location;
                     },
                     enumerable: true,
                     configurable: true
