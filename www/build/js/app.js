@@ -9492,7 +9492,7 @@ var app;
                     this._init();
                 }
                 TeacherProfilePageController.prototype._init = function () {
-                    this.data = null;
+                    this.data = new app.models.teacher.Teacher();
                     this.loading = true;
                     this._initNativeTooltip();
                     this.activate();

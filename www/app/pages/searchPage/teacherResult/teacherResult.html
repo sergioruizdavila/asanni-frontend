@@ -232,7 +232,7 @@
         <div class="search-result__teacher__block__native
                     row text-center
                     space-1 hidden"
-             ng-class="{'search-result__teacher__block__native--noNative': !vm._assignNativeClass(item.languages)}">
+             ng-class="{'search-result__teacher__block__native--noNative': !vm._assignNativeClass(item.profile.languages)}">
 
             <div class="col-xs-12 col-md-12">
 
@@ -256,7 +256,7 @@
                             ma-label--box--small
                             pull-right"
                     ng-class="{'ma-label--box--gray
-                                ma-label--box--gray--line-through': !vm._assignNativeClass(item.languages)}"
+                                ma-label--box--gray--line-through': !vm._assignNativeClass(item.profile.languages)}"
                     translate>
                     %search.container.teacher.native.title.text
                 </div>

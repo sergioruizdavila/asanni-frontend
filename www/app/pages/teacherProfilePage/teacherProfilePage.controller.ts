@@ -63,7 +63,7 @@ module app.pages.teacherProfilePage {
         private _init() {
 
             //Init profile teacher data
-            this.data = null;
+            this.data = new app.models.teacher.Teacher();
 
             //Init loading
             this.loading = true;
