@@ -47,9 +47,9 @@ var components;
                 };
                 ModalSignUpController.prototype.registerUser = function () {
                     var self = this;
-                    this.saving = true;
                     var formValid = this._validateForm();
                     if (formValid) {
+                        this.saving = true;
                         this.form.username = this.functionsUtil.generateUsername(this.form.first_name, this.form.last_name);
                         this.RegisterService.register(this.form).then(function (response) {
                             DEBUG && console.log('Welcome!, Your new account has been successfuly created.');
@@ -68,9 +68,6 @@ var components;
                             self.validate.globalValidate.valid = false;
                             self.validate.globalValidate.message = errortext[0];
                         });
-                    }
-                    else {
-                        this.saving = false;
                     }
                 };
                 ModalSignUpController.prototype._validateForm = function () {

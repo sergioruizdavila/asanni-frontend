@@ -104,7 +104,6 @@ module app.pages.createTeacherPage {
             };
 
             //Init form
-            //Is required use null here because en DB save: "[]"
             this.form = {
                 native: [],
                 learn: [],
@@ -124,7 +123,7 @@ module app.pages.createTeacherPage {
         /*-- ACTIVATE METHOD --*/
         activate(): void {
             //LOG
-            console.log('TeacherLanguageSectionController controller actived');
+            DEBUG && console.log('TeacherLanguageSectionController controller actived');
 
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
