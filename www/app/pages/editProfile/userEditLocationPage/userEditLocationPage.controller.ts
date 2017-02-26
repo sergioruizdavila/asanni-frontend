@@ -1,35 +1,22 @@
 /**
- * TeacherLocationSectionController
- * @description - Teacher Location Section Controller (create teacher)
+ * UserEditLocationPageController
+ * @description - User Edit Location Page Controller
  */
 
-module app.pages.createTeacherPage {
+module app.pages.userEditLocationPage {
 
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
-    export interface ITeacherLocationSectionController {
-        form: ITeacherLocationForm;
-        validate: ITeacherLocationValidate;
+    export interface IUserEditLocationPageController {
+        form: IUserEditLocationForm;
+        validate: IUserEditLocationValidate;
         activate: () => void;
+        goToEditMedia: () => void;
+        goToEditProfile: () => void;
     }
 
-    export interface ITeacherLocationScope extends angular.IScope {
-        $parent: IParentScope;
-    }
-
-    export interface IParentScope extends angular.IScope {
-        vm: ICreateTeacherPageController;
-    }
-
-    /********************************/
-    /*    STATEPARAMS INTERFACES    */
-    /********************************/
-    export interface IParams extends ng.ui.IStateParamsService {
-        id: string;
-    }
-
-    export interface ITeacherLocationForm {
+    export interface IUserEditLocationForm {
         countryLocation: string;
         addressLocation: string;
         cityLocation: string;
@@ -38,7 +25,7 @@ module app.pages.createTeacherPage {
         positionLocation: app.models.user.Position;
     }
 
-    interface ITeacherLocationValidate {
+    interface IUserEditLocationValidate {
         countryLocation: app.core.util.functionsUtil.IValid;
         addressLocation: app.core.util.functionsUtil.IValid;
         cityLocation: app.core.util.functionsUtil.IValid;
@@ -50,72 +37,69 @@ module app.pages.createTeacherPage {
     /****************************************/
     /*           CLASS DEFINITION           */
     /****************************************/
-    export class TeacherLocationSectionController implements ITeacherLocationSectionController {
+    export class UserEditLocationPageController implements IUserEditLocationPageController {
 
-        static controllerId = 'mainApp.pages.createTeacherPage.TeacherLocationSectionController';
+        static controllerId = 'mainApp.pages.userEditLocationPage.UserEditLocationPageController';
 
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
-        form: ITeacherLocationForm;
-        validate: ITeacherLocationValidate;
-        helpText: app.core.interfaces.IHelpTextStep;
+        form: IUserEditLocationForm;
+        validate: IUserEditLocationValidate;
+        saving: boolean;
+        saved: boolean;
+        error: boolean;
         geocoder: google.maps.Geocoder;
         mapConfig: components.map.IMapConfig;
         listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
         countryObject: app.core.interfaces.IDataFromJsonI18n;
-        STEP1_STATE: string;
-        STEP3_STATE: string;
-        HELP_TEXT_TITLE: string;
-        HELP_TEXT_DESCRIPTION: string;
         // --------------------------------
 
 
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = [
+            'dataConfig',
+            'mainApp.models.user.UserService',
             'mainApp.core.util.GetDataStaticJsonService',
             'mainApp.core.util.FunctionsUtilService',
             '$state',
             '$filter',
+            '$timeout',
+            '$uibModal',
             '$scope',
-            '$rootScope',
-            '$timeout'
+            '$rootScope'
         ];
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
+            private dataConfig: IDataConfig,
+            private userService: app.models.user.IUserService,
             private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
-            private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
+            private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
-            private $scope: ITeacherLocationScope,
-            private $rootScope: app.core.interfaces.IMainAppRootScope,
-            private $timeout: angular.ITimeoutService) {
-                this._init();
+            private $timeout,
+            private $uibModal: ng.ui.bootstrap.IModalService,
+            private $scope: angular.IScope,
+            private $rootScope: app.core.interfaces.IMainAppRootScope) {
+
+            this._init();
+
         }
 
         /*-- INITIALIZE METHOD --*/
         private _init() {
-            //CONSTANTS
-            this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
-            this.STEP3_STATE = 'page.createTeacherPage.language';
-            this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.location.help_text.title.text');
-            this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.description.text');
-            /*********************************/
 
-            // Update progress bar width
-            this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(2, 9);
+            // Init saving loading
+            this.saving = false;
 
-            //Put Help Text Default
-            this.helpText = {
-                title: this.HELP_TEXT_TITLE,
-                description: this.HELP_TEXT_DESCRIPTION
-            };
+            // Init saved message
+            this.saved = false;
 
-            // Country Select List Structure
-            this.countryObject = {code: '', value: ''};
+            // Init error message
+            this.error = false;
 
             //Init form
             this.form = {
@@ -127,11 +111,14 @@ module app.pages.createTeacherPage {
                 positionLocation: new app.models.user.Position()
             };
 
-            //Build Countries select lists
+            // Country Select List Structure
+            this.countryObject = {code: '', value: ''};
+
+            // Build Countries select lists
             this.listCountries = this.getDataFromJson.getCountryi18n();
 
             // Init Map
-            this.mapConfig = this.functionsUtilService.buildMapConfig(
+            this.mapConfig = this.functionsUtil.buildMapConfig(
                 null, 'drag-maker-map', null, null
             );
 
@@ -151,15 +138,13 @@ module app.pages.createTeacherPage {
         /*-- ACTIVATE METHOD --*/
         activate(): void {
             //LOG
-            DEBUG && console.log('TeacherLocationSectionController controller actived');
+            DEBUG && console.log('UserEditLocationPage controller actived');
+
+            //Charge user profile data
+            this.fillFormWithLocationData();
 
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
-
-            //FILL FORM FROM ROOTSCOPE TEACHER INFO
-            if(this.$rootScope.profileData) {
-                this._fillForm(this.$rootScope.profileData);
-            }
 
         }
 
@@ -167,45 +152,60 @@ module app.pages.createTeacherPage {
         /*            METHODS             */
         /**********************************/
 
-        /**
-        * goToNext
-        * @description - go to next step (create or update teacher data on DB)
-        * @function
-        * @return void
+        /*
+        * Go to edit media page
+        * @description this method is launched when user press 'Edit Photo' menu
+        * option
         */
-        goToNext(): void {
-            //Validate data form
-            let formValid = this._validateForm();
+        goToEditMedia(): void {
+            // Go to next page on calls stack
+            this.$state.go('page.userEditMediaPage');
+        }
 
-            if(formValid){
-                this._setDataModelFromForm();
-                this.$scope.$emit('Save Profile Data');
-                // GO TO NEXT STEP
-                this.$state.go(this.STEP3_STATE, {reload: true});
-            } else {
-                //Go top pages
-                window.scrollTo(0, 0);
-            }
 
+        /*
+        * Go to edit profile page
+        * @description this method is launched when user press 'Edit Profile' menu
+        * option
+        */
+        goToEditProfile(): void {
+            this.$state.go('page.userEditProfilePage');
         }
 
 
 
         /**
-        * goToBack
-        * @description - go to back step
+        * fillFormWithLocationData
+        * @description - get user profile data from DB, and fill each field on form.
         * @function
         * @return void
         */
-        goToBack(): void {
-            this.$state.go(this.STEP1_STATE, {reload: true});
+        fillFormWithLocationData(): void {
+            // VARIABLES
+            let self = this;
+            let userId = this.$rootScope.userData.id;
+
+            if(userId) {
+                // GET USER PROFILE DATA
+                this.userService.getUserProfileById(userId)
+                .then(
+                    function(response) {
+
+                        if(response.userId) {
+                            self.$rootScope.profileData = new app.models.user.Profile(response);
+                            self._fillForm(self.$rootScope.profileData);
+                        }
+
+                    }
+                );
+            }
         }
 
 
 
         /**
         * _fillForm
-        * @description - Fill form with teacher data
+        * @description - Fill form with user location data
         * @use - this._fillForm(data);
         * @function
         * @param {app.models.user.Profile} data - Profile Data
@@ -221,7 +221,7 @@ module app.pages.createTeacherPage {
             //Current Map Position
             this.form.positionLocation = new app.models.user.Position(data.Location.Position);
 
-            this.mapConfig = this.functionsUtilService.buildMapConfig(
+            this.mapConfig = this.functionsUtil.buildMapConfig(
                 [
                     {
                         id: this.form.positionLocation.Id,
@@ -248,13 +248,13 @@ module app.pages.createTeacherPage {
 
 
         /**
-        * _validateForm
-        * @description - Validate each field on form
-        * @use - this._validateForm();
+        * _validateLocationForm
+        * @description - Validate each field on location's form
+        * @use - this._validateLocationForm();
         * @function
         * @return {boolean} formValid - return If the complete form is valid or not.
         */
-        private _validateForm(): boolean {
+        private _validateLocationForm(): boolean {
             //CONSTANTS
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
@@ -266,46 +266,36 @@ module app.pages.createTeacherPage {
 
             //Validate Country field
             let country_rules = [NULL_ENUM, EMPTY_ENUM];
-            this.validate.countryLocation = this.functionsUtilService.validator(this.countryObject.code, country_rules);
+            this.validate.countryLocation = this.functionsUtil.validator(this.countryObject.code, country_rules);
             if(!this.validate.countryLocation.valid) {
                 formValid = this.validate.countryLocation.valid;
             }
 
             //Validate City field
             let city_rules = [NULL_ENUM, EMPTY_ENUM];
-            this.validate.cityLocation = this.functionsUtilService.validator(this.form.cityLocation, city_rules);
+            this.validate.cityLocation = this.functionsUtil.validator(this.form.cityLocation, city_rules);
             if(!this.validate.cityLocation.valid) {
                 formValid = this.validate.cityLocation.valid;
             }
 
             //Validate State field
             let state_rules = [NULL_ENUM, EMPTY_ENUM];
-            this.validate.stateLocation = this.functionsUtilService.validator(this.form.stateLocation, state_rules);
+            this.validate.stateLocation = this.functionsUtil.validator(this.form.stateLocation, state_rules);
             if(!this.validate.stateLocation.valid) {
                 formValid = this.validate.stateLocation.valid;
             }
 
             //Validate Address field
             let address_rules = [NULL_ENUM, EMPTY_ENUM];
-            this.validate.addressLocation = this.functionsUtilService.validator(this.form.addressLocation, address_rules);
+            this.validate.addressLocation = this.functionsUtil.validator(this.form.addressLocation, address_rules);
             if(!this.validate.addressLocation.valid) {
                 formValid = this.validate.addressLocation.valid;
             }
 
-            //Validate Zip Code field
-            //TODO por ahora no es importante validar el Zip Code, pero si el
-            // usuario no escribe nada, me sale el error como si fuera requerido,
-            // y este campo no es requerido, solucionar eso.
-            /*let zipCode_rules = [NUMBER_ENUM];
-            this.validate.zipCodeLocation = this.functionsUtilService.validator(this.form.zipCodeLocation, zipCode_rules);
-            if(!this.validate.zipCodeLocation.valid) {
-                formValid = this.validate.zipCodeLocation.valid;
-            }*/
-
             //Validate Position on Map
             let position_rules = [NULL_ENUM, EMPTY_ENUM];
-            let latValidate= this.functionsUtilService.validator(this.form.positionLocation.Lat, position_rules);
-            let lngValidate = this.functionsUtilService.validator(this.form.positionLocation.Lng, position_rules);
+            let latValidate= this.functionsUtil.validator(this.form.positionLocation.Lat, position_rules);
+            let lngValidate = this.functionsUtil.validator(this.form.positionLocation.Lng, position_rules);
             if(!latValidate.valid || !lngValidate.valid) {
                 if(!latValidate.valid) {
                     this.validate.positionLocation = latValidate;
@@ -317,71 +307,6 @@ module app.pages.createTeacherPage {
             }
 
             return formValid;
-        }
-
-
-
-        /**
-        * changeHelpText
-        * @description - change help block text (titles and descriptions) dynamically
-        *  based on specific field (firstName, lastName, email, etc)
-        * @use - this.changeHelpText('firstName');
-        * @function
-        * @return {void}
-        */
-        changeHelpText(type): void {
-            //CONSTANTS
-            const COUNTRY_TITLE = this.$filter('translate')('%create.teacher.location.help_text.cntry.title.text');
-            const COUNTRY_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.cntry.description.text');
-            const CITY_TITLE = this.$filter('translate')('%create.teacher.location.help_text.city.title.text');
-            const CITY_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.city.description.text');
-            const STATE_TITLE = this.$filter('translate')('%create.teacher.location.help_text.state.title.text');
-            const STATE_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.state.description.text');
-            const ADDRESS_TITLE = this.$filter('translate')('%create.teacher.location.help_text.address.title.text');
-            const ADDRESS_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.address.description.text');
-            const ZIP_CODE_TITLE = this.$filter('translate')('%create.teacher.location.help_text.zip_code.title.text');
-            const ZIP_CODE_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.zip_code.description.text');
-            const POSITION_TITLE = this.$filter('translate')('%create.teacher.location.help_text.position.title.text');
-            const POSITION_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.position.description.text');
-            /*****************************************************/
-
-            switch(type) {
-                case 'default':
-                    this.helpText.title = this.HELP_TEXT_TITLE;
-                    this.helpText.description = this.HELP_TEXT_DESCRIPTION;
-                break;
-
-                case 'country':
-                    this.helpText.title = COUNTRY_TITLE;
-                    this.helpText.description = COUNTRY_DESCRIPTION;
-                break;
-
-                case 'city':
-                    this.helpText.title = CITY_TITLE;
-                    this.helpText.description = CITY_DESCRIPTION;
-                break;
-
-                case 'state':
-                    this.helpText.title = STATE_TITLE;
-                    this.helpText.description = STATE_DESCRIPTION;
-                break;
-
-                case 'address':
-                    this.helpText.title = ADDRESS_TITLE;
-                    this.helpText.description = ADDRESS_DESCRIPTION;
-                break;
-
-                case 'zipCode':
-                    this.helpText.title = ZIP_CODE_TITLE;
-                    this.helpText.description = ZIP_CODE_DESCRIPTION;
-                break;
-
-                case 'position':
-                    this.helpText.title = POSITION_TITLE;
-                    this.helpText.description = POSITION_DESCRIPTION;
-                break;
-            }
-
         }
 
 
@@ -416,14 +341,15 @@ module app.pages.createTeacherPage {
         }
 
 
+
         /**
-        * _setDataModelFromForm
+        * _setLocationFromForm
         * @description - get data from form's input in order to put it on $parent.teacherData
-        * @use - this._getDataFromForm();
+        * @use - this._setLocationFromForm();
         * @function
         * @return {void}
         */
-        private _setDataModelFromForm(): void {
+        private _setLocationFromForm(): void {
             //VARIABLES
             let countryCode = this.countryObject.code;
             /*********************************/
@@ -436,12 +362,79 @@ module app.pages.createTeacherPage {
             this.$rootScope.profileData.Location.State = this.form.stateLocation;
             this.$rootScope.profileData.Location.ZipCode = this.form.zipCodeLocation;
             this.$rootScope.profileData.Location.Position = this.form.positionLocation;
-            //FIXME: Cuando le doy guardar, se me vuelve a poner el
+            //FIXME: Si lo dejo, cuando le doy guardar, se me vuelve a poner el
             // marker en la posicion anterior. Asi que no se si esta linea sea
-            // necesaria. En userEditLocationPage.controller.ts la comente y no
-            // rompio nada.
+            // necesaria.
             //get position on Map
-            this.changeMapPosition();
+            //this.changeMapPosition();
+        }
+
+
+
+        /**
+        * saveBasicInfoSection
+        * @description - Update profile's basic data calling to save method
+        * @function
+        * @return void
+        */
+        saveLocationSection(): void {
+            //VARIABLES
+            let self = this;
+            //Validate data form
+            let formValid = this._validateLocationForm();
+
+            if(formValid) {
+                //loading On
+                this.saving = true;
+
+                this._setLocationFromForm();
+                this.save().then(
+                    function(saved) {
+                        //loading Off
+                        self.saving = false;
+                        self.saved = saved;
+                        self.error = !saved;
+
+                        self.$timeout(function() {
+                            self.saved = false;
+                        }, 3000);
+                    }
+                );
+            } else {
+                //Go top pages
+                window.scrollTo(0, 0);
+            }
+        }
+
+
+
+        /**
+        * save
+        * @description - Update location's languages data on DB
+        * @function
+        * @return {angular.IPromise<boolean>} saved - return if saved or not data
+        */
+        save(): angular.IPromise<boolean> {
+            //VARIABLES
+            let self = this;
+
+            // Save profile's updated data
+            return this.userService.updateUserProfile(this.$rootScope.profileData)
+            .then(
+                function(response) {
+                    let saved = false;
+                    if(response.userId) {
+                        //Fill Form
+                        self.$rootScope.profileData = new app.models.user.Profile(response);
+                        saved = true;
+                    }
+                    return saved;
+                },
+                function(error) {
+                    DEBUG && console.error(error);
+                    return false;
+                }
+            );
         }
 
 
@@ -459,20 +452,9 @@ module app.pages.createTeacherPage {
             let self = this;
 
             /**
-            * Fill Form event
-            * @parent - CreateTeacherPageController
-            * @description - Parent send markers teacher data in order to
-            * Child fill the form's field
-            * @event
-            */
-            this.$scope.$on('Fill Form', function(event, args: app.models.user.Profile) {
-                self._fillForm(args);
-            });
-
-            /**
             * Return Position
             * @child - MapController
-            * @description - Parent (TeacherLocationSectionController) receive
+            * @description - Parent (UserEditLocationPageController) receive
                              Child's event (MapController) with new position on
                              map (lng, lat)
             * @event
@@ -487,8 +469,7 @@ module app.pages.createTeacherPage {
 
     /*-- MODULE DEFINITION --*/
     angular
-        .module('mainApp.pages.createTeacherPage')
-        .controller(TeacherLocationSectionController.controllerId,
-                    TeacherLocationSectionController);
+        .module('mainApp.pages.userEditLocationPage')
+        .controller(UserEditLocationPageController.controllerId, UserEditLocationPageController);
 
 }

@@ -25,6 +25,7 @@
         'mainApp.pages.teacherProfilePage',
         'mainApp.pages.userProfilePage',
         'mainApp.pages.userEditProfilePage',
+        'mainApp.pages.userEditLocationPage',
         'mainApp.pages.userEditAgendaPage',
         'mainApp.pages.userEditMediaPage',
         'mainApp.pages.userInboxPage',
@@ -5010,9 +5011,9 @@ var components;
                 };
                 ModalSignUpController.prototype.registerUser = function () {
                     var self = this;
-                    this.saving = true;
                     var formValid = this._validateForm();
                     if (formValid) {
+                        this.saving = true;
                         this.form.username = this.functionsUtil.generateUsername(this.form.first_name, this.form.last_name);
                         this.RegisterService.register(this.form).then(function (response) {
                             DEBUG && console.log('Welcome!, Your new account has been successfuly created.');
@@ -5031,9 +5032,6 @@ var components;
                             self.validate.globalValidate.valid = false;
                             self.validate.globalValidate.message = errortext[0];
                         });
-                    }
-                    else {
-                        this.saving = false;
                     }
                 };
                 ModalSignUpController.prototype._validateForm = function () {
@@ -6814,19 +6812,32 @@ var app;
     function config($stateProvider) {
         $stateProvider
             .state('page.userEditProfilePage', {
-            url: '/users/edit/:id',
+            url: '/users/edit',
             views: {
                 'container': {
-                    templateUrl: 'app/pages/userEditProfilePage/userEditProfilePage.html',
+                    templateUrl: 'app/pages/editProfile/userEditProfilePage/userEditProfilePage.html',
                     controller: 'mainApp.pages.userEditProfilePage.UserEditProfilePageController',
-                    controllerAs: 'vm'
+                    controllerAs: 'vm',
+                    resolve: {
+                        waitForAuth: ['mainApp.auth.AuthService', function (AuthService) {
+                                return AuthService.autoRefreshToken();
+                            }]
+                    }
                 }
             },
-            parent: 'page',
+            cache: false,
             params: {
                 user: null,
-                id: '1'
-            }
+                id: null
+            },
+            data: {
+                requireLogin: true
+            },
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = true;
+                    $rootScope.activeFooter = true;
+                    $rootScope.activeMessageBar = false;
+                }]
         });
     }
 })();
@@ -6838,38 +6849,377 @@ var app;
         var userEditProfilePage;
         (function (userEditProfilePage) {
             var UserEditProfilePageController = (function () {
-                function UserEditProfilePageController($state, $filter, $scope) {
+                function UserEditProfilePageController(dataConfig, userService, getDataFromJson, functionsUtil, $state, $filter, $timeout, $uibModal, $scope, $rootScope) {
+                    this.dataConfig = dataConfig;
+                    this.userService = userService;
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtil = functionsUtil;
                     this.$state = $state;
                     this.$filter = $filter;
+                    this.$timeout = $timeout;
+                    this.$uibModal = $uibModal;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this._init();
                 }
                 UserEditProfilePageController.prototype._init = function () {
+                    this.saving = false;
+                    this.saved = false;
+                    this.error = false;
+                    this.countryObject = { code: '', value: '' };
+                    this.genderObject = { gender: { code: '', value: '' } };
+                    this.dateObject = { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } };
                     this.form = {
-                        username: '',
-                        email: ''
+                        firstName: '',
+                        lastName: '',
+                        phoneNumber: '',
+                        gender: '',
+                        birthDate: null,
+                        countryBirth: '',
+                        cityBirth: '',
+                        about: '',
+                        native: [],
+                        learn: [],
+                        teach: []
                     };
-                    this.error = {
-                        message: ''
+                    this.listMonths = this.getDataFromJson.getMonthi18n();
+                    this.listGenders = this.getDataFromJson.getSexi18n();
+                    this.listDays = this.functionsUtil.buildNumberSelectList(1, 31);
+                    this.listYears = this.functionsUtil.buildNumberSelectList(1916, 1998);
+                    this.listCountries = this.getDataFromJson.getCountryi18n();
+                    this.validate = {
+                        firstName: { valid: true, message: '' },
+                        lastName: { valid: true, message: '' },
+                        phoneNumber: { valid: true, message: '' },
+                        gender: { valid: true, message: '' },
+                        birthDate: {
+                            day: { valid: true, message: '' },
+                            month: { valid: true, message: '' },
+                            year: { valid: true, message: '' },
+                            valid: true,
+                            message: ''
+                        },
+                        countryBirth: { valid: true, message: '' },
+                        cityBirth: { valid: true, message: '' },
+                        about: { valid: true, message: '' },
+                        native: { valid: true, message: '' },
+                        teach: { valid: true, message: '' },
+                        learn: { valid: true, message: '' }
                     };
                     this.activate();
                 };
                 UserEditProfilePageController.prototype.activate = function () {
-                    console.log('userEditProfilePage controller actived');
+                    DEBUG && console.log('UserEditProfilePage controller actived');
+                    this.fillFormWithProfileData();
                 };
                 UserEditProfilePageController.prototype.goToEditMedia = function () {
                     this.$state.go('page.userEditMediaPage');
                 };
-                UserEditProfilePageController.prototype.goToEditAgenda = function () {
-                    this.$state.go('page.userEditAgendaPage');
+                UserEditProfilePageController.prototype.goToEditLocation = function () {
+                    this.$state.go('page.userEditLocationPage');
+                };
+                UserEditProfilePageController.prototype.fillFormWithProfileData = function () {
+                    var self = this;
+                    var userId = this.$rootScope.userData.id;
+                    if (userId) {
+                        this.userService.getUserProfileById(userId)
+                            .then(function (response) {
+                            if (response.userId) {
+                                self.$rootScope.profileData = new app.models.user.Profile(response);
+                                self._fillForm(self.$rootScope.profileData);
+                            }
+                        });
+                    }
+                };
+                UserEditProfilePageController.prototype._fillForm = function (data) {
+                    this.form.firstName = data.FirstName;
+                    this.form.lastName = data.LastName;
+                    this.form.phoneNumber = data.PhoneNumber;
+                    this.genderObject.gender.code = data.Gender;
+                    var date = this.functionsUtil.splitDate(data.BirthDate);
+                    this.dateObject.day.value = date.day ? parseInt(date.day) : '';
+                    this.dateObject.month.code = date.month !== 'Invalid date' ? date.month : '';
+                    this.dateObject.year.value = date.year ? parseInt(date.year) : '';
+                    this.countryObject.code = data.BornCountry;
+                    this.form.cityBirth = data.BornCity;
+                    this.form.about = data.About;
+                    if (this.form.native.length === 0) {
+                        var languageArray = this.getDataFromJson.getLanguagei18n();
+                        for (var i = 0; i < languageArray.length; i++) {
+                            if (data.Languages.Native) {
+                                for (var j = 0; j < data.Languages.Native.length; j++) {
+                                    if (data.Languages.Native[j] == languageArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = parseInt(languageArray[i].code);
+                                        obj.value = languageArray[i].value;
+                                        if (this.form.native == null) {
+                                            this.form.native = [];
+                                            this.form.native.push(obj);
+                                        }
+                                        else {
+                                            this.form.native.push(obj);
+                                        }
+                                    }
+                                }
+                            }
+                            if (data.Languages.Learn) {
+                                for (var j = 0; j < data.Languages.Learn.length; j++) {
+                                    if (data.Languages.Learn[j] == languageArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = parseInt(languageArray[i].code);
+                                        obj.value = languageArray[i].value;
+                                        if (this.form.learn == null) {
+                                            this.form.learn = [];
+                                            this.form.learn.push(obj);
+                                        }
+                                        else {
+                                            this.form.learn.push(obj);
+                                        }
+                                    }
+                                }
+                            }
+                            if (data.Languages.Teach) {
+                                for (var j = 0; j < data.Languages.Teach.length; j++) {
+                                    if (data.Languages.Teach[j] == languageArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = parseInt(languageArray[i].code);
+                                        obj.value = languageArray[i].value;
+                                        if (this.form.teach == null) {
+                                            this.form.teach = [];
+                                            this.form.teach.push(obj);
+                                        }
+                                        else {
+                                            this.form.teach.push(obj);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+                UserEditProfilePageController.prototype._validateBasicInfoForm = function () {
+                    var NULL_ENUM = 2;
+                    var NAN_ENUM = 8;
+                    var EMPTY_ENUM = 3;
+                    var EMAIL_ENUM = 0;
+                    var NUMBER_ENUM = 4;
+                    var BIRTHDATE_MESSAGE = this.$filter('translate')('%create.teacher.basic_info.form.birthdate.validation.message.text');
+                    var formValid = true;
+                    var first_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.firstName = this.functionsUtil.validator(this.form.firstName, first_rules);
+                    if (!this.validate.firstName.valid) {
+                        formValid = this.validate.firstName.valid;
+                    }
+                    var last_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.lastName = this.functionsUtil.validator(this.form.lastName, last_rules);
+                    if (!this.validate.lastName.valid) {
+                        formValid = this.validate.lastName.valid;
+                    }
+                    var phoneNumber_rules = [NULL_ENUM, EMPTY_ENUM, NUMBER_ENUM];
+                    var onlyNum = this.form.phoneNumber.replace(/\D+/g, "");
+                    onlyNum = parseInt(onlyNum) || '';
+                    this.validate.phoneNumber = this.functionsUtil.validator(onlyNum, phoneNumber_rules);
+                    if (!this.validate.phoneNumber.valid) {
+                        formValid = this.validate.phoneNumber.valid;
+                    }
+                    var gender_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.gender = this.functionsUtil.validator(this.genderObject.gender.code, gender_rules);
+                    if (!this.validate.gender.valid) {
+                        formValid = this.validate.gender.valid;
+                    }
+                    var day_birthdate_rules = [NULL_ENUM, EMPTY_ENUM, NAN_ENUM];
+                    this.validate.birthDate.day = this.functionsUtil.validator(this.dateObject.day.value, day_birthdate_rules);
+                    if (!this.validate.birthDate.day.valid) {
+                        formValid = this.validate.birthDate.day.valid;
+                        this.validate.birthDate.valid = this.validate.birthDate.day.valid;
+                        this.validate.birthDate.message = BIRTHDATE_MESSAGE;
+                    }
+                    var month_birthdate_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.birthDate.month = this.functionsUtil.validator(this.dateObject.month.code, month_birthdate_rules);
+                    if (!this.validate.birthDate.month.valid) {
+                        formValid = this.validate.birthDate.month.valid;
+                        this.validate.birthDate.valid = this.validate.birthDate.month.valid;
+                        this.validate.birthDate.message = BIRTHDATE_MESSAGE;
+                    }
+                    var year_birthdate_rules = [NULL_ENUM, EMPTY_ENUM, NAN_ENUM];
+                    this.validate.birthDate.year = this.functionsUtil.validator(this.dateObject.year.value, year_birthdate_rules);
+                    if (!this.validate.birthDate.year.valid) {
+                        formValid = this.validate.birthDate.year.valid;
+                        this.validate.birthDate.valid = this.validate.birthDate.year.valid;
+                        this.validate.birthDate.message = BIRTHDATE_MESSAGE;
+                    }
+                    if (this.validate.birthDate.day.valid &&
+                        this.validate.birthDate.month.valid &&
+                        this.validate.birthDate.year.valid) {
+                        this.validate.birthDate.valid = true;
+                        this.validate.birthDate.message = '';
+                    }
+                    var country_birth_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.countryBirth = this.functionsUtil.validator(this.countryObject.code, country_birth_rules);
+                    if (!this.validate.countryBirth.valid) {
+                        formValid = this.validate.countryBirth.valid;
+                    }
+                    var city_birth_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.cityBirth = this.functionsUtil.validator(this.form.cityBirth, city_birth_rules);
+                    if (!this.validate.cityBirth.valid) {
+                        formValid = this.validate.cityBirth.valid;
+                    }
+                    var about_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.about = this.functionsUtil.validator(this.form.about, about_rules);
+                    if (!this.validate.about.valid) {
+                        formValid = this.validate.about.valid;
+                    }
+                    return formValid;
+                };
+                UserEditProfilePageController.prototype._validateLanguagesForm = function () {
+                    var NULL_ENUM = 2;
+                    var NAN_ENUM = 8;
+                    var EMPTY_ENUM = 3;
+                    var EMAIL_ENUM = 0;
+                    var NUMBER_ENUM = 4;
+                    var BIRTHDATE_MESSAGE = this.$filter('translate')('%create.teacher.basic_info.form.birthdate.validation.message.text');
+                    var formValid = true;
+                    var native_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.native = this.functionsUtil.validator(this.form.native, native_rules);
+                    if (!this.validate.native.valid) {
+                        formValid = this.validate.native.valid;
+                    }
+                    var learn_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.learn = this.functionsUtil.validator(this.form.learn, learn_rules);
+                    if (!this.validate.learn.valid) {
+                        formValid = this.validate.learn.valid;
+                    }
+                    return formValid;
+                };
+                UserEditProfilePageController.prototype._addNewLanguages = function (type, $event) {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalLanguagesTmpl,
+                        controller: 'mainApp.components.modal.ModalLanguageController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    type: type,
+                                    list: self.form[type]
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function (newLanguagesList) {
+                        self.form[type] = newLanguagesList;
+                    }, function () {
+                        console.info('Modal dismissed at: ' + new Date());
+                    });
+                    $event.preventDefault();
+                };
+                UserEditProfilePageController.prototype._removeLanguage = function (key, type) {
+                    var newArray = this.form[type].filter(function (el) {
+                        return el.key !== key;
+                    });
+                    this.form[type] = newArray;
+                };
+                UserEditProfilePageController.prototype._setBasicInfoFromForm = function () {
+                    var dateFormatted = this.functionsUtil.joinDate(this.dateObject.day.value, this.dateObject.month.code, this.dateObject.year.value);
+                    var genderCode = this.genderObject.gender.code;
+                    var countryCode = this.countryObject.code;
+                    this.form.countryBirth = countryCode;
+                    this.$rootScope.profileData.FirstName = this.form.firstName;
+                    this.$rootScope.profileData.LastName = this.form.lastName;
+                    this.$rootScope.profileData.PhoneNumber = this.form.phoneNumber;
+                    this.$rootScope.profileData.Gender = genderCode;
+                    this.$rootScope.profileData.BirthDate = dateFormatted;
+                    this.$rootScope.profileData.BornCountry = this.form.countryBirth;
+                    this.$rootScope.profileData.BornCity = this.form.cityBirth;
+                    this.$rootScope.profileData.About = this.form.about;
+                };
+                UserEditProfilePageController.prototype._setLanguageFromForm = function () {
+                    if (this.form.native) {
+                        var native = [];
+                        for (var i = 0; i < this.form.native.length; i++) {
+                            native.push(this.form.native[i].key);
+                        }
+                        this.$rootScope.profileData.Languages.Native = native;
+                    }
+                    if (this.form.learn) {
+                        var learn = [];
+                        for (var i = 0; i < this.form.learn.length; i++) {
+                            learn.push(this.form.learn[i].key);
+                        }
+                        this.$rootScope.profileData.Languages.Learn = learn;
+                    }
+                    if (this.form.teach) {
+                        var teach = [];
+                        for (var i = 0; i < this.form.teach.length; i++) {
+                            teach.push(this.form.teach[i].key);
+                        }
+                        this.$rootScope.profileData.Languages.Teach = teach;
+                    }
+                };
+                UserEditProfilePageController.prototype.saveBasicInfoSection = function () {
+                    var self = this;
+                    var formValid = this._validateBasicInfoForm();
+                    if (formValid) {
+                        this.saving = true;
+                        this._setBasicInfoFromForm();
+                        this.save().then(function (saved) {
+                            self.saving = false;
+                            self.saved = saved;
+                            self.error = !saved;
+                            self.$timeout(function () {
+                                self.saved = false;
+                            }, 3000);
+                        });
+                    }
+                };
+                UserEditProfilePageController.prototype.saveLanguagesSection = function () {
+                    var self = this;
+                    var formValid = this._validateLanguagesForm();
+                    if (formValid) {
+                        this.saving = true;
+                        this._setLanguageFromForm();
+                        this.save().then(function (saved) {
+                            self.saving = false;
+                            self.saved = saved;
+                            self.error = !saved;
+                            self.$timeout(function () {
+                                self.saved = false;
+                            }, 3000);
+                        });
+                    }
+                };
+                UserEditProfilePageController.prototype.save = function () {
+                    var self = this;
+                    return this.userService.updateUserProfile(this.$rootScope.profileData)
+                        .then(function (response) {
+                        var saved = false;
+                        if (response.userId) {
+                            self.$rootScope.profileData = new app.models.user.Profile(response);
+                            saved = true;
+                        }
+                        return saved;
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        return false;
+                    });
                 };
                 return UserEditProfilePageController;
             }());
             UserEditProfilePageController.controllerId = 'mainApp.pages.userEditProfilePage.UserEditProfilePageController';
             UserEditProfilePageController.$inject = [
+                'dataConfig',
+                'mainApp.models.user.UserService',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
                 '$state',
                 '$filter',
-                '$scope'
+                '$timeout',
+                '$uibModal',
+                '$scope',
+                '$rootScope'
             ];
             userEditProfilePage.UserEditProfilePageController = UserEditProfilePageController;
             angular
@@ -6882,6 +7232,260 @@ var app;
 (function () {
     'use strict';
     angular
+        .module('mainApp.pages.userEditLocationPage', [])
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.userEditLocationPage', {
+            url: '/users/edit/location',
+            views: {
+                'container': {
+                    templateUrl: 'app/pages/editProfile/userEditLocationPage/userEditLocationPage.html',
+                    controller: 'mainApp.pages.userEditLocationPage.UserEditLocationPageController',
+                    controllerAs: 'vm',
+                    resolve: {
+                        waitForAuth: ['mainApp.auth.AuthService', function (AuthService) {
+                                return AuthService.autoRefreshToken();
+                            }]
+                    }
+                }
+            },
+            cache: false,
+            params: {
+                user: null,
+                id: null
+            },
+            data: {
+                requireLogin: true
+            },
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = true;
+                    $rootScope.activeFooter = true;
+                    $rootScope.activeMessageBar = false;
+                }]
+        });
+    }
+})();
+//# sourceMappingURL=userEditLocationPage.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var userEditLocationPage;
+        (function (userEditLocationPage) {
+            var UserEditLocationPageController = (function () {
+                function UserEditLocationPageController(dataConfig, userService, getDataFromJson, functionsUtil, $state, $filter, $timeout, $uibModal, $scope, $rootScope) {
+                    this.dataConfig = dataConfig;
+                    this.userService = userService;
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtil = functionsUtil;
+                    this.$state = $state;
+                    this.$filter = $filter;
+                    this.$timeout = $timeout;
+                    this.$uibModal = $uibModal;
+                    this.$scope = $scope;
+                    this.$rootScope = $rootScope;
+                    this._init();
+                }
+                UserEditLocationPageController.prototype._init = function () {
+                    this.saving = false;
+                    this.saved = false;
+                    this.error = false;
+                    this.form = {
+                        countryLocation: '',
+                        cityLocation: '',
+                        stateLocation: '',
+                        addressLocation: '',
+                        zipCodeLocation: '',
+                        positionLocation: new app.models.user.Position()
+                    };
+                    this.countryObject = { code: '', value: '' };
+                    this.listCountries = this.getDataFromJson.getCountryi18n();
+                    this.mapConfig = this.functionsUtil.buildMapConfig(null, 'drag-maker-map', null, null);
+                    this.validate = {
+                        countryLocation: { valid: true, message: '' },
+                        cityLocation: { valid: true, message: '' },
+                        stateLocation: { valid: true, message: '' },
+                        addressLocation: { valid: true, message: '' },
+                        zipCodeLocation: { valid: true, message: '' },
+                        positionLocation: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                UserEditLocationPageController.prototype.activate = function () {
+                    DEBUG && console.log('UserEditLocationPage controller actived');
+                    this.fillFormWithLocationData();
+                    this._subscribeToEvents();
+                };
+                UserEditLocationPageController.prototype.goToEditMedia = function () {
+                    this.$state.go('page.userEditMediaPage');
+                };
+                UserEditLocationPageController.prototype.goToEditProfile = function () {
+                    this.$state.go('page.userEditProfilePage');
+                };
+                UserEditLocationPageController.prototype.fillFormWithLocationData = function () {
+                    var self = this;
+                    var userId = this.$rootScope.userData.id;
+                    if (userId) {
+                        this.userService.getUserProfileById(userId)
+                            .then(function (response) {
+                            if (response.userId) {
+                                self.$rootScope.profileData = new app.models.user.Profile(response);
+                                self._fillForm(self.$rootScope.profileData);
+                            }
+                        });
+                    }
+                };
+                UserEditLocationPageController.prototype._fillForm = function (data) {
+                    this.form.addressLocation = data.Location.Address;
+                    this.form.cityLocation = data.Location.City;
+                    this.form.stateLocation = data.Location.State;
+                    this.form.zipCodeLocation = data.Location.ZipCode;
+                    this.countryObject.code = data.Location.Country;
+                    this.form.positionLocation = new app.models.user.Position(data.Location.Position);
+                    this.mapConfig = this.functionsUtil.buildMapConfig([
+                        {
+                            id: this.form.positionLocation.Id,
+                            location: {
+                                position: {
+                                    lat: parseFloat(this.form.positionLocation.Lat),
+                                    lng: parseFloat(this.form.positionLocation.Lng)
+                                }
+                            }
+                        }
+                    ], 'drag-maker-map', { lat: parseFloat(this.form.positionLocation.Lat), lng: parseFloat(this.form.positionLocation.Lng) }, null);
+                    this.$scope.$broadcast('BuildMarkers', this.mapConfig);
+                };
+                UserEditLocationPageController.prototype._validateLocationForm = function () {
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
+                    var NUMBER_ENUM = 4;
+                    var formValid = true;
+                    var country_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.countryLocation = this.functionsUtil.validator(this.countryObject.code, country_rules);
+                    if (!this.validate.countryLocation.valid) {
+                        formValid = this.validate.countryLocation.valid;
+                    }
+                    var city_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.cityLocation = this.functionsUtil.validator(this.form.cityLocation, city_rules);
+                    if (!this.validate.cityLocation.valid) {
+                        formValid = this.validate.cityLocation.valid;
+                    }
+                    var state_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.stateLocation = this.functionsUtil.validator(this.form.stateLocation, state_rules);
+                    if (!this.validate.stateLocation.valid) {
+                        formValid = this.validate.stateLocation.valid;
+                    }
+                    var address_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.addressLocation = this.functionsUtil.validator(this.form.addressLocation, address_rules);
+                    if (!this.validate.addressLocation.valid) {
+                        formValid = this.validate.addressLocation.valid;
+                    }
+                    var position_rules = [NULL_ENUM, EMPTY_ENUM];
+                    var latValidate = this.functionsUtil.validator(this.form.positionLocation.Lat, position_rules);
+                    var lngValidate = this.functionsUtil.validator(this.form.positionLocation.Lng, position_rules);
+                    if (!latValidate.valid || !lngValidate.valid) {
+                        if (!latValidate.valid) {
+                            this.validate.positionLocation = latValidate;
+                            formValid = this.validate.positionLocation.valid;
+                        }
+                        else if (!lngValidate.valid) {
+                            this.validate.positionLocation = lngValidate;
+                            formValid = this.validate.positionLocation.valid;
+                        }
+                    }
+                    return formValid;
+                };
+                UserEditLocationPageController.prototype.changeMapPosition = function () {
+                    var self = this;
+                    var countryCode = this.countryObject.code;
+                    this.form.countryLocation = countryCode;
+                    var location = {
+                        country: this.form.countryLocation,
+                        city: this.form.cityLocation,
+                        address: this.form.addressLocation
+                    };
+                    this.$timeout(function () {
+                        self.$scope.$broadcast('CodeAddress', location);
+                    });
+                };
+                UserEditLocationPageController.prototype._setLocationFromForm = function () {
+                    var countryCode = this.countryObject.code;
+                    this.form.countryLocation = countryCode;
+                    this.$rootScope.profileData.Location.Country = this.form.countryLocation;
+                    this.$rootScope.profileData.Location.Address = this.form.addressLocation;
+                    this.$rootScope.profileData.Location.City = this.form.cityLocation;
+                    this.$rootScope.profileData.Location.State = this.form.stateLocation;
+                    this.$rootScope.profileData.Location.ZipCode = this.form.zipCodeLocation;
+                    this.$rootScope.profileData.Location.Position = this.form.positionLocation;
+                };
+                UserEditLocationPageController.prototype.saveLocationSection = function () {
+                    var self = this;
+                    var formValid = this._validateLocationForm();
+                    if (formValid) {
+                        this.saving = true;
+                        this._setLocationFromForm();
+                        this.save().then(function (saved) {
+                            self.saving = false;
+                            self.saved = saved;
+                            self.error = !saved;
+                            self.$timeout(function () {
+                                self.saved = false;
+                            }, 3000);
+                        });
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                UserEditLocationPageController.prototype.save = function () {
+                    var self = this;
+                    return this.userService.updateUserProfile(this.$rootScope.profileData)
+                        .then(function (response) {
+                        var saved = false;
+                        if (response.userId) {
+                            self.$rootScope.profileData = new app.models.user.Profile(response);
+                            saved = true;
+                        }
+                        return saved;
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        return false;
+                    });
+                };
+                UserEditLocationPageController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Position', function (event, args) {
+                        self.form.positionLocation.Lng = args.lng;
+                        self.form.positionLocation.Lat = args.lat;
+                    });
+                };
+                return UserEditLocationPageController;
+            }());
+            UserEditLocationPageController.controllerId = 'mainApp.pages.userEditLocationPage.UserEditLocationPageController';
+            UserEditLocationPageController.$inject = [
+                'dataConfig',
+                'mainApp.models.user.UserService',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                '$state',
+                '$filter',
+                '$timeout',
+                '$uibModal',
+                '$scope',
+                '$rootScope'
+            ];
+            userEditLocationPage.UserEditLocationPageController = UserEditLocationPageController;
+            angular
+                .module('mainApp.pages.userEditLocationPage')
+                .controller(UserEditLocationPageController.controllerId, UserEditLocationPageController);
+        })(userEditLocationPage = pages.userEditLocationPage || (pages.userEditLocationPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=userEditLocationPage.controller.js.map
+(function () {
+    'use strict';
+    angular
         .module('mainApp.pages.userEditMediaPage', [])
         .config(config);
     function config($stateProvider) {
@@ -6890,7 +7494,7 @@ var app;
             url: '/users/edit/:id/media',
             views: {
                 'container': {
-                    templateUrl: 'app/pages/userEditMediaPage/userEditMediaPage.html',
+                    templateUrl: 'app/pages/editProfile/userEditMediaPage/userEditMediaPage.html',
                     controller: 'mainApp.pages.userEditMediaPage.UserEditMediaPageController',
                     controllerAs: 'vm'
                 }
@@ -7891,7 +8495,6 @@ var app;
                     this._init();
                 }
                 TeacherLocationSectionController.prototype._init = function () {
-                    var self = this;
                     this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
                     this.STEP3_STATE = 'page.createTeacherPage.language';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.location.help_text.title.text');
@@ -7911,7 +8514,7 @@ var app;
                         positionLocation: new app.models.user.Position()
                     };
                     this.listCountries = this.getDataFromJson.getCountryi18n();
-                    this.mapConfig = self.functionsUtilService.buildMapConfig(null, 'drag-maker-map', null, null);
+                    this.mapConfig = this.functionsUtilService.buildMapConfig(null, 'drag-maker-map', null, null);
                     this.validate = {
                         countryLocation: { valid: true, message: '' },
                         cityLocation: { valid: true, message: '' },
@@ -7923,7 +8526,7 @@ var app;
                     this.activate();
                 };
                 TeacherLocationSectionController.prototype.activate = function () {
-                    console.log('TeacherLocationSectionController controller actived');
+                    DEBUG && console.log('TeacherLocationSectionController controller actived');
                     this._subscribeToEvents();
                     if (this.$rootScope.profileData) {
                         this._fillForm(this.$rootScope.profileData);
@@ -8165,7 +8768,7 @@ var app;
                     this.activate();
                 };
                 TeacherLanguageSectionController.prototype.activate = function () {
-                    console.log('TeacherLanguageSectionController controller actived');
+                    DEBUG && console.log('TeacherLanguageSectionController controller actived');
                     this._subscribeToEvents();
                     if (this.$rootScope.profileData) {
                         this._fillForm(this.$rootScope.profileData);

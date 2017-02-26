@@ -413,7 +413,7 @@ module app.pages.createTeacherPage {
         /**
         * _setDataModelFromForm
         * @description - get data from form's input in order to put it on $parent.teacherData
-        * @use - this._getDataFromForm();
+        * @use - this._setDataModelFromForm();
         * @function
         * @return {void}
         */

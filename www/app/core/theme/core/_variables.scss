@@ -516,6 +516,7 @@ $label-box-width-block: 99%;
 
 $label-simple-color-gray: $dark-gray;
 $label-simple-color-primary: map-get($main-palette, primary);
+$label-simple-color-alert: map-get($main-palette, alert);
 
 $label-box-primary-font-color: $white;
 $label-box-primary-background: map-get($main-palette, primary);

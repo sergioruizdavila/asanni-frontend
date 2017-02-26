@@ -25,6 +25,7 @@
     "%global.more.label.text": "+ More",
     "%global.email.label.text": "Email Address",
     "%global.age.text": "years old",
+    "%global.profile.text": "Profile",
     "%global.teacher.text": "Teacher",
     "%global.teachers.text": "Teachers",
     "%global.student.text": "Student",
@@ -50,6 +51,7 @@
     "%global.mth.label.text": "month",
     "%global.cntry_birth.label.text": "Country of birth",
     "%global.city_birth.label.text": "City of birth",
+    "%global.lang.label.text": "languages",
 
     "%global.validation.null.message.text": "Required",
     "%global.validation.empty.message.text": "Required",
@@ -275,6 +277,15 @@
     "%landing.student.input_name.placeholder.text": "Your name",
     "%landing.student.notify_block.success_msg.text": "You’re all set. We’ll be in touch.",
 
+    "__EDIT PROFILE PAGE: BASIC INFO__": "",
+    "%edit.profile.edit_photo.option.button.text": "edit photo",
+    "%edit.profile.edit_location.option.button.text": "edit location",
+    "%edit.profile.view_profile.option.button.text": "view profile",
+    "%edit.profile.basic_info.title.text": "basic information",
+
+    "__EDIT PROFILE PAGE: LOCATION__": "",
+    "%edit.profile.location.title.text": "Where are you located?",
+
     "__RESET PASSWORD PAGE__": "",
     "%recover.password.title.text": "reset your password",
     "%recover.password.not_match.text": "Your new passwords did not match. Please try again.",
@@ -365,6 +376,7 @@
     "%create.teacher.location.form.state.text": "State",
     "%create.teacher.location.form.zip_code.text": "Zip Code",
     "%create.teacher.location.form.address.text": "Street Address",
+    "%create.teacher.location.form.address.placeholder.text": "House name/number + street/road",
     "%create.teacher.location.form.position.text": "Drag the marker to change location.",
 
     "%create.teacher.location.help_text.title.text": "Let them find you faster",

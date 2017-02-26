@@ -9,7 +9,7 @@
             url: '/users/edit/:id/media',
             views: {
                 'container': {
-                    templateUrl: 'app/pages/userEditMediaPage/userEditMediaPage.html',
+                    templateUrl: 'app/pages/editProfile/userEditMediaPage/userEditMediaPage.html',
                     controller: 'mainApp.pages.userEditMediaPage.UserEditMediaPageController',
                     controllerAs: 'vm'
                 }

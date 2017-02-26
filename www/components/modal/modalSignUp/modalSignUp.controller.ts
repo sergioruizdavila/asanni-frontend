@@ -148,13 +148,13 @@ module components.modal.modalSignUp {
             //VARIABLES
             let self = this;
 
-            //loading On
-            this.saving = true;
-
             //Validate data form
             let formValid = this._validateForm();
 
             if(formValid) {
+                //loading On
+                this.saving = true;
+                
                 //Create a username based on first name and last name
                 this.form.username = this.functionsUtil.generateUsername(this.form.first_name, this.form.last_name);
 
@@ -199,9 +199,6 @@ module components.modal.modalSignUp {
                     }
                 );
 
-            } else {
-                //loading Off
-                this.saving = false;
             }
 
         }

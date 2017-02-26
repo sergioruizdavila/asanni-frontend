@@ -25,6 +25,7 @@
     "%global.more.label.text": "+ Más",
     "%global.email.label.text": "Correo Electrónico",
     "%global.age.text": "años",
+    "%global.profile.text": "Perfil",
     "%global.teacher.text": "Profesor",
     "%global.teachers.text": "Profesores",
     "%global.student.text": "Estudiante",
@@ -50,6 +51,7 @@
     "%global.mth.label.text": "mes",
     "%global.cntry_birth.label.text": "País de nacimiento",
     "%global.city_birth.label.text": "Ciudad de nacimiento",
+    "%global.lang.label.text": "idiomas",
 
     "%global.validation.null.message.text": "Valor requerido",
     "%global.validation.empty.message.text": "Valor requerido",
@@ -76,7 +78,7 @@
 
     "__NOTIFICATION__": "",
     "%notification.success.text": "Guardado Exitoso!",
-    "%notification.error.server.text": "Estamos teniendo un problema, por favor intentelo nuevamente",
+    "%notification.error.server.text": "Ocurrio un problema, intentalo nuevamente",
 
     "__MODALS__": "",
     "%modal.signup.title.text": "Únete a la comunidad",
@@ -275,6 +277,15 @@
     "%landing.student.input_name.placeholder.text": "Tu nombre",
     "%landing.student.notify_block.success_msg.text": "Ya está todo listo. Estaremos en contacto.",
 
+    "__EDIT PROFILE PAGE: BASIC INFO__": "",
+    "%edit.profile.edit_photo.option.button.text": "editar foto",
+    "%edit.profile.edit_location.option.button.text": "editar ubicación",
+    "%edit.profile.view_profile.option.button.text": "ver perfil",
+    "%edit.profile.basic_info.title.text": "información básica",
+
+    "__EDIT PROFILE PAGE: LOCATION__": "",
+    "%edit.profile.location.title.text": "¿Dónde estás ubicado?",
+
     "__RESET PASSWORD PAGE__": "",
     "%recover.password.title.text": "restablece tu contraseña",
     "%recover.password.not_match.text": "Tus nuevas contraseñas no coinciden. Por favor, inténtalo de nuevo.",
@@ -365,6 +376,7 @@
     "%create.teacher.location.form.state.text": "Estado/Provincia",
     "%create.teacher.location.form.zip_code.text": "Código Postal",
     "%create.teacher.location.form.address.text": "Dirección",
+    "%create.teacher.location.form.address.placeholder.text": "Nombre/número de la casa + calle/carretera",
     "%create.teacher.location.form.position.text": "Arrastra el marcador para cambiar de ubicación.",
 
     "%create.teacher.location.help_text.title.text": "Deja que te encuentren más rápido",

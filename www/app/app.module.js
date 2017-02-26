@@ -25,6 +25,7 @@
         'mainApp.pages.teacherProfilePage',
         'mainApp.pages.userProfilePage',
         'mainApp.pages.userEditProfilePage',
+        'mainApp.pages.userEditLocationPage',
         'mainApp.pages.userEditAgendaPage',
         'mainApp.pages.userEditMediaPage',
         'mainApp.pages.userInboxPage',

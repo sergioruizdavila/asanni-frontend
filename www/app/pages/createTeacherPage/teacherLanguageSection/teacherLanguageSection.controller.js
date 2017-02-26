@@ -41,7 +41,7 @@ var app;
                     this.activate();
                 };
                 TeacherLanguageSectionController.prototype.activate = function () {
-                    console.log('TeacherLanguageSectionController controller actived');
+                    DEBUG && console.log('TeacherLanguageSectionController controller actived');
                     this._subscribeToEvents();
                     if (this.$rootScope.profileData) {
                         this._fillForm(this.$rootScope.profileData);
