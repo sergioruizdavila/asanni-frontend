@@ -71,8 +71,8 @@ var app;
                 UserEditProfilePageController.prototype.goToEditMedia = function () {
                     this.$state.go('page.userEditMediaPage');
                 };
-                UserEditProfilePageController.prototype.goToEditAgenda = function () {
-                    this.$state.go('page.userEditAgendaPage');
+                UserEditProfilePageController.prototype.goToEditLocation = function () {
+                    this.$state.go('page.userEditLocationPage');
                 };
                 UserEditProfilePageController.prototype.fillFormWithProfileData = function () {
                     var self = this;

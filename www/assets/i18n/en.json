@@ -277,11 +277,14 @@
     "%landing.student.input_name.placeholder.text": "Your name",
     "%landing.student.notify_block.success_msg.text": "You’re all set. We’ll be in touch.",
 
-    "__EDIT PROFILE PAGE__": "",
+    "__EDIT PROFILE PAGE: BASIC INFO__": "",
     "%edit.profile.edit_photo.option.button.text": "edit photo",
     "%edit.profile.edit_location.option.button.text": "edit location",
     "%edit.profile.view_profile.option.button.text": "view profile",
     "%edit.profile.basic_info.title.text": "basic information",
+
+    "__EDIT PROFILE PAGE: LOCATION__": "",
+    "%edit.profile.location.title.text": "Where are you located?",
 
     "__RESET PASSWORD PAGE__": "",
     "%recover.password.title.text": "reset your password",
@@ -373,6 +376,7 @@
     "%create.teacher.location.form.state.text": "State",
     "%create.teacher.location.form.zip_code.text": "Zip Code",
     "%create.teacher.location.form.address.text": "Street Address",
+    "%create.teacher.location.form.address.placeholder.text": "House name/number + street/road",
     "%create.teacher.location.form.position.text": "Drag the marker to change location.",
 
     "%create.teacher.location.help_text.title.text": "Let them find you faster",

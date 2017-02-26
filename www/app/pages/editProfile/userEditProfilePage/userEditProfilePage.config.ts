@@ -16,10 +16,10 @@
 
         $stateProvider
             .state('page.userEditProfilePage', {
-                url: '/users/edit/:id',
+                url: '/users/edit',
                 views: {
                     'container': {
-                        templateUrl: 'app/pages/userEditProfilePage/userEditProfilePage.html',
+                        templateUrl: 'app/pages/editProfile/userEditProfilePage/userEditProfilePage.html',
                         controller: 'mainApp.pages.userEditProfilePage.UserEditProfilePageController',
                         controllerAs: 'vm',
                         resolve: {

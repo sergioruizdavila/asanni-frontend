@@ -13,7 +13,7 @@ module app.pages.userEditProfilePage {
         validate: IUserEditProfileValidate;
         activate: () => void;
         goToEditMedia: () => void;
-        goToEditAgenda: () => void;
+        goToEditLocation: () => void;
     }
 
     interface IGenderForm {
@@ -210,12 +210,12 @@ module app.pages.userEditProfilePage {
 
 
         /*
-        * Go to edit agenda page
-        * @description this method is launched when user press 'Edit Agenda' menu
+        * Go to edit location page
+        * @description this method is launched when user press 'Edit Location' menu
         * option
         */
-        goToEditAgenda(): void {
-            this.$state.go('page.userEditAgendaPage');
+        goToEditLocation(): void {
+            this.$state.go('page.userEditLocationPage');
         }
 
 

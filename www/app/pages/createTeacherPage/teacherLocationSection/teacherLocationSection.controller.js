@@ -16,7 +16,6 @@ var app;
                     this._init();
                 }
                 TeacherLocationSectionController.prototype._init = function () {
-                    var self = this;
                     this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
                     this.STEP3_STATE = 'page.createTeacherPage.language';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.location.help_text.title.text');
@@ -36,7 +35,7 @@ var app;
                         positionLocation: new app.models.user.Position()
                     };
                     this.listCountries = this.getDataFromJson.getCountryi18n();
-                    this.mapConfig = self.functionsUtilService.buildMapConfig(null, 'drag-maker-map', null, null);
+                    this.mapConfig = this.functionsUtilService.buildMapConfig(null, 'drag-maker-map', null, null);
                     this.validate = {
                         countryLocation: { valid: true, message: '' },
                         cityLocation: { valid: true, message: '' },
@@ -48,7 +47,7 @@ var app;
                     this.activate();
                 };
                 TeacherLocationSectionController.prototype.activate = function () {
-                    console.log('TeacherLocationSectionController controller actived');
+                    DEBUG && console.log('TeacherLocationSectionController controller actived');
                     this._subscribeToEvents();
                     if (this.$rootScope.profileData) {
                         this._fillForm(this.$rootScope.profileData);
