@@ -491,13 +491,6 @@ module app.pages.userEditProfilePage {
                 formValid = this.validate.learn.valid;
             }
 
-            //Validate Teach Languages List
-            let teach_rules = [NULL_ENUM, EMPTY_ENUM];
-            this.validate.teach = this.functionsUtil.validator(this.form.teach, teach_rules);
-            if(!this.validate.teach.valid) {
-                formValid = this.validate.teach.valid;
-            }
-
             return formValid;
         }
 

@@ -7089,11 +7089,6 @@ var app;
                     if (!this.validate.learn.valid) {
                         formValid = this.validate.learn.valid;
                     }
-                    var teach_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.teach = this.functionsUtil.validator(this.form.teach, teach_rules);
-                    if (!this.validate.teach.valid) {
-                        formValid = this.validate.teach.valid;
-                    }
                     return formValid;
                 };
                 UserEditProfilePageController.prototype._addNewLanguages = function (type, $event) {
