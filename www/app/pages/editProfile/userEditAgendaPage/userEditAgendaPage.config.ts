@@ -24,11 +24,7 @@
                         controllerAs: 'vm'
                     }
                 },
-                parent: 'page',
-                params: {
-                    user: null,
-                    id: '1'
-                }
+                parent: 'page'
             });
     }
 })();

@@ -56,7 +56,7 @@ module app.pages.createTeacherPage {
 
 
         /*-- INJECT DEPENDENCIES --*/
-        public static $inject = [            
+        public static $inject = [
             'mainApp.core.util.FunctionsUtilService',
             'mainApp.core.s3Upload.S3UploadService',
             'mainApp.core.util.messageUtilService',
@@ -276,7 +276,7 @@ module app.pages.createTeacherPage {
         changeHelpText(type): void {
             //CONSTANTS
             const AVATAR_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.avatar.title.text');
-            const AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.avatar.description.text');
+            const AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.description.text');
             /*****************************************************/
 
             switch(type) {

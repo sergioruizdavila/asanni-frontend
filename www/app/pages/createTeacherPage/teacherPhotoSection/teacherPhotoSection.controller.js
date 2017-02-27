@@ -104,7 +104,7 @@ var app;
                 };
                 TeacherPhotoSectionController.prototype.changeHelpText = function (type) {
                     var AVATAR_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.avatar.title.text');
-                    var AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.avatar.description.text');
+                    var AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.description.text');
                     switch (type) {
                         case 'default':
                             this.helpText.title = this.HELP_TEXT_TITLE;

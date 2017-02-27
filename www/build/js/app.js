@@ -95,7 +95,7 @@ DEBUG = true;
     var BASE_URL = 'https://waysily-server.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/teachers-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/teachers-avatar-dev';
     }
     var dataConfig = {
@@ -7251,10 +7251,6 @@ var app;
                 }
             },
             cache: false,
-            params: {
-                user: null,
-                id: null
-            },
             data: {
                 requireLogin: true
             },
@@ -7274,7 +7270,7 @@ var app;
         var userEditLocationPage;
         (function (userEditLocationPage) {
             var UserEditLocationPageController = (function () {
-                function UserEditLocationPageController(dataConfig, userService, getDataFromJson, functionsUtil, $state, $filter, $timeout, $uibModal, $scope, $rootScope) {
+                function UserEditLocationPageController(dataConfig, userService, getDataFromJson, functionsUtil, $state, $filter, $timeout, $scope, $rootScope) {
                     this.dataConfig = dataConfig;
                     this.userService = userService;
                     this.getDataFromJson = getDataFromJson;
@@ -7282,7 +7278,6 @@ var app;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$timeout = $timeout;
-                    this.$uibModal = $uibModal;
                     this.$scope = $scope;
                     this.$rootScope = $rootScope;
                     this._init();
@@ -7471,7 +7466,6 @@ var app;
                 '$state',
                 '$filter',
                 '$timeout',
-                '$uibModal',
                 '$scope',
                 '$rootScope'
             ];
@@ -7491,19 +7485,28 @@ var app;
     function config($stateProvider) {
         $stateProvider
             .state('page.userEditMediaPage', {
-            url: '/users/edit/:id/media',
+            url: '/users/edit/media',
             views: {
                 'container': {
                     templateUrl: 'app/pages/editProfile/userEditMediaPage/userEditMediaPage.html',
                     controller: 'mainApp.pages.userEditMediaPage.UserEditMediaPageController',
-                    controllerAs: 'vm'
+                    controllerAs: 'vm',
+                    resolve: {
+                        waitForAuth: ['mainApp.auth.AuthService', function (AuthService) {
+                                return AuthService.autoRefreshToken();
+                            }]
+                    }
                 }
             },
-            parent: 'page',
-            params: {
-                user: null,
-                id: '1'
-            }
+            cache: false,
+            data: {
+                requireLogin: true
+            },
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = true;
+                    $rootScope.activeFooter = true;
+                    $rootScope.activeMessageBar = false;
+                }]
         });
     }
 })();
@@ -7515,35 +7518,155 @@ var app;
         var userEditMediaPage;
         (function (userEditMediaPage) {
             var UserEditMediaPageController = (function () {
-                function UserEditMediaPageController($state, $filter, $scope) {
+                function UserEditMediaPageController(dataConfig, userService, S3UploadService, getDataFromJson, functionsUtil, Upload, $state, $filter, $timeout, $scope, $rootScope) {
+                    this.dataConfig = dataConfig;
+                    this.userService = userService;
+                    this.S3UploadService = S3UploadService;
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtil = functionsUtil;
+                    this.Upload = Upload;
                     this.$state = $state;
                     this.$filter = $filter;
+                    this.$timeout = $timeout;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this._init();
                 }
                 UserEditMediaPageController.prototype._init = function () {
+                    this.saving = false;
+                    this.saved = false;
+                    this.error = false;
                     this.form = {
-                        username: '',
-                        email: ''
+                        avatar: null,
+                        croppedDataUrl: '',
+                        thumbnail: ''
                     };
-                    this.error = {
-                        message: ''
+                    this.validate = {
+                        avatar: { valid: true, message: '' },
+                        thumbnail: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
                     };
                     this.activate();
                 };
                 UserEditMediaPageController.prototype.activate = function () {
-                    console.log('userEditMediaPage controller actived');
+                    DEBUG && console.log('userEditMediaPage controller actived');
                 };
                 UserEditMediaPageController.prototype.goToEditProfile = function () {
                     this.$state.go('page.userEditProfilePage');
+                };
+                UserEditMediaPageController.prototype.goToEditLocation = function () {
+                    this.$state.go('page.userEditLocationPage');
+                };
+                UserEditMediaPageController.prototype._validateForm = function () {
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
+                    var DEFINED_ENUM = 6;
+                    var PHOTO_MESSAGE = this.$filter('translate')('%create.teacher.photo.validation.message.text');
+                    var formValid = true;
+                    var avatar_rules = [NULL_ENUM, EMPTY_ENUM, DEFINED_ENUM];
+                    this.validate.avatar = this.functionsUtil.validator(this.form.avatar, avatar_rules);
+                    var thumbnail_rules = [NULL_ENUM, EMPTY_ENUM, DEFINED_ENUM];
+                    this.validate.thumbnail = this.functionsUtil.validator(this.form.thumbnail, thumbnail_rules);
+                    if (!this.validate.avatar.valid) {
+                        if (!this.validate.thumbnail.valid) {
+                            this.validate.globalValidate.valid = false;
+                            this.validate.globalValidate.message = PHOTO_MESSAGE;
+                            formValid = this.validate.globalValidate.valid;
+                        }
+                        else {
+                            this.validate.globalValidate.valid = true;
+                            this.validate.globalValidate.message = '';
+                        }
+                    }
+                    return formValid;
+                };
+                UserEditMediaPageController.prototype._resizeImage = function () {
+                    var self = this;
+                    var newName = app.core.util.functionsUtil.FunctionsUtilService.generateGuid() + '.jpeg';
+                    var options = {
+                        width: 250,
+                        height: 250,
+                        quality: 1.0,
+                        type: 'image/jpeg',
+                        pattern: '.jpg',
+                        restoreExif: false
+                    };
+                    var file = this.Upload.dataUrltoBlob(this.form.croppedDataUrl, newName);
+                    return this.Upload.resize(file, options).then(function (resizedFile) {
+                        return self._uploadImage(resizedFile).then(function (result) {
+                            return result;
+                        });
+                    });
+                };
+                UserEditMediaPageController.prototype._uploadImage = function (resizedFile) {
+                    var self = this;
+                    return this.S3UploadService.upload(resizedFile).then(function (result) {
+                        return result;
+                    }, function (error) {
+                        DEBUG && console.error('error', error);
+                        return error;
+                    });
+                };
+                UserEditMediaPageController.prototype._setDataModelFromForm = function (avatar) {
+                    this.$rootScope.profileData.Avatar = avatar;
+                };
+                UserEditMediaPageController.prototype.saveImageSection = function () {
+                    var self = this;
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this.saving = true;
+                        this._resizeImage().then(function (result) {
+                            if (result.Location) {
+                                self._setDataModelFromForm(result.Location);
+                                self.save().then(function (saved) {
+                                    self.saving = false;
+                                    self.saved = saved;
+                                    self.error = !saved;
+                                    self.form.avatar = self.saved ? null : self.form.avatar;
+                                    self.$timeout(function () {
+                                        self.saved = false;
+                                    }, 3000);
+                                });
+                            }
+                            else {
+                                self.error = true;
+                            }
+                        });
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                UserEditMediaPageController.prototype.save = function () {
+                    var self = this;
+                    return this.userService.updateUserProfile(this.$rootScope.profileData)
+                        .then(function (response) {
+                        var saved = false;
+                        if (response.userId) {
+                            self.$rootScope.profileData = new app.models.user.Profile(response);
+                            saved = true;
+                        }
+                        return saved;
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        return false;
+                    });
                 };
                 return UserEditMediaPageController;
             }());
             UserEditMediaPageController.controllerId = 'mainApp.pages.userEditMediaPage.UserEditMediaPageController';
             UserEditMediaPageController.$inject = [
+                'dataConfig',
+                'mainApp.models.user.UserService',
+                'mainApp.core.s3Upload.S3UploadService',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                'Upload',
                 '$state',
                 '$filter',
-                '$scope'
+                '$timeout',
+                '$scope',
+                '$rootScope'
             ];
             userEditMediaPage.UserEditMediaPageController = UserEditMediaPageController;
             angular
@@ -7569,11 +7692,7 @@ var app;
                     controllerAs: 'vm'
                 }
             },
-            parent: 'page',
-            params: {
-                user: null,
-                id: '1'
-            }
+            parent: 'page'
         });
     }
 })();
@@ -9912,7 +10031,7 @@ var app;
                 };
                 TeacherPhotoSectionController.prototype.changeHelpText = function (type) {
                     var AVATAR_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.avatar.title.text');
-                    var AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.avatar.description.text');
+                    var AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.description.text');
                     switch (type) {
                         case 'default':
                             this.helpText.title = this.HELP_TEXT_TITLE;

@@ -16,19 +16,29 @@
 
         $stateProvider
             .state('page.userEditMediaPage', {
-                url: '/users/edit/:id/media',
+                url: '/users/edit/media',
                 views: {
                     'container': {
                         templateUrl: 'app/pages/editProfile/userEditMediaPage/userEditMediaPage.html',
                         controller: 'mainApp.pages.userEditMediaPage.UserEditMediaPageController',
-                        controllerAs: 'vm'
+                        controllerAs: 'vm',
+                        resolve: {
+                            waitForAuth: ['mainApp.auth.AuthService', function(AuthService) {
+                                return AuthService.autoRefreshToken();
+                            }]
+                        }
                     }
                 },
-                parent: 'page',
-                params: {
-                    user: null,
-                    id: '1'
-                }
+                cache: false,
+                data: {
+                    requireLogin: true
+                },
+                onEnter: ['$rootScope', function ($rootScope) {
+                    // Show/Hide header & footer
+                    $rootScope.activeHeader = true;
+                    $rootScope.activeFooter = true;
+                    $rootScope.activeMessageBar = false;
+                }]
             });
 
     }

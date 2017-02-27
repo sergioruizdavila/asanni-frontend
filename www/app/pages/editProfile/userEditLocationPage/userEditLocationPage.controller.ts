@@ -65,7 +65,6 @@ module app.pages.userEditLocationPage {
             '$state',
             '$filter',
             '$timeout',
-            '$uibModal',
             '$scope',
             '$rootScope'
         ];
@@ -80,8 +79,7 @@ module app.pages.userEditLocationPage {
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
-            private $timeout,
-            private $uibModal: ng.ui.bootstrap.IModalService,
+            private $timeout: angular.ITimeoutService,
             private $scope: angular.IScope,
             private $rootScope: app.core.interfaces.IMainAppRootScope) {
 
@@ -185,6 +183,9 @@ module app.pages.userEditLocationPage {
             let self = this;
             let userId = this.$rootScope.userData.id;
 
+            //TODO: Analizar si este llamado es necesario, ya que cada vez que refresco
+            // en el run llamo a esta funcion y traigo la información del usuario
+            // asi que es bobada hacerlo 2 veces.
             if(userId) {
                 // GET USER PROFILE DATA
                 this.userService.getUserProfileById(userId)

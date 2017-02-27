@@ -204,7 +204,6 @@ module app.pages.userEditProfilePage {
         * option
         */
         goToEditMedia(): void {
-            // Go to next page on calls stack
             this.$state.go('page.userEditMediaPage');
         }
 
@@ -231,6 +230,9 @@ module app.pages.userEditProfilePage {
             let self = this;
             let userId = this.$rootScope.userData.id;
 
+            //TODO: Analizar si este llamado es necesario, ya que cada vez que refresco
+            // en el run llamo a esta funcion y traigo la información del usuario
+            // asi que es bobada hacerlo 2 veces.
             if(userId) {
                 // GET USER PROFILE DATA
                 this.userService.getUserProfileById(userId)
