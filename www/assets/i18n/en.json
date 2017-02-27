@@ -286,6 +286,9 @@
     "__EDIT PROFILE PAGE: LOCATION__": "",
     "%edit.profile.location.title.text": "Where are you located?",
 
+    "__EDIT PROFILE PAGE: PROFILE PHOTO__": "",
+    "%edit.profile.photo.title.text": "profile photo",    
+
     "__RESET PASSWORD PAGE__": "",
     "%recover.password.title.text": "reset your password",
     "%recover.password.not_match.text": "Your new passwords did not match. Please try again.",
@@ -485,7 +488,6 @@
     "%create.teacher.photo.help_text.title.text": "First impressions are lasting",
     "%create.teacher.photo.help_text.description.text": "Clear front photos are an important way for teachers and students to get to know each other. Load a photo that clearly shows your face.",
     "%create.teacher.photo.help_text.avatar.title.text": "First impressions are lasting",
-    "%create.teacher.photo.help_text.avatar.description.text": "Clear frontal face photos are an important way for hosts and guests to learn about each other. It’s not much fun to host a landscape! Please upload a photo that clearly shows your face.",
     "%create.teacher.photo.help_text.avatar.uploaded.title.text": "Preview of your photo",
     "%create.teacher.photo.help_text.avatar.uploaded.description.text": "We will validate your photograph so that you are sure that it satisfies the minimum criteria. This will help you get students quickly.",
     "%create.teacher.photo.validation.message.text": "Please provide a profile photo",

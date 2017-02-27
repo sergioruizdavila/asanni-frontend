@@ -5,7 +5,7 @@ var app;
         var userEditLocationPage;
         (function (userEditLocationPage) {
             var UserEditLocationPageController = (function () {
-                function UserEditLocationPageController(dataConfig, userService, getDataFromJson, functionsUtil, $state, $filter, $timeout, $uibModal, $scope, $rootScope) {
+                function UserEditLocationPageController(dataConfig, userService, getDataFromJson, functionsUtil, $state, $filter, $timeout, $scope, $rootScope) {
                     this.dataConfig = dataConfig;
                     this.userService = userService;
                     this.getDataFromJson = getDataFromJson;
@@ -13,7 +13,6 @@ var app;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$timeout = $timeout;
-                    this.$uibModal = $uibModal;
                     this.$scope = $scope;
                     this.$rootScope = $rootScope;
                     this._init();
@@ -202,7 +201,6 @@ var app;
                 '$state',
                 '$filter',
                 '$timeout',
-                '$uibModal',
                 '$scope',
                 '$rootScope'
             ];

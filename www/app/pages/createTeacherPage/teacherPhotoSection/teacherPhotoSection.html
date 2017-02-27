@@ -40,7 +40,7 @@
                         <div class="teacher-avatar-box__upload-image-block__left-block
                                     col-xs-12
                                     col-lg-5 text-center">
-
+                            <! Upload Photo block >
                             <div ngf-drop ng-model="vm.form.avatar"
                                  ngf-pattern="image/*"
                                  class="ma-photo-profile
@@ -143,7 +143,7 @@
                                 </span>
                                 <span ng-class="{'hidden' : !vm.uploading}"
                                       translate>
-                                    Subiendo...
+                                    %global.uploading.button.text
                                 </span>
                             </button>
 
@@ -216,6 +216,7 @@
                     </div>
                     <! Help Text Block >
                     <div class="row space-top-3 space-3">
+                        <! Preview Image >
                         <div class="col-xs-12 space-3 text-center" ng-if="vm.form.avatar">
                             <img class="teacher-avatar-help-box__preview-image
                                         round"
@@ -226,7 +227,7 @@
                                 {{vm.helpText.description}}
                             </p>
                             <p class="ma-p ma-p--default" ng-if="vm.form.avatar" translate>
-                                %create.teacher.photo.help_text.avatar.uploaded.description.text
+                                %create.teacher.photo.help_text.description.text
                             </p>
                         </div>
                     </div>

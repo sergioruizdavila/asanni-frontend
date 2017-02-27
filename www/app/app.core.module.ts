@@ -23,10 +23,4 @@
         'ngImgCrop'
     ]);
 
-    /*angular.module('mainApp.core', [
-        'ngResource',
-        'ui.router',
-        'pascalprecht.translate'
-    ]);*/
-
 })();

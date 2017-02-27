@@ -286,6 +286,9 @@
     "__EDIT PROFILE PAGE: LOCATION__": "",
     "%edit.profile.location.title.text": "¿Dónde estás ubicado?",
 
+    "__EDIT PROFILE PAGE: PROFILE PHOTO__": "",
+    "%edit.profile.photo.title.text": "foto de perfil",
+
     "__RESET PASSWORD PAGE__": "",
     "%recover.password.title.text": "restablece tu contraseña",
     "%recover.password.not_match.text": "Tus nuevas contraseñas no coinciden. Por favor, inténtalo de nuevo.",
@@ -485,7 +488,6 @@
     "%create.teacher.photo.help_text.title.text": "La primera impresión es la más importante",
     "%create.teacher.photo.help_text.description.text": "Las fotos frontales claras son una forma importante para que los profesores y estudiantes se conozcan. Carga una foto que muestre claramente tu cara.",
     "%create.teacher.photo.help_text.avatar.title.text": "La primera impresión es la más importante",
-    "%create.teacher.photo.help_text.avatar.description.text": "Las fotos frontales claras son una forma importante para que los profesores y estudiantes se conozcan. Carga una foto que muestre claramente tu cara.",
     "%create.teacher.photo.help_text.avatar.uploaded.title.text": "Vista previa de tu foto",
     "%create.teacher.photo.help_text.avatar.uploaded.description.text": "Validaremos tu fotografía para que estés seguro de que cumples con los criterios mínimos. Esto te ayudará a conseguir estudiantes rápidamente.",
     "%create.teacher.photo.validation.message.text": "Es necesaria una foto de perfil",

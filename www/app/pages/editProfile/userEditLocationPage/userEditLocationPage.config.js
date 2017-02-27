@@ -20,10 +20,6 @@
                 }
             },
             cache: false,
-            params: {
-                user: null,
-                id: null
-            },
             data: {
                 requireLogin: true
             },
