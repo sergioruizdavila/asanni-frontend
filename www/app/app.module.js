@@ -28,6 +28,7 @@
         'mainApp.pages.userEditLocationPage',
         'mainApp.pages.userEditAgendaPage',
         'mainApp.pages.userEditMediaPage',
+        'mainApp.pages.editTeacher',
         'mainApp.pages.userInboxPage',
         'mainApp.pages.userInboxDetailsPage',
         'mainApp.pages.meetingConfirmationPage',
