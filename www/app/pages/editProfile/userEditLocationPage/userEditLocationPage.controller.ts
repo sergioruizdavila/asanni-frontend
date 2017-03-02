@@ -53,6 +53,7 @@ module app.pages.userEditLocationPage {
         mapConfig: components.map.IMapConfig;
         listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
         countryObject: app.core.interfaces.IDataFromJsonI18n;
+        TIME_SHOW_MESSAGE: number;
         // --------------------------------
 
 
@@ -89,6 +90,8 @@ module app.pages.userEditLocationPage {
 
         /*-- INITIALIZE METHOD --*/
         private _init() {
+            //CONSTANTS
+            this.TIME_SHOW_MESSAGE = 6000;
 
             // Init saving loading
             this.saving = false;
@@ -398,7 +401,7 @@ module app.pages.userEditLocationPage {
 
                         self.$timeout(function() {
                             self.saved = false;
-                        }, 3000);
+                        }, self.TIME_SHOW_MESSAGE);
                     }
                 );
             } else {

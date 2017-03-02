@@ -19,6 +19,7 @@ var app;
                     this._init();
                 }
                 UserEditProfilePageController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
                     this.saving = false;
                     this.saved = false;
                     this.error = false;
@@ -327,7 +328,7 @@ var app;
                             self.error = !saved;
                             self.$timeout(function () {
                                 self.saved = false;
-                            }, 3000);
+                            }, self.TIME_SHOW_MESSAGE);
                         });
                     }
                 };
@@ -343,7 +344,7 @@ var app;
                             self.error = !saved;
                             self.$timeout(function () {
                                 self.saved = false;
-                            }, 3000);
+                            }, self.TIME_SHOW_MESSAGE);
                         });
                     }
                 };

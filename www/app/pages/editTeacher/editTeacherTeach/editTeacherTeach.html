@@ -1,0 +1,211 @@
+<!----------------------------------------------------------------------------->
+<!--                           EDIT TEACHER TEACH                            -->
+<!----------------------------------------------------------------------------->
+
+
+<!--                         START: LEFT COLUMN                              -->
+<!----------------------------------------------------------------------------->
+<div id="editTeacher-left-column" class="col-xs-12 col-sm-12 col-md-3 space-4">
+
+    <!------------------------ START: LEFT MENU BLOCK ------------------------->
+    <div id="editTeacher-menu-block"
+         class="editTeacher__block row">
+
+        <div class="col-xs-12">
+            <ma-side-menu type="edit-teacher"></ma-side-menu>
+        </div>
+
+    </div>
+    <!--                        END: LEFT MENU BLOCK                         -->
+
+</div>
+<!--                             END: LEFT COLUMN                            -->
+
+
+
+<!---------------------------- START: MIDDLE COLUMN --------------------------->
+<div id="editTeacher-teach-middle-column"
+     class="col-xs-12 col-sm-12 col-md-6">
+
+    <div id="editTeacher-block"
+         class="editTeacher__block row">
+
+        <div class="col-xs-12">
+
+            <div class="ma-box">
+
+                <h4 class="ma-box__title text-capitalize margin-reset"
+                    ng-mouseover="vm.changeHelpText('default')" translate>
+                    %global.lang.label.text
+                </h4>
+
+                <div class="ma-box__content space-2">
+
+                    <!---------------- START: TEACH INFO BLOCK ---------------->
+
+                    <form class="ma-form ma-form--basic" novalidate>
+
+                        <! Teach Languages Box >
+                        <div class="form-group ma-form-group"
+                            ng-mouseover="vm.changeHelpText('teach')">
+                            <label for="teacher-teach-languages"
+                                    class="space-2" translate>
+                                %create.teacher.lang.form.teach.text
+                            </label>
+                            <div class="text-left ma-labels-box ma-labels-box--dashed"
+                                 ng-class="{'ma-labels-box--dashed--invalid': !vm.validate.teach.valid}">
+                                <div class="ma-label ma-label--box
+                                            ma-label--box--secondary
+                                            ma-label--box--default
+                                            ma-label--box--default--with-icon
+                                            ma-label--box--space2"
+                                     ng-repeat="language in vm.form.teach">
+                                    {{language.value}}
+                                    <i class="ma-label--box--default--with-icon__icon
+                                                  material-icons"
+                                       ng-click="vm._removeLanguage(language.key, 'teach')">clear</i>
+                                </div>
+                            </div>
+                            <div class="row margin-reset">
+                                <div class="col-xs-7 col-sm-8 padding-reset">
+                                    <p class="ma-p ma-p--small ma-p--alert pull-left"
+                                       ng-show="!vm.validate.teach.valid">
+                                        <span>{{vm.validate.teach.message}}</span>
+                                    </p>
+                                </div>
+                                <div class="col-xs-5 col-sm-4 padding-reset">
+                                    <a class="ma-link ma-link--box
+                                              ma-link--box--primary
+                                              space-top-1 pull-right"
+                                       href
+                                       ng-click="vm._addNewLanguages('teach', $event)"
+                                       translate>
+                                        %global.add_more.button.text
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+
+                    <!--              END: EXPERIENCE INFO BLOCK             -->
+
+                </div>
+
+                <div class="ma-box__footer">
+
+                    <div class="row middle-xs">
+
+                        <div class="col-xs-6 text-left">
+
+                            <span class="ma-label
+                                         ma-label--simple
+                                         ma-label--simple--large
+                                         ma-label--simple--primary
+                                         margin-reset"
+                                  ng-class="{'hidden' : !vm.saved}">
+                                <i class="material-icons
+                                          md-30
+                                          md-primary
+                                          vertical-align-middle">
+                                    done
+                                </i>
+                                <span class="vertical-align-middle"
+                                      translate>
+                                    %notification.success.text
+                                </span>
+                            </span>
+
+                            <span class="ma-label
+                                         ma-label--simple
+                                         ma-label--simple--large
+                                         ma-label--simple--alert
+                                         margin-reset"
+                                  ng-class="{'hidden' : !vm.error}"
+                                  translate>
+                                %notification.error.server.text
+                            </span>
+
+                        </div>
+
+                        <div class="col-xs-6 text-right">
+
+                            <button class="ma-btn
+                                           ma-btn--primary
+                                           ma-btn--medium"
+                                    ng-click="vm.saveTeachSection()"
+                                    ng-disabled="vm.saving">
+                                <span ng-class="{'hidden' : vm.saving}"
+                                      translate>
+                                    %global.save.button.text
+                                </span>
+                                <span ng-class="{'hidden' : !vm.saving}"
+                                      translate>
+                                    %global.saving.button.text
+                                </span>
+                           </button>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<!--                           END: LEFT COLUMN                              -->
+
+
+
+<!--------------------------- START: RIGHT COLUMN ----------------------------->
+<div id="editTeacher-right-column"
+     class="editTeacher__help-block
+            hidden-xs hidden-sm col-md-3 col-lg-3">
+
+    <div class="ma-box space-5">
+
+        <div class="ma-box__content">
+
+            <!----------------- START: HELP AND INFO BLOCK -------------------->
+            <div id="editTeacher-info-block"
+                 class="row margin-reset text-center">
+
+                <div class="col-xs-12">
+                    <! Help Icon Block >
+                    <div class="row">
+                        <div class="col-xs-12 text-right padding-reset">
+                            <i class="material-icons md-30 md-primary">
+                                 lightbulb_outline
+                             </i>
+                        </div>
+                    </div>
+                    <! Help Title Block >
+                    <div class="row">
+                        <div class="col-xs-12 text-left">
+                            <h5>
+                                {{vm.helpText.title}}
+                            </h5>
+                        </div>
+                    </div>
+                    <! Help Text Block >
+                    <div class="row">
+                        <div class="col-xs-12 text-left">
+                            <p class="ma-p ma-p--small">
+                                {{vm.helpText.description}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!--                END: HELP AND INFO BLOCK                     -->
+
+        </div>
+
+    </div>
+
+</div>
+<!--                          END: RIGHT COLUMN                              -->

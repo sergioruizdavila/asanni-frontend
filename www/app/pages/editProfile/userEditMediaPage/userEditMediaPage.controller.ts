@@ -43,6 +43,7 @@ module app.pages.userEditMediaPage {
         saving: boolean;
         saved: boolean;
         error: boolean;
+        TIME_SHOW_MESSAGE: number;
         // --------------------------------
 
 
@@ -82,6 +83,8 @@ module app.pages.userEditMediaPage {
 
         /*-- INITIALIZE METHOD --*/
         private _init() {
+            //CONSTANTS
+            this.TIME_SHOW_MESSAGE = 6000;
 
             // Init saving loading
             this.saving = false;
@@ -159,6 +162,10 @@ module app.pages.userEditMediaPage {
             /***************************************************/
             //VARIABLES
             let formValid = true;
+
+            //Reset globalValidate
+            this.validate.globalValidate.valid = true;
+            this.validate.globalValidate.message = '';
 
             //Validate photo
             let avatar_rules = [NULL_ENUM, EMPTY_ENUM, DEFINED_ENUM];
@@ -301,7 +308,7 @@ module app.pages.userEditMediaPage {
 
                                     self.$timeout(function() {
                                         self.saved = false;
-                                    }, 3000);
+                                    }, self.TIME_SHOW_MESSAGE);
                                 }
                             );
                         } else {

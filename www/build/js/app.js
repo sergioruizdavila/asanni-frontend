@@ -28,10 +28,12 @@
         'mainApp.pages.userEditLocationPage',
         'mainApp.pages.userEditAgendaPage',
         'mainApp.pages.userEditMediaPage',
+        'mainApp.pages.editTeacher',
         'mainApp.pages.userInboxPage',
         'mainApp.pages.userInboxDetailsPage',
         'mainApp.pages.meetingConfirmationPage',
         'mainApp.components.header',
+        'mainApp.components.sideMenu',
         'mainApp.components.rating',
         'mainApp.components.map',
         'mainApp.components.modal',
@@ -3329,6 +3331,96 @@ var components;
     })(header = components.header || (components.header = {}));
 })(components || (components = {}));
 //# sourceMappingURL=header.directive.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.components.sideMenu', [])
+        .config(config);
+    function config() { }
+})();
+//# sourceMappingURL=sideMenu.config.js.map
+var components;
+(function (components) {
+    var sideMenu;
+    (function (sideMenu) {
+        'use strict';
+        var MaSideMenu = (function () {
+            function MaSideMenu() {
+                this.bindToController = true;
+                this.controller = SideMenuController.controllerId;
+                this.controllerAs = 'vm';
+                this.restrict = 'E';
+                this.scope = {
+                    type: '@'
+                };
+                this.templateUrl = 'components/sideMenu/sideMenu.html';
+                DEBUG && console.log('maSideMenu directive constructor');
+            }
+            MaSideMenu.prototype.link = function ($scope, elm, attr) {
+                DEBUG && console.log('maSideMenu link function');
+            };
+            MaSideMenu.instance = function () {
+                return new MaSideMenu();
+            };
+            return MaSideMenu;
+        }());
+        MaSideMenu.directiveId = 'maSideMenu';
+        angular
+            .module('mainApp.components.sideMenu')
+            .directive(MaSideMenu.directiveId, MaSideMenu.instance);
+        var SideMenuController = (function () {
+            function SideMenuController($state, $filter) {
+                this.$state = $state;
+                this.$filter = $filter;
+                this.init();
+            }
+            SideMenuController.prototype.init = function () {
+                this.activate();
+            };
+            SideMenuController.prototype.activate = function () {
+                DEBUG && console.log('sideMenu controller actived');
+                this._buildSideMenunOptions();
+            };
+            SideMenuController.prototype._buildSideMenunOptions = function () {
+                var type = this.type;
+                var TEACH_OPTION = this.$filter('translate')('%modal.recommend.teacher.invitation.message.teach.label.text');
+                var EXPERIENCE_OPTION = this.$filter('translate')('%landing.teacher.badge_explanation.get.first_requirement.title.text');
+                switch (type) {
+                    case 'edit-teacher':
+                        this.optionsList = [
+                            {
+                                name: TEACH_OPTION,
+                                state: 'page.editTeacher.teach'
+                            },
+                            {
+                                name: EXPERIENCE_OPTION,
+                                state: 'page.editTeacher.experience'
+                            }
+                        ];
+                        break;
+                    case 'edit-profile':
+                        break;
+                }
+            };
+            SideMenuController.prototype._currentState = function (state) {
+                var currentState = this.$state.current.name;
+                return state === currentState;
+            };
+            SideMenuController.prototype._goToSection = function (state) {
+                this.$state.go(state, { reload: true });
+            };
+            SideMenuController.prototype._goToViewProfile = function (id) {
+            };
+            return SideMenuController;
+        }());
+        SideMenuController.controllerId = 'mainApp.components.sideMenu.SideMenuController';
+        SideMenuController.$inject = ['$state', '$filter'];
+        sideMenu.SideMenuController = SideMenuController;
+        angular.module('mainApp.components.sideMenu')
+            .controller(SideMenuController.controllerId, SideMenuController);
+    })(sideMenu = components.sideMenu || (components.sideMenu = {}));
+})(components || (components = {}));
+//# sourceMappingURL=sideMenu.directive.js.map
 (function () {
     'use strict';
     angular
@@ -6863,6 +6955,7 @@ var app;
                     this._init();
                 }
                 UserEditProfilePageController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
                     this.saving = false;
                     this.saved = false;
                     this.error = false;
@@ -7171,7 +7264,7 @@ var app;
                             self.error = !saved;
                             self.$timeout(function () {
                                 self.saved = false;
-                            }, 3000);
+                            }, self.TIME_SHOW_MESSAGE);
                         });
                     }
                 };
@@ -7187,7 +7280,7 @@ var app;
                             self.error = !saved;
                             self.$timeout(function () {
                                 self.saved = false;
-                            }, 3000);
+                            }, self.TIME_SHOW_MESSAGE);
                         });
                     }
                 };
@@ -7283,6 +7376,7 @@ var app;
                     this._init();
                 }
                 UserEditLocationPageController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
                     this.saving = false;
                     this.saved = false;
                     this.error = false;
@@ -7426,7 +7520,7 @@ var app;
                             self.error = !saved;
                             self.$timeout(function () {
                                 self.saved = false;
-                            }, 3000);
+                            }, self.TIME_SHOW_MESSAGE);
                         });
                     }
                     else {
@@ -7533,6 +7627,7 @@ var app;
                     this._init();
                 }
                 UserEditMediaPageController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
                     this.saving = false;
                     this.saved = false;
                     this.error = false;
@@ -7563,6 +7658,8 @@ var app;
                     var DEFINED_ENUM = 6;
                     var PHOTO_MESSAGE = this.$filter('translate')('%create.teacher.photo.validation.message.text');
                     var formValid = true;
+                    this.validate.globalValidate.valid = true;
+                    this.validate.globalValidate.message = '';
                     var avatar_rules = [NULL_ENUM, EMPTY_ENUM, DEFINED_ENUM];
                     this.validate.avatar = this.functionsUtil.validator(this.form.avatar, avatar_rules);
                     var thumbnail_rules = [NULL_ENUM, EMPTY_ENUM, DEFINED_ENUM];
@@ -7625,7 +7722,7 @@ var app;
                                     self.form.avatar = self.saved ? null : self.form.avatar;
                                     self.$timeout(function () {
                                         self.saved = false;
-                                    }, 3000);
+                                    }, self.TIME_SHOW_MESSAGE);
                                 });
                             }
                             else {
@@ -7790,6 +7887,599 @@ var app;
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
 //# sourceMappingURL=userEditAgendaPage.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.editTeacher', [])
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.editTeacher', {
+            url: '/teachers/edit',
+            views: {
+                'container': {
+                    templateUrl: 'app/pages/editTeacher/editTeacher.html',
+                    controller: 'mainApp.pages.editTeacher.EditTeacherController',
+                    controllerAs: 'vm',
+                    resolve: {
+                        waitForAuth: ['mainApp.auth.AuthService', function (AuthService) {
+                                return AuthService.autoRefreshToken();
+                            }]
+                    }
+                }
+            },
+            cache: false,
+            data: {
+                requireLogin: true
+            },
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = true;
+                    $rootScope.activeFooter = true;
+                    $rootScope.activeMessageBar = false;
+                }]
+        });
+    }
+})();
+//# sourceMappingURL=editTeacher.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var editTeacher;
+        (function (editTeacher) {
+            var EditTeacherController = (function () {
+                function EditTeacherController(getDataFromJson, functionsUtilService, userService, teacherService, messageUtil, dataConfig, $state, $stateParams, $filter, $scope, $window, $rootScope, $uibModal, waitForAuth) {
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
+                    this.userService = userService;
+                    this.teacherService = teacherService;
+                    this.messageUtil = messageUtil;
+                    this.dataConfig = dataConfig;
+                    this.$state = $state;
+                    this.$stateParams = $stateParams;
+                    this.$filter = $filter;
+                    this.$scope = $scope;
+                    this.$window = $window;
+                    this.$rootScope = $rootScope;
+                    this.$uibModal = $uibModal;
+                    this._init();
+                }
+                EditTeacherController.prototype._init = function () {
+                    var self = this;
+                    var loggedUserId = this.$rootScope.userData.id;
+                    var currentState = this.$state.current.name;
+                    this.$rootScope.teacherData = new app.models.teacher.Teacher();
+                    this.$rootScope.teacherData.Profile.UserId = loggedUserId;
+                    this.activate();
+                };
+                EditTeacherController.prototype.activate = function () {
+                    var self = this;
+                    console.log('editTeacher controller actived');
+                    this._subscribeToEvents();
+                    this.fillFormWithProfileData();
+                    this.fillFormWithTeacherData();
+                };
+                EditTeacherController.prototype.fillFormWithProfileData = function () {
+                    var self = this;
+                    var userId = this.$rootScope.userData.id;
+                    if (userId) {
+                        this.userService.getUserProfileById(userId)
+                            .then(function (response) {
+                            if (response.userId) {
+                                self.$rootScope.profileData = new app.models.user.Profile(response);
+                                self.$scope.$broadcast('Fill User Profile Form', self.$rootScope.profileData);
+                            }
+                        });
+                    }
+                };
+                EditTeacherController.prototype.fillFormWithTeacherData = function () {
+                    var self = this;
+                    var userId = this.$rootScope.userData.id;
+                    this.teacherService.getTeacherByProfileId(userId).then(function (response) {
+                        if (response.id) {
+                            self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
+                            self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
+                        }
+                    });
+                };
+                EditTeacherController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Save Profile Data', function (event, args) {
+                        var SUCCESS_MESSAGE = self.$filter('translate')('%notification.success.text');
+                        var userId = self.$rootScope.profileData.UserId;
+                        if (userId) {
+                            self.userService.updateUserProfile(self.$rootScope.profileData)
+                                .then(function (response) {
+                                if (response.userId) {
+                                    self.$rootScope.profileData = new app.models.user.Profile(response);
+                                    self.$scope.$broadcast('Fill User Profile Form', self.$rootScope.profileData);
+                                    self.$scope.$broadcast('Saved');
+                                }
+                            }, function (error) {
+                                self.messageUtil.error('');
+                                self.$scope.$broadcast('Fill User Profile Form', 'error');
+                            });
+                        }
+                    });
+                    this.$scope.$on('Save Data', function (event, args) {
+                        var SUCCESS_MESSAGE = self.$filter('translate')('%notification.success.text');
+                        if (self.$rootScope.teacherData.Id) {
+                            self.teacherService.updateTeacher(self.$rootScope.teacherData)
+                                .then(function (response) {
+                                if (response.id) {
+                                    self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
+                                    self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
+                                    self.$scope.$broadcast('Saved');
+                                }
+                            }, function (error) {
+                                self.messageUtil.error('');
+                                self.$scope.$broadcast('Fill Form', 'error');
+                            });
+                        }
+                        else {
+                            DEBUG && console.log('self.$rootScope.teacherData.Id doesn´t exist');
+                        }
+                    });
+                };
+                return EditTeacherController;
+            }());
+            EditTeacherController.controllerId = 'mainApp.pages.editTeacher.EditTeacherController';
+            EditTeacherController.$inject = [
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.models.user.UserService',
+                'mainApp.models.teacher.TeacherService',
+                'mainApp.core.util.messageUtilService',
+                'dataConfig',
+                '$state',
+                '$stateParams',
+                '$filter',
+                '$scope',
+                '$window',
+                '$rootScope',
+                '$uibModal',
+                'waitForAuth'
+            ];
+            editTeacher.EditTeacherController = EditTeacherController;
+            angular
+                .module('mainApp.pages.editTeacher')
+                .controller(EditTeacherController.controllerId, EditTeacherController);
+        })(editTeacher = pages.editTeacher || (pages.editTeacher = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=editTeacher.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.editTeacher')
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.editTeacher.experience', {
+            url: '/experience',
+            views: {
+                'section': {
+                    templateUrl: 'app/pages/editTeacher/editTeacherExperience/editTeacherExperience.html',
+                    controller: 'mainApp.pages.editTeacher.EditTeacherExperienceController',
+                    controllerAs: 'vm'
+                }
+            },
+            cache: false
+        });
+    }
+})();
+//# sourceMappingURL=editTeacherExperience.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var editTeacher;
+        (function (editTeacher) {
+            var EditTeacherExperienceController = (function () {
+                function EditTeacherExperienceController(dataConfig, getDataFromJson, functionsUtilService, $timeout, $filter, $scope, $rootScope, $uibModal) {
+                    this.dataConfig = dataConfig;
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
+                    this.$timeout = $timeout;
+                    this.$filter = $filter;
+                    this.$scope = $scope;
+                    this.$rootScope = $rootScope;
+                    this.$uibModal = $uibModal;
+                    this._init();
+                }
+                EditTeacherExperienceController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
+                    this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.title.text');
+                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.description.text');
+                    this.saving = false;
+                    this.saved = false;
+                    this.error = false;
+                    this.helpText = {
+                        title: this.HELP_TEXT_TITLE,
+                        description: this.HELP_TEXT_DESCRIPTION
+                    };
+                    this.form = {
+                        type: 'H',
+                        experiences: []
+                    };
+                    var currentYear = parseInt(this.dataConfig.currentYear);
+                    this.listYears = this.functionsUtilService.buildNumberSelectList(1957, currentYear);
+                    this.yearObject = { value: '' };
+                    this._hobbyChecked = { type: 'H', checked: true };
+                    this._professionalChecked = { type: 'P', checked: false };
+                    this.validate = {
+                        type: { valid: true, message: '' },
+                        teacherSince: { valid: true, message: '' },
+                        experiences: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                EditTeacherExperienceController.prototype.activate = function () {
+                    DEBUG && console.log('EditTeacherExperienceController controller actived');
+                    this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
+                };
+                EditTeacherExperienceController.prototype.saveExperienceSection = function () {
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this.saving = true;
+                        this._setDataModelFromForm();
+                        this.$scope.$emit('Save Data');
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                EditTeacherExperienceController.prototype._checkType = function (key) {
+                    var type = key.type;
+                    if (type === 'H') {
+                        this._professionalChecked.checked = false;
+                        this._hobbyChecked.checked = true;
+                        this.form.type = this._hobbyChecked.type;
+                    }
+                    else {
+                        this._professionalChecked.checked = true;
+                        this._hobbyChecked.checked = false;
+                        this.form.type = this._professionalChecked.type;
+                    }
+                };
+                EditTeacherExperienceController.prototype._fillForm = function (data) {
+                    this.form.type = data.Type || 'H';
+                    if (this.form.type === 'H') {
+                        this._professionalChecked.checked = false;
+                        this._hobbyChecked.checked = true;
+                    }
+                    else {
+                        this._professionalChecked.checked = true;
+                        this._hobbyChecked.checked = false;
+                    }
+                    this.yearObject.value = data.TeacherSince;
+                    this.form.experiences = data.Experiences;
+                };
+                EditTeacherExperienceController.prototype._validateForm = function () {
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
+                    var formValid = true;
+                    var teacher_since_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.teacherSince = this.functionsUtilService.validator(this.yearObject.value, teacher_since_rules);
+                    if (!this.validate.teacherSince.valid) {
+                        formValid = this.validate.teacherSince.valid;
+                    }
+                    return formValid;
+                };
+                EditTeacherExperienceController.prototype.changeHelpText = function (type) {
+                    var TYPE_HOBBY_TITLE = this.$filter('translate')('%global.teacher.type.hobby.text');
+                    var TYPE_HOBBY_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.type.hobby.description.text');
+                    var TYPE_PROFESSIONAL_TITLE = this.$filter('translate')('%global.teacher.type.professional.text');
+                    var TYPE_PROFESSIONAL_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.type.professional.description.text');
+                    var SINCE_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.teacher_since.title.text');
+                    var SINCE_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.teacher_since.description.text');
+                    var EXPERIENCES_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.experiences.title.text');
+                    var EXPERIENCES_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.experiences.description.text');
+                    switch (type) {
+                        case 'default':
+                            this.helpText.title = this.HELP_TEXT_TITLE;
+                            this.helpText.description = this.HELP_TEXT_DESCRIPTION;
+                            break;
+                        case 'hobby':
+                            this.helpText.title = TYPE_HOBBY_TITLE;
+                            this.helpText.description = TYPE_HOBBY_DESCRIPTION;
+                            break;
+                        case 'professional':
+                            this.helpText.title = TYPE_PROFESSIONAL_TITLE;
+                            this.helpText.description = TYPE_PROFESSIONAL_DESCRIPTION;
+                            break;
+                        case 'teacherSince':
+                            this.helpText.title = SINCE_TITLE;
+                            this.helpText.description = SINCE_DESCRIPTION;
+                            break;
+                        case 'experiences':
+                            this.helpText.title = EXPERIENCES_TITLE;
+                            this.helpText.description = EXPERIENCES_DESCRIPTION;
+                            break;
+                    }
+                };
+                EditTeacherExperienceController.prototype._addEditExperience = function (index, $event) {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalExperienceTmpl,
+                        controller: 'mainApp.components.modal.ModalExperienceController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    experience: self.form.experiences[index],
+                                    teacherId: self.$rootScope.teacherData.Id
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function (newExperience) {
+                        if (newExperience) {
+                            self.form.experiences.push(newExperience);
+                        }
+                    }, function () {
+                        DEBUG && console.info('Modal dismissed at: ' + new Date());
+                    });
+                    $event.preventDefault();
+                };
+                EditTeacherExperienceController.prototype._setDataModelFromForm = function () {
+                    this.$rootScope.teacherData.Type = this.form.type;
+                    this.$rootScope.teacherData.TeacherSince = this.yearObject.value;
+                };
+                EditTeacherExperienceController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Fill Form', function (event, args) {
+                        self.error = false;
+                        if (args !== 'error') {
+                            self._fillForm(args);
+                        }
+                        else {
+                            self.error = true;
+                        }
+                    });
+                    this.$scope.$on('Saved', function (event, args) {
+                        self.saving = false;
+                        self.error = false;
+                        self.saved = true;
+                        self.$timeout(function () {
+                            self.saved = false;
+                        }, self.TIME_SHOW_MESSAGE);
+                    });
+                };
+                return EditTeacherExperienceController;
+            }());
+            EditTeacherExperienceController.controllerId = 'mainApp.pages.editTeacher.EditTeacherExperienceController';
+            EditTeacherExperienceController.$inject = [
+                'dataConfig',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                '$timeout',
+                '$filter',
+                '$scope',
+                '$rootScope',
+                '$uibModal'
+            ];
+            editTeacher.EditTeacherExperienceController = EditTeacherExperienceController;
+            angular
+                .module('mainApp.pages.editTeacher')
+                .controller(EditTeacherExperienceController.controllerId, EditTeacherExperienceController);
+        })(editTeacher = pages.editTeacher || (pages.editTeacher = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=editTeacherExperience.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.editTeacher')
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.editTeacher.teach', {
+            url: '/teach',
+            views: {
+                'section': {
+                    templateUrl: 'app/pages/editTeacher/editTeacherTeach/editTeacherTeach.html',
+                    controller: 'mainApp.pages.editTeacher.EditTeacherTeachController',
+                    controllerAs: 'vm'
+                }
+            },
+            cache: false
+        });
+    }
+})();
+//# sourceMappingURL=editTeacherTeach.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var editTeacher;
+        (function (editTeacher) {
+            var EditTeacherTeachController = (function () {
+                function EditTeacherTeachController(dataConfig, functionsUtil, getDataFromJson, $state, $filter, $timeout, $scope, $rootScope, $uibModal) {
+                    this.dataConfig = dataConfig;
+                    this.functionsUtil = functionsUtil;
+                    this.getDataFromJson = getDataFromJson;
+                    this.$state = $state;
+                    this.$filter = $filter;
+                    this.$timeout = $timeout;
+                    this.$scope = $scope;
+                    this.$rootScope = $rootScope;
+                    this.$uibModal = $uibModal;
+                    this._init();
+                }
+                EditTeacherTeachController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
+                    this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.lang.help_text.teach.title.text');
+                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.lang.help_text.teach.description.text');
+                    this.saving = false;
+                    this.saved = false;
+                    this.error = false;
+                    this.helpText = {
+                        title: this.HELP_TEXT_TITLE,
+                        description: this.HELP_TEXT_DESCRIPTION
+                    };
+                    this.form = {
+                        teach: []
+                    };
+                    this.validate = {
+                        teach: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                EditTeacherTeachController.prototype.activate = function () {
+                    DEBUG && console.log('EditTeacherTeachController controller actived');
+                    this._subscribeToEvents();
+                    if (this.$rootScope.profileData) {
+                        this._fillForm(this.$rootScope.profileData);
+                    }
+                };
+                EditTeacherTeachController.prototype.saveTeachSection = function () {
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this.saving = true;
+                        this._setDataModelFromForm();
+                        this.$scope.$emit('Save Profile Data');
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                EditTeacherTeachController.prototype._fillForm = function (data) {
+                    if (this.form.teach.length === 0) {
+                        var languageArray = this.getDataFromJson.getLanguagei18n();
+                        for (var i = 0; i < languageArray.length; i++) {
+                            if (data.Languages.Teach) {
+                                for (var j = 0; j < data.Languages.Teach.length; j++) {
+                                    if (data.Languages.Teach[j] == languageArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = parseInt(languageArray[i].code);
+                                        obj.value = languageArray[i].value;
+                                        if (this.form.teach == null) {
+                                            this.form.teach = [];
+                                            this.form.teach.push(obj);
+                                        }
+                                        else {
+                                            this.form.teach.push(obj);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+                EditTeacherTeachController.prototype._validateForm = function () {
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
+                    var formValid = true;
+                    var teach_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.teach = this.functionsUtil.validator(this.form.teach, teach_rules);
+                    if (!this.validate.teach.valid) {
+                        formValid = this.validate.teach.valid;
+                    }
+                    return formValid;
+                };
+                EditTeacherTeachController.prototype.changeHelpText = function (type) {
+                    var TEACH_TITLE = this.$filter('translate')('%create.teacher.lang.help_text.teach.title.text');
+                    var TEACH_DESCRIPTION = this.$filter('translate')('%create.teacher.lang.help_text.teach.description.text');
+                    switch (type) {
+                        case 'default':
+                            this.helpText.title = this.HELP_TEXT_TITLE;
+                            this.helpText.description = this.HELP_TEXT_DESCRIPTION;
+                            break;
+                        case 'teach':
+                            this.helpText.title = TEACH_TITLE;
+                            this.helpText.description = TEACH_DESCRIPTION;
+                            break;
+                    }
+                };
+                EditTeacherTeachController.prototype._addNewLanguages = function (type, $event) {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalLanguagesTmpl,
+                        controller: 'mainApp.components.modal.ModalLanguageController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    type: type,
+                                    list: self.form[type]
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function (newLanguagesList) {
+                        self.form[type] = newLanguagesList;
+                    }, function () {
+                        DEBUG && console.info('Modal dismissed at: ' + new Date());
+                    });
+                    $event.preventDefault();
+                };
+                EditTeacherTeachController.prototype._removeLanguage = function (key, type) {
+                    var newArray = this.form[type].filter(function (el) {
+                        return el.key !== key;
+                    });
+                    this.form[type] = newArray;
+                };
+                EditTeacherTeachController.prototype._setDataModelFromForm = function () {
+                    if (this.form.teach) {
+                        var teach = [];
+                        for (var i = 0; i < this.form.teach.length; i++) {
+                            teach.push(this.form.teach[i].key);
+                        }
+                        this.$rootScope.profileData.Languages.Teach = teach;
+                    }
+                };
+                EditTeacherTeachController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Fill Form', function (event, args) {
+                        self.error = false;
+                        if (args !== 'error') {
+                            self._fillForm(args);
+                        }
+                        else {
+                            self.error = true;
+                        }
+                    });
+                    this.$scope.$on('Saved', function (event, args) {
+                        self.saving = false;
+                        self.error = false;
+                        self.saved = true;
+                        self.$timeout(function () {
+                            self.saved = false;
+                        }, self.TIME_SHOW_MESSAGE);
+                    });
+                };
+                return EditTeacherTeachController;
+            }());
+            EditTeacherTeachController.controllerId = 'mainApp.pages.editTeacher.EditTeacherTeachController';
+            EditTeacherTeachController.$inject = [
+                'dataConfig',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.core.util.GetDataStaticJsonService',
+                '$state',
+                '$filter',
+                '$timeout',
+                '$scope',
+                '$rootScope',
+                '$uibModal'
+            ];
+            editTeacher.EditTeacherTeachController = EditTeacherTeachController;
+            angular
+                .module('mainApp.pages.editTeacher')
+                .controller(EditTeacherTeachController.controllerId, EditTeacherTeachController);
+        })(editTeacher = pages.editTeacher || (pages.editTeacher = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=editTeacherTeach.controller.js.map
 (function () {
     'use strict';
     angular
