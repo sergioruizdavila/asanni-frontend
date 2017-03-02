@@ -77,6 +77,7 @@ module app.pages.userEditProfilePage {
         countryObject: app.core.interfaces.IDataFromJsonI18n;
         dateObject: IBirthdateForm;
         genderObject: IGenderForm;
+        TIME_SHOW_MESSAGE: number;
         // --------------------------------
 
 
@@ -104,7 +105,7 @@ module app.pages.userEditProfilePage {
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
-            private $timeout,
+            private $timeout: angular.ITimeoutService,
             private $uibModal: ng.ui.bootstrap.IModalService,
             private $scope: angular.IScope,
             private $rootScope: app.core.interfaces.IMainAppRootScope) {
@@ -115,6 +116,8 @@ module app.pages.userEditProfilePage {
 
         /*-- INITIALIZE METHOD --*/
         private _init() {
+            //CONSTANTS
+            this.TIME_SHOW_MESSAGE = 6000;
 
             // Init saving loading
             this.saving = false;
@@ -651,7 +654,7 @@ module app.pages.userEditProfilePage {
 
                         self.$timeout(function() {
                             self.saved = false;
-                        }, 3000);
+                        }, self.TIME_SHOW_MESSAGE);
                     }
                 );
             }
@@ -686,7 +689,7 @@ module app.pages.userEditProfilePage {
 
                         self.$timeout(function() {
                             self.saved = false;
-                        }, 3000);
+                        }, self.TIME_SHOW_MESSAGE);
                     }
                 );
             }

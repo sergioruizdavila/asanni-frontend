@@ -71,6 +71,9 @@
     "%header.join.teacher.tooltip.second_part.text.legacy": "on average",
     "%header.join.teacher.tooltip.second_part.text": "as a teacher in your country in a week. Join as a teacher.",
 
+    "__SUBNAV HEADER__": "",
+    "%subnav.user.dashboard.teacher.option.text": "Teacher information",
+
     "__FLOAT MESSAGE BAR__": "",
     "%message.bar.text_block.first_part.label.text.bkp": "You have a recommendation from",
     "%message.bar.text_block.first_part.label.text": "You have a recommendation.",
@@ -287,7 +290,7 @@
     "%edit.profile.location.title.text": "Where are you located?",
 
     "__EDIT PROFILE PAGE: PROFILE PHOTO__": "",
-    "%edit.profile.photo.title.text": "profile photo",    
+    "%edit.profile.photo.title.text": "profile photo",
 
     "__RESET PASSWORD PAGE__": "",
     "%recover.password.title.text": "reset your password",

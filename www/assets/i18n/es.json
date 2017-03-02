@@ -71,6 +71,9 @@
     "%header.join.teacher.tooltip.second_part.text.legacy": "en promedio",
     "%header.join.teacher.tooltip.second_part.text": "en una semana como profesor en tu país. Únete como profesor.",
 
+    "__SUBNAV HEADER__": "",
+    "%subnav.user.dashboard.teacher.option.text": "Información de profesor",
+
     "__FLOAT MESSAGE BAR__": "",
     "%message.bar.text_block.first_part.label.text.bkp": "Tienes una recomendación de",
     "%message.bar.text_block.first_part.label.text": "Tienes una recomendación.",

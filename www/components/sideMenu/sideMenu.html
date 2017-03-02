@@ -1,0 +1,30 @@
+<!---------------------------------------------------------->
+<!--                 SIDE MENU COMPONENT                  -->
+<!---------------------------------------------------------->
+
+<div class="ma-side-menu ma-box">
+
+    <div class="ma-box__content ma-box__content--padding-reset">
+        <div class="menu-box">
+
+            <! options list >
+            <div ng-repeat="option in vm.optionsList track by $index"
+                 class="menu-box__item
+                        text-capitalize"
+                 ng-class="{ 'menu-box__item--active' : vm._currentState(option.state) }"
+                 ng-click="vm._goToSection(option.state)">
+                {{option.name}}
+            </div>
+
+            <! view profile option >
+            <div class="menu-box__item menu-box__item--with-button">
+                <a class="ma-btn ma-btn--default ma-btn--primary
+                          ma-btn--block text-capitalize"
+                   ng-click="vm._goToViewProfile()"
+                   href translate>
+                   %edit.profile.view_profile.option.button.text
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

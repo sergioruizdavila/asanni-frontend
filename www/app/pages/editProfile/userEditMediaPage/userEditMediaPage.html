@@ -17,8 +17,9 @@
             </li>
             <li class="ma-subnav__list__option">
                 <a class="ma-subnav__list__option__tab"
+                   ui-sref="page.editTeacher.teach"
                    href translate>
-                   %global.teacher.text
+                   %subnav.user.dashboard.teacher.option.text
                 </a>
             </li>
             <li class="ma-subnav__list__option">
@@ -262,9 +263,17 @@
                                                  ma-label--simple--large
                                                  ma-label--simple--primary
                                                  margin-reset"
-                                          ng-class="{'hidden' : !vm.saved}"
-                                          translate>
-                                        %notification.success.text
+                                          ng-class="{'hidden' : !vm.saved}">
+                                        <i class="material-icons
+                                                  md-30
+                                                  md-primary
+                                                  vertical-align-middle">
+                                            sentiment_very_satisfied
+                                        </i>
+                                        <span class="vertical-align-middle"
+                                              translate>
+                                            %notification.success.text
+                                        </span>
                                     </span>
 
                                     <span class="ma-label

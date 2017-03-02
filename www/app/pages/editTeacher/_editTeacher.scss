@@ -1,0 +1,206 @@
+/*************************/
+/*       VARIABLES       */
+/*************************/
+$editTeacher-padding: 20px;
+$editTeacher-block-margin: 20px;
+$editTeacher-block-sayHello-label-font-size: 17px;
+$editTeacher-mapBlock-height: 300px;
+
+/**********************************************************/
+/*                   CREATE TEACHER PAGE                  */
+/**********************************************************/
+
+.editTeacher {
+
+    &__block {
+
+        .teacher-welcome-help-box {
+
+            .main-title {
+                line-height: 40px;
+            }
+
+        }
+
+        .teacher-experience-box {
+
+            &__item-block {
+                cursor: pointer;
+                padding-top: 20px;
+                &:hover {
+                    background-color: #f9f9f9;
+                    cursor: pointer;
+                }
+
+                &__description {
+                    @include text-truncate-multiline($font-size: 17px,
+                                                     $line-height: $paragraph-lineHeight,
+                                                     $lines-to-show: $paragraph-lines-to-show,
+                                                     $excerpt-bg: transparent);
+                }
+            }
+        }
+
+        .teacher-education-box {
+
+            &__item-block {
+                cursor: pointer;
+                padding-top: 20px;
+                &:hover {
+                    background-color: #f9f9f9;
+                    cursor: pointer;
+                }
+
+                &__description {
+                    @include text-truncate-multiline($font-size: 17px,
+                                                     $line-height: $paragraph-lineHeight,
+                                                     $lines-to-show: $paragraph-lines-to-show,
+                                                     $excerpt-bg: transparent);
+                }
+            }
+        }
+
+        .teacher-certificate-box {
+
+            &__item-block {
+                cursor: pointer;
+                padding-top: 20px;
+                &:hover {
+                    background-color: #f9f9f9;
+                    cursor: pointer;
+                }
+
+                &__description {
+                    @include text-truncate-multiline($font-size: 17px,
+                                                     $line-height: $paragraph-lineHeight,
+                                                     $lines-to-show: $paragraph-lines-to-show,
+                                                     $excerpt-bg: transparent);
+                }
+            }
+        }
+
+        .teacher-avatar-box {
+
+            &__upload-image-block {
+                &__left-block {
+                    .ma-photo-profile {
+                        border: 1px solid #dce0e0;
+                    }
+                }
+
+                &__right-block {
+                    .ma-p {
+                        strong {
+                            margin-right:10px;
+                        }
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    &__help-block {
+
+        .ma-box {
+            position: fixed;
+        }
+
+        .teacher-avatar-help-box {
+
+            &__preview-image {
+                border: 5px solid map-get($main-palette, alert);
+            }
+
+        }
+
+        .teacher-welcome-help-box {
+
+            &__price-average {
+
+                .currency, .time {
+                    font-size: 20px;
+                }
+
+                .amount {
+                    font-weight: 400;
+                    font-size: 30px;
+                    color: map-get($main-palette, primary);
+                }
+
+            }
+
+        }
+    }
+
+    &__map-block {
+        height: $editTeacher-mapBlock-height;
+    }
+}
+
+
+/*==========  Mobile First Method  ==========*/
+
+ /* Custom, iPhone Retina */
+ @media only screen and (min-width : 320px) {}
+
+ /* Extra Small Devices, Phones */
+ @media only screen and (min-width : 480px) {}
+
+ /* Small Devices, Tablets */
+ @media only screen and (min-width : 768px) {}
+
+ /* Medium Devices, Desktops */
+ @media only screen and (min-width : 992px) {
+
+    .editTeacher {
+
+        label {
+            font-size: 15px!important;
+        }
+
+        &__help-block {
+            .ma-box {
+                width: 213px;
+            }
+        }
+    }
+
+ }
+
+ /* Large Devices, Wide Screens */
+ @media only screen and (min-width : 1200px) {
+
+    .editTeacher {
+
+        label {
+            font-size: 18px!important;
+        }
+
+        &__help-block {
+            .ma-box {
+                width: 262px;
+            }
+        }
+    }
+
+ }
+
+ /* Extra Large Devices, Wide Screens */
+ @media only screen and (min-width : 1600px) {
+
+    .editTeacher {
+
+        label {
+            font-size: 18px!important;
+        }
+
+        &__help-block {
+            .ma-box {
+                width: 280px;
+            }
+        }
+    }
+
+ }
