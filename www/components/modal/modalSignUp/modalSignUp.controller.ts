@@ -154,6 +154,7 @@ module components.modal.modalSignUp {
                 });
 
                 let userData = {
+                    uid: app.core.util.functionsUtil.FunctionsUtilService.generateGuid(),
                     name: '*',
                     email: this.form.email,
                     comment: '*'

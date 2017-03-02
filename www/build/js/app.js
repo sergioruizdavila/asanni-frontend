@@ -4061,6 +4061,7 @@ var components;
                             "comment": '*'
                         });
                         var userData = {
+                            uid: app.core.util.functionsUtil.FunctionsUtilService.generateGuid(),
                             name: '*',
                             email: this.form.email,
                             comment: '*'
@@ -4676,6 +4677,7 @@ var app;
                             "comment": this.form.userData.comment || '*'
                         });
                         var userData = {
+                            uid: app.core.util.functionsUtil.FunctionsUtilService.generateGuid(),
                             name: this.form.userData.name || '*',
                             email: this.form.userData.email,
                             comment: this.form.userData.comment || '*'

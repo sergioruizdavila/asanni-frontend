@@ -50,6 +50,7 @@ var components;
                             "comment": '*'
                         });
                         var userData = {
+                            uid: app.core.util.functionsUtil.FunctionsUtilService.generateGuid(),
                             name: '*',
                             email: this.form.email,
                             comment: '*'
