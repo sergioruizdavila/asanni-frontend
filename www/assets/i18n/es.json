@@ -296,6 +296,9 @@
     "%edit.teacher.education.menu.option.text": "educación",
     "%edit.teacher.education.title.text": "¿Dónde estudiaste?",
 
+    "__EDIT TEACHER PAGE: TEACHER PRICE__": "",
+    "%edit.teacher.price.title.text": "Precio de tus clases",
+
     "__RESET PASSWORD PAGE__": "",
     "%recover.password.title.text": "restablece tu contraseña",
     "%recover.password.not_match.text": "Tus nuevas contraseñas no coinciden. Por favor, inténtalo de nuevo.",

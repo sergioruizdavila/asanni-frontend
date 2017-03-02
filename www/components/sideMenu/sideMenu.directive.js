@@ -46,6 +46,7 @@ var components;
                 var EXPERIENCE_OPTION = this.$filter('translate')('%landing.teacher.badge_explanation.get.first_requirement.title.text');
                 var EDUCATION_OPTION = this.$filter('translate')('%edit.teacher.education.menu.option.text');
                 var METHODOLOGY_OPTION = this.$filter('translate')('%search.container.teacher.methodology.title.text');
+                var PRICE_OPTION = this.$filter('translate')('%search.container.teacher.price.title.text');
                 switch (type) {
                     case 'edit-teacher':
                         this.optionsList = [
@@ -64,6 +65,10 @@ var components;
                             {
                                 name: METHODOLOGY_OPTION,
                                 state: 'page.editTeacher.methodology'
+                            },
+                            {
+                                name: PRICE_OPTION,
+                                state: 'page.editTeacher.price'
                             }
                         ];
                         break;
