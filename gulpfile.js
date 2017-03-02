@@ -102,6 +102,8 @@ var paths = {
         "www/app/pages/editTeacher/editTeacherTeach/editTeacherTeach.controller.js",
         "www/app/pages/editTeacher/editTeacherMethodology/editTeacherMethodology.config.js",
         "www/app/pages/editTeacher/editTeacherMethodology/editTeacherMethodology.controller.js",
+        "www/app/pages/editTeacher/editTeacherPrice/editTeacherPrice.config.js",
+        "www/app/pages/editTeacher/editTeacherPrice/editTeacherPrice.controller.js",
         "www/app/pages/meetingConfirmationPage/meetingConfirmationPage.config.js",
         "www/app/pages/meetingConfirmationPage/meetingConfirmationPage.controller.js",
         "www/app/pages/userInboxPage/userInboxPage.config.js",

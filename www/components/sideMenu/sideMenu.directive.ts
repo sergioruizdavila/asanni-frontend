@@ -141,6 +141,7 @@ module components.sideMenu {
             const EXPERIENCE_OPTION = this.$filter('translate')('%landing.teacher.badge_explanation.get.first_requirement.title.text');
             const EDUCATION_OPTION = this.$filter('translate')('%edit.teacher.education.menu.option.text');
             const METHODOLOGY_OPTION = this.$filter('translate')('%search.container.teacher.methodology.title.text');
+            const PRICE_OPTION = this.$filter('translate')('%search.container.teacher.price.title.text');
 
             switch (type) {
                 case 'edit-teacher':
@@ -160,6 +161,10 @@ module components.sideMenu {
                         {
                             name: METHODOLOGY_OPTION,
                             state: 'page.editTeacher.methodology'
+                        },
+                        {
+                            name: PRICE_OPTION,
+                            state: 'page.editTeacher.price'
                         }
 
                     ];

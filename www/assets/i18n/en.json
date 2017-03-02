@@ -296,6 +296,9 @@
     "%edit.teacher.education.menu.option.text": "education",
     "%edit.teacher.education.title.text": "Where did you study?",
 
+    "__EDIT TEACHER PAGE: TEACHER PRICE__": "",
+    "%edit.teacher.price.title.text": "Price of your classes",
+
     "__RESET PASSWORD PAGE__": "",
     "%recover.password.title.text": "reset your password",
     "%recover.password.not_match.text": "Your new passwords did not match. Please try again.",

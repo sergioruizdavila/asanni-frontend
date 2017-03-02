@@ -2,25 +2,27 @@ var app;
 (function (app) {
     var pages;
     (function (pages) {
-        var createTeacherPage;
-        (function (createTeacherPage) {
-            var TeacherPriceSectionController = (function () {
-                function TeacherPriceSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope, $rootScope) {
+        var editTeacher;
+        (function (editTeacher) {
+            var EditTeacherPriceController = (function () {
+                function EditTeacherPriceController(dataConfig, getDataFromJson, functionsUtilService, $timeout, $filter, $scope, $rootScope, $uibModal) {
                     this.dataConfig = dataConfig;
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
-                    this.$state = $state;
+                    this.$timeout = $timeout;
                     this.$filter = $filter;
                     this.$scope = $scope;
                     this.$rootScope = $rootScope;
+                    this.$uibModal = $uibModal;
                     this._init();
                 }
-                TeacherPriceSectionController.prototype._init = function () {
-                    this.STEP6_STATE = 'page.createTeacherPage.method';
-                    this.STEP8_STATE = 'page.createTeacherPage.photo';
+                EditTeacherPriceController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.price.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.price.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(7, 9);
+                    this.saving = false;
+                    this.saved = false;
+                    this.error = false;
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -38,35 +40,32 @@ var app;
                     };
                     this.activate();
                 };
-                TeacherPriceSectionController.prototype.activate = function () {
-                    DEBUG && console.log('TeacherPriceSectionController controller actived');
+                EditTeacherPriceController.prototype.activate = function () {
+                    DEBUG && console.log('EditTeacherPriceController controller actived');
                     this._subscribeToEvents();
                     if (this.$rootScope.teacherData) {
                         this._fillForm(this.$rootScope.teacherData);
                     }
                 };
-                TeacherPriceSectionController.prototype.changeStatus = function (type) {
+                EditTeacherPriceController.prototype.changeStatus = function (type) {
                     this.form[type].Active = !this.form[type].Active;
                 };
-                TeacherPriceSectionController.prototype.goToNext = function () {
+                EditTeacherPriceController.prototype.savePriceSection = function () {
                     var formValid = this._validateForm();
                     if (formValid) {
+                        this.saving = true;
                         this._setDataModelFromForm();
                         this.$scope.$emit('Save Data');
-                        this.$state.go(this.STEP8_STATE, { reload: true });
                     }
                     else {
                         window.scrollTo(0, 0);
                     }
                 };
-                TeacherPriceSectionController.prototype.goToBack = function () {
-                    this.$state.go(this.STEP6_STATE, { reload: true });
-                };
-                TeacherPriceSectionController.prototype._fillForm = function (data) {
+                EditTeacherPriceController.prototype._fillForm = function (data) {
                     this.form.privateClass = data.Price.PrivateClass;
                     this.form.groupClass = data.Price.GroupClass;
                 };
-                TeacherPriceSectionController.prototype._validateForm = function () {
+                EditTeacherPriceController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
                     var IS_NOT_ZERO_ENUM = 5;
                     var EMPTY_ENUM = 3;
@@ -102,7 +101,7 @@ var app;
                     }
                     return formValid;
                 };
-                TeacherPriceSectionController.prototype.changeHelpText = function (type) {
+                EditTeacherPriceController.prototype.changeHelpText = function (type) {
                     var PRIVATE_CLASS_TITLE = this.$filter('translate')('%create.teacher.price.help_text.private_class.title.text');
                     var PRIVATE_CLASS_DESCRIPTION = this.$filter('translate')('%create.teacher.price.help_text.private_class.description.text');
                     var GROUP_CLASS_TITLE = this.$filter('translate')('%create.teacher.price.help_text.group_class.title.text');
@@ -122,33 +121,48 @@ var app;
                             break;
                     }
                 };
-                TeacherPriceSectionController.prototype._setDataModelFromForm = function () {
+                EditTeacherPriceController.prototype._setDataModelFromForm = function () {
                     this.$rootScope.teacherData.Price.PrivateClass = this.form.privateClass;
                     this.$rootScope.teacherData.Price.GroupClass = this.form.groupClass;
                 };
-                TeacherPriceSectionController.prototype._subscribeToEvents = function () {
+                EditTeacherPriceController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self._fillForm(args);
+                        self.error = false;
+                        if (args !== 'error') {
+                            self._fillForm(args);
+                        }
+                        else {
+                            self.error = true;
+                        }
+                    });
+                    this.$scope.$on('Saved', function (event, args) {
+                        self.saving = false;
+                        self.error = false;
+                        self.saved = true;
+                        self.$timeout(function () {
+                            self.saved = false;
+                        }, self.TIME_SHOW_MESSAGE);
                     });
                 };
-                return TeacherPriceSectionController;
+                return EditTeacherPriceController;
             }());
-            TeacherPriceSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherPriceSectionController';
-            TeacherPriceSectionController.$inject = [
+            EditTeacherPriceController.controllerId = 'mainApp.pages.editTeacher.EditTeacherPriceController';
+            EditTeacherPriceController.$inject = [
                 'dataConfig',
                 'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
-                '$state',
+                '$timeout',
                 '$filter',
                 '$scope',
-                '$rootScope'
+                '$rootScope',
+                '$uibModal'
             ];
-            createTeacherPage.TeacherPriceSectionController = TeacherPriceSectionController;
+            editTeacher.EditTeacherPriceController = EditTeacherPriceController;
             angular
-                .module('mainApp.pages.createTeacherPage')
-                .controller(TeacherPriceSectionController.controllerId, TeacherPriceSectionController);
-        })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
+                .module('mainApp.pages.editTeacher')
+                .controller(EditTeacherPriceController.controllerId, EditTeacherPriceController);
+        })(editTeacher = pages.editTeacher || (pages.editTeacher = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=teacherPriceSection.controller.js.map
+//# sourceMappingURL=editTeacherPrice.controller.js.map
