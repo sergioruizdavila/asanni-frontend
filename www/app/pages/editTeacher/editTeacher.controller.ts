@@ -211,6 +211,7 @@ module app.pages.editTeacher {
                                 //TODO: Validar si esto es necesario ya que estoy guardando todo en $rootScope
                                 // ya deberia poder tener acceso en los hijos
                                 self.$scope.$broadcast('Fill User Profile Form', self.$rootScope.profileData);
+                                self.$scope.$broadcast('Saved');
                             }
                         },
                         function(error) {
@@ -246,6 +247,7 @@ module app.pages.editTeacher {
                                 //TODO: Validar si esto es necesario ya que estoy guardando todo en $rootScope
                                 // ya deberia poder tener acceso en los hijos
                                 self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
+                                self.$scope.$broadcast('Saved');
                             }
                         },
                         function(error) {

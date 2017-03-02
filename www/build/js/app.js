@@ -7993,6 +7993,7 @@ var app;
                                 if (response.userId) {
                                     self.$rootScope.profileData = new app.models.user.Profile(response);
                                     self.$scope.$broadcast('Fill User Profile Form', self.$rootScope.profileData);
+                                    self.$scope.$broadcast('Saved');
                                 }
                             }, function (error) {
                                 self.messageUtil.error('');
@@ -8008,6 +8009,7 @@ var app;
                                 if (response.id) {
                                     self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
                                     self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
+                                    self.$scope.$broadcast('Saved');
                                 }
                             }, function (error) {
                                 self.messageUtil.error('');
@@ -8233,14 +8235,21 @@ var app;
                 EditTeacherExperienceController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
+                        self.error = false;
+                        if (args !== 'error') {
+                            self._fillForm(args);
+                        }
+                        else {
+                            self.error = true;
+                        }
+                    });
+                    this.$scope.$on('Saved', function (event, args) {
                         self.saving = false;
+                        self.error = false;
                         self.saved = true;
                         self.$timeout(function () {
                             self.saved = false;
                         }, self.TIME_SHOW_MESSAGE);
-                        if (args !== 'error') {
-                            self._fillForm(args);
-                        }
                     });
                 };
                 return EditTeacherExperienceController;
@@ -8431,15 +8440,22 @@ var app;
                 };
                 EditTeacherTeachController.prototype._subscribeToEvents = function () {
                     var self = this;
-                    this.$scope.$on('Fill User Profile Form', function (event, args) {
+                    this.$scope.$on('Fill Form', function (event, args) {
+                        self.error = false;
+                        if (args !== 'error') {
+                            self._fillForm(args);
+                        }
+                        else {
+                            self.error = true;
+                        }
+                    });
+                    this.$scope.$on('Saved', function (event, args) {
                         self.saving = false;
+                        self.error = false;
                         self.saved = true;
                         self.$timeout(function () {
                             self.saved = false;
                         }, self.TIME_SHOW_MESSAGE);
-                        if (args !== 'error') {
-                            self._fillForm(args);
-                        }
                     });
                 };
                 return EditTeacherTeachController;

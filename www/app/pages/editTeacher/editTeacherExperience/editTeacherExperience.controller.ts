@@ -373,23 +373,38 @@ module app.pages.editTeacher {
             /**
             * Fill Form event
             * @parent - EditTeacherController
-            * @description - Parent send markers teacher data in order to
+            * @description - Parent send teacher data in order to
             * Child fill the form's field
             * @event
             */
             this.$scope.$on('Fill Form',
                 function(event, args) {
+                    self.error = false;
+                    if(args !== 'error') {
+                        self._fillForm(args);
+                    } else {
+                        self.error = true;
+                    }
+                }
+            );
+
+
+            /**
+            * Saved event
+            * @parent - EditTeacherController
+            * @description - Parent notify that data was saved successful
+            * @event
+            */
+            this.$scope.$on('Saved',
+                function(event, args) {
                     //loading Off
                     self.saving = false;
+                    self.error = false;
                     self.saved = true;
 
                     self.$timeout(function() {
                         self.saved = false;
                     }, self.TIME_SHOW_MESSAGE);
-
-                    if(args !== 'error') {
-                        self._fillForm(args);
-                    }
                 }
             );
         }

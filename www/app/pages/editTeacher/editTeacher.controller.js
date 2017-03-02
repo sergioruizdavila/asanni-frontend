@@ -70,6 +70,7 @@ var app;
                                 if (response.userId) {
                                     self.$rootScope.profileData = new app.models.user.Profile(response);
                                     self.$scope.$broadcast('Fill User Profile Form', self.$rootScope.profileData);
+                                    self.$scope.$broadcast('Saved');
                                 }
                             }, function (error) {
                                 self.messageUtil.error('');
@@ -85,6 +86,7 @@ var app;
                                 if (response.id) {
                                     self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
                                     self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
+                                    self.$scope.$broadcast('Saved');
                                 }
                             }, function (error) {
                                 self.messageUtil.error('');
