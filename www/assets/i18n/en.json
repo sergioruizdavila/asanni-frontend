@@ -140,7 +140,7 @@
     "%modal.education.form.date_start.text": "Date Start",
     "%modal.education.form.date_finish.text": "Date Finish",
     "%modal.education.form.description.text": "What did you learn?",
-    "%modal.education.form.description.placeholder.text": "e.g. I learned in depth the language, its history and grammar. I also learned the proper methodology for teaching.",
+    "%modal.education.form.description.placeholder.text": "e.g. I learned in depth the language, its history and grammar. I also learned the proper  for teaching.",
 
     "%modal.certificate.title.text": "Add/Edit Certificate",
     "%modal.certificate.form.name.text": "Certificate Name",
@@ -148,7 +148,7 @@
     "%modal.certificate.form.institution.placeholder.text": "e.g. English Institute / Spanish Institute",
     "%modal.certificate.form.date_received.text": "Date Received",
     "%modal.certificate.form.description.text": "What did you learn?",
-    "%modal.certificate.form.description.placeholder.text": "e.g. I learned in depth the language, its history and grammar. I also learned the proper methodology for teaching.",
+    "%modal.certificate.form.description.placeholder.text": "e.g. I learned in depth the language, its history and grammar. I also learned the proper  for teaching.",
 
     "%modal.recommend.teacher.title.text": "wants you to be part of the biggest community of teachers and language schools.",
     "%modal.recommend.teacher.description.text": "wrote the following recommendation and rating you as language tutor:",
@@ -208,7 +208,7 @@
     "%landing.teacher.why_waysily.title.text": "Why should I be in Waysily?",
     "%landing.teacher.why_waysily.description.first_part.text": "Approximately each year,",
     "%landing.teacher.why_waysily.description.second_part.text": "42'000.000 people travel",
-    "%landing.teacher.why_waysily.description.third_part.text": "to learn a language by immersing themselves in the culture and customs of each country. If your classes offer a human connection, a dynamic methodology or an immersion in the local culture, you're in the right place.",
+    "%landing.teacher.why_waysily.description.third_part.text": "to learn a language by immersing themselves in the culture and customs of each country. If your classes offer a human connection, a dynamic  or an immersion in the local culture, you're in the right place.",
     "%landing.teacher.why_waysily.description.fourth_part.text": "Your profile is public on the platform, which will also have visibility to all students/travelers via email, Twitter and Facebook.",
     "%landing.teacher.why_waysily.details.title.text": "So, why should I be in Waysily?:",
     "%landing.teacher.why_waysily.details.first_detail.text": "Build a reputation, and become visible globally.",
