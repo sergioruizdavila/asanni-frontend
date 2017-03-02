@@ -2,26 +2,27 @@ var app;
 (function (app) {
     var pages;
     (function (pages) {
-        var createTeacherPage;
-        (function (createTeacherPage) {
-            var TeacherEducationSectionController = (function () {
-                function TeacherEducationSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope, $rootScope, $uibModal) {
+        var editTeacher;
+        (function (editTeacher) {
+            var EditTeacherEducationController = (function () {
+                function EditTeacherEducationController(dataConfig, getDataFromJson, functionsUtilService, $timeout, $filter, $scope, $rootScope, $uibModal) {
                     this.dataConfig = dataConfig;
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
-                    this.$state = $state;
+                    this.$timeout = $timeout;
                     this.$filter = $filter;
                     this.$scope = $scope;
                     this.$rootScope = $rootScope;
                     this.$uibModal = $uibModal;
                     this._init();
                 }
-                TeacherEducationSectionController.prototype._init = function () {
-                    this.STEP4_STATE = 'page.createTeacherPage.experience';
-                    this.STEP6_STATE = 'page.createTeacherPage.method';
+                EditTeacherEducationController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.education.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.education.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(5, 9);
+                    this.saving = false;
+                    this.saved = false;
+                    this.error = false;
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -37,31 +38,28 @@ var app;
                     };
                     this.activate();
                 };
-                TeacherEducationSectionController.prototype.activate = function () {
-                    DEBUG && console.log('TeacherEducationSectionController controller actived');
+                EditTeacherEducationController.prototype.activate = function () {
+                    DEBUG && console.log('EditTeacherEducationController controller actived');
                     this._subscribeToEvents();
                     if (this.$rootScope.teacherData) {
                         this._fillForm(this.$rootScope.teacherData);
                     }
                 };
-                TeacherEducationSectionController.prototype.goToNext = function () {
+                EditTeacherEducationController.prototype.saveEducationSection = function () {
                     var formValid = this._validateForm();
                     if (formValid) {
+                        this.saving = true;
                         this.$scope.$emit('Save Data');
-                        this.$state.go(this.STEP6_STATE, { reload: true });
                     }
                     else {
                         window.scrollTo(0, 0);
                     }
                 };
-                TeacherEducationSectionController.prototype.goToBack = function () {
-                    this.$state.go(this.STEP4_STATE, { reload: true });
-                };
-                TeacherEducationSectionController.prototype._fillForm = function (data) {
+                EditTeacherEducationController.prototype._fillForm = function (data) {
                     this.form.educations = data.Educations;
                     this.form.certificates = data.Certificates;
                 };
-                TeacherEducationSectionController.prototype._validateForm = function () {
+                EditTeacherEducationController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
                     var EMPTY_ENUM = 3;
                     var GLOBAL_MESSAGE = this.$filter('translate')('%create.teacher.education.validation.message.text');
@@ -85,7 +83,7 @@ var app;
                     }
                     return formValid;
                 };
-                TeacherEducationSectionController.prototype.changeHelpText = function (type) {
+                EditTeacherEducationController.prototype.changeHelpText = function (type) {
                     var EDUCATIONS_TITLE = this.$filter('translate')('%create.teacher.education.help_text.educations.title.text');
                     var EDUCATIONS_DESCRIPTION = this.$filter('translate')('%create.teacher.education.help_text.educations.description.text');
                     var CERTIFICATES_TITLE = this.$filter('translate')('%create.teacher.education.help_text.certificates.title.text');
@@ -105,7 +103,7 @@ var app;
                             break;
                     }
                 };
-                TeacherEducationSectionController.prototype._addEditEducation = function (index, $event) {
+                EditTeacherEducationController.prototype._addEditEducation = function (index, $event) {
                     var self = this;
                     var options = {
                         animation: false,
@@ -132,7 +130,7 @@ var app;
                     });
                     $event.preventDefault();
                 };
-                TeacherEducationSectionController.prototype._addEditCertificate = function (index, $event) {
+                EditTeacherEducationController.prototype._addEditCertificate = function (index, $event) {
                     var self = this;
                     var options = {
                         animation: false,
@@ -159,30 +157,44 @@ var app;
                     });
                     $event.preventDefault();
                 };
-                TeacherEducationSectionController.prototype._subscribeToEvents = function () {
+                EditTeacherEducationController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self._fillForm(args);
+                        self.error = false;
+                        if (args !== 'error') {
+                            self._fillForm(args);
+                        }
+                        else {
+                            self.error = true;
+                        }
+                    });
+                    this.$scope.$on('Saved', function (event, args) {
+                        self.saving = false;
+                        self.error = false;
+                        self.saved = true;
+                        self.$timeout(function () {
+                            self.saved = false;
+                        }, self.TIME_SHOW_MESSAGE);
                     });
                 };
-                return TeacherEducationSectionController;
+                return EditTeacherEducationController;
             }());
-            TeacherEducationSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherEducationSectionController';
-            TeacherEducationSectionController.$inject = [
+            EditTeacherEducationController.controllerId = 'mainApp.pages.editTeacher.EditTeacherEducationController';
+            EditTeacherEducationController.$inject = [
                 'dataConfig',
                 'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
-                '$state',
+                '$timeout',
                 '$filter',
                 '$scope',
                 '$rootScope',
                 '$uibModal'
             ];
-            createTeacherPage.TeacherEducationSectionController = TeacherEducationSectionController;
+            editTeacher.EditTeacherEducationController = EditTeacherEducationController;
             angular
-                .module('mainApp.pages.createTeacherPage')
-                .controller(TeacherEducationSectionController.controllerId, TeacherEducationSectionController);
-        })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
+                .module('mainApp.pages.editTeacher')
+                .controller(EditTeacherEducationController.controllerId, EditTeacherEducationController);
+        })(editTeacher = pages.editTeacher || (pages.editTeacher = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=teacherEducationSection.controller.js.map
+//# sourceMappingURL=editTeacherEducation.controller.js.map

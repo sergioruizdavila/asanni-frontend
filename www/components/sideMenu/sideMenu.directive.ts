@@ -139,6 +139,7 @@ module components.sideMenu {
             //CONSTANTS
             const TEACH_OPTION = this.$filter('translate')('%modal.recommend.teacher.invitation.message.teach.label.text');
             const EXPERIENCE_OPTION = this.$filter('translate')('%landing.teacher.badge_explanation.get.first_requirement.title.text');
+            const EDUCATION_OPTION = this.$filter('translate')('%edit.teacher.education.menu.option.text');
 
             switch (type) {
                 case 'edit-teacher':
@@ -150,7 +151,12 @@ module components.sideMenu {
                         {
                             name: EXPERIENCE_OPTION,
                             state: 'page.editTeacher.experience'
-                        }
+                        },
+                        {
+                            name: EDUCATION_OPTION,
+                            state: 'page.editTeacher.education'
+                        },
+
                     ];
                 break;
                 case 'edit-profile':
