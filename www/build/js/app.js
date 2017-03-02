@@ -6863,6 +6863,7 @@ var app;
                     this._init();
                 }
                 UserEditProfilePageController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
                     this.saving = false;
                     this.saved = false;
                     this.error = false;
@@ -7171,7 +7172,7 @@ var app;
                             self.error = !saved;
                             self.$timeout(function () {
                                 self.saved = false;
-                            }, 3000);
+                            }, self.TIME_SHOW_MESSAGE);
                         });
                     }
                 };
@@ -7187,7 +7188,7 @@ var app;
                             self.error = !saved;
                             self.$timeout(function () {
                                 self.saved = false;
-                            }, 3000);
+                            }, self.TIME_SHOW_MESSAGE);
                         });
                     }
                 };
@@ -7283,6 +7284,7 @@ var app;
                     this._init();
                 }
                 UserEditLocationPageController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
                     this.saving = false;
                     this.saved = false;
                     this.error = false;
@@ -7426,7 +7428,7 @@ var app;
                             self.error = !saved;
                             self.$timeout(function () {
                                 self.saved = false;
-                            }, 3000);
+                            }, self.TIME_SHOW_MESSAGE);
                         });
                     }
                     else {
@@ -7533,6 +7535,7 @@ var app;
                     this._init();
                 }
                 UserEditMediaPageController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
                     this.saving = false;
                     this.saved = false;
                     this.error = false;
@@ -7563,6 +7566,8 @@ var app;
                     var DEFINED_ENUM = 6;
                     var PHOTO_MESSAGE = this.$filter('translate')('%create.teacher.photo.validation.message.text');
                     var formValid = true;
+                    this.validate.globalValidate.valid = true;
+                    this.validate.globalValidate.message = '';
                     var avatar_rules = [NULL_ENUM, EMPTY_ENUM, DEFINED_ENUM];
                     this.validate.avatar = this.functionsUtil.validator(this.form.avatar, avatar_rules);
                     var thumbnail_rules = [NULL_ENUM, EMPTY_ENUM, DEFINED_ENUM];
@@ -7625,7 +7630,7 @@ var app;
                                     self.form.avatar = self.saved ? null : self.form.avatar;
                                     self.$timeout(function () {
                                         self.saved = false;
-                                    }, 3000);
+                                    }, self.TIME_SHOW_MESSAGE);
                                 });
                             }
                             else {
