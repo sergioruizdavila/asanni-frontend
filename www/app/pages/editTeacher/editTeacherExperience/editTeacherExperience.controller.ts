@@ -36,6 +36,9 @@ module app.pages.editTeacher {
         /*           PROPERTIES           */
         /**********************************/
         form: IEditTeacherExperienceForm;
+        saving: boolean;
+        saved: boolean;
+        error: boolean;
         validate: IEditTeacherExperienceValidate;
         helpText: app.core.interfaces.IHelpTextStep;
         listYears: Array<app.core.interfaces.ISelectListElement>;
@@ -44,6 +47,7 @@ module app.pages.editTeacher {
         private _professionalChecked: any;
         HELP_TEXT_TITLE: string;
         HELP_TEXT_DESCRIPTION: string;
+        TIME_SHOW_MESSAGE: number;
         // --------------------------------
 
 
@@ -52,7 +56,7 @@ module app.pages.editTeacher {
             'dataConfig',
             'mainApp.core.util.GetDataStaticJsonService',
             'mainApp.core.util.FunctionsUtilService',
-            '$state',
+            '$timeout',
             '$filter',
             '$scope',
             '$rootScope',
@@ -66,7 +70,7 @@ module app.pages.editTeacher {
             private dataConfig: IDataConfig,
             private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
             private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
-            private $state: ng.ui.IStateService,
+            private $timeout: angular.ITimeoutService,
             private $filter: angular.IFilterService,
             private $scope: angular.IScope,
             private $rootScope: app.core.interfaces.IMainAppRootScope,
@@ -77,9 +81,19 @@ module app.pages.editTeacher {
         /*-- INITIALIZE METHOD --*/
         private _init() {
             //CONSTANTS
+            this.TIME_SHOW_MESSAGE = 6000;
             this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.title.text');
             this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.description.text');
             /*********************************/
+
+            // Init saving loading
+            this.saving = false;
+
+            // Init saved message
+            this.saved = false;
+
+            // Init error message
+            this.error = false;
 
             //Put Help Text Default
             this.helpText = {
@@ -146,6 +160,8 @@ module app.pages.editTeacher {
             let formValid = this._validateForm();
 
             if(formValid) {
+                //loading On
+                this.saving = true;
                 this._setDataModelFromForm();
                 this.$scope.$emit('Save Data');
             } else {
@@ -362,8 +378,18 @@ module app.pages.editTeacher {
             * @event
             */
             this.$scope.$on('Fill Form',
-                function(event, args: app.models.teacher.Teacher) {
-                    self._fillForm(args);
+                function(event, args) {
+                    //loading Off
+                    self.saving = false;
+                    self.saved = true;
+
+                    self.$timeout(function() {
+                        self.saved = false;
+                    }, self.TIME_SHOW_MESSAGE);
+
+                    if(args !== 'error') {
+                        self._fillForm(args);
+                    }
                 }
             );
         }

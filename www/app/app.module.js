@@ -33,6 +33,7 @@
         'mainApp.pages.userInboxDetailsPage',
         'mainApp.pages.meetingConfirmationPage',
         'mainApp.components.header',
+        'mainApp.components.sideMenu',
         'mainApp.components.rating',
         'mainApp.components.map',
         'mainApp.components.modal',

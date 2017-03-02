@@ -42,6 +42,8 @@ var paths = {
         "www/app/models/school/school.service.js",
         "www/components/header/header.config.js",
         "www/components/header/header.directive.js",
+        "www/components/sideMenu/sideMenu.config.js",
+        "www/components/sideMenu/sideMenu.directive.js",
         "www/components/rating/rating.config.js",
         "www/components/rating/rating.directive.js",
         "www/components/footer/footer.config.js",

@@ -5,20 +5,25 @@ var app;
         var editTeacher;
         (function (editTeacher) {
             var EditTeacherTeachController = (function () {
-                function EditTeacherTeachController(dataConfig, functionsUtil, getDataFromJson, $state, $filter, $scope, $rootScope, $uibModal) {
+                function EditTeacherTeachController(dataConfig, functionsUtil, getDataFromJson, $state, $filter, $timeout, $scope, $rootScope, $uibModal) {
                     this.dataConfig = dataConfig;
                     this.functionsUtil = functionsUtil;
                     this.getDataFromJson = getDataFromJson;
                     this.$state = $state;
                     this.$filter = $filter;
+                    this.$timeout = $timeout;
                     this.$scope = $scope;
                     this.$rootScope = $rootScope;
                     this.$uibModal = $uibModal;
                     this._init();
                 }
                 EditTeacherTeachController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.lang.help_text.teach.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.lang.help_text.teach.description.text');
+                    this.saving = false;
+                    this.saved = false;
+                    this.error = false;
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -41,6 +46,7 @@ var app;
                 EditTeacherTeachController.prototype.saveTeachSection = function () {
                     var formValid = this._validateForm();
                     if (formValid) {
+                        this.saving = true;
                         this._setDataModelFromForm();
                         this.$scope.$emit('Save Profile Data');
                     }
@@ -139,7 +145,14 @@ var app;
                 EditTeacherTeachController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill User Profile Form', function (event, args) {
-                        self._fillForm(args);
+                        self.saving = false;
+                        self.saved = true;
+                        self.$timeout(function () {
+                            self.saved = false;
+                        }, self.TIME_SHOW_MESSAGE);
+                        if (args !== 'error') {
+                            self._fillForm(args);
+                        }
                     });
                 };
                 return EditTeacherTeachController;
@@ -151,6 +164,7 @@ var app;
                 'mainApp.core.util.GetDataStaticJsonService',
                 '$state',
                 '$filter',
+                '$timeout',
                 '$scope',
                 '$rootScope',
                 '$uibModal'

@@ -12,52 +12,7 @@
          class="editTeacher__block row">
 
         <div class="col-xs-12">
-
-            <div class="ma-box ma-box">
-
-                <div class="ma-box__content ma-box__content--padding-reset">
-                    <div class="menu-box">
-                        <div class="menu-box__item
-                                    menu-box__item--active
-                                    text-capitalize"
-                             translate>
-                            Teach
-                        </div>
-                        <div class="menu-box__item
-                                    text-capitalize"
-                             ng-click="vm.goToEditExperience()"
-                             translate>
-                            Experience
-                        </div>
-                        <div class="menu-box__item text-capitalize"
-                             ng-click="vm.goToEditEducation()"
-                             translate>
-                            Education
-                        </div>
-                        <div class="menu-box__item
-                                    text-capitalize"
-                             ng-click="vm.goToEditMethodology()"
-                             translate>
-                            Methodology
-                        </div>
-                        <div class="menu-box__item
-                                    text-capitalize"
-                             ng-click="vm.goToEditPrice()"
-                             translate>
-                            Prices
-                        </div>
-                        <div class="menu-box__item menu-box__item--with-button">
-                            <a class="ma-btn ma-btn--default ma-btn--primary
-                                      ma-btn--block text-capitalize"
-                               ng-click="vm.goToViewProfile()"
-                               href translate>
-                               %edit.profile.view_profile.option.button.text
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            <ma-side-menu type="edit-teacher"></ma-side-menu>
         </div>
 
     </div>
@@ -79,9 +34,9 @@
 
             <div class="ma-box">
 
-                <h4 class="ma-box__title margin-reset"
+                <h4 class="ma-box__title text-capitalize margin-reset"
                     ng-mouseover="vm.changeHelpText('default')" translate>
-                    Idiomas
+                    %global.lang.label.text
                 </h4>
 
                 <div class="ma-box__content space-2">
@@ -94,10 +49,7 @@
                         <div class="form-group ma-form-group"
                             ng-mouseover="vm.changeHelpText('teach')">
                             <label for="teacher-teach-languages"
-                                    class="space-2"
-                                    style="color: rgba(118, 118, 118, 0.72);
-                                    font-size: 20px;
-                                    font-weight: normal;" translate>
+                                    class="space-2" translate>
                                 %create.teacher.lang.form.teach.text
                             </label>
                             <div class="text-left ma-labels-box ma-labels-box--dashed"
@@ -144,7 +96,7 @@
 
                     <div class="row middle-xs">
 
-                        <div class="col-xs-6 col-sm-4 text-left">
+                        <div class="col-xs-6 text-left">
 
                             <span class="ma-label
                                          ma-label--simple
@@ -176,9 +128,7 @@
 
                         </div>
 
-                        <div class="hidden-xs col-sm-4"></div>
-
-                        <div class="col-xs-6 col-sm-4 text-right">
+                        <div class="col-xs-6 text-right">
 
                             <button class="ma-btn
                                            ma-btn--primary

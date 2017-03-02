@@ -5,11 +5,11 @@ var app;
         var editTeacher;
         (function (editTeacher) {
             var EditTeacherExperienceController = (function () {
-                function EditTeacherExperienceController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope, $rootScope, $uibModal) {
+                function EditTeacherExperienceController(dataConfig, getDataFromJson, functionsUtilService, $timeout, $filter, $scope, $rootScope, $uibModal) {
                     this.dataConfig = dataConfig;
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
-                    this.$state = $state;
+                    this.$timeout = $timeout;
                     this.$filter = $filter;
                     this.$scope = $scope;
                     this.$rootScope = $rootScope;
@@ -17,8 +17,12 @@ var app;
                     this._init();
                 }
                 EditTeacherExperienceController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.description.text');
+                    this.saving = false;
+                    this.saved = false;
+                    this.error = false;
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -49,6 +53,7 @@ var app;
                 EditTeacherExperienceController.prototype.saveExperienceSection = function () {
                     var formValid = this._validateForm();
                     if (formValid) {
+                        this.saving = true;
                         this._setDataModelFromForm();
                         this.$scope.$emit('Save Data');
                     }
@@ -159,7 +164,14 @@ var app;
                 EditTeacherExperienceController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Fill Form', function (event, args) {
-                        self._fillForm(args);
+                        self.saving = false;
+                        self.saved = true;
+                        self.$timeout(function () {
+                            self.saved = false;
+                        }, self.TIME_SHOW_MESSAGE);
+                        if (args !== 'error') {
+                            self._fillForm(args);
+                        }
                     });
                 };
                 return EditTeacherExperienceController;
@@ -169,7 +181,7 @@ var app;
                 'dataConfig',
                 'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
-                '$state',
+                '$timeout',
                 '$filter',
                 '$scope',
                 '$rootScope',

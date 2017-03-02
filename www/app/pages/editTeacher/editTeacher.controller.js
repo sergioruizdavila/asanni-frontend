@@ -68,13 +68,12 @@ var app;
                             self.userService.updateUserProfile(self.$rootScope.profileData)
                                 .then(function (response) {
                                 if (response.userId) {
-                                    window.scrollTo(0, 0);
-                                    self.messageUtil.success(SUCCESS_MESSAGE);
                                     self.$rootScope.profileData = new app.models.user.Profile(response);
                                     self.$scope.$broadcast('Fill User Profile Form', self.$rootScope.profileData);
                                 }
                             }, function (error) {
-                                DEBUG && console.error(error);
+                                self.messageUtil.error('');
+                                self.$scope.$broadcast('Fill User Profile Form', 'error');
                             });
                         }
                     });
@@ -84,23 +83,16 @@ var app;
                             self.teacherService.updateTeacher(self.$rootScope.teacherData)
                                 .then(function (response) {
                                 if (response.id) {
-                                    window.scrollTo(0, 0);
-                                    self.messageUtil.success(SUCCESS_MESSAGE);
                                     self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
                                     self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
                                 }
+                            }, function (error) {
+                                self.messageUtil.error('');
+                                self.$scope.$broadcast('Fill Form', 'error');
                             });
                         }
                         else {
-                            self.teacherService.createTeacher(self.$rootScope.teacherData)
-                                .then(function (response) {
-                                if (response.id) {
-                                    window.scrollTo(0, 0);
-                                    self.messageUtil.success(SUCCESS_MESSAGE);
-                                    self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
-                                    self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
-                                }
-                            });
+                            DEBUG && console.log('self.$rootScope.teacherData.Id doesn´t exist');
                         }
                     });
                 };

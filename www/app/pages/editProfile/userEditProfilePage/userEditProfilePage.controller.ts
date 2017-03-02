@@ -105,7 +105,7 @@ module app.pages.userEditProfilePage {
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
-            private $timeout,
+            private $timeout: angular.ITimeoutService,
             private $uibModal: ng.ui.bootstrap.IModalService,
             private $scope: angular.IScope,
             private $rootScope: app.core.interfaces.IMainAppRootScope) {

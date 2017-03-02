@@ -203,18 +203,19 @@ module app.pages.editTeacher {
                     .then(
                         function(response) {
                             if(response.userId) {
-                                //Go top pages
-                                window.scrollTo(0, 0);
                                 //Show message
-                                self.messageUtil.success(SUCCESS_MESSAGE);
+                                //self.messageUtil.success(SUCCESS_MESSAGE);
 
                                 //Fill Form
                                 self.$rootScope.profileData = new app.models.user.Profile(response);
+                                //TODO: Validar si esto es necesario ya que estoy guardando todo en $rootScope
+                                // ya deberia poder tener acceso en los hijos
                                 self.$scope.$broadcast('Fill User Profile Form', self.$rootScope.profileData);
                             }
                         },
                         function(error) {
-                            DEBUG && console.error(error);
+                            self.messageUtil.error('');
+                            self.$scope.$broadcast('Fill User Profile Form', 'error');
                         }
                     );
                 }
@@ -238,34 +239,24 @@ module app.pages.editTeacher {
                     .then(
                         function(response) {
                             if(response.id) {
-                                //Go top pages
-                                window.scrollTo(0, 0);
                                 //Show message
-                                self.messageUtil.success(SUCCESS_MESSAGE);
+                                //self.messageUtil.success(SUCCESS_MESSAGE);
                                 //Fill Form
                                 self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
+                                //TODO: Validar si esto es necesario ya que estoy guardando todo en $rootScope
+                                // ya deberia poder tener acceso en los hijos
                                 self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
-
                             }
+                        },
+                        function(error) {
+                            //Show error
+                            self.messageUtil.error('');
+                            self.$scope.$broadcast('Fill Form', 'error');
                         }
                     );
                 } else {
-                    // CREATE NEW TEACHER
-                    self.teacherService.createTeacher(self.$rootScope.teacherData)
-                    .then(
-                        function(response) {
-                            if(response.id) {
-                                //Go top pages
-                                window.scrollTo(0, 0);
-                                //Show message
-                                self.messageUtil.success(SUCCESS_MESSAGE);
-                                //Fill Form
-                                self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
-                                self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
-
-                            }
-                        }
-                    );
+                    //TODO: Validar cuando no haya un teacherData Id
+                    DEBUG && console.log('self.$rootScope.teacherData.Id doesn´t exist');
                 }
 
             });
