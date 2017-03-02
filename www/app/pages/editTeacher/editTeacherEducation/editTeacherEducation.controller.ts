@@ -1,33 +1,25 @@
 /**
- * TeacherEducationSectionController
- * @description - Teacher Education Section Controller (create teacher)
+ * EditTeacherEducationController
+ * @description - Edit Teacher Education Section Controller (edit teacher)
  */
 
-module app.pages.createTeacherPage {
+module app.pages.editTeacher {
 
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
-    export interface ITeacherEducationSectionController {
-        form: ITeacherEducationForm;
-        validate: ITeacherEducationValidate;
+    export interface IEditTeacherEducationController {
+        form: IEditTeacherEducationForm;
+        validate: IEditTeacherEducationValidate;
         activate: () => void;
     }
 
-    export interface ITeacherEducationScope extends angular.IScope {
-        $parent: IParentScope;
-    }
-
-    export interface IParentScope extends angular.IScope {
-        vm: ICreateTeacherPageController;
-    }
-
-    export interface ITeacherEducationForm {
+    export interface IEditTeacherEducationForm {
         educations: Array<app.models.teacher.Education>;
         certificates: Array<app.models.teacher.Certificate>;
     }
 
-    interface ITeacherEducationValidate {
+    interface IEditTeacherEducationValidate {
         educations: app.core.util.functionsUtil.IValid;
         certificates: app.core.util.functionsUtil.IValid;
         globalValidate: app.core.util.functionsUtil.IValid;
@@ -36,20 +28,22 @@ module app.pages.createTeacherPage {
     /****************************************/
     /*           CLASS DEFINITION           */
     /****************************************/
-    export class TeacherEducationSectionController implements ITeacherEducationSectionController {
+    export class EditTeacherEducationController implements IEditTeacherEducationController {
 
-        static controllerId = 'mainApp.pages.createTeacherPage.TeacherEducationSectionController';
+        static controllerId = 'mainApp.pages.editTeacher.EditTeacherEducationController';
 
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
-        form: ITeacherEducationForm;
-        validate: ITeacherEducationValidate;
+        form: IEditTeacherEducationForm;
+        saving: boolean;
+        saved: boolean;
+        error: boolean;
+        validate: IEditTeacherEducationValidate;
         helpText: app.core.interfaces.IHelpTextStep;
-        STEP4_STATE: string;
-        STEP6_STATE: string;
         HELP_TEXT_TITLE: string;
         HELP_TEXT_DESCRIPTION: string;
+        TIME_SHOW_MESSAGE: number;
         // --------------------------------
 
 
@@ -58,7 +52,7 @@ module app.pages.createTeacherPage {
             'dataConfig',
             'mainApp.core.util.GetDataStaticJsonService',
             'mainApp.core.util.FunctionsUtilService',
-            '$state',
+            '$timeout',
             '$filter',
             '$scope',
             '$rootScope',
@@ -72,9 +66,9 @@ module app.pages.createTeacherPage {
             private dataConfig: IDataConfig,
             private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
             private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
-            private $state: ng.ui.IStateService,
+            private $timeout: angular.ITimeoutService,
             private $filter: angular.IFilterService,
-            private $scope: ITeacherEducationScope,
+            private $scope: angular.IScope,
             private $rootScope: app.core.interfaces.IMainAppRootScope,
             private $uibModal: ng.ui.bootstrap.IModalService) {
                 this._init();
@@ -83,14 +77,19 @@ module app.pages.createTeacherPage {
         /*-- INITIALIZE METHOD --*/
         private _init() {
             //CONSTANTS
-            this.STEP4_STATE = 'page.createTeacherPage.experience';
-            this.STEP6_STATE = 'page.createTeacherPage.method';
+            this.TIME_SHOW_MESSAGE = 6000;
             this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.education.help_text.title.text');
             this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.education.help_text.description.text');
             /*********************************/
 
-            // Update progress bar width
-            this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(5, 9);
+            // Init saving loading
+            this.saving = false;
+
+            // Init saved message
+            this.saved = false;
+
+            // Init error message
+            this.error = false;
 
             //Put Help Text Default
             this.helpText = {
@@ -117,7 +116,7 @@ module app.pages.createTeacherPage {
         /*-- ACTIVATE METHOD --*/
         activate(): void {
             //LOG
-            DEBUG && console.log('TeacherEducationSectionController controller actived');
+            DEBUG && console.log('EditTeacherEducationController controller actived');
 
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
@@ -134,39 +133,24 @@ module app.pages.createTeacherPage {
         /**********************************/
 
         /**
-        * goToNext
-        * @description - go to next step (create or update teacher data on DB)
+        * saveEducationSection
+        * @description - save teacher educations (update teacher data on DB)
         * @function
         * @return void
         */
-        goToNext(): void {
-
+        saveEducationSection(): void {
             //Validate data form
             let formValid = this._validateForm();
 
             if(formValid) {
+                //loading On
+                this.saving = true;
                 this.$scope.$emit('Save Data');
-                // GO TO NEXT STEP
-                this.$state.go(this.STEP6_STATE, {reload: true});
             } else {
                 //Go top pages
                 window.scrollTo(0, 0);
             }
-
         }
-
-
-
-        /**
-        * goToBack
-        * @description - go to back step
-        * @function
-        * @return void
-        */
-        goToBack(): void {
-            this.$state.go(this.STEP4_STATE, {reload: true});
-        }
-
 
 
         /**
@@ -264,7 +248,6 @@ module app.pages.createTeacherPage {
                     this.helpText.description = CERTIFICATES_DESCRIPTION;
                 break;
             }
-
         }
 
 
@@ -357,7 +340,8 @@ module app.pages.createTeacherPage {
 
         /**
         * _subscribeToEvents
-        * @description - this method subscribes Teacher Location Section to Parent Events
+        * @description - this method subscribes Teacher Location Section
+        * to Parent Events
         * @use - this._subscribeToEvents();
         * @function
         * @return {void}
@@ -368,22 +352,49 @@ module app.pages.createTeacherPage {
 
             /**
             * Fill Form event
-            * @parent - CreateTeacherPageController
-            * @description - Parent send markers teacher data in order to
+            * @parent - EditTeacherController
+            * @description - Parent send teacher data in order to
             * Child fill the form's field
             * @event
             */
-            this.$scope.$on('Fill Form', function(event, args: app.models.teacher.Teacher) {
-                self._fillForm(args);
-            });
+            this.$scope.$on('Fill Form',
+                function(event, args) {
+                    self.error = false;
+                    if(args !== 'error') {
+                        self._fillForm(args);
+                    } else {
+                        self.error = true;
+                    }
+                }
+            );
+
+
+            /**
+            * Saved event
+            * @parent - EditTeacherController
+            * @description - Parent notify that data was saved successful
+            * @event
+            */
+            this.$scope.$on('Saved',
+                function(event, args) {
+                    //loading Off
+                    self.saving = false;
+                    self.error = false;
+                    self.saved = true;
+
+                    self.$timeout(function() {
+                        self.saved = false;
+                    }, self.TIME_SHOW_MESSAGE);
+                }
+            );
         }
 
     }
 
     /*-- MODULE DEFINITION --*/
     angular
-        .module('mainApp.pages.createTeacherPage')
-        .controller(TeacherEducationSectionController.controllerId,
-                    TeacherEducationSectionController);
+        .module('mainApp.pages.editTeacher')
+        .controller(EditTeacherEducationController.controllerId,
+                    EditTeacherEducationController);
 
 }

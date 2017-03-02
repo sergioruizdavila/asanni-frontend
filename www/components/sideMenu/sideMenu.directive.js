@@ -44,6 +44,7 @@ var components;
                 var type = this.type;
                 var TEACH_OPTION = this.$filter('translate')('%modal.recommend.teacher.invitation.message.teach.label.text');
                 var EXPERIENCE_OPTION = this.$filter('translate')('%landing.teacher.badge_explanation.get.first_requirement.title.text');
+                var EDUCATION_OPTION = this.$filter('translate')('%edit.teacher.education.menu.option.text');
                 switch (type) {
                     case 'edit-teacher':
                         this.optionsList = [
@@ -54,7 +55,11 @@ var components;
                             {
                                 name: EXPERIENCE_OPTION,
                                 state: 'page.editTeacher.experience'
-                            }
+                            },
+                            {
+                                name: EDUCATION_OPTION,
+                                state: 'page.editTeacher.education'
+                            },
                         ];
                         break;
                     case 'edit-profile':

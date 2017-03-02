@@ -292,6 +292,10 @@
     "__EDIT PROFILE PAGE: PROFILE PHOTO__": "",
     "%edit.profile.photo.title.text": "profile photo",
 
+    "__EDIT TEACHER PAGE: TEACHER EDUCATION__": "",
+    "%edit.teacher.education.menu.option.text": "education",
+    "%edit.teacher.education.title.text": "Where did you study?",
+
     "__RESET PASSWORD PAGE__": "",
     "%recover.password.title.text": "reset your password",
     "%recover.password.not_match.text": "Your new passwords did not match. Please try again.",
