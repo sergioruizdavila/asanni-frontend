@@ -47,6 +47,7 @@ module app.models.user {
         private about: string;
         private languages: Language;
         private location: Location;
+        private isTeacher: boolean;
         private status: string;
         private createdAt: string;
 
@@ -74,6 +75,7 @@ module app.models.user {
             this.about = obj.about || '';
             this.languages = new Language(obj.languages);
             this.location = new Location(obj.location);
+            this.isTeacher = obj.isTeacher || false;
             this.status = obj.status || 'NW';
             this.createdAt = obj.createdAt || '';
 
@@ -202,6 +204,15 @@ module app.models.user {
         set About(about: string) {
             if (about === undefined) { throw 'Please supply profile location'; }
             this.about = about;
+        }
+
+        get IsTeacher() {
+            return this.isTeacher;
+        }
+
+        set IsTeacher(isTeacher: boolean) {
+            if (isTeacher === undefined) { throw 'Please supply profile IsTeacher value'; }
+            this.isTeacher = isTeacher;
         }
 
         get Status() {

@@ -40,6 +40,9 @@ var components;
             }
             HeaderController.prototype.init = function () {
                 this.isAuthenticated = this.AuthService.isAuthenticated();
+                if (this.$rootScope.profileData) {
+                    this.isTeacher = this.$rootScope.profileData.IsTeacher;
+                }
                 this.form = {
                     whereTo: this.$filter('translate')('%header.search.placeholder.text')
                 };
@@ -120,6 +123,9 @@ var components;
                 var self = this;
                 this.$scope.$on('Is Authenticated', function (event, args) {
                     self.isAuthenticated = self.AuthService.isAuthenticated();
+                    if (self.$rootScope.profileData) {
+                        self.isTeacher = self.$rootScope.profileData.IsTeacher;
+                    }
                 });
             };
             return HeaderController;
