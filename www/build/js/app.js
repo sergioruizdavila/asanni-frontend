@@ -9574,6 +9574,7 @@ var app;
                                     self.messageUtil.success(SUCCESS_MESSAGE);
                                     self.localStorage.setItem(self.dataConfig.teacherDataLocalStorage, JSON.stringify(response));
                                     self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
+                                    self.$rootScope.profileData.IsTeacher = response.profile.isTeacher;
                                     self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
                                 }
                             });

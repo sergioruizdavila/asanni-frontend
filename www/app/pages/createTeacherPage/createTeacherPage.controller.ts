@@ -240,7 +240,7 @@ module app.pages.createTeacherPage {
                              event in order to save user profile data on BD
             * @event
             */
-            this.$scope.$on('Save Profile Data', function(event, args){
+            this.$scope.$on('Save Profile Data', function(event, args) {
                 //CONSTANTS
                 const SUCCESS_MESSAGE = self.$filter('translate')('%notification.success.text');
                 //VARIABLES
@@ -316,8 +316,9 @@ module app.pages.createTeacherPage {
 
                                 //Fill Form
                                 self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
+                                // set isTeacher in true
+                                self.$rootScope.profileData.IsTeacher = response.profile.isTeacher;
                                 self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
-
                             }
                         }
                     );
