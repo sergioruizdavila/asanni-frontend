@@ -43,6 +43,7 @@ module app.pages.userEditMediaPage {
         saving: boolean;
         saved: boolean;
         error: boolean;
+        isTeacher: boolean;
         TIME_SHOW_MESSAGE: number;
         // --------------------------------
 
@@ -85,6 +86,13 @@ module app.pages.userEditMediaPage {
         private _init() {
             //CONSTANTS
             this.TIME_SHOW_MESSAGE = 6000;
+
+            //Validate if user is teacher
+            //TODO: Esto deberia unificarse, no esta bien que tenga que ponerlo
+            // en cada sección del editar perfil
+            if(this.$rootScope.profileData) {
+                this.isTeacher = this.$rootScope.profileData.IsTeacher;
+            }
 
             // Init saving loading
             this.saving = false;

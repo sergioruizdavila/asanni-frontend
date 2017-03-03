@@ -15,7 +15,8 @@
                 <a class="ma-subnav__list__option__tab"
                    href>Invitar amigos</a>
             </li>
-            <li class="ma-subnav__list__option">
+            <li ng-if="vm.isTeacher"
+                class="ma-subnav__list__option">
                 <a class="ma-subnav__list__option__tab"
                    ui-sref="page.editTeacher.teach"
                    href translate>

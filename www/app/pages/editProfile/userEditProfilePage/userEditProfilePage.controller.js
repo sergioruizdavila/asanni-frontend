@@ -26,6 +26,9 @@ var app;
                     this.countryObject = { code: '', value: '' };
                     this.genderObject = { gender: { code: '', value: '' } };
                     this.dateObject = { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } };
+                    if (this.$rootScope.profileData) {
+                        this.isTeacher = this.$rootScope.profileData.IsTeacher;
+                    }
                     this.form = {
                         firstName: '',
                         lastName: '',
