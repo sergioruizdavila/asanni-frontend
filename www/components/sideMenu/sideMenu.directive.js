@@ -10,7 +10,9 @@ var components;
                 this.controllerAs = 'vm';
                 this.restrict = 'E';
                 this.scope = {
-                    type: '@'
+                    type: '@',
+                    viewProfileBtn: '=',
+                    viewProfileId: '@'
                 };
                 this.templateUrl = 'components/sideMenu/sideMenu.html';
                 DEBUG && console.log('maSideMenu directive constructor');
@@ -83,7 +85,11 @@ var components;
             SideMenuController.prototype._goToSection = function (state) {
                 this.$state.go(state, { reload: true });
             };
-            SideMenuController.prototype._goToViewProfile = function (id) {
+            SideMenuController.prototype._goToViewProfile = function () {
+                var id = this.viewProfileId;
+                var state = this.type == 'edit-teacher' ? 'page.teacherProfilePage' : 'page.userProfilePage';
+                var url = this.$state.href(state, { id: id });
+                window.open(url, '_blank');
             };
             return SideMenuController;
         }());

@@ -1178,7 +1178,6 @@ var app;
                     this.languages = new Language(obj.languages);
                     this.location = new Location(obj.location);
                     this.isTeacher = obj.isTeacher || false;
-                    this.status = obj.status || 'NW';
                     this.createdAt = obj.createdAt || '';
                 }
                 Object.defineProperty(Profile.prototype, "UserId", {
@@ -1366,19 +1365,6 @@ var app;
                             throw 'Please supply profile IsTeacher value';
                         }
                         this.isTeacher = isTeacher;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(Profile.prototype, "Status", {
-                    get: function () {
-                        return this.status;
-                    },
-                    set: function (status) {
-                        if (status === undefined) {
-                            throw 'Please supply profile status value';
-                        }
-                        this.status = status;
                     },
                     enumerable: true,
                     configurable: true
@@ -1979,6 +1965,7 @@ var app;
                     this.teacherSince = obj.teacherSince || '';
                     this.methodology = obj.methodology || '';
                     this.immersion = new Immersion(obj.immersion);
+                    this.status = obj.status || 'NW';
                     this.price = new Price(obj.price);
                     if (obj != {}) {
                         this.experiences = [];
@@ -2192,6 +2179,19 @@ var app;
                         }
                     });
                 };
+                Object.defineProperty(Teacher.prototype, "Status", {
+                    get: function () {
+                        return this.status;
+                    },
+                    set: function (status) {
+                        if (status === undefined) {
+                            throw 'Please supply profile status value';
+                        }
+                        this.status = status;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 Object.defineProperty(Teacher.prototype, "Recommended", {
                     get: function () {
                         return this.recommended;
@@ -3371,7 +3371,9 @@ var components;
                 this.controllerAs = 'vm';
                 this.restrict = 'E';
                 this.scope = {
-                    type: '@'
+                    type: '@',
+                    viewProfileBtn: '=',
+                    viewProfileId: '@'
                 };
                 this.templateUrl = 'components/sideMenu/sideMenu.html';
                 DEBUG && console.log('maSideMenu directive constructor');
@@ -3444,7 +3446,11 @@ var components;
             SideMenuController.prototype._goToSection = function (state) {
                 this.$state.go(state, { reload: true });
             };
-            SideMenuController.prototype._goToViewProfile = function (id) {
+            SideMenuController.prototype._goToViewProfile = function () {
+                var id = this.viewProfileId;
+                var state = this.type == 'edit-teacher' ? 'page.teacherProfilePage' : 'page.userProfilePage';
+                var url = this.$state.href(state, { id: id });
+                window.open(url, '_blank');
             };
             return SideMenuController;
         }());

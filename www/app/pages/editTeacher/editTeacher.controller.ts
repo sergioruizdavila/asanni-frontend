@@ -121,6 +121,9 @@ module app.pages.editTeacher {
         * @function
         * @return void
         */
+        //TODO: Analizar si es necesario esta funcion aqui, ya que estoy editando
+        // la info del profesor no del profile (solo uso aqui el idioma que enseño)
+        // si es asi, colocar una Nota para que no se me olvide por que deje esta funcion
         fillFormWithProfileData(): void {
             // VARIABLES
             let self = this;

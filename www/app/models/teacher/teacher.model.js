@@ -16,6 +16,7 @@ var app;
                     this.teacherSince = obj.teacherSince || '';
                     this.methodology = obj.methodology || '';
                     this.immersion = new Immersion(obj.immersion);
+                    this.status = obj.status || 'NW';
                     this.price = new Price(obj.price);
                     if (obj != {}) {
                         this.experiences = [];
@@ -229,6 +230,19 @@ var app;
                         }
                     });
                 };
+                Object.defineProperty(Teacher.prototype, "Status", {
+                    get: function () {
+                        return this.status;
+                    },
+                    set: function (status) {
+                        if (status === undefined) {
+                            throw 'Please supply profile status value';
+                        }
+                        this.status = status;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 Object.defineProperty(Teacher.prototype, "Recommended", {
                     get: function () {
                         return this.recommended;

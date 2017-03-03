@@ -17,7 +17,8 @@
             </div>
 
             <! view profile option >
-            <div class="menu-box__item menu-box__item--with-button">
+            <div ng-if="vm.viewProfileBtn"
+                 class="menu-box__item menu-box__item--with-button">
                 <a class="ma-btn ma-btn--default ma-btn--primary
                           ma-btn--block text-capitalize"
                    ng-click="vm._goToViewProfile()"
