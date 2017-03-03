@@ -313,7 +313,6 @@ module app.pages.createTeacherPage {
                                 self.messageUtil.success(SUCCESS_MESSAGE);
                                 //Save teacher data in localStorage
                                 self.localStorage.setItem(self.dataConfig.teacherDataLocalStorage, JSON.stringify(response));
-
                                 //Fill Form
                                 self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
                                 // set isTeacher in true
