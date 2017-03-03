@@ -226,7 +226,8 @@
                         ng-click="vm._openSignUpModal()" translate>
                     %global.student.text
                 </button>
-                <a class="ma-header--transparent__block__buttons-list__btn
+                <a ng-if="!vm.isTeacher"
+                   class="ma-header--transparent__block__buttons-list__btn
                           ma-btn ma-btn--tertiary ma-btn--default space-right-1"
                     ui-sref="page.teacherLandingPage"
                     uib-tooltip-template="'headerTooltip.tmpl.html'"

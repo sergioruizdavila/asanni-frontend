@@ -30,6 +30,7 @@ var app;
                     this.about = obj.about || '';
                     this.languages = new Language(obj.languages);
                     this.location = new Location(obj.location);
+                    this.isTeacher = obj.isTeacher || false;
                     this.status = obj.status || 'NW';
                     this.createdAt = obj.createdAt || '';
                 }
@@ -205,6 +206,19 @@ var app;
                             throw 'Please supply profile location';
                         }
                         this.about = about;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "IsTeacher", {
+                    get: function () {
+                        return this.isTeacher;
+                    },
+                    set: function (isTeacher) {
+                        if (isTeacher === undefined) {
+                            throw 'Please supply profile IsTeacher value';
+                        }
+                        this.isTeacher = isTeacher;
                     },
                     enumerable: true,
                     configurable: true

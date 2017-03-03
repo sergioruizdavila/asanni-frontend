@@ -19,6 +19,9 @@ var app;
                 }
                 UserEditLocationPageController.prototype._init = function () {
                     this.TIME_SHOW_MESSAGE = 6000;
+                    if (this.$rootScope.profileData) {
+                        this.isTeacher = this.$rootScope.profileData.IsTeacher;
+                    }
                     this.saving = false;
                     this.saved = false;
                     this.error = false;

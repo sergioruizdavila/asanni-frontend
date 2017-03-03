@@ -49,6 +49,7 @@ module app.pages.userEditLocationPage {
         saving: boolean;
         saved: boolean;
         error: boolean;
+        isTeacher: boolean;
         geocoder: google.maps.Geocoder;
         mapConfig: components.map.IMapConfig;
         listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
@@ -92,6 +93,13 @@ module app.pages.userEditLocationPage {
         private _init() {
             //CONSTANTS
             this.TIME_SHOW_MESSAGE = 6000;
+
+            //Validate if user is teacher
+            //TODO: Esto deberia unificarse, no esta bien que tenga que ponerlo
+            // en cada sección del editar perfil
+            if(this.$rootScope.profileData) {
+                this.isTeacher = this.$rootScope.profileData.IsTeacher;
+            }
 
             // Init saving loading
             this.saving = false;

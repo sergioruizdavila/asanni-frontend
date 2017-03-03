@@ -68,6 +68,7 @@ module app.pages.landingPage {
         infoNewUser: IFormStatus;
         validate: ILandingValidate;
         isAuthenticated: boolean;
+        isTeacher: boolean;
         countryObject: app.core.interfaces.IDataFromJsonI18n;
         listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
         // --------------------------------
@@ -115,6 +116,11 @@ module app.pages.landingPage {
 
             //Validate if user is Authenticated
             this.isAuthenticated = this.AuthService.isAuthenticated();
+
+            //Validate if user is teacher
+            if(this.$rootScope.profileData) {
+                this.isTeacher = this.$rootScope.profileData.IsTeacher;
+            }
 
             //Init form
             this.form = {
@@ -477,6 +483,10 @@ module app.pages.landingPage {
             this.$scope.$on('Is Authenticated', function(event, args) {
                 //Validate if user is Authenticated
                 self.isAuthenticated = self.AuthService.isAuthenticated();
+                //Validate if user is teacher
+                if(self.$rootScope.profileData) {
+                    self.isTeacher = self.$rootScope.profileData.IsTeacher;
+                }
             });
 
         }

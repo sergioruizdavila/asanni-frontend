@@ -69,6 +69,7 @@ module app.pages.userEditProfilePage {
         saving: boolean;
         saved: boolean;
         error: boolean;
+        isTeacher: boolean;
         listMonths: Array<app.core.interfaces.IDataFromJsonI18n>;
         listGenders: Array<app.core.interfaces.IDataFromJsonI18n>;
         listDays: Array<app.core.interfaces.ISelectListElement>;
@@ -136,6 +137,13 @@ module app.pages.userEditProfilePage {
 
             // Birthdate Select List Structure
             this.dateObject = {day:{value:''}, month: {code:'', value:''}, year: {value:''}};
+
+            //Validate if user is teacher
+            //TODO: Esto deberia unificarse, no esta bien que tenga que ponerlo
+            // en cada sección del editar perfil
+            if(this.$rootScope.profileData) {
+                this.isTeacher = this.$rootScope.profileData.IsTeacher;
+            }
 
 
             //Init form

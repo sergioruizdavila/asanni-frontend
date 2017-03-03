@@ -191,7 +191,7 @@
                                 ma-header__block__btn__icon__ma-photo">
                         <img width="32"
                              height="32"
-                             ng-show="{{vm.$rootScope.profileData.avatar}}"
+                             ng-show="vm.$rootScope.profileData.avatar"
                              ng-src="{{vm.$rootScope.profileData.avatar}}"
                              alt="{{vm.$rootScope.profileData.firstName}}">
                     </div>
@@ -328,7 +328,8 @@
                         ng-click="vm._openSignUpModal()" translate>
                     %global.student.text
                 </button>
-                <a class="ma-header--transparent__block__buttons-list__btn
+                <a ng-if="!vm.isTeacher"
+                   class="ma-header--transparent__block__buttons-list__btn
                           ma-btn ma-btn--secondary ma-btn--default space-right-1"
                     ui-sref="page.teacherLandingPage"
                     uib-tooltip-template="'headerTooltip.tmpl.html'"

@@ -91,6 +91,7 @@ module components.header {
         private _slideout: boolean;
         form: IHeaderForm;
         isAuthenticated: boolean;
+        isTeacher: boolean;
         // --------------------------------
 
 
@@ -117,7 +118,7 @@ module components.header {
                     private dataConfig: IDataConfig,
                     private $filter: angular.IFilterService,
                     private $scope: angular.IScope,
-                    private $rootScope: angular.IRootScopeService,
+                    private $rootScope: app.core.interfaces.IMainAppRootScope,
                     private $state: ng.ui.IStateService,
                     private localStorage) {
             this.init();
@@ -129,6 +130,11 @@ module components.header {
 
             //Validate if user is Authenticated
             this.isAuthenticated = this.AuthService.isAuthenticated();
+
+            //Validate if user is teacher
+            if(this.$rootScope.profileData) {
+                this.isTeacher = this.$rootScope.profileData.IsTeacher;
+            }
 
             //Init form
             this.form = {
@@ -318,6 +324,10 @@ module components.header {
             this.$scope.$on('Is Authenticated', function(event, args) {
                 //Validate if user is Authenticated
                 self.isAuthenticated = self.AuthService.isAuthenticated();
+                //Validate if user is teacher
+                if(self.$rootScope.profileData) {
+                    self.isTeacher = self.$rootScope.profileData.IsTeacher;
+                }
             });
 
         }
