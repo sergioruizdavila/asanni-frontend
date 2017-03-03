@@ -168,7 +168,7 @@ module app.pages.createTeacherPage {
                 this.$scope.$emit('Save Data');
                 // GO TO ALTERNATIVE STEP IF IS PROFESSIONAL TEACHER, IF NOT GO
                 // TO NEXT STEP
-                if(this.form.type === 'P'){
+                if(this.form.type === 'P') {
                     this.$state.go(this.STEP_ALTER_STATE, {reload: true});
                 } else {
                     this.$state.go(this.STEP5_STATE, {reload: true});
@@ -372,10 +372,6 @@ module app.pages.createTeacherPage {
         * @return {void}
         */
         private _setDataModelFromForm(): void {
-            //VARIABLES
-
-            /*********************************/
-
             // Send data to parent (createTeacherPage)
             this.$rootScope.teacherData.Type = this.form.type;
             this.$rootScope.teacherData.TeacherSince = this.yearObject.value;
