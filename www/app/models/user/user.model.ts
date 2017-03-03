@@ -48,7 +48,6 @@ module app.models.user {
         private languages: Language;
         private location: Location;
         private isTeacher: boolean;
-        private status: string;
         private createdAt: string;
 
         /**********************************/
@@ -76,7 +75,6 @@ module app.models.user {
             this.languages = new Language(obj.languages);
             this.location = new Location(obj.location);
             this.isTeacher = obj.isTeacher || false;
-            this.status = obj.status || 'NW';
             this.createdAt = obj.createdAt || '';
 
         }
@@ -213,15 +211,6 @@ module app.models.user {
         set IsTeacher(isTeacher: boolean) {
             if (isTeacher === undefined) { throw 'Please supply profile IsTeacher value'; }
             this.isTeacher = isTeacher;
-        }
-
-        get Status() {
-            return this.status;
-        }
-
-        set Status(status: string) {
-            if (status === undefined) { throw 'Please supply profile status value'; }
-            this.status = status;
         }
 
         get CreatedAt() {

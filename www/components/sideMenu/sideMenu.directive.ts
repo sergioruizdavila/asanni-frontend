@@ -27,7 +27,9 @@ module components.sideMenu {
         controllerAs: string = 'vm';
         restrict: string = 'E';
         scope = {
-            type: '@'
+            type: '@',
+            viewProfileBtn: '=',
+            viewProfileId: '@'
         };
         templateUrl: string = 'components/sideMenu/sideMenu.html';
         // --------------------------------
@@ -89,6 +91,7 @@ module components.sideMenu {
         /*           PROPERTIES           */
         /**********************************/
         type: string;
+        viewProfileId: string;
         optionsList: Array<IOption>;
         // --------------------------------
 
@@ -208,8 +211,12 @@ module components.sideMenu {
         * @function
         * @return void
         */
-        private _goToViewProfile(id) {
-            //this.$state.go(id, {reload: true});
+        private _goToViewProfile() {
+            //VARIABLES
+            let id = this.viewProfileId;
+            let state = this.type == 'edit-teacher' ? 'page.teacherProfilePage' : 'page.userProfilePage';
+            let url = this.$state.href(state, {id: id});
+            window.open(url,'_blank');
         }
 
     }

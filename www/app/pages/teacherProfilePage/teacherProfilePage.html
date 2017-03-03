@@ -5,9 +5,11 @@
 <div class="teacherProfilePage container">
 
     <!---------------------- START: LARGE MESSAGE BLOCK ----------------------->
-    <!--div class="teacherProfilePage__preview-message
+    <div ng-if="vm.data.Status !== 'VA'"
+         ng-hide="vm.loading"
+         class="teacherProfilePage__preview-message
                 row ma-large-message ma-large-message--info"
-         ng-hide="vm.loading">
+         style="background-color:rgb(185, 232, 223);">
         <div class="col-xs-12 text-center">
             <p class="ma-p ma-p--default ma-p--info margin-reset">
                 <span translate>
@@ -15,7 +17,7 @@
                 </span>
             </p>
         </div>
-    </div-->
+    </div>
     <!--                      END: PROFILE IMAGE BLOCK                       -->
 
 
@@ -36,7 +38,9 @@
 
 
 
-    <div class="row space-top-5" ng-hide="vm.loading">
+    <div class="row"
+         ng-class="vm.data.Status !== 'VA' ? 'space-top-10' : 'space-top-5'"
+         ng-hide="vm.loading">
 
         <!--                     START: LEFT COLUMN                          -->
         <!--------------------------------------------------------------------->
@@ -84,7 +88,7 @@
             <!---------------------- START: VERIFIED BLOCK -------------------->
             <div id="teacherProfile-verified-block"
                  class="teacherProfilePage__verified-block
-                        center-xs row space-4">
+                        center-xs row space-4 hidden">
 
                 <div class="col-xs-12">
 

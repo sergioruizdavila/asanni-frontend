@@ -27,6 +27,7 @@ module app.models.teacher {
         private immersion: Immersion;
         private price: Price;
         private ratings: Array<Rating>;
+        private status: string;
         private recommended: number;
 
         /**********************************/
@@ -45,6 +46,7 @@ module app.models.teacher {
             this.teacherSince = obj.teacherSince || '';
             this.methodology = obj.methodology || '';
             this.immersion = new Immersion(obj.immersion);
+            this.status = obj.status || 'NW';
             this.price = new Price(obj.price);
 
             if(obj != {}) {
@@ -223,6 +225,15 @@ module app.models.teacher {
                     array[index] = rating;
                 }
             });
+        }
+
+        get Status() {
+            return this.status;
+        }
+
+        set Status(status: string) {
+            if (status === undefined) { throw 'Please supply profile status value'; }
+            this.status = status;
         }
 
         get Recommended() {

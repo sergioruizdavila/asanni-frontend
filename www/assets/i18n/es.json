@@ -318,7 +318,8 @@
     "%search.container.teacher.methodology.title.text": "Metodología",
 
     "__TEACHER PROFILE PAGE__": "",
-    "%profile.teacher.large_message.text": "Asi se veria tu perfil cuando terminemos de validar tu información",
+    "%profile.teacher.large_message.text.legacy": "Asi se veria tu perfil cuando terminemos de validar tu información",
+    "%profile.teacher.large_message.text": "Tu perfil sigue aún en proceso de validación",
     "%profile.teacher.edit_profile.button.text": "Editar Perfil",
     "%profile.teacher.verified.title.text": "Verificado",
     "%profile.teacher.verified.phone.label.text": "Teléfono Verificado",

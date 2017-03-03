@@ -31,7 +31,6 @@ var app;
                     this.languages = new Language(obj.languages);
                     this.location = new Location(obj.location);
                     this.isTeacher = obj.isTeacher || false;
-                    this.status = obj.status || 'NW';
                     this.createdAt = obj.createdAt || '';
                 }
                 Object.defineProperty(Profile.prototype, "UserId", {
@@ -219,19 +218,6 @@ var app;
                             throw 'Please supply profile IsTeacher value';
                         }
                         this.isTeacher = isTeacher;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(Profile.prototype, "Status", {
-                    get: function () {
-                        return this.status;
-                    },
-                    set: function (status) {
-                        if (status === undefined) {
-                            throw 'Please supply profile status value';
-                        }
-                        this.status = status;
                     },
                     enumerable: true,
                     configurable: true
