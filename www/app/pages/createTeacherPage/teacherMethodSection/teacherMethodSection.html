@@ -21,6 +21,17 @@
 
                 <div class="ma-box__content">
 
+                    <!-- Global Validate Error Message -->
+                    <div class="row ma-large-message
+                                ma-large-message--alert space-5"
+                         ng-show="!vm.validate.globalValidate.valid">
+                        <div class="col-md-12 text-center">
+                            <p class="ma-p ma-p--default ma-p--alert margin-reset">
+                                <span>{{vm.validate.globalValidate.message}}</span>
+                            </p>
+                        </div>
+                    </div>
+
                     <!------------- START: METHODOLOGY INFO BLOCK ------------->
 
                     <! Methodology TextArea Input >
@@ -111,6 +122,7 @@
                                                 class="ma-input ma-select
                                                        ma-select--large"
                                                 ng-model="vm.typeObject"
+                                                ng-change="vm._addNewImmersion()"
                                                 ng-options="type.value | translate disable when type.disabled for type in vm.typeOfImmersionList track by type.code"
                                                 name="teacher[type]" class="form-control">
                                                 <option value="" disabled selected translate>
@@ -122,14 +134,6 @@
 
                             </div>
 
-                            <div class="col-xs-12 col-sm-6 text-right">
-                                <!-- Add Button -->
-                                <button class="ma-btn ma-btn--primary ma-btn--large"
-                                        ng-click="vm._addNewImmersion()"
-                                        translate>
-                                    %global.add.button.text
-                                </button>
-                            </div>
                         </div>
 
 
@@ -155,14 +159,6 @@
                                                 ng-click="vm._removeImmersion(immersion.key)">clear</i>
                                          </div>
                                     </div>
-                                    <div class="row margin-reset">
-                                        <div class="col-sm-12 padding-reset">
-                                            <p class="ma-p ma-p--default ma-p--alert pull-left"
-                                               ng-show="!vm.validate.typeOfImmersionList.valid">
-                                                <span>{{vm.validate.typeOfImmersionList.message}}</span>
-                                            </p>
-                                        </div>
-                                    </div>
                                 </div>
 
                             </div>
@@ -183,6 +179,7 @@
                                     <textarea id="otherType-immersion-input"
                                               name="teacher_immersion[otherType]"
                                               ng-model="vm.form.immersion.OtherCategory"
+                                              ng-class="{'ma-input--invalid': !vm.validate.otherCategory.valid}"
                                               class="ma-input ma-input--large ma-textarea"
                                               translate
                                               translate-attr-placeholder="%create.teacher.method.form.imm.type.other.placeholder.text"

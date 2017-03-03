@@ -473,6 +473,7 @@
     "%create.teacher.method.help_text.methodology.description.text": "This field is required. This will be an excellent guide since according to the method you use, students will feel more identified and related with your methodology. Describe in detail what teaching method you use (e.g. books and supporting material, conversations with local people, flashcards, etc.).",
     "%create.teacher.method.help_text.imm.title.text": "Immersion in your culture",
     "%create.teacher.method.help_text.imm.description.text": "Describe if your classes offer some kind of 'immersion in the language'. Being in direct contact with local people is a big factor to learn a language faster. (e.g. Exit every third class to the central park to talk with local people or each Friday class will be in a cafe to share with locals, etc.).",
+    "%create.teacher.method.validation.message.text": "If you offer immersion, please specify your type of immersion",
 
     "__7. TEACHER PRICE SECTION__": "",
     "%create.teacher.price.title.text": "Step 7 -  Price of your classes",

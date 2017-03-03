@@ -473,6 +473,7 @@
     "%create.teacher.method.help_text.methodology.description.text": "Este campo es obligatorio. Esta será una excelente guía ya que según el método que utilices, los estudiantes se van a sentir más identificados y afines con tu metodología. Describe en detalle que método de enseñanza usas (p.ej. Libros y material de apoyo, conversaciones con personas locales, flashcards, etc.).",
     "%create.teacher.method.help_text.imm.title.text": "Inmersión en tu cultura",
     "%create.teacher.method.help_text.imm.description.text": "Describe si tus clases ofrecen algún tipo de 'inmersión en el idioma'. Estar en contacto directo con personas locales es un gran factor para que un idioma se aprenda más rápidamente.  (p.ej. Salida cada tercera clase al parque central para hablar con lugareños, las clases de los viernes serán en un café para compartir con locales, etc.).",
+    "%create.teacher.method.validation.message.text": "Si ofreces inmersión, por favor detalla que tipo de inmersión.",
 
     "__7. TEACHER PRICE SECTION__": "",
     "%create.teacher.price.title.text": "Paso 7 -  Precio de tus clases",
