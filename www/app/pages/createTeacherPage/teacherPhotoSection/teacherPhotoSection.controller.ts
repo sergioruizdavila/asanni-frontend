@@ -88,7 +88,7 @@ module app.pages.createTeacherPage {
             this.STEP7_STATE = 'page.createTeacherPage.price';
             this.FINAL_STEP_STATE = 'page.createTeacherPage.finish';
             this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.title.text');
-            this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.description.text');
+            this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.teacher.help_text.description.text');
             /*********************************/
 
             // Init upload loading button
@@ -276,7 +276,7 @@ module app.pages.createTeacherPage {
         changeHelpText(type): void {
             //CONSTANTS
             const AVATAR_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.avatar.title.text');
-            const AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.description.text');
+            const AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.teacher.help_text.description.text');
             /*****************************************************/
 
             switch(type) {

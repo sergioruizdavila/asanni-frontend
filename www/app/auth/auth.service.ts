@@ -105,6 +105,7 @@ module app.auth {
           //Clean localStorage Values
           this.localStorage.removeItem(this.dataConfig.userDataLocalStorage);
           this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
+          window.location.reload();
         }
 
 
@@ -242,7 +243,7 @@ module app.auth {
                     //Clean localStorage Values
                     self.localStorage.removeItem(self.dataConfig.userDataLocalStorage);
                     self.localStorage.removeItem(self.dataConfig.teacherDataLocalStorage);
-
+                    window.location.reload();
                     deferred.resolve(response);
                 },
                 function(response) {

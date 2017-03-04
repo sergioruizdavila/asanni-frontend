@@ -5,10 +5,10 @@ var app;
         var editTeacher;
         (function (editTeacher) {
             var EditTeacherMethodologyController = (function () {
-                function EditTeacherMethodologyController(dataConfig, getDataFromJson, functionsUtilService, $timeout, $filter, $scope, $rootScope, $uibModal) {
+                function EditTeacherMethodologyController(dataConfig, getDataFromJson, functionsUtil, $timeout, $filter, $scope, $rootScope, $uibModal) {
                     this.dataConfig = dataConfig;
                     this.getDataFromJson = getDataFromJson;
-                    this.functionsUtilService = functionsUtilService;
+                    this.functionsUtil = functionsUtil;
                     this.$timeout = $timeout;
                     this.$filter = $filter;
                     this.$scope = $scope;
@@ -36,7 +36,9 @@ var app;
                     this.validate = {
                         methodology: { valid: true, message: '' },
                         immersionActive: { valid: true, message: '' },
-                        typeOfImmersionList: { valid: true, message: '' }
+                        typeOfImmersionList: { valid: true, message: '' },
+                        otherCategory: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
                     };
                     this.activate();
                 };
@@ -85,17 +87,34 @@ var app;
                 EditTeacherMethodologyController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
                     var EMPTY_ENUM = 3;
+                    var GLOBAL_MESSAGE = this.$filter('translate')('%create.teacher.method.validation.message.text');
                     var formValid = true;
                     var methodology_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.methodology = this.functionsUtilService.validator(this.form.methodology, methodology_rules);
+                    this.validate.methodology = this.functionsUtil.validator(this.form.methodology, methodology_rules);
                     if (!this.validate.methodology.valid) {
                         formValid = this.validate.methodology.valid;
                     }
                     if (this.form.immersion.Active) {
                         var typeOfImmersion_rules = [NULL_ENUM, EMPTY_ENUM];
-                        this.validate.typeOfImmersionList = this.functionsUtilService.validator(this.form.immersion.Category, typeOfImmersion_rules);
-                        if (!this.validate.typeOfImmersionList.valid) {
-                            formValid = this.validate.typeOfImmersionList.valid;
+                        this.validate.typeOfImmersionList = this.functionsUtil.validator(this.form.immersion.Category, typeOfImmersion_rules);
+                        var otherCategory_rules = [NULL_ENUM, EMPTY_ENUM];
+                        this.validate.otherCategory = this.functionsUtil.validator(this.form.immersion.OtherCategory, otherCategory_rules);
+                        if (this.validate.typeOfImmersionList.valid) {
+                            this.validate.typeOfImmersionList.valid = true;
+                            this.validate.otherCategory.valid = true;
+                            this.validate.globalValidate.valid = true;
+                            this.validate.globalValidate.message = '';
+                        }
+                        else if (this.validate.otherCategory.valid) {
+                            this.validate.typeOfImmersionList.valid = true;
+                            this.validate.otherCategory.valid = true;
+                            this.validate.globalValidate.valid = true;
+                            this.validate.globalValidate.message = '';
+                        }
+                        else {
+                            this.validate.globalValidate.valid = false;
+                            this.validate.globalValidate.message = GLOBAL_MESSAGE;
+                            formValid = this.validate.globalValidate.valid;
                         }
                     }
                     return formValid;

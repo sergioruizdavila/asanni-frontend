@@ -180,8 +180,13 @@
                                     <div class="row space-top-6">
 
                                         <div class="col-xs-12">
-                                            <p class="ma-p ma-p--large text-left" translate>
-                                                %create.teacher.photo.help_text.description.text
+                                            <p ng-if="!vm.isTeacher"
+                                               class="ma-p ma-p--large text-left" translate>
+                                               %create.teacher.photo.user.help_text.description.text
+                                            </p>
+                                            <p ng-if="vm.isTeacher"
+                                               class="ma-p ma-p--large text-left" translate>
+                                                %create.teacher.photo.teacher.help_text.description.text
                                             </p>
                                             <div class="row space-top-5">
                                                 <div class="col-md-12 text-left">
@@ -232,8 +237,13 @@
 
                                 <!-- Description Profile Photo -->
                                 <div class="col-lg-8 space-top-5 space-4">
-                                    <p class="ma-p ma-p--large" translate>
-                                        %create.teacher.photo.help_text.description.text
+                                    <p ng-if="!vm.isTeacher"
+                                       class="ma-p ma-p--large text-left" translate>
+                                       %create.teacher.photo.user.help_text.description.text
+                                    </p>
+                                    <p ng-if="vm.isTeacher"
+                                       class="ma-p ma-p--large text-left" translate>
+                                        %create.teacher.photo.teacher.help_text.description.text
                                     </p>
                                     <div class="row space-top-5">
                                         <div class="col-md-12 text-center">
@@ -269,7 +279,7 @@
                                                   md-30
                                                   md-primary
                                                   vertical-align-middle">
-                                            sentiment_very_satisfied
+                                            done
                                         </i>
                                         <span class="vertical-align-middle"
                                               translate>

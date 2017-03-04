@@ -6,8 +6,9 @@ var app;
         (function (teacher_1) {
             'use strict';
             var TeacherService = (function () {
-                function TeacherService(restApi, $q) {
+                function TeacherService(restApi, AuthService, $q) {
                     this.restApi = restApi;
+                    this.AuthService = AuthService;
                     this.$q = $q;
                     console.log('teacher service instanced');
                     this.TEACHER_URI = 'teachers';
@@ -18,6 +19,7 @@ var app;
                     this.CERTIFICATES_URI = 'certificates';
                 }
                 TeacherService.prototype.getTeacherById = function (id) {
+                    var self = this;
                     var url = this.TEACHER_URI;
                     var deferred = this.$q.defer();
                     this.restApi.show({ url: url, id: id }).$promise
@@ -25,11 +27,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.getTeacherByProfileId = function (profileId) {
+                    var self = this;
                     var url = this.PROFILE_TEACHER_URI + profileId;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
@@ -44,11 +50,15 @@ var app;
                         }
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.getAllTeachersByStatus = function (status) {
+                    var self = this;
                     var url = this.STATUS_TEACHER_URI + status;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
@@ -56,11 +66,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.getAllTeachers = function () {
+                    var self = this;
                     var url = this.TEACHER_URI;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
@@ -68,11 +82,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.createTeacher = function (teacher) {
+                    var self = this;
                     var url = this.TEACHER_URI;
                     var deferred = this.$q.defer();
                     this.restApi.create({ url: url }, teacher).$promise
@@ -80,11 +98,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.updateTeacher = function (teacher) {
+                    var self = this;
                     var url = this.TEACHER_URI;
                     var deferred = this.$q.defer();
                     this.restApi.update({ url: url, id: teacher.Id }, teacher).$promise
@@ -92,11 +114,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.createExperience = function (teacherId, experience) {
+                    var self = this;
                     var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EXPERIENCES_URI;
                     var deferred = this.$q.defer();
                     this.restApi.create({ url: url }, experience).$promise
@@ -104,11 +130,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.log(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.updateExperience = function (teacherId, experience) {
+                    var self = this;
                     var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EXPERIENCES_URI;
                     var deferred = this.$q.defer();
                     this.restApi.update({ url: url, id: experience.Id }, experience).$promise
@@ -116,11 +146,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.createEducation = function (teacherId, education) {
+                    var self = this;
                     var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EDUCATIONS_URI;
                     var deferred = this.$q.defer();
                     this.restApi.create({ url: url }, education).$promise
@@ -128,11 +162,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.updateEducation = function (teacherId, education) {
+                    var self = this;
                     var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EDUCATIONS_URI;
                     var deferred = this.$q.defer();
                     this.restApi.update({ url: url, id: education.Id }, education).$promise
@@ -140,11 +178,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.createCertificate = function (teacherId, certificate) {
+                    var self = this;
                     var url = this.TEACHER_URI + '/' + teacherId + '/' + this.CERTIFICATES_URI;
                     var deferred = this.$q.defer();
                     this.restApi.create({ url: url }, certificate).$promise
@@ -152,11 +194,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.updateCertificate = function (teacherId, certificate) {
+                    var self = this;
                     var url = this.TEACHER_URI + '/' + teacherId + '/' + this.CERTIFICATES_URI;
                     var deferred = this.$q.defer();
                     this.restApi.update({ url: url, id: certificate.Id }, certificate).$promise
@@ -164,6 +210,9 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
@@ -173,6 +222,7 @@ var app;
             TeacherService.serviceId = 'mainApp.models.teacher.TeacherService';
             TeacherService.$inject = [
                 'mainApp.core.restApi.restApiService',
+                'mainApp.auth.AuthService',
                 '$q'
             ];
             teacher_1.TeacherService = TeacherService;

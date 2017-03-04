@@ -26,6 +26,7 @@ var app;
                 this.$cookies.remove(this.dataConfig.cookieName);
                 this.localStorage.removeItem(this.dataConfig.userDataLocalStorage);
                 this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
+                window.location.reload();
             };
             AuthService.prototype.resetPassword = function (email) {
                 var url = this.AUTH_RESET_PASSWORD_URI;
@@ -80,6 +81,7 @@ var app;
                     DEBUG && console.info("Logged out successfuly!");
                     self.localStorage.removeItem(self.dataConfig.userDataLocalStorage);
                     self.localStorage.removeItem(self.dataConfig.teacherDataLocalStorage);
+                    window.location.reload();
                     deferred.resolve(response);
                 }, function (response) {
                     DEBUG && console.error("Error while logging you out!");
