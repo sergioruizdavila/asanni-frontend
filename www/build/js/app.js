@@ -233,6 +233,7 @@ var app;
                 this.$cookies.remove(this.dataConfig.cookieName);
                 this.localStorage.removeItem(this.dataConfig.userDataLocalStorage);
                 this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
+                window.location.reload();
             };
             AuthService.prototype.resetPassword = function (email) {
                 var url = this.AUTH_RESET_PASSWORD_URI;
@@ -287,6 +288,7 @@ var app;
                     DEBUG && console.info("Logged out successfuly!");
                     self.localStorage.removeItem(self.dataConfig.userDataLocalStorage);
                     self.localStorage.removeItem(self.dataConfig.teacherDataLocalStorage);
+                    window.location.reload();
                     deferred.resolve(response);
                 }, function (response) {
                     DEBUG && console.error("Error while logging you out!");
@@ -1645,8 +1647,9 @@ var app;
         (function (user_1) {
             'use strict';
             var UserService = (function () {
-                function UserService(restApi) {
+                function UserService(restApi, AuthService) {
                     this.restApi = restApi;
+                    this.AuthService = AuthService;
                     console.log('user service instanced');
                     this.USER_URI = 'users';
                 }
@@ -1671,12 +1674,16 @@ var app;
                     });
                 };
                 UserService.prototype.updateUserProfile = function (profile) {
+                    var self = this;
                     var url = this.USER_URI;
                     return this.restApi.update({ url: url, id: profile.userId }, profile).$promise
                         .then(function (response) {
                         return response;
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         return error;
                     });
                 };
@@ -1684,7 +1691,8 @@ var app;
             }());
             UserService.serviceId = 'mainApp.models.user.UserService';
             UserService.$inject = [
-                'mainApp.core.restApi.restApiService'
+                'mainApp.core.restApi.restApiService',
+                'mainApp.auth.AuthService'
             ];
             user_1.UserService = UserService;
             angular
@@ -2952,8 +2960,9 @@ var app;
         (function (teacher_1) {
             'use strict';
             var TeacherService = (function () {
-                function TeacherService(restApi, $q) {
+                function TeacherService(restApi, AuthService, $q) {
                     this.restApi = restApi;
+                    this.AuthService = AuthService;
                     this.$q = $q;
                     console.log('teacher service instanced');
                     this.TEACHER_URI = 'teachers';
@@ -3019,6 +3028,7 @@ var app;
                     return deferred.promise;
                 };
                 TeacherService.prototype.createTeacher = function (teacher) {
+                    var self = this;
                     var url = this.TEACHER_URI;
                     var deferred = this.$q.defer();
                     this.restApi.create({ url: url }, teacher).$promise
@@ -3026,11 +3036,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.updateTeacher = function (teacher) {
+                    var self = this;
                     var url = this.TEACHER_URI;
                     var deferred = this.$q.defer();
                     this.restApi.update({ url: url, id: teacher.Id }, teacher).$promise
@@ -3038,11 +3052,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.createExperience = function (teacherId, experience) {
+                    var self = this;
                     var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EXPERIENCES_URI;
                     var deferred = this.$q.defer();
                     this.restApi.create({ url: url }, experience).$promise
@@ -3050,11 +3068,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.log(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.updateExperience = function (teacherId, experience) {
+                    var self = this;
                     var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EXPERIENCES_URI;
                     var deferred = this.$q.defer();
                     this.restApi.update({ url: url, id: experience.Id }, experience).$promise
@@ -3062,11 +3084,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.createEducation = function (teacherId, education) {
+                    var self = this;
                     var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EDUCATIONS_URI;
                     var deferred = this.$q.defer();
                     this.restApi.create({ url: url }, education).$promise
@@ -3074,11 +3100,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.updateEducation = function (teacherId, education) {
+                    var self = this;
                     var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EDUCATIONS_URI;
                     var deferred = this.$q.defer();
                     this.restApi.update({ url: url, id: education.Id }, education).$promise
@@ -3086,11 +3116,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.createCertificate = function (teacherId, certificate) {
+                    var self = this;
                     var url = this.TEACHER_URI + '/' + teacherId + '/' + this.CERTIFICATES_URI;
                     var deferred = this.$q.defer();
                     this.restApi.create({ url: url }, certificate).$promise
@@ -3098,11 +3132,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.updateCertificate = function (teacherId, certificate) {
+                    var self = this;
                     var url = this.TEACHER_URI + '/' + teacherId + '/' + this.CERTIFICATES_URI;
                     var deferred = this.$q.defer();
                     this.restApi.update({ url: url, id: certificate.Id }, certificate).$promise
@@ -3110,6 +3148,9 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
@@ -3119,6 +3160,7 @@ var app;
             TeacherService.serviceId = 'mainApp.models.teacher.TeacherService';
             TeacherService.$inject = [
                 'mainApp.core.restApi.restApiService',
+                'mainApp.auth.AuthService',
                 '$q'
             ];
             teacher_1.TeacherService = TeacherService;
@@ -8785,10 +8827,10 @@ var app;
         var editTeacher;
         (function (editTeacher) {
             var EditTeacherMethodologyController = (function () {
-                function EditTeacherMethodologyController(dataConfig, getDataFromJson, functionsUtilService, $timeout, $filter, $scope, $rootScope, $uibModal) {
+                function EditTeacherMethodologyController(dataConfig, getDataFromJson, functionsUtil, $timeout, $filter, $scope, $rootScope, $uibModal) {
                     this.dataConfig = dataConfig;
                     this.getDataFromJson = getDataFromJson;
-                    this.functionsUtilService = functionsUtilService;
+                    this.functionsUtil = functionsUtil;
                     this.$timeout = $timeout;
                     this.$filter = $filter;
                     this.$scope = $scope;
@@ -8816,7 +8858,9 @@ var app;
                     this.validate = {
                         methodology: { valid: true, message: '' },
                         immersionActive: { valid: true, message: '' },
-                        typeOfImmersionList: { valid: true, message: '' }
+                        typeOfImmersionList: { valid: true, message: '' },
+                        otherCategory: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
                     };
                     this.activate();
                 };
@@ -8865,17 +8909,34 @@ var app;
                 EditTeacherMethodologyController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
                     var EMPTY_ENUM = 3;
+                    var GLOBAL_MESSAGE = this.$filter('translate')('%create.teacher.method.validation.message.text');
                     var formValid = true;
                     var methodology_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.methodology = this.functionsUtilService.validator(this.form.methodology, methodology_rules);
+                    this.validate.methodology = this.functionsUtil.validator(this.form.methodology, methodology_rules);
                     if (!this.validate.methodology.valid) {
                         formValid = this.validate.methodology.valid;
                     }
                     if (this.form.immersion.Active) {
                         var typeOfImmersion_rules = [NULL_ENUM, EMPTY_ENUM];
-                        this.validate.typeOfImmersionList = this.functionsUtilService.validator(this.form.immersion.Category, typeOfImmersion_rules);
-                        if (!this.validate.typeOfImmersionList.valid) {
-                            formValid = this.validate.typeOfImmersionList.valid;
+                        this.validate.typeOfImmersionList = this.functionsUtil.validator(this.form.immersion.Category, typeOfImmersion_rules);
+                        var otherCategory_rules = [NULL_ENUM, EMPTY_ENUM];
+                        this.validate.otherCategory = this.functionsUtil.validator(this.form.immersion.OtherCategory, otherCategory_rules);
+                        if (this.validate.typeOfImmersionList.valid) {
+                            this.validate.typeOfImmersionList.valid = true;
+                            this.validate.otherCategory.valid = true;
+                            this.validate.globalValidate.valid = true;
+                            this.validate.globalValidate.message = '';
+                        }
+                        else if (this.validate.otherCategory.valid) {
+                            this.validate.typeOfImmersionList.valid = true;
+                            this.validate.otherCategory.valid = true;
+                            this.validate.globalValidate.valid = true;
+                            this.validate.globalValidate.message = '';
+                        }
+                        else {
+                            this.validate.globalValidate.valid = false;
+                            this.validate.globalValidate.message = GLOBAL_MESSAGE;
+                            formValid = this.validate.globalValidate.valid;
                         }
                     }
                     return formValid;

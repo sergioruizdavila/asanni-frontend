@@ -478,6 +478,7 @@
     "__7. TEACHER PRICE SECTION__": "",
     "%create.teacher.price.title.text": "Paso 7 -  Precio de tus clases",
     "%create.teacher.price.form.price.text": "Precio por hora (dólares)",
+    "%create.teacher.price.form.group.price.text": "Precio por hora por persona",
     "%create.teacher.price.form.private_class.text": "Clases Privadas",
     "%create.teacher.price.form.group_class.text": "Clases Grupales",
 
@@ -486,7 +487,7 @@
     "%create.teacher.price.help_text.private_class.title.text": "Clases privadas",
     "%create.teacher.price.help_text.private_class.description.text": "Son aquellas en las que te enfocas 100% en un solo estudiante por clase. (Uno a uno).",
     "%create.teacher.price.help_text.group_class.title.text": "Clases grupales",
-    "%create.teacher.price.help_text.group_class.description.text": "Son aquellas en las que te enfocas en varios estudiantes por clase.",
+    "%create.teacher.price.help_text.group_class.description.text": "Son aquellas en las que te enfocas en varios estudiantes por clase. Recuerda, el precio que asignes es el que cobrarás por persona. Estima un grupo máximo de 3 personas.",
     "%create.teacher.price.validation.message.text": "Es necesario que escojas un tipo de clase",
 
     "__8. TEACHER AVATAR PHOTO SECTION__": "",

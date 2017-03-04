@@ -35,14 +35,17 @@ module app.models.user {
 
         /*-- INJECT DEPENDENCIES --*/
         static $inject = [
-            'mainApp.core.restApi.restApiService'
+            'mainApp.core.restApi.restApiService',
+            'mainApp.auth.AuthService'
         ];
 
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        constructor(private restApi: app.core.restApi.IRestApi) {
+        constructor(
+            private restApi: app.core.restApi.IRestApi,
+            private AuthService: app.auth.IAuthService) {
             //LOG
             console.log('user service instanced');
             //CONSTANTS
@@ -115,6 +118,7 @@ module app.models.user {
         */
         updateUserProfile(profile): ng.IPromise<any> {
             //VARIABLES
+            let self = this;
             let url = this.USER_URI;
 
             return this.restApi.update({ url: url, id: profile.userId }, profile).$promise
@@ -124,6 +128,9 @@ module app.models.user {
                     },
                     function (error) {
                         DEBUG && console.error(error);
+                        if(error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         return error;
                     }
                 );
