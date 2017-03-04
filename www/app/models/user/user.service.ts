@@ -66,6 +66,7 @@ module app.models.user {
         */
         getUserProfileById(id): angular.IPromise<any> {
             //VARIABLES
+            let self = this;
             let url = this.USER_URI;
 
             return this.restApi.show({url: url, id: id}).$promise
@@ -75,6 +76,9 @@ module app.models.user {
                     },
                     function (error) {
                         DEBUG && console.error(error);
+                        if(error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         return error;
                     }
                 );
@@ -91,6 +95,7 @@ module app.models.user {
         */
         getAllUsersProfile(): angular.IPromise<any> {
             //VARIABLES
+            let self = this;
             let url = this.USER_URI;
 
             return this.restApi.query({url: url}).$promise
@@ -99,9 +104,12 @@ module app.models.user {
                         return data;
                     }
                 ).catch(
-                    function(err) {
-                        console.log(err);
-                        return err;
+                    function(error) {
+                        DEBUG && console.log(error);
+                        if(error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        return error;
                     }
                 );
         }

@@ -20,7 +20,7 @@ var app;
                     this.STEP7_STATE = 'page.createTeacherPage.price';
                     this.FINAL_STEP_STATE = 'page.createTeacherPage.finish';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.title.text');
-                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.description.text');
+                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.teacher.help_text.description.text');
                     this.uploading = false;
                     this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(8, 9);
                     this.helpText = {
@@ -104,7 +104,7 @@ var app;
                 };
                 TeacherPhotoSectionController.prototype.changeHelpText = function (type) {
                     var AVATAR_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.avatar.title.text');
-                    var AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.description.text');
+                    var AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.teacher.help_text.description.text');
                     switch (type) {
                         case 'default':
                             this.helpText.title = this.HELP_TEXT_TITLE;

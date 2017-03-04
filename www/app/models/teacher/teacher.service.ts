@@ -95,6 +95,7 @@ module app.models.teacher {
         */
         getTeacherById(id): angular.IPromise<any> {
             //VARIABLES
+            let self = this;
             let url = this.TEACHER_URI;
             let deferred = this.$q.defer();
 
@@ -105,6 +106,9 @@ module app.models.teacher {
                     },
                     function(error) {
                         DEBUG && console.error(error);
+                        if(error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     }
                 );
@@ -122,6 +126,7 @@ module app.models.teacher {
         */
         getTeacherByProfileId(profileId): angular.IPromise<any> {
             //VARIABLES
+            let self = this;
             let url = this.PROFILE_TEACHER_URI + profileId;
             let deferred = this.$q.defer();
 
@@ -138,6 +143,9 @@ module app.models.teacher {
                     },
                     function(error) {
                         DEBUG && console.error(error);
+                        if(error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     }
                 );
@@ -155,6 +163,7 @@ module app.models.teacher {
         */
         getAllTeachersByStatus(status): angular.IPromise<any> {
             //VARIABLES
+            let self = this;
             let url = this.STATUS_TEACHER_URI + status;
             let deferred = this.$q.defer();
 
@@ -165,6 +174,9 @@ module app.models.teacher {
                     },
                     function(error) {
                         DEBUG && console.error(error);
+                        if(error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     }
                 );
@@ -182,6 +194,7 @@ module app.models.teacher {
         */
         getAllTeachers(): angular.IPromise<any> {
             //VARIABLES
+            let self = this;
             let url = this.TEACHER_URI;
             let deferred = this.$q.defer();
 
@@ -192,6 +205,9 @@ module app.models.teacher {
                     },
                     function(error) {
                         DEBUG && console.error(error);
+                        if(error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     }
                 );

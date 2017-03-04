@@ -13,23 +13,31 @@ var app;
                     this.USER_URI = 'users';
                 }
                 UserService.prototype.getUserProfileById = function (id) {
+                    var self = this;
                     var url = this.USER_URI;
                     return this.restApi.show({ url: url, id: id }).$promise
                         .then(function (response) {
                         return response;
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         return error;
                     });
                 };
                 UserService.prototype.getAllUsersProfile = function () {
+                    var self = this;
                     var url = this.USER_URI;
                     return this.restApi.query({ url: url }).$promise
                         .then(function (data) {
                         return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                    }).catch(function (error) {
+                        DEBUG && console.log(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        return error;
                     });
                 };
                 UserService.prototype.updateUserProfile = function (profile) {

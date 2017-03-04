@@ -19,6 +19,7 @@ var app;
                     this.CERTIFICATES_URI = 'certificates';
                 }
                 TeacherService.prototype.getTeacherById = function (id) {
+                    var self = this;
                     var url = this.TEACHER_URI;
                     var deferred = this.$q.defer();
                     this.restApi.show({ url: url, id: id }).$promise
@@ -26,11 +27,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.getTeacherByProfileId = function (profileId) {
+                    var self = this;
                     var url = this.PROFILE_TEACHER_URI + profileId;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
@@ -45,11 +50,15 @@ var app;
                         }
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.getAllTeachersByStatus = function (status) {
+                    var self = this;
                     var url = this.STATUS_TEACHER_URI + status;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
@@ -57,11 +66,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.getAllTeachers = function () {
+                    var self = this;
                     var url = this.TEACHER_URI;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
@@ -69,6 +82,9 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;

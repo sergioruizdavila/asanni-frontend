@@ -1654,23 +1654,31 @@ var app;
                     this.USER_URI = 'users';
                 }
                 UserService.prototype.getUserProfileById = function (id) {
+                    var self = this;
                     var url = this.USER_URI;
                     return this.restApi.show({ url: url, id: id }).$promise
                         .then(function (response) {
                         return response;
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         return error;
                     });
                 };
                 UserService.prototype.getAllUsersProfile = function () {
+                    var self = this;
                     var url = this.USER_URI;
                     return this.restApi.query({ url: url }).$promise
                         .then(function (data) {
                         return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                    }).catch(function (error) {
+                        DEBUG && console.log(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        return error;
                     });
                 };
                 UserService.prototype.updateUserProfile = function (profile) {
@@ -2973,6 +2981,7 @@ var app;
                     this.CERTIFICATES_URI = 'certificates';
                 }
                 TeacherService.prototype.getTeacherById = function (id) {
+                    var self = this;
                     var url = this.TEACHER_URI;
                     var deferred = this.$q.defer();
                     this.restApi.show({ url: url, id: id }).$promise
@@ -2980,11 +2989,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.getTeacherByProfileId = function (profileId) {
+                    var self = this;
                     var url = this.PROFILE_TEACHER_URI + profileId;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
@@ -2999,11 +3012,15 @@ var app;
                         }
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.getAllTeachersByStatus = function (status) {
+                    var self = this;
                     var url = this.STATUS_TEACHER_URI + status;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
@@ -3011,11 +3028,15 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
                 };
                 TeacherService.prototype.getAllTeachers = function () {
+                    var self = this;
                     var url = this.TEACHER_URI;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
@@ -3023,6 +3044,9 @@ var app;
                         deferred.resolve(response);
                     }, function (error) {
                         DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
                         deferred.reject(error);
                     });
                     return deferred.promise;
@@ -11401,7 +11425,7 @@ var app;
                     this.STEP7_STATE = 'page.createTeacherPage.price';
                     this.FINAL_STEP_STATE = 'page.createTeacherPage.finish';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.title.text');
-                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.description.text');
+                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.teacher.help_text.description.text');
                     this.uploading = false;
                     this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(8, 9);
                     this.helpText = {
@@ -11485,7 +11509,7 @@ var app;
                 };
                 TeacherPhotoSectionController.prototype.changeHelpText = function (type) {
                     var AVATAR_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.avatar.title.text');
-                    var AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.description.text');
+                    var AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.teacher.help_text.description.text');
                     switch (type) {
                         case 'default':
                             this.helpText.title = this.HELP_TEXT_TITLE;
