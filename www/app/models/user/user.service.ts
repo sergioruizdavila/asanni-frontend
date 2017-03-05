@@ -47,7 +47,7 @@ module app.models.user {
             private restApi: app.core.restApi.IRestApi,
             private AuthService: app.auth.IAuthService) {
             //LOG
-            console.log('user service instanced');
+            DEBUG && console.log('user service instanced');
             //CONSTANTS
             this.USER_URI = 'users';
         }

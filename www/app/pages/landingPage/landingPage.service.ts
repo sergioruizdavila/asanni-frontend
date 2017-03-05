@@ -27,21 +27,25 @@ module app.pages.landingPage {
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
-
+        EARLY_URI: string;
         // --------------------------------
 
 
         /*-- INJECT DEPENDENCIES --*/
         static $inject = [
-            'mainApp.core.restApi.restApiService'
+            'mainApp.core.restApi.restApiService',
+            '$q'
         ];
 
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        constructor(private restApi: app.core.restApi.IRestApi) {
-
+        constructor(
+            private restApi: app.core.restApi.IRestApi,
+            private $q: angular.IQService) {
+            //CONSTANTS
+            this.EARLY_URI = 'early';
         }
 
         /**********************************/
@@ -57,20 +61,23 @@ module app.pages.landingPage {
         */
         createEarlyAdopter(userData): angular.IPromise<any> {
             //VARIABLES
-            let url = 'early';
+            let url = this.EARLY_URI;
+            let deferred = this.$q.defer();
 
-            return this.restApi.create({url: url}, userData).$promise
-                .then(
-                    function(data) {
-                        return data;
-                    }
-                ).catch(
-                    function(err) {
-                        console.log(err);
-                        return err;
-                    }
-                );
+            this.restApi.create({url: url}, userData).$promise
+            .then(
+                function(response) {
+                    deferred.resolve(response);
+                },
+                function(error) {
+                    DEBUG && console.error(error);
+                    deferred.reject(error);
+                }
+            );
+
+            return deferred.promise;
         }
+
 
     }
 

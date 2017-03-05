@@ -9,7 +9,7 @@ var app;
                 function UserService(restApi, AuthService) {
                     this.restApi = restApi;
                     this.AuthService = AuthService;
-                    console.log('user service instanced');
+                    DEBUG && console.log('user service instanced');
                     this.USER_URI = 'users';
                 }
                 UserService.prototype.getUserProfileById = function (id) {
