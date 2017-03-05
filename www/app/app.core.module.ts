@@ -10,6 +10,7 @@
 
     angular.module('mainApp.core', [
         /*Angular Modules*/
+        'ngRaven',
         'ngResource',
         'ngCookies',
         'ui.router',
