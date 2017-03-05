@@ -78,6 +78,7 @@
 (function () {
     'use strict';
     angular.module('mainApp.core', [
+        'ngRaven',
         'ngResource',
         'ngCookies',
         'ui.router',
