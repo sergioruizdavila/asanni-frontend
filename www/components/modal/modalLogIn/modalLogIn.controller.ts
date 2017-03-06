@@ -184,6 +184,7 @@ module components.modal.modalLogIn {
                                             function(response) {
                                                 if(response.userId) {
                                                     self.$rootScope.profileData = new app.models.user.Profile(response);
+                                                    self.functionsUtil.addUserIndentifyMixpanel(self.$rootScope.profileData.UserId);
                                                 }
 
                                                 //Close modal
