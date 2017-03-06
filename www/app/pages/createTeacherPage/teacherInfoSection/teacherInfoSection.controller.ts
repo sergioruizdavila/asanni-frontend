@@ -146,7 +146,7 @@ module app.pages.createTeacherPage {
             // no es necesario volverlo a traer aqui.
             this.listSexs = this.getDataFromJson.getSexi18n();
             this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
-            this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
+            this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 2017);
             // Build Countries select lists
             this.listCountries = this.getDataFromJson.getCountryi18n();
 

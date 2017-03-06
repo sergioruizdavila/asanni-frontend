@@ -167,7 +167,7 @@ module app.pages.userEditProfilePage {
             // no es necesario volverlo a traer aqui.
             this.listGenders = this.getDataFromJson.getSexi18n();
             this.listDays = this.functionsUtil.buildNumberSelectList(1, 31);
-            this.listYears = this.functionsUtil.buildNumberSelectList(1916, 1998);
+            this.listYears = this.functionsUtil.buildNumberSelectList(1916, 2017);
             // Build Countries select lists
             this.listCountries = this.getDataFromJson.getCountryi18n();
 

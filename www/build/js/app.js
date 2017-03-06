@@ -7144,7 +7144,7 @@ var app;
                     this.listMonths = this.getDataFromJson.getMonthi18n();
                     this.listGenders = this.getDataFromJson.getSexi18n();
                     this.listDays = this.functionsUtil.buildNumberSelectList(1, 31);
-                    this.listYears = this.functionsUtil.buildNumberSelectList(1916, 1998);
+                    this.listYears = this.functionsUtil.buildNumberSelectList(1916, 2017);
                     this.listCountries = this.getDataFromJson.getCountryi18n();
                     this.validate = {
                         firstName: { valid: true, message: '' },
@@ -9889,7 +9889,7 @@ var app;
                     this.listMonths = this.getDataFromJson.getMonthi18n();
                     this.listSexs = this.getDataFromJson.getSexi18n();
                     this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
-                    this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
+                    this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 2017);
                     this.listCountries = this.getDataFromJson.getCountryi18n();
                     this.validate = {
                         phoneNumber: { valid: true, message: '' },
