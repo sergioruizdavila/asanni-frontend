@@ -208,10 +208,14 @@ module components.header {
         */
 
         search(country): void {
+            //CONSTANTS
+            const CLICK_MIXPANEL = 'Click: Search Teacher on SearchBox';
             //VARIABLES
             //Get current state
             let currentState = this.$state.current.name;
             this.form.whereTo = country;
+            //MIXPANEL
+            mixpanel.track(CLICK_MIXPANEL);
 
             if(currentState !== 'page.searchPage') {
                 this.$state.go('page.searchPage', {country: country});
@@ -251,9 +255,6 @@ module components.header {
             };
 
             var modalInstance = this.$uibModal.open(options);
-
-            //MIXPANEL
-            mixpanel.track("Click on 'Sign Up' from header");
         }
 
 
@@ -266,8 +267,6 @@ module components.header {
         * @return {void}
         */
         private _openLogInModal(): void {
-            //MIXPANEL
-            mixpanel.track("Click on 'Log In' from header");
 
             //VARIABLES
             let self = this;

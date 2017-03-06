@@ -76,12 +76,15 @@ module app.pages.teacherProfilePage {
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
+            //CONSTANTS
+            const ENTER_MIXPANEL = 'Enter: Teacher Profile Page';
             //VARIABLES
             let self = this;
             //LOG
             console.log('teacherProfilePage controller actived');
             //MIXPANEL
-            mixpanel.track("Enter: Teacher Profile Details");
+            mixpanel.track(ENTER_MIXPANEL);
+
             // Get Teacher information
             this.TeacherService.getTeacherById(this.$stateParams.id).then(
                 function(response) {
@@ -128,11 +131,19 @@ module app.pages.teacherProfilePage {
             };
         }
 
+        /**
+        * goToConfirm
+        * @description - go to book a class with current teacher
+        * @use - this.goToConfirm();
+        * @function
+        * @return {void}
+        */
 
-        //TODO: Poner descripcion
         goToConfirm (): void {
+            //CONSTANTS
+            const CLICK_MIXPANEL = 'Click: Book a Class';
             //MIXPANEL
-            mixpanel.track("Click on book a class", {
+            mixpanel.track(CLICK_MIXPANEL, {
                 "teacher_id": this.data.Id,
                 "teacher_name": this.data.Profile.FirstName + ' ' + this.data.Profile.LastName
             });

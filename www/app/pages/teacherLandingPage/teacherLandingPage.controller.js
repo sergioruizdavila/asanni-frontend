@@ -26,15 +26,15 @@ var app;
                     this.activate();
                 };
                 TeacherLandingPageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Teacher Landing Page';
                     this.TEACHER_FAKE_TMPL = 'app/pages/teacherLandingPage/teacherContainerExample/teacherContainerExample.html';
                     var self = this;
                     console.log('teacherLandingPage controller actived');
-                    mixpanel.track("Enter: Teacher Landing Page");
+                    mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
                 };
                 TeacherLandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
-                    mixpanel.track("Change Language on teacherLandingPage");
                 };
                 TeacherLandingPageController.prototype._openSignUpModal = function (event) {
                     var self = this;
@@ -62,10 +62,8 @@ var app;
                         }
                     };
                     var modalInstance = this.$uibModal.open(options);
-                    mixpanel.track("Click on 'Join as Student' teacher landing page header");
                 };
                 TeacherLandingPageController.prototype._openLogInModal = function () {
-                    mixpanel.track("Click on 'Log in' from teacher landing page");
                     var self = this;
                     var options = {
                         animation: false,

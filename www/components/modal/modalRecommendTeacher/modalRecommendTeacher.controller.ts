@@ -104,8 +104,9 @@ module components.modal.modalRecommendTeacher {
         _join(): void {
             //CONSTANTS
             const CREATE_TEACHER = 'page.createTeacherPage.start';
+            const CLICK_MIXPANEL = 'Click: Join as a Teacher from recommendation modal';
             //MIXPANEL
-            mixpanel.track("Click on join as a teacher from recommendation modal");
+            mixpanel.track(CLICK_MIXPANEL);
             //Save early id on localStorage to keep it while user navigate waysily
             this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, this.dataSetModal.earlyId);
             this.$uibModalInstance.close();
@@ -121,8 +122,10 @@ module components.modal.modalRecommendTeacher {
         * @return {void}
         */
         close(): void {
+            //CONSTANTS
+            const CLICK_MIXPANEL = 'Click on Close recommend teacher modal button';
             //MIXPANEL
-            mixpanel.track("Click on Close recommend teacher modal button");
+            mixpanel.track(CLICK_MIXPANEL);
             //Save early id on localStorage to keep it while user navigate waysily
             this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, this.dataSetModal.earlyId);
             this.$rootScope.activeMessageBar = true;

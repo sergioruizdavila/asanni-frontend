@@ -32,13 +32,15 @@ var components;
                 };
                 ModalRecommendTeacherController.prototype._join = function () {
                     var CREATE_TEACHER = 'page.createTeacherPage.start';
-                    mixpanel.track("Click on join as a teacher from recommendation modal");
+                    var CLICK_MIXPANEL = 'Click: Join as a Teacher from recommendation modal';
+                    mixpanel.track(CLICK_MIXPANEL);
                     this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, this.dataSetModal.earlyId);
                     this.$uibModalInstance.close();
                     this.$state.go(CREATE_TEACHER, { reload: true });
                 };
                 ModalRecommendTeacherController.prototype.close = function () {
-                    mixpanel.track("Click on Close recommend teacher modal button");
+                    var CLICK_MIXPANEL = 'Click on Close recommend teacher modal button';
+                    mixpanel.track(CLICK_MIXPANEL);
                     this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, this.dataSetModal.earlyId);
                     this.$rootScope.activeMessageBar = true;
                     this.$uibModalInstance.close();

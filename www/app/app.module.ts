@@ -90,6 +90,10 @@
                     $urlRouterProvider: angular.ui.IUrlRouterProvider,
                     $translateProvider: angular.translate.ITranslateProvider) {
 
+        //Turn on/off Sentry alerting catcher
+        //FIXME: No he podido inyectar ravenProvider, lo comento por ahora.
+        //$ravenProvider.development(DEBUG);
+
         $locationProvider.html5Mode(true);
         //$locationProvider.hashPrefix('!');
 

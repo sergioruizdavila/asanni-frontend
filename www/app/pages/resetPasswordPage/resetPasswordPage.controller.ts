@@ -117,11 +117,18 @@ module app.pages.resetPasswordPage {
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
+            //CONSTANTS
+            const ENTER_MIXPANEL = 'Enter: Reset Password Page';
             //VARIABLES
             let self = this;
 
             //LOG
             console.log('resetPasswordPage controller actived');
+            //MIXPANEL
+            mixpanel.track(ENTER_MIXPANEL, {
+                "uid": this.uid || '*',
+                "token": this.token || '*'
+            });
 
         }
 

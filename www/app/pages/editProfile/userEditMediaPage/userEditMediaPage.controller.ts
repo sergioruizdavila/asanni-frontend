@@ -122,8 +122,12 @@ module app.pages.userEditMediaPage {
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
+            //CONSTANTS
+            const ENTER_MIXPANEL = 'Enter: Edit Profile Page (Photo)';
             //LOG
             DEBUG && console.log('userEditMediaPage controller actived');
+            //MIXPANEL
+            mixpanel.track(ENTER_MIXPANEL);
         }
 
         /**********************************/

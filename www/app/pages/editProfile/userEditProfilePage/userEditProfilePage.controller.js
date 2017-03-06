@@ -69,7 +69,9 @@ var app;
                     this.activate();
                 };
                 UserEditProfilePageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Edit Profile Page (Basic Info)';
                     DEBUG && console.log('UserEditProfilePage controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
                     this.fillFormWithProfileData();
                 };
                 UserEditProfilePageController.prototype.goToEditMedia = function () {

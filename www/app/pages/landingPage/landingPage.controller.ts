@@ -166,13 +166,15 @@ module app.pages.landingPage {
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
+            //CONSTANTS
+            const ENTER_MIXPANEL = 'Enter: Main Landing Page';
             //VARIABLES
             let self = this;
             //LOG
             console.log('landingPage controller actived');
 
             //MIXPANEL
-            mixpanel.track("Enter: Main Landing Page");
+            mixpanel.track(ENTER_MIXPANEL);
 
             //Validate if come from recommendation email
             if(this.$stateParams.id) {
@@ -222,7 +224,6 @@ module app.pages.landingPage {
 
         changeLanguage(): void {
              this.functionsUtil.changeLanguage(this.form.language);
-             mixpanel.track("Change Language on landingPage");
         }
 
 
@@ -264,12 +265,16 @@ module app.pages.landingPage {
 
         private _sendCountryFeedback(): void {
             //CONSTANTS
+            const ENTER_MIXPANEL = 'Click: Send Country Feedback';
             const FEEDBACK_SUCCESS_MESSAGE = '¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.';
             /***************************************************/
 
             //VARIABLES
             let self = this;
             this.form.feedback.NextCountry = this.countryObject.code;
+
+            //MIXPANEL
+            mixpanel.track(ENTER_MIXPANEL);
 
             if(this.form.feedback.NextCountry) {
                 this.infoCountry.sending = true;
@@ -300,25 +305,43 @@ module app.pages.landingPage {
 
 
 
-        //TODO: Poner descripcion
+        /**
+        * _recommendTeacher
+        * @description - user could recommend a known teacher
+        * @use - this._recommendTeacher();
+        * @function
+        * @return {void}
+        */
+
         _recommendTeacher(): void {
+            //CONSTANTS
+            const CLICK_MIXPANEL = 'Click: Recommend Teacher';
             //VARIABLES
             let url = 'https://waysily.typeform.com/to/iAWFeg';
-
             //MIXPANEL
-            mixpanel.track("Click on recommend teacher");
+            mixpanel.track(CLICK_MIXPANEL);
+
             window.open(url,'_blank');
         }
 
 
 
-        //TODO: Poner descripcion
+        /**
+        * _recommendSchool
+        * @description - user could recommend a known school
+        * @use - this._recommendTeacher();
+        * @function
+        * @return {void}
+        */
+
         _recommendSchool(): void {
+            //CONSTANTS
+            const CLICK_MIXPANEL = 'Click: Recommend School';
             //VARIABLES
             let url = 'https://waysily.typeform.com/to/q5uT0P';
-
             //MIXPANEL
-            mixpanel.track("Click on recommend school");
+            mixpanel.track(CLICK_MIXPANEL);
+
             window.open(url,'_blank');
         }
 
@@ -337,6 +360,7 @@ module app.pages.landingPage {
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
             const EMAIL_ENUM = app.core.util.functionsUtil.Validation.Email;
+            const NEW_MIXPANEL = 'New Early Adopter data';
             /***************************************************/
 
             // VARIABLES
@@ -349,7 +373,7 @@ module app.pages.landingPage {
             if(this.validate.email.valid) {
                 this.infoNewUser.sending = true;
 
-                mixpanel.track("Click on Notify button", {
+                mixpanel.track(NEW_MIXPANEL, {
                     "name": this.form.userData.name || '*',
                     "email": this.form.userData.email,
                     "comment": this.form.userData.comment || '*'
@@ -391,6 +415,9 @@ module app.pages.landingPage {
         * @return {void}
         */
         private _openSignUpModal(): void {
+            //CONSTANTS
+            const CLICK_MIXPANEL = 'Click on Sign up: main landing page';
+            //VARIABLES
             let self = this;
             // modal default options
             let options: ng.ui.bootstrap.IModalSettings = {
@@ -412,7 +439,7 @@ module app.pages.landingPage {
 
             var modalInstance = this.$uibModal.open(options);
 
-            mixpanel.track("Click on 'Join as Student' landing page header");
+            mixpanel.track(CLICK_MIXPANEL);
         }
 
 
@@ -425,11 +452,9 @@ module app.pages.landingPage {
         * @return {void}
         */
         private _openLogInModal(): void {
-            //MIXPANEL
-            mixpanel.track("Click on 'Log in' from landingPage");
-
             //VARIABLES
             let self = this;
+
             // modal default options
             let options: ng.ui.bootstrap.IModalSettings = {
                 animation: false,

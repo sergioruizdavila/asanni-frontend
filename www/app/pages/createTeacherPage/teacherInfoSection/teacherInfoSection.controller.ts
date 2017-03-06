@@ -442,13 +442,6 @@ module app.pages.createTeacherPage {
 
             //If this teacher was recommended by a Student
             this.$rootScope.teacherData.Recommended = recommended ? recommended : null;
-
-            //MIXPANEL
-            mixpanel.track("Enter: Basic Info on Create Teacher", {
-                "name": this.$rootScope.profileData.FirstName + ' ' + this.$rootScope.profileData.LastName,
-                "email": this.$rootScope.profileData.Email,
-                "phone": this.$rootScope.profileData.PhoneNumber
-            });
         }
 
 

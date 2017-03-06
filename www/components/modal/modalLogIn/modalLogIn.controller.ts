@@ -115,8 +115,12 @@ module components.modal.modalLogIn {
 
         //active function to handle all controller logic
         activate(): void {
+            //CONSTANTS
+            const ENTER_MIXPANEL = 'Enter: Log in modal';
             //LOG
             DEBUG && console.log('modalLogIn controller actived');
+            //MIXPANEL
+            mixpanel.track(ENTER_MIXPANEL);
         }
 
         /**********************************/
@@ -304,8 +308,6 @@ module components.modal.modalLogIn {
         * @return {void}
         */
         private _openSignUpModal(): void {
-            //MIXPANEL
-            mixpanel.track("Click on 'Sign up' from logIn modal");
 
             //VARIABLES
             let self = this;

@@ -273,6 +273,28 @@ var app;
                         average = this.averageNumbersArray(averageArr);
                         return average;
                     };
+                    FunctionsUtilService.prototype.addUserIndentifyMixpanel = function (userId) {
+                        mixpanel.identify(userId);
+                    };
+                    FunctionsUtilService.prototype.setUserMixpanel = function (userData) {
+                        mixpanel.people.set({
+                            'username': userData.Username,
+                            '$name': userData.FirstName + ' ' + userData.LastName,
+                            'gender': userData.Gender,
+                            '$email': userData.Email,
+                            '$created': userData.DateJoined,
+                            '$last_login': new Date()
+                        });
+                    };
+                    FunctionsUtilService.prototype.setPropertyMixpanel = function (property) {
+                        var arr = [];
+                        arr.push(property);
+                        var setData = {};
+                        _.mapKeys(arr, function (value, key) {
+                            setData[key] = value;
+                        });
+                        mixpanel.people.set(setData);
+                    };
                     return FunctionsUtilService;
                 }());
                 FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';

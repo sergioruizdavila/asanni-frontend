@@ -47,7 +47,9 @@ var app;
                     this.activate();
                 };
                 UserEditLocationPageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Edit Profile Page (Location)';
                     DEBUG && console.log('UserEditLocationPage controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
                     this.fillFormWithLocationData();
                     this._subscribeToEvents();
                 };

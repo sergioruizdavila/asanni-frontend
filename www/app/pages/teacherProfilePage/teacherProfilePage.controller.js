@@ -20,9 +20,10 @@ var app;
                     this.activate();
                 };
                 TeacherProfilePageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Teacher Profile Page';
                     var self = this;
                     console.log('teacherProfilePage controller actived');
-                    mixpanel.track("Enter: Teacher Profile Details");
+                    mixpanel.track(ENTER_MIXPANEL);
                     this.TeacherService.getTeacherById(this.$stateParams.id).then(function (response) {
                         self.data = new app.models.teacher.Teacher(response);
                         self.mapConfig = self.functionsUtil.buildMapConfig([
@@ -47,7 +48,8 @@ var app;
                     };
                 };
                 TeacherProfilePageController.prototype.goToConfirm = function () {
-                    mixpanel.track("Click on book a class", {
+                    var CLICK_MIXPANEL = 'Click: Book a Class';
+                    mixpanel.track(CLICK_MIXPANEL, {
                         "teacher_id": this.data.Id,
                         "teacher_name": this.data.Profile.FirstName + ' ' + this.data.Profile.LastName
                     });

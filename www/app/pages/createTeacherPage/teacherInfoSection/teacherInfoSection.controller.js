@@ -215,11 +215,6 @@ var app;
                     this.$rootScope.profileData.About = this.form.about;
                     this.$rootScope.teacherData.Profile = this.$rootScope.profileData;
                     this.$rootScope.teacherData.Recommended = recommended ? recommended : null;
-                    mixpanel.track("Enter: Basic Info on Create Teacher", {
-                        "name": this.$rootScope.profileData.FirstName + ' ' + this.$rootScope.profileData.LastName,
-                        "email": this.$rootScope.profileData.Email,
-                        "phone": this.$rootScope.profileData.PhoneNumber
-                    });
                 };
                 TeacherInfoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;

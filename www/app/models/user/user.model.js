@@ -31,6 +31,7 @@ var app;
                     this.languages = new Language(obj.languages);
                     this.location = new Location(obj.location);
                     this.isTeacher = obj.isTeacher || false;
+                    this.dateJoined = obj.dateJoined || '';
                     this.createdAt = obj.createdAt || '';
                 }
                 Object.defineProperty(Profile.prototype, "UserId", {
@@ -218,6 +219,13 @@ var app;
                             throw 'Please supply profile IsTeacher value';
                         }
                         this.isTeacher = isTeacher;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "DateJoined", {
+                    get: function () {
+                        return this.dateJoined;
                     },
                     enumerable: true,
                     configurable: true

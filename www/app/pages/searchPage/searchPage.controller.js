@@ -29,9 +29,10 @@ var app;
                     this.activate();
                 };
                 SearchPageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Search Page';
                     var self = this;
                     console.log('searchPage controller actived');
-                    mixpanel.track("Enter: Search Page");
+                    mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
                     this.TeacherService.getAllTeachersByStatus(this.VALIDATED).then(function (response) {
                         self.type = 'teacher';
