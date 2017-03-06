@@ -30,6 +30,9 @@ module app.core.util.functionsUtil {
         validator: (value: any, validations: Array<Validation>) => IValid;
         averageNumbersArray: (values: Array<number>) => number;
         teacherRatingAverage: (ratingsArr: Array<Object>) => number;
+        addUserIndentifyMixpanel: (userId: string) => void;
+        setUserMixpanel: (userData: app.models.user.Profile) => void;
+        setPropertyMixpanel: (property: Object) => void;
     }
 
     export interface IValid {
@@ -596,6 +599,16 @@ module app.core.util.functionsUtil {
 
 
 
+        /**
+        * teacherRatingAverage
+        * @description - Calculate teacher rating average based on a ratings list given
+        * @use - this.FunctionsUtilService.teacherRatingAverage(ratingsArray);
+        * @function
+        * @param {Array<Object>} ratingsArr - list of rating objects
+        * @return {number} average - average value
+        */
+        //TODO: Analizar por que puse Array<Object> en vez de Array<Rating>
+        // y solucionar
         teacherRatingAverage(ratingsArr: Array<Object>): number {
             //VARIABLES
             let average = 0;
@@ -619,6 +632,61 @@ module app.core.util.functionsUtil {
             average = this.averageNumbersArray(averageArr);
 
             return average;
+        }
+
+
+
+        /**
+        * addUserIndentifyMixpanel
+        * @description - Assign a Identify number to your user on MixPanel
+        * @use - this.FunctionsUtilService.addUserIndentifyMixpanel('1');
+        * @function
+        * @param {app.models.user.Profile} userData - user profile information
+        * @return {void}
+        */
+        addUserIndentifyMixpanel(userId: string): void {
+            mixpanel.identify(userId);
+        }
+
+
+
+        /**
+        * setUserMixpanel
+        * @description - Set User on MixPanel service in order to track his behavior
+        * @use - this.FunctionsUtilService.setUserMixpanel(userObject);
+        * @function
+        * @param {app.models.user.Profile} userData - user profile information
+        * @return {void}
+        */
+        setUserMixpanel(userData: app.models.user.Profile): void {
+            mixpanel.people.set({
+                'username': userData.Username,
+                '$name': userData.FirstName + ' ' + userData.LastName,
+                'gender': userData.Gender,
+                '$email': userData.Email,
+                '$created': userData.DateJoined,
+                '$last_login': new Date()
+            });
+        }
+
+        /**
+        * setPropertyMixpanel
+        * @description - Set new property on user's MixPanel service
+        * @use - this.FunctionsUtilService.setPropertyMixpanel({key: 'value'});
+        * @function
+        * @param {Object} property - new property
+        * @return {void}
+        */
+        //TODO: Probar por que nunca se uso.
+        setPropertyMixpanel(property: Object): void {
+            let arr = [];
+            arr.push(property);
+            let setData = {};
+            _.mapKeys(arr, function(value, key) {
+                setData[key] = value;
+            });
+
+            mixpanel.people.set(setData);
         }
 
 

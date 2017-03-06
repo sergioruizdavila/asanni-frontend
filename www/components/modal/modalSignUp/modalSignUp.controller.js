@@ -163,6 +163,8 @@ var components;
                             self.$rootScope.userData = response;
                             response.userId = response.id;
                             self.$rootScope.profileData = new app.models.user.Profile(response);
+                            self.functionsUtil.addUserIndentifyMixpanel(self.$rootScope.profileData.UserId);
+                            self.functionsUtil.setUserMixpanel(self.$rootScope.profileData);
                             self.$rootScope.$broadcast('Is Authenticated', self.dataSetModal.hasNextStep);
                             if (!self.dataSetModal.hasNextStep) {
                                 self._openWelcomeModal();

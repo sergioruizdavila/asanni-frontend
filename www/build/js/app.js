@@ -681,6 +681,28 @@ var app;
                         average = this.averageNumbersArray(averageArr);
                         return average;
                     };
+                    FunctionsUtilService.prototype.addUserIndentifyMixpanel = function (userId) {
+                        mixpanel.identify(userId);
+                    };
+                    FunctionsUtilService.prototype.setUserMixpanel = function (userData) {
+                        mixpanel.people.set({
+                            'username': userData.Username,
+                            '$name': userData.FirstName + ' ' + userData.LastName,
+                            'gender': userData.Gender,
+                            '$email': userData.Email,
+                            '$created': userData.DateJoined,
+                            '$last_login': new Date()
+                        });
+                    };
+                    FunctionsUtilService.prototype.setPropertyMixpanel = function (property) {
+                        var arr = [];
+                        arr.push(property);
+                        var setData = {};
+                        _.mapKeys(arr, function (value, key) {
+                            setData[key] = value;
+                        });
+                        mixpanel.people.set(setData);
+                    };
                     return FunctionsUtilService;
                 }());
                 FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
@@ -1181,6 +1203,7 @@ var app;
                     this.languages = new Language(obj.languages);
                     this.location = new Location(obj.location);
                     this.isTeacher = obj.isTeacher || false;
+                    this.dateJoined = obj.dateJoined || '';
                     this.createdAt = obj.createdAt || '';
                 }
                 Object.defineProperty(Profile.prototype, "UserId", {
@@ -1368,6 +1391,13 @@ var app;
                             throw 'Please supply profile IsTeacher value';
                         }
                         this.isTeacher = isTeacher;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "DateJoined", {
+                    get: function () {
+                        return this.dateJoined;
                     },
                     enumerable: true,
                     configurable: true
@@ -5327,6 +5357,8 @@ var components;
                             self.$rootScope.userData = response;
                             response.userId = response.id;
                             self.$rootScope.profileData = new app.models.user.Profile(response);
+                            self.functionsUtil.addUserIndentifyMixpanel(self.$rootScope.profileData.UserId);
+                            self.functionsUtil.setUserMixpanel(self.$rootScope.profileData);
                             self.$rootScope.$broadcast('Is Authenticated', self.dataSetModal.hasNextStep);
                             if (!self.dataSetModal.hasNextStep) {
                                 self._openWelcomeModal();

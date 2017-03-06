@@ -183,7 +183,17 @@ module app.pages.searchPage {
             }
 
 
-            //TODO: poner description
+
+            /**
+            * _ratingAverage
+            * @description - take teacher ranking and calculate the rating average
+            * @use - this._ratingAverage(ratingsArray);
+            * @function
+            * @param {Array<Object>} ratingsArr - list of rating objects
+            * @return {number} rating average value
+            */
+            //TODO: Analizar por que puse Array<Object> en vez de Array<Rating>
+            // y solucionar
             private _ratingAverage(ratingsArr: Array<Object>): number {
                 return this.functionsUtil.teacherRatingAverage(ratingsArr);
             }

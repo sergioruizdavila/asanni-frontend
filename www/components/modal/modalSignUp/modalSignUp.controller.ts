@@ -154,7 +154,7 @@ module components.modal.modalSignUp {
             if(formValid) {
                 //loading On
                 this.saving = true;
-                
+
                 //Create a username based on first name and last name
                 this.form.username = this.functionsUtil.generateUsername(this.form.first_name, this.form.last_name);
 
@@ -384,6 +384,10 @@ module components.modal.modalSignUp {
                                 that's why we have to parse 'id' to 'userId'*/
                             response.userId = response.id;
                             self.$rootScope.profileData = new app.models.user.Profile(response);
+
+                            //MIXPANEL
+                            self.functionsUtil.addUserIndentifyMixpanel(self.$rootScope.profileData.UserId);
+                            self.functionsUtil.setUserMixpanel(self.$rootScope.profileData);
 
                             //Validate if user is Authenticated
                             self.$rootScope.$broadcast('Is Authenticated', self.dataSetModal.hasNextStep);
