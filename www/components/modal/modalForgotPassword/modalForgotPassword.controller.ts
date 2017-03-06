@@ -99,8 +99,12 @@ module components.modal.modalForgotPassword {
 
         //active function to handle all controller logic
         activate(): void {
+            //CONSTANTS
+            const ENTER_MIXPANEL = 'Enter: Forgot Passwod Modal';
             //LOG
             DEBUG && console.log('modalForgotPassword controller actived');
+            //MIXPANEL
+            mixpanel.track(ENTER_MIXPANEL);
         }
 
         /**********************************/
@@ -147,9 +151,15 @@ module components.modal.modalForgotPassword {
         */
         private _sendInstructions(): void {
             //CONSTANTS
+            const CLICK_MIXPANEL = 'Click: Send instructions from Forgot Password';
             const NO_ACCOUNT_EXISTS_1 = this.$filter('translate')('%modal.forgot_password.no_account_exists.part1.text');
             const NO_ACCOUNT_EXISTS_2 = this.$filter('translate')('%modal.forgot_password.no_account_exists.part2.text');
             const SENT_LINK = this.$filter('translate')('%modal.forgot_password.sent_link.text');
+
+            //MIXPANEL
+            mixpanel.track(CLICK_MIXPANEL, {
+                "email": this.form.email || '*'
+            });
 
             //VARIABLES
             let self = this;

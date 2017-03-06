@@ -197,8 +197,12 @@ module app.pages.userEditProfilePage {
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
+            //CONSTANTS
+            const ENTER_MIXPANEL = 'Enter: Edit Profile Page (Basic Info)';
             //LOG
             DEBUG && console.log('UserEditProfilePage controller actived');
+            //MIXPANEL
+            mixpanel.track(ENTER_MIXPANEL);
 
             //Charge user profile data
             this.fillFormWithProfileData();

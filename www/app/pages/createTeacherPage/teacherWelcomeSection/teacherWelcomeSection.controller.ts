@@ -65,11 +65,13 @@ module app.pages.createTeacherPage {
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
+            //CONSTANTS
+            const ENTER_MIXPANEL = "Enter: Start Create Teacher Process";
             //LOG
             console.log('TeacherWelcomeSectionController controller actived');
 
             //MIXPANEL
-            mixpanel.track("Enter: Start Create Teacher Process");
+            mixpanel.track(ENTER_MIXPANEL);
         }
 
         /**********************************/

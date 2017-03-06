@@ -113,19 +113,16 @@ module app.pages.studentLandingPage {
         /**********************************/
         changeLanguage(): void {
              this.functionsUtil.changeLanguage(this.form.language);
-             mixpanel.track("Change Language");
         }
 
         goToEarlyAccessForm(): void {
             // Scroll to a certain element
             document.querySelector('.studentLandingPage__early-access-block').scrollIntoView({ behavior: 'smooth' });
-            mixpanel.track("Go to early access form");
         }
 
         goDown(): void {
             // Scroll to a certain element
             document.querySelector('.studentLandingPage__title-block').scrollIntoView({ behavior: 'smooth' });
-            mixpanel.track('Go down');
         }
 
         showCommentsTextarea(): void {
@@ -138,12 +135,6 @@ module app.pages.studentLandingPage {
             let self = this;
 
             this.sending = true;
-
-            mixpanel.track("Click on Notify button", {
-                "name": this.form.userData.name || '*',
-                "email": this.form.userData.email,
-                "comment": this.form.userData.comment || '*'
-            });
 
             //TODO: Validate If email is not null
             let userData = {

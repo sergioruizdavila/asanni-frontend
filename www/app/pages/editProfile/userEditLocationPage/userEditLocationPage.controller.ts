@@ -146,8 +146,12 @@ module app.pages.userEditLocationPage {
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
+            //CONSTANTS
+            const ENTER_MIXPANEL = 'Enter: Edit Profile Page (Location)';
             //LOG
             DEBUG && console.log('UserEditLocationPage controller actived');
+            //MIXPANEL
+            mixpanel.track(ENTER_MIXPANEL);
 
             //Charge user profile data
             this.fillFormWithLocationData();

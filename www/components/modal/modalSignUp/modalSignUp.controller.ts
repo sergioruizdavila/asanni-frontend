@@ -128,8 +128,12 @@ module components.modal.modalSignUp {
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
+            //CONSTANTS
+            const ENTER_MIXPANEL = 'Enter: Sign up modal';
             //LOG
             DEBUG && console.log('modalSignUp controller actived');
+            //MIXPANEL
+            mixpanel.track(ENTER_MIXPANEL);
         }
 
         /**********************************/
@@ -302,9 +306,7 @@ module components.modal.modalSignUp {
         * @return {void}
         */
         private _openLogInModal(): void {
-            //MIXPANEL
-            mixpanel.track("Click on 'Log in' from signUp modal");
-
+            
             //VARIABLES
             let self = this;
             // modal default options

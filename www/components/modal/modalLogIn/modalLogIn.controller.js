@@ -38,7 +38,9 @@ var components;
                     this.activate();
                 };
                 ModalLogInController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Log in modal';
                     DEBUG && console.log('modalLogIn controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
                 };
                 ModalLogInController.prototype.login = function () {
                     var USERNAME_PASSWORD_WRONG = this.$filter('translate')('%error.username_password_wrong.text');
@@ -128,7 +130,6 @@ var components;
                     this.$uibModalInstance.close();
                 };
                 ModalLogInController.prototype._openSignUpModal = function () {
-                    mixpanel.track("Click on 'Sign up' from logIn modal");
                     var self = this;
                     var options = {
                         animation: false,

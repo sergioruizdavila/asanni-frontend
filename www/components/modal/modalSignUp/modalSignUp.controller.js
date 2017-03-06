@@ -43,7 +43,9 @@ var components;
                     this.activate();
                 };
                 ModalSignUpController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Sign up modal';
                     DEBUG && console.log('modalSignUp controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
                 };
                 ModalSignUpController.prototype.registerUser = function () {
                     var self = this;
@@ -120,7 +122,6 @@ var components;
                     }
                 };
                 ModalSignUpController.prototype._openLogInModal = function () {
-                    mixpanel.track("Click on 'Log in' from signUp modal");
                     var self = this;
                     var options = {
                         animation: false,

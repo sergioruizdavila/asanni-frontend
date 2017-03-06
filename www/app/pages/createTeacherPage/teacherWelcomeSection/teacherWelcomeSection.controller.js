@@ -19,8 +19,9 @@ var app;
                     this.activate();
                 };
                 TeacherWelcomeSectionController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = "Enter: Start Create Teacher Process";
                     console.log('TeacherWelcomeSectionController controller actived');
-                    mixpanel.track("Enter: Start Create Teacher Process");
+                    mixpanel.track(ENTER_MIXPANEL);
                 };
                 TeacherWelcomeSectionController.prototype.goToStart = function () {
                     this.$rootScope.teacherData.Profile = this.$rootScope.profileData;

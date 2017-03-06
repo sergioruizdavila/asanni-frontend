@@ -34,8 +34,13 @@ var app;
                     this.activate();
                 };
                 ResetPasswordPageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Reset Password Page';
                     var self = this;
                     console.log('resetPasswordPage controller actived');
+                    mixpanel.track(ENTER_MIXPANEL, {
+                        "uid": this.uid || '*',
+                        "token": this.token || '*'
+                    });
                 };
                 ResetPasswordPageController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;

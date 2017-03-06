@@ -96,6 +96,7 @@ module app.pages.teacherLandingPage {
         /*-- ACTIVATE METHOD --*/
         activate(): void {
             //CONSTANTS
+            const ENTER_MIXPANEL = 'Enter: Teacher Landing Page';
             this.TEACHER_FAKE_TMPL = 'app/pages/teacherLandingPage/teacherContainerExample/teacherContainerExample.html';
             //VARIABLES
             let self = this;
@@ -104,7 +105,7 @@ module app.pages.teacherLandingPage {
             console.log('teacherLandingPage controller actived');
 
             //MIXPANEL
-            mixpanel.track("Enter: Teacher Landing Page");
+            mixpanel.track(ENTER_MIXPANEL);
 
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
@@ -125,7 +126,6 @@ module app.pages.teacherLandingPage {
 
         changeLanguage(): void {
              this.functionsUtil.changeLanguage(this.form.language);
-             mixpanel.track("Change Language on teacherLandingPage");
         }
 
 
@@ -173,9 +173,6 @@ module app.pages.teacherLandingPage {
 
             var modalInstance = this.$uibModal.open(options);
 
-            //MIXPANEL
-            mixpanel.track("Click on 'Join as Student' teacher landing page header");
-
         }
 
 
@@ -189,8 +186,6 @@ module app.pages.teacherLandingPage {
         */
 
         private _openLogInModal(): void {
-            //MIXPANEL
-            mixpanel.track("Click on 'Log in' from teacher landing page");
 
             //VARIABLES
             let self = this;

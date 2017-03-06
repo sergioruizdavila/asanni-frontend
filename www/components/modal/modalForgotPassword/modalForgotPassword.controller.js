@@ -30,7 +30,9 @@ var components;
                     this.activate();
                 };
                 ModalForgotPasswordController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Forgot Passwod Modal';
                     DEBUG && console.log('modalForgotPassword controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
                 };
                 ModalForgotPasswordController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
@@ -45,9 +47,13 @@ var components;
                     return formValid;
                 };
                 ModalForgotPasswordController.prototype._sendInstructions = function () {
+                    var CLICK_MIXPANEL = 'Click: Send instructions from Forgot Password';
                     var NO_ACCOUNT_EXISTS_1 = this.$filter('translate')('%modal.forgot_password.no_account_exists.part1.text');
                     var NO_ACCOUNT_EXISTS_2 = this.$filter('translate')('%modal.forgot_password.no_account_exists.part2.text');
                     var SENT_LINK = this.$filter('translate')('%modal.forgot_password.sent_link.text');
+                    mixpanel.track(CLICK_MIXPANEL, {
+                        "email": this.form.email || '*'
+                    });
                     var self = this;
                     var formValid = this._validateForm();
                     if (formValid) {

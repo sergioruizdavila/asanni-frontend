@@ -3365,8 +3365,10 @@ var components;
                 });
             };
             HeaderController.prototype.search = function (country) {
+                var CLICK_MIXPANEL = 'Click: Search Teacher on SearchBox';
                 var currentState = this.$state.current.name;
                 this.form.whereTo = country;
+                mixpanel.track(CLICK_MIXPANEL);
                 if (currentState !== 'page.searchPage') {
                     this.$state.go('page.searchPage', { country: country });
                 }
@@ -3392,10 +3394,8 @@ var components;
                     }
                 };
                 var modalInstance = this.$uibModal.open(options);
-                mixpanel.track("Click on 'Sign Up' from header");
             };
             HeaderController.prototype._openLogInModal = function () {
-                mixpanel.track("Click on 'Log In' from header");
                 var self = this;
                 var options = {
                     animation: false,
@@ -3766,7 +3766,8 @@ var components;
             };
             FloatMessageBarController.prototype._join = function () {
                 var CREATE_TEACHER = 'page.createTeacherPage.start';
-                mixpanel.track("Click on join as a teacher from floatMessageBar");
+                var CLICK_MIXPANEL = 'Click: Join as a teacher from floatMessageBar';
+                mixpanel.track(CLICK_MIXPANEL);
                 this.$state.go(CREATE_TEACHER, { reload: true });
             };
             return FloatMessageBarController;
@@ -5237,7 +5238,9 @@ var components;
                     this.activate();
                 };
                 ModalSignUpController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Sign up modal';
                     DEBUG && console.log('modalSignUp controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
                 };
                 ModalSignUpController.prototype.registerUser = function () {
                     var self = this;
@@ -5314,7 +5317,6 @@ var components;
                     }
                 };
                 ModalSignUpController.prototype._openLogInModal = function () {
-                    mixpanel.track("Click on 'Log in' from signUp modal");
                     var self = this;
                     var options = {
                         animation: false,
@@ -5460,7 +5462,9 @@ var components;
                     this.activate();
                 };
                 ModalLogInController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Log in modal';
                     DEBUG && console.log('modalLogIn controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
                 };
                 ModalLogInController.prototype.login = function () {
                     var USERNAME_PASSWORD_WRONG = this.$filter('translate')('%error.username_password_wrong.text');
@@ -5550,7 +5554,6 @@ var components;
                     this.$uibModalInstance.close();
                 };
                 ModalLogInController.prototype._openSignUpModal = function () {
-                    mixpanel.track("Click on 'Sign up' from logIn modal");
                     var self = this;
                     var options = {
                         animation: false,
@@ -5629,7 +5632,9 @@ var components;
                     this.activate();
                 };
                 ModalForgotPasswordController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Forgot Passwod Modal';
                     DEBUG && console.log('modalForgotPassword controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
                 };
                 ModalForgotPasswordController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
@@ -5644,9 +5649,13 @@ var components;
                     return formValid;
                 };
                 ModalForgotPasswordController.prototype._sendInstructions = function () {
+                    var CLICK_MIXPANEL = 'Click: Send instructions from Forgot Password';
                     var NO_ACCOUNT_EXISTS_1 = this.$filter('translate')('%modal.forgot_password.no_account_exists.part1.text');
                     var NO_ACCOUNT_EXISTS_2 = this.$filter('translate')('%modal.forgot_password.no_account_exists.part2.text');
                     var SENT_LINK = this.$filter('translate')('%modal.forgot_password.sent_link.text');
+                    mixpanel.track(CLICK_MIXPANEL, {
+                        "email": this.form.email || '*'
+                    });
                     var self = this;
                     var formValid = this._validateForm();
                     if (formValid) {
@@ -5761,13 +5770,15 @@ var components;
                 };
                 ModalRecommendTeacherController.prototype._join = function () {
                     var CREATE_TEACHER = 'page.createTeacherPage.start';
-                    mixpanel.track("Click on join as a teacher from recommendation modal");
+                    var CLICK_MIXPANEL = 'Click: Join as a Teacher from recommendation modal';
+                    mixpanel.track(CLICK_MIXPANEL);
                     this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, this.dataSetModal.earlyId);
                     this.$uibModalInstance.close();
                     this.$state.go(CREATE_TEACHER, { reload: true });
                 };
                 ModalRecommendTeacherController.prototype.close = function () {
-                    mixpanel.track("Click on Close recommend teacher modal button");
+                    var CLICK_MIXPANEL = 'Click on Close recommend teacher modal button';
+                    mixpanel.track(CLICK_MIXPANEL);
                     this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, this.dataSetModal.earlyId);
                     this.$rootScope.activeMessageBar = true;
                     this.$uibModalInstance.close();
@@ -5923,15 +5934,12 @@ var app;
                 };
                 StudentLandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
-                    mixpanel.track("Change Language");
                 };
                 StudentLandingPageController.prototype.goToEarlyAccessForm = function () {
                     document.querySelector('.studentLandingPage__early-access-block').scrollIntoView({ behavior: 'smooth' });
-                    mixpanel.track("Go to early access form");
                 };
                 StudentLandingPageController.prototype.goDown = function () {
                     document.querySelector('.studentLandingPage__title-block').scrollIntoView({ behavior: 'smooth' });
-                    mixpanel.track('Go down');
                 };
                 StudentLandingPageController.prototype.showCommentsTextarea = function () {
                     event.preventDefault();
@@ -5940,11 +5948,6 @@ var app;
                 StudentLandingPageController.prototype.createEarlyAdopter = function () {
                     var self = this;
                     this.sending = true;
-                    mixpanel.track("Click on Notify button", {
-                        "name": this.form.userData.name || '*',
-                        "email": this.form.userData.email,
-                        "comment": this.form.userData.comment || '*'
-                    });
                     var userData = {
                         name: this.form.userData.name || '*',
                         email: this.form.userData.email,
@@ -6064,15 +6067,15 @@ var app;
                     this.activate();
                 };
                 TeacherLandingPageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Teacher Landing Page';
                     this.TEACHER_FAKE_TMPL = 'app/pages/teacherLandingPage/teacherContainerExample/teacherContainerExample.html';
                     var self = this;
                     console.log('teacherLandingPage controller actived');
-                    mixpanel.track("Enter: Teacher Landing Page");
+                    mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
                 };
                 TeacherLandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
-                    mixpanel.track("Change Language on teacherLandingPage");
                 };
                 TeacherLandingPageController.prototype._openSignUpModal = function (event) {
                     var self = this;
@@ -6100,10 +6103,8 @@ var app;
                         }
                     };
                     var modalInstance = this.$uibModal.open(options);
-                    mixpanel.track("Click on 'Join as Student' teacher landing page header");
                 };
                 TeacherLandingPageController.prototype._openLogInModal = function () {
-                    mixpanel.track("Click on 'Log in' from teacher landing page");
                     var self = this;
                     var options = {
                         animation: false,
@@ -6275,8 +6276,13 @@ var app;
                     this.activate();
                 };
                 ResetPasswordPageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Reset Password Page';
                     var self = this;
                     console.log('resetPasswordPage controller actived');
+                    mixpanel.track(ENTER_MIXPANEL, {
+                        "uid": this.uid || '*',
+                        "token": this.token || '*'
+                    });
                 };
                 ResetPasswordPageController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
@@ -6463,9 +6469,10 @@ var app;
                     this.activate();
                 };
                 LandingPageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Main Landing Page';
                     var self = this;
                     console.log('landingPage controller actived');
-                    mixpanel.track("Enter: Main Landing Page");
+                    mixpanel.track(ENTER_MIXPANEL);
                     if (this.$stateParams.id) {
                         var options = {
                             animation: false,
@@ -6490,7 +6497,6 @@ var app;
                 };
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
-                    mixpanel.track("Change Language on landingPage");
                 };
                 LandingPageController.prototype.logout = function () {
                     var self = this;
@@ -6501,9 +6507,11 @@ var app;
                     });
                 };
                 LandingPageController.prototype._sendCountryFeedback = function () {
+                    var ENTER_MIXPANEL = 'Click: Send Country Feedback';
                     var FEEDBACK_SUCCESS_MESSAGE = '¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.';
                     var self = this;
                     this.form.feedback.NextCountry = this.countryObject.code;
+                    mixpanel.track(ENTER_MIXPANEL);
                     if (this.form.feedback.NextCountry) {
                         this.infoCountry.sending = true;
                         this.infoCountry.sent = false;
@@ -6530,25 +6538,28 @@ var app;
                     }
                 };
                 LandingPageController.prototype._recommendTeacher = function () {
+                    var CLICK_MIXPANEL = 'Click: Recommend Teacher';
                     var url = 'https://waysily.typeform.com/to/iAWFeg';
-                    mixpanel.track("Click on recommend teacher");
+                    mixpanel.track(CLICK_MIXPANEL);
                     window.open(url, '_blank');
                 };
                 LandingPageController.prototype._recommendSchool = function () {
+                    var CLICK_MIXPANEL = 'Click: Recommend School';
                     var url = 'https://waysily.typeform.com/to/q5uT0P';
-                    mixpanel.track("Click on recommend school");
+                    mixpanel.track(CLICK_MIXPANEL);
                     window.open(url, '_blank');
                 };
                 LandingPageController.prototype._createEarlyAdopter = function () {
                     var NULL_ENUM = 2;
                     var EMPTY_ENUM = 3;
                     var EMAIL_ENUM = 0;
+                    var NEW_MIXPANEL = 'New Early Adopter data';
                     var self = this;
                     var email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
                     this.validate.email = this.functionsUtil.validator(this.form.userData.email, email_rules);
                     if (this.validate.email.valid) {
                         this.infoNewUser.sending = true;
-                        mixpanel.track("Click on Notify button", {
+                        mixpanel.track(NEW_MIXPANEL, {
                             "name": this.form.userData.name || '*',
                             "email": this.form.userData.email,
                             "comment": this.form.userData.comment || '*'
@@ -6579,6 +6590,7 @@ var app;
                     }
                 };
                 LandingPageController.prototype._openSignUpModal = function () {
+                    var CLICK_MIXPANEL = 'Click on Sign up: main landing page';
                     var self = this;
                     var options = {
                         animation: false,
@@ -6596,10 +6608,9 @@ var app;
                         }
                     };
                     var modalInstance = this.$uibModal.open(options);
-                    mixpanel.track("Click on 'Join as Student' landing page header");
+                    mixpanel.track(CLICK_MIXPANEL);
                 };
                 LandingPageController.prototype._openLogInModal = function () {
-                    mixpanel.track("Click on 'Log in' from landingPage");
                     var self = this;
                     var options = {
                         animation: false,
@@ -6758,9 +6769,10 @@ var app;
                     this.activate();
                 };
                 SearchPageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Search Page';
                     var self = this;
                     console.log('searchPage controller actived');
-                    mixpanel.track("Enter: Search Page");
+                    mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
                     this.TeacherService.getAllTeachersByStatus(this.VALIDATED).then(function (response) {
                         self.type = 'teacher';
@@ -7156,7 +7168,9 @@ var app;
                     this.activate();
                 };
                 UserEditProfilePageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Edit Profile Page (Basic Info)';
                     DEBUG && console.log('UserEditProfilePage controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
                     this.fillFormWithProfileData();
                 };
                 UserEditProfilePageController.prototype.goToEditMedia = function () {
@@ -7559,7 +7573,9 @@ var app;
                     this.activate();
                 };
                 UserEditLocationPageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Edit Profile Page (Location)';
                     DEBUG && console.log('UserEditLocationPage controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
                     this.fillFormWithLocationData();
                     this._subscribeToEvents();
                 };
@@ -7804,7 +7820,9 @@ var app;
                     this.activate();
                 };
                 UserEditMediaPageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Edit Profile Page (Photo)';
                     DEBUG && console.log('userEditMediaPage controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
                 };
                 UserEditMediaPageController.prototype.goToEditProfile = function () {
                     this.$state.go('page.userEditProfilePage');
@@ -8113,8 +8131,10 @@ var app;
                     this.activate();
                 };
                 EditTeacherController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Edit Teacher Page';
                     var self = this;
                     console.log('editTeacher controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
                     this.fillFormWithProfileData();
                     this.fillFormWithTeacherData();
@@ -9626,8 +9646,9 @@ var app;
                 };
                 CreateTeacherPageController.prototype.activate = function () {
                     var self = this;
+                    var ENTER_MIXPANEL = "Enter: Create Teacher Page";
                     console.log('createTeacherPage controller actived');
-                    mixpanel.track("Enter: Create Teacher Page");
+                    mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
                     if (this.$stateParams.type === 'new') {
                         this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
@@ -9780,8 +9801,9 @@ var app;
                     this.activate();
                 };
                 TeacherWelcomeSectionController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = "Enter: Start Create Teacher Process";
                     console.log('TeacherWelcomeSectionController controller actived');
-                    mixpanel.track("Enter: Start Create Teacher Process");
+                    mixpanel.track(ENTER_MIXPANEL);
                 };
                 TeacherWelcomeSectionController.prototype.goToStart = function () {
                     this.$rootScope.teacherData.Profile = this.$rootScope.profileData;
@@ -10043,11 +10065,6 @@ var app;
                     this.$rootScope.profileData.About = this.form.about;
                     this.$rootScope.teacherData.Profile = this.$rootScope.profileData;
                     this.$rootScope.teacherData.Recommended = recommended ? recommended : null;
-                    mixpanel.track("Enter: Basic Info on Create Teacher", {
-                        "name": this.$rootScope.profileData.FirstName + ' ' + this.$rootScope.profileData.LastName,
-                        "email": this.$rootScope.profileData.Email,
-                        "phone": this.$rootScope.profileData.PhoneNumber
-                    });
                 };
                 TeacherInfoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
@@ -11658,17 +11675,13 @@ var app;
                     this.activate();
                 };
                 TeacherFinishSectionController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = "Enter: Finish Create Teacher Process";
                     console.log('TeacherFinishSectionController controller actived');
-                    mixpanel.track("Enter: Finish Create Teacher Process");
+                    mixpanel.track(ENTER_MIXPANEL);
                 };
                 TeacherFinishSectionController.prototype._finishProcess = function () {
                     this.localStorage.removeItem(this.dataConfig.earlyIdLocalStorage);
                     this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
-                    mixpanel.track("Finish Process: Create Teacher", {
-                        "id": this.$rootScope.teacherData.Id,
-                        "name": this.$rootScope.profileData.FirstName + ' ' + this.$rootScope.profileData.LastName,
-                        "email": this.$rootScope.profileData.Email
-                    });
                     this.$state.go('page.landingPage');
                 };
                 return TeacherFinishSectionController;
@@ -11743,9 +11756,10 @@ var app;
                     this.activate();
                 };
                 TeacherProfilePageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Teacher Profile Page';
                     var self = this;
                     console.log('teacherProfilePage controller actived');
-                    mixpanel.track("Enter: Teacher Profile Details");
+                    mixpanel.track(ENTER_MIXPANEL);
                     this.TeacherService.getTeacherById(this.$stateParams.id).then(function (response) {
                         self.data = new app.models.teacher.Teacher(response);
                         self.mapConfig = self.functionsUtil.buildMapConfig([
@@ -11770,7 +11784,8 @@ var app;
                     };
                 };
                 TeacherProfilePageController.prototype.goToConfirm = function () {
-                    mixpanel.track("Click on book a class", {
+                    var CLICK_MIXPANEL = 'Click: Book a Class';
+                    mixpanel.track(CLICK_MIXPANEL, {
                         "teacher_id": this.data.Id,
                         "teacher_name": this.data.Profile.FirstName + ' ' + this.data.Profile.LastName
                     });

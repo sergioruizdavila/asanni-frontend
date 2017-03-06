@@ -65,8 +65,10 @@ var components;
                 });
             };
             HeaderController.prototype.search = function (country) {
+                var CLICK_MIXPANEL = 'Click: Search Teacher on SearchBox';
                 var currentState = this.$state.current.name;
                 this.form.whereTo = country;
+                mixpanel.track(CLICK_MIXPANEL);
                 if (currentState !== 'page.searchPage') {
                     this.$state.go('page.searchPage', { country: country });
                 }
@@ -92,10 +94,8 @@ var components;
                     }
                 };
                 var modalInstance = this.$uibModal.open(options);
-                mixpanel.track("Click on 'Sign Up' from header");
             };
             HeaderController.prototype._openLogInModal = function () {
-                mixpanel.track("Click on 'Log In' from header");
                 var self = this;
                 var options = {
                     animation: false,

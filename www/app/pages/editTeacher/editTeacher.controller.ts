@@ -93,11 +93,16 @@ module app.pages.editTeacher {
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
+            //CONSTANTS
+            const ENTER_MIXPANEL = 'Enter: Edit Teacher Page';
             //VARIABLES
             let self = this;
 
             //LOG
             console.log('editTeacher controller actived');
+
+            //MIXPANEL
+            mixpanel.track(ENTER_MIXPANEL);
 
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();

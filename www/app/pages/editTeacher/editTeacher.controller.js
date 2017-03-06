@@ -30,8 +30,10 @@ var app;
                     this.activate();
                 };
                 EditTeacherController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Edit Teacher Page';
                     var self = this;
                     console.log('editTeacher controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
                     this.fillFormWithProfileData();
                     this.fillFormWithTeacherData();

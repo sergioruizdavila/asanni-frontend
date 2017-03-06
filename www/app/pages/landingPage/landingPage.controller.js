@@ -56,9 +56,10 @@ var app;
                     this.activate();
                 };
                 LandingPageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Main Landing Page';
                     var self = this;
                     console.log('landingPage controller actived');
-                    mixpanel.track("Enter: Main Landing Page");
+                    mixpanel.track(ENTER_MIXPANEL);
                     if (this.$stateParams.id) {
                         var options = {
                             animation: false,
@@ -83,7 +84,6 @@ var app;
                 };
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
-                    mixpanel.track("Change Language on landingPage");
                 };
                 LandingPageController.prototype.logout = function () {
                     var self = this;
@@ -94,9 +94,11 @@ var app;
                     });
                 };
                 LandingPageController.prototype._sendCountryFeedback = function () {
+                    var ENTER_MIXPANEL = 'Click: Send Country Feedback';
                     var FEEDBACK_SUCCESS_MESSAGE = '¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.';
                     var self = this;
                     this.form.feedback.NextCountry = this.countryObject.code;
+                    mixpanel.track(ENTER_MIXPANEL);
                     if (this.form.feedback.NextCountry) {
                         this.infoCountry.sending = true;
                         this.infoCountry.sent = false;
@@ -123,25 +125,28 @@ var app;
                     }
                 };
                 LandingPageController.prototype._recommendTeacher = function () {
+                    var CLICK_MIXPANEL = 'Click: Recommend Teacher';
                     var url = 'https://waysily.typeform.com/to/iAWFeg';
-                    mixpanel.track("Click on recommend teacher");
+                    mixpanel.track(CLICK_MIXPANEL);
                     window.open(url, '_blank');
                 };
                 LandingPageController.prototype._recommendSchool = function () {
+                    var CLICK_MIXPANEL = 'Click: Recommend School';
                     var url = 'https://waysily.typeform.com/to/q5uT0P';
-                    mixpanel.track("Click on recommend school");
+                    mixpanel.track(CLICK_MIXPANEL);
                     window.open(url, '_blank');
                 };
                 LandingPageController.prototype._createEarlyAdopter = function () {
                     var NULL_ENUM = 2;
                     var EMPTY_ENUM = 3;
                     var EMAIL_ENUM = 0;
+                    var NEW_MIXPANEL = 'New Early Adopter data';
                     var self = this;
                     var email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
                     this.validate.email = this.functionsUtil.validator(this.form.userData.email, email_rules);
                     if (this.validate.email.valid) {
                         this.infoNewUser.sending = true;
-                        mixpanel.track("Click on Notify button", {
+                        mixpanel.track(NEW_MIXPANEL, {
                             "name": this.form.userData.name || '*',
                             "email": this.form.userData.email,
                             "comment": this.form.userData.comment || '*'
@@ -172,6 +177,7 @@ var app;
                     }
                 };
                 LandingPageController.prototype._openSignUpModal = function () {
+                    var CLICK_MIXPANEL = 'Click on Sign up: main landing page';
                     var self = this;
                     var options = {
                         animation: false,
@@ -189,10 +195,9 @@ var app;
                         }
                     };
                     var modalInstance = this.$uibModal.open(options);
-                    mixpanel.track("Click on 'Join as Student' landing page header");
+                    mixpanel.track(CLICK_MIXPANEL);
                 };
                 LandingPageController.prototype._openLogInModal = function () {
-                    mixpanel.track("Click on 'Log in' from landingPage");
                     var self = this;
                     var options = {
                         animation: false,

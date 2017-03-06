@@ -130,12 +130,14 @@ module app.pages.createTeacherPage {
         activate(): void {
             //VARIABLES
             let self = this;
+            //CONSTANTS
+            const ENTER_MIXPANEL = "Enter: Create Teacher Page";
 
             //LOG
             console.log('createTeacherPage controller actived');
 
             //MIXPANEL
-            mixpanel.track("Enter: Create Teacher Page");
+            mixpanel.track(ENTER_MIXPANEL);
 
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();

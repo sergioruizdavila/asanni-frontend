@@ -47,8 +47,9 @@ var app;
                 };
                 CreateTeacherPageController.prototype.activate = function () {
                     var self = this;
+                    var ENTER_MIXPANEL = "Enter: Create Teacher Page";
                     console.log('createTeacherPage controller actived');
-                    mixpanel.track("Enter: Create Teacher Page");
+                    mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
                     if (this.$stateParams.type === 'new') {
                         this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);

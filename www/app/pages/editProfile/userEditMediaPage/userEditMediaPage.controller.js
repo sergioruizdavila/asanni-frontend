@@ -40,7 +40,9 @@ var app;
                     this.activate();
                 };
                 UserEditMediaPageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Edit Profile Page (Photo)';
                     DEBUG && console.log('userEditMediaPage controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
                 };
                 UserEditMediaPageController.prototype.goToEditProfile = function () {
                     this.$state.go('page.userEditProfilePage');
