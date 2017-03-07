@@ -117,7 +117,7 @@ module app.pages.createTeacherPage {
         /*-- ACTIVATE METHOD --*/
         activate(): void {
             //LOG
-            console.log('TeacherEducationSectionController controller actived');
+            DEBUG && console.log('TeacherEducationSectionController controller actived');
 
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();

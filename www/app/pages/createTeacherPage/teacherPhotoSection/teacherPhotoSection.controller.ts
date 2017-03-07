@@ -1,4 +1,4 @@
-/**
+ /**
  * TeacherPhotoSectionController
  * @description - Teacher Photo Section Controller (create teacher)
  */
@@ -22,15 +22,10 @@ module app.pages.createTeacherPage {
         vm: ICreateTeacherPageController;
     }
 
-    export interface ITeacherPhotoForm {
+    interface ITeacherPhotoForm {
         avatar: File;
         croppedDataUrl: string;
         thumbnail: string;
-    }
-
-    export interface IUpload extends angular.angularFileUpload.IUploadService {
-        dataUrltoBlob: (dataUrl: string, name: string) => File;
-        urlToBlob: (url: string) => angular.IPromise<any>;
     }
 
     interface ITeacherPhotoValidate {
@@ -62,8 +57,6 @@ module app.pages.createTeacherPage {
 
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = [
-            'dataConfig',
-            'mainApp.core.util.GetDataStaticJsonService',
             'mainApp.core.util.FunctionsUtilService',
             'mainApp.core.s3Upload.S3UploadService',
             'mainApp.core.util.messageUtilService',
@@ -78,12 +71,10 @@ module app.pages.createTeacherPage {
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
-            private dataConfig: IDataConfig,
-            private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
             private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
             private S3UploadService: app.core.s3Upload.IS3UploadService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
-            private Upload: IUpload,
+            private Upload: app.core.interfaces.IUpload,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
             private $scope: ITeacherPhotoScope,
@@ -97,7 +88,7 @@ module app.pages.createTeacherPage {
             this.STEP7_STATE = 'page.createTeacherPage.price';
             this.FINAL_STEP_STATE = 'page.createTeacherPage.finish';
             this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.title.text');
-            this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.description.text');
+            this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.teacher.help_text.description.text');
             /*********************************/
 
             // Init upload loading button
@@ -132,14 +123,14 @@ module app.pages.createTeacherPage {
         /*-- ACTIVATE METHOD --*/
         activate(): void {
             //LOG
-            console.log('TeacherPhotoSectionController controller actived');
+            DEBUG && console.log('TeacherPhotoSectionController controller actived');
 
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
 
             //FILL FORM FROM ROOTSCOPE TEACHER INFO
-            if(this.$rootScope.teacherData) {
-                this._fillForm(this.$rootScope.teacherData);
+            if(this.$rootScope.profileData) {
+                this._fillForm(this.$rootScope.profileData);
             }
 
         }
@@ -176,7 +167,7 @@ module app.pages.createTeacherPage {
                         if(result.Location) {
                             // Save teacher model on DB
                             self._setDataModelFromForm(result.Location);
-                            self.$scope.$emit('Save Data');
+                            self.$scope.$emit('Save Profile Data');
 
                             // GO TO NEXT STEP
                             self.$state.go(self.FINAL_STEP_STATE, {reload: true});
@@ -188,7 +179,7 @@ module app.pages.createTeacherPage {
 
                 // If this.form.avatar not exists, only go to next step
                 } else {
-                    this.$scope.$emit('Save Data');
+                    this.$scope.$emit('Save Profile Data');
                     // GO TO NEXT STEP
                     this.$state.go(this.FINAL_STEP_STATE, {reload: true});
                 }
@@ -219,10 +210,10 @@ module app.pages.createTeacherPage {
         * @description - Fill form with teacher data
         * @use - this._fillForm(data);
         * @function
-        * @param {app.models.teacher.Teacher} data - Teacher Data
+        * @param {app.models.user.Profile} data - User Profile Data
         * @return {void}
         */
-        private _fillForm(data: app.models.teacher.Teacher): void {
+        private _fillForm(data: app.models.user.Profile): void {
 
             this.form.thumbnail = data.Avatar;
 
@@ -285,7 +276,7 @@ module app.pages.createTeacherPage {
         changeHelpText(type): void {
             //CONSTANTS
             const AVATAR_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.avatar.title.text');
-            const AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.avatar.description.text');
+            const AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.teacher.help_text.description.text');
             /*****************************************************/
 
             switch(type) {
@@ -381,7 +372,7 @@ module app.pages.createTeacherPage {
         private _setDataModelFromForm(avatar): void {
 
             // Send data to parent (createTeacherPage)
-            this.$rootScope.teacherData.Avatar = avatar;
+            this.$rootScope.profileData.Avatar = avatar;
 
         }
 
@@ -405,11 +396,11 @@ module app.pages.createTeacherPage {
             * Child fill the form's field
             * @event
             */
-            this.$scope.$on('Fill Form', function(event, args: app.models.teacher.Teacher) {
-
-                self._fillForm(args);
-
-            });
+            this.$scope.$on('Fill User Profile Form',
+                function(event, args: app.models.user.Profile) {
+                    self._fillForm(args);
+                }
+            );
         }
 
     }

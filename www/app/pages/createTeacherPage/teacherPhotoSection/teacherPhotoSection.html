@@ -40,7 +40,7 @@
                         <div class="teacher-avatar-box__upload-image-block__left-block
                                     col-xs-12
                                     col-lg-5 text-center">
-
+                            <! Upload Photo block >
                             <div ngf-drop ng-model="vm.form.avatar"
                                  ngf-pattern="image/*"
                                  class="ma-photo-profile
@@ -70,31 +70,31 @@
                                         %create.teacher.photo.form.avatar.description.text
                                     </h4>
                                     <p class="ma-p ma-p--default margin-reset">
-                                        <strong>✔ </strong>
+                                        <strong class="strong strong--alert">✔ </strong>
                                         <span translate>
                                             %create.teacher.photo.form.avatar.criteria.1.text
                                         </span>
                                     </p>
                                     <p class="ma-p ma-p--default margin-reset">
-                                        <strong>✔ </strong>
+                                        <strong class="strong strong--alert">✔ </strong>
                                         <span translate>
                                             %create.teacher.photo.form.avatar.criteria.2.text
                                         </span>
                                     </p>
                                     <p class="ma-p ma-p--default margin-reset">
-                                        <strong>✔ </strong>
+                                        <strong class="strong strong--alert">✔ </strong>
                                         <span translate>
                                             %create.teacher.photo.form.avatar.criteria.3.text
                                         </span>
                                     </p>
                                     <p class="ma-p ma-p--default margin-reset">
-                                        <strong>✔ </strong>
+                                        <strong class="strong strong--alert">✔ </strong>
                                         <span translate>
                                             %create.teacher.photo.form.avatar.criteria.4.text
                                         </span>
                                     </p>
                                     <p class="ma-p ma-p--default margin-reset">
-                                        <strong>✔ </strong>
+                                        <strong class="strong strong--alert">✔ </strong>
                                         <span translate>
                                             %create.teacher.photo.form.avatar.criteria.5.text
                                         </span>
@@ -143,7 +143,7 @@
                                 </span>
                                 <span ng-class="{'hidden' : !vm.uploading}"
                                       translate>
-                                    Subiendo...
+                                    %global.uploading.button.text
                                 </span>
                             </button>
 
@@ -164,7 +164,7 @@
                                    </span>
                                    <span ng-class="{'hidden' : !vm.uploading}"
                                          translate>
-                                       Subiendo...
+                                       %global.uploading.button.text
                                    </span>
                            </button>
 
@@ -203,7 +203,7 @@
                              </i>
                         </div>
                     </div>
-                    <!-- Help Title Block -->
+                    <! Help Title Block >
                     <div class="row">
                         <div class="col-xs-12 text-left">
                             <h4 ng-if="!vm.form.avatar">
@@ -214,8 +214,9 @@
                             </h4>
                         </div>
                     </div>
-                    <!-- Help Text Block -->
+                    <! Help Text Block >
                     <div class="row space-top-3 space-3">
+                        <! Preview Image >
                         <div class="col-xs-12 space-3 text-center" ng-if="vm.form.avatar">
                             <img class="teacher-avatar-help-box__preview-image
                                         round"
@@ -226,7 +227,7 @@
                                 {{vm.helpText.description}}
                             </p>
                             <p class="ma-p ma-p--default" ng-if="vm.form.avatar" translate>
-                                %create.teacher.photo.help_text.avatar.uploaded.description.text
+                                %create.teacher.photo.teacher.help_text.description.text
                             </p>
                         </div>
                     </div>

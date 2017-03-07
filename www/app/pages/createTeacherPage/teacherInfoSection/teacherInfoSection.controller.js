@@ -25,26 +25,23 @@ var app;
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
                     };
+                    this.countryObject = { code: '', value: '' };
                     this.sexObject = { sex: { code: '', value: '' } };
                     this.dateObject = { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } };
                     this.form = {
-                        firstName: '',
-                        lastName: '',
-                        email: '',
                         phoneNumber: '',
                         sex: '',
-                        birthDate: '',
-                        born: '',
+                        birthDate: null,
+                        bornCountry: '',
+                        bornCity: '',
                         about: ''
                     };
                     this.listMonths = this.getDataFromJson.getMonthi18n();
                     this.listSexs = this.getDataFromJson.getSexi18n();
                     this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
-                    this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
+                    this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 2017);
+                    this.listCountries = this.getDataFromJson.getCountryi18n();
                     this.validate = {
-                        firstName: { valid: true, message: '' },
-                        lastName: { valid: true, message: '' },
-                        email: { valid: true, message: '' },
                         phoneNumber: { valid: true, message: '' },
                         sex: { valid: true, message: '' },
                         birthDate: {
@@ -54,28 +51,24 @@ var app;
                             valid: true,
                             message: ''
                         },
-                        born: { valid: true, message: '' },
+                        bornCountry: { valid: true, message: '' },
+                        bornCity: { valid: true, message: '' },
                         about: { valid: true, message: '' }
                     };
                     this.activate();
                 };
                 TeacherInfoSectionController.prototype.activate = function () {
-                    console.log('TeacherInfoSectionController controller actived');
+                    DEBUG && console.log('TeacherInfoSectionController controller actived');
                     this._subscribeToEvents();
-                    if (this.$rootScope.teacherData) {
-                        this._fillForm(this.$rootScope.teacherData);
+                    if (this.$rootScope.profileData) {
+                        this._fillForm(this.$rootScope.profileData);
                     }
                 };
                 TeacherInfoSectionController.prototype.goToNext = function () {
                     var formValid = this._validateForm();
                     if (formValid) {
-                        mixpanel.track("Enter: Basic Info on Create Teacher", {
-                            "name": this.form.firstName + ' ' + this.form.lastName,
-                            "email": this.form.email,
-                            "phone": this.form.phoneNumber
-                        });
                         this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data');
+                        this.$scope.$emit('Save Profile Data');
                         this.$state.go(this.STEP2_STATE, { reload: true });
                     }
                     else {
@@ -83,16 +76,14 @@ var app;
                     }
                 };
                 TeacherInfoSectionController.prototype._fillForm = function (data) {
-                    this.form.firstName = data.FirstName;
-                    this.form.lastName = data.LastName;
-                    this.form.email = data.Email;
                     this.form.phoneNumber = data.PhoneNumber;
-                    this.sexObject.sex.code = data.Sex;
+                    this.sexObject.sex.code = data.Gender;
                     var date = this.functionsUtilService.splitDate(data.BirthDate);
                     this.dateObject.day.value = date.day ? parseInt(date.day) : '';
                     this.dateObject.month.code = date.month !== 'Invalid date' ? date.month : '';
                     this.dateObject.year.value = date.year ? parseInt(date.year) : '';
-                    this.form.born = data.Born;
+                    this.countryObject.code = data.BornCountry;
+                    this.form.bornCity = data.BornCity;
                     this.form.about = data.About;
                 };
                 TeacherInfoSectionController.prototype._validateForm = function () {
@@ -103,21 +94,6 @@ var app;
                     var NUMBER_ENUM = 4;
                     var BIRTHDATE_MESSAGE = this.$filter('translate')('%create.teacher.basic_info.form.birthdate.validation.message.text');
                     var formValid = true;
-                    var firstName_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.firstName = this.functionsUtilService.validator(this.form.firstName, firstName_rules);
-                    if (!this.validate.firstName.valid) {
-                        formValid = this.validate.firstName.valid;
-                    }
-                    var lastName_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.lastName = this.functionsUtilService.validator(this.form.lastName, lastName_rules);
-                    if (!this.validate.lastName.valid) {
-                        formValid = this.validate.lastName.valid;
-                    }
-                    var email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
-                    this.validate.email = this.functionsUtilService.validator(this.form.email, email_rules);
-                    if (!this.validate.email.valid) {
-                        formValid = this.validate.email.valid;
-                    }
                     var phoneNumber_rules = [NULL_ENUM, EMPTY_ENUM, NUMBER_ENUM];
                     var onlyNum = this.form.phoneNumber.replace(/\D+/g, "");
                     onlyNum = parseInt(onlyNum) || '';
@@ -157,10 +133,20 @@ var app;
                         this.validate.birthDate.valid = true;
                         this.validate.birthDate.message = '';
                     }
-                    var born_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.born = this.functionsUtilService.validator(this.form.born, born_rules);
-                    if (!this.validate.born.valid) {
-                        formValid = this.validate.born.valid;
+                    var country_born_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.bornCountry = this.functionsUtilService.validator(this.countryObject.code, country_born_rules);
+                    if (!this.validate.bornCountry.valid) {
+                        formValid = this.validate.bornCountry.valid;
+                    }
+                    var city_born_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.bornCity = this.functionsUtilService.validator(this.form.bornCity, city_born_rules);
+                    if (!this.validate.bornCity.valid) {
+                        formValid = this.validate.bornCity.valid;
+                    }
+                    var about_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.about = this.functionsUtilService.validator(this.form.about, about_rules);
+                    if (!this.validate.about.valid) {
+                        formValid = this.validate.about.valid;
                     }
                     return formValid;
                 };
@@ -217,21 +203,22 @@ var app;
                 };
                 TeacherInfoSectionController.prototype._setDataModelFromForm = function () {
                     var dateFormatted = this.functionsUtilService.joinDate(this.dateObject.day.value, this.dateObject.month.code, this.dateObject.year.value);
-                    var sexCode = this.sexObject.sex.code;
+                    var genderCode = this.sexObject.sex.code;
+                    var countryCode = this.countryObject.code;
                     var recommended = this.localStorage.getItem(this.dataConfig.earlyIdLocalStorage);
-                    this.$rootScope.teacherData.FirstName = this.form.firstName;
-                    this.$rootScope.teacherData.LastName = this.form.lastName;
-                    this.$rootScope.teacherData.Email = this.form.email;
-                    this.$rootScope.teacherData.PhoneNumber = this.form.phoneNumber;
-                    this.$rootScope.teacherData.Sex = sexCode;
-                    this.$rootScope.teacherData.BirthDate = dateFormatted;
-                    this.$rootScope.teacherData.Born = this.form.born;
-                    this.$rootScope.teacherData.About = this.form.about;
+                    this.form.bornCountry = countryCode;
+                    this.$rootScope.profileData.PhoneNumber = this.form.phoneNumber;
+                    this.$rootScope.profileData.Gender = genderCode;
+                    this.$rootScope.profileData.BirthDate = dateFormatted;
+                    this.$rootScope.profileData.BornCountry = this.form.bornCountry;
+                    this.$rootScope.profileData.BornCity = this.form.bornCity;
+                    this.$rootScope.profileData.About = this.form.about;
+                    this.$rootScope.teacherData.Profile = this.$rootScope.profileData;
                     this.$rootScope.teacherData.Recommended = recommended ? recommended : null;
                 };
                 TeacherInfoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
-                    this.$scope.$on('Fill Form', function (event, args) {
+                    this.$scope.$on('Fill User Profile Form', function (event, args) {
                         self._fillForm(args);
                     });
                 };

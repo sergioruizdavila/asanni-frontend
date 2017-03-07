@@ -3,10 +3,15 @@
     angular
         .module('mainApp')
         .run(run);
-    run.$inject = ['$rootScope',
+    run.$inject = [
+        '$rootScope',
+        '$state',
         'dataConfig',
-        '$http'];
-    function run($rootScope, dataConfig, $http) {
+        'mainApp.auth.AuthService',
+        'mainApp.models.user.UserService',
+        'mainApp.localStorageService'
+    ];
+    function run($rootScope, $state, dataConfig, AuthService, userService, localStorage) {
         var productionHost = dataConfig.domain;
         var mixpanelTokenDEV = dataConfig.mixpanelTokenDEV;
         var mixpanelTokenPRD = dataConfig.mixpanelTokenPRD;
@@ -25,7 +30,21 @@
                 }
             });
         }
-        dataConfig.userId = 'id1234';
+        if (AuthService.isAuthenticated()) {
+            var userAccountInfo = JSON.parse(localStorage.getItem(dataConfig.userDataLocalStorage));
+            $rootScope.userData = userAccountInfo;
+            userService.getUserProfileById($rootScope.userData.id).then(function (response) {
+                if (response.userId) {
+                    $rootScope.profileData = new app.models.user.Profile(response);
+                }
+            });
+        }
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+            if (toState.data.requireLogin && !AuthService.isAuthenticated()) {
+                event.preventDefault();
+                $state.go('page.landingPage');
+            }
+        });
     }
 })();
 (function (angular) {

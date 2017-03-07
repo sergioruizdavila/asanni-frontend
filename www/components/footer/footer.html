@@ -49,26 +49,88 @@
         </div>
 
         <div class="row middle-xs">
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left">
-                <i class="ma-logo
-                          ma-logo--primary-short
-                          ma-logo--primary-short--small"></i>
-                <!-- Twitter button -->
-                <a href="https://twitter.com/waysily"
-                   class="twitter-follow-button"
-                   data-show-count="false">Follow @waysily
-                </a>
-                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                <!-- Facebook Like button -->
-                <div class="fb-like"
-                     data-href="https://www.facebook.com/waysily"
-                     data-layout="button"
-                     data-action="like"
-                     data-size="small"
-                     data-show-faces="false"
-                     data-share="false"></div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6
+                        padding-reset text-left">
+
+                <! Change Language >
+                <span class="dropup"
+                      uib-dropdown on-toggle="toggled(open)">
+                    <span id="change-languages-options"
+                       class="ma-link ma-link--simple ma-link--default
+                              ma-footer__change-language
+                              link-reset space-right-4"
+                       uib-dropdown-toggle href
+                       aria-haspopup="true" aria-expanded="true">
+                       <span class="ma-flag
+                                    ma-flag--default
+                                    round space-right-2"
+                             ng-class="vm.assignFlag"></span>
+                       <span data-value="{{vm.form.language.code}}"
+                             class="space-right-1" translate>
+                           {{vm.form.language.value}}
+                       </span>
+                       <i class="fa fa-angle-down" aria-hidden="true"></i>
+                   </span>
+                    <ul class="ma-dropdown
+                               dropdown-menu
+                               dropdown-menu-top"
+                        uib-dropdown-menu
+                        role="menu"
+                        aria-labelledby="change-languages-options">
+                        <li class="ma-dropdown__option">
+                            <a class="ma-dropdown__option__btn"
+                               ng-click="vm.changeLanguage('es')"
+                               href>
+                                <span class="ma-flag
+                                             ma-flag--small
+                                             ma-flag--small--flag-es
+                                             round space-right-2"></span>
+                                <span class="space-right-1"
+                                      translate>
+                                    %header.lang.options.es.text
+                                </span>
+                            </a>
+                        </li>
+                        <li class="ma-dropdown__option">
+                            <a class="ma-dropdown__option__btn"
+                               ng-click="vm.changeLanguage('en')"
+                               href>
+                               <span class="ma-flag
+                                            ma-flag--small
+                                            ma-flag--small--flag-en
+                                            round space-right-2"></span>
+                               <span class="space-right-1"
+                                     translate>
+                                   %header.lang.options.en.text
+                               </span>
+                            </a>
+                        </li>
+                    </ul>
+                </span>
+
+
+                <! Social links >
+                <div class="ma-footer__social-links">
+                    <a class="link-reset"
+                       href="https://twitter.com/waysily"
+                       target="_blank">
+                        <i class="fa fa-twitter
+                                  space-right-3" aria-hidden="true"></i>
+                    </a>
+                    <a class="link-reset"
+                       href="https://www.facebook.com/waysily"
+                       target="_blank">
+                        <i class="fa fa-facebook-official
+                                  space-right-3" aria-hidden="true"></i>
+                    </a>
+                    <a class="link-reset"
+                       href="mailto:help@waysily.com">
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                    </a>
+                </div>
+
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-right">
+            <div class="hidden-xs col-sm-6 col-md-6 col-lg-6 text-right">
                 <p class="ma-footer__copyright ma-p ma-p--small margin-reset">
                     <span translate>
                         %footer.made.label.text
@@ -77,9 +139,14 @@
                     <span translate>
                         %footer.by.label.text
                     </span>
-                    <a class="ma-link ma-link--box ma-link--box--small ma-link--box--primary" href="https://twitter.com/seruda" target="_blank">
+                    <a class="ma-link ma-link--box
+                              ma-link--box--small ma-link--box--primary"
+                              href="https://twitter.com/seruda" target="_blank">
                         @seruda
-                    </a> & <a class="ma-link ma-link--box ma-link--box--small ma-link--box--primary" href="https://twitter.com/rosa7082" target="_blank">
+                    </a> & <a class="ma-link ma-link--box
+                                     ma-link--box--small
+                                     ma-link--box--primary"
+                              href="https://twitter.com/rosa7082" target="_blank">
                         @rosa7082
                     </a>
                 </p>

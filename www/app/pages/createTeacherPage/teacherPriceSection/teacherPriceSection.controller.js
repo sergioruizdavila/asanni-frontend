@@ -39,7 +39,7 @@ var app;
                     this.activate();
                 };
                 TeacherPriceSectionController.prototype.activate = function () {
-                    console.log('TeacherPriceSectionController controller actived');
+                    DEBUG && console.log('TeacherPriceSectionController controller actived');
                     this._subscribeToEvents();
                     if (this.$rootScope.teacherData) {
                         this._fillForm(this.$rootScope.teacherData);

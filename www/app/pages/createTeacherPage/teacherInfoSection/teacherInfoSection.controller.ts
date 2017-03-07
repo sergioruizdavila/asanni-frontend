@@ -33,33 +33,21 @@ module app.pages.createTeacherPage {
     }
 
     export interface ITeacherInfoForm {
-        firstName: string;
-        lastName: string;
-        email: string;
         phoneNumber: string;
         sex: string;
         birthDate: string;
-        born: string;
+        bornCountry: string;
+        bornCity: string;
         about: string;
     }
 
     interface ITeacherInfoValidate {
-        firstName: app.core.util.functionsUtil.IValid;
-        lastName: app.core.util.functionsUtil.IValid;
-        email: app.core.util.functionsUtil.IValid;
         phoneNumber: app.core.util.functionsUtil.IValid;
         sex: app.core.util.functionsUtil.IValid;
-        birthDate: IBirthdateValidate;
-        born: app.core.util.functionsUtil.IValid;
+        birthDate: app.core.interfaces.IBirthdateValidate;
+        bornCountry: app.core.util.functionsUtil.IValid;
+        bornCity: app.core.util.functionsUtil.IValid;
         about: app.core.util.functionsUtil.IValid;
-    }
-
-    interface IBirthdateValidate {
-        day: app.core.util.functionsUtil.IValid,
-        month: app.core.util.functionsUtil.IValid,
-        year: app.core.util.functionsUtil.IValid,
-        valid: boolean,
-        message: string
     }
 
     /****************************************/
@@ -79,6 +67,8 @@ module app.pages.createTeacherPage {
         listSexs: Array<app.core.interfaces.IDataFromJsonI18n>;
         listDays: Array<app.core.interfaces.ISelectListElement>;
         listYears: Array<app.core.interfaces.ISelectListElement>;
+        listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
+        countryObject: app.core.interfaces.IDataFromJsonI18n;
         dateObject: IBirthdateForm;
         sexObject: ISexForm;
         STEP2_STATE: string;
@@ -131,6 +121,9 @@ module app.pages.createTeacherPage {
                 description: this.HELP_TEXT_DESCRIPTION
             };
 
+            // Country Select List Structure
+            this.countryObject = {code: '', value: ''};
+
             // Sex Select List Structure
             this.sexObject = {sex: {code:'', value:''}};
 
@@ -139,13 +132,11 @@ module app.pages.createTeacherPage {
 
             //Init form
             this.form = {
-                firstName: '',
-                lastName: '',
-                email: '',
                 phoneNumber: '',
                 sex: '',
-                birthDate: '',
-                born: '',
+                birthDate: null,
+                bornCountry: '',
+                bornCity: '',
                 about: ''
             };
 
@@ -155,13 +146,12 @@ module app.pages.createTeacherPage {
             // no es necesario volverlo a traer aqui.
             this.listSexs = this.getDataFromJson.getSexi18n();
             this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
-            this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
+            this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 2017);
+            // Build Countries select lists
+            this.listCountries = this.getDataFromJson.getCountryi18n();
 
             // Build validate object fields
             this.validate = {
-                firstName: {valid: true, message: ''},
-                lastName: {valid: true, message: ''},
-                email: {valid: true, message: ''},
                 phoneNumber: {valid: true, message: ''},
                 sex: {valid: true, message: ''},
                 birthDate: {
@@ -171,7 +161,8 @@ module app.pages.createTeacherPage {
                     valid: true,
                     message: ''
                 },
-                born: {valid: true, message: ''},
+                bornCountry: {valid: true, message: ''},
+                bornCity: {valid: true, message: ''},
                 about: {valid: true, message: ''}
             };
 
@@ -181,14 +172,14 @@ module app.pages.createTeacherPage {
         /*-- ACTIVATE METHOD --*/
         activate(): void {
             //LOG
-            console.log('TeacherInfoSectionController controller actived');
+            DEBUG && console.log('TeacherInfoSectionController controller actived');
 
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
 
-            //FILL FORM FROM ROOTSCOPE TEACHER INFO
-            if(this.$rootScope.teacherData) {
-                this._fillForm(this.$rootScope.teacherData);
+            //FILL FORM FROM ROOTSCOPE USER PROFILE INFO
+            if(this.$rootScope.profileData) {
+                this._fillForm(this.$rootScope.profileData);
             }
 
         }
@@ -209,14 +200,8 @@ module app.pages.createTeacherPage {
             let formValid = this._validateForm();
 
             if(formValid) {
-                //MIXPANEL
-                mixpanel.track("Enter: Basic Info on Create Teacher", {
-                    "name": this.form.firstName + ' ' + this.form.lastName,
-                    "email": this.form.email,
-                    "phone": this.form.phoneNumber
-                });
                 this._setDataModelFromForm();
-                this.$scope.$emit('Save Data');
+                this.$scope.$emit('Save Profile Data');
                 // GO TO NEXT STEP
                 this.$state.go(this.STEP2_STATE, {reload: true});
             } else {
@@ -236,13 +221,10 @@ module app.pages.createTeacherPage {
         * @param {app.models.teacher.Teacher} data - Teacher Data
         * @return {void}
         */
-        private _fillForm(data: app.models.teacher.Teacher): void {
-            this.form.firstName = data.FirstName;
-            this.form.lastName = data.LastName;
-            this.form.email = data.Email;
+        private _fillForm(data: app.models.user.Profile): void {
             this.form.phoneNumber = data.PhoneNumber;
             //Charge Sex on select List
-            this.sexObject.sex.code = data.Sex;
+            this.sexObject.sex.code = data.Gender;
 
             //Build birthdate (Charge on select List)
             let date = this.functionsUtilService.splitDate(data.BirthDate);
@@ -250,7 +232,9 @@ module app.pages.createTeacherPage {
             this.dateObject.month.code = date.month !== 'Invalid date' ? date.month : '';
             this.dateObject.year.value = date.year ? parseInt(date.year) : '';
 
-            this.form.born = data.Born;
+            //Charge Country on select List
+            this.countryObject.code = data.BornCountry;
+            this.form.bornCity = data.BornCity;
             this.form.about = data.About;
         }
 
@@ -275,27 +259,6 @@ module app.pages.createTeacherPage {
             /***************************************************/
             //VARIABLES
             let formValid = true;
-
-            //Validate First Name field
-            let firstName_rules = [NULL_ENUM, EMPTY_ENUM];
-            this.validate.firstName = this.functionsUtilService.validator(this.form.firstName, firstName_rules);
-            if(!this.validate.firstName.valid) {
-                formValid = this.validate.firstName.valid;
-            }
-
-            //Validate Last Name field
-            let lastName_rules = [NULL_ENUM, EMPTY_ENUM];
-            this.validate.lastName = this.functionsUtilService.validator(this.form.lastName, lastName_rules);
-            if(!this.validate.lastName.valid) {
-                formValid = this.validate.lastName.valid;
-            }
-
-            //Validate Email field
-            let email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
-            this.validate.email = this.functionsUtilService.validator(this.form.email, email_rules);
-            if(!this.validate.email.valid) {
-                formValid = this.validate.email.valid;
-            }
 
             //Validate Phone Number field
             let phoneNumber_rules = [NULL_ENUM, EMPTY_ENUM, NUMBER_ENUM];
@@ -348,11 +311,25 @@ module app.pages.createTeacherPage {
                    this.validate.birthDate.message = '';
             }
 
-            //Validate Born field
-            let born_rules = [NULL_ENUM, EMPTY_ENUM];
-            this.validate.born = this.functionsUtilService.validator(this.form.born, born_rules);
-            if(!this.validate.born.valid) {
-                formValid = this.validate.born.valid;
+            //Validate Country field
+            let country_born_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.bornCountry = this.functionsUtilService.validator(this.countryObject.code, country_born_rules);
+            if(!this.validate.bornCountry.valid) {
+                formValid = this.validate.bornCountry.valid;
+            }
+
+            //Validate City Born field
+            let city_born_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.bornCity = this.functionsUtilService.validator(this.form.bornCity, city_born_rules);
+            if(!this.validate.bornCity.valid) {
+                formValid = this.validate.bornCity.valid;
+            }
+
+            //Validate About me field
+            let about_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.about = this.functionsUtilService.validator(this.form.about, about_rules);
+            if(!this.validate.about.valid) {
+                formValid = this.validate.about.valid;
             }
 
             return formValid;
@@ -436,7 +413,7 @@ module app.pages.createTeacherPage {
         /**
         * _setDataModelFromForm
         * @description - get data from form's input in order to put it on $parent.teacherData
-        * @use - this._getDataFromForm();
+        * @use - this._setDataModelFromForm();
         * @function
         * @return {void}
         */
@@ -446,19 +423,22 @@ module app.pages.createTeacherPage {
                                     this.dateObject.day.value,
                                     this.dateObject.month.code,
                                     this.dateObject.year.value);
-            let sexCode = this.sexObject.sex.code;
+            let genderCode = this.sexObject.sex.code;
+            let countryCode = this.countryObject.code;
             let recommended = this.localStorage.getItem(this.dataConfig.earlyIdLocalStorage);
             /*********************************/
 
+            this.form.bornCountry = countryCode;
             // Send data to parent (createTeacherPage)
-            this.$rootScope.teacherData.FirstName = this.form.firstName;
-            this.$rootScope.teacherData.LastName = this.form.lastName;
-            this.$rootScope.teacherData.Email = this.form.email;
-            this.$rootScope.teacherData.PhoneNumber = this.form.phoneNumber;
-            this.$rootScope.teacherData.Sex = sexCode;
-            this.$rootScope.teacherData.BirthDate = dateFormatted;
-            this.$rootScope.teacherData.Born = this.form.born;
-            this.$rootScope.teacherData.About = this.form.about;
+            this.$rootScope.profileData.PhoneNumber = this.form.phoneNumber;
+            this.$rootScope.profileData.Gender = genderCode;
+            this.$rootScope.profileData.BirthDate = dateFormatted;
+            this.$rootScope.profileData.BornCountry = this.form.bornCountry;
+            this.$rootScope.profileData.BornCity = this.form.bornCity;
+            this.$rootScope.profileData.About = this.form.about;
+
+            //Save profile data on teacher data models
+            this.$rootScope.teacherData.Profile = this.$rootScope.profileData;
 
             //If this teacher was recommended by a Student
             this.$rootScope.teacherData.Recommended = recommended ? recommended : null;
@@ -480,13 +460,15 @@ module app.pages.createTeacherPage {
             /**
             * Fill Form event
             * @parent - CreateTeacherPageController
-            * @description - Parent send markers teacher data in order to
+            * @description - Parent send user profile data in order to
             * Child fill the form's field
             * @event
             */
-            this.$scope.$on('Fill Form', function(event, args: app.models.teacher.Teacher) {
-                self._fillForm(args);
-            });
+            this.$scope.$on('Fill User Profile Form',
+                function(event, args: app.models.user.Profile) {
+                    self._fillForm(args);
+                }
+            );
         }
 
     }

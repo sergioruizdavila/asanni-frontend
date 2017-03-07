@@ -11,12 +11,14 @@
 
     angular
         .module('mainApp', [
-            'mainApp.auth',
             'mainApp.core',
             'mainApp.core.util',
             'mainApp.localStorage',
             'mainApp.core.restApi',
             'mainApp.core.s3Upload',
+            'mainApp.auth',
+            'mainApp.register',
+            'mainApp.account',
             'mainApp.models.feedback',
             'mainApp.models.user',
             'mainApp.models.student',
@@ -26,31 +28,74 @@
             'mainApp.pages.studentLandingPage',
             'mainApp.pages.teacherLandingPage',
             'mainApp.pages.landingPage',
+            'mainApp.pages.resetPasswordPage',
             'mainApp.pages.searchPage',
             'mainApp.pages.createTeacherPage',
             'mainApp.pages.teacherProfilePage',
             'mainApp.pages.userProfilePage',
             'mainApp.pages.userEditProfilePage',
+            'mainApp.pages.userEditLocationPage',
             'mainApp.pages.userEditAgendaPage',
             'mainApp.pages.userEditMediaPage',
+            'mainApp.pages.editTeacher',
             'mainApp.pages.userInboxPage',
             'mainApp.pages.userInboxDetailsPage',
             'mainApp.pages.meetingConfirmationPage',
             'mainApp.components.header',
+            'mainApp.components.sideMenu',
             'mainApp.components.rating',
             'mainApp.components.map',
             'mainApp.components.modal',
             'mainApp.components.footer',
             'mainApp.components.floatMessageBar'
         ])
+
+        /* Configuration for angular-oauth2 */
+
+        .config(['OAuthProvider', 'dataConfig',
+            function(
+                    OAuthProvider,
+                    dataConfig: IDataConfig) {
+
+                OAuthProvider.configure({
+                    baseUrl: dataConfig.baseUrl,
+                    clientId: dataConfig.localOAuth2Key,
+                    grantPath: '/oauth2/token/',
+                    revokePath: '/oauth2/revoke_token/'
+                });
+
+            }
+        ])
+
+        .config(['OAuthTokenProvider', 'dataConfig',
+            function(
+                    OAuthTokenProvider,
+                    dataConfig: IDataConfig) {
+
+                OAuthTokenProvider.configure({
+                    name: dataConfig.cookieName,
+                    options: {
+                        secure: dataConfig.https,
+                    }
+                });
+
+            }
+        ])
+
+        /* Default Configuration */
+
         .config(config);
 
     function config($locationProvider: angular.ILocationProvider,
                     $urlRouterProvider: angular.ui.IUrlRouterProvider,
                     $translateProvider: angular.translate.ITranslateProvider) {
 
-        /*$locationProvider.html5Mode(true);
-        $locationProvider.hashPrefix('!');*/
+        //Turn on/off Sentry alerting catcher
+        //FIXME: No he podido inyectar ravenProvider, lo comento por ahora.
+        //$ravenProvider.development(DEBUG);
+
+        $locationProvider.html5Mode(true);
+        //$locationProvider.hashPrefix('!');
 
         $urlRouterProvider.otherwise('/page/main');
         //$urlRouterProvider.otherwise('/page/landing/student');

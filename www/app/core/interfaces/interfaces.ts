@@ -8,12 +8,27 @@ module app.core.interfaces {
     /*     ROOTSCOPE INTERFACE     */
     /*******************************/
     export interface IMainAppRootScope extends angular.IRootScopeService {
+        userData: IUserData;
+        profileData: app.models.user.Profile;
         teacher_id: string;
         teacherData: app.models.teacher.Teacher;
         language_doc: angular.translate.ITranslateProvider;
         activeHeader: boolean;
         activeFooter: boolean;
         activeMessageBar: boolean;
+    }
+
+    /***********************************/
+    /*         USER DATA MODEL         */
+    /***********************************/
+    export interface IUserData {
+        id: string;
+        username: string;
+        email: string;
+        password: string;
+        firstName: string;
+        lastName: string;
+        groups: Array<string>;
     }
 
     //TODO: Remover cuando ya no sea necesario
@@ -91,6 +106,21 @@ module app.core.interfaces {
         class: string;
     }
 
+    /************************************/
+    /*  SIGNUP AND LOGIN DATASET MODAL  */
+    /************************************/
+    export interface IDataSet {
+        hasNextStep: boolean;
+    }
+
+    /************************************/
+    /*      UPLOAD FILE INTERFACE       */
+    /************************************/
+    export interface IUpload extends angular.angularFileUpload.IUploadService {
+        dataUrltoBlob: (dataUrl: string, name: string) => File;
+        urlToBlob: (url: string) => angular.IPromise<any>;
+    }
+
 
     /////////////////////////////////
 
@@ -103,4 +133,72 @@ module app.core.interfaces {
         textsList?: Array<string>;
     }
 
+
+    /********************************/
+    /*    BIRTHDATE VALIDATE FORM   */
+    /********************************/
+    export interface IBirthdateValidate {
+        day: app.core.util.functionsUtil.IValid,
+        month: app.core.util.functionsUtil.IValid,
+        year: app.core.util.functionsUtil.IValid,
+        valid: boolean,
+        message: string
+    }
+
+}
+
+
+
+/******************************************************************************/
+
+
+/**
+ * Nowday there is not a angular-oauth2 definition, here is a basic
+ * created by cskiwi on gitHub
+ * @reference https://github.com/oauthjs/angular-oauth2/issues/91
+ */
+
+declare namespace angular.oauth2 {
+    /*
+     * IOAuth
+     */
+
+     interface IOAuthConfig {
+        baseUrl: string;
+        clientId: string;
+        clientSecret?: string;
+        grantPath?: string;
+        revokePath?: string;
+    }
+    interface IOAuthProvider {
+        configure(params: IOAuthConfig): IOAuthConfig;
+    }
+
+    interface IData {
+        username: string;
+        password: string;
+    }
+
+    interface IOAuth {
+        isAuthenticated(): boolean;
+        getAccessToken(data: IData, options?: any): angular.IPromise<string>;
+        getRefreshToken(data?: IData, options?: any): angular.IPromise<string>;
+        revokeToken(data?: IData, options?: any): angular.IPromise<string>;
+    }
+
+    /*
+     * IOAuthToken
+     */
+    interface IOAuthTokenConfig {
+        name: string;
+        options: IOAuthTokenOptions;
+    }
+
+    interface IOAuthTokenOptions {
+        secure: boolean;
+    }
+
+    interface IOAuthTokenProvider {
+        configure(params: IOAuthTokenConfig): IOAuthTokenConfig;
+    }
 }

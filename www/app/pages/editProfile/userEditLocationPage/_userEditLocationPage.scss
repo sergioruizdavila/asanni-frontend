@@ -1,0 +1,17 @@
+/*************************/
+/*       VARIABLES       */
+/*************************/
+$userEditLocation-padding: 20px;
+$userEditLocation-block-margin: 20px;
+
+/**********************************************************/
+/*                USER EDIT LOCATION PAGE                 */
+/**********************************************************/
+
+.userEditLocationPage {
+    padding-top: $userEditLocation-padding;
+
+    &__block {
+        margin-bottom: $userEditLocation-block-margin;
+    }
+}

@@ -34,15 +34,12 @@ var app;
                 };
                 StudentLandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
-                    mixpanel.track("Change Language");
                 };
                 StudentLandingPageController.prototype.goToEarlyAccessForm = function () {
                     document.querySelector('.studentLandingPage__early-access-block').scrollIntoView({ behavior: 'smooth' });
-                    mixpanel.track("Go to early access form");
                 };
                 StudentLandingPageController.prototype.goDown = function () {
                     document.querySelector('.studentLandingPage__title-block').scrollIntoView({ behavior: 'smooth' });
-                    mixpanel.track('Go down');
                 };
                 StudentLandingPageController.prototype.showCommentsTextarea = function () {
                     event.preventDefault();
@@ -51,11 +48,6 @@ var app;
                 StudentLandingPageController.prototype.createEarlyAdopter = function () {
                     var self = this;
                     this.sending = true;
-                    mixpanel.track("Click on Notify button", {
-                        "name": this.form.userData.name || '*',
-                        "email": this.form.userData.email,
-                        "comment": this.form.userData.comment || '*'
-                    });
                     var userData = {
                         name: this.form.userData.name || '*',
                         email: this.form.userData.email,

@@ -5,11 +5,13 @@ var app;
         var landingPage;
         (function (landingPage) {
             var LandingPageController = (function () {
-                function LandingPageController($state, $stateParams, dataConfig, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope, localStorage) {
+                function LandingPageController($scope, $state, $stateParams, dataConfig, $uibModal, AuthService, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope, localStorage) {
+                    this.$scope = $scope;
                     this.$state = $state;
                     this.$stateParams = $stateParams;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
+                    this.AuthService = AuthService;
                     this.messageUtil = messageUtil;
                     this.functionsUtil = functionsUtil;
                     this.LandingPageService = LandingPageService;
@@ -20,6 +22,10 @@ var app;
                     this._init();
                 }
                 LandingPageController.prototype._init = function () {
+                    this.isAuthenticated = this.AuthService.isAuthenticated();
+                    if (this.$rootScope.profileData) {
+                        this.isTeacher = this.$rootScope.profileData.IsTeacher;
+                    }
                     this.form = {
                         userData: {
                             name: '',
@@ -50,9 +56,10 @@ var app;
                     this.activate();
                 };
                 LandingPageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Main Landing Page';
                     var self = this;
                     console.log('landingPage controller actived');
-                    mixpanel.track("Enter: Main Landing Page");
+                    mixpanel.track(ENTER_MIXPANEL);
                     if (this.$stateParams.id) {
                         var options = {
                             animation: false,
@@ -70,15 +77,28 @@ var app;
                         };
                         var modalInstance = this.$uibModal.open(options);
                     }
+                    if (this.$stateParams.showLogin) {
+                        this._openLogInModal();
+                    }
+                    this._subscribeToEvents();
                 };
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
-                    mixpanel.track("Change Language on landingPage");
+                };
+                LandingPageController.prototype.logout = function () {
+                    var self = this;
+                    this.AuthService.logout().then(function (response) {
+                        window.location.reload();
+                    }, function (response) {
+                        DEBUG && console.log('A problem occured while logging you out.');
+                    });
                 };
                 LandingPageController.prototype._sendCountryFeedback = function () {
+                    var ENTER_MIXPANEL = 'Click: Send Country Feedback';
                     var FEEDBACK_SUCCESS_MESSAGE = '¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.';
                     var self = this;
                     this.form.feedback.NextCountry = this.countryObject.code;
+                    mixpanel.track(ENTER_MIXPANEL);
                     if (this.form.feedback.NextCountry) {
                         this.infoCountry.sending = true;
                         this.infoCountry.sent = false;
@@ -105,25 +125,28 @@ var app;
                     }
                 };
                 LandingPageController.prototype._recommendTeacher = function () {
+                    var CLICK_MIXPANEL = 'Click: Recommend Teacher';
                     var url = 'https://waysily.typeform.com/to/iAWFeg';
-                    mixpanel.track("Click on recommend teacher");
+                    mixpanel.track(CLICK_MIXPANEL);
                     window.open(url, '_blank');
                 };
                 LandingPageController.prototype._recommendSchool = function () {
+                    var CLICK_MIXPANEL = 'Click: Recommend School';
                     var url = 'https://waysily.typeform.com/to/q5uT0P';
-                    mixpanel.track("Click on recommend school");
+                    mixpanel.track(CLICK_MIXPANEL);
                     window.open(url, '_blank');
                 };
                 LandingPageController.prototype._createEarlyAdopter = function () {
                     var NULL_ENUM = 2;
                     var EMPTY_ENUM = 3;
                     var EMAIL_ENUM = 0;
+                    var NEW_MIXPANEL = 'New Early Adopter data';
                     var self = this;
                     var email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
                     this.validate.email = this.functionsUtil.validator(this.form.userData.email, email_rules);
                     if (this.validate.email.valid) {
                         this.infoNewUser.sending = true;
-                        mixpanel.track("Click on Notify button", {
+                        mixpanel.track(NEW_MIXPANEL, {
                             "name": this.form.userData.name || '*',
                             "email": this.form.userData.email,
                             "comment": this.form.userData.comment || '*'
@@ -155,24 +178,68 @@ var app;
                     }
                 };
                 LandingPageController.prototype._openSignUpModal = function () {
+                    var CLICK_MIXPANEL = 'Click on Sign up: main landing page';
                     var self = this;
                     var options = {
                         animation: false,
                         backdrop: 'static',
                         keyboard: false,
+                        size: 'sm',
                         templateUrl: this.dataConfig.modalSignUpTmpl,
-                        controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
-                    mixpanel.track("Click on 'Join as Student' landing page header");
+                    mixpanel.track(CLICK_MIXPANEL);
+                };
+                LandingPageController.prototype._openLogInModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        size: 'sm',
+                        templateUrl: this.dataConfig.modalLogInTmpl,
+                        controller: 'mainApp.components.modal.ModalLogInController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function () {
+                        self.$rootScope.$broadcast('Is Authenticated');
+                    }, function () {
+                        DEBUG && console.info('Modal dismissed at: ' + new Date());
+                    });
+                };
+                LandingPageController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Is Authenticated', function (event, args) {
+                        self.isAuthenticated = self.AuthService.isAuthenticated();
+                        if (self.$rootScope.profileData) {
+                            self.isTeacher = self.$rootScope.profileData.IsTeacher;
+                        }
+                    });
                 };
                 return LandingPageController;
             }());
             LandingPageController.controllerId = 'mainApp.pages.landingPage.LandingPageController';
-            LandingPageController.$inject = ['$state',
+            LandingPageController.$inject = ['$scope',
+                '$state',
                 '$stateParams',
                 'dataConfig',
                 '$uibModal',
+                'mainApp.auth.AuthService',
                 'mainApp.core.util.messageUtilService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.pages.landingPage.LandingPageService',

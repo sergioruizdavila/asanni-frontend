@@ -61,7 +61,7 @@ module components.floatMessageBar {
     /*********************************************************/
     /*                     CONTROLLER                        */
     /*********************************************************/
-    
+
     /**
     * FloatMessageBarController
     * @description - FloatMessageBar Controller
@@ -130,8 +130,9 @@ module components.floatMessageBar {
         _join(): void {
             //CONSTANTS
             const CREATE_TEACHER = 'page.createTeacherPage.start';
+            const CLICK_MIXPANEL = 'Click: Join as a teacher from floatMessageBar';
             //MIXPANEL
-            mixpanel.track("Click on join as a teacher from floatMessageBar");
+            mixpanel.track(CLICK_MIXPANEL);
             // GO TO NEXT STEP
             this.$state.go(CREATE_TEACHER, {reload: true});
         }

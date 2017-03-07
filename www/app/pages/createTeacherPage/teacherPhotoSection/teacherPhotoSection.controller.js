@@ -5,9 +5,7 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherPhotoSectionController = (function () {
-                function TeacherPhotoSectionController(dataConfig, getDataFromJson, functionsUtilService, S3UploadService, messageUtil, Upload, $state, $filter, $scope, $rootScope) {
-                    this.dataConfig = dataConfig;
-                    this.getDataFromJson = getDataFromJson;
+                function TeacherPhotoSectionController(functionsUtilService, S3UploadService, messageUtil, Upload, $state, $filter, $scope, $rootScope) {
                     this.functionsUtilService = functionsUtilService;
                     this.S3UploadService = S3UploadService;
                     this.messageUtil = messageUtil;
@@ -22,7 +20,7 @@ var app;
                     this.STEP7_STATE = 'page.createTeacherPage.price';
                     this.FINAL_STEP_STATE = 'page.createTeacherPage.finish';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.title.text');
-                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.description.text');
+                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.teacher.help_text.description.text');
                     this.uploading = false;
                     this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(8, 9);
                     this.helpText = {
@@ -42,10 +40,10 @@ var app;
                     this.activate();
                 };
                 TeacherPhotoSectionController.prototype.activate = function () {
-                    console.log('TeacherPhotoSectionController controller actived');
+                    DEBUG && console.log('TeacherPhotoSectionController controller actived');
                     this._subscribeToEvents();
-                    if (this.$rootScope.teacherData) {
-                        this._fillForm(this.$rootScope.teacherData);
+                    if (this.$rootScope.profileData) {
+                        this._fillForm(this.$rootScope.profileData);
                     }
                 };
                 TeacherPhotoSectionController.prototype.goToNext = function () {
@@ -58,7 +56,7 @@ var app;
                                 self.uploading = false;
                                 if (result.Location) {
                                     self._setDataModelFromForm(result.Location);
-                                    self.$scope.$emit('Save Data');
+                                    self.$scope.$emit('Save Profile Data');
                                     self.$state.go(self.FINAL_STEP_STATE, { reload: true });
                                 }
                                 else {
@@ -67,7 +65,7 @@ var app;
                             });
                         }
                         else {
-                            this.$scope.$emit('Save Data');
+                            this.$scope.$emit('Save Profile Data');
                             this.$state.go(this.FINAL_STEP_STATE, { reload: true });
                         }
                     }
@@ -106,7 +104,7 @@ var app;
                 };
                 TeacherPhotoSectionController.prototype.changeHelpText = function (type) {
                     var AVATAR_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.avatar.title.text');
-                    var AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.avatar.description.text');
+                    var AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.teacher.help_text.description.text');
                     switch (type) {
                         case 'default':
                             this.helpText.title = this.HELP_TEXT_TITLE;
@@ -146,11 +144,11 @@ var app;
                     });
                 };
                 TeacherPhotoSectionController.prototype._setDataModelFromForm = function (avatar) {
-                    this.$rootScope.teacherData.Avatar = avatar;
+                    this.$rootScope.profileData.Avatar = avatar;
                 };
                 TeacherPhotoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
-                    this.$scope.$on('Fill Form', function (event, args) {
+                    this.$scope.$on('Fill User Profile Form', function (event, args) {
                         self._fillForm(args);
                     });
                 };
@@ -158,8 +156,6 @@ var app;
             }());
             TeacherPhotoSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherPhotoSectionController';
             TeacherPhotoSectionController.$inject = [
-                'dataConfig',
-                'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.s3Upload.S3UploadService',
                 'mainApp.core.util.messageUtilService',

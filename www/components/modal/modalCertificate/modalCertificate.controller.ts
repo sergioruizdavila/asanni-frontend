@@ -237,7 +237,8 @@ module components.modal.modalCertificate {
         * close
         * @description - when user click "X" button, close the modal
         * @use - this.close();
-        * @function
+        * @function TODO: deberia siempre llamarse a close, no a $uibModalInstance
+        * dejarle la funcion de cerrar a este metodo.
         * @return {void}
         */
         close(): void {

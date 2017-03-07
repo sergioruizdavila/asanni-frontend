@@ -1,28 +1,33 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var app;
 (function (app) {
     var models;
     (function (models) {
         var student;
         (function (student) {
-            var Student = (function (_super) {
-                __extends(Student, _super);
+            var Student = (function () {
                 function Student(obj) {
                     if (obj === void 0) { obj = {}; }
-                    var _this;
                     console.log('Student Model instanced');
-                    _this = _super.call(this, obj) || this;
-                    _this.school = obj.school || '';
-                    _this.occupation = obj.occupation || '';
-                    _this.fluent_in = obj.fluent_in || '';
-                    _this.learning = obj.learning || '';
-                    _this.interests = obj.interests || '';
-                    return _this;
+                    this.id = obj.id || '';
+                    this.school = obj.school || '';
+                    this.occupation = obj.occupation || '';
+                    this.fluent_in = obj.fluent_in || '';
+                    this.learning = obj.learning || '';
+                    this.interests = obj.interests || '';
                 }
+                Object.defineProperty(Student.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 Object.defineProperty(Student.prototype, "School", {
                     get: function () {
                         return this.school;
@@ -119,7 +124,7 @@ var app;
                     });
                 };
                 return Student;
-            }(app.models.user.User));
+            }());
             student.Student = Student;
         })(student = models.student || (models.student = {}));
     })(models = app.models || (app.models = {}));

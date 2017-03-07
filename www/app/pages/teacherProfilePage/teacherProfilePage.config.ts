@@ -25,6 +25,9 @@
                     }
                 },
                 parent: 'page',
+                data: {
+                    requireLogin: false
+                },
                 params: {
                     id: null
                 },
