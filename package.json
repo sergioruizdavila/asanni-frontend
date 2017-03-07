@@ -15,7 +15,9 @@
   "license": "ISC",
   "dependencies": {
     "angular-bootstrap-datetimepicker": "^1.1.2",
-    "bower": "^1.7.9",
+    "bower": "^1.7.9"
+  },
+  "devDependencies": {
     "bower-files": "^3.14.1",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
@@ -31,8 +33,5 @@
     "gulp-typescript": "^2.13.6",
     "gulp-uglify": "^2.0.0",
     "gulp-uglifycss": "^1.0.6"
-  },
-  "devDependencies": {
-
   }
 }
