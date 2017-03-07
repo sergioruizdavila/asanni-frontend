@@ -8,7 +8,7 @@
 
  declare var DEBUG: boolean;
  /* This must be false in production */
- DEBUG = true;
+ DEBUG = false;
  /************************************/
 
 
@@ -57,13 +57,13 @@ interface IDataConfig {
 
     'use strict';
 
-    let BASE_URL = 'https://waysily-server.herokuapp.com/api/v1/';
-    let BUCKETS3 = 'waysily-img/teachers-avatar-prd';
+    let BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
+    let BUCKETS3 = 'waysily-img/profile-avatar-prd';
 
     /* Assign Environment values */
     if(DEBUG) {
         BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
-        BUCKETS3 = 'waysily-img/teachers-avatar-dev';
+        BUCKETS3 = 'waysily-img/profile-avatar-dev';
     }
 
     // DEV Fake
