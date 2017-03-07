@@ -380,6 +380,7 @@ module app.pages.landingPage {
                 });
 
                 let userData = {
+                    uid: app.core.util.functionsUtil.FunctionsUtilService.generateGuid(),
                     name: this.form.userData.name || '*',
                     email: this.form.userData.email,
                     comment: this.form.userData.comment || '*'
