@@ -22,15 +22,16 @@ module app.pages.landingPage {
     /********************************/
     export interface IParams extends ng.ui.IStateParamsService {
         id: string;
+        showLogin: boolean;
     }
 
     export interface ILandingForm {
-        userData: IUserData;
+        userData: IUserDataLanding;
         language: string;
         feedback: app.models.feedback.Feedback;
     }
 
-    export interface IUserData {
+    export interface IUserDataLanding {
         name: string;
         email: string;
         comment: string;
@@ -66,16 +67,20 @@ module app.pages.landingPage {
         infoCountry: IFormStatus;
         infoNewUser: IFormStatus;
         validate: ILandingValidate;
+        isAuthenticated: boolean;
+        isTeacher: boolean;
         countryObject: app.core.interfaces.IDataFromJsonI18n;
         listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
         // --------------------------------
 
 
         /*-- INJECT DEPENDENCIES --*/
-        public static $inject = ['$state',
+        public static $inject = ['$scope',
+                                 '$state',
                                  '$stateParams',
                                  'dataConfig',
                                  '$uibModal',
+                                 'mainApp.auth.AuthService',
                                  'mainApp.core.util.messageUtilService',
                                  'mainApp.core.util.FunctionsUtilService',
                                  'mainApp.pages.landingPage.LandingPageService',
@@ -88,10 +93,12 @@ module app.pages.landingPage {
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
+            private $scope: angular.IScope,
             private $state: ng.ui.IStateService,
             private $stateParams: IParams,
             private dataConfig: IDataConfig,
             private $uibModal: ng.ui.bootstrap.IModalService,
+            private AuthService: app.auth.IAuthService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService,
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private LandingPageService: app.pages.landingPage.ILandingPageService,
@@ -106,6 +113,15 @@ module app.pages.landingPage {
 
         /*-- INITIALIZE METHOD --*/
         private _init() {
+
+            //Validate if user is Authenticated
+            this.isAuthenticated = this.AuthService.isAuthenticated();
+
+            //Validate if user is teacher
+            if(this.$rootScope.profileData) {
+                this.isTeacher = this.$rootScope.profileData.IsTeacher;
+            }
+
             //Init form
             this.form = {
                 userData: {
@@ -150,13 +166,15 @@ module app.pages.landingPage {
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
+            //CONSTANTS
+            const ENTER_MIXPANEL = 'Enter: Main Landing Page';
             //VARIABLES
             let self = this;
             //LOG
             console.log('landingPage controller actived');
 
             //MIXPANEL
-            mixpanel.track("Enter: Main Landing Page");
+            mixpanel.track(ENTER_MIXPANEL);
 
             //Validate if come from recommendation email
             if(this.$stateParams.id) {
@@ -182,6 +200,14 @@ module app.pages.landingPage {
                 var modalInstance = this.$uibModal.open(options);
             }
 
+            // Launch Login modal
+            if(this.$stateParams.showLogin) {
+                this._openLogInModal();
+            }
+
+            //SUBSCRIBE TO EVENTS
+            this._subscribeToEvents();
+
         }
 
         /**********************************/
@@ -198,7 +224,33 @@ module app.pages.landingPage {
 
         changeLanguage(): void {
              this.functionsUtil.changeLanguage(this.form.language);
-             mixpanel.track("Change Language on landingPage");
+        }
+
+
+
+        /**
+         * logout
+         * @description - Log out current logged user (call AuthService to revoke token)
+         * @use - this.logout();
+         * @function
+         * @return {void}
+        */
+
+        logout(): void {
+            //VARIABLES
+            let self = this;
+
+            this.AuthService.logout().then(
+                function(response) {
+                    // Success
+                    window.location.reload();
+                },
+                function(response) {
+                    // Error
+                    /* This can occur if connection to server is lost or server is down */
+                    DEBUG && console.log('A problem occured while logging you out.');
+                }
+            );
         }
 
 
@@ -213,12 +265,16 @@ module app.pages.landingPage {
 
         private _sendCountryFeedback(): void {
             //CONSTANTS
+            const ENTER_MIXPANEL = 'Click: Send Country Feedback';
             const FEEDBACK_SUCCESS_MESSAGE = '¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.';
             /***************************************************/
 
             //VARIABLES
             let self = this;
             this.form.feedback.NextCountry = this.countryObject.code;
+
+            //MIXPANEL
+            mixpanel.track(ENTER_MIXPANEL);
 
             if(this.form.feedback.NextCountry) {
                 this.infoCountry.sending = true;
@@ -249,25 +305,43 @@ module app.pages.landingPage {
 
 
 
-        //TODO: Poner descripcion
+        /**
+        * _recommendTeacher
+        * @description - user could recommend a known teacher
+        * @use - this._recommendTeacher();
+        * @function
+        * @return {void}
+        */
+
         _recommendTeacher(): void {
+            //CONSTANTS
+            const CLICK_MIXPANEL = 'Click: Recommend Teacher';
             //VARIABLES
             let url = 'https://waysily.typeform.com/to/iAWFeg';
-
             //MIXPANEL
-            mixpanel.track("Click on recommend teacher");
+            mixpanel.track(CLICK_MIXPANEL);
+
             window.open(url,'_blank');
         }
 
 
 
-        //TODO: Poner descripcion
+        /**
+        * _recommendSchool
+        * @description - user could recommend a known school
+        * @use - this._recommendTeacher();
+        * @function
+        * @return {void}
+        */
+
         _recommendSchool(): void {
+            //CONSTANTS
+            const CLICK_MIXPANEL = 'Click: Recommend School';
             //VARIABLES
             let url = 'https://waysily.typeform.com/to/q5uT0P';
-
             //MIXPANEL
-            mixpanel.track("Click on recommend school");
+            mixpanel.track(CLICK_MIXPANEL);
+
             window.open(url,'_blank');
         }
 
@@ -286,6 +360,7 @@ module app.pages.landingPage {
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
             const EMAIL_ENUM = app.core.util.functionsUtil.Validation.Email;
+            const NEW_MIXPANEL = 'New Early Adopter data';
             /***************************************************/
 
             // VARIABLES
@@ -298,7 +373,7 @@ module app.pages.landingPage {
             if(this.validate.email.valid) {
                 this.infoNewUser.sending = true;
 
-                mixpanel.track("Click on Notify button", {
+                mixpanel.track(NEW_MIXPANEL, {
                     "name": this.form.userData.name || '*',
                     "email": this.form.userData.email,
                     "comment": this.form.userData.comment || '*'
@@ -336,24 +411,110 @@ module app.pages.landingPage {
         /**
         * _openSignUpModal
         * @description - open Modal in order to add a New Teacher's Experience on Box
-        * @use - this._addEditExperience();
+        * @use - this._openSignUpModal();
         * @function
         * @return {void}
         */
         private _openSignUpModal(): void {
+            //CONSTANTS
+            const CLICK_MIXPANEL = 'Click on Sign up: main landing page';
+            //VARIABLES
             let self = this;
             // modal default options
             let options: ng.ui.bootstrap.IModalSettings = {
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,
+                size:'sm',
                 templateUrl: this.dataConfig.modalSignUpTmpl,
-                controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            hasNextStep: false
+                        }
+                    }
+                }
             };
 
             var modalInstance = this.$uibModal.open(options);
 
-            mixpanel.track("Click on 'Join as Student' landing page header");
+            mixpanel.track(CLICK_MIXPANEL);
+        }
+
+
+
+        /**
+        * _openLogInModal
+        * @description - open Modal in order to Log in action
+        * @use - this._openLogInModal();
+        * @function
+        * @return {void}
+        */
+        private _openLogInModal(): void {
+            //VARIABLES
+            let self = this;
+
+            // modal default options
+            let options: ng.ui.bootstrap.IModalSettings = {
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'sm',
+                templateUrl: this.dataConfig.modalLogInTmpl,
+                controller: 'mainApp.components.modal.ModalLogInController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            hasNextStep: false
+                        }
+                    }
+                }
+            };
+
+            var modalInstance = this.$uibModal.open(options);
+
+            /* When modal is closed,validate if user is Authenticated in order to
+            show current avatar user */
+            modalInstance.result.then(function () {
+                //Validate if user is Authenticated
+                self.$rootScope.$broadcast('Is Authenticated');
+            }, function () {
+                DEBUG && console.info('Modal dismissed at: ' + new Date());
+            });
+
+        }
+
+
+
+        /**
+        * _subscribeToEvents
+        * @description - this method subscribes Landing Page to Child's Events
+        * @use - this._subscribeToEvents();
+        * @function
+        * @return {void}
+        */
+        private _subscribeToEvents(): void {
+            // VARIABLES
+            let self = this;
+
+            /**
+            * Is Authenticated event
+            * @description - Parent (LandingPageController) receive Child's
+                             event in order to know if user is authenticated
+            * @event
+            */
+            this.$scope.$on('Is Authenticated', function(event, args) {
+                //Validate if user is Authenticated
+                self.isAuthenticated = self.AuthService.isAuthenticated();
+                //Validate if user is teacher
+                if(self.$rootScope.profileData) {
+                    self.isTeacher = self.$rootScope.profileData.IsTeacher;
+                }
+            });
+
         }
 
     }

@@ -157,6 +157,10 @@
         }
     }
 
+    &--block {
+        width: 100%;
+    }
+
     .ma-select {
         -webkit-appearance: none;
         -moz-appearance:    none;
@@ -174,6 +178,7 @@
             //Testing
             padding: 12px;
             padding-right: $select-padding;
+            font-size: $input-font-size-default;
         }
 
         &--large {
@@ -182,6 +187,10 @@
             padding: 15px;
             padding-right: $select-padding;
             font-size: $input-font-size-large;
+        }
+
+        &--block {
+            width: 100%;
         }
 
         &--invalid {

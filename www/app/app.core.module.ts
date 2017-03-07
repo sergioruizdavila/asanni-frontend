@@ -10,9 +10,11 @@
 
     angular.module('mainApp.core', [
         /*Angular Modules*/
+        'ngRaven',
         'ngResource',
         'ngCookies',
         'ui.router',
+        'angular-oauth2',
         /*3rd Party*/
         'pascalprecht.translate',
         'ui.bootstrap',
@@ -21,11 +23,5 @@
         'ngFileUpload',
         'ngImgCrop'
     ]);
-
-    /*angular.module('mainApp.core', [
-        'ngResource',
-        'ui.router',
-        'pascalprecht.translate'
-    ]);*/
 
 })();

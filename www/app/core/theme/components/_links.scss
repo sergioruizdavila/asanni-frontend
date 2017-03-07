@@ -109,12 +109,17 @@
         letter-spacing: 0;
         font-style: normal;
         font-weight: normal;
-        margin-bottom: 0;
+        //margin-bottom: 0;
         color: $link-simple-font-color;
 
         &:hover {
             text-decoration: none;
             color: $link-simple-font-color;
+        }
+
+        &:focus {
+            color: $link-simple-font-color;
+            text-decoration: none;
         }
 
         ///SIMPLE LINK SIZE

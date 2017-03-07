@@ -100,12 +100,14 @@ module app.pages.searchPage {
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
+            //CONSTANTS
+            const ENTER_MIXPANEL = 'Enter: Search Page';
             //VARIABLES
             let self = this;
             //LOG
             console.log('searchPage controller actived');
             //MIXPANEL
-            mixpanel.track("Enter: Search Page");
+            mixpanel.track(ENTER_MIXPANEL);
 
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();

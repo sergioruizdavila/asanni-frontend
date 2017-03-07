@@ -5,9 +5,11 @@
 <div class="teacherProfilePage container">
 
     <!---------------------- START: LARGE MESSAGE BLOCK ----------------------->
-    <!--div class="teacherProfilePage__preview-message
+    <div ng-if="vm.data.Status !== 'VA'"
+         ng-hide="vm.loading"
+         class="teacherProfilePage__preview-message
                 row ma-large-message ma-large-message--info"
-         ng-hide="vm.loading">
+         style="background-color:rgb(185, 232, 223);">
         <div class="col-xs-12 text-center">
             <p class="ma-p ma-p--default ma-p--info margin-reset">
                 <span translate>
@@ -15,7 +17,7 @@
                 </span>
             </p>
         </div>
-    </div-->
+    </div>
     <!--                      END: PROFILE IMAGE BLOCK                       -->
 
 
@@ -36,7 +38,9 @@
 
 
 
-    <div class="row space-top-5" ng-hide="vm.loading">
+    <div class="row"
+         ng-class="vm.data.Status !== 'VA' ? 'space-top-10' : 'space-top-5'"
+         ng-hide="vm.loading">
 
         <!--                     START: LEFT COLUMN                          -->
         <!--------------------------------------------------------------------->
@@ -51,7 +55,7 @@
                     <div class="ma-photo-profile ma-photo-profile--large round">
                         <img class="img-responsive center-block"
                              width="240" height="240"
-                             src="{{vm.data.avatar}}" alt="{{vm.data.firstName}}">
+                             src="{{vm.data.Profile.Avatar}}" alt="{{vm.data.Profile.FirstName}}">
                     </div>
                 </div>
 
@@ -84,7 +88,7 @@
             <!---------------------- START: VERIFIED BLOCK -------------------->
             <div id="teacherProfile-verified-block"
                  class="teacherProfilePage__verified-block
-                        center-xs row space-4">
+                        center-xs row space-4 hidden">
 
                 <div class="col-xs-12">
 
@@ -147,29 +151,29 @@
                             <div class="row margin-reset">
 
                                 <div class="col-xs-12">
-                                    <!-- Age - Orientation -->
+                                    <! Age - Orientation >
                                     <div id="teacherProfile-basicInfo-ageOrientation"
                                          class="pull-right">
                                         <div class="basic-info-box__age">
                                             <p class="ma-p margin-reset">
-                                                {{vm.data.birthDate | ageFilter}}
+                                                {{vm.data.Profile.BirthDate | ageFilter}}
                                             </p>
                                         </div>
                                         <div class="basic-info-box__orientation
                                                     text-center">
                                             <p class="ma-p margin-reset">
-                                                {{ vm.data.sex | getI18nFilter:'sex' }}
+                                                {{ vm.data.Profile.Gender | getI18nFilter:'sex' }}
                                             </p>
                                         </div>
                                     </div>
-                                    <!-- Name -->
+                                    <! Name >
                                     <div id="teacherProfile-basicInfo-name"
                                          class="basic-info-box__name">
                                         <h2 class="margin-reset">
-                                            {{vm.data.firstName}}
+                                            {{vm.data.Profile.FirstName}}
                                         </h2>
                                     </div>
-                                    <!-- From -->
+                                    <! From >
                                     <div id="teacherProfile-basicInfo-from"
                                          class="basic-info-box__from">
                                         <p class="ma-label
@@ -180,10 +184,10 @@
                                                 <span translate>
                                                     %profile.teacher.from.label.text
                                                 </span> ·
-                                            </strong> {{vm.data.born}}
+                                            </strong>{{vm.data.Profile.BornCity}}, {{vm.data.Profile.BornCountry | getI18nFilter:'country' }}
                                         </p>
                                     </div>
-                                    <!-- Live in -->
+                                    <! Live in >
                                     <div id="teacherProfile-basicInfo-liveIn"
                                          class="basic-info-box__live">
                                         <p class="ma-label
@@ -194,7 +198,7 @@
                                                 <span translate>
                                                     %profile.teacher.live_in.label.text
                                                 </span> ·
-                                            </strong> {{vm.data.location.city}}, {{ vm.data.location.country | getI18nFilter:'country' }}
+                                            </strong> {{vm.data.Profile.Location.City}}, {{ vm.data.Profile.Location.Country | getI18nFilter:'country' }}
                                         </p>
                                     </div>
                                 </div>
@@ -206,7 +210,7 @@
                                         margin-reset">
 
                                 <div class="col-xs-12">
-                                    <!-- Joined in -->
+                                    <! Joined in >
                                     <div class="basic-info-box__since pull-right">
                                         <p class="ma-label
                                                       ma-label--simple
@@ -222,7 +226,7 @@
 
                             </div>
                         </div>
-                        <div class="ma-box__footer" ng-if="vm.data.about">
+                        <div class="ma-box__footer" ng-if="vm.data.Profile.About">
                             <div class="row margin-reset">
 
                                 <div class="col-xs-12">
@@ -230,7 +234,7 @@
                                         %profile.teacher.about_me.title.text
                                     </h4>
                                     <p class="ma-p ma-p--default">
-                                        {{vm.data.about}}
+                                        {{vm.data.Profile.About}}
                                     </p>
                                 </div>
 
@@ -246,7 +250,7 @@
             <!------------------ START: TEACH AND SPEAK BLOCK ----------------->
             <div id="teacherProfile-languages-block" class="row space-3">
 
-                <!-- Teacher of -->
+                <! Teacher of >
                 <div id="teacherProfile-languages-teach"
                      class="col-xs-12 col-sm-6 col-md-6 space-4">
 
@@ -256,7 +260,7 @@
                         </h4>
                         <div class="ma-box__content text-center">
                             <div class="row"
-                                 ng-repeat="language in vm.data.languages.teach track by $index">
+                                 ng-repeat="language in vm.data.Profile.Languages.Teach track by $index">
                                 <div class="col-xs-12">
                                     <p tooltip-placement="{{vm.nativeTooltipOptions.placement}}"
                                        tooltip-animation="{{vm.nativeTooltipOptions.animation}}"
@@ -275,7 +279,7 @@
 
                 </div>
 
-                <!-- Also Speak  -->
+                <! Also Speak  >
                 <div id="teacherProfile-languages-speak"
                      class="col-xs-12 col-sm-6 col-md-6">
 
@@ -285,7 +289,7 @@
                         </h4>
                         <div class="ma-box__content text-center">
                             <div class="row"
-                                 ng-repeat="language in vm.data.languages.learn track by $index">
+                                 ng-repeat="language in vm.data.Profile.Languages.Learn track by $index">
                                 <div class="col-xs-12">
                                     <p class="ma-p ma-p--default text-truncate">
                                         {{ language | getI18nFilter:'language' }}
@@ -785,7 +789,7 @@
 
 
             <!-------------------- START: LOCATION MAP BLOCK ------------------>
-            <div id="teacherProfile-location-block" class="row space-5">
+            <div id="teacherProfile-location-block" class="row space-14">
 
                 <div class="col-xs-12">
 

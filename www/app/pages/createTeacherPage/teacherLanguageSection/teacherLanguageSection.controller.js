@@ -41,18 +41,17 @@ var app;
                     this.activate();
                 };
                 TeacherLanguageSectionController.prototype.activate = function () {
-                    console.log('TeacherLanguageSectionController controller actived');
+                    DEBUG && console.log('TeacherLanguageSectionController controller actived');
                     this._subscribeToEvents();
-                    if (this.$rootScope.teacherData) {
-                        this._fillForm(this.$rootScope.teacherData);
+                    if (this.$rootScope.profileData) {
+                        this._fillForm(this.$rootScope.profileData);
                     }
                 };
                 TeacherLanguageSectionController.prototype.goToNext = function () {
-                    var CURRENT_STEP = 3;
                     var formValid = this._validateForm();
                     if (formValid) {
                         this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data', CURRENT_STEP);
+                        this.$scope.$emit('Save Profile Data');
                         this.$state.go(this.STEP4_STATE, { reload: true });
                     }
                     else {
@@ -201,26 +200,26 @@ var app;
                         for (var i = 0; i < this.form.native.length; i++) {
                             native.push(this.form.native[i].key);
                         }
-                        this.$rootScope.teacherData.Languages.Native = native;
+                        this.$rootScope.profileData.Languages.Native = native;
                     }
                     if (this.form.learn) {
                         var learn = [];
                         for (var i = 0; i < this.form.learn.length; i++) {
                             learn.push(this.form.learn[i].key);
                         }
-                        this.$rootScope.teacherData.Languages.Learn = learn;
+                        this.$rootScope.profileData.Languages.Learn = learn;
                     }
                     if (this.form.teach) {
                         var teach = [];
                         for (var i = 0; i < this.form.teach.length; i++) {
                             teach.push(this.form.teach[i].key);
                         }
-                        this.$rootScope.teacherData.Languages.Teach = teach;
+                        this.$rootScope.profileData.Languages.Teach = teach;
                     }
                 };
                 TeacherLanguageSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
-                    this.$scope.$on('Fill Form', function (event, args) {
+                    this.$scope.$on('Fill User Profile Form', function (event, args) {
                         self._fillForm(args);
                     });
                 };

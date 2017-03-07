@@ -2,12 +2,14 @@
     'use strict';
     angular
         .module('mainApp', [
-        'mainApp.auth',
         'mainApp.core',
         'mainApp.core.util',
         'mainApp.localStorage',
         'mainApp.core.restApi',
         'mainApp.core.s3Upload',
+        'mainApp.auth',
+        'mainApp.register',
+        'mainApp.account',
         'mainApp.models.feedback',
         'mainApp.models.user',
         'mainApp.models.student',
@@ -17,25 +19,50 @@
         'mainApp.pages.studentLandingPage',
         'mainApp.pages.teacherLandingPage',
         'mainApp.pages.landingPage',
+        'mainApp.pages.resetPasswordPage',
         'mainApp.pages.searchPage',
         'mainApp.pages.createTeacherPage',
         'mainApp.pages.teacherProfilePage',
         'mainApp.pages.userProfilePage',
         'mainApp.pages.userEditProfilePage',
+        'mainApp.pages.userEditLocationPage',
         'mainApp.pages.userEditAgendaPage',
         'mainApp.pages.userEditMediaPage',
+        'mainApp.pages.editTeacher',
         'mainApp.pages.userInboxPage',
         'mainApp.pages.userInboxDetailsPage',
         'mainApp.pages.meetingConfirmationPage',
         'mainApp.components.header',
+        'mainApp.components.sideMenu',
         'mainApp.components.rating',
         'mainApp.components.map',
         'mainApp.components.modal',
         'mainApp.components.footer',
         'mainApp.components.floatMessageBar'
     ])
+        .config(['OAuthProvider', 'dataConfig',
+        function (OAuthProvider, dataConfig) {
+            OAuthProvider.configure({
+                baseUrl: dataConfig.baseUrl,
+                clientId: dataConfig.localOAuth2Key,
+                grantPath: '/oauth2/token/',
+                revokePath: '/oauth2/revoke_token/'
+            });
+        }
+    ])
+        .config(['OAuthTokenProvider', 'dataConfig',
+        function (OAuthTokenProvider, dataConfig) {
+            OAuthTokenProvider.configure({
+                name: dataConfig.cookieName,
+                options: {
+                    secure: dataConfig.https,
+                }
+            });
+        }
+    ])
         .config(config);
     function config($locationProvider, $urlRouterProvider, $translateProvider) {
+        $locationProvider.html5Mode(true);
         $urlRouterProvider.otherwise('/page/main');
         var prefix = 'assets/i18n/';
         var suffix = '.json';
@@ -51,9 +78,11 @@
 (function () {
     'use strict';
     angular.module('mainApp.core', [
+        'ngRaven',
         'ngResource',
         'ngCookies',
         'ui.router',
+        'angular-oauth2',
         'pascalprecht.translate',
         'ui.bootstrap',
         'ui.calendar',
@@ -63,33 +92,56 @@
     ]);
 })();
 //# sourceMappingURL=app.core.module.js.map
+DEBUG = false;
 (function () {
     'use strict';
+    var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
+    var BUCKETS3 = 'waysily-img/profile-avatar-prd';
+    if (DEBUG) {
+        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
+        BUCKETS3 = 'waysily-img/profile-avatar-dev';
+    }
     var dataConfig = {
         currentYear: '2017',
-        baseUrl: 'https://waysily-server.herokuapp.com/api/v1/',
+        baseUrl: BASE_URL,
         domain: 'www.waysily.com',
+        https: false,
+        autoRefreshTokenIntervalSeconds: 300,
+        usernameMinLength: 8,
+        usernameMaxLength: 80,
+        passwordMinLength: 8,
+        passwordMaxLength: 80,
+        localOAuth2Key: 'fCY4EWQIPuixOGhA9xRIxzVLNgKJVmG1CVnwXssq',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',
         mixpanelTokenDEV: 'eda475bf46e7f01e417a4ed1d9cc3e58',
+        modalWelcomeTmpl: 'components/modal/modalCreateUser/modalWelcome/modalWelcome.html',
+        modalBornTmpl: 'components/modal/modalCreateUser/modalBorn/modalBorn.html',
+        modalPhotoTmpl: 'components/modal/modalCreateUser/modalPhoto/modalPhoto.html',
+        modalBasicInfoTmpl: 'components/modal/modalCreateUser/modalBasicInfo/modalBasicInfo.html',
+        modalFinishTmpl: 'components/modal/modalCreateUser/modalFinish/modalFinish.html',
         modalMeetingPointTmpl: 'components/modal/modalMeetingPoint/modalMeetingPoint.html',
         modalLanguagesTmpl: 'components/modal/modalLanguages/modalLanguages.html',
         modalExperienceTmpl: 'components/modal/modalExperience/modalExperience.html',
         modalEducationTmpl: 'components/modal/modalEducation/modalEducation.html',
         modalCertificateTmpl: 'components/modal/modalCertificate/modalCertificate.html',
         modalSignUpTmpl: 'components/modal/modalSignUp/modalSignUp.html',
+        modalLogInTmpl: 'components/modal/modalLogIn/modalLogIn.html',
+        modalForgotPasswordTmpl: 'components/modal/modalForgotPassword/modalForgotPassword.html',
         modalRecommendTeacherTmpl: 'components/modal/modalRecommendTeacher/modalRecommendTeacher.html',
-        bucketS3: 'waysily-img/teachers-avatar-prd',
+        bucketS3: BUCKETS3,
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
         secretAccessKeyS3: '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',
         userId: '',
-        teacherIdLocalStorage: 'waysily.teacher_id',
-        earlyIdLocalStorage: 'waysily.early_id'
+        userDataLocalStorage: 'waysily.userData',
+        teacherDataLocalStorage: 'waysily.teacherData',
+        earlyIdLocalStorage: 'waysily.early_id',
+        cookieName: 'token'
     };
     angular
         .module('mainApp')
-        .value('dataConfig', dataConfig);
+        .constant('dataConfig', dataConfig);
 })();
 //# sourceMappingURL=app.values.js.map
 (function () {
@@ -97,10 +149,15 @@
     angular
         .module('mainApp')
         .run(run);
-    run.$inject = ['$rootScope',
+    run.$inject = [
+        '$rootScope',
+        '$state',
         'dataConfig',
-        '$http'];
-    function run($rootScope, dataConfig, $http) {
+        'mainApp.auth.AuthService',
+        'mainApp.models.user.UserService',
+        'mainApp.localStorageService'
+    ];
+    function run($rootScope, $state, dataConfig, AuthService, userService, localStorage) {
         var productionHost = dataConfig.domain;
         var mixpanelTokenDEV = dataConfig.mixpanelTokenDEV;
         var mixpanelTokenPRD = dataConfig.mixpanelTokenPRD;
@@ -119,7 +176,21 @@
                 }
             });
         }
-        dataConfig.userId = 'id1234';
+        if (AuthService.isAuthenticated()) {
+            var userAccountInfo = JSON.parse(localStorage.getItem(dataConfig.userDataLocalStorage));
+            $rootScope.userData = userAccountInfo;
+            userService.getUserProfileById($rootScope.userData.id).then(function (response) {
+                if (response.userId) {
+                    $rootScope.profileData = new app.models.user.Profile(response);
+                }
+            });
+        }
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+            if (toState.data.requireLogin && !AuthService.isAuthenticated()) {
+                event.preventDefault();
+                $state.go('page.landingPage');
+            }
+        });
     }
 })();
 (function (angular) {
@@ -141,29 +212,141 @@ var app;
     (function (auth) {
         'use strict';
         var AuthService = (function () {
-            function AuthService($q, $rootScope, $http) {
+            function AuthService($q, $timeout, $cookies, OAuth, restApi, dataConfig, localStorage) {
                 this.$q = $q;
-                this.$http = $http;
-                console.log('auth service called');
+                this.$timeout = $timeout;
+                this.$cookies = $cookies;
+                this.OAuth = OAuth;
+                this.restApi = restApi;
+                this.dataConfig = dataConfig;
+                this.localStorage = localStorage;
+                DEBUG && console.log('auth service called');
+                this.AUTH_RESET_PASSWORD_URI = 'rest-auth/password/reset/';
+                this.AUTH_CONFIRM_RESET_PASSWORD_URI = 'rest-auth/password/reset/confirm/';
+                this.autoRefreshTokenInterval = dataConfig.autoRefreshTokenIntervalSeconds * 1000;
+                this.refreshNeeded = true;
             }
-            AuthService.prototype.signUpPassword = function (username, email, password) {
-                var self = this;
-                var userData = {
-                    username: username,
-                    email: email,
-                    password: password
+            AuthService.prototype.isAuthenticated = function () {
+                return this.OAuth.isAuthenticated();
+            };
+            AuthService.prototype.forceLogout = function () {
+                DEBUG && console.log("Forcing logout");
+                this.$cookies.remove(this.dataConfig.cookieName);
+                this.localStorage.removeItem(this.dataConfig.userDataLocalStorage);
+                this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
+                window.location.reload();
+            };
+            AuthService.prototype.resetPassword = function (email) {
+                var url = this.AUTH_RESET_PASSWORD_URI;
+                var deferred = this.$q.defer();
+                var data = {
+                    email: email
                 };
-                return this.$http.post('http://asanni.herokuapp.com/api/v1/posts/', {
-                    Title: userData.username,
-                    Link: userData.password
+                this.restApi.create({ url: url }, data).$promise
+                    .then(function (response) {
+                    deferred.resolve(response);
+                }, function (error) {
+                    DEBUG && console.error(error);
+                    deferred.reject(error);
                 });
+                return deferred.promise;
+            };
+            AuthService.prototype.confirmResetPassword = function (uid, token, newPassword1, newPassword2) {
+                var url = this.AUTH_CONFIRM_RESET_PASSWORD_URI;
+                var deferred = this.$q.defer();
+                var data = {
+                    uid: uid,
+                    token: token,
+                    new_password1: newPassword1,
+                    new_password2: newPassword2
+                };
+                this.restApi.create({ url: url }, data).$promise
+                    .then(function (response) {
+                    DEBUG && console.error(response);
+                    deferred.resolve(response.detail);
+                }, function (error) {
+                    DEBUG && console.error(error);
+                    deferred.reject(error);
+                });
+                return deferred.promise;
+            };
+            AuthService.prototype.login = function (user) {
+                var self = this;
+                var deferred = this.$q.defer();
+                this.OAuth.getAccessToken(user, {}).then(function (response) {
+                    DEBUG && console.info("Logged in successfuly!");
+                    deferred.resolve(response);
+                }, function (error) {
+                    DEBUG && console.error("Error while logging in!");
+                    deferred.reject(error);
+                });
+                return deferred.promise;
+            };
+            AuthService.prototype.logout = function () {
+                var self = this;
+                var deferred = this.$q.defer();
+                this.OAuth.revokeToken().then(function (response) {
+                    DEBUG && console.info("Logged out successfuly!");
+                    self.localStorage.removeItem(self.dataConfig.userDataLocalStorage);
+                    self.localStorage.removeItem(self.dataConfig.teacherDataLocalStorage);
+                    window.location.reload();
+                    deferred.resolve(response);
+                }, function (response) {
+                    DEBUG && console.error("Error while logging you out!");
+                    self.forceLogout();
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            };
+            AuthService.prototype.refreshToken = function () {
+                var self = this;
+                var deferred = this.$q.defer();
+                if (!this.isAuthenticated()) {
+                    DEBUG && console.error('Cannot refresh token if Unauthenticated');
+                    deferred.reject();
+                    return deferred.promise;
+                }
+                this.OAuth.getRefreshToken().then(function (response) {
+                    DEBUG && console.info("Access token refreshed");
+                    deferred.resolve(response);
+                }, function (response) {
+                    DEBUG && console.error("Error refreshing token ");
+                    DEBUG && console.error(response);
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            };
+            AuthService.prototype.autoRefreshToken = function () {
+                var self = this;
+                var deferred = this.$q.defer();
+                if (!this.refreshNeeded) {
+                    deferred.resolve();
+                    return deferred.promise;
+                }
+                this.refreshToken().then(function (response) {
+                    self.refreshNeeded = false;
+                    deferred.resolve(response);
+                }, function (response) {
+                    deferred.reject(response);
+                });
+                this.$timeout(function () {
+                    if (self.isAuthenticated()) {
+                        self.refreshNeeded = true;
+                        self.autoRefreshToken();
+                    }
+                }, self.autoRefreshTokenInterval);
+                return deferred.promise;
             };
             return AuthService;
         }());
         AuthService.serviceId = 'mainApp.auth.AuthService';
         AuthService.$inject = ['$q',
-            '$rootScope',
-            '$http'];
+            '$timeout',
+            '$cookies',
+            'OAuth',
+            'mainApp.core.restApi.restApiService',
+            'dataConfig',
+            'mainApp.localStorageService'];
         auth.AuthService = AuthService;
         angular
             .module('mainApp.auth', [])
@@ -171,6 +354,58 @@ var app;
     })(auth = app.auth || (app.auth = {}));
 })(app || (app = {}));
 //# sourceMappingURL=auth.service.js.map
+var app;
+(function (app) {
+    var account;
+    (function (account) {
+        'use strict';
+        var AccountService = (function () {
+            function AccountService($q, restApi) {
+                this.$q = $q;
+                this.restApi = restApi;
+                DEBUG && console.log('account service instanced');
+                this.ACCOUNT_URI = 'account';
+                this.ACCOUNT_GET_USERNAME_URI = 'account/username';
+            }
+            AccountService.prototype.getAccount = function () {
+                var url = this.ACCOUNT_URI;
+                return this.restApi.show({ url: url }).$promise
+                    .then(function (response) {
+                    return response;
+                }, function (error) {
+                    DEBUG && console.error(error);
+                    return error;
+                });
+            };
+            AccountService.prototype.getUsername = function (email) {
+                var url = this.ACCOUNT_GET_USERNAME_URI;
+                var deferred = this.$q.defer();
+                var data = {
+                    email: email
+                };
+                this.restApi.create({ url: url }, data).$promise
+                    .then(function (response) {
+                    deferred.resolve(response);
+                }, function (error) {
+                    DEBUG && console.error(error);
+                    deferred.reject(error);
+                });
+                return deferred.promise;
+            };
+            return AccountService;
+        }());
+        AccountService.serviceId = 'mainApp.account.AccountService';
+        AccountService.$inject = [
+            '$q',
+            'mainApp.core.restApi.restApiService'
+        ];
+        account.AccountService = AccountService;
+        angular
+            .module('mainApp.account', [])
+            .service(AccountService.serviceId, AccountService);
+    })(account = app.account || (app.account = {}));
+})(app || (app = {}));
+//# sourceMappingURL=account.service.js.map
 var app;
 (function (app) {
     var core;
@@ -199,6 +434,22 @@ var app;
                         this.$translate = $translate;
                         console.log('functionsUtil service called');
                     }
+                    FunctionsUtilService.prototype.normalizeString = function (str) {
+                        var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç";
+                        var to = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc";
+                        var mapping = {};
+                        for (var i = 0; i < from.length; i++)
+                            mapping[from.charAt(i)] = to.charAt(i);
+                        var ret = [];
+                        for (var i = 0; i < str.length; i++) {
+                            var c = str.charAt(i);
+                            if (mapping.hasOwnProperty(str.charAt(i)))
+                                ret.push(mapping[c]);
+                            else
+                                ret.push(c);
+                        }
+                        return ret.join('');
+                    };
                     FunctionsUtilService.generateGuid = function () {
                         var fmt = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
                         var guid = fmt.replace(/[xy]/g, function (c) {
@@ -225,8 +476,34 @@ var app;
                         var currentLanguage = this.$translate.use();
                         return currentLanguage;
                     };
+                    FunctionsUtilService.prototype.generateUsername = function (firstName, lastName) {
+                        var alias = '';
+                        var username = '';
+                        var randomCode = '';
+                        var minLength = this.dataConfig.usernameMinLength;
+                        var maxLength = this.dataConfig.usernameMaxLength;
+                        var ALPHABET = '0123456789';
+                        var ID_LENGTH = 7;
+                        var REMAINDER = maxLength - ID_LENGTH;
+                        var EXTRAS = 2;
+                        firstName = this.normalizeString(firstName);
+                        firstName = firstName.replace(/[^\w\s]/gi, '').replace(/\s/g, '');
+                        lastName = this.normalizeString(lastName);
+                        lastName = lastName.replace(/[^\w\s]/gi, '').replace(/\s/g, '');
+                        if (firstName.length > REMAINDER - EXTRAS) {
+                            firstName = firstName.substring(0, REMAINDER - EXTRAS);
+                        }
+                        alias = (firstName + lastName.substring(0, 1)).toLowerCase();
+                        for (var i = 0; i < ID_LENGTH; i++) {
+                            randomCode += ALPHABET.charAt(Math.floor(Math.random() * ALPHABET.length));
+                        }
+                        username = alias + '-' + randomCode;
+                        return username;
+                    };
                     FunctionsUtilService.prototype.changeLanguage = function (language) {
-                        this.$translate.use(language);
+                        return this.$translate.use(language).then(function (data) {
+                            return data;
+                        });
                     };
                     FunctionsUtilService.prototype.joinDate = function (day, month, year) {
                         var newDate = year + '-' + month + '-' + day;
@@ -260,9 +537,16 @@ var app;
                         };
                         if (dataSet) {
                             for (var i = 0; i < dataSet.length; i++) {
+                                var markerPosition = null;
+                                if (dataSet[i].profile) {
+                                    markerPosition = new app.models.user.Position(dataSet[i].profile.location.position);
+                                }
+                                else if (dataSet[i].location) {
+                                    markerPosition = new app.models.user.Position(dataSet[i].location.position);
+                                }
                                 mapConfig.data.markers.push({
                                     id: dataSet[i].id,
-                                    position: dataSet[i].location.position
+                                    position: markerPosition
                                 });
                             }
                         }
@@ -396,6 +680,28 @@ var app;
                         }
                         average = this.averageNumbersArray(averageArr);
                         return average;
+                    };
+                    FunctionsUtilService.prototype.addUserIndentifyMixpanel = function (userId) {
+                        mixpanel.identify(userId);
+                    };
+                    FunctionsUtilService.prototype.setUserMixpanel = function (userData) {
+                        mixpanel.people.set({
+                            'username': userData.Username,
+                            '$name': userData.FirstName + ' ' + userData.LastName,
+                            'gender': userData.Gender,
+                            '$email': userData.Email,
+                            '$created': userData.DateJoined,
+                            '$last_login': new Date()
+                        });
+                    };
+                    FunctionsUtilService.prototype.setPropertyMixpanel = function (property) {
+                        var arr = [];
+                        arr.push(property);
+                        var setData = {};
+                        _.mapKeys(arr, function (value, key) {
+                            setData[key] = value;
+                        });
+                        mixpanel.people.set(setData);
                     };
                     return FunctionsUtilService;
                 }());
@@ -550,6 +856,8 @@ var app;
                         toastr.error(message);
                     };
                     messageUtilService.prototype.info = function (message) {
+                        toastr.options.closeButton = true;
+                        toastr.options.timeOut = 10000;
                         toastr.info(message);
                     };
                     messageUtilService.instance = function ($filter) {
@@ -632,6 +940,73 @@ var app;
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
 //# sourceMappingURL=app.filter.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.core.restApi', [])
+        .config(config);
+    function config() {
+    }
+})();
+//# sourceMappingURL=restApi.config.js.map
+var app;
+(function (app) {
+    var core;
+    (function (core) {
+        var restApi;
+        (function (restApi) {
+            'use strict';
+            var RestApiService = (function () {
+                function RestApiService($resource, dataConfig) {
+                    this.$resource = $resource;
+                }
+                RestApiService.Api = function ($resource, dataConfig) {
+                    var resource = $resource(dataConfig.baseUrl + ':url/:id', { url: '@url' }, {
+                        show: { method: 'GET', params: { id: '@id' } },
+                        query: { method: 'GET', isArray: true },
+                        queryObject: { method: 'GET', isArray: false },
+                        create: { method: 'POST' },
+                        update: { method: 'PUT', params: { id: '@id' } },
+                        remove: { method: 'DELETE', params: { id: '@id' } }
+                    });
+                    return resource;
+                };
+                return RestApiService;
+            }());
+            RestApiService.serviceId = 'mainApp.core.restApi.restApiService';
+            RestApiService.$inject = [
+                '$resource',
+                'dataConfig'
+            ];
+            restApi.RestApiService = RestApiService;
+            angular
+                .module('mainApp.core.restApi')
+                .factory(RestApiService.serviceId, RestApiService.Api)
+                .factory('customHttpInterceptor', customHttpInterceptor)
+                .config(configApi);
+            configApi.$inject = ['$httpProvider'];
+            customHttpInterceptor.$inject = ['$q', 'mainApp.core.util.messageUtilService'];
+            function configApi($httpProvider) {
+                $httpProvider.interceptors.push('customHttpInterceptor');
+            }
+            function customHttpInterceptor($q, messageUtil) {
+                return {
+                    request: function (req) {
+                        req.url = decodeURIComponent(req.url);
+                        return req;
+                    },
+                    requestError: function (rejection) {
+                        return rejection;
+                    },
+                    response: function (res) {
+                        return res;
+                    }
+                };
+            }
+        })(restApi = core.restApi || (core.restApi = {}));
+    })(core = app.core || (app.core = {}));
+})(app || (app = {}));
+//# sourceMappingURL=restApi.service.js.map
 var app;
 (function (app) {
     var core;
@@ -691,84 +1066,6 @@ var app;
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
 //# sourceMappingURL=s3Upload.service.js.map
-(function () {
-    'use strict';
-    angular
-        .module('mainApp.core.restApi', [])
-        .config(config);
-    function config() {
-    }
-})();
-//# sourceMappingURL=restApi.config.js.map
-var app;
-(function (app) {
-    var core;
-    (function (core) {
-        var restApi;
-        (function (restApi) {
-            'use strict';
-            var RestApiService = (function () {
-                function RestApiService($resource, localStorage, dataConfig) {
-                    this.$resource = $resource;
-                    this.localStorage = localStorage;
-                }
-                RestApiService.Api = function ($resource, dataConfig) {
-                    var resource = $resource(dataConfig.baseUrl + ':url/:id', { url: '@url' }, {
-                        show: { method: 'GET', params: { id: '@id' } },
-                        query: { method: 'GET', isArray: true },
-                        queryObject: { method: 'GET', isArray: false },
-                        create: { method: 'POST' },
-                        update: { method: 'PUT', params: { id: '@id' } },
-                        remove: { method: 'DELETE', params: { id: '@id' } }
-                    });
-                    return resource;
-                };
-                return RestApiService;
-            }());
-            RestApiService.serviceId = 'mainApp.core.restApi.restApiService';
-            RestApiService.$inject = [
-                '$resource',
-                'mainApp.localStorageService',
-                'dataConfig'
-            ];
-            restApi.RestApiService = RestApiService;
-            angular
-                .module('mainApp.core.restApi')
-                .factory(RestApiService.serviceId, RestApiService.Api)
-                .factory('customHttpInterceptor', customHttpInterceptor)
-                .config(configApi);
-            configApi.$inject = ['$httpProvider'];
-            customHttpInterceptor.$inject = ['$q', 'mainApp.core.util.messageUtilService'];
-            function configApi($httpProvider) {
-                $httpProvider.interceptors.push('customHttpInterceptor');
-            }
-            function customHttpInterceptor($q, messageUtil) {
-                return {
-                    request: function (req) {
-                        req.url = decodeURIComponent(req.url);
-                        return req;
-                    },
-                    requestError: function (rejection) {
-                        return rejection;
-                    },
-                    response: function (res) {
-                        return res;
-                    },
-                    responseError: function (rejection) {
-                        if (rejection.data) {
-                            messageUtil.error(rejection.data.Message);
-                        }
-                        else {
-                            messageUtil.error('');
-                        }
-                        return rejection;
-                    }
-                };
-            }
-        })(restApi = core.restApi || (core.restApi = {}));
-    })(core = app.core || (app.core = {}));
-})(app || (app = {}));
-//# sourceMappingURL=restApi.service.js.map
 var app;
 (function (app) {
     var models;
@@ -885,27 +1182,248 @@ var app;
                 Status[Status["validated"] = 1] = "validated";
                 Status[Status["verified"] = 2] = "verified";
             })(Status = user.Status || (user.Status = {}));
-            var User = (function () {
-                function User(obj) {
+            var Profile = (function () {
+                function Profile(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('User Model instanced');
-                    this.id = obj.id;
-                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
-                    this.avatar = obj.avatar;
+                    DEBUG && console.log('Profile Model instanced');
+                    if (obj === null)
+                        obj = {};
+                    this.userId = obj.userId || '';
+                    this.avatar = obj.avatar || '';
                     this.username = obj.username || '';
                     this.email = obj.email || '';
                     this.phoneNumber = obj.phoneNumber || '';
                     this.firstName = obj.firstName || '';
                     this.lastName = obj.lastName || '';
-                    this.sex = obj.sex || '';
-                    this.birthDate = obj.birthDate || '';
-                    this.born = obj.born || '';
+                    this.gender = obj.gender || '';
+                    this.birthDate = obj.birthDate || null;
+                    this.bornCountry = obj.bornCountry || '';
+                    this.bornCity = obj.bornCity || '';
                     this.about = obj.about || '';
+                    this.languages = new Language(obj.languages);
                     this.location = new Location(obj.location);
-                    this.status = obj.status || 'NW';
+                    this.isTeacher = obj.isTeacher || false;
+                    this.dateJoined = obj.dateJoined || '';
                     this.createdAt = obj.createdAt || '';
                 }
-                Object.defineProperty(User.prototype, "Id", {
+                Object.defineProperty(Profile.prototype, "UserId", {
+                    get: function () {
+                        return this.userId;
+                    },
+                    set: function (userId) {
+                        if (userId === undefined) {
+                            throw 'Please supply profile userId';
+                        }
+                        this.userId = userId;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "Avatar", {
+                    get: function () {
+                        return this.avatar;
+                    },
+                    set: function (avatar) {
+                        if (avatar === undefined) {
+                            throw 'Please supply profile avatar';
+                        }
+                        this.avatar = avatar;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "Username", {
+                    get: function () {
+                        return this.username;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "Email", {
+                    get: function () {
+                        return this.email;
+                    },
+                    set: function (email) {
+                        if (email === undefined) {
+                            throw 'Please supply profile email';
+                        }
+                        this.email = email;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "PhoneNumber", {
+                    get: function () {
+                        return this.phoneNumber;
+                    },
+                    set: function (phoneNumber) {
+                        if (phoneNumber === undefined) {
+                            throw 'Please supply profile phone number';
+                        }
+                        this.phoneNumber = phoneNumber;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "FirstName", {
+                    get: function () {
+                        return this.firstName;
+                    },
+                    set: function (firstName) {
+                        if (firstName === undefined) {
+                            throw 'Please supply profile first name';
+                        }
+                        this.firstName = firstName;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "LastName", {
+                    get: function () {
+                        return this.lastName;
+                    },
+                    set: function (lastName) {
+                        if (lastName === undefined) {
+                            throw 'Please supply profile last name';
+                        }
+                        this.lastName = lastName;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "Gender", {
+                    get: function () {
+                        return this.gender;
+                    },
+                    set: function (gender) {
+                        if (gender === undefined) {
+                            throw 'Please supply profile gender';
+                        }
+                        this.gender = gender;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "BirthDate", {
+                    get: function () {
+                        return this.birthDate;
+                    },
+                    set: function (birthDate) {
+                        if (birthDate === undefined) {
+                            throw 'Please supply profile birth date';
+                        }
+                        this.birthDate = birthDate;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "BornCountry", {
+                    get: function () {
+                        return this.bornCountry;
+                    },
+                    set: function (bornCountry) {
+                        if (bornCountry === undefined) {
+                            throw 'Please supply profile born country';
+                        }
+                        this.bornCountry = bornCountry;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "BornCity", {
+                    get: function () {
+                        return this.bornCity;
+                    },
+                    set: function (bornCity) {
+                        if (bornCity === undefined) {
+                            throw 'Please supply profile born city';
+                        }
+                        this.bornCity = bornCity;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "Languages", {
+                    get: function () {
+                        return this.languages;
+                    },
+                    set: function (languages) {
+                        if (languages === undefined) {
+                            throw 'Please supply profile languages';
+                        }
+                        this.languages = languages;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "Location", {
+                    get: function () {
+                        return this.location;
+                    },
+                    set: function (location) {
+                        if (location === undefined) {
+                            throw 'Please supply profile location';
+                        }
+                        this.location = location;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "About", {
+                    get: function () {
+                        return this.about;
+                    },
+                    set: function (about) {
+                        if (about === undefined) {
+                            throw 'Please supply profile location';
+                        }
+                        this.about = about;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "IsTeacher", {
+                    get: function () {
+                        return this.isTeacher;
+                    },
+                    set: function (isTeacher) {
+                        if (isTeacher === undefined) {
+                            throw 'Please supply profile IsTeacher value';
+                        }
+                        this.isTeacher = isTeacher;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "DateJoined", {
+                    get: function () {
+                        return this.dateJoined;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "CreatedAt", {
+                    get: function () {
+                        return this.createdAt;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Profile;
+            }());
+            user.Profile = Profile;
+            var Language = (function () {
+                function Language(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('Languages Model instanced');
+                    if (obj === null)
+                        obj = {};
+                    this.id = obj.id;
+                    this.native = obj.native || [];
+                    this.learn = obj.learn || [];
+                    this.teach = obj.teach || [];
+                }
+                Object.defineProperty(Language.prototype, "Id", {
                     get: function () {
                         return this.id;
                     },
@@ -918,190 +1436,55 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Uid", {
+                Object.defineProperty(Language.prototype, "Native", {
                     get: function () {
-                        return this.uid;
+                        return this.native;
                     },
-                    set: function (uid) {
-                        if (uid === undefined) {
-                            throw 'Please supply user uid';
+                    set: function (native) {
+                        if (native === undefined) {
+                            throw 'Please supply native languages';
                         }
-                        this.uid = uid;
+                        this.native = native;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Avatar", {
+                Object.defineProperty(Language.prototype, "Learn", {
                     get: function () {
-                        return this.avatar;
+                        return this.learn;
                     },
-                    set: function (avatar) {
-                        if (avatar === undefined) {
-                            throw 'Please supply avatar';
+                    set: function (learn) {
+                        if (learn === undefined) {
+                            throw 'Please supply learn languages';
                         }
-                        this.avatar = avatar;
+                        this.learn = learn;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Username", {
+                Object.defineProperty(Language.prototype, "Teach", {
                     get: function () {
-                        return this.username;
+                        return this.teach;
                     },
-                    set: function (username) {
-                        if (username === undefined) {
-                            throw 'Please supply username';
+                    set: function (teach) {
+                        if (teach === undefined) {
+                            throw 'Please supply teach languages';
                         }
-                        this.username = username;
+                        this.teach = teach;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Email", {
-                    get: function () {
-                        return this.email;
-                    },
-                    set: function (email) {
-                        if (email === undefined) {
-                            throw 'Please supply email';
-                        }
-                        this.email = email;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "PhoneNumber", {
-                    get: function () {
-                        return this.phoneNumber;
-                    },
-                    set: function (phoneNumber) {
-                        if (phoneNumber === undefined) {
-                            throw 'Please supply phone number';
-                        }
-                        this.phoneNumber = phoneNumber;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "FirstName", {
-                    get: function () {
-                        return this.firstName;
-                    },
-                    set: function (firstName) {
-                        if (firstName === undefined) {
-                            throw 'Please supply first name';
-                        }
-                        this.firstName = firstName;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "LastName", {
-                    get: function () {
-                        return this.lastName;
-                    },
-                    set: function (lastName) {
-                        if (lastName === undefined) {
-                            throw 'Please supply last name';
-                        }
-                        this.lastName = lastName;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "Sex", {
-                    get: function () {
-                        return this.sex;
-                    },
-                    set: function (sex) {
-                        if (sex === undefined) {
-                            throw 'Please supply sex';
-                        }
-                        this.sex = sex;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "BirthDate", {
-                    get: function () {
-                        return this.birthDate;
-                    },
-                    set: function (birthDate) {
-                        if (birthDate === undefined) {
-                            throw 'Please supply birth date';
-                        }
-                        this.birthDate = birthDate;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "Born", {
-                    get: function () {
-                        return this.born;
-                    },
-                    set: function (born) {
-                        if (born === undefined) {
-                            throw 'Please supply born';
-                        }
-                        this.born = born;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "About", {
-                    get: function () {
-                        return this.about;
-                    },
-                    set: function (about) {
-                        if (about === undefined) {
-                            throw 'Please supply location';
-                        }
-                        this.about = about;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "Location", {
-                    get: function () {
-                        return this.location;
-                    },
-                    set: function (location) {
-                        if (location === undefined) {
-                            throw 'Please supply location';
-                        }
-                        this.location = location;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "Status", {
-                    get: function () {
-                        return this.status;
-                    },
-                    set: function (status) {
-                        if (status === undefined) {
-                            throw 'Please supply status value';
-                        }
-                        this.status = status;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "CreatedAt", {
-                    get: function () {
-                        return this.createdAt;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                return User;
+                return Language;
             }());
-            user.User = User;
+            user.Language = Language;
             var Location = (function () {
                 function Location(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('User Model instanced');
-                    this.id = obj.id;
+                    DEBUG && console.log('Location Model instanced');
+                    if (obj === null)
+                        obj = {};
+                    this.id = obj.id || '';
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.country = obj.country || '';
                     this.address = obj.address || '';
@@ -1220,8 +1603,10 @@ var app;
             var Position = (function () {
                 function Position(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('User Model instanced');
-                    this.id = obj.id;
+                    DEBUG && console.log('Position Model instanced');
+                    if (obj === null)
+                        obj = {};
+                    this.id = obj.id || '';
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.lng = obj.lng || '';
                     this.lat = obj.lat || '';
@@ -1290,40 +1675,65 @@ var app;
     var models;
     (function (models) {
         var user;
-        (function (user) {
+        (function (user_1) {
             'use strict';
             var UserService = (function () {
-                function UserService(restApi) {
+                function UserService(restApi, AuthService) {
                     this.restApi = restApi;
-                    console.log('user service instanced');
+                    this.AuthService = AuthService;
+                    DEBUG && console.log('user service instanced');
+                    this.USER_URI = 'users';
                 }
-                UserService.prototype.getUserById = function (id) {
-                    var url = 'users/';
+                UserService.prototype.getUserProfileById = function (id) {
+                    var self = this;
+                    var url = this.USER_URI;
                     return this.restApi.show({ url: url, id: id }).$promise
-                        .then(function (data) {
-                        return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                        .then(function (response) {
+                        return response;
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        return error;
                     });
                 };
-                UserService.prototype.getAllUsers = function () {
-                    var url = 'users/';
+                UserService.prototype.getAllUsersProfile = function () {
+                    var self = this;
+                    var url = this.USER_URI;
                     return this.restApi.query({ url: url }).$promise
                         .then(function (data) {
                         return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                    }).catch(function (error) {
+                        DEBUG && console.log(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        return error;
+                    });
+                };
+                UserService.prototype.updateUserProfile = function (profile) {
+                    var self = this;
+                    var url = this.USER_URI;
+                    return this.restApi.update({ url: url, id: profile.userId }, profile).$promise
+                        .then(function (response) {
+                        return response;
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        return error;
                     });
                 };
                 return UserService;
             }());
             UserService.serviceId = 'mainApp.models.user.UserService';
             UserService.$inject = [
-                'mainApp.core.restApi.restApiService'
+                'mainApp.core.restApi.restApiService',
+                'mainApp.auth.AuthService'
             ];
-            user.UserService = UserService;
+            user_1.UserService = UserService;
             angular
                 .module('mainApp.models.user', [])
                 .service(UserService.serviceId, UserService);
@@ -1331,31 +1741,101 @@ var app;
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
 //# sourceMappingURL=user.service.js.map
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var app;
+(function (app) {
+    var register;
+    (function (register) {
+        'use strict';
+        var RegisterService = (function () {
+            function RegisterService($q, restApi) {
+                this.$q = $q;
+                this.restApi = restApi;
+                DEBUG && console.log('register service instanced');
+                this.REGISTER_URI = 'register';
+                this.REGISTER_CHECK_EMAIL_URI = 'register/check-email';
+                this.REGISTER_CHECK_USERNAME_URI = 'register/check-username';
+            }
+            RegisterService.prototype.checkEmail = function (email) {
+                var url = this.REGISTER_CHECK_EMAIL_URI;
+                var deferred = this.$q.defer();
+                var data = {
+                    email: email
+                };
+                this.restApi.create({ url: url }, data).$promise
+                    .then(function (response) {
+                    deferred.resolve(response);
+                }, function (error) {
+                    DEBUG && console.error(error);
+                    deferred.resolve(error);
+                });
+                return deferred.promise;
+            };
+            RegisterService.prototype.checkUsername = function (username) {
+                var url = this.REGISTER_CHECK_USERNAME_URI;
+                return this.restApi.create({ url: url }, username).$promise
+                    .then(function (data) {
+                    return data;
+                }, function (error) {
+                    DEBUG && console.log(error);
+                    return error;
+                });
+            };
+            RegisterService.prototype.register = function (userData) {
+                var url = this.REGISTER_URI;
+                var deferred = this.$q.defer();
+                this.restApi.create({ url: url }, userData).$promise
+                    .then(function (response) {
+                    deferred.resolve(response);
+                }, function (error) {
+                    DEBUG && console.error(error);
+                    deferred.reject(error);
+                });
+                return deferred.promise;
+            };
+            return RegisterService;
+        }());
+        RegisterService.serviceId = 'mainApp.register.RegisterService';
+        RegisterService.$inject = [
+            '$q',
+            'mainApp.core.restApi.restApiService'
+        ];
+        register.RegisterService = RegisterService;
+        angular
+            .module('mainApp.register', [])
+            .service(RegisterService.serviceId, RegisterService);
+    })(register = app.register || (app.register = {}));
+})(app || (app = {}));
+//# sourceMappingURL=register.service.js.map
 var app;
 (function (app) {
     var models;
     (function (models) {
         var student;
         (function (student) {
-            var Student = (function (_super) {
-                __extends(Student, _super);
+            var Student = (function () {
                 function Student(obj) {
                     if (obj === void 0) { obj = {}; }
-                    var _this;
                     console.log('Student Model instanced');
-                    _this = _super.call(this, obj) || this;
-                    _this.school = obj.school || '';
-                    _this.occupation = obj.occupation || '';
-                    _this.fluent_in = obj.fluent_in || '';
-                    _this.learning = obj.learning || '';
-                    _this.interests = obj.interests || '';
-                    return _this;
+                    this.id = obj.id || '';
+                    this.school = obj.school || '';
+                    this.occupation = obj.occupation || '';
+                    this.fluent_in = obj.fluent_in || '';
+                    this.learning = obj.learning || '';
+                    this.interests = obj.interests || '';
                 }
+                Object.defineProperty(Student.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply id';
+                        }
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 Object.defineProperty(Student.prototype, "School", {
                     get: function () {
                         return this.school;
@@ -1452,7 +1932,7 @@ var app;
                     });
                 };
                 return Student;
-            }(app.models.user.User));
+            }());
             student.Student = Student;
         })(student = models.student || (models.student = {}));
     })(models = app.models || (app.models = {}));
@@ -1514,69 +1994,77 @@ var app;
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
 //# sourceMappingURL=student.service.js.map
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var app;
 (function (app) {
     var models;
     (function (models) {
         var teacher;
         (function (teacher) {
-            var Teacher = (function (_super) {
-                __extends(Teacher, _super);
+            var Teacher = (function () {
                 function Teacher(obj) {
                     if (obj === void 0) { obj = {}; }
-                    var _this;
                     console.log('Teacher Model instanced');
-                    _this = _super.call(this, obj) || this;
-                    _this.languages = new Language(obj.languages);
-                    _this.type = obj.type || '';
-                    _this.teacherSince = obj.teacherSince || '';
-                    _this.methodology = obj.methodology || '';
-                    _this.immersion = new Immersion(obj.immersion);
-                    _this.price = new Price(obj.price);
+                    if (obj === null)
+                        obj = {};
+                    this.id = obj.id || '';
+                    this.profile = new app.models.user.Profile(obj.profile);
+                    this.type = obj.type || '';
+                    this.teacherSince = obj.teacherSince || '';
+                    this.methodology = obj.methodology || '';
+                    this.immersion = new Immersion(obj.immersion);
+                    this.status = obj.status || 'NW';
+                    this.price = new Price(obj.price);
                     if (obj != {}) {
-                        _this.experiences = [];
+                        this.experiences = [];
                         for (var key in obj.experiences) {
                             var experienceInstance = new Experience(obj.experiences[key]);
-                            _this.addExperience(experienceInstance);
+                            this.addExperience(experienceInstance);
                         }
-                        _this.educations = [];
+                        this.educations = [];
                         for (var key in obj.educations) {
                             var educationInstance = new Education(obj.educations[key]);
-                            _this.addEducation(educationInstance);
+                            this.addEducation(educationInstance);
                         }
-                        _this.certificates = [];
+                        this.certificates = [];
                         for (var key in obj.certificates) {
                             var certificateInstance = new Certificate(obj.certificates[key]);
-                            _this.addCertificate(certificateInstance);
+                            this.addCertificate(certificateInstance);
                         }
-                        _this.ratings = [];
+                        this.ratings = [];
                         for (var key in obj.ratings) {
                             var ratingInstance = new Rating(obj.ratings[key]);
-                            _this.addRating(ratingInstance);
+                            this.addRating(ratingInstance);
                         }
                     }
                     else {
-                        _this.experiences = [];
-                        _this.educations = [];
-                        _this.certificates = [];
-                        _this.ratings = [];
+                        this.experiences = [];
+                        this.educations = [];
+                        this.certificates = [];
+                        this.ratings = [];
                     }
-                    return _this;
                 }
-                Object.defineProperty(Teacher.prototype, "Languages", {
+                Object.defineProperty(Teacher.prototype, "Id", {
                     get: function () {
-                        return this.languages;
+                        return this.id;
                     },
-                    set: function (languages) {
-                        if (languages === undefined) {
-                            throw 'Please supply languages';
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply id of teacher';
                         }
-                        this.languages = languages;
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Teacher.prototype, "Profile", {
+                    get: function () {
+                        return this.profile;
+                    },
+                    set: function (profile) {
+                        if (profile === undefined) {
+                            throw 'Please supply teacher profile data';
+                        }
+                        this.profile = profile;
                     },
                     enumerable: true,
                     configurable: true
@@ -1738,6 +2226,19 @@ var app;
                         }
                     });
                 };
+                Object.defineProperty(Teacher.prototype, "Status", {
+                    get: function () {
+                        return this.status;
+                    },
+                    set: function (status) {
+                        if (status === undefined) {
+                            throw 'Please supply profile status value';
+                        }
+                        this.status = status;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 Object.defineProperty(Teacher.prototype, "Recommended", {
                     get: function () {
                         return this.recommended;
@@ -1752,90 +2253,14 @@ var app;
                     configurable: true
                 });
                 return Teacher;
-            }(app.models.user.User));
-            teacher.Teacher = Teacher;
-            var Language = (function () {
-                function Language(obj) {
-                    if (obj === void 0) { obj = {}; }
-                    console.log('Languages Model instanced');
-                    this.id = obj.id;
-                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
-                    this.native = obj.native || [];
-                    this.learn = obj.learn || [];
-                    this.teach = obj.teach || [];
-                }
-                Object.defineProperty(Language.prototype, "Id", {
-                    get: function () {
-                        return this.id;
-                    },
-                    set: function (id) {
-                        if (id === undefined) {
-                            throw 'Please supply id';
-                        }
-                        this.id = id;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(Language.prototype, "Uid", {
-                    get: function () {
-                        return this.uid;
-                    },
-                    set: function (uid) {
-                        if (uid === undefined) {
-                            throw 'Please supply language uid';
-                        }
-                        this.uid = uid;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(Language.prototype, "Native", {
-                    get: function () {
-                        return this.native;
-                    },
-                    set: function (native) {
-                        if (native === undefined) {
-                            throw 'Please supply native languages';
-                        }
-                        this.native = native;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(Language.prototype, "Learn", {
-                    get: function () {
-                        return this.learn;
-                    },
-                    set: function (learn) {
-                        if (learn === undefined) {
-                            throw 'Please supply learn languages';
-                        }
-                        this.learn = learn;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(Language.prototype, "Teach", {
-                    get: function () {
-                        return this.teach;
-                    },
-                    set: function (teach) {
-                        if (teach === undefined) {
-                            throw 'Please supply teach languages';
-                        }
-                        this.teach = teach;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                return Language;
             }());
-            teacher.Language = Language;
+            teacher.Teacher = Teacher;
             var Experience = (function () {
                 function Experience(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Experience Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.position = obj.position || '';
@@ -1970,6 +2395,8 @@ var app;
                 function Education(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Education Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.school = obj.school || '';
@@ -2090,6 +2517,8 @@ var app;
                 function Certificate(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Certificate Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.name = obj.name || '';
@@ -2182,6 +2611,8 @@ var app;
                 function Immersion(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Certificate Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.active = obj.active || false;
@@ -2260,6 +2691,8 @@ var app;
                 function TypeOfImmersion(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('TypeOfImmersion Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.category = obj.category || '';
@@ -2310,6 +2743,8 @@ var app;
                 function Price(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Price of Teacher Class Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.privateClass = new TypeOfPrice(obj.privateClass);
@@ -2374,6 +2809,8 @@ var app;
                 function TypeOfPrice(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('TypeOfPrice Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.active = obj.active || false;
@@ -2438,6 +2875,8 @@ var app;
                 function Rating(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Rating Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.author = new app.models.student.Student(obj.author);
@@ -2560,157 +2999,224 @@ var app;
         (function (teacher_1) {
             'use strict';
             var TeacherService = (function () {
-                function TeacherService(restApi) {
+                function TeacherService(restApi, AuthService, $q) {
                     this.restApi = restApi;
+                    this.AuthService = AuthService;
+                    this.$q = $q;
                     console.log('teacher service instanced');
+                    this.TEACHER_URI = 'teachers';
+                    this.PROFILE_TEACHER_URI = 'teachers?profileId=';
+                    this.STATUS_TEACHER_URI = 'teachers?status=';
+                    this.EXPERIENCES_URI = 'experiences';
+                    this.EDUCATIONS_URI = 'educations';
+                    this.CERTIFICATES_URI = 'certificates';
                 }
                 TeacherService.prototype.getTeacherById = function (id) {
-                    var url = 'teachers';
-                    return this.restApi.show({ url: url, id: id }).$promise
-                        .then(function (data) {
-                        return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                    var self = this;
+                    var url = this.TEACHER_URI;
+                    var deferred = this.$q.defer();
+                    this.restApi.show({ url: url, id: id }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
                     });
+                    return deferred.promise;
+                };
+                TeacherService.prototype.getTeacherByProfileId = function (profileId) {
+                    var self = this;
+                    var url = this.PROFILE_TEACHER_URI + profileId;
+                    var deferred = this.$q.defer();
+                    this.restApi.queryObject({ url: url }).$promise
+                        .then(function (response) {
+                        if (response.results) {
+                            var res = response.results[0] ? response.results[0] : '';
+                            deferred.resolve(res);
+                        }
+                        else {
+                            DEBUG && console.error(response);
+                            deferred.reject(response);
+                        }
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
                 };
                 TeacherService.prototype.getAllTeachersByStatus = function (status) {
-                    var url = 'teachers?status=' + status;
-                    return this.restApi.queryObject({ url: url }).$promise
-                        .then(function (data) {
-                        return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                    var self = this;
+                    var url = this.STATUS_TEACHER_URI + status;
+                    var deferred = this.$q.defer();
+                    this.restApi.queryObject({ url: url }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
                     });
+                    return deferred.promise;
                 };
                 TeacherService.prototype.getAllTeachers = function () {
-                    var url = 'teachers';
-                    return this.restApi.queryObject({ url: url }).$promise
-                        .then(function (data) {
-                        return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                    var self = this;
+                    var url = this.TEACHER_URI;
+                    var deferred = this.$q.defer();
+                    this.restApi.queryObject({ url: url }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
                     });
+                    return deferred.promise;
                 };
                 TeacherService.prototype.createTeacher = function (teacher) {
-                    var promise;
-                    var url = 'teachers';
-                    promise = this.restApi.create({ url: url }, teacher)
-                        .$promise.then(function (response) {
-                        return response;
+                    var self = this;
+                    var url = this.TEACHER_URI;
+                    var deferred = this.$q.defer();
+                    this.restApi.create({ url: url }, teacher).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
                     }, function (error) {
-                        return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
                     });
-                    return promise;
+                    return deferred.promise;
                 };
                 TeacherService.prototype.updateTeacher = function (teacher) {
-                    var promise;
-                    var url = 'teachers';
-                    promise = this.restApi.update({ url: url, id: teacher.Id }, teacher)
-                        .$promise.then(function (response) {
-                        return response;
+                    var self = this;
+                    var url = this.TEACHER_URI;
+                    var deferred = this.$q.defer();
+                    this.restApi.update({ url: url, id: teacher.Id }, teacher).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
                     }, function (error) {
-                        return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
                     });
-                    return promise;
+                    return deferred.promise;
                 };
                 TeacherService.prototype.createExperience = function (teacherId, experience) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/experiences';
-                    promise = this.restApi.create({ url: url }, experience)
-                        .$promise.then(function (response) {
-                        return response;
+                    var self = this;
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EXPERIENCES_URI;
+                    var deferred = this.$q.defer();
+                    this.restApi.create({ url: url }, experience).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
                     }, function (error) {
-                        return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                        DEBUG && console.log(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
                     });
-                    return promise;
+                    return deferred.promise;
                 };
                 TeacherService.prototype.updateExperience = function (teacherId, experience) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/experiences';
-                    promise = this.restApi.update({ url: url, id: experience.Id }, experience)
-                        .$promise.then(function (response) {
-                        return response;
+                    var self = this;
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EXPERIENCES_URI;
+                    var deferred = this.$q.defer();
+                    this.restApi.update({ url: url, id: experience.Id }, experience).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
                     }, function (error) {
-                        return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
                     });
-                    return promise;
+                    return deferred.promise;
                 };
                 TeacherService.prototype.createEducation = function (teacherId, education) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/educations';
-                    promise = this.restApi.create({ url: url }, education)
-                        .$promise.then(function (response) {
-                        return response;
+                    var self = this;
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EDUCATIONS_URI;
+                    var deferred = this.$q.defer();
+                    this.restApi.create({ url: url }, education).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
                     }, function (error) {
-                        return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
                     });
-                    return promise;
+                    return deferred.promise;
                 };
                 TeacherService.prototype.updateEducation = function (teacherId, education) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/educations';
-                    promise = this.restApi.update({ url: url, id: education.Id }, education)
-                        .$promise.then(function (response) {
-                        return response;
+                    var self = this;
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.EDUCATIONS_URI;
+                    var deferred = this.$q.defer();
+                    this.restApi.update({ url: url, id: education.Id }, education).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
                     }, function (error) {
-                        return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
                     });
-                    return promise;
+                    return deferred.promise;
                 };
                 TeacherService.prototype.createCertificate = function (teacherId, certificate) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/certificates';
-                    promise = this.restApi.create({ url: url }, certificate)
-                        .$promise.then(function (response) {
-                        return response;
+                    var self = this;
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.CERTIFICATES_URI;
+                    var deferred = this.$q.defer();
+                    this.restApi.create({ url: url }, certificate).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
                     }, function (error) {
-                        return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
                     });
-                    return promise;
+                    return deferred.promise;
                 };
                 TeacherService.prototype.updateCertificate = function (teacherId, certificate) {
-                    var promise;
-                    var url = 'teachers/' + teacherId + '/certificates';
-                    promise = this.restApi.update({ url: url, id: certificate.Id }, certificate)
-                        .$promise.then(function (response) {
-                        return response;
+                    var self = this;
+                    var url = this.TEACHER_URI + '/' + teacherId + '/' + this.CERTIFICATES_URI;
+                    var deferred = this.$q.defer();
+                    this.restApi.update({ url: url, id: certificate.Id }, certificate).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
                     }, function (error) {
-                        return error;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
                     });
-                    return promise;
+                    return deferred.promise;
                 };
                 return TeacherService;
             }());
             TeacherService.serviceId = 'mainApp.models.teacher.TeacherService';
             TeacherService.$inject = [
-                'mainApp.core.restApi.restApiService'
+                'mainApp.core.restApi.restApiService',
+                'mainApp.auth.AuthService',
+                '$q'
             ];
             teacher_1.TeacherService = TeacherService;
             angular
@@ -2820,19 +3326,24 @@ var components;
             .module('mainApp.components.header')
             .directive(MaHeader.directiveId, MaHeader.instance);
         var HeaderController = (function () {
-            function HeaderController(functionsUtil, $uibModal, dataConfig, $filter, $scope, $rootScope, $state) {
+            function HeaderController(functionsUtil, AuthService, $uibModal, dataConfig, $filter, $scope, $rootScope, $state, localStorage) {
                 this.functionsUtil = functionsUtil;
+                this.AuthService = AuthService;
                 this.$uibModal = $uibModal;
                 this.dataConfig = dataConfig;
                 this.$filter = $filter;
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
                 this.$state = $state;
+                this.localStorage = localStorage;
                 this.init();
             }
             HeaderController.prototype.init = function () {
+                this.isAuthenticated = this.AuthService.isAuthenticated();
+                if (this.$rootScope.profileData) {
+                    this.isTeacher = this.$rootScope.profileData.IsTeacher;
+                }
                 this.form = {
-                    language: this.functionsUtil.getCurrentLanguage() || 'en',
                     whereTo: this.$filter('translate')('%header.search.placeholder.text')
                 };
                 this._slideout = false;
@@ -2840,17 +3351,24 @@ var components;
             };
             HeaderController.prototype.activate = function () {
                 console.log('header controller actived');
+                this._subscribeToEvents();
             };
             HeaderController.prototype.slideNavMenu = function () {
                 this._slideout = !this._slideout;
             };
-            HeaderController.prototype.changeLanguage = function () {
-                this.functionsUtil.changeLanguage(this.form.language);
-                mixpanel.track("Change Language on header");
+            HeaderController.prototype.logout = function () {
+                var self = this;
+                this.AuthService.logout().then(function (response) {
+                    window.location.reload();
+                }, function (response) {
+                    DEBUG && console.log('A problem occured while logging you out.');
+                });
             };
             HeaderController.prototype.search = function (country) {
+                var CLICK_MIXPANEL = 'Click: Search Teacher on SearchBox';
                 var currentState = this.$state.current.name;
                 this.form.whereTo = country;
+                mixpanel.track(CLICK_MIXPANEL);
                 if (currentState !== 'page.searchPage') {
                     this.$state.go('page.searchPage', { country: country });
                 }
@@ -2864,23 +3382,65 @@ var components;
                     animation: false,
                     backdrop: 'static',
                     keyboard: false,
+                    size: 'sm',
                     templateUrl: this.dataConfig.modalSignUpTmpl,
-                    controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                    controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                    resolve: {
+                        dataSetModal: function () {
+                            return {
+                                hasNextStep: false
+                            };
+                        }
+                    }
                 };
                 var modalInstance = this.$uibModal.open(options);
-                mixpanel.track("Click on 'Join as Student' main header");
+            };
+            HeaderController.prototype._openLogInModal = function () {
+                var self = this;
+                var options = {
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    size: 'sm',
+                    templateUrl: this.dataConfig.modalLogInTmpl,
+                    controller: 'mainApp.components.modal.ModalLogInController as vm',
+                    resolve: {
+                        dataSetModal: function () {
+                            return {
+                                hasNextStep: false
+                            };
+                        }
+                    }
+                };
+                var modalInstance = this.$uibModal.open(options);
+                modalInstance.result.then(function () {
+                    self.$rootScope.$broadcast('Is Authenticated');
+                }, function () {
+                    DEBUG && console.info('Modal dismissed at: ' + new Date());
+                });
+            };
+            HeaderController.prototype._subscribeToEvents = function () {
+                var self = this;
+                this.$scope.$on('Is Authenticated', function (event, args) {
+                    self.isAuthenticated = self.AuthService.isAuthenticated();
+                    if (self.$rootScope.profileData) {
+                        self.isTeacher = self.$rootScope.profileData.IsTeacher;
+                    }
+                });
             };
             return HeaderController;
         }());
         HeaderController.controllerId = 'mainApp.components.header.HeaderController';
         HeaderController.$inject = [
             'mainApp.core.util.FunctionsUtilService',
+            'mainApp.auth.AuthService',
             '$uibModal',
             'dataConfig',
             '$filter',
             '$scope',
             '$rootScope',
-            '$state'
+            '$state',
+            'mainApp.localStorageService'
         ];
         header.HeaderController = HeaderController;
         angular.module('mainApp.components.header')
@@ -2888,6 +3448,117 @@ var components;
     })(header = components.header || (components.header = {}));
 })(components || (components = {}));
 //# sourceMappingURL=header.directive.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.components.sideMenu', [])
+        .config(config);
+    function config() { }
+})();
+//# sourceMappingURL=sideMenu.config.js.map
+var components;
+(function (components) {
+    var sideMenu;
+    (function (sideMenu) {
+        'use strict';
+        var MaSideMenu = (function () {
+            function MaSideMenu() {
+                this.bindToController = true;
+                this.controller = SideMenuController.controllerId;
+                this.controllerAs = 'vm';
+                this.restrict = 'E';
+                this.scope = {
+                    type: '@',
+                    viewProfileBtn: '=',
+                    viewProfileId: '@'
+                };
+                this.templateUrl = 'components/sideMenu/sideMenu.html';
+                DEBUG && console.log('maSideMenu directive constructor');
+            }
+            MaSideMenu.prototype.link = function ($scope, elm, attr) {
+                DEBUG && console.log('maSideMenu link function');
+            };
+            MaSideMenu.instance = function () {
+                return new MaSideMenu();
+            };
+            return MaSideMenu;
+        }());
+        MaSideMenu.directiveId = 'maSideMenu';
+        angular
+            .module('mainApp.components.sideMenu')
+            .directive(MaSideMenu.directiveId, MaSideMenu.instance);
+        var SideMenuController = (function () {
+            function SideMenuController($state, $filter) {
+                this.$state = $state;
+                this.$filter = $filter;
+                this.init();
+            }
+            SideMenuController.prototype.init = function () {
+                this.activate();
+            };
+            SideMenuController.prototype.activate = function () {
+                DEBUG && console.log('sideMenu controller actived');
+                this._buildSideMenunOptions();
+            };
+            SideMenuController.prototype._buildSideMenunOptions = function () {
+                var type = this.type;
+                var TEACH_OPTION = this.$filter('translate')('%modal.recommend.teacher.invitation.message.teach.label.text');
+                var EXPERIENCE_OPTION = this.$filter('translate')('%landing.teacher.badge_explanation.get.first_requirement.title.text');
+                var EDUCATION_OPTION = this.$filter('translate')('%edit.teacher.education.menu.option.text');
+                var METHODOLOGY_OPTION = this.$filter('translate')('%search.container.teacher.methodology.title.text');
+                var PRICE_OPTION = this.$filter('translate')('%search.container.teacher.price.title.text');
+                switch (type) {
+                    case 'edit-teacher':
+                        this.optionsList = [
+                            {
+                                name: TEACH_OPTION,
+                                state: 'page.editTeacher.teach'
+                            },
+                            {
+                                name: EXPERIENCE_OPTION,
+                                state: 'page.editTeacher.experience'
+                            },
+                            {
+                                name: EDUCATION_OPTION,
+                                state: 'page.editTeacher.education'
+                            },
+                            {
+                                name: METHODOLOGY_OPTION,
+                                state: 'page.editTeacher.methodology'
+                            },
+                            {
+                                name: PRICE_OPTION,
+                                state: 'page.editTeacher.price'
+                            }
+                        ];
+                        break;
+                    case 'edit-profile':
+                        break;
+                }
+            };
+            SideMenuController.prototype._currentState = function (state) {
+                var currentState = this.$state.current.name;
+                return state === currentState;
+            };
+            SideMenuController.prototype._goToSection = function (state) {
+                this.$state.go(state, { reload: true });
+            };
+            SideMenuController.prototype._goToViewProfile = function () {
+                var id = this.viewProfileId;
+                var state = this.type == 'edit-teacher' ? 'page.teacherProfilePage' : 'page.userProfilePage';
+                var url = this.$state.href(state, { id: id });
+                window.open(url, '_blank');
+            };
+            return SideMenuController;
+        }());
+        SideMenuController.controllerId = 'mainApp.components.sideMenu.SideMenuController';
+        SideMenuController.$inject = ['$state', '$filter'];
+        sideMenu.SideMenuController = SideMenuController;
+        angular.module('mainApp.components.sideMenu')
+            .controller(SideMenuController.controllerId, SideMenuController);
+    })(sideMenu = components.sideMenu || (components.sideMenu = {}));
+})(components || (components = {}));
+//# sourceMappingURL=sideMenu.directive.js.map
 (function () {
     'use strict';
     angular
@@ -3001,18 +3672,42 @@ var components;
             .module('mainApp.components.footer')
             .directive(MaFooter.directiveId, MaFooter.instance);
         var FooterController = (function () {
-            function FooterController() {
+            function FooterController(functionsUtil) {
+                this.functionsUtil = functionsUtil;
                 this.init();
             }
             FooterController.prototype.init = function () {
+                var currentLanguageCode = this.functionsUtil.getCurrentLanguage() || 'en';
+                var languageLabel = '%header.lang.options.' + currentLanguageCode + '.text';
+                this.form = {
+                    language: {
+                        key: currentLanguageCode,
+                        value: languageLabel
+                    }
+                };
+                this.assignFlag = 'ma-flag--default--flag-' + this.form.language.key;
                 this.activate();
             };
             FooterController.prototype.activate = function () {
                 console.log('footer controller actived');
             };
+            FooterController.prototype.changeLanguage = function (code) {
+                var self = this;
+                this.functionsUtil.changeLanguage(code).then(function (key) {
+                    if (typeof key === 'string') {
+                        self.form.language.key = code;
+                        self.form.language.value = '%header.lang.options.' + code + '.text';
+                        self.assignFlag = 'ma-flag--default--flag-' + code;
+                        window.location.reload();
+                    }
+                });
+            };
             return FooterController;
         }());
         FooterController.controllerId = 'mainApp.components.footer.FooterController';
+        FooterController.$inject = [
+            'mainApp.core.util.FunctionsUtilService'
+        ];
         footer.FooterController = FooterController;
         angular.module('mainApp.components.footer')
             .controller(FooterController.controllerId, FooterController);
@@ -3071,7 +3766,8 @@ var components;
             };
             FloatMessageBarController.prototype._join = function () {
                 var CREATE_TEACHER = 'page.createTeacherPage.start';
-                mixpanel.track("Click on join as a teacher from floatMessageBar");
+                var CLICK_MIXPANEL = 'Click: Join as a teacher from floatMessageBar';
+                mixpanel.track(CLICK_MIXPANEL);
                 this.$state.go(CREATE_TEACHER, { reload: true });
             };
             return FloatMessageBarController;
@@ -3472,6 +4168,494 @@ var components;
     function config() { }
 })();
 //# sourceMappingURL=modal.config.js.map
+var components;
+(function (components) {
+    var modal;
+    (function (modal) {
+        var modalWelcome;
+        (function (modalWelcome) {
+            var ModalWelcomeController = (function () {
+                function ModalWelcomeController($uibModalInstance, dataConfig, $uibModal) {
+                    this.$uibModalInstance = $uibModalInstance;
+                    this.dataConfig = dataConfig;
+                    this.$uibModal = $uibModal;
+                    this._init();
+                }
+                ModalWelcomeController.prototype._init = function () {
+                    var self = this;
+                    this.activate();
+                };
+                ModalWelcomeController.prototype.activate = function () {
+                    DEBUG && console.log('modalWelcome controller actived');
+                };
+                ModalWelcomeController.prototype._openPhotoModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        size: 'sm',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalPhotoTmpl,
+                        controller: 'mainApp.components.modal.ModalPhotoController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    this.$uibModalInstance.close();
+                };
+                return ModalWelcomeController;
+            }());
+            ModalWelcomeController.controllerId = 'mainApp.components.modal.ModalWelcomeController';
+            ModalWelcomeController.$inject = [
+                '$uibModalInstance',
+                'dataConfig',
+                '$uibModal'
+            ];
+            angular.module('mainApp.components.modal')
+                .controller(ModalWelcomeController.controllerId, ModalWelcomeController);
+        })(modalWelcome = modal.modalWelcome || (modal.modalWelcome = {}));
+    })(modal = components.modal || (components.modal = {}));
+})(components || (components = {}));
+//# sourceMappingURL=modalWelcome.controller.js.map
+var components;
+(function (components) {
+    var modal;
+    (function (modal) {
+        var modalPhoto;
+        (function (modalPhoto) {
+            var ModalPhotoController = (function () {
+                function ModalPhotoController(userService, S3UploadService, $uibModalInstance, messageUtil, Upload, dataConfig, $uibModal, $rootScope) {
+                    this.userService = userService;
+                    this.S3UploadService = S3UploadService;
+                    this.$uibModalInstance = $uibModalInstance;
+                    this.messageUtil = messageUtil;
+                    this.Upload = Upload;
+                    this.dataConfig = dataConfig;
+                    this.$uibModal = $uibModal;
+                    this.$rootScope = $rootScope;
+                    this._init();
+                }
+                ModalPhotoController.prototype._init = function () {
+                    var self = this;
+                    this.uploading = false;
+                    this.form = {
+                        avatar: null,
+                        croppedDataUrl: '',
+                        thumbnail: ''
+                    };
+                    this.validate = {
+                        avatar: { valid: true, message: '' },
+                        thumbnail: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                ModalPhotoController.prototype.activate = function () {
+                    DEBUG && console.log('modalPhoto controller actived');
+                };
+                ModalPhotoController.prototype._resizeImage = function () {
+                    var self = this;
+                    var newName = app.core.util.functionsUtil.FunctionsUtilService.generateGuid() + '.jpeg';
+                    var options = {
+                        width: 250,
+                        height: 250,
+                        quality: 1.0,
+                        type: 'image/jpeg',
+                        pattern: '.jpg',
+                        restoreExif: false
+                    };
+                    var file = this.Upload.dataUrltoBlob(this.form.croppedDataUrl, newName);
+                    return this.Upload.resize(file, options).then(function (resizedFile) {
+                        if (resizedFile) {
+                            return self._uploadImage(resizedFile).then(function (result) {
+                                return result;
+                            });
+                        }
+                        else {
+                            self.messageUtil.error('Hubo un problema al redimensionar la foto, intenta nuevamente por favor.');
+                        }
+                    });
+                };
+                ModalPhotoController.prototype._uploadImage = function (resizedFile) {
+                    var self = this;
+                    return this.S3UploadService.upload(resizedFile).then(function (result) {
+                        return result;
+                    }, function (error) {
+                        console.log('error', error);
+                        return error;
+                    });
+                };
+                ModalPhotoController.prototype._parseData = function (avatar) {
+                    this.$rootScope.profileData.Avatar = avatar;
+                };
+                ModalPhotoController.prototype._goToNext = function () {
+                    var self = this;
+                    this.uploading = true;
+                    if (this.form.avatar) {
+                        this._resizeImage().then(function (result) {
+                            if (result.Location) {
+                                self._parseData(result.Location);
+                                self.userService.updateUserProfile(self.$rootScope.profileData)
+                                    .then(function (response) {
+                                    if (response.userId) {
+                                        self.uploading = false;
+                                        self._openBornModal();
+                                    }
+                                });
+                            }
+                            else {
+                                self.messageUtil.error('');
+                            }
+                        });
+                    }
+                    else {
+                        this._openBornModal();
+                    }
+                };
+                ModalPhotoController.prototype._openBornModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        size: 'sm',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalBornTmpl,
+                        controller: 'mainApp.components.modal.ModalBornController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    this.$uibModalInstance.close();
+                };
+                return ModalPhotoController;
+            }());
+            ModalPhotoController.controllerId = 'mainApp.components.modal.ModalPhotoController';
+            ModalPhotoController.$inject = [
+                'mainApp.models.user.UserService',
+                'mainApp.core.s3Upload.S3UploadService',
+                '$uibModalInstance',
+                'mainApp.core.util.messageUtilService',
+                'Upload',
+                'dataConfig',
+                '$uibModal',
+                '$rootScope'
+            ];
+            angular.module('mainApp.components.modal')
+                .controller(ModalPhotoController.controllerId, ModalPhotoController);
+        })(modalPhoto = modal.modalPhoto || (modal.modalPhoto = {}));
+    })(modal = components.modal || (components.modal = {}));
+})(components || (components = {}));
+//# sourceMappingURL=modalPhoto.controller.js.map
+var components;
+(function (components) {
+    var modal;
+    (function (modal) {
+        var modalBorn;
+        (function (modalBorn) {
+            var ModalBornController = (function () {
+                function ModalBornController(userService, getDataFromJson, functionsUtilService, $uibModalInstance, dataConfig, $filter, $uibModal, $rootScope) {
+                    this.userService = userService;
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
+                    this.$uibModalInstance = $uibModalInstance;
+                    this.dataConfig = dataConfig;
+                    this.$filter = $filter;
+                    this.$uibModal = $uibModal;
+                    this.$rootScope = $rootScope;
+                    this._init();
+                }
+                ModalBornController.prototype._init = function () {
+                    var BIRTHDATE_TOOLTIP = this.$filter('translate')('%tooltip.modal_born.birthdate.text');
+                    var COUNTRY_BIRTH_TOOLTIP = this.$filter('translate')('%tooltip.modal_born.cntry_birth.text');
+                    var CITY_BIRTH_TOOLTIP = this.$filter('translate')('%tooltip.modal_born.city_birth.text');
+                    var self = this;
+                    this.form = {
+                        country: '',
+                        city: '',
+                        birthDate: null
+                    };
+                    this.tooltip = {
+                        birthDate: BIRTHDATE_TOOLTIP,
+                        countryBirth: COUNTRY_BIRTH_TOOLTIP,
+                        cityBirth: CITY_BIRTH_TOOLTIP
+                    };
+                    this.dateObject = { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } };
+                    this.countryObject = { code: '', value: '' };
+                    this.listCountries = this.getDataFromJson.getCountryi18n();
+                    this.listMonths = this.getDataFromJson.getMonthi18n();
+                    this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
+                    this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 2017);
+                    this.validate = {
+                        birthDate: {
+                            day: { valid: true, message: '' },
+                            month: { valid: true, message: '' },
+                            year: { valid: true, message: '' },
+                            valid: true,
+                            message: ''
+                        },
+                        country: { valid: true, message: '' },
+                        city: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                ModalBornController.prototype.activate = function () {
+                    DEBUG && console.log('modalBorn controller actived');
+                };
+                ModalBornController.prototype._openBasicInfoModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        size: 'sm',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalBasicInfoTmpl,
+                        controller: 'mainApp.components.modal.ModalBasicInfoController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    this.$uibModalInstance.close();
+                };
+                ModalBornController.prototype._validateForm = function () {
+                    var NULL_ENUM = 2;
+                    var NAN_ENUM = 8;
+                    var EMPTY_ENUM = 3;
+                    var NUMBER_ENUM = 4;
+                    var BIRTHDATE_MESSAGE = this.$filter('translate')('%create.teacher.basic_info.form.birthdate.validation.message.text');
+                    var formValid = true;
+                    this.validate.birthDate.valid = true;
+                    var day_birthdate_rules = [NULL_ENUM, EMPTY_ENUM, NAN_ENUM];
+                    this.validate.birthDate.day = this.functionsUtilService.validator(this.dateObject.day.value, day_birthdate_rules);
+                    if (!this.validate.birthDate.day.valid) {
+                        formValid = this.validate.birthDate.day.valid;
+                        this.validate.birthDate.valid = this.validate.birthDate.day.valid;
+                        this.validate.birthDate.message = BIRTHDATE_MESSAGE;
+                    }
+                    var month_birthdate_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.birthDate.month = this.functionsUtilService.validator(this.dateObject.month.code, month_birthdate_rules);
+                    if (!this.validate.birthDate.month.valid) {
+                        formValid = this.validate.birthDate.month.valid;
+                        this.validate.birthDate.valid = this.validate.birthDate.month.valid;
+                        this.validate.birthDate.message = BIRTHDATE_MESSAGE;
+                    }
+                    var year_birthdate_rules = [NULL_ENUM, EMPTY_ENUM, NAN_ENUM];
+                    this.validate.birthDate.year = this.functionsUtilService.validator(this.dateObject.year.value, year_birthdate_rules);
+                    if (!this.validate.birthDate.year.valid) {
+                        formValid = this.validate.birthDate.year.valid;
+                        this.validate.birthDate.valid = this.validate.birthDate.year.valid;
+                        this.validate.birthDate.message = BIRTHDATE_MESSAGE;
+                    }
+                    var country_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.country = this.functionsUtilService.validator(this.countryObject.code, country_rules);
+                    if (!this.validate.country.valid) {
+                        formValid = this.validate.country.valid;
+                    }
+                    var city_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.city = this.functionsUtilService.validator(this.form.city, city_rules);
+                    if (!this.validate.city.valid) {
+                        formValid = this.validate.city.valid;
+                    }
+                    return formValid;
+                };
+                ModalBornController.prototype._parseData = function () {
+                    var dateFormatted = this.functionsUtilService.joinDate(this.dateObject.day.value, this.dateObject.month.code, this.dateObject.year.value);
+                    var countryCode = this.countryObject.code;
+                    this.form.country = countryCode;
+                    this.$rootScope.profileData.BirthDate = dateFormatted;
+                    this.$rootScope.profileData.BornCountry = this.form.country;
+                    this.$rootScope.profileData.BornCity = this.form.city;
+                };
+                ModalBornController.prototype._goToNext = function () {
+                    var self = this;
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this._parseData();
+                        this.userService.updateUserProfile(this.$rootScope.profileData)
+                            .then(function (response) {
+                            if (response.userId) {
+                                self._openBasicInfoModal();
+                            }
+                        });
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                ModalBornController.prototype.close = function () {
+                    this.$uibModalInstance.close();
+                };
+                return ModalBornController;
+            }());
+            ModalBornController.controllerId = 'mainApp.components.modal.ModalBornController';
+            ModalBornController.$inject = [
+                'mainApp.models.user.UserService',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                '$uibModalInstance',
+                'dataConfig',
+                '$filter',
+                '$uibModal',
+                '$rootScope'
+            ];
+            angular.module('mainApp.components.modal')
+                .controller(ModalBornController.controllerId, ModalBornController);
+        })(modalBorn = modal.modalBorn || (modal.modalBorn = {}));
+    })(modal = components.modal || (components.modal = {}));
+})(components || (components = {}));
+//# sourceMappingURL=modalBorn.controller.js.map
+var components;
+(function (components) {
+    var modal;
+    (function (modal) {
+        var modalBasicInfo;
+        (function (modalBasicInfo) {
+            var ModalBasicInfoController = (function () {
+                function ModalBasicInfoController(userService, getDataFromJson, functionsUtilService, $uibModalInstance, dataConfig, $filter, $uibModal, $rootScope) {
+                    this.userService = userService;
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
+                    this.$uibModalInstance = $uibModalInstance;
+                    this.dataConfig = dataConfig;
+                    this.$filter = $filter;
+                    this.$uibModal = $uibModal;
+                    this.$rootScope = $rootScope;
+                    this._init();
+                }
+                ModalBasicInfoController.prototype._init = function () {
+                    var PHONE_NUMBER_TOOLTIP = this.$filter('translate')('%tooltip.modal_basic_info.phone_number.text');
+                    var GENDER_TOOLTIP = this.$filter('translate')('%tooltip.modal_basic_info.gender.text');
+                    var ABOUT_TOOLTIP = this.$filter('translate')('%tooltip.modal_basic_info.about.text');
+                    var self = this;
+                    this.genderObject = { gender: { code: '', value: '' } };
+                    this.listGenders = this.getDataFromJson.getSexi18n();
+                    this.tooltip = {
+                        phoneNumber: PHONE_NUMBER_TOOLTIP,
+                        gender: GENDER_TOOLTIP,
+                        about: ABOUT_TOOLTIP
+                    };
+                    this.form = {
+                        phoneNumber: '',
+                        gender: '',
+                        about: ''
+                    };
+                    this.validate = {
+                        phoneNumber: { valid: true, message: '' },
+                        gender: { valid: true, message: '' },
+                        about: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                ModalBasicInfoController.prototype.activate = function () {
+                    DEBUG && console.log('modalBasicInfo controller actived');
+                };
+                ModalBasicInfoController.prototype._openFinishModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        size: 'sm',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalFinishTmpl,
+                        controller: 'mainApp.components.modal.ModalFinishController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    this.$uibModalInstance.close();
+                };
+                ModalBasicInfoController.prototype._validateForm = function () {
+                    var NULL_ENUM = 2;
+                    var NAN_ENUM = 8;
+                    var EMPTY_ENUM = 3;
+                    var NUMBER_ENUM = 4;
+                    var BIRTHDATE_MESSAGE = this.$filter('translate')('%create.teacher.basic_info.form.birthdate.validation.message.text');
+                    var formValid = true;
+                    var phoneNumber_rules = [NUMBER_ENUM];
+                    var onlyNum = this.form.phoneNumber.replace(/\D+/g, "");
+                    onlyNum = parseInt(onlyNum) || NaN;
+                    this.validate.phoneNumber = this.functionsUtilService.validator(onlyNum, phoneNumber_rules);
+                    if (!this.validate.phoneNumber.valid) {
+                        formValid = this.validate.phoneNumber.valid;
+                    }
+                    var gender_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.gender = this.functionsUtilService.validator(this.genderObject.gender.code, gender_rules);
+                    if (!this.validate.gender.valid) {
+                        formValid = this.validate.gender.valid;
+                    }
+                    return formValid;
+                };
+                ModalBasicInfoController.prototype._parseData = function () {
+                    var genderCode = this.genderObject.gender.code;
+                    this.$rootScope.profileData.PhoneNumber = this.form.phoneNumber;
+                    this.$rootScope.profileData.Gender = genderCode;
+                    this.$rootScope.profileData.About = this.form.about;
+                };
+                ModalBasicInfoController.prototype._goToNext = function () {
+                    var self = this;
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this._parseData();
+                        this.userService.updateUserProfile(this.$rootScope.profileData)
+                            .then(function (response) {
+                            if (response.userId) {
+                                self._openFinishModal();
+                            }
+                        });
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                ModalBasicInfoController.prototype.close = function () {
+                    this.$uibModalInstance.close();
+                };
+                return ModalBasicInfoController;
+            }());
+            ModalBasicInfoController.controllerId = 'mainApp.components.modal.ModalBasicInfoController';
+            ModalBasicInfoController.$inject = [
+                'mainApp.models.user.UserService',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                '$uibModalInstance',
+                'dataConfig',
+                '$filter',
+                '$uibModal',
+                '$rootScope'
+            ];
+            angular.module('mainApp.components.modal')
+                .controller(ModalBasicInfoController.controllerId, ModalBasicInfoController);
+        })(modalBasicInfo = modal.modalBasicInfo || (modal.modalBasicInfo = {}));
+    })(modal = components.modal || (components.modal = {}));
+})(components || (components = {}));
+//# sourceMappingURL=modalBasicInfo.controller.js.map
+var components;
+(function (components) {
+    var modal;
+    (function (modal) {
+        var modalFinish;
+        (function (modalFinish) {
+            var ModalFinishController = (function () {
+                function ModalFinishController($uibModalInstance, dataConfig, $uibModal) {
+                    this.$uibModalInstance = $uibModalInstance;
+                    this.dataConfig = dataConfig;
+                    this.$uibModal = $uibModal;
+                    this._init();
+                }
+                ModalFinishController.prototype._init = function () {
+                    var self = this;
+                    this.activate();
+                };
+                ModalFinishController.prototype.activate = function () {
+                    DEBUG && console.log('modalFinish controller actived');
+                };
+                ModalFinishController.prototype.close = function () {
+                    this.$uibModalInstance.close();
+                };
+                return ModalFinishController;
+            }());
+            ModalFinishController.controllerId = 'mainApp.components.modal.ModalFinishController';
+            ModalFinishController.$inject = [
+                '$uibModalInstance',
+                'dataConfig',
+                '$uibModal'
+            ];
+            angular.module('mainApp.components.modal')
+                .controller(ModalFinishController.controllerId, ModalFinishController);
+        })(modalFinish = modal.modalFinish || (modal.modalFinish = {}));
+    })(modal = components.modal || (components.modal = {}));
+})(components || (components = {}));
+//# sourceMappingURL=modalFinish.controller.js.map
 var components;
 (function (components) {
     var modal;
@@ -4016,29 +5200,444 @@ var components;
         var modalSignUp;
         (function (modalSignUp) {
             var ModalSignUpController = (function () {
-                function ModalSignUpController($uibModalInstance, functionsUtil, LandingPageService, messageUtil, $filter) {
-                    this.$uibModalInstance = $uibModalInstance;
+                function ModalSignUpController($rootScope, AuthService, AccountService, RegisterService, functionsUtil, messageUtil, $filter, localStorage, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
+                    this.$rootScope = $rootScope;
+                    this.AuthService = AuthService;
+                    this.AccountService = AccountService;
+                    this.RegisterService = RegisterService;
                     this.functionsUtil = functionsUtil;
-                    this.LandingPageService = LandingPageService;
                     this.messageUtil = messageUtil;
                     this.$filter = $filter;
+                    this.localStorage = localStorage;
+                    this.dataSetModal = dataSetModal;
+                    this.dataConfig = dataConfig;
+                    this.$uibModal = $uibModal;
+                    this.$uibModalInstance = $uibModalInstance;
                     this._init();
                 }
                 ModalSignUpController.prototype._init = function () {
                     var self = this;
                     this.form = {
-                        email: ''
+                        username: '',
+                        email: '',
+                        first_name: '',
+                        last_name: '',
+                        password: ''
                     };
-                    this.sending = false;
+                    this.saving = false;
+                    this.passwordMinLength = this.dataConfig.passwordMinLength;
+                    this.passwordMaxLength = this.dataConfig.passwordMaxLength;
                     this.validate = {
-                        email: { valid: true, message: '' }
+                        username: { valid: true, message: '' },
+                        email: { valid: true, message: '' },
+                        first_name: { valid: true, message: '' },
+                        last_name: { valid: true, message: '' },
+                        password: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
                     };
                     this.activate();
                 };
                 ModalSignUpController.prototype.activate = function () {
-                    console.log('modalSignUp controller actived');
+                    var ENTER_MIXPANEL = 'Enter: Sign up modal';
+                    DEBUG && console.log('modalSignUp controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
+                };
+                ModalSignUpController.prototype.registerUser = function () {
+                    var self = this;
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this.saving = true;
+                        this.form.username = this.functionsUtil.generateUsername(this.form.first_name, this.form.last_name);
+                        this.RegisterService.register(this.form).then(function (response) {
+                            DEBUG && console.log('Welcome!, Your new account has been successfuly created.');
+                            self._loginAfterRegister(response.username, response.email, response.password);
+                        }, function (error) {
+                            DEBUG && console.log(JSON.stringify(error));
+                            self.saving = false;
+                            var errortext = [];
+                            for (var key in error.data) {
+                                var line = key;
+                                line += ': ';
+                                line += error.data[key];
+                                errortext.push(line);
+                            }
+                            DEBUG && console.error(errortext);
+                            self.validate.globalValidate.valid = false;
+                            self.validate.globalValidate.message = errortext[0];
+                        });
+                    }
                 };
                 ModalSignUpController.prototype._validateForm = function () {
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
+                    var EMAIL_ENUM = 0;
+                    var PASSWORD_MESSAGE = this.$filter('translate')('%modal.signup.error.short_password.text');
+                    var formValid = true;
+                    var firstName_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.first_name = this.functionsUtil.validator(this.form.first_name, firstName_rules);
+                    if (!this.validate.first_name.valid) {
+                        formValid = this.validate.first_name.valid;
+                    }
+                    var lastName_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.last_name = this.functionsUtil.validator(this.form.last_name, lastName_rules);
+                    if (!this.validate.last_name.valid) {
+                        formValid = this.validate.last_name.valid;
+                    }
+                    var email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
+                    this.validate.email = this.functionsUtil.validator(this.form.email, email_rules);
+                    if (!this.validate.email.valid) {
+                        formValid = this.validate.email.valid;
+                    }
+                    var password_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.password = this.functionsUtil.validator(this.form.password, password_rules);
+                    if (!this.validate.password.valid) {
+                        formValid = this.validate.password.valid;
+                        this.validate.password.message = PASSWORD_MESSAGE;
+                    }
+                    return formValid;
+                };
+                ModalSignUpController.prototype._checkIfEmailExist = function () {
+                    var EMAIL_TAKEN_MESSAGE = this.$filter('translate')('%modal.signup.error.email_taken.text');
+                    var self = this;
+                    if (this.form.email) {
+                        this.RegisterService.checkEmail(this.form.email).then(function (response) {
+                            if (response.data) {
+                                if (!response.data.emailExist) {
+                                    self.validate.email.valid = true;
+                                }
+                                else {
+                                    self.validate.email.valid = false;
+                                    self.validate.email.message = EMAIL_TAKEN_MESSAGE;
+                                }
+                            }
+                            else if (response.email) {
+                                self.validate.email.valid = true;
+                            }
+                        });
+                    }
+                };
+                ModalSignUpController.prototype._openLogInModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        size: 'sm',
+                        templateUrl: this.dataConfig.modalLogInTmpl,
+                        controller: 'mainApp.components.modal.ModalLogInController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: self.dataSetModal.hasNextStep
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function () {
+                        self.$rootScope.$broadcast('Is Authenticated', self.dataSetModal.hasNextStep);
+                    }, function () {
+                        DEBUG && console.info('Modal dismissed at: ' + new Date());
+                    });
+                    this.$uibModalInstance.close();
+                };
+                ModalSignUpController.prototype._loginAfterRegister = function (username, email, password) {
+                    var USERNAME_PASSWORD_WRONG = this.$filter('translate')('%error.username_password_wrong.text');
+                    var SERVER_ERROR = this.$filter('translate')('%error.server_error.text');
+                    var SERVER_CODE_ERROR = this.$filter('translate')('%error.server_error_code.text');
+                    var self = this;
+                    var userData = {
+                        username: username,
+                        email: email,
+                        password: password
+                    };
+                    this.AuthService.login(userData).then(function (response) {
+                        self.AccountService.getAccount().then(function (response) {
+                            DEBUG && console.log('Data User: ', response);
+                            self.saving = false;
+                            self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
+                            self.$rootScope.userData = response;
+                            response.userId = response.id;
+                            self.$rootScope.profileData = new app.models.user.Profile(response);
+                            self.functionsUtil.addUserIndentifyMixpanel(self.$rootScope.profileData.UserId);
+                            self.functionsUtil.setUserMixpanel(self.$rootScope.profileData);
+                            self.$rootScope.$broadcast('Is Authenticated', self.dataSetModal.hasNextStep);
+                            if (!self.dataSetModal.hasNextStep) {
+                                self._openWelcomeModal();
+                            }
+                            self.$uibModalInstance.close();
+                        });
+                    }, function (response) {
+                        self.saving = false;
+                        if (response.status == 401) {
+                            DEBUG && console.log(USERNAME_PASSWORD_WRONG);
+                            self.validate.globalValidate.valid = false;
+                            self.validate.globalValidate.message = USERNAME_PASSWORD_WRONG;
+                        }
+                        else if (response.status == -1) {
+                            DEBUG && console.log(SERVER_ERROR);
+                            self.messageUtil.error(SERVER_ERROR);
+                        }
+                        else {
+                            DEBUG && console.log(SERVER_CODE_ERROR + response.status);
+                            self.messageUtil.error(SERVER_CODE_ERROR + response.status);
+                        }
+                    });
+                };
+                ModalSignUpController.prototype._openWelcomeModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: true,
+                        backdrop: 'static',
+                        keyboard: false,
+                        size: 'sm',
+                        templateUrl: this.dataConfig.modalWelcomeTmpl,
+                        controller: 'mainApp.components.modal.ModalWelcomeController as vm'
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                };
+                ModalSignUpController.prototype.close = function () {
+                    this.$uibModalInstance.close();
+                };
+                return ModalSignUpController;
+            }());
+            ModalSignUpController.controllerId = 'mainApp.components.modal.ModalSignUpController';
+            ModalSignUpController.$inject = [
+                '$rootScope',
+                'mainApp.auth.AuthService',
+                'mainApp.account.AccountService',
+                'mainApp.register.RegisterService',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.core.util.messageUtilService',
+                '$filter',
+                'mainApp.localStorageService',
+                'dataSetModal',
+                'dataConfig',
+                '$uibModal',
+                '$uibModalInstance'
+            ];
+            angular.module('mainApp.components.modal')
+                .controller(ModalSignUpController.controllerId, ModalSignUpController);
+        })(modalSignUp = modal.modalSignUp || (modal.modalSignUp = {}));
+    })(modal = components.modal || (components.modal = {}));
+})(components || (components = {}));
+//# sourceMappingURL=modalSignUp.controller.js.map
+var components;
+(function (components) {
+    var modal;
+    (function (modal) {
+        var modalLogIn;
+        (function (modalLogIn) {
+            var ModalLogInController = (function () {
+                function ModalLogInController($rootScope, $state, AuthService, AccountService, userService, functionsUtil, messageUtil, $filter, localStorage, dataSetModal, dataConfig, $uibModal, $uibModalInstance) {
+                    this.$rootScope = $rootScope;
+                    this.$state = $state;
+                    this.AuthService = AuthService;
+                    this.AccountService = AccountService;
+                    this.userService = userService;
+                    this.functionsUtil = functionsUtil;
+                    this.messageUtil = messageUtil;
+                    this.$filter = $filter;
+                    this.localStorage = localStorage;
+                    this.dataSetModal = dataSetModal;
+                    this.dataConfig = dataConfig;
+                    this.$uibModal = $uibModal;
+                    this.$uibModalInstance = $uibModalInstance;
+                    this._init();
+                }
+                ModalLogInController.prototype._init = function () {
+                    var self = this;
+                    this.saving = false;
+                    this.form = {
+                        username: '',
+                        email: '',
+                        password: ''
+                    };
+                    this.validate = {
+                        username: { valid: true, message: '' },
+                        email: { valid: true, message: '' },
+                        password: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                ModalLogInController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Log in modal';
+                    DEBUG && console.log('modalLogIn controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
+                };
+                ModalLogInController.prototype.login = function () {
+                    var USERNAME_PASSWORD_WRONG = this.$filter('translate')('%error.username_password_wrong.text');
+                    var SERVER_ERROR = this.$filter('translate')('%error.server_error.text');
+                    var SERVER_CODE_ERROR = this.$filter('translate')('%error.server_error_code.text');
+                    var self = this;
+                    this.saving = true;
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this.AccountService.getUsername(this.form.email).then(function (response) {
+                            if (response.userExist) {
+                                self.form.username = response.username;
+                            }
+                            else {
+                                self.form.username = self.form.email;
+                            }
+                            self.AuthService.login(self.form).then(function (response) {
+                                self.AccountService.getAccount().then(function (response) {
+                                    DEBUG && console.log('Data User: ', response);
+                                    self.saving = false;
+                                    self.localStorage.setItem(self.dataConfig.userDataLocalStorage, JSON.stringify(response));
+                                    self.$rootScope.userData = response;
+                                    self.userService.getUserProfileById(response.id).then(function (response) {
+                                        if (response.userId) {
+                                            self.$rootScope.profileData = new app.models.user.Profile(response);
+                                            self.functionsUtil.addUserIndentifyMixpanel(self.$rootScope.profileData.UserId);
+                                        }
+                                        self.$uibModalInstance.close();
+                                    });
+                                });
+                            }, function (response) {
+                                self.saving = false;
+                                if (response.status == 401) {
+                                    DEBUG && console.log(USERNAME_PASSWORD_WRONG);
+                                    self.validate.globalValidate.valid = false;
+                                    self.validate.globalValidate.message = USERNAME_PASSWORD_WRONG;
+                                }
+                                else if (response.status == -1) {
+                                    DEBUG && console.log(SERVER_ERROR);
+                                    self.messageUtil.error(SERVER_ERROR);
+                                }
+                                else {
+                                    DEBUG && console.log(SERVER_CODE_ERROR + response.status);
+                                    self.messageUtil.error(SERVER_CODE_ERROR + response.status);
+                                }
+                            });
+                        });
+                    }
+                    else {
+                        this.saving = false;
+                    }
+                };
+                ModalLogInController.prototype._validateForm = function () {
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
+                    var EMAIL_ENUM = 0;
+                    var formValid = true;
+                    var email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
+                    this.validate.email = this.functionsUtil.validator(this.form.email, email_rules);
+                    if (!this.validate.email.valid) {
+                        formValid = this.validate.email.valid;
+                    }
+                    var password_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.password = this.functionsUtil.validator(this.form.password, password_rules);
+                    if (!this.validate.password.valid) {
+                        formValid = this.validate.password.valid;
+                    }
+                    return formValid;
+                };
+                ModalLogInController.prototype._openForgotPasswordModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        size: 'sm',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalForgotPasswordTmpl,
+                        controller: 'mainApp.components.modal.ModalForgotPasswordController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: self.dataSetModal.hasNextStep
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    this.$uibModalInstance.close();
+                };
+                ModalLogInController.prototype._openSignUpModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        size: 'sm',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalSignUpTmpl,
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: self.dataSetModal.hasNextStep
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    this.$uibModalInstance.close();
+                };
+                ModalLogInController.prototype.close = function () {
+                    this.$uibModalInstance.close();
+                };
+                return ModalLogInController;
+            }());
+            ModalLogInController.controllerId = 'mainApp.components.modal.ModalLogInController';
+            ModalLogInController.$inject = [
+                '$rootScope',
+                '$state',
+                'mainApp.auth.AuthService',
+                'mainApp.account.AccountService',
+                'mainApp.models.user.UserService',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.core.util.messageUtilService',
+                '$filter',
+                'mainApp.localStorageService',
+                'dataSetModal',
+                'dataConfig',
+                '$uibModal',
+                '$uibModalInstance'
+            ];
+            angular.module('mainApp.components.modal')
+                .controller(ModalLogInController.controllerId, ModalLogInController);
+        })(modalLogIn = modal.modalLogIn || (modal.modalLogIn = {}));
+    })(modal = components.modal || (components.modal = {}));
+})(components || (components = {}));
+//# sourceMappingURL=modalLogIn.controller.js.map
+var components;
+(function (components) {
+    var modal;
+    (function (modal) {
+        var modalForgotPassword;
+        (function (modalForgotPassword) {
+            var ModalForgotPasswordController = (function () {
+                function ModalForgotPasswordController($rootScope, AuthService, functionsUtil, messageUtil, RegisterService, $filter, $uibModal, $uibModalInstance, dataConfig) {
+                    this.$rootScope = $rootScope;
+                    this.AuthService = AuthService;
+                    this.functionsUtil = functionsUtil;
+                    this.messageUtil = messageUtil;
+                    this.RegisterService = RegisterService;
+                    this.$filter = $filter;
+                    this.$uibModal = $uibModal;
+                    this.$uibModalInstance = $uibModalInstance;
+                    this.dataConfig = dataConfig;
+                    this._init();
+                }
+                ModalForgotPasswordController.prototype._init = function () {
+                    var self = this;
+                    this.sending = false;
+                    this.form = {
+                        email: ''
+                    };
+                    this.validate = {
+                        email: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                ModalForgotPasswordController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Forgot Passwod Modal';
+                    DEBUG && console.log('modalForgotPassword controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
+                };
+                ModalForgotPasswordController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
                     var EMPTY_ENUM = 3;
                     var EMAIL_ENUM = 0;
@@ -4050,54 +5649,94 @@ var components;
                     }
                     return formValid;
                 };
-                ModalSignUpController.prototype.save = function () {
+                ModalForgotPasswordController.prototype._sendInstructions = function () {
+                    var CLICK_MIXPANEL = 'Click: Send instructions from Forgot Password';
+                    var NO_ACCOUNT_EXISTS_1 = this.$filter('translate')('%modal.forgot_password.no_account_exists.part1.text');
+                    var NO_ACCOUNT_EXISTS_2 = this.$filter('translate')('%modal.forgot_password.no_account_exists.part2.text');
+                    var SENT_LINK = this.$filter('translate')('%modal.forgot_password.sent_link.text');
+                    mixpanel.track(CLICK_MIXPANEL, {
+                        "email": this.form.email || '*'
+                    });
+                    var self = this;
                     var formValid = this._validateForm();
                     if (formValid) {
-                        var self_1 = this;
                         this.sending = true;
-                        mixpanel.track("Click on Join as a Student button", {
-                            "name": '*',
-                            "email": this.form.email,
-                            "comment": '*'
-                        });
-                        var userData = {
-                            uid: app.core.util.functionsUtil.FunctionsUtilService.generateGuid(),
-                            name: '*',
-                            email: this.form.email,
-                            comment: '*'
-                        };
-                        this.LandingPageService.createEarlyAdopter(userData)
-                            .then(function (response) {
-                            if (response.createdAt) {
-                                self_1.messageUtil.success('¡Gracias!, Ya está todo listo. Te agregaremos a nuestra lista.');
-                                self_1.$uibModalInstance.close();
+                        this.RegisterService.checkEmail(this.form.email).then(function (response) {
+                            var emailExist = true;
+                            if (response.data) {
+                                emailExist = response.data.emailExist || true;
                             }
                             else {
-                                self_1.sending = false;
+                                emailExist = false;
+                            }
+                            self.validate.globalValidate.valid = emailExist;
+                            if (!emailExist) {
+                                self.sending = false;
+                                self.validate.globalValidate.message = NO_ACCOUNT_EXISTS_1 + self.form.email + NO_ACCOUNT_EXISTS_2;
+                            }
+                            else {
+                                self.AuthService.resetPassword(self.form.email).then(function (response) {
+                                    self.sending = false;
+                                    self.messageUtil.info(SENT_LINK + self.form.email);
+                                    self._openLogInModal();
+                                }, function (error) {
+                                    self.sending = false;
+                                    DEBUG && console.error(error);
+                                    self.messageUtil.error('');
+                                });
                             }
                         });
                     }
                 };
-                ModalSignUpController.prototype.close = function () {
+                ModalForgotPasswordController.prototype._openLogInModal = function () {
+                    mixpanel.track("Click on 'Log in' from signUp modal");
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        size: 'sm',
+                        templateUrl: this.dataConfig.modalLogInTmpl,
+                        controller: 'mainApp.components.modal.ModalLogInController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function () {
+                        self.$rootScope.$broadcast('Is Authenticated');
+                    }, function () {
+                        DEBUG && console.info('Modal dismissed at: ' + new Date());
+                    });
                     this.$uibModalInstance.close();
-                    event.preventDefault();
                 };
-                return ModalSignUpController;
+                ModalForgotPasswordController.prototype.close = function () {
+                    this.$uibModalInstance.close();
+                };
+                return ModalForgotPasswordController;
             }());
-            ModalSignUpController.controllerId = 'mainApp.components.modal.ModalSignUpController';
-            ModalSignUpController.$inject = [
-                '$uibModalInstance',
+            ModalForgotPasswordController.controllerId = 'mainApp.components.modal.ModalForgotPasswordController';
+            ModalForgotPasswordController.$inject = [
+                '$rootScope',
+                'mainApp.auth.AuthService',
                 'mainApp.core.util.FunctionsUtilService',
-                'mainApp.pages.landingPage.LandingPageService',
                 'mainApp.core.util.messageUtilService',
-                '$filter'
+                'mainApp.register.RegisterService',
+                '$filter',
+                '$uibModal',
+                '$uibModalInstance',
+                'dataConfig'
             ];
             angular.module('mainApp.components.modal')
-                .controller(ModalSignUpController.controllerId, ModalSignUpController);
-        })(modalSignUp = modal.modalSignUp || (modal.modalSignUp = {}));
+                .controller(ModalForgotPasswordController.controllerId, ModalForgotPasswordController);
+        })(modalForgotPassword = modal.modalForgotPassword || (modal.modalForgotPassword = {}));
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
-//# sourceMappingURL=modalSignUp.controller.js.map
+//# sourceMappingURL=modalForgotPassword.controller.js.map
 var components;
 (function (components) {
     var modal;
@@ -4132,13 +5771,15 @@ var components;
                 };
                 ModalRecommendTeacherController.prototype._join = function () {
                     var CREATE_TEACHER = 'page.createTeacherPage.start';
-                    mixpanel.track("Click on join as a teacher from recommendation modal");
+                    var CLICK_MIXPANEL = 'Click: Join as a Teacher from recommendation modal';
+                    mixpanel.track(CLICK_MIXPANEL);
                     this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, this.dataSetModal.earlyId);
                     this.$uibModalInstance.close();
                     this.$state.go(CREATE_TEACHER, { reload: true });
                 };
                 ModalRecommendTeacherController.prototype.close = function () {
-                    mixpanel.track("Click on Close recommend teacher modal button");
+                    var CLICK_MIXPANEL = 'Click on Close recommend teacher modal button';
+                    mixpanel.track(CLICK_MIXPANEL);
                     this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, this.dataSetModal.earlyId);
                     this.$rootScope.activeMessageBar = true;
                     this.$uibModalInstance.close();
@@ -4243,6 +5884,9 @@ var app;
                 }
             },
             parent: 'page',
+            data: {
+                requireLogin: true
+            },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
                     $rootScope.activeFooter = true;
@@ -4291,15 +5935,12 @@ var app;
                 };
                 StudentLandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
-                    mixpanel.track("Change Language");
                 };
                 StudentLandingPageController.prototype.goToEarlyAccessForm = function () {
                     document.querySelector('.studentLandingPage__early-access-block').scrollIntoView({ behavior: 'smooth' });
-                    mixpanel.track("Go to early access form");
                 };
                 StudentLandingPageController.prototype.goDown = function () {
                     document.querySelector('.studentLandingPage__title-block').scrollIntoView({ behavior: 'smooth' });
-                    mixpanel.track('Go down');
                 };
                 StudentLandingPageController.prototype.showCommentsTextarea = function () {
                     event.preventDefault();
@@ -4308,11 +5949,6 @@ var app;
                 StudentLandingPageController.prototype.createEarlyAdopter = function () {
                     var self = this;
                     this.sending = true;
-                    mixpanel.track("Click on Notify button", {
-                        "name": this.form.userData.name || '*',
-                        "email": this.form.userData.email,
-                        "comment": this.form.userData.comment || '*'
-                    });
                     var userData = {
                         name: this.form.userData.name || '*',
                         email: this.form.userData.email,
@@ -4393,6 +6029,9 @@ var app;
                 }
             },
             parent: 'page',
+            data: {
+                requireLogin: false
+            },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
                     $rootScope.activeFooter = true;
@@ -4408,14 +6047,19 @@ var app;
         var teacherLandingPage;
         (function (teacherLandingPage) {
             var TeacherLandingPageController = (function () {
-                function TeacherLandingPageController(functionsUtil, $state, dataConfig, $uibModal) {
+                function TeacherLandingPageController($scope, functionsUtil, AuthService, $state, dataConfig, $uibModal, $rootScope, localStorage) {
+                    this.$scope = $scope;
                     this.functionsUtil = functionsUtil;
+                    this.AuthService = AuthService;
                     this.$state = $state;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
+                    this.$rootScope = $rootScope;
+                    this.localStorage = localStorage;
                     this._init();
                 }
                 TeacherLandingPageController.prototype._init = function () {
+                    this.isAuthenticated = this.AuthService.isAuthenticated();
                     this.form = {
                         language: this.functionsUtil.getCurrentLanguage() || 'en'
                     };
@@ -4424,44 +6068,94 @@ var app;
                     this.activate();
                 };
                 TeacherLandingPageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Teacher Landing Page';
                     this.TEACHER_FAKE_TMPL = 'app/pages/teacherLandingPage/teacherContainerExample/teacherContainerExample.html';
                     var self = this;
                     console.log('teacherLandingPage controller actived');
-                    mixpanel.track("Enter: Teacher Landing Page");
+                    mixpanel.track(ENTER_MIXPANEL);
+                    this._subscribeToEvents();
                 };
                 TeacherLandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
-                    mixpanel.track("Change Language on teacherLandingPage");
                 };
-                TeacherLandingPageController.prototype._openSignUpModal = function () {
+                TeacherLandingPageController.prototype._openSignUpModal = function (event) {
+                    var self = this;
+                    var hasNextStep = false;
+                    if (this.isAuthenticated) {
+                        this.goToCreate();
+                        return;
+                    }
+                    if (event.target.id === 'hero-go-to-button') {
+                        hasNextStep = true;
+                    }
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        size: 'sm',
+                        templateUrl: this.dataConfig.modalSignUpTmpl,
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: hasNextStep
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                };
+                TeacherLandingPageController.prototype._openLogInModal = function () {
                     var self = this;
                     var options = {
                         animation: false,
                         backdrop: 'static',
                         keyboard: false,
-                        templateUrl: this.dataConfig.modalSignUpTmpl,
-                        controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                        size: 'sm',
+                        templateUrl: this.dataConfig.modalLogInTmpl,
+                        controller: 'mainApp.components.modal.ModalLogInController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
-                    mixpanel.track("Click on 'Join as Student' teacher landing page header");
+                    modalInstance.result.then(function () {
+                        self.$rootScope.$broadcast('Is Authenticated', false);
+                    }, function () {
+                        DEBUG && console.info('Modal dismissed at: ' + new Date());
+                    });
+                };
+                TeacherLandingPageController.prototype.logout = function () {
+                    var self = this;
+                    this.AuthService.logout().then(function (response) {
+                        window.location.reload();
+                    }, function (response) {
+                        DEBUG && console.log('A problem occured while logging you out.');
+                    });
                 };
                 TeacherLandingPageController.prototype._buildFakeTeacher = function () {
-                    this.fake = new app.models.teacher.Teacher();
-                    this.fake.Id = '1';
-                    this.fake.FirstName = 'Dianne';
-                    this.fake.Born = 'New York, United States';
-                    this.fake.Avatar = 'https://waysily-img.s3.amazonaws.com/b3605bad-0924-4bc1-98c8-676c664acd9d-example.jpeg';
-                    this.fake.Methodology = 'I can customize the lessons to fit your needs. I teach conversational English to intermediate and advanced students with a focus on grammar, pronunciation, vocabulary and clear fluency and Business English with a focus on formal English in a business setting (role-play), business journal articles, and technical, industry based vocabulary';
-                    this.fake.TeacherSince = '2013';
-                    this.fake.Type = 'H';
-                    this.fake.Languages.Native = ['6'];
-                    this.fake.Languages.Teach = ['6', '8'];
-                    this.fake.Languages.Learn = ['8', '7'];
-                    this.fake.Immersion.Active = true;
-                    this.fake.Price.PrivateClass.Active = true;
-                    this.fake.Price.PrivateClass.HourPrice = 20.00;
-                    this.fake.Price.GroupClass.Active = true;
-                    this.fake.Price.GroupClass.HourPrice = 15.00;
+                    this.profileFake = new app.models.user.Profile();
+                    this.teacherFake = new app.models.teacher.Teacher();
+                    this.profileFake.UserId = '1';
+                    this.profileFake.FirstName = 'Dianne';
+                    this.profileFake.BornCity = 'New York';
+                    this.profileFake.BornCountry = 'United States';
+                    this.profileFake.Avatar = 'https://waysily-img.s3.amazonaws.com/b3605bad-0924-4bc1-98c8-676c664acd9d-example.jpeg';
+                    this.profileFake.Languages.Native = ['6'];
+                    this.profileFake.Languages.Teach = ['6', '8'];
+                    this.profileFake.Languages.Learn = ['8', '7'];
+                    this.teacherFake.Methodology = 'I can customize the lessons to fit your needs. I teach conversational English to intermediate and advanced students with a focus on grammar, pronunciation, vocabulary and clear fluency and Business English with a focus on formal English in a business setting (role-play), business journal articles, and technical, industry based vocabulary';
+                    this.teacherFake.TeacherSince = '2013';
+                    this.teacherFake.Type = 'H';
+                    this.teacherFake.Immersion.Active = true;
+                    this.teacherFake.Price.PrivateClass.Active = true;
+                    this.teacherFake.Price.PrivateClass.HourPrice = 20.00;
+                    this.teacherFake.Price.GroupClass.Active = true;
+                    this.teacherFake.Price.GroupClass.HourPrice = 15.00;
                 };
                 TeacherLandingPageController.prototype._hoverEvent = function (id, status) {
                     var args = { id: id, status: status };
@@ -4486,13 +6180,26 @@ var app;
                     };
                     this.$state.go('page.createTeacherPage.start', params, { reload: true });
                 };
+                TeacherLandingPageController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Is Authenticated', function (event, args) {
+                        self.isAuthenticated = self.AuthService.isAuthenticated();
+                        if (self.isAuthenticated && args) {
+                            self.goToCreate();
+                        }
+                    });
+                };
                 return TeacherLandingPageController;
             }());
             TeacherLandingPageController.controllerId = 'mainApp.pages.teacherLandingPage.TeacherLandingPageController';
-            TeacherLandingPageController.$inject = ['mainApp.core.util.FunctionsUtilService',
+            TeacherLandingPageController.$inject = ['$scope',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.auth.AuthService',
                 '$state',
                 'dataConfig',
-                '$uibModal'];
+                '$uibModal',
+                '$rootScope',
+                'mainApp.localStorageService'];
             teacherLandingPage.TeacherLandingPageController = TeacherLandingPageController;
             angular
                 .module('mainApp.pages.teacherLandingPage')
@@ -4501,6 +6208,159 @@ var app;
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
 //# sourceMappingURL=teacherLandingPage.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.resetPasswordPage', [])
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.resetPasswordPage', {
+            url: '/users/password/edit/:uid/:token',
+            views: {
+                'container': {
+                    templateUrl: 'app/pages/resetPasswordPage/resetPasswordPage.html',
+                    controller: 'mainApp.pages.resetPasswordPage.ResetPasswordPageController',
+                    controllerAs: 'vm'
+                }
+            },
+            parent: 'page',
+            data: {
+                requireLogin: false
+            },
+            params: {
+                uid: null,
+                token: null
+            },
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = true;
+                    $rootScope.activeFooter = true;
+                    $rootScope.activeMessageBar = false;
+                }]
+        });
+    }
+})();
+//# sourceMappingURL=resetPasswordPage.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var resetPasswordPage;
+        (function (resetPasswordPage) {
+            var ResetPasswordPageController = (function () {
+                function ResetPasswordPageController($state, dataConfig, $filter, $stateParams, AuthService, functionsUtil, messageUtil) {
+                    this.$state = $state;
+                    this.dataConfig = dataConfig;
+                    this.$filter = $filter;
+                    this.$stateParams = $stateParams;
+                    this.AuthService = AuthService;
+                    this.functionsUtil = functionsUtil;
+                    this.messageUtil = messageUtil;
+                    this._init();
+                }
+                ResetPasswordPageController.prototype._init = function () {
+                    var self = this;
+                    this.saving = false;
+                    this.uid = this.$stateParams.uid;
+                    this.token = this.$stateParams.token;
+                    this.passwordMinLength = this.dataConfig.passwordMinLength;
+                    this.passwordMaxLength = this.dataConfig.passwordMaxLength;
+                    this.form = {
+                        newPassword1: '',
+                        newPassword2: ''
+                    };
+                    this.validate = {
+                        newPassword1: { valid: true, message: '' },
+                        newPassword2: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                ResetPasswordPageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Reset Password Page';
+                    var self = this;
+                    console.log('resetPasswordPage controller actived');
+                    mixpanel.track(ENTER_MIXPANEL, {
+                        "uid": this.uid || '*',
+                        "token": this.token || '*'
+                    });
+                };
+                ResetPasswordPageController.prototype._validateForm = function () {
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
+                    var PASSWORD_MESSAGE = this.$filter('translate')('%recover.password.not_match.text');
+                    var formValid = true;
+                    var password_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.newPassword1 = this.functionsUtil.validator(this.form.newPassword1, password_rules);
+                    if (!this.validate.newPassword1.valid) {
+                        formValid = this.validate.newPassword1.valid;
+                    }
+                    this.validate.newPassword2 = this.functionsUtil.validator(this.form.newPassword2, password_rules);
+                    if (!this.validate.newPassword2.valid) {
+                        formValid = this.validate.newPassword2.valid;
+                    }
+                    if (this.form.newPassword1 !== this.form.newPassword2) {
+                        formValid = false;
+                        this.validate.globalValidate.valid = false;
+                        this.validate.globalValidate.message = PASSWORD_MESSAGE;
+                    }
+                    return formValid;
+                };
+                ResetPasswordPageController.prototype._changePassword = function () {
+                    var SUCCESS_CHANGE_PROCESS = this.$filter('translate')('%recover.password.success.text');
+                    var LINK_EXPIRED = this.$filter('translate')('%recover.password.link_expired.text');
+                    var PASSWORD_COMMON = this.$filter('translate')('%recover.password.password_common.text');
+                    var self = this;
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this.validate.globalValidate.valid = true;
+                        this.saving = true;
+                        this.AuthService.confirmResetPassword(self.uid, self.token, self.form.newPassword1, self.form.newPassword2).then(function (response) {
+                            self.saving = false;
+                            self.messageUtil.success(SUCCESS_CHANGE_PROCESS);
+                            self.$state.go('page.landingPage', { showLogin: true }, { reload: true });
+                        }, function (error) {
+                            self.saving = false;
+                            self.validate.globalValidate.valid = false;
+                            if (error.data) {
+                                if (error.data.token) {
+                                    if (error.data.token[0] === 'Invalid value') {
+                                        self.validate.globalValidate.message = LINK_EXPIRED;
+                                    }
+                                    else {
+                                        self.messageUtil.error('');
+                                    }
+                                }
+                                else if (error.data.newPassword2) {
+                                    self.validate.globalValidate.message = PASSWORD_COMMON;
+                                }
+                                else {
+                                    self.messageUtil.error('');
+                                }
+                            }
+                        });
+                    }
+                };
+                return ResetPasswordPageController;
+            }());
+            ResetPasswordPageController.controllerId = 'mainApp.pages.resetPasswordPage.ResetPasswordPageController';
+            ResetPasswordPageController.$inject = [
+                '$state',
+                'dataConfig',
+                '$filter',
+                '$stateParams',
+                'mainApp.auth.AuthService',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.core.util.messageUtilService'
+            ];
+            resetPasswordPage.ResetPasswordPageController = ResetPasswordPageController;
+            angular
+                .module('mainApp.pages.resetPasswordPage')
+                .controller(ResetPasswordPageController.controllerId, ResetPasswordPageController);
+        })(resetPasswordPage = pages.resetPasswordPage || (pages.resetPasswordPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=resetPasswordPage.controller.js.map
 (function () {
     'use strict';
     angular
@@ -4518,6 +6378,12 @@ var app;
                 }
             },
             parent: 'page',
+            data: {
+                requireLogin: false
+            },
+            params: {
+                showLogin: false,
+            },
             cache: false,
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
@@ -4553,11 +6419,13 @@ var app;
         var landingPage;
         (function (landingPage) {
             var LandingPageController = (function () {
-                function LandingPageController($state, $stateParams, dataConfig, $uibModal, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope, localStorage) {
+                function LandingPageController($scope, $state, $stateParams, dataConfig, $uibModal, AuthService, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope, localStorage) {
+                    this.$scope = $scope;
                     this.$state = $state;
                     this.$stateParams = $stateParams;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
+                    this.AuthService = AuthService;
                     this.messageUtil = messageUtil;
                     this.functionsUtil = functionsUtil;
                     this.LandingPageService = LandingPageService;
@@ -4568,6 +6436,10 @@ var app;
                     this._init();
                 }
                 LandingPageController.prototype._init = function () {
+                    this.isAuthenticated = this.AuthService.isAuthenticated();
+                    if (this.$rootScope.profileData) {
+                        this.isTeacher = this.$rootScope.profileData.IsTeacher;
+                    }
                     this.form = {
                         userData: {
                             name: '',
@@ -4598,9 +6470,10 @@ var app;
                     this.activate();
                 };
                 LandingPageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Main Landing Page';
                     var self = this;
                     console.log('landingPage controller actived');
-                    mixpanel.track("Enter: Main Landing Page");
+                    mixpanel.track(ENTER_MIXPANEL);
                     if (this.$stateParams.id) {
                         var options = {
                             animation: false,
@@ -4618,15 +6491,28 @@ var app;
                         };
                         var modalInstance = this.$uibModal.open(options);
                     }
+                    if (this.$stateParams.showLogin) {
+                        this._openLogInModal();
+                    }
+                    this._subscribeToEvents();
                 };
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
-                    mixpanel.track("Change Language on landingPage");
+                };
+                LandingPageController.prototype.logout = function () {
+                    var self = this;
+                    this.AuthService.logout().then(function (response) {
+                        window.location.reload();
+                    }, function (response) {
+                        DEBUG && console.log('A problem occured while logging you out.');
+                    });
                 };
                 LandingPageController.prototype._sendCountryFeedback = function () {
+                    var ENTER_MIXPANEL = 'Click: Send Country Feedback';
                     var FEEDBACK_SUCCESS_MESSAGE = '¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.';
                     var self = this;
                     this.form.feedback.NextCountry = this.countryObject.code;
+                    mixpanel.track(ENTER_MIXPANEL);
                     if (this.form.feedback.NextCountry) {
                         this.infoCountry.sending = true;
                         this.infoCountry.sent = false;
@@ -4653,31 +6539,33 @@ var app;
                     }
                 };
                 LandingPageController.prototype._recommendTeacher = function () {
+                    var CLICK_MIXPANEL = 'Click: Recommend Teacher';
                     var url = 'https://waysily.typeform.com/to/iAWFeg';
-                    mixpanel.track("Click on recommend teacher");
+                    mixpanel.track(CLICK_MIXPANEL);
                     window.open(url, '_blank');
                 };
                 LandingPageController.prototype._recommendSchool = function () {
+                    var CLICK_MIXPANEL = 'Click: Recommend School';
                     var url = 'https://waysily.typeform.com/to/q5uT0P';
-                    mixpanel.track("Click on recommend school");
+                    mixpanel.track(CLICK_MIXPANEL);
                     window.open(url, '_blank');
                 };
                 LandingPageController.prototype._createEarlyAdopter = function () {
                     var NULL_ENUM = 2;
                     var EMPTY_ENUM = 3;
                     var EMAIL_ENUM = 0;
+                    var NEW_MIXPANEL = 'New Early Adopter data';
                     var self = this;
                     var email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
                     this.validate.email = this.functionsUtil.validator(this.form.userData.email, email_rules);
                     if (this.validate.email.valid) {
                         this.infoNewUser.sending = true;
-                        mixpanel.track("Click on Notify button", {
+                        mixpanel.track(NEW_MIXPANEL, {
                             "name": this.form.userData.name || '*',
                             "email": this.form.userData.email,
                             "comment": this.form.userData.comment || '*'
                         });
                         var userData = {
-                            uid: app.core.util.functionsUtil.FunctionsUtilService.generateGuid(),
                             name: this.form.userData.name || '*',
                             email: this.form.userData.email,
                             comment: this.form.userData.comment || '*'
@@ -4703,24 +6591,68 @@ var app;
                     }
                 };
                 LandingPageController.prototype._openSignUpModal = function () {
+                    var CLICK_MIXPANEL = 'Click on Sign up: main landing page';
                     var self = this;
                     var options = {
                         animation: false,
                         backdrop: 'static',
                         keyboard: false,
+                        size: 'sm',
                         templateUrl: this.dataConfig.modalSignUpTmpl,
-                        controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
                     };
                     var modalInstance = this.$uibModal.open(options);
-                    mixpanel.track("Click on 'Join as Student' landing page header");
+                    mixpanel.track(CLICK_MIXPANEL);
+                };
+                LandingPageController.prototype._openLogInModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        size: 'sm',
+                        templateUrl: this.dataConfig.modalLogInTmpl,
+                        controller: 'mainApp.components.modal.ModalLogInController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function () {
+                        self.$rootScope.$broadcast('Is Authenticated');
+                    }, function () {
+                        DEBUG && console.info('Modal dismissed at: ' + new Date());
+                    });
+                };
+                LandingPageController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Is Authenticated', function (event, args) {
+                        self.isAuthenticated = self.AuthService.isAuthenticated();
+                        if (self.$rootScope.profileData) {
+                            self.isTeacher = self.$rootScope.profileData.IsTeacher;
+                        }
+                    });
                 };
                 return LandingPageController;
             }());
             LandingPageController.controllerId = 'mainApp.pages.landingPage.LandingPageController';
-            LandingPageController.$inject = ['$state',
+            LandingPageController.$inject = ['$scope',
+                '$state',
                 '$stateParams',
                 'dataConfig',
                 '$uibModal',
+                'mainApp.auth.AuthService',
                 'mainApp.core.util.messageUtilService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.pages.landingPage.LandingPageService',
@@ -4744,24 +6676,29 @@ var app;
         (function (landingPage) {
             'use strict';
             var LandingPageService = (function () {
-                function LandingPageService(restApi) {
+                function LandingPageService(restApi, $q) {
                     this.restApi = restApi;
+                    this.$q = $q;
+                    this.EARLY_URI = 'early';
                 }
                 LandingPageService.prototype.createEarlyAdopter = function (userData) {
-                    var url = 'early';
-                    return this.restApi.create({ url: url }, userData).$promise
-                        .then(function (data) {
-                        return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                    var url = this.EARLY_URI;
+                    var deferred = this.$q.defer();
+                    this.restApi.create({ url: url }, userData).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        deferred.reject(error);
                     });
+                    return deferred.promise;
                 };
                 return LandingPageService;
             }());
             LandingPageService.serviceId = 'mainApp.pages.landingPage.LandingPageService';
             LandingPageService.$inject = [
-                'mainApp.core.restApi.restApiService'
+                'mainApp.core.restApi.restApiService',
+                '$q'
             ];
             landingPage.LandingPageService = LandingPageService;
             angular
@@ -4771,78 +6708,6 @@ var app;
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
 //# sourceMappingURL=landingPage.service.js.map
-(function () {
-    'use strict';
-    angular
-        .module('mainApp.pages.signUpPage', [])
-        .config(config);
-    function config($stateProvider) {
-        $stateProvider
-            .state('signUp', {
-            url: '/signUp',
-            views: {
-                'container': {
-                    templateUrl: 'app/pages/signUpPage/signUpPage.html',
-                    controller: 'mainApp.pages.signUpPage.SignUpPageController',
-                    controllerAs: 'vm'
-                }
-            },
-            params: {
-                user: null
-            }
-        });
-    }
-})();
-//# sourceMappingURL=signUpPage.config.js.map
-var app;
-(function (app) {
-    var pages;
-    (function (pages) {
-        var signUpPage;
-        (function (signUpPage) {
-            var SignUpPageController = (function () {
-                function SignUpPageController($state, $filter, $scope, AuthService) {
-                    this.$state = $state;
-                    this.$filter = $filter;
-                    this.$scope = $scope;
-                    this.AuthService = AuthService;
-                    this._init();
-                }
-                SignUpPageController.prototype._init = function () {
-                    this.form = {
-                        username: '',
-                        email: '',
-                        password: ''
-                    };
-                    this.error = {
-                        message: ''
-                    };
-                    this.activate();
-                };
-                SignUpPageController.prototype.activate = function () {
-                    console.log('signUpPage controller actived');
-                };
-                SignUpPageController.prototype.signUp = function () {
-                    var self = this;
-                    this.AuthService.signUpPassword(this.form.username, this.form.email, this.form.password);
-                };
-                return SignUpPageController;
-            }());
-            SignUpPageController.controllerId = 'mainApp.pages.signUpPage.SignUpPageController';
-            SignUpPageController.$inject = [
-                '$state',
-                '$filter',
-                '$scope',
-                'mainApp.auth.AuthService'
-            ];
-            signUpPage.SignUpPageController = SignUpPageController;
-            angular
-                .module('mainApp.pages.signUpPage')
-                .controller(SignUpPageController.controllerId, SignUpPageController);
-        })(signUpPage = pages.signUpPage || (pages.signUpPage = {}));
-    })(pages = app.pages || (app.pages = {}));
-})(app || (app = {}));
-//# sourceMappingURL=signUpPage.controller.js.map
 (function () {
     'use strict';
     angular
@@ -4858,6 +6723,9 @@ var app;
                     controller: 'mainApp.pages.searchPage.SearchPageController',
                     controllerAs: 'vm'
                 }
+            },
+            data: {
+                requireLogin: false
             },
             parent: 'page',
             params: {
@@ -4902,9 +6770,10 @@ var app;
                     this.activate();
                 };
                 SearchPageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Search Page';
                     var self = this;
                     console.log('searchPage controller actived');
-                    mixpanel.track("Enter: Search Page");
+                    mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
                     this.TeacherService.getAllTeachersByStatus(this.VALIDATED).then(function (response) {
                         self.type = 'teacher';
@@ -5158,8 +7027,8 @@ var app;
                 UserProfilePageController.prototype.activate = function () {
                     var self = this;
                     console.log('userProfilePage controller actived');
-                    this.UserService.getUserById(this.$stateParams.id).then(function (response) {
-                        self.data = new app.models.user.User(response);
+                    this.UserService.getUserProfileById(this.$stateParams.id).then(function (response) {
+                        self.data = new app.models.user.Profile(response);
                     });
                 };
                 UserProfilePageController.prototype.onTimeSet = function (newDate, oldDate) {
@@ -5199,19 +7068,32 @@ var app;
     function config($stateProvider) {
         $stateProvider
             .state('page.userEditProfilePage', {
-            url: '/users/edit/:id',
+            url: '/users/edit',
             views: {
                 'container': {
-                    templateUrl: 'app/pages/userEditProfilePage/userEditProfilePage.html',
+                    templateUrl: 'app/pages/editProfile/userEditProfilePage/userEditProfilePage.html',
                     controller: 'mainApp.pages.userEditProfilePage.UserEditProfilePageController',
-                    controllerAs: 'vm'
+                    controllerAs: 'vm',
+                    resolve: {
+                        waitForAuth: ['mainApp.auth.AuthService', function (AuthService) {
+                                return AuthService.autoRefreshToken();
+                            }]
+                    }
                 }
             },
-            parent: 'page',
+            cache: false,
             params: {
                 user: null,
-                id: '1'
-            }
+                id: null
+            },
+            data: {
+                requireLogin: true
+            },
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = true;
+                    $rootScope.activeFooter = true;
+                    $rootScope.activeMessageBar = false;
+                }]
         });
     }
 })();
@@ -5223,38 +7105,383 @@ var app;
         var userEditProfilePage;
         (function (userEditProfilePage) {
             var UserEditProfilePageController = (function () {
-                function UserEditProfilePageController($state, $filter, $scope) {
+                function UserEditProfilePageController(dataConfig, userService, getDataFromJson, functionsUtil, $state, $filter, $timeout, $uibModal, $scope, $rootScope) {
+                    this.dataConfig = dataConfig;
+                    this.userService = userService;
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtil = functionsUtil;
                     this.$state = $state;
                     this.$filter = $filter;
+                    this.$timeout = $timeout;
+                    this.$uibModal = $uibModal;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this._init();
                 }
                 UserEditProfilePageController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
+                    this.saving = false;
+                    this.saved = false;
+                    this.error = false;
+                    this.countryObject = { code: '', value: '' };
+                    this.genderObject = { gender: { code: '', value: '' } };
+                    this.dateObject = { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } };
+                    if (this.$rootScope.profileData) {
+                        this.isTeacher = this.$rootScope.profileData.IsTeacher;
+                    }
                     this.form = {
-                        username: '',
-                        email: ''
+                        firstName: '',
+                        lastName: '',
+                        phoneNumber: '',
+                        gender: '',
+                        birthDate: null,
+                        countryBirth: '',
+                        cityBirth: '',
+                        about: '',
+                        native: [],
+                        learn: [],
+                        teach: []
                     };
-                    this.error = {
-                        message: ''
+                    this.listMonths = this.getDataFromJson.getMonthi18n();
+                    this.listGenders = this.getDataFromJson.getSexi18n();
+                    this.listDays = this.functionsUtil.buildNumberSelectList(1, 31);
+                    this.listYears = this.functionsUtil.buildNumberSelectList(1916, 2017);
+                    this.listCountries = this.getDataFromJson.getCountryi18n();
+                    this.validate = {
+                        firstName: { valid: true, message: '' },
+                        lastName: { valid: true, message: '' },
+                        phoneNumber: { valid: true, message: '' },
+                        gender: { valid: true, message: '' },
+                        birthDate: {
+                            day: { valid: true, message: '' },
+                            month: { valid: true, message: '' },
+                            year: { valid: true, message: '' },
+                            valid: true,
+                            message: ''
+                        },
+                        countryBirth: { valid: true, message: '' },
+                        cityBirth: { valid: true, message: '' },
+                        about: { valid: true, message: '' },
+                        native: { valid: true, message: '' },
+                        teach: { valid: true, message: '' },
+                        learn: { valid: true, message: '' }
                     };
                     this.activate();
                 };
                 UserEditProfilePageController.prototype.activate = function () {
-                    console.log('userEditProfilePage controller actived');
+                    var ENTER_MIXPANEL = 'Enter: Edit Profile Page (Basic Info)';
+                    DEBUG && console.log('UserEditProfilePage controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
+                    this.fillFormWithProfileData();
                 };
                 UserEditProfilePageController.prototype.goToEditMedia = function () {
                     this.$state.go('page.userEditMediaPage');
                 };
-                UserEditProfilePageController.prototype.goToEditAgenda = function () {
-                    this.$state.go('page.userEditAgendaPage');
+                UserEditProfilePageController.prototype.goToEditLocation = function () {
+                    this.$state.go('page.userEditLocationPage');
+                };
+                UserEditProfilePageController.prototype.fillFormWithProfileData = function () {
+                    var self = this;
+                    var userId = this.$rootScope.userData.id;
+                    if (userId) {
+                        this.userService.getUserProfileById(userId)
+                            .then(function (response) {
+                            if (response.userId) {
+                                self.$rootScope.profileData = new app.models.user.Profile(response);
+                                self._fillForm(self.$rootScope.profileData);
+                            }
+                        });
+                    }
+                };
+                UserEditProfilePageController.prototype._fillForm = function (data) {
+                    this.form.firstName = data.FirstName;
+                    this.form.lastName = data.LastName;
+                    this.form.phoneNumber = data.PhoneNumber;
+                    this.genderObject.gender.code = data.Gender;
+                    var date = this.functionsUtil.splitDate(data.BirthDate);
+                    this.dateObject.day.value = date.day ? parseInt(date.day) : '';
+                    this.dateObject.month.code = date.month !== 'Invalid date' ? date.month : '';
+                    this.dateObject.year.value = date.year ? parseInt(date.year) : '';
+                    this.countryObject.code = data.BornCountry;
+                    this.form.cityBirth = data.BornCity;
+                    this.form.about = data.About;
+                    if (this.form.native.length === 0) {
+                        var languageArray = this.getDataFromJson.getLanguagei18n();
+                        for (var i = 0; i < languageArray.length; i++) {
+                            if (data.Languages.Native) {
+                                for (var j = 0; j < data.Languages.Native.length; j++) {
+                                    if (data.Languages.Native[j] == languageArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = parseInt(languageArray[i].code);
+                                        obj.value = languageArray[i].value;
+                                        if (this.form.native == null) {
+                                            this.form.native = [];
+                                            this.form.native.push(obj);
+                                        }
+                                        else {
+                                            this.form.native.push(obj);
+                                        }
+                                    }
+                                }
+                            }
+                            if (data.Languages.Learn) {
+                                for (var j = 0; j < data.Languages.Learn.length; j++) {
+                                    if (data.Languages.Learn[j] == languageArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = parseInt(languageArray[i].code);
+                                        obj.value = languageArray[i].value;
+                                        if (this.form.learn == null) {
+                                            this.form.learn = [];
+                                            this.form.learn.push(obj);
+                                        }
+                                        else {
+                                            this.form.learn.push(obj);
+                                        }
+                                    }
+                                }
+                            }
+                            if (data.Languages.Teach) {
+                                for (var j = 0; j < data.Languages.Teach.length; j++) {
+                                    if (data.Languages.Teach[j] == languageArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = parseInt(languageArray[i].code);
+                                        obj.value = languageArray[i].value;
+                                        if (this.form.teach == null) {
+                                            this.form.teach = [];
+                                            this.form.teach.push(obj);
+                                        }
+                                        else {
+                                            this.form.teach.push(obj);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+                UserEditProfilePageController.prototype._validateBasicInfoForm = function () {
+                    var NULL_ENUM = 2;
+                    var NAN_ENUM = 8;
+                    var EMPTY_ENUM = 3;
+                    var EMAIL_ENUM = 0;
+                    var NUMBER_ENUM = 4;
+                    var BIRTHDATE_MESSAGE = this.$filter('translate')('%create.teacher.basic_info.form.birthdate.validation.message.text');
+                    var formValid = true;
+                    var first_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.firstName = this.functionsUtil.validator(this.form.firstName, first_rules);
+                    if (!this.validate.firstName.valid) {
+                        formValid = this.validate.firstName.valid;
+                    }
+                    var last_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.lastName = this.functionsUtil.validator(this.form.lastName, last_rules);
+                    if (!this.validate.lastName.valid) {
+                        formValid = this.validate.lastName.valid;
+                    }
+                    var phoneNumber_rules = [NULL_ENUM, EMPTY_ENUM, NUMBER_ENUM];
+                    var onlyNum = this.form.phoneNumber.replace(/\D+/g, "");
+                    onlyNum = parseInt(onlyNum) || '';
+                    this.validate.phoneNumber = this.functionsUtil.validator(onlyNum, phoneNumber_rules);
+                    if (!this.validate.phoneNumber.valid) {
+                        formValid = this.validate.phoneNumber.valid;
+                    }
+                    var gender_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.gender = this.functionsUtil.validator(this.genderObject.gender.code, gender_rules);
+                    if (!this.validate.gender.valid) {
+                        formValid = this.validate.gender.valid;
+                    }
+                    var day_birthdate_rules = [NULL_ENUM, EMPTY_ENUM, NAN_ENUM];
+                    this.validate.birthDate.day = this.functionsUtil.validator(this.dateObject.day.value, day_birthdate_rules);
+                    if (!this.validate.birthDate.day.valid) {
+                        formValid = this.validate.birthDate.day.valid;
+                        this.validate.birthDate.valid = this.validate.birthDate.day.valid;
+                        this.validate.birthDate.message = BIRTHDATE_MESSAGE;
+                    }
+                    var month_birthdate_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.birthDate.month = this.functionsUtil.validator(this.dateObject.month.code, month_birthdate_rules);
+                    if (!this.validate.birthDate.month.valid) {
+                        formValid = this.validate.birthDate.month.valid;
+                        this.validate.birthDate.valid = this.validate.birthDate.month.valid;
+                        this.validate.birthDate.message = BIRTHDATE_MESSAGE;
+                    }
+                    var year_birthdate_rules = [NULL_ENUM, EMPTY_ENUM, NAN_ENUM];
+                    this.validate.birthDate.year = this.functionsUtil.validator(this.dateObject.year.value, year_birthdate_rules);
+                    if (!this.validate.birthDate.year.valid) {
+                        formValid = this.validate.birthDate.year.valid;
+                        this.validate.birthDate.valid = this.validate.birthDate.year.valid;
+                        this.validate.birthDate.message = BIRTHDATE_MESSAGE;
+                    }
+                    if (this.validate.birthDate.day.valid &&
+                        this.validate.birthDate.month.valid &&
+                        this.validate.birthDate.year.valid) {
+                        this.validate.birthDate.valid = true;
+                        this.validate.birthDate.message = '';
+                    }
+                    var country_birth_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.countryBirth = this.functionsUtil.validator(this.countryObject.code, country_birth_rules);
+                    if (!this.validate.countryBirth.valid) {
+                        formValid = this.validate.countryBirth.valid;
+                    }
+                    var city_birth_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.cityBirth = this.functionsUtil.validator(this.form.cityBirth, city_birth_rules);
+                    if (!this.validate.cityBirth.valid) {
+                        formValid = this.validate.cityBirth.valid;
+                    }
+                    var about_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.about = this.functionsUtil.validator(this.form.about, about_rules);
+                    if (!this.validate.about.valid) {
+                        formValid = this.validate.about.valid;
+                    }
+                    return formValid;
+                };
+                UserEditProfilePageController.prototype._validateLanguagesForm = function () {
+                    var NULL_ENUM = 2;
+                    var NAN_ENUM = 8;
+                    var EMPTY_ENUM = 3;
+                    var EMAIL_ENUM = 0;
+                    var NUMBER_ENUM = 4;
+                    var BIRTHDATE_MESSAGE = this.$filter('translate')('%create.teacher.basic_info.form.birthdate.validation.message.text');
+                    var formValid = true;
+                    var native_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.native = this.functionsUtil.validator(this.form.native, native_rules);
+                    if (!this.validate.native.valid) {
+                        formValid = this.validate.native.valid;
+                    }
+                    var learn_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.learn = this.functionsUtil.validator(this.form.learn, learn_rules);
+                    if (!this.validate.learn.valid) {
+                        formValid = this.validate.learn.valid;
+                    }
+                    return formValid;
+                };
+                UserEditProfilePageController.prototype._addNewLanguages = function (type, $event) {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalLanguagesTmpl,
+                        controller: 'mainApp.components.modal.ModalLanguageController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    type: type,
+                                    list: self.form[type]
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function (newLanguagesList) {
+                        self.form[type] = newLanguagesList;
+                    }, function () {
+                        console.info('Modal dismissed at: ' + new Date());
+                    });
+                    $event.preventDefault();
+                };
+                UserEditProfilePageController.prototype._removeLanguage = function (key, type) {
+                    var newArray = this.form[type].filter(function (el) {
+                        return el.key !== key;
+                    });
+                    this.form[type] = newArray;
+                };
+                UserEditProfilePageController.prototype._setBasicInfoFromForm = function () {
+                    var dateFormatted = this.functionsUtil.joinDate(this.dateObject.day.value, this.dateObject.month.code, this.dateObject.year.value);
+                    var genderCode = this.genderObject.gender.code;
+                    var countryCode = this.countryObject.code;
+                    this.form.countryBirth = countryCode;
+                    this.$rootScope.profileData.FirstName = this.form.firstName;
+                    this.$rootScope.profileData.LastName = this.form.lastName;
+                    this.$rootScope.profileData.PhoneNumber = this.form.phoneNumber;
+                    this.$rootScope.profileData.Gender = genderCode;
+                    this.$rootScope.profileData.BirthDate = dateFormatted;
+                    this.$rootScope.profileData.BornCountry = this.form.countryBirth;
+                    this.$rootScope.profileData.BornCity = this.form.cityBirth;
+                    this.$rootScope.profileData.About = this.form.about;
+                };
+                UserEditProfilePageController.prototype._setLanguageFromForm = function () {
+                    if (this.form.native) {
+                        var native = [];
+                        for (var i = 0; i < this.form.native.length; i++) {
+                            native.push(this.form.native[i].key);
+                        }
+                        this.$rootScope.profileData.Languages.Native = native;
+                    }
+                    if (this.form.learn) {
+                        var learn = [];
+                        for (var i = 0; i < this.form.learn.length; i++) {
+                            learn.push(this.form.learn[i].key);
+                        }
+                        this.$rootScope.profileData.Languages.Learn = learn;
+                    }
+                    if (this.form.teach) {
+                        var teach = [];
+                        for (var i = 0; i < this.form.teach.length; i++) {
+                            teach.push(this.form.teach[i].key);
+                        }
+                        this.$rootScope.profileData.Languages.Teach = teach;
+                    }
+                };
+                UserEditProfilePageController.prototype.saveBasicInfoSection = function () {
+                    var self = this;
+                    var formValid = this._validateBasicInfoForm();
+                    if (formValid) {
+                        this.saving = true;
+                        this._setBasicInfoFromForm();
+                        this.save().then(function (saved) {
+                            self.saving = false;
+                            self.saved = saved;
+                            self.error = !saved;
+                            self.$timeout(function () {
+                                self.saved = false;
+                            }, self.TIME_SHOW_MESSAGE);
+                        });
+                    }
+                };
+                UserEditProfilePageController.prototype.saveLanguagesSection = function () {
+                    var self = this;
+                    var formValid = this._validateLanguagesForm();
+                    if (formValid) {
+                        this.saving = true;
+                        this._setLanguageFromForm();
+                        this.save().then(function (saved) {
+                            self.saving = false;
+                            self.saved = saved;
+                            self.error = !saved;
+                            self.$timeout(function () {
+                                self.saved = false;
+                            }, self.TIME_SHOW_MESSAGE);
+                        });
+                    }
+                };
+                UserEditProfilePageController.prototype.save = function () {
+                    var self = this;
+                    return this.userService.updateUserProfile(this.$rootScope.profileData)
+                        .then(function (response) {
+                        var saved = false;
+                        if (response.userId) {
+                            self.$rootScope.profileData = new app.models.user.Profile(response);
+                            saved = true;
+                        }
+                        return saved;
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        return false;
+                    });
                 };
                 return UserEditProfilePageController;
             }());
             UserEditProfilePageController.controllerId = 'mainApp.pages.userEditProfilePage.UserEditProfilePageController';
             UserEditProfilePageController.$inject = [
+                'dataConfig',
+                'mainApp.models.user.UserService',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
                 '$state',
                 '$filter',
-                '$scope'
+                '$timeout',
+                '$uibModal',
+                '$scope',
+                '$rootScope'
             ];
             userEditProfilePage.UserEditProfilePageController = UserEditProfilePageController;
             angular
@@ -5267,24 +7494,287 @@ var app;
 (function () {
     'use strict';
     angular
+        .module('mainApp.pages.userEditLocationPage', [])
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.userEditLocationPage', {
+            url: '/users/edit/location',
+            views: {
+                'container': {
+                    templateUrl: 'app/pages/editProfile/userEditLocationPage/userEditLocationPage.html',
+                    controller: 'mainApp.pages.userEditLocationPage.UserEditLocationPageController',
+                    controllerAs: 'vm',
+                    resolve: {
+                        waitForAuth: ['mainApp.auth.AuthService', function (AuthService) {
+                                return AuthService.autoRefreshToken();
+                            }]
+                    }
+                }
+            },
+            cache: false,
+            data: {
+                requireLogin: true
+            },
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = true;
+                    $rootScope.activeFooter = true;
+                    $rootScope.activeMessageBar = false;
+                }]
+        });
+    }
+})();
+//# sourceMappingURL=userEditLocationPage.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var userEditLocationPage;
+        (function (userEditLocationPage) {
+            var UserEditLocationPageController = (function () {
+                function UserEditLocationPageController(dataConfig, userService, getDataFromJson, functionsUtil, $state, $filter, $timeout, $scope, $rootScope) {
+                    this.dataConfig = dataConfig;
+                    this.userService = userService;
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtil = functionsUtil;
+                    this.$state = $state;
+                    this.$filter = $filter;
+                    this.$timeout = $timeout;
+                    this.$scope = $scope;
+                    this.$rootScope = $rootScope;
+                    this._init();
+                }
+                UserEditLocationPageController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
+                    if (this.$rootScope.profileData) {
+                        this.isTeacher = this.$rootScope.profileData.IsTeacher;
+                    }
+                    this.saving = false;
+                    this.saved = false;
+                    this.error = false;
+                    this.form = {
+                        countryLocation: '',
+                        cityLocation: '',
+                        stateLocation: '',
+                        addressLocation: '',
+                        zipCodeLocation: '',
+                        positionLocation: new app.models.user.Position()
+                    };
+                    this.countryObject = { code: '', value: '' };
+                    this.listCountries = this.getDataFromJson.getCountryi18n();
+                    this.mapConfig = this.functionsUtil.buildMapConfig(null, 'drag-maker-map', null, null);
+                    this.validate = {
+                        countryLocation: { valid: true, message: '' },
+                        cityLocation: { valid: true, message: '' },
+                        stateLocation: { valid: true, message: '' },
+                        addressLocation: { valid: true, message: '' },
+                        zipCodeLocation: { valid: true, message: '' },
+                        positionLocation: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                UserEditLocationPageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Edit Profile Page (Location)';
+                    DEBUG && console.log('UserEditLocationPage controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
+                    this.fillFormWithLocationData();
+                    this._subscribeToEvents();
+                };
+                UserEditLocationPageController.prototype.goToEditMedia = function () {
+                    this.$state.go('page.userEditMediaPage');
+                };
+                UserEditLocationPageController.prototype.goToEditProfile = function () {
+                    this.$state.go('page.userEditProfilePage');
+                };
+                UserEditLocationPageController.prototype.fillFormWithLocationData = function () {
+                    var self = this;
+                    var userId = this.$rootScope.userData.id;
+                    if (userId) {
+                        this.userService.getUserProfileById(userId)
+                            .then(function (response) {
+                            if (response.userId) {
+                                self.$rootScope.profileData = new app.models.user.Profile(response);
+                                self._fillForm(self.$rootScope.profileData);
+                            }
+                        });
+                    }
+                };
+                UserEditLocationPageController.prototype._fillForm = function (data) {
+                    this.form.addressLocation = data.Location.Address;
+                    this.form.cityLocation = data.Location.City;
+                    this.form.stateLocation = data.Location.State;
+                    this.form.zipCodeLocation = data.Location.ZipCode;
+                    this.countryObject.code = data.Location.Country;
+                    this.form.positionLocation = new app.models.user.Position(data.Location.Position);
+                    this.mapConfig = this.functionsUtil.buildMapConfig([
+                        {
+                            id: this.form.positionLocation.Id,
+                            location: {
+                                position: {
+                                    lat: parseFloat(this.form.positionLocation.Lat),
+                                    lng: parseFloat(this.form.positionLocation.Lng)
+                                }
+                            }
+                        }
+                    ], 'drag-maker-map', { lat: parseFloat(this.form.positionLocation.Lat), lng: parseFloat(this.form.positionLocation.Lng) }, null);
+                    this.$scope.$broadcast('BuildMarkers', this.mapConfig);
+                };
+                UserEditLocationPageController.prototype._validateLocationForm = function () {
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
+                    var NUMBER_ENUM = 4;
+                    var formValid = true;
+                    var country_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.countryLocation = this.functionsUtil.validator(this.countryObject.code, country_rules);
+                    if (!this.validate.countryLocation.valid) {
+                        formValid = this.validate.countryLocation.valid;
+                    }
+                    var city_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.cityLocation = this.functionsUtil.validator(this.form.cityLocation, city_rules);
+                    if (!this.validate.cityLocation.valid) {
+                        formValid = this.validate.cityLocation.valid;
+                    }
+                    var state_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.stateLocation = this.functionsUtil.validator(this.form.stateLocation, state_rules);
+                    if (!this.validate.stateLocation.valid) {
+                        formValid = this.validate.stateLocation.valid;
+                    }
+                    var address_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.addressLocation = this.functionsUtil.validator(this.form.addressLocation, address_rules);
+                    if (!this.validate.addressLocation.valid) {
+                        formValid = this.validate.addressLocation.valid;
+                    }
+                    var position_rules = [NULL_ENUM, EMPTY_ENUM];
+                    var latValidate = this.functionsUtil.validator(this.form.positionLocation.Lat, position_rules);
+                    var lngValidate = this.functionsUtil.validator(this.form.positionLocation.Lng, position_rules);
+                    if (!latValidate.valid || !lngValidate.valid) {
+                        if (!latValidate.valid) {
+                            this.validate.positionLocation = latValidate;
+                            formValid = this.validate.positionLocation.valid;
+                        }
+                        else if (!lngValidate.valid) {
+                            this.validate.positionLocation = lngValidate;
+                            formValid = this.validate.positionLocation.valid;
+                        }
+                    }
+                    return formValid;
+                };
+                UserEditLocationPageController.prototype.changeMapPosition = function () {
+                    var self = this;
+                    var countryCode = this.countryObject.code;
+                    this.form.countryLocation = countryCode;
+                    var location = {
+                        country: this.form.countryLocation,
+                        city: this.form.cityLocation,
+                        address: this.form.addressLocation
+                    };
+                    this.$timeout(function () {
+                        self.$scope.$broadcast('CodeAddress', location);
+                    });
+                };
+                UserEditLocationPageController.prototype._setLocationFromForm = function () {
+                    var countryCode = this.countryObject.code;
+                    this.form.countryLocation = countryCode;
+                    this.$rootScope.profileData.Location.Country = this.form.countryLocation;
+                    this.$rootScope.profileData.Location.Address = this.form.addressLocation;
+                    this.$rootScope.profileData.Location.City = this.form.cityLocation;
+                    this.$rootScope.profileData.Location.State = this.form.stateLocation;
+                    this.$rootScope.profileData.Location.ZipCode = this.form.zipCodeLocation;
+                    this.$rootScope.profileData.Location.Position = this.form.positionLocation;
+                };
+                UserEditLocationPageController.prototype.saveLocationSection = function () {
+                    var self = this;
+                    var formValid = this._validateLocationForm();
+                    if (formValid) {
+                        this.saving = true;
+                        this._setLocationFromForm();
+                        this.save().then(function (saved) {
+                            self.saving = false;
+                            self.saved = saved;
+                            self.error = !saved;
+                            self.$timeout(function () {
+                                self.saved = false;
+                            }, self.TIME_SHOW_MESSAGE);
+                        });
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                UserEditLocationPageController.prototype.save = function () {
+                    var self = this;
+                    return this.userService.updateUserProfile(this.$rootScope.profileData)
+                        .then(function (response) {
+                        var saved = false;
+                        if (response.userId) {
+                            self.$rootScope.profileData = new app.models.user.Profile(response);
+                            saved = true;
+                        }
+                        return saved;
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        return false;
+                    });
+                };
+                UserEditLocationPageController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Position', function (event, args) {
+                        self.form.positionLocation.Lng = args.lng;
+                        self.form.positionLocation.Lat = args.lat;
+                    });
+                };
+                return UserEditLocationPageController;
+            }());
+            UserEditLocationPageController.controllerId = 'mainApp.pages.userEditLocationPage.UserEditLocationPageController';
+            UserEditLocationPageController.$inject = [
+                'dataConfig',
+                'mainApp.models.user.UserService',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                '$state',
+                '$filter',
+                '$timeout',
+                '$scope',
+                '$rootScope'
+            ];
+            userEditLocationPage.UserEditLocationPageController = UserEditLocationPageController;
+            angular
+                .module('mainApp.pages.userEditLocationPage')
+                .controller(UserEditLocationPageController.controllerId, UserEditLocationPageController);
+        })(userEditLocationPage = pages.userEditLocationPage || (pages.userEditLocationPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=userEditLocationPage.controller.js.map
+(function () {
+    'use strict';
+    angular
         .module('mainApp.pages.userEditMediaPage', [])
         .config(config);
     function config($stateProvider) {
         $stateProvider
             .state('page.userEditMediaPage', {
-            url: '/users/edit/:id/media',
+            url: '/users/edit/media',
             views: {
                 'container': {
-                    templateUrl: 'app/pages/userEditMediaPage/userEditMediaPage.html',
+                    templateUrl: 'app/pages/editProfile/userEditMediaPage/userEditMediaPage.html',
                     controller: 'mainApp.pages.userEditMediaPage.UserEditMediaPageController',
-                    controllerAs: 'vm'
+                    controllerAs: 'vm',
+                    resolve: {
+                        waitForAuth: ['mainApp.auth.AuthService', function (AuthService) {
+                                return AuthService.autoRefreshToken();
+                            }]
+                    }
                 }
             },
-            parent: 'page',
-            params: {
-                user: null,
-                id: '1'
-            }
+            cache: false,
+            data: {
+                requireLogin: true
+            },
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = true;
+                    $rootScope.activeFooter = true;
+                    $rootScope.activeMessageBar = false;
+                }]
         });
     }
 })();
@@ -5296,35 +7786,163 @@ var app;
         var userEditMediaPage;
         (function (userEditMediaPage) {
             var UserEditMediaPageController = (function () {
-                function UserEditMediaPageController($state, $filter, $scope) {
+                function UserEditMediaPageController(dataConfig, userService, S3UploadService, getDataFromJson, functionsUtil, Upload, $state, $filter, $timeout, $scope, $rootScope) {
+                    this.dataConfig = dataConfig;
+                    this.userService = userService;
+                    this.S3UploadService = S3UploadService;
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtil = functionsUtil;
+                    this.Upload = Upload;
                     this.$state = $state;
                     this.$filter = $filter;
+                    this.$timeout = $timeout;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this._init();
                 }
                 UserEditMediaPageController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
+                    if (this.$rootScope.profileData) {
+                        this.isTeacher = this.$rootScope.profileData.IsTeacher;
+                    }
+                    this.saving = false;
+                    this.saved = false;
+                    this.error = false;
                     this.form = {
-                        username: '',
-                        email: ''
+                        avatar: null,
+                        croppedDataUrl: '',
+                        thumbnail: ''
                     };
-                    this.error = {
-                        message: ''
+                    this.validate = {
+                        avatar: { valid: true, message: '' },
+                        thumbnail: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
                     };
                     this.activate();
                 };
                 UserEditMediaPageController.prototype.activate = function () {
-                    console.log('userEditMediaPage controller actived');
+                    var ENTER_MIXPANEL = 'Enter: Edit Profile Page (Photo)';
+                    DEBUG && console.log('userEditMediaPage controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
                 };
                 UserEditMediaPageController.prototype.goToEditProfile = function () {
                     this.$state.go('page.userEditProfilePage');
+                };
+                UserEditMediaPageController.prototype.goToEditLocation = function () {
+                    this.$state.go('page.userEditLocationPage');
+                };
+                UserEditMediaPageController.prototype._validateForm = function () {
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
+                    var DEFINED_ENUM = 6;
+                    var PHOTO_MESSAGE = this.$filter('translate')('%create.teacher.photo.validation.message.text');
+                    var formValid = true;
+                    this.validate.globalValidate.valid = true;
+                    this.validate.globalValidate.message = '';
+                    var avatar_rules = [NULL_ENUM, EMPTY_ENUM, DEFINED_ENUM];
+                    this.validate.avatar = this.functionsUtil.validator(this.form.avatar, avatar_rules);
+                    var thumbnail_rules = [NULL_ENUM, EMPTY_ENUM, DEFINED_ENUM];
+                    this.validate.thumbnail = this.functionsUtil.validator(this.form.thumbnail, thumbnail_rules);
+                    if (!this.validate.avatar.valid) {
+                        if (!this.validate.thumbnail.valid) {
+                            this.validate.globalValidate.valid = false;
+                            this.validate.globalValidate.message = PHOTO_MESSAGE;
+                            formValid = this.validate.globalValidate.valid;
+                        }
+                        else {
+                            this.validate.globalValidate.valid = true;
+                            this.validate.globalValidate.message = '';
+                        }
+                    }
+                    return formValid;
+                };
+                UserEditMediaPageController.prototype._resizeImage = function () {
+                    var self = this;
+                    var newName = app.core.util.functionsUtil.FunctionsUtilService.generateGuid() + '.jpeg';
+                    var options = {
+                        width: 250,
+                        height: 250,
+                        quality: 1.0,
+                        type: 'image/jpeg',
+                        pattern: '.jpg',
+                        restoreExif: false
+                    };
+                    var file = this.Upload.dataUrltoBlob(this.form.croppedDataUrl, newName);
+                    return this.Upload.resize(file, options).then(function (resizedFile) {
+                        return self._uploadImage(resizedFile).then(function (result) {
+                            return result;
+                        });
+                    });
+                };
+                UserEditMediaPageController.prototype._uploadImage = function (resizedFile) {
+                    var self = this;
+                    return this.S3UploadService.upload(resizedFile).then(function (result) {
+                        return result;
+                    }, function (error) {
+                        DEBUG && console.error('error', error);
+                        return error;
+                    });
+                };
+                UserEditMediaPageController.prototype._setDataModelFromForm = function (avatar) {
+                    this.$rootScope.profileData.Avatar = avatar;
+                };
+                UserEditMediaPageController.prototype.saveImageSection = function () {
+                    var self = this;
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this.saving = true;
+                        this._resizeImage().then(function (result) {
+                            if (result.Location) {
+                                self._setDataModelFromForm(result.Location);
+                                self.save().then(function (saved) {
+                                    self.saving = false;
+                                    self.saved = saved;
+                                    self.error = !saved;
+                                    self.form.avatar = self.saved ? null : self.form.avatar;
+                                    self.$timeout(function () {
+                                        self.saved = false;
+                                    }, self.TIME_SHOW_MESSAGE);
+                                });
+                            }
+                            else {
+                                self.error = true;
+                            }
+                        });
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                UserEditMediaPageController.prototype.save = function () {
+                    var self = this;
+                    return this.userService.updateUserProfile(this.$rootScope.profileData)
+                        .then(function (response) {
+                        var saved = false;
+                        if (response.userId) {
+                            self.$rootScope.profileData = new app.models.user.Profile(response);
+                            saved = true;
+                        }
+                        return saved;
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        return false;
+                    });
                 };
                 return UserEditMediaPageController;
             }());
             UserEditMediaPageController.controllerId = 'mainApp.pages.userEditMediaPage.UserEditMediaPageController';
             UserEditMediaPageController.$inject = [
+                'dataConfig',
+                'mainApp.models.user.UserService',
+                'mainApp.core.s3Upload.S3UploadService',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                'Upload',
                 '$state',
                 '$filter',
-                '$scope'
+                '$timeout',
+                '$scope',
+                '$rootScope'
             ];
             userEditMediaPage.UserEditMediaPageController = UserEditMediaPageController;
             angular
@@ -5350,11 +7968,7 @@ var app;
                     controllerAs: 'vm'
                 }
             },
-            parent: 'page',
-            params: {
-                user: null,
-                id: '1'
-            }
+            parent: 'page'
         });
     }
 })();
@@ -5452,6 +8066,1247 @@ var app;
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
 //# sourceMappingURL=userEditAgendaPage.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.editTeacher', [])
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.editTeacher', {
+            url: '/teachers/edit',
+            views: {
+                'container': {
+                    templateUrl: 'app/pages/editTeacher/editTeacher.html',
+                    controller: 'mainApp.pages.editTeacher.EditTeacherController',
+                    controllerAs: 'vm',
+                    resolve: {
+                        waitForAuth: ['mainApp.auth.AuthService', function (AuthService) {
+                                return AuthService.autoRefreshToken();
+                            }]
+                    }
+                }
+            },
+            cache: false,
+            data: {
+                requireLogin: true
+            },
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = true;
+                    $rootScope.activeFooter = true;
+                    $rootScope.activeMessageBar = false;
+                }]
+        });
+    }
+})();
+//# sourceMappingURL=editTeacher.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var editTeacher;
+        (function (editTeacher) {
+            var EditTeacherController = (function () {
+                function EditTeacherController(getDataFromJson, functionsUtilService, userService, teacherService, messageUtil, dataConfig, $state, $stateParams, $filter, $scope, $window, $rootScope, $uibModal, waitForAuth) {
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
+                    this.userService = userService;
+                    this.teacherService = teacherService;
+                    this.messageUtil = messageUtil;
+                    this.dataConfig = dataConfig;
+                    this.$state = $state;
+                    this.$stateParams = $stateParams;
+                    this.$filter = $filter;
+                    this.$scope = $scope;
+                    this.$window = $window;
+                    this.$rootScope = $rootScope;
+                    this.$uibModal = $uibModal;
+                    this._init();
+                }
+                EditTeacherController.prototype._init = function () {
+                    var self = this;
+                    var loggedUserId = this.$rootScope.userData.id;
+                    var currentState = this.$state.current.name;
+                    this.$rootScope.teacherData = new app.models.teacher.Teacher();
+                    this.$rootScope.teacherData.Profile.UserId = loggedUserId;
+                    this.activate();
+                };
+                EditTeacherController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Edit Teacher Page';
+                    var self = this;
+                    console.log('editTeacher controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
+                    this._subscribeToEvents();
+                    this.fillFormWithProfileData();
+                    this.fillFormWithTeacherData();
+                };
+                EditTeacherController.prototype.fillFormWithProfileData = function () {
+                    var self = this;
+                    var userId = this.$rootScope.userData.id;
+                    if (userId) {
+                        this.userService.getUserProfileById(userId)
+                            .then(function (response) {
+                            if (response.userId) {
+                                self.$rootScope.profileData = new app.models.user.Profile(response);
+                                self.$scope.$broadcast('Fill User Profile Form', self.$rootScope.profileData);
+                            }
+                        });
+                    }
+                };
+                EditTeacherController.prototype.fillFormWithTeacherData = function () {
+                    var self = this;
+                    var userId = this.$rootScope.userData.id;
+                    this.teacherService.getTeacherByProfileId(userId).then(function (response) {
+                        if (response.id) {
+                            self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
+                            self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
+                        }
+                    });
+                };
+                EditTeacherController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Save Profile Data', function (event, args) {
+                        var SUCCESS_MESSAGE = self.$filter('translate')('%notification.success.text');
+                        var userId = self.$rootScope.profileData.UserId;
+                        if (userId) {
+                            self.userService.updateUserProfile(self.$rootScope.profileData)
+                                .then(function (response) {
+                                if (response.userId) {
+                                    self.$rootScope.profileData = new app.models.user.Profile(response);
+                                    self.$scope.$broadcast('Fill User Profile Form', self.$rootScope.profileData);
+                                    self.$scope.$broadcast('Saved');
+                                }
+                            }, function (error) {
+                                self.messageUtil.error('');
+                                self.$scope.$broadcast('Fill User Profile Form', 'error');
+                            });
+                        }
+                    });
+                    this.$scope.$on('Save Data', function (event, args) {
+                        var SUCCESS_MESSAGE = self.$filter('translate')('%notification.success.text');
+                        if (self.$rootScope.teacherData.Id) {
+                            self.teacherService.updateTeacher(self.$rootScope.teacherData)
+                                .then(function (response) {
+                                if (response.id) {
+                                    self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
+                                    self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
+                                    self.$scope.$broadcast('Saved');
+                                }
+                            }, function (error) {
+                                self.messageUtil.error('');
+                                self.$scope.$broadcast('Fill Form', 'error');
+                            });
+                        }
+                        else {
+                            DEBUG && console.log('self.$rootScope.teacherData.Id doesn´t exist');
+                        }
+                    });
+                };
+                return EditTeacherController;
+            }());
+            EditTeacherController.controllerId = 'mainApp.pages.editTeacher.EditTeacherController';
+            EditTeacherController.$inject = [
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.models.user.UserService',
+                'mainApp.models.teacher.TeacherService',
+                'mainApp.core.util.messageUtilService',
+                'dataConfig',
+                '$state',
+                '$stateParams',
+                '$filter',
+                '$scope',
+                '$window',
+                '$rootScope',
+                '$uibModal',
+                'waitForAuth'
+            ];
+            editTeacher.EditTeacherController = EditTeacherController;
+            angular
+                .module('mainApp.pages.editTeacher')
+                .controller(EditTeacherController.controllerId, EditTeacherController);
+        })(editTeacher = pages.editTeacher || (pages.editTeacher = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=editTeacher.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.editTeacher')
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.editTeacher.experience', {
+            url: '/experience',
+            views: {
+                'section': {
+                    templateUrl: 'app/pages/editTeacher/editTeacherExperience/editTeacherExperience.html',
+                    controller: 'mainApp.pages.editTeacher.EditTeacherExperienceController',
+                    controllerAs: 'vm'
+                }
+            },
+            cache: false
+        });
+    }
+})();
+//# sourceMappingURL=editTeacherExperience.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var editTeacher;
+        (function (editTeacher) {
+            var EditTeacherExperienceController = (function () {
+                function EditTeacherExperienceController(dataConfig, getDataFromJson, functionsUtilService, $timeout, $filter, $scope, $rootScope, $uibModal) {
+                    this.dataConfig = dataConfig;
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
+                    this.$timeout = $timeout;
+                    this.$filter = $filter;
+                    this.$scope = $scope;
+                    this.$rootScope = $rootScope;
+                    this.$uibModal = $uibModal;
+                    this._init();
+                }
+                EditTeacherExperienceController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
+                    this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.title.text');
+                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.description.text');
+                    this.saving = false;
+                    this.saved = false;
+                    this.error = false;
+                    this.helpText = {
+                        title: this.HELP_TEXT_TITLE,
+                        description: this.HELP_TEXT_DESCRIPTION
+                    };
+                    this.form = {
+                        type: 'H',
+                        experiences: []
+                    };
+                    var currentYear = parseInt(this.dataConfig.currentYear);
+                    this.listYears = this.functionsUtilService.buildNumberSelectList(1957, currentYear);
+                    this.yearObject = { value: '' };
+                    this._hobbyChecked = { type: 'H', checked: true };
+                    this._professionalChecked = { type: 'P', checked: false };
+                    this.validate = {
+                        type: { valid: true, message: '' },
+                        teacherSince: { valid: true, message: '' },
+                        experiences: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                EditTeacherExperienceController.prototype.activate = function () {
+                    DEBUG && console.log('EditTeacherExperienceController controller actived');
+                    this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
+                };
+                EditTeacherExperienceController.prototype.saveExperienceSection = function () {
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this.saving = true;
+                        this._setDataModelFromForm();
+                        this.$scope.$emit('Save Data');
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                EditTeacherExperienceController.prototype._checkType = function (key) {
+                    var type = key.type;
+                    if (type === 'H') {
+                        this._professionalChecked.checked = false;
+                        this._hobbyChecked.checked = true;
+                        this.form.type = this._hobbyChecked.type;
+                    }
+                    else {
+                        this._professionalChecked.checked = true;
+                        this._hobbyChecked.checked = false;
+                        this.form.type = this._professionalChecked.type;
+                    }
+                };
+                EditTeacherExperienceController.prototype._fillForm = function (data) {
+                    this.form.type = data.Type || 'H';
+                    if (this.form.type === 'H') {
+                        this._professionalChecked.checked = false;
+                        this._hobbyChecked.checked = true;
+                    }
+                    else {
+                        this._professionalChecked.checked = true;
+                        this._hobbyChecked.checked = false;
+                    }
+                    this.yearObject.value = data.TeacherSince;
+                    this.form.experiences = data.Experiences;
+                };
+                EditTeacherExperienceController.prototype._validateForm = function () {
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
+                    var formValid = true;
+                    var teacher_since_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.teacherSince = this.functionsUtilService.validator(this.yearObject.value, teacher_since_rules);
+                    if (!this.validate.teacherSince.valid) {
+                        formValid = this.validate.teacherSince.valid;
+                    }
+                    return formValid;
+                };
+                EditTeacherExperienceController.prototype.changeHelpText = function (type) {
+                    var TYPE_HOBBY_TITLE = this.$filter('translate')('%global.teacher.type.hobby.text');
+                    var TYPE_HOBBY_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.type.hobby.description.text');
+                    var TYPE_PROFESSIONAL_TITLE = this.$filter('translate')('%global.teacher.type.professional.text');
+                    var TYPE_PROFESSIONAL_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.type.professional.description.text');
+                    var SINCE_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.teacher_since.title.text');
+                    var SINCE_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.teacher_since.description.text');
+                    var EXPERIENCES_TITLE = this.$filter('translate')('%create.teacher.experience.help_text.experiences.title.text');
+                    var EXPERIENCES_DESCRIPTION = this.$filter('translate')('%create.teacher.experience.help_text.experiences.description.text');
+                    switch (type) {
+                        case 'default':
+                            this.helpText.title = this.HELP_TEXT_TITLE;
+                            this.helpText.description = this.HELP_TEXT_DESCRIPTION;
+                            break;
+                        case 'hobby':
+                            this.helpText.title = TYPE_HOBBY_TITLE;
+                            this.helpText.description = TYPE_HOBBY_DESCRIPTION;
+                            break;
+                        case 'professional':
+                            this.helpText.title = TYPE_PROFESSIONAL_TITLE;
+                            this.helpText.description = TYPE_PROFESSIONAL_DESCRIPTION;
+                            break;
+                        case 'teacherSince':
+                            this.helpText.title = SINCE_TITLE;
+                            this.helpText.description = SINCE_DESCRIPTION;
+                            break;
+                        case 'experiences':
+                            this.helpText.title = EXPERIENCES_TITLE;
+                            this.helpText.description = EXPERIENCES_DESCRIPTION;
+                            break;
+                    }
+                };
+                EditTeacherExperienceController.prototype._addEditExperience = function (index, $event) {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalExperienceTmpl,
+                        controller: 'mainApp.components.modal.ModalExperienceController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    experience: self.form.experiences[index],
+                                    teacherId: self.$rootScope.teacherData.Id
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function (newExperience) {
+                        if (newExperience) {
+                            self.form.experiences.push(newExperience);
+                        }
+                    }, function () {
+                        DEBUG && console.info('Modal dismissed at: ' + new Date());
+                    });
+                    $event.preventDefault();
+                };
+                EditTeacherExperienceController.prototype._setDataModelFromForm = function () {
+                    this.$rootScope.teacherData.Type = this.form.type;
+                    this.$rootScope.teacherData.TeacherSince = this.yearObject.value;
+                };
+                EditTeacherExperienceController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Fill Form', function (event, args) {
+                        self.error = false;
+                        if (args !== 'error') {
+                            self._fillForm(args);
+                        }
+                        else {
+                            self.error = true;
+                        }
+                    });
+                    this.$scope.$on('Saved', function (event, args) {
+                        self.saving = false;
+                        self.error = false;
+                        self.saved = true;
+                        self.$timeout(function () {
+                            self.saved = false;
+                        }, self.TIME_SHOW_MESSAGE);
+                    });
+                };
+                return EditTeacherExperienceController;
+            }());
+            EditTeacherExperienceController.controllerId = 'mainApp.pages.editTeacher.EditTeacherExperienceController';
+            EditTeacherExperienceController.$inject = [
+                'dataConfig',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                '$timeout',
+                '$filter',
+                '$scope',
+                '$rootScope',
+                '$uibModal'
+            ];
+            editTeacher.EditTeacherExperienceController = EditTeacherExperienceController;
+            angular
+                .module('mainApp.pages.editTeacher')
+                .controller(EditTeacherExperienceController.controllerId, EditTeacherExperienceController);
+        })(editTeacher = pages.editTeacher || (pages.editTeacher = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=editTeacherExperience.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.editTeacher')
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.editTeacher.education', {
+            url: '/education',
+            views: {
+                'section': {
+                    templateUrl: 'app/pages/editTeacher/editTeacherEducation/editTeacherEducation.html',
+                    controller: 'mainApp.pages.editTeacher.EditTeacherEducationController',
+                    controllerAs: 'vm'
+                }
+            },
+            cache: false
+        });
+    }
+})();
+//# sourceMappingURL=editTeacherEducation.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var editTeacher;
+        (function (editTeacher) {
+            var EditTeacherEducationController = (function () {
+                function EditTeacherEducationController(dataConfig, getDataFromJson, functionsUtilService, $timeout, $filter, $scope, $rootScope, $uibModal) {
+                    this.dataConfig = dataConfig;
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
+                    this.$timeout = $timeout;
+                    this.$filter = $filter;
+                    this.$scope = $scope;
+                    this.$rootScope = $rootScope;
+                    this.$uibModal = $uibModal;
+                    this._init();
+                }
+                EditTeacherEducationController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
+                    this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.education.help_text.title.text');
+                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.education.help_text.description.text');
+                    this.saving = false;
+                    this.saved = false;
+                    this.error = false;
+                    this.helpText = {
+                        title: this.HELP_TEXT_TITLE,
+                        description: this.HELP_TEXT_DESCRIPTION
+                    };
+                    this.form = {
+                        educations: [],
+                        certificates: []
+                    };
+                    this.validate = {
+                        educations: { valid: true, message: '' },
+                        certificates: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                EditTeacherEducationController.prototype.activate = function () {
+                    DEBUG && console.log('EditTeacherEducationController controller actived');
+                    this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
+                };
+                EditTeacherEducationController.prototype.saveEducationSection = function () {
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this.saving = true;
+                        this.$scope.$emit('Save Data');
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                EditTeacherEducationController.prototype._fillForm = function (data) {
+                    this.form.educations = data.Educations;
+                    this.form.certificates = data.Certificates;
+                };
+                EditTeacherEducationController.prototype._validateForm = function () {
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
+                    var GLOBAL_MESSAGE = this.$filter('translate')('%create.teacher.education.validation.message.text');
+                    var formValid = true;
+                    var education_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.educations = this.functionsUtilService.validator(this.form.educations, education_rules);
+                    var certificates_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.certificates = this.functionsUtilService.validator(this.form.certificates, certificates_rules);
+                    if (this.validate.educations.valid) {
+                        this.validate.globalValidate.valid = true;
+                        this.validate.globalValidate.message = '';
+                    }
+                    else if (this.validate.certificates.valid) {
+                        this.validate.globalValidate.valid = true;
+                        this.validate.globalValidate.message = '';
+                    }
+                    else {
+                        this.validate.globalValidate.valid = false;
+                        this.validate.globalValidate.message = GLOBAL_MESSAGE;
+                        formValid = this.validate.globalValidate.valid;
+                    }
+                    return formValid;
+                };
+                EditTeacherEducationController.prototype.changeHelpText = function (type) {
+                    var EDUCATIONS_TITLE = this.$filter('translate')('%create.teacher.education.help_text.educations.title.text');
+                    var EDUCATIONS_DESCRIPTION = this.$filter('translate')('%create.teacher.education.help_text.educations.description.text');
+                    var CERTIFICATES_TITLE = this.$filter('translate')('%create.teacher.education.help_text.certificates.title.text');
+                    var CERTIFICATES_DESCRIPTION = this.$filter('translate')('%create.teacher.education.help_text.certificates.description.text');
+                    switch (type) {
+                        case 'default':
+                            this.helpText.title = this.HELP_TEXT_TITLE;
+                            this.helpText.description = this.HELP_TEXT_DESCRIPTION;
+                            break;
+                        case 'educations':
+                            this.helpText.title = EDUCATIONS_TITLE;
+                            this.helpText.description = EDUCATIONS_DESCRIPTION;
+                            break;
+                        case 'certificates':
+                            this.helpText.title = CERTIFICATES_TITLE;
+                            this.helpText.description = CERTIFICATES_DESCRIPTION;
+                            break;
+                    }
+                };
+                EditTeacherEducationController.prototype._addEditEducation = function (index, $event) {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalEducationTmpl,
+                        controller: 'mainApp.components.modal.ModalEducationController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    education: self.form.educations[index],
+                                    teacherId: self.$rootScope.teacherData.Id
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function (newEducation) {
+                        if (newEducation) {
+                            self.form.educations.push(newEducation);
+                        }
+                    }, function () {
+                        console.info('Modal dismissed at: ' + new Date());
+                    });
+                    $event.preventDefault();
+                };
+                EditTeacherEducationController.prototype._addEditCertificate = function (index, $event) {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalCertificateTmpl,
+                        controller: 'mainApp.components.modal.ModalCertificateController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    certificate: self.form.certificates[index],
+                                    teacherId: self.$rootScope.teacherData.Id
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function (newCertificate) {
+                        if (newCertificate) {
+                            self.form.certificates.push(newCertificate);
+                        }
+                    }, function () {
+                        console.info('Modal dismissed at: ' + new Date());
+                    });
+                    $event.preventDefault();
+                };
+                EditTeacherEducationController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Fill Form', function (event, args) {
+                        self.error = false;
+                        if (args !== 'error') {
+                            self._fillForm(args);
+                        }
+                        else {
+                            self.error = true;
+                        }
+                    });
+                    this.$scope.$on('Saved', function (event, args) {
+                        self.saving = false;
+                        self.error = false;
+                        self.saved = true;
+                        self.$timeout(function () {
+                            self.saved = false;
+                        }, self.TIME_SHOW_MESSAGE);
+                    });
+                };
+                return EditTeacherEducationController;
+            }());
+            EditTeacherEducationController.controllerId = 'mainApp.pages.editTeacher.EditTeacherEducationController';
+            EditTeacherEducationController.$inject = [
+                'dataConfig',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                '$timeout',
+                '$filter',
+                '$scope',
+                '$rootScope',
+                '$uibModal'
+            ];
+            editTeacher.EditTeacherEducationController = EditTeacherEducationController;
+            angular
+                .module('mainApp.pages.editTeacher')
+                .controller(EditTeacherEducationController.controllerId, EditTeacherEducationController);
+        })(editTeacher = pages.editTeacher || (pages.editTeacher = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=editTeacherEducation.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.editTeacher')
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.editTeacher.teach', {
+            url: '/teach',
+            views: {
+                'section': {
+                    templateUrl: 'app/pages/editTeacher/editTeacherTeach/editTeacherTeach.html',
+                    controller: 'mainApp.pages.editTeacher.EditTeacherTeachController',
+                    controllerAs: 'vm'
+                }
+            },
+            cache: false
+        });
+    }
+})();
+//# sourceMappingURL=editTeacherTeach.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var editTeacher;
+        (function (editTeacher) {
+            var EditTeacherTeachController = (function () {
+                function EditTeacherTeachController(dataConfig, functionsUtil, getDataFromJson, $state, $filter, $timeout, $scope, $rootScope, $uibModal) {
+                    this.dataConfig = dataConfig;
+                    this.functionsUtil = functionsUtil;
+                    this.getDataFromJson = getDataFromJson;
+                    this.$state = $state;
+                    this.$filter = $filter;
+                    this.$timeout = $timeout;
+                    this.$scope = $scope;
+                    this.$rootScope = $rootScope;
+                    this.$uibModal = $uibModal;
+                    this._init();
+                }
+                EditTeacherTeachController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
+                    this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.lang.help_text.teach.title.text');
+                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.lang.help_text.teach.description.text');
+                    this.saving = false;
+                    this.saved = false;
+                    this.error = false;
+                    this.helpText = {
+                        title: this.HELP_TEXT_TITLE,
+                        description: this.HELP_TEXT_DESCRIPTION
+                    };
+                    this.form = {
+                        teach: []
+                    };
+                    this.validate = {
+                        teach: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                EditTeacherTeachController.prototype.activate = function () {
+                    DEBUG && console.log('EditTeacherTeachController controller actived');
+                    this._subscribeToEvents();
+                    if (this.$rootScope.profileData) {
+                        this._fillForm(this.$rootScope.profileData);
+                    }
+                };
+                EditTeacherTeachController.prototype.saveTeachSection = function () {
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this.saving = true;
+                        this._setDataModelFromForm();
+                        this.$scope.$emit('Save Profile Data');
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                EditTeacherTeachController.prototype._fillForm = function (data) {
+                    if (this.form.teach.length === 0) {
+                        var languageArray = this.getDataFromJson.getLanguagei18n();
+                        for (var i = 0; i < languageArray.length; i++) {
+                            if (data.Languages.Teach) {
+                                for (var j = 0; j < data.Languages.Teach.length; j++) {
+                                    if (data.Languages.Teach[j] == languageArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = parseInt(languageArray[i].code);
+                                        obj.value = languageArray[i].value;
+                                        if (this.form.teach == null) {
+                                            this.form.teach = [];
+                                            this.form.teach.push(obj);
+                                        }
+                                        else {
+                                            this.form.teach.push(obj);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+                EditTeacherTeachController.prototype._validateForm = function () {
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
+                    var formValid = true;
+                    var teach_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.teach = this.functionsUtil.validator(this.form.teach, teach_rules);
+                    if (!this.validate.teach.valid) {
+                        formValid = this.validate.teach.valid;
+                    }
+                    return formValid;
+                };
+                EditTeacherTeachController.prototype.changeHelpText = function (type) {
+                    var TEACH_TITLE = this.$filter('translate')('%create.teacher.lang.help_text.teach.title.text');
+                    var TEACH_DESCRIPTION = this.$filter('translate')('%create.teacher.lang.help_text.teach.description.text');
+                    switch (type) {
+                        case 'default':
+                            this.helpText.title = this.HELP_TEXT_TITLE;
+                            this.helpText.description = this.HELP_TEXT_DESCRIPTION;
+                            break;
+                        case 'teach':
+                            this.helpText.title = TEACH_TITLE;
+                            this.helpText.description = TEACH_DESCRIPTION;
+                            break;
+                    }
+                };
+                EditTeacherTeachController.prototype._addNewLanguages = function (type, $event) {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        templateUrl: this.dataConfig.modalLanguagesTmpl,
+                        controller: 'mainApp.components.modal.ModalLanguageController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    type: type,
+                                    list: self.form[type]
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                    modalInstance.result.then(function (newLanguagesList) {
+                        self.form[type] = newLanguagesList;
+                    }, function () {
+                        DEBUG && console.info('Modal dismissed at: ' + new Date());
+                    });
+                    $event.preventDefault();
+                };
+                EditTeacherTeachController.prototype._removeLanguage = function (key, type) {
+                    var newArray = this.form[type].filter(function (el) {
+                        return el.key !== key;
+                    });
+                    this.form[type] = newArray;
+                };
+                EditTeacherTeachController.prototype._setDataModelFromForm = function () {
+                    if (this.form.teach) {
+                        var teach = [];
+                        for (var i = 0; i < this.form.teach.length; i++) {
+                            teach.push(this.form.teach[i].key);
+                        }
+                        this.$rootScope.profileData.Languages.Teach = teach;
+                    }
+                };
+                EditTeacherTeachController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Fill Form', function (event, args) {
+                        self.error = false;
+                        if (args !== 'error') {
+                            self._fillForm(args);
+                        }
+                        else {
+                            self.error = true;
+                        }
+                    });
+                    this.$scope.$on('Saved', function (event, args) {
+                        self.saving = false;
+                        self.error = false;
+                        self.saved = true;
+                        self.$timeout(function () {
+                            self.saved = false;
+                        }, self.TIME_SHOW_MESSAGE);
+                    });
+                };
+                return EditTeacherTeachController;
+            }());
+            EditTeacherTeachController.controllerId = 'mainApp.pages.editTeacher.EditTeacherTeachController';
+            EditTeacherTeachController.$inject = [
+                'dataConfig',
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.core.util.GetDataStaticJsonService',
+                '$state',
+                '$filter',
+                '$timeout',
+                '$scope',
+                '$rootScope',
+                '$uibModal'
+            ];
+            editTeacher.EditTeacherTeachController = EditTeacherTeachController;
+            angular
+                .module('mainApp.pages.editTeacher')
+                .controller(EditTeacherTeachController.controllerId, EditTeacherTeachController);
+        })(editTeacher = pages.editTeacher || (pages.editTeacher = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=editTeacherTeach.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.editTeacher')
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.editTeacher.methodology', {
+            url: '/methodology',
+            views: {
+                'section': {
+                    templateUrl: 'app/pages/editTeacher/editTeacherMethodology/editTeacherMethodology.html',
+                    controller: 'mainApp.pages.editTeacher.EditTeacherMethodologyController',
+                    controllerAs: 'vm'
+                }
+            },
+            cache: false
+        });
+    }
+})();
+//# sourceMappingURL=editTeacherMethodology.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var editTeacher;
+        (function (editTeacher) {
+            var EditTeacherMethodologyController = (function () {
+                function EditTeacherMethodologyController(dataConfig, getDataFromJson, functionsUtil, $timeout, $filter, $scope, $rootScope, $uibModal) {
+                    this.dataConfig = dataConfig;
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtil = functionsUtil;
+                    this.$timeout = $timeout;
+                    this.$filter = $filter;
+                    this.$scope = $scope;
+                    this.$rootScope = $rootScope;
+                    this.$uibModal = $uibModal;
+                    this._init();
+                }
+                EditTeacherMethodologyController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
+                    this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.method.help_text.title.text');
+                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.method.help_text.description.text');
+                    this.saving = false;
+                    this.saved = false;
+                    this.error = false;
+                    this.helpText = {
+                        title: this.HELP_TEXT_TITLE,
+                        description: this.HELP_TEXT_DESCRIPTION
+                    };
+                    this.form = {
+                        methodology: '',
+                        immersion: new app.models.teacher.Immersion
+                    };
+                    this.typeOfImmersionList = this.getDataFromJson.getTypeOfImmersioni18n();
+                    this.typeOfImmersionOptionBox = [];
+                    this.validate = {
+                        methodology: { valid: true, message: '' },
+                        immersionActive: { valid: true, message: '' },
+                        typeOfImmersionList: { valid: true, message: '' },
+                        otherCategory: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                EditTeacherMethodologyController.prototype.activate = function () {
+                    DEBUG && console.log('EditTeacherMethodologyController controller actived');
+                    this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
+                };
+                EditTeacherMethodologyController.prototype.changeStatus = function () {
+                    this.form.immersion.Active = !this.form.immersion.Active;
+                };
+                EditTeacherMethodologyController.prototype.saveMethodologySection = function () {
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this.saving = true;
+                        this._setDataModelFromForm();
+                        this.$scope.$emit('Save Data');
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                EditTeacherMethodologyController.prototype._fillForm = function (data) {
+                    this.form.methodology = data.Methodology;
+                    this.form.immersion = data.Immersion;
+                    if (this.form.immersion.Active) {
+                        if (this.typeOfImmersionOptionBox.length === 0) {
+                            var immersionArray = this.getDataFromJson.getTypeOfImmersioni18n();
+                            var newArray = [];
+                            for (var i = 0; i < immersionArray.length; i++) {
+                                for (var j = 0; j < this.form.immersion.Category.length; j++) {
+                                    if (this.form.immersion.Category[j] === immersionArray[i].code) {
+                                        var obj = { key: null, value: '' };
+                                        obj.key = immersionArray[i].code;
+                                        obj.value = immersionArray[i].value;
+                                        this._disableEnableOption(true, obj.key);
+                                        this.typeOfImmersionOptionBox.push(obj);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+                EditTeacherMethodologyController.prototype._validateForm = function () {
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
+                    var GLOBAL_MESSAGE = this.$filter('translate')('%create.teacher.method.validation.message.text');
+                    var formValid = true;
+                    var methodology_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.methodology = this.functionsUtil.validator(this.form.methodology, methodology_rules);
+                    if (!this.validate.methodology.valid) {
+                        formValid = this.validate.methodology.valid;
+                    }
+                    if (this.form.immersion.Active) {
+                        var typeOfImmersion_rules = [NULL_ENUM, EMPTY_ENUM];
+                        this.validate.typeOfImmersionList = this.functionsUtil.validator(this.form.immersion.Category, typeOfImmersion_rules);
+                        var otherCategory_rules = [NULL_ENUM, EMPTY_ENUM];
+                        this.validate.otherCategory = this.functionsUtil.validator(this.form.immersion.OtherCategory, otherCategory_rules);
+                        if (this.validate.typeOfImmersionList.valid) {
+                            this.validate.typeOfImmersionList.valid = true;
+                            this.validate.otherCategory.valid = true;
+                            this.validate.globalValidate.valid = true;
+                            this.validate.globalValidate.message = '';
+                        }
+                        else if (this.validate.otherCategory.valid) {
+                            this.validate.typeOfImmersionList.valid = true;
+                            this.validate.otherCategory.valid = true;
+                            this.validate.globalValidate.valid = true;
+                            this.validate.globalValidate.message = '';
+                        }
+                        else {
+                            this.validate.globalValidate.valid = false;
+                            this.validate.globalValidate.message = GLOBAL_MESSAGE;
+                            formValid = this.validate.globalValidate.valid;
+                        }
+                    }
+                    return formValid;
+                };
+                EditTeacherMethodologyController.prototype.changeHelpText = function (type) {
+                    var METHODOLOGY_TITLE = this.$filter('translate')('%create.teacher.method.help_text.methodology.title.text');
+                    var METHODOLOGY_DESCRIPTION = this.$filter('translate')('%create.teacher.method.help_text.methodology.description.text');
+                    var IMMERSION_TITLE = this.$filter('translate')('%create.teacher.method.help_text.imm.title.text');
+                    var IMMERSION_DESCRIPTION = this.$filter('translate')('%create.teacher.method.help_text.imm.description.text');
+                    switch (type) {
+                        case 'default':
+                            this.helpText.title = this.HELP_TEXT_TITLE;
+                            this.helpText.description = this.HELP_TEXT_DESCRIPTION;
+                            break;
+                        case 'methodology':
+                            this.helpText.title = METHODOLOGY_TITLE;
+                            this.helpText.description = METHODOLOGY_DESCRIPTION;
+                            break;
+                        case 'immersion':
+                            this.helpText.title = IMMERSION_TITLE;
+                            this.helpText.description = IMMERSION_DESCRIPTION;
+                            break;
+                    }
+                };
+                EditTeacherMethodologyController.prototype._addNewImmersion = function () {
+                    var self = this;
+                    this._disableEnableOption(true, this.typeObject.code);
+                    this.typeOfImmersionOptionBox.push({ key: this.typeObject.code, value: this.typeObject.value });
+                    this.form.immersion.Category = [];
+                    for (var i = 0; i < this.typeOfImmersionOptionBox.length; i++) {
+                        this.form.immersion.Category.push(this.typeOfImmersionOptionBox[i].key);
+                    }
+                };
+                EditTeacherMethodologyController.prototype._removeImmersion = function (key) {
+                    this._disableEnableOption(false, key);
+                    var newArray = this.typeOfImmersionOptionBox.filter(function (el) {
+                        return el.key !== key;
+                    });
+                    this.typeOfImmersionOptionBox = newArray;
+                    this.form.immersion.Category = [];
+                    for (var i = 0; i < this.typeOfImmersionOptionBox.length; i++) {
+                        this.form.immersion.Category.push(this.typeOfImmersionOptionBox[i].key);
+                    }
+                };
+                EditTeacherMethodologyController.prototype._setDataModelFromForm = function () {
+                    var immersionOptions = this.typeOfImmersionOptionBox;
+                    this.$rootScope.teacherData.Methodology = this.form.methodology;
+                    this.$rootScope.teacherData.Immersion = this.form.immersion;
+                    this.$rootScope.teacherData.Immersion.Category = this.form.immersion.Category;
+                };
+                EditTeacherMethodologyController.prototype._disableEnableOption = function (action, key) {
+                    for (var i = 0; i < this.typeOfImmersionList.length; i++) {
+                        if (this.typeOfImmersionList[i].code === key) {
+                            this.typeOfImmersionList[i].disabled = action;
+                        }
+                    }
+                };
+                EditTeacherMethodologyController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Fill Form', function (event, args) {
+                        self.error = false;
+                        if (args !== 'error') {
+                            self._fillForm(args);
+                        }
+                        else {
+                            self.error = true;
+                        }
+                    });
+                    this.$scope.$on('Saved', function (event, args) {
+                        self.saving = false;
+                        self.error = false;
+                        self.saved = true;
+                        self.$timeout(function () {
+                            self.saved = false;
+                        }, self.TIME_SHOW_MESSAGE);
+                    });
+                };
+                return EditTeacherMethodologyController;
+            }());
+            EditTeacherMethodologyController.controllerId = 'mainApp.pages.editTeacher.EditTeacherMethodologyController';
+            EditTeacherMethodologyController.$inject = [
+                'dataConfig',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                '$timeout',
+                '$filter',
+                '$scope',
+                '$rootScope',
+                '$uibModal'
+            ];
+            editTeacher.EditTeacherMethodologyController = EditTeacherMethodologyController;
+            angular
+                .module('mainApp.pages.editTeacher')
+                .controller(EditTeacherMethodologyController.controllerId, EditTeacherMethodologyController);
+        })(editTeacher = pages.editTeacher || (pages.editTeacher = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=editTeacherMethodology.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.editTeacher')
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.editTeacher.price', {
+            url: '/price',
+            views: {
+                'section': {
+                    templateUrl: 'app/pages/editTeacher/editTeacherPrice/editTeacherPrice.html',
+                    controller: 'mainApp.pages.editTeacher.EditTeacherPriceController',
+                    controllerAs: 'vm'
+                }
+            },
+            cache: false
+        });
+    }
+})();
+//# sourceMappingURL=editTeacherPrice.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var editTeacher;
+        (function (editTeacher) {
+            var EditTeacherPriceController = (function () {
+                function EditTeacherPriceController(dataConfig, getDataFromJson, functionsUtilService, $timeout, $filter, $scope, $rootScope, $uibModal) {
+                    this.dataConfig = dataConfig;
+                    this.getDataFromJson = getDataFromJson;
+                    this.functionsUtilService = functionsUtilService;
+                    this.$timeout = $timeout;
+                    this.$filter = $filter;
+                    this.$scope = $scope;
+                    this.$rootScope = $rootScope;
+                    this.$uibModal = $uibModal;
+                    this._init();
+                }
+                EditTeacherPriceController.prototype._init = function () {
+                    this.TIME_SHOW_MESSAGE = 6000;
+                    this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.price.help_text.title.text');
+                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.price.help_text.description.text');
+                    this.saving = false;
+                    this.saved = false;
+                    this.error = false;
+                    this.helpText = {
+                        title: this.HELP_TEXT_TITLE,
+                        description: this.HELP_TEXT_DESCRIPTION
+                    };
+                    this.form = {
+                        privateClass: new app.models.teacher.TypeOfPrice,
+                        groupClass: new app.models.teacher.TypeOfPrice
+                    };
+                    this.validate = {
+                        privateClassPrice: { valid: true, message: '' },
+                        privateClassActive: { valid: true, message: '' },
+                        groupClassPrice: { valid: true, message: '' },
+                        groupClassActive: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
+                    };
+                    this.activate();
+                };
+                EditTeacherPriceController.prototype.activate = function () {
+                    DEBUG && console.log('EditTeacherPriceController controller actived');
+                    this._subscribeToEvents();
+                    if (this.$rootScope.teacherData) {
+                        this._fillForm(this.$rootScope.teacherData);
+                    }
+                };
+                EditTeacherPriceController.prototype.changeStatus = function (type) {
+                    this.form[type].Active = !this.form[type].Active;
+                };
+                EditTeacherPriceController.prototype.savePriceSection = function () {
+                    var formValid = this._validateForm();
+                    if (formValid) {
+                        this.saving = true;
+                        this._setDataModelFromForm();
+                        this.$scope.$emit('Save Data');
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                    }
+                };
+                EditTeacherPriceController.prototype._fillForm = function (data) {
+                    this.form.privateClass = data.Price.PrivateClass;
+                    this.form.groupClass = data.Price.GroupClass;
+                };
+                EditTeacherPriceController.prototype._validateForm = function () {
+                    var NULL_ENUM = 2;
+                    var IS_NOT_ZERO_ENUM = 5;
+                    var EMPTY_ENUM = 3;
+                    var TRUE_ENUM = 7;
+                    var GLOBAL_MESSAGE = this.$filter('translate')('%create.teacher.price.validation.message.text');
+                    var formValid = true;
+                    if (this.form.privateClass.Active) {
+                        var privateClassPrice_rules = [NULL_ENUM, EMPTY_ENUM, IS_NOT_ZERO_ENUM];
+                        this.validate.privateClassPrice = this.functionsUtilService.validator(this.form.privateClass.HourPrice, privateClassPrice_rules);
+                        if (!this.validate.privateClassPrice.valid) {
+                            formValid = this.validate.privateClassPrice.valid;
+                        }
+                    }
+                    if (this.form.groupClass.Active) {
+                        var groupClassPrice_rules = [NULL_ENUM, EMPTY_ENUM, IS_NOT_ZERO_ENUM];
+                        this.validate.groupClassPrice = this.functionsUtilService.validator(this.form.groupClass.HourPrice, groupClassPrice_rules);
+                        if (!this.validate.groupClassPrice.valid) {
+                            formValid = this.validate.groupClassPrice.valid;
+                        }
+                    }
+                    var privateClassActive_rules = [TRUE_ENUM];
+                    this.validate.privateClassActive = this.functionsUtilService.validator(this.form.privateClass.Active, privateClassActive_rules);
+                    var groupClassActive_rules = [TRUE_ENUM];
+                    this.validate.groupClassActive = this.functionsUtilService.validator(this.form.groupClass.Active, groupClassActive_rules);
+                    if (!this.validate.privateClassActive.valid && !this.validate.groupClassActive.valid) {
+                        this.validate.globalValidate.valid = false;
+                        this.validate.globalValidate.message = GLOBAL_MESSAGE;
+                        formValid = this.validate.globalValidate.valid;
+                    }
+                    else {
+                        this.validate.globalValidate.valid = true;
+                        this.validate.globalValidate.message = '';
+                    }
+                    return formValid;
+                };
+                EditTeacherPriceController.prototype.changeHelpText = function (type) {
+                    var PRIVATE_CLASS_TITLE = this.$filter('translate')('%create.teacher.price.help_text.private_class.title.text');
+                    var PRIVATE_CLASS_DESCRIPTION = this.$filter('translate')('%create.teacher.price.help_text.private_class.description.text');
+                    var GROUP_CLASS_TITLE = this.$filter('translate')('%create.teacher.price.help_text.group_class.title.text');
+                    var GROUP_CLASS_DESCRIPTION = this.$filter('translate')('%create.teacher.price.help_text.group_class.description.text');
+                    switch (type) {
+                        case 'default':
+                            this.helpText.title = this.HELP_TEXT_TITLE;
+                            this.helpText.description = this.HELP_TEXT_DESCRIPTION;
+                            break;
+                        case 'privateClass':
+                            this.helpText.title = PRIVATE_CLASS_TITLE;
+                            this.helpText.description = PRIVATE_CLASS_DESCRIPTION;
+                            break;
+                        case 'groupClass':
+                            this.helpText.title = GROUP_CLASS_TITLE;
+                            this.helpText.description = GROUP_CLASS_DESCRIPTION;
+                            break;
+                    }
+                };
+                EditTeacherPriceController.prototype._setDataModelFromForm = function () {
+                    this.$rootScope.teacherData.Price.PrivateClass = this.form.privateClass;
+                    this.$rootScope.teacherData.Price.GroupClass = this.form.groupClass;
+                };
+                EditTeacherPriceController.prototype._subscribeToEvents = function () {
+                    var self = this;
+                    this.$scope.$on('Fill Form', function (event, args) {
+                        self.error = false;
+                        if (args !== 'error') {
+                            self._fillForm(args);
+                        }
+                        else {
+                            self.error = true;
+                        }
+                    });
+                    this.$scope.$on('Saved', function (event, args) {
+                        self.saving = false;
+                        self.error = false;
+                        self.saved = true;
+                        self.$timeout(function () {
+                            self.saved = false;
+                        }, self.TIME_SHOW_MESSAGE);
+                    });
+                };
+                return EditTeacherPriceController;
+            }());
+            EditTeacherPriceController.controllerId = 'mainApp.pages.editTeacher.EditTeacherPriceController';
+            EditTeacherPriceController.$inject = [
+                'dataConfig',
+                'mainApp.core.util.GetDataStaticJsonService',
+                'mainApp.core.util.FunctionsUtilService',
+                '$timeout',
+                '$filter',
+                '$scope',
+                '$rootScope',
+                '$uibModal'
+            ];
+            editTeacher.EditTeacherPriceController = EditTeacherPriceController;
+            angular
+                .module('mainApp.pages.editTeacher')
+                .controller(EditTeacherPriceController.controllerId, EditTeacherPriceController);
+        })(editTeacher = pages.editTeacher || (pages.editTeacher = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=editTeacherPrice.controller.js.map
 (function () {
     'use strict';
     angular
@@ -5719,16 +9574,24 @@ var app;
                 'container': {
                     templateUrl: 'app/pages/createTeacherPage/createTeacherPage.html',
                     controller: 'mainApp.pages.createTeacherPage.CreateTeacherPageController',
-                    controllerAs: 'vm'
+                    controllerAs: 'vm',
+                    resolve: {
+                        waitForAuth: ['mainApp.auth.AuthService', function (AuthService) {
+                                return AuthService.autoRefreshToken();
+                            }]
+                    }
                 }
             },
             cache: false,
             params: {
                 type: '',
             },
+            data: {
+                requireLogin: true
+            },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = false;
-                    $rootScope.activeFooter = false;
+                    $rootScope.activeFooter = true;
                     $rootScope.activeMessageBar = false;
                 }]
         });
@@ -5742,9 +9605,10 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var CreateTeacherPageController = (function () {
-                function CreateTeacherPageController(getDataFromJson, functionsUtilService, teacherService, messageUtil, localStorage, dataConfig, $state, $stateParams, $filter, $scope, $window, $rootScope, $uibModal) {
+                function CreateTeacherPageController(getDataFromJson, functionsUtilService, userService, teacherService, messageUtil, localStorage, dataConfig, $state, $stateParams, $filter, $scope, $window, $rootScope, $uibModal, waitForAuth) {
                     this.getDataFromJson = getDataFromJson;
                     this.functionsUtilService = functionsUtilService;
+                    this.userService = userService;
                     this.teacherService = teacherService;
                     this.messageUtil = messageUtil;
                     this.localStorage = localStorage;
@@ -5760,8 +9624,10 @@ var app;
                 }
                 CreateTeacherPageController.prototype._init = function () {
                     var self = this;
+                    var loggedUserId = this.$rootScope.userData.id;
                     var currentState = this.$state.current.name;
                     this.$rootScope.teacherData = new app.models.teacher.Teacher();
+                    this.$rootScope.teacherData.Profile.UserId = loggedUserId;
                     angular.element(this.$window).bind("scroll", function () {
                         var floatHeader = document.getElementById('header-float');
                         if (floatHeader) {
@@ -5781,46 +9647,73 @@ var app;
                 };
                 CreateTeacherPageController.prototype.activate = function () {
                     var self = this;
+                    var ENTER_MIXPANEL = "Enter: Create Teacher Page";
                     console.log('createTeacherPage controller actived');
-                    mixpanel.track("Enter: Create Teacher Page");
+                    mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
                     if (this.$stateParams.type === 'new') {
-                        this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
+                        this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
                     }
+                    this.fillFormWithProfileData();
                     this.fillFormWithTeacherData();
                 };
-                CreateTeacherPageController.prototype.fillFormWithTeacherData = function () {
+                CreateTeacherPageController.prototype.fillFormWithProfileData = function () {
                     var self = this;
-                    this.$rootScope.teacher_id = this.localStorage.getItem(this.dataConfig.teacherIdLocalStorage);
-                    if (this.$rootScope.teacher_id) {
-                        this.teacherService.getTeacherById(this.$rootScope.teacher_id)
+                    var userId = this.$rootScope.userData.id;
+                    if (userId) {
+                        this.userService.getUserProfileById(userId)
                             .then(function (response) {
-                            if (response.id) {
-                                self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
-                                self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
-                            }
-                            else {
+                            if (response.userId) {
+                                self.$rootScope.profileData = new app.models.user.Profile(response);
+                                self.$scope.$broadcast('Fill User Profile Form', self.$rootScope.profileData);
                             }
                         });
                     }
                 };
+                CreateTeacherPageController.prototype.fillFormWithTeacherData = function () {
+                    var self = this;
+                    var userId = this.$rootScope.userData.id;
+                    this.teacherService.getTeacherByProfileId(userId).then(function (response) {
+                        if (response.id) {
+                            self.localStorage.setItem(self.dataConfig.teacherDataLocalStorage, JSON.stringify(response));
+                            self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
+                            self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
+                        }
+                        else {
+                            self.localStorage.removeItem(self.dataConfig.teacherDataLocalStorage);
+                        }
+                    });
+                };
                 CreateTeacherPageController.prototype._subscribeToEvents = function () {
                     var self = this;
+                    this.$scope.$on('Save Profile Data', function (event, args) {
+                        var SUCCESS_MESSAGE = self.$filter('translate')('%notification.success.text');
+                        var userId = self.$rootScope.profileData.UserId;
+                        if (userId) {
+                            self.userService.updateUserProfile(self.$rootScope.profileData)
+                                .then(function (response) {
+                                if (response.userId) {
+                                    window.scrollTo(0, 0);
+                                    self.messageUtil.success(SUCCESS_MESSAGE);
+                                    self.$rootScope.profileData = new app.models.user.Profile(response);
+                                    self.$scope.$broadcast('Fill User Profile Form', self.$rootScope.profileData);
+                                }
+                            }, function (error) {
+                                DEBUG && console.error(error);
+                            });
+                        }
+                    });
                     this.$scope.$on('Save Data', function (event, args) {
                         var SUCCESS_MESSAGE = self.$filter('translate')('%notification.success.text');
-                        var numStep = args;
                         if (self.$rootScope.teacherData.Id) {
                             self.teacherService.updateTeacher(self.$rootScope.teacherData)
                                 .then(function (response) {
                                 if (response.id) {
                                     window.scrollTo(0, 0);
                                     self.messageUtil.success(SUCCESS_MESSAGE);
-                                    self.$rootScope.teacher_id = response.id;
-                                    self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
+                                    self.localStorage.setItem(self.dataConfig.teacherDataLocalStorage, JSON.stringify(response));
                                     self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
                                     self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
-                                }
-                                else {
                                 }
                             });
                         }
@@ -5830,12 +9723,10 @@ var app;
                                 if (response.id) {
                                     window.scrollTo(0, 0);
                                     self.messageUtil.success(SUCCESS_MESSAGE);
-                                    self.$rootScope.teacher_id = response.id;
-                                    self.localStorage.setItem(self.dataConfig.teacherIdLocalStorage, response.id);
+                                    self.localStorage.setItem(self.dataConfig.teacherDataLocalStorage, JSON.stringify(response));
                                     self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
+                                    self.$rootScope.profileData.IsTeacher = response.profile.isTeacher;
                                     self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
-                                }
-                                else {
                                 }
                             });
                         }
@@ -5847,6 +9738,7 @@ var app;
             CreateTeacherPageController.$inject = [
                 'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
+                'mainApp.models.user.UserService',
                 'mainApp.models.teacher.TeacherService',
                 'mainApp.core.util.messageUtilService',
                 'mainApp.localStorageService',
@@ -5857,7 +9749,8 @@ var app;
                 '$scope',
                 '$window',
                 '$rootScope',
-                '$uibModal'
+                '$uibModal',
+                'waitForAuth'
             ];
             createTeacherPage.CreateTeacherPageController = CreateTeacherPageController;
             angular
@@ -5895,9 +9788,10 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherWelcomeSectionController = (function () {
-                function TeacherWelcomeSectionController($state, $scope, functionsUtilService) {
+                function TeacherWelcomeSectionController($state, $scope, $rootScope, functionsUtilService) {
                     this.$state = $state;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this.functionsUtilService = functionsUtilService;
                     this._init();
                 }
@@ -5908,10 +9802,13 @@ var app;
                     this.activate();
                 };
                 TeacherWelcomeSectionController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = "Enter: Start Create Teacher Process";
                     console.log('TeacherWelcomeSectionController controller actived');
-                    mixpanel.track("Enter: Start Create Teacher Process");
+                    mixpanel.track(ENTER_MIXPANEL);
                 };
                 TeacherWelcomeSectionController.prototype.goToStart = function () {
+                    this.$rootScope.teacherData.Profile = this.$rootScope.profileData;
+                    this.$scope.$emit('Save Data');
                     this.$state.go(this.STEP1_STATE, { reload: true });
                 };
                 return TeacherWelcomeSectionController;
@@ -5920,6 +9817,7 @@ var app;
             TeacherWelcomeSectionController.$inject = [
                 '$state',
                 '$scope',
+                '$rootScope',
                 'mainApp.core.util.FunctionsUtilService'
             ];
             createTeacherPage.TeacherWelcomeSectionController = TeacherWelcomeSectionController;
@@ -5978,26 +9876,23 @@ var app;
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
                     };
+                    this.countryObject = { code: '', value: '' };
                     this.sexObject = { sex: { code: '', value: '' } };
                     this.dateObject = { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } };
                     this.form = {
-                        firstName: '',
-                        lastName: '',
-                        email: '',
                         phoneNumber: '',
                         sex: '',
-                        birthDate: '',
-                        born: '',
+                        birthDate: null,
+                        bornCountry: '',
+                        bornCity: '',
                         about: ''
                     };
                     this.listMonths = this.getDataFromJson.getMonthi18n();
                     this.listSexs = this.getDataFromJson.getSexi18n();
                     this.listDays = this.functionsUtilService.buildNumberSelectList(1, 31);
-                    this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 1998);
+                    this.listYears = this.functionsUtilService.buildNumberSelectList(1916, 2017);
+                    this.listCountries = this.getDataFromJson.getCountryi18n();
                     this.validate = {
-                        firstName: { valid: true, message: '' },
-                        lastName: { valid: true, message: '' },
-                        email: { valid: true, message: '' },
                         phoneNumber: { valid: true, message: '' },
                         sex: { valid: true, message: '' },
                         birthDate: {
@@ -6007,28 +9902,24 @@ var app;
                             valid: true,
                             message: ''
                         },
-                        born: { valid: true, message: '' },
+                        bornCountry: { valid: true, message: '' },
+                        bornCity: { valid: true, message: '' },
                         about: { valid: true, message: '' }
                     };
                     this.activate();
                 };
                 TeacherInfoSectionController.prototype.activate = function () {
-                    console.log('TeacherInfoSectionController controller actived');
+                    DEBUG && console.log('TeacherInfoSectionController controller actived');
                     this._subscribeToEvents();
-                    if (this.$rootScope.teacherData) {
-                        this._fillForm(this.$rootScope.teacherData);
+                    if (this.$rootScope.profileData) {
+                        this._fillForm(this.$rootScope.profileData);
                     }
                 };
                 TeacherInfoSectionController.prototype.goToNext = function () {
                     var formValid = this._validateForm();
                     if (formValid) {
-                        mixpanel.track("Enter: Basic Info on Create Teacher", {
-                            "name": this.form.firstName + ' ' + this.form.lastName,
-                            "email": this.form.email,
-                            "phone": this.form.phoneNumber
-                        });
                         this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data');
+                        this.$scope.$emit('Save Profile Data');
                         this.$state.go(this.STEP2_STATE, { reload: true });
                     }
                     else {
@@ -6036,16 +9927,14 @@ var app;
                     }
                 };
                 TeacherInfoSectionController.prototype._fillForm = function (data) {
-                    this.form.firstName = data.FirstName;
-                    this.form.lastName = data.LastName;
-                    this.form.email = data.Email;
                     this.form.phoneNumber = data.PhoneNumber;
-                    this.sexObject.sex.code = data.Sex;
+                    this.sexObject.sex.code = data.Gender;
                     var date = this.functionsUtilService.splitDate(data.BirthDate);
                     this.dateObject.day.value = date.day ? parseInt(date.day) : '';
                     this.dateObject.month.code = date.month !== 'Invalid date' ? date.month : '';
                     this.dateObject.year.value = date.year ? parseInt(date.year) : '';
-                    this.form.born = data.Born;
+                    this.countryObject.code = data.BornCountry;
+                    this.form.bornCity = data.BornCity;
                     this.form.about = data.About;
                 };
                 TeacherInfoSectionController.prototype._validateForm = function () {
@@ -6056,21 +9945,6 @@ var app;
                     var NUMBER_ENUM = 4;
                     var BIRTHDATE_MESSAGE = this.$filter('translate')('%create.teacher.basic_info.form.birthdate.validation.message.text');
                     var formValid = true;
-                    var firstName_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.firstName = this.functionsUtilService.validator(this.form.firstName, firstName_rules);
-                    if (!this.validate.firstName.valid) {
-                        formValid = this.validate.firstName.valid;
-                    }
-                    var lastName_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.lastName = this.functionsUtilService.validator(this.form.lastName, lastName_rules);
-                    if (!this.validate.lastName.valid) {
-                        formValid = this.validate.lastName.valid;
-                    }
-                    var email_rules = [NULL_ENUM, EMPTY_ENUM, EMAIL_ENUM];
-                    this.validate.email = this.functionsUtilService.validator(this.form.email, email_rules);
-                    if (!this.validate.email.valid) {
-                        formValid = this.validate.email.valid;
-                    }
                     var phoneNumber_rules = [NULL_ENUM, EMPTY_ENUM, NUMBER_ENUM];
                     var onlyNum = this.form.phoneNumber.replace(/\D+/g, "");
                     onlyNum = parseInt(onlyNum) || '';
@@ -6110,10 +9984,20 @@ var app;
                         this.validate.birthDate.valid = true;
                         this.validate.birthDate.message = '';
                     }
-                    var born_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.born = this.functionsUtilService.validator(this.form.born, born_rules);
-                    if (!this.validate.born.valid) {
-                        formValid = this.validate.born.valid;
+                    var country_born_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.bornCountry = this.functionsUtilService.validator(this.countryObject.code, country_born_rules);
+                    if (!this.validate.bornCountry.valid) {
+                        formValid = this.validate.bornCountry.valid;
+                    }
+                    var city_born_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.bornCity = this.functionsUtilService.validator(this.form.bornCity, city_born_rules);
+                    if (!this.validate.bornCity.valid) {
+                        formValid = this.validate.bornCity.valid;
+                    }
+                    var about_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.about = this.functionsUtilService.validator(this.form.about, about_rules);
+                    if (!this.validate.about.valid) {
+                        formValid = this.validate.about.valid;
                     }
                     return formValid;
                 };
@@ -6170,21 +10054,22 @@ var app;
                 };
                 TeacherInfoSectionController.prototype._setDataModelFromForm = function () {
                     var dateFormatted = this.functionsUtilService.joinDate(this.dateObject.day.value, this.dateObject.month.code, this.dateObject.year.value);
-                    var sexCode = this.sexObject.sex.code;
+                    var genderCode = this.sexObject.sex.code;
+                    var countryCode = this.countryObject.code;
                     var recommended = this.localStorage.getItem(this.dataConfig.earlyIdLocalStorage);
-                    this.$rootScope.teacherData.FirstName = this.form.firstName;
-                    this.$rootScope.teacherData.LastName = this.form.lastName;
-                    this.$rootScope.teacherData.Email = this.form.email;
-                    this.$rootScope.teacherData.PhoneNumber = this.form.phoneNumber;
-                    this.$rootScope.teacherData.Sex = sexCode;
-                    this.$rootScope.teacherData.BirthDate = dateFormatted;
-                    this.$rootScope.teacherData.Born = this.form.born;
-                    this.$rootScope.teacherData.About = this.form.about;
+                    this.form.bornCountry = countryCode;
+                    this.$rootScope.profileData.PhoneNumber = this.form.phoneNumber;
+                    this.$rootScope.profileData.Gender = genderCode;
+                    this.$rootScope.profileData.BirthDate = dateFormatted;
+                    this.$rootScope.profileData.BornCountry = this.form.bornCountry;
+                    this.$rootScope.profileData.BornCity = this.form.bornCity;
+                    this.$rootScope.profileData.About = this.form.about;
+                    this.$rootScope.teacherData.Profile = this.$rootScope.profileData;
                     this.$rootScope.teacherData.Recommended = recommended ? recommended : null;
                 };
                 TeacherInfoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
-                    this.$scope.$on('Fill Form', function (event, args) {
+                    this.$scope.$on('Fill User Profile Form', function (event, args) {
                         self._fillForm(args);
                     });
                 };
@@ -6248,7 +10133,6 @@ var app;
                     this._init();
                 }
                 TeacherLocationSectionController.prototype._init = function () {
-                    var self = this;
                     this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
                     this.STEP3_STATE = 'page.createTeacherPage.language';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.location.help_text.title.text');
@@ -6268,7 +10152,7 @@ var app;
                         positionLocation: new app.models.user.Position()
                     };
                     this.listCountries = this.getDataFromJson.getCountryi18n();
-                    this.mapConfig = self.functionsUtilService.buildMapConfig(null, 'drag-maker-map', null, null);
+                    this.mapConfig = this.functionsUtilService.buildMapConfig(null, 'drag-maker-map', null, null);
                     this.validate = {
                         countryLocation: { valid: true, message: '' },
                         cityLocation: { valid: true, message: '' },
@@ -6280,18 +10164,17 @@ var app;
                     this.activate();
                 };
                 TeacherLocationSectionController.prototype.activate = function () {
-                    console.log('TeacherLocationSectionController controller actived');
+                    DEBUG && console.log('TeacherLocationSectionController controller actived');
                     this._subscribeToEvents();
-                    if (this.$rootScope.teacherData) {
-                        this._fillForm(this.$rootScope.teacherData);
+                    if (this.$rootScope.profileData) {
+                        this._fillForm(this.$rootScope.profileData);
                     }
                 };
                 TeacherLocationSectionController.prototype.goToNext = function () {
-                    var CURRENT_STEP = 2;
                     var formValid = this._validateForm();
                     if (formValid) {
                         this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data', CURRENT_STEP);
+                        this.$scope.$emit('Save Profile Data');
                         this.$state.go(this.STEP3_STATE, { reload: true });
                     }
                     else {
@@ -6421,12 +10304,12 @@ var app;
                 TeacherLocationSectionController.prototype._setDataModelFromForm = function () {
                     var countryCode = this.countryObject.code;
                     this.form.countryLocation = countryCode;
-                    this.$rootScope.teacherData.Location.Country = this.form.countryLocation;
-                    this.$rootScope.teacherData.Location.Address = this.form.addressLocation;
-                    this.$rootScope.teacherData.Location.City = this.form.cityLocation;
-                    this.$rootScope.teacherData.Location.State = this.form.stateLocation;
-                    this.$rootScope.teacherData.Location.ZipCode = this.form.zipCodeLocation;
-                    this.$rootScope.teacherData.Location.Position = this.form.positionLocation;
+                    this.$rootScope.profileData.Location.Country = this.form.countryLocation;
+                    this.$rootScope.profileData.Location.Address = this.form.addressLocation;
+                    this.$rootScope.profileData.Location.City = this.form.cityLocation;
+                    this.$rootScope.profileData.Location.State = this.form.stateLocation;
+                    this.$rootScope.profileData.Location.ZipCode = this.form.zipCodeLocation;
+                    this.$rootScope.profileData.Location.Position = this.form.positionLocation;
                     this.changeMapPosition();
                 };
                 TeacherLocationSectionController.prototype._subscribeToEvents = function () {
@@ -6523,18 +10406,17 @@ var app;
                     this.activate();
                 };
                 TeacherLanguageSectionController.prototype.activate = function () {
-                    console.log('TeacherLanguageSectionController controller actived');
+                    DEBUG && console.log('TeacherLanguageSectionController controller actived');
                     this._subscribeToEvents();
-                    if (this.$rootScope.teacherData) {
-                        this._fillForm(this.$rootScope.teacherData);
+                    if (this.$rootScope.profileData) {
+                        this._fillForm(this.$rootScope.profileData);
                     }
                 };
                 TeacherLanguageSectionController.prototype.goToNext = function () {
-                    var CURRENT_STEP = 3;
                     var formValid = this._validateForm();
                     if (formValid) {
                         this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data', CURRENT_STEP);
+                        this.$scope.$emit('Save Profile Data');
                         this.$state.go(this.STEP4_STATE, { reload: true });
                     }
                     else {
@@ -6683,26 +10565,26 @@ var app;
                         for (var i = 0; i < this.form.native.length; i++) {
                             native.push(this.form.native[i].key);
                         }
-                        this.$rootScope.teacherData.Languages.Native = native;
+                        this.$rootScope.profileData.Languages.Native = native;
                     }
                     if (this.form.learn) {
                         var learn = [];
                         for (var i = 0; i < this.form.learn.length; i++) {
                             learn.push(this.form.learn[i].key);
                         }
-                        this.$rootScope.teacherData.Languages.Learn = learn;
+                        this.$rootScope.profileData.Languages.Learn = learn;
                     }
                     if (this.form.teach) {
                         var teach = [];
                         for (var i = 0; i < this.form.teach.length; i++) {
                             teach.push(this.form.teach[i].key);
                         }
-                        this.$rootScope.teacherData.Languages.Teach = teach;
+                        this.$rootScope.profileData.Languages.Teach = teach;
                     }
                 };
                 TeacherLanguageSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
-                    this.$scope.$on('Fill Form', function (event, args) {
+                    this.$scope.$on('Fill User Profile Form', function (event, args) {
                         self._fillForm(args);
                     });
                 };
@@ -7008,7 +10890,7 @@ var app;
                     this.activate();
                 };
                 TeacherEducationSectionController.prototype.activate = function () {
-                    console.log('TeacherEducationSectionController controller actived');
+                    DEBUG && console.log('TeacherEducationSectionController controller actived');
                     this._subscribeToEvents();
                     if (this.$rootScope.teacherData) {
                         this._fillForm(this.$rootScope.teacherData);
@@ -7184,10 +11066,10 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherMethodSectionController = (function () {
-                function TeacherMethodSectionController(dataConfig, getDataFromJson, functionsUtilService, $state, $filter, $scope, $rootScope) {
+                function TeacherMethodSectionController(dataConfig, getDataFromJson, functionsUtil, $state, $filter, $scope, $rootScope) {
                     this.dataConfig = dataConfig;
                     this.getDataFromJson = getDataFromJson;
-                    this.functionsUtilService = functionsUtilService;
+                    this.functionsUtil = functionsUtil;
                     this.$state = $state;
                     this.$filter = $filter;
                     this.$scope = $scope;
@@ -7199,7 +11081,7 @@ var app;
                     this.STEP7_STATE = 'page.createTeacherPage.price';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.method.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.method.help_text.description.text');
-                    this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(6, 9);
+                    this.$scope.$parent.vm.progressWidth = this.functionsUtil.progress(6, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
                         description: this.HELP_TEXT_DESCRIPTION
@@ -7213,7 +11095,9 @@ var app;
                     this.validate = {
                         methodology: { valid: true, message: '' },
                         immersionActive: { valid: true, message: '' },
-                        typeOfImmersionList: { valid: true, message: '' }
+                        typeOfImmersionList: { valid: true, message: '' },
+                        otherCategory: { valid: true, message: '' },
+                        globalValidate: { valid: true, message: '' }
                     };
                     this.activate();
                 };
@@ -7271,17 +11155,30 @@ var app;
                 TeacherMethodSectionController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
                     var EMPTY_ENUM = 3;
+                    var GLOBAL_MESSAGE = this.$filter('translate')('%create.teacher.method.validation.message.text');
                     var formValid = true;
                     var methodology_rules = [NULL_ENUM, EMPTY_ENUM];
-                    this.validate.methodology = this.functionsUtilService.validator(this.form.methodology, methodology_rules);
+                    this.validate.methodology = this.functionsUtil.validator(this.form.methodology, methodology_rules);
                     if (!this.validate.methodology.valid) {
                         formValid = this.validate.methodology.valid;
                     }
                     if (this.form.immersion.Active) {
                         var typeOfImmersion_rules = [NULL_ENUM, EMPTY_ENUM];
-                        this.validate.typeOfImmersionList = this.functionsUtilService.validator(this.form.immersion.Category, typeOfImmersion_rules);
-                        if (!this.validate.typeOfImmersionList.valid) {
-                            formValid = this.validate.typeOfImmersionList.valid;
+                        this.validate.typeOfImmersionList = this.functionsUtil.validator(this.form.immersion.Category, typeOfImmersion_rules);
+                        var otherCategory_rules = [NULL_ENUM, EMPTY_ENUM];
+                        this.validate.otherCategory = this.functionsUtil.validator(this.form.immersion.OtherCategory, otherCategory_rules);
+                        if (this.validate.typeOfImmersionList.valid) {
+                            this.validate.globalValidate.valid = true;
+                            this.validate.globalValidate.message = '';
+                        }
+                        else if (this.validate.otherCategory.valid) {
+                            this.validate.globalValidate.valid = true;
+                            this.validate.globalValidate.message = '';
+                        }
+                        else {
+                            this.validate.globalValidate.valid = false;
+                            this.validate.globalValidate.message = GLOBAL_MESSAGE;
+                            formValid = this.validate.globalValidate.valid;
                         }
                     }
                     return formValid;
@@ -7428,7 +11325,7 @@ var app;
                     this.activate();
                 };
                 TeacherPriceSectionController.prototype.activate = function () {
-                    console.log('TeacherPriceSectionController controller actived');
+                    DEBUG && console.log('TeacherPriceSectionController controller actived');
                     this._subscribeToEvents();
                     if (this.$rootScope.teacherData) {
                         this._fillForm(this.$rootScope.teacherData);
@@ -7569,9 +11466,7 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherPhotoSectionController = (function () {
-                function TeacherPhotoSectionController(dataConfig, getDataFromJson, functionsUtilService, S3UploadService, messageUtil, Upload, $state, $filter, $scope, $rootScope) {
-                    this.dataConfig = dataConfig;
-                    this.getDataFromJson = getDataFromJson;
+                function TeacherPhotoSectionController(functionsUtilService, S3UploadService, messageUtil, Upload, $state, $filter, $scope, $rootScope) {
                     this.functionsUtilService = functionsUtilService;
                     this.S3UploadService = S3UploadService;
                     this.messageUtil = messageUtil;
@@ -7586,7 +11481,7 @@ var app;
                     this.STEP7_STATE = 'page.createTeacherPage.price';
                     this.FINAL_STEP_STATE = 'page.createTeacherPage.finish';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.title.text');
-                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.description.text');
+                    this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.teacher.help_text.description.text');
                     this.uploading = false;
                     this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(8, 9);
                     this.helpText = {
@@ -7606,10 +11501,10 @@ var app;
                     this.activate();
                 };
                 TeacherPhotoSectionController.prototype.activate = function () {
-                    console.log('TeacherPhotoSectionController controller actived');
+                    DEBUG && console.log('TeacherPhotoSectionController controller actived');
                     this._subscribeToEvents();
-                    if (this.$rootScope.teacherData) {
-                        this._fillForm(this.$rootScope.teacherData);
+                    if (this.$rootScope.profileData) {
+                        this._fillForm(this.$rootScope.profileData);
                     }
                 };
                 TeacherPhotoSectionController.prototype.goToNext = function () {
@@ -7622,7 +11517,7 @@ var app;
                                 self.uploading = false;
                                 if (result.Location) {
                                     self._setDataModelFromForm(result.Location);
-                                    self.$scope.$emit('Save Data');
+                                    self.$scope.$emit('Save Profile Data');
                                     self.$state.go(self.FINAL_STEP_STATE, { reload: true });
                                 }
                                 else {
@@ -7631,7 +11526,7 @@ var app;
                             });
                         }
                         else {
-                            this.$scope.$emit('Save Data');
+                            this.$scope.$emit('Save Profile Data');
                             this.$state.go(this.FINAL_STEP_STATE, { reload: true });
                         }
                     }
@@ -7670,7 +11565,7 @@ var app;
                 };
                 TeacherPhotoSectionController.prototype.changeHelpText = function (type) {
                     var AVATAR_TITLE = this.$filter('translate')('%create.teacher.photo.help_text.avatar.title.text');
-                    var AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.help_text.avatar.description.text');
+                    var AVATAR_DESCRIPTION = this.$filter('translate')('%create.teacher.photo.teacher.help_text.description.text');
                     switch (type) {
                         case 'default':
                             this.helpText.title = this.HELP_TEXT_TITLE;
@@ -7710,11 +11605,11 @@ var app;
                     });
                 };
                 TeacherPhotoSectionController.prototype._setDataModelFromForm = function (avatar) {
-                    this.$rootScope.teacherData.Avatar = avatar;
+                    this.$rootScope.profileData.Avatar = avatar;
                 };
                 TeacherPhotoSectionController.prototype._subscribeToEvents = function () {
                     var self = this;
-                    this.$scope.$on('Fill Form', function (event, args) {
+                    this.$scope.$on('Fill User Profile Form', function (event, args) {
                         self._fillForm(args);
                     });
                 };
@@ -7722,8 +11617,6 @@ var app;
             }());
             TeacherPhotoSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherPhotoSectionController';
             TeacherPhotoSectionController.$inject = [
-                'dataConfig',
-                'mainApp.core.util.GetDataStaticJsonService',
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.core.s3Upload.S3UploadService',
                 'mainApp.core.util.messageUtilService',
@@ -7783,17 +11676,13 @@ var app;
                     this.activate();
                 };
                 TeacherFinishSectionController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = "Enter: Finish Create Teacher Process";
                     console.log('TeacherFinishSectionController controller actived');
-                    mixpanel.track("Enter: Finish Create Teacher Process");
+                    mixpanel.track(ENTER_MIXPANEL);
                 };
                 TeacherFinishSectionController.prototype._finishProcess = function () {
-                    this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
-                    this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, '');
-                    mixpanel.track("Finish Process: Create Teacher", {
-                        "id": this.$rootScope.teacherData.Id,
-                        "name": this.$rootScope.teacherData.FirstName + ' ' + this.$rootScope.teacherData.LastName,
-                        "email": this.$rootScope.teacherData.Email
-                    });
+                    this.localStorage.removeItem(this.dataConfig.earlyIdLocalStorage);
+                    this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
                     this.$state.go('page.landingPage');
                 };
                 return TeacherFinishSectionController;
@@ -7832,6 +11721,9 @@ var app;
                 }
             },
             parent: 'page',
+            data: {
+                requireLogin: false
+            },
             params: {
                 id: null
             },
@@ -7859,28 +11751,29 @@ var app;
                     this._init();
                 }
                 TeacherProfilePageController.prototype._init = function () {
-                    this.data = null;
+                    this.data = new app.models.teacher.Teacher();
                     this.loading = true;
                     this._initNativeTooltip();
                     this.activate();
                 };
                 TeacherProfilePageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Teacher Profile Page';
                     var self = this;
                     console.log('teacherProfilePage controller actived');
-                    mixpanel.track("Enter: Teacher Profile Details");
+                    mixpanel.track(ENTER_MIXPANEL);
                     this.TeacherService.getTeacherById(this.$stateParams.id).then(function (response) {
                         self.data = new app.models.teacher.Teacher(response);
                         self.mapConfig = self.functionsUtil.buildMapConfig([
                             {
-                                id: self.data.Location.Position.Id,
+                                id: self.data.Profile.Location.Position.Id,
                                 location: {
                                     position: {
-                                        lat: parseFloat(self.data.Location.Position.Lat),
-                                        lng: parseFloat(self.data.Location.Position.Lng)
+                                        lat: parseFloat(self.data.Profile.Location.Position.Lat),
+                                        lng: parseFloat(self.data.Profile.Location.Position.Lng)
                                     }
                                 }
                             }
-                        ], 'location-circle-map', { lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng) }, null);
+                        ], 'location-circle-map', { lat: parseFloat(self.data.Profile.Location.Position.Lat), lng: parseFloat(self.data.Profile.Location.Position.Lng) }, null);
                         self.loading = false;
                     });
                 };
@@ -7892,15 +11785,16 @@ var app;
                     };
                 };
                 TeacherProfilePageController.prototype.goToConfirm = function () {
-                    mixpanel.track("Click on book a class", {
+                    var CLICK_MIXPANEL = 'Click: Book a Class';
+                    mixpanel.track(CLICK_MIXPANEL, {
                         "teacher_id": this.data.Id,
-                        "teacher_name": this.data.FirstName + ' ' + this.data.LastName
+                        "teacher_name": this.data.Profile.FirstName + ' ' + this.data.Profile.LastName
                     });
                     var url = 'https://waysily.typeform.com/to/NDPRAb';
                     window.open(url, '_blank');
                 };
                 TeacherProfilePageController.prototype._assignNative = function (language) {
-                    var native = this.data.Languages.Native;
+                    var native = this.data.Profile.Languages.Native;
                     var isNativeOfThisLanguage = false;
                     for (var i = 0; i < native.length; i++) {
                         if (language === native[i]) {
@@ -7912,7 +11806,7 @@ var app;
                 };
                 TeacherProfilePageController.prototype._assignNativeTooltip = function (language) {
                     var TOOLTIP_TEXT = this.$filter('translate')('%profile.teacher.native.lang.tooltip.text');
-                    var firstName = this.data.FirstName;
+                    var firstName = this.data.Profile.FirstName;
                     var tooltipText = null;
                     var isNative = this._assignNative(language);
                     if (isNative) {

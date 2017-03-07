@@ -30,23 +30,25 @@ module app.models.user {
     /*          USER CLASS DEFINITION       */
     /****************************************/
 
-    export class User {
+    export class Profile {
 
         /*-- PROPERTIES --*/
-        private id: string;
-        private uid: string;
+        private userId: string;
         private avatar: string;
         private username: string;
         private email: string;
         private phoneNumber: string;
         private firstName: string;
         private lastName: string;
-        private sex: string;
+        private gender: string;
         private birthDate: string;
-        private born: string;
+        private bornCountry: string;
+        private bornCity: string;
         private about: string;
+        private languages: Language;
         private location: Location;
-        private status: string;
+        private isTeacher: boolean;
+        private dateJoined: string;
         private createdAt: string;
 
         /**********************************/
@@ -54,24 +56,203 @@ module app.models.user {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('User Model instanced');
+            DEBUG && console.log('Profile Model instanced');
+
+            if(obj === null) obj = {};
 
             //init properties
-            this.id = obj.id;
-            this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
-            this.avatar = obj.avatar;
+            this.userId = obj.userId || '';
+            this.avatar = obj.avatar || '';
             this.username = obj.username || '';
             this.email = obj.email || '';
             this.phoneNumber = obj.phoneNumber || '';
             this.firstName = obj.firstName || '';
             this.lastName = obj.lastName || '';
-            this.sex = obj.sex || '';
-            this.birthDate = obj.birthDate || '';
-            this.born = obj.born || '';
+            this.gender = obj.gender || '';
+            this.birthDate = obj.birthDate || null;
+            this.bornCountry = obj.bornCountry || '';
+            this.bornCity = obj.bornCity || '';
             this.about = obj.about || '';
+            this.languages = new Language(obj.languages);
             this.location = new Location(obj.location);
-            this.status = obj.status || 'NW';
+            this.isTeacher = obj.isTeacher || false;
+            this.dateJoined = obj.dateJoined || '';
             this.createdAt = obj.createdAt || '';
+
+        }
+
+        /**********************************/
+        /*             METHODS            */
+        /**********************************/
+
+        get UserId() {
+            return this.userId;
+        }
+
+        set UserId(userId: string) {
+            if (userId === undefined) { throw 'Please supply profile userId'; }
+            this.userId = userId;
+        }
+
+        get Avatar() {
+            return this.avatar;
+        }
+
+        set Avatar(avatar: string) {
+            if (avatar === undefined) { throw 'Please supply profile avatar'; }
+            this.avatar = avatar;
+        }
+
+        get Username() {
+            return this.username;
+        }
+
+        get Email() {
+            return this.email;
+        }
+
+        set Email(email: string) {
+            if (email === undefined) { throw 'Please supply profile email'; }
+            this.email = email;
+        }
+
+        get PhoneNumber() {
+            return this.phoneNumber;
+        }
+
+        set PhoneNumber(phoneNumber: string) {
+            if (phoneNumber === undefined) { throw 'Please supply profile phone number'; }
+            this.phoneNumber = phoneNumber;
+        }
+
+        get FirstName() {
+            return this.firstName;
+        }
+
+        set FirstName(firstName: string) {
+            if (firstName === undefined) { throw 'Please supply profile first name'; }
+            this.firstName = firstName;
+        }
+
+        get LastName() {
+            return this.lastName;
+        }
+
+        set LastName(lastName: string) {
+            if (lastName === undefined) { throw 'Please supply profile last name'; }
+            this.lastName = lastName;
+        }
+
+        get Gender() {
+            return this.gender;
+        }
+
+        set Gender(gender: string) {
+            if (gender === undefined) { throw 'Please supply profile gender'; }
+            this.gender = gender;
+        }
+
+        get BirthDate() {
+            return this.birthDate;
+        }
+
+        set BirthDate(birthDate: string) {
+            if (birthDate === undefined) { throw 'Please supply profile birth date'; }
+            this.birthDate = birthDate;
+        }
+
+        get BornCountry() {
+            return this.bornCountry;
+        }
+
+        set BornCountry(bornCountry: string) {
+            if (bornCountry === undefined) { throw 'Please supply profile born country'; }
+            this.bornCountry = bornCountry;
+        }
+
+        get BornCity() {
+            return this.bornCity;
+        }
+
+        set BornCity(bornCity: string) {
+            if (bornCity === undefined) { throw 'Please supply profile born city'; }
+            this.bornCity = bornCity;
+        }
+
+        get Languages() {
+            return this.languages;
+        }
+
+        set Languages(languages: Language) {
+            if (languages === undefined) { throw 'Please supply profile languages'; }
+            this.languages = languages;
+        }
+
+        get Location() {
+            return this.location;
+        }
+
+        set Location(location: app.models.user.Location) {
+            if (location === undefined) { throw 'Please supply profile location'; }
+            this.location = location;
+        }
+
+        get About() {
+            return this.about;
+        }
+
+        set About(about: string) {
+            if (about === undefined) { throw 'Please supply profile location'; }
+            this.about = about;
+        }
+
+        get IsTeacher() {
+            return this.isTeacher;
+        }
+
+        set IsTeacher(isTeacher: boolean) {
+            if (isTeacher === undefined) { throw 'Please supply profile IsTeacher value'; }
+            this.isTeacher = isTeacher;
+        }
+
+        get DateJoined() {
+            return this.dateJoined;
+        }
+
+        get CreatedAt() {
+            return this.createdAt;
+        }
+
+    }
+
+
+
+    /************************************************/
+    /*          LANGUAGE CLASS DEFINITION           */
+    /************************************************/
+
+    export class Language {
+
+        /*-- PROPERTIES --*/
+        private id: number;
+        private native: Array<string>;
+        private learn: Array<string>;
+        private teach: Array<string>;
+
+        /**********************************/
+        /*           CONSTRUCTOR          */
+        /**********************************/
+        constructor(obj: any = {}) {
+            //LOG
+            console.log('Languages Model instanced');
+
+            if(obj === null) obj = {};
+
+            //init properties
+            this.id = obj.id;
+            this.native = obj.native || [];
+            this.learn = obj.learn || [];
+            this.teach = obj.teach || [];
 
         }
 
@@ -83,131 +264,38 @@ module app.models.user {
             return this.id;
         }
 
-        set Id(id: string) {
+        set Id(id: number) {
             if (id === undefined) { throw 'Please supply id'; }
             this.id = id;
         }
 
-        get Uid() {
-            return this.uid;
+        get Native() {
+            return this.native;
         }
 
-        set Uid(uid: string) {
-            if (uid === undefined) { throw 'Please supply user uid'; }
-            this.uid = uid;
+        set Native(native: Array<string>) {
+            if (native === undefined) { throw 'Please supply native languages'; }
+            this.native = native;
         }
 
-        get Avatar() {
-            return this.avatar;
+        get Learn() {
+            return this.learn;
         }
 
-        set Avatar(avatar: string) {
-            if (avatar === undefined) { throw 'Please supply avatar'; }
-            this.avatar = avatar;
+        set Learn(learn: Array<string>) {
+            if (learn === undefined) { throw 'Please supply learn languages'; }
+            this.learn = learn;
         }
 
-        get Username() {
-            return this.username;
+        get Teach() {
+            return this.teach;
         }
 
-        set Username(username: string) {
-            if (username === undefined) { throw 'Please supply username'; }
-            this.username = username;
+        set Teach(teach: Array<string>) {
+            if (teach === undefined) { throw 'Please supply teach languages'; }
+            this.teach = teach;
         }
 
-        get Email() {
-            return this.email;
-        }
-
-        set Email(email: string) {
-            if (email === undefined) { throw 'Please supply email'; }
-            this.email = email;
-        }
-
-        get PhoneNumber() {
-            return this.phoneNumber;
-        }
-
-        set PhoneNumber(phoneNumber: string) {
-            if (phoneNumber === undefined) { throw 'Please supply phone number'; }
-            this.phoneNumber = phoneNumber;
-        }
-
-        get FirstName() {
-            return this.firstName;
-        }
-
-        set FirstName(firstName: string) {
-            if (firstName === undefined) { throw 'Please supply first name'; }
-            this.firstName = firstName;
-        }
-
-        get LastName() {
-            return this.lastName;
-        }
-
-        set LastName(lastName: string) {
-            if (lastName === undefined) { throw 'Please supply last name'; }
-            this.lastName = lastName;
-        }
-
-        get Sex() {
-            return this.sex;
-        }
-
-        set Sex(sex: string) {
-            if (sex === undefined) { throw 'Please supply sex'; }
-            this.sex = sex;
-        }
-
-        get BirthDate() {
-            return this.birthDate;
-        }
-
-        set BirthDate(birthDate: string) {
-            if (birthDate === undefined) { throw 'Please supply birth date'; }
-            this.birthDate = birthDate;
-        }
-
-        get Born() {
-            return this.born;
-        }
-
-        set Born(born: string) {
-            if (born === undefined) { throw 'Please supply born'; }
-            this.born = born;
-        }
-
-        get About() {
-            return this.about;
-        }
-
-        set About(about: string) {
-            if (about === undefined) { throw 'Please supply location'; }
-            this.about = about;
-        }
-
-        get Location() {
-            return this.location;
-        }
-
-        set Location(location: Location) {
-            if (location === undefined) { throw 'Please supply location'; }
-            this.location = location;
-        }
-
-        get Status() {
-            return this.status;
-        }
-
-        set Status(status: string) {
-            if (status === undefined) { throw 'Please supply status value'; }
-            this.status = status;
-        }
-
-        get CreatedAt() {
-            return this.createdAt;
-        }
 
     }
 
@@ -234,10 +322,12 @@ module app.models.user {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('User Model instanced');
+            DEBUG && console.log('Location Model instanced');
+
+            if(obj === null) obj = {};
 
             //init properties
-            this.id = obj.id;
+            this.id = obj.id || '';
             this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
             this.country = obj.country || '';
             this.address = obj.address || '';
@@ -345,10 +435,12 @@ module app.models.user {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('User Model instanced');
+            DEBUG && console.log('Position Model instanced');
+
+            if(obj === null) obj = {};
 
             //init properties
-            this.id = obj.id;
+            this.id = obj.id || '';
             this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
             this.lng = obj.lng || '';
             this.lat = obj.lat || '';

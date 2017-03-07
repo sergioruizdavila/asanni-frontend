@@ -38,7 +38,7 @@ var app;
                     this.activate();
                 };
                 TeacherEducationSectionController.prototype.activate = function () {
-                    console.log('TeacherEducationSectionController controller actived');
+                    DEBUG && console.log('TeacherEducationSectionController controller actived');
                     this._subscribeToEvents();
                     if (this.$rootScope.teacherData) {
                         this._fillForm(this.$rootScope.teacherData);

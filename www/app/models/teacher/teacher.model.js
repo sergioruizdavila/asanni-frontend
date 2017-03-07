@@ -1,66 +1,74 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var app;
 (function (app) {
     var models;
     (function (models) {
         var teacher;
         (function (teacher) {
-            var Teacher = (function (_super) {
-                __extends(Teacher, _super);
+            var Teacher = (function () {
                 function Teacher(obj) {
                     if (obj === void 0) { obj = {}; }
-                    var _this;
                     console.log('Teacher Model instanced');
-                    _this = _super.call(this, obj) || this;
-                    _this.languages = new Language(obj.languages);
-                    _this.type = obj.type || '';
-                    _this.teacherSince = obj.teacherSince || '';
-                    _this.methodology = obj.methodology || '';
-                    _this.immersion = new Immersion(obj.immersion);
-                    _this.price = new Price(obj.price);
+                    if (obj === null)
+                        obj = {};
+                    this.id = obj.id || '';
+                    this.profile = new app.models.user.Profile(obj.profile);
+                    this.type = obj.type || '';
+                    this.teacherSince = obj.teacherSince || '';
+                    this.methodology = obj.methodology || '';
+                    this.immersion = new Immersion(obj.immersion);
+                    this.status = obj.status || 'NW';
+                    this.price = new Price(obj.price);
                     if (obj != {}) {
-                        _this.experiences = [];
+                        this.experiences = [];
                         for (var key in obj.experiences) {
                             var experienceInstance = new Experience(obj.experiences[key]);
-                            _this.addExperience(experienceInstance);
+                            this.addExperience(experienceInstance);
                         }
-                        _this.educations = [];
+                        this.educations = [];
                         for (var key in obj.educations) {
                             var educationInstance = new Education(obj.educations[key]);
-                            _this.addEducation(educationInstance);
+                            this.addEducation(educationInstance);
                         }
-                        _this.certificates = [];
+                        this.certificates = [];
                         for (var key in obj.certificates) {
                             var certificateInstance = new Certificate(obj.certificates[key]);
-                            _this.addCertificate(certificateInstance);
+                            this.addCertificate(certificateInstance);
                         }
-                        _this.ratings = [];
+                        this.ratings = [];
                         for (var key in obj.ratings) {
                             var ratingInstance = new Rating(obj.ratings[key]);
-                            _this.addRating(ratingInstance);
+                            this.addRating(ratingInstance);
                         }
                     }
                     else {
-                        _this.experiences = [];
-                        _this.educations = [];
-                        _this.certificates = [];
-                        _this.ratings = [];
+                        this.experiences = [];
+                        this.educations = [];
+                        this.certificates = [];
+                        this.ratings = [];
                     }
-                    return _this;
                 }
-                Object.defineProperty(Teacher.prototype, "Languages", {
+                Object.defineProperty(Teacher.prototype, "Id", {
                     get: function () {
-                        return this.languages;
+                        return this.id;
                     },
-                    set: function (languages) {
-                        if (languages === undefined) {
-                            throw 'Please supply languages';
+                    set: function (id) {
+                        if (id === undefined) {
+                            throw 'Please supply id of teacher';
                         }
-                        this.languages = languages;
+                        this.id = id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Teacher.prototype, "Profile", {
+                    get: function () {
+                        return this.profile;
+                    },
+                    set: function (profile) {
+                        if (profile === undefined) {
+                            throw 'Please supply teacher profile data';
+                        }
+                        this.profile = profile;
                     },
                     enumerable: true,
                     configurable: true
@@ -222,6 +230,19 @@ var app;
                         }
                     });
                 };
+                Object.defineProperty(Teacher.prototype, "Status", {
+                    get: function () {
+                        return this.status;
+                    },
+                    set: function (status) {
+                        if (status === undefined) {
+                            throw 'Please supply profile status value';
+                        }
+                        this.status = status;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 Object.defineProperty(Teacher.prototype, "Recommended", {
                     get: function () {
                         return this.recommended;
@@ -236,90 +257,14 @@ var app;
                     configurable: true
                 });
                 return Teacher;
-            }(app.models.user.User));
-            teacher.Teacher = Teacher;
-            var Language = (function () {
-                function Language(obj) {
-                    if (obj === void 0) { obj = {}; }
-                    console.log('Languages Model instanced');
-                    this.id = obj.id;
-                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
-                    this.native = obj.native || [];
-                    this.learn = obj.learn || [];
-                    this.teach = obj.teach || [];
-                }
-                Object.defineProperty(Language.prototype, "Id", {
-                    get: function () {
-                        return this.id;
-                    },
-                    set: function (id) {
-                        if (id === undefined) {
-                            throw 'Please supply id';
-                        }
-                        this.id = id;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(Language.prototype, "Uid", {
-                    get: function () {
-                        return this.uid;
-                    },
-                    set: function (uid) {
-                        if (uid === undefined) {
-                            throw 'Please supply language uid';
-                        }
-                        this.uid = uid;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(Language.prototype, "Native", {
-                    get: function () {
-                        return this.native;
-                    },
-                    set: function (native) {
-                        if (native === undefined) {
-                            throw 'Please supply native languages';
-                        }
-                        this.native = native;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(Language.prototype, "Learn", {
-                    get: function () {
-                        return this.learn;
-                    },
-                    set: function (learn) {
-                        if (learn === undefined) {
-                            throw 'Please supply learn languages';
-                        }
-                        this.learn = learn;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(Language.prototype, "Teach", {
-                    get: function () {
-                        return this.teach;
-                    },
-                    set: function (teach) {
-                        if (teach === undefined) {
-                            throw 'Please supply teach languages';
-                        }
-                        this.teach = teach;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                return Language;
             }());
-            teacher.Language = Language;
+            teacher.Teacher = Teacher;
             var Experience = (function () {
                 function Experience(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Experience Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.position = obj.position || '';
@@ -454,6 +399,8 @@ var app;
                 function Education(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Education Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.school = obj.school || '';
@@ -574,6 +521,8 @@ var app;
                 function Certificate(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Certificate Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.name = obj.name || '';
@@ -666,6 +615,8 @@ var app;
                 function Immersion(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Certificate Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.active = obj.active || false;
@@ -744,6 +695,8 @@ var app;
                 function TypeOfImmersion(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('TypeOfImmersion Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.category = obj.category || '';
@@ -794,6 +747,8 @@ var app;
                 function Price(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Price of Teacher Class Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.privateClass = new TypeOfPrice(obj.privateClass);
@@ -858,6 +813,8 @@ var app;
                 function TypeOfPrice(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('TypeOfPrice Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.active = obj.active || false;
@@ -922,6 +879,8 @@ var app;
                 function Rating(obj) {
                     if (obj === void 0) { obj = {}; }
                     console.log('Rating Model instanced');
+                    if (obj === null)
+                        obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.author = new app.models.student.Student(obj.author);
