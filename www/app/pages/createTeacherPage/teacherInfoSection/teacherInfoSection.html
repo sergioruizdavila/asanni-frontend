@@ -26,8 +26,8 @@
                     <form class="form-horizontal
                                  ma-form--horizontal" novalidate>
 
-                        <!-- First Name Input -->
-                        <div class="form-group
+                        <! First Name Input >
+                        <!--div class="form-group
                                     ma-form-group
                                     ma-form-group--large"
                              ng-mouseover="vm.changeHelpText('firstName')">
@@ -47,10 +47,10 @@
                                     <span>{{vm.validate.firstName.message}}</span>
                                 </p>
                             </div>
-                        </div>
+                        </div-->
 
-                        <!-- Last Name Input -->
-                        <div class="form-group
+                        <! Last Name Input >
+                        <!--div class="form-group
                                     ma-form-group
                                     ma-form-group--large"
                              ng-mouseover="vm.changeHelpText('lastName')">
@@ -69,10 +69,10 @@
                                    <span>{{vm.validate.lastName.message}}</span>
                                 </p>
                             </div>
-                        </div>
+                        </div-->
 
-                        <!-- Email Input -->
-                        <div class="form-group
+                        <! Email Input >
+                        <!--div class="form-group
                                     ma-form-group
                                     ma-form-group--large"
                              ng-mouseover="vm.changeHelpText('email')">
@@ -91,9 +91,9 @@
                                    <span>{{vm.validate.email.message}}</span>
                                 </p>
                             </div>
-                        </div>
+                        </div-->
 
-                        <!-- Phone Number Input -->
+                        <! Phone Number >
                         <div class="form-group
                                     ma-form-group
                                     ma-form-group--large"
@@ -117,7 +117,7 @@
                             </div>
                         </div>
 
-                        <!-- I am Select Input -->
+                        <! I am Select >
                         <div class="form-group
                                     ma-form-group
                                     ma-form-group--large"
@@ -148,7 +148,7 @@
                             </div>
                         </div>
 
-                        <!-- Birthday Select Input with Help Text -->
+                        <! Birthdate >
                         <div class="form-group
                                     ma-form-group
                                     ma-form-group--large"
@@ -169,7 +169,7 @@
                                             ng-class="{'ma-input--invalid': !vm.validate.birthDate.month.valid}"
                                             name="teacher[month]" class="form-control">
                                             <option value="" disabled selected translate>
-                                                %create.teacher.basic_info.form.mth_birthdate.text
+                                                %global.mth.label.text
                                             </option>
                                     </select>
                                 </div>
@@ -184,8 +184,8 @@
                                             ng-options="day.value for day in vm.listDays track by day.value"
                                             ng-class="{'ma-input--invalid': !vm.validate.birthDate.day.valid}"
                                             name="teacher[day]" class="form-control">
-                                            <option value="" disabled selected>
-                                                dd
+                                            <option value="" disabled selected translate>
+                                                %global.day.label.text
                                             </option>
                                     </select>
                                 </div>
@@ -200,8 +200,8 @@
                                             ng-options="year.value for year in vm.listYears | orderBy:'value':true track by year.value"
                                             ng-class="{'ma-input--invalid': !vm.validate.birthDate.year.valid}"
                                             name="teacher[year]" class="form-control">
-                                            <option value="" disabled selected>
-                                                yyyy
+                                            <option value="" disabled selected translate>
+                                                %global.year.label.text
                                             </option>
                                     </select>
                                 </div>
@@ -214,31 +214,65 @@
                             </div>
                         </div>
 
-                        <!-- Where you born Input -->
+                        <! Country born >
+                        <div class="form-group ma-form-group ma-form-group--large"
+                             ng-mouseover="vm.changeHelpText('born')">
+                            <label class="text-right
+                                          col-xs-3 col-sm-3"
+                                   for="user-country-born" translate>
+                                %global.cntry_birth.label.text
+                            </label>
+                            <div class="col-xs-9 col-sm-9">
+                                <div class="ma-select-container
+                                            ma-select-container--large">
+                                    <select id="user-country-born"
+                                            class="ma-input ma-select
+                                                   ma-select--large"
+                                            ng-model="vm.countryObject"
+                                            ng-options="country.value | translate for country in vm.listCountries track by country.code"
+                                            ng-class="{'ma-input--invalid': !vm.validate.bornCountry.valid}"
+                                            name="teacher[country]" class="form-control">
+                                            <option value="" disabled selected translate>
+                                                %create.teacher.location.form.cntry.option_list.text
+                                            </option>
+                                    </select>
+                                    <p class="ma-p ma-p--small ma-p--alert
+                                              pull-right margin-reset"
+                                        ng-show="!vm.validate.bornCountry.valid">
+                                        <span>
+                                            {{vm.validate.bornCountry.message}}
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <! Where city born >
                         <div class="form-group
                                     ma-form-group
                                     ma-form-group--large"
                              ng-mouseover="vm.changeHelpText('born')">
-                            <label class="text-right col-xs-3 col-sm-3"
-                                   for="teacher-born" translate>
-                                   %create.teacher.basic_info.form.born.text
+                            <label class="text-right col-xs-3
+                                          col-sm-3"
+                                   for="teacher-city-born" translate>
+                                   %global.city_birth.label.text
                             </label>
                             <div class="col-xs-9 col-sm-9">
-                                <input id="teacher-born"
+                                <input id="teacher-city-born"
                                        type="text"
                                        class="ma-input ma-input--large"
-                                       ng-class="{'ma-input--invalid': !vm.validate.born.valid}"
-                                       ng-model="vm.form.born"
+                                       ng-class="{'ma-input--invalid': !vm.validate.bornCity.valid}"
+                                       ng-model="vm.form.bornCity"
                                        translate
                                        translate-attr-placeholder="%create.teacher.basic_info.form.born.placeholder.text">
                                 <p class="ma-p ma-p--small ma-p--alert pull-right"
-                                    ng-show="!vm.validate.born.valid">
-                                   <span>{{vm.validate.born.message}}</span>
+                                    ng-show="!vm.validate.bornCity.valid">
+                                   <span>{{vm.validate.bornCity.message}}</span>
                                 </p>
                             </div>
                         </div>
 
-                        <!-- About me -->
+                        <! About me >
                         <div class="form-group
                                     ma-form-group
                                     ma-form-group--large"
@@ -251,10 +285,15 @@
                                 <textarea id="teacher-about"
                                           name="teacher[about]"
                                           class="ma-input ma-input--large ma-textarea"
+                                          ng-class="{'ma-input--invalid': !vm.validate.about.valid}"
                                           translate
                                           translate-attr-placeholder="%create.teacher.basic_info.form.about.input.text"
                                           ng-model="vm.form.about"
                                           rows="5" cols="40"></textarea>
+                                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                   ng-show="!vm.validate.about.valid">
+                                   <span>{{vm.validate.about.message}}</span>
+                                </p>
                             </div>
                         </div>
 

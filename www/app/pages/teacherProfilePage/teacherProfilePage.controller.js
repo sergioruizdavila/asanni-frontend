@@ -14,28 +14,29 @@ var app;
                     this._init();
                 }
                 TeacherProfilePageController.prototype._init = function () {
-                    this.data = null;
+                    this.data = new app.models.teacher.Teacher();
                     this.loading = true;
                     this._initNativeTooltip();
                     this.activate();
                 };
                 TeacherProfilePageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Teacher Profile Page';
                     var self = this;
                     console.log('teacherProfilePage controller actived');
-                    mixpanel.track("Enter: Teacher Profile Details");
+                    mixpanel.track(ENTER_MIXPANEL);
                     this.TeacherService.getTeacherById(this.$stateParams.id).then(function (response) {
                         self.data = new app.models.teacher.Teacher(response);
                         self.mapConfig = self.functionsUtil.buildMapConfig([
                             {
-                                id: self.data.Location.Position.Id,
+                                id: self.data.Profile.Location.Position.Id,
                                 location: {
                                     position: {
-                                        lat: parseFloat(self.data.Location.Position.Lat),
-                                        lng: parseFloat(self.data.Location.Position.Lng)
+                                        lat: parseFloat(self.data.Profile.Location.Position.Lat),
+                                        lng: parseFloat(self.data.Profile.Location.Position.Lng)
                                     }
                                 }
                             }
-                        ], 'location-circle-map', { lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng) }, null);
+                        ], 'location-circle-map', { lat: parseFloat(self.data.Profile.Location.Position.Lat), lng: parseFloat(self.data.Profile.Location.Position.Lng) }, null);
                         self.loading = false;
                     });
                 };
@@ -47,15 +48,16 @@ var app;
                     };
                 };
                 TeacherProfilePageController.prototype.goToConfirm = function () {
-                    mixpanel.track("Click on book a class", {
+                    var CLICK_MIXPANEL = 'Click: Book a Class';
+                    mixpanel.track(CLICK_MIXPANEL, {
                         "teacher_id": this.data.Id,
-                        "teacher_name": this.data.FirstName + ' ' + this.data.LastName
+                        "teacher_name": this.data.Profile.FirstName + ' ' + this.data.Profile.LastName
                     });
                     var url = 'https://waysily.typeform.com/to/NDPRAb';
                     window.open(url, '_blank');
                 };
                 TeacherProfilePageController.prototype._assignNative = function (language) {
-                    var native = this.data.Languages.Native;
+                    var native = this.data.Profile.Languages.Native;
                     var isNativeOfThisLanguage = false;
                     for (var i = 0; i < native.length; i++) {
                         if (language === native[i]) {
@@ -67,7 +69,7 @@ var app;
                 };
                 TeacherProfilePageController.prototype._assignNativeTooltip = function (language) {
                     var TOOLTIP_TEXT = this.$filter('translate')('%profile.teacher.native.lang.tooltip.text');
-                    var firstName = this.data.FirstName;
+                    var firstName = this.data.Profile.FirstName;
                     var tooltipText = null;
                     var isNative = this._assignNative(language);
                     if (isNative) {

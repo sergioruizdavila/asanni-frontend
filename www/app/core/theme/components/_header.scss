@@ -41,6 +41,12 @@
                 text-decoration: none;
             }
 
+            &:focus {
+                outline: none;
+                color: $black;
+                text-decoration: none;
+            }
+
             &__ma-logo {
                 position: relative;
                 top: $header-block-btn-logo-top;
@@ -120,6 +126,7 @@
 
     }
 
+
     &--transparent {
         background: $header-transparent-background;
         border: $header-transparent-border;
@@ -132,6 +139,21 @@
                 padding-right: $header-transparent-block-right-padding;
             }
 
+            &__btn {
+
+                &:hover {
+                    background-color: transparent;
+                    color: $white;
+                }
+
+                &:focus {
+                    outline: none;
+                    color: $white;
+                    text-decoration: none;
+                }
+
+            }
+
             .ma-select-container {
                 vertical-align: middle;
             }
@@ -142,12 +164,8 @@
                 &__label {
                     color: $white;
                     font-size:15px;
-                    margin-right: 10px;
                 }
 
-                &__btn {
-                     margin-right: 6px;
-                }
             }
         }
     }

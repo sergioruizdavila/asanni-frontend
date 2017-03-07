@@ -42,7 +42,8 @@ var components;
             };
             FloatMessageBarController.prototype._join = function () {
                 var CREATE_TEACHER = 'page.createTeacherPage.start';
-                mixpanel.track("Click on join as a teacher from floatMessageBar");
+                var CLICK_MIXPANEL = 'Click: Join as a teacher from floatMessageBar';
+                mixpanel.track(CLICK_MIXPANEL);
                 this.$state.go(CREATE_TEACHER, { reload: true });
             };
             return FloatMessageBarController;

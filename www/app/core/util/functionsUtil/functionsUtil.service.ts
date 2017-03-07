@@ -11,6 +11,7 @@ module app.core.util.functionsUtil {
     /*           INTERFACES           */
     /**********************************/
     export interface IFunctionsUtilService {
+        normalizeString: (value: string) => string;
         splitToColumns: (arr: Array<any>, size: number) => Array<any>;
         buildMapConfig: (dataSet: Array<any>,
                         mapType: string,
@@ -21,13 +22,17 @@ module app.core.util.functionsUtil {
         dateFormat: (date: string) => string;
         ageFormat: (date: any) => string;
         getCurrentLanguage: () => string;
-        changeLanguage: (language: string) => void;
+        generateUsername: (firstName: string, lastName: string) => string;
+        changeLanguage: (language: string) => angular.IPromise<string> ;
         joinDate: (day:string, month:string, year:string) => string;
         splitDate: (date:string) => app.core.interfaces.IDateSplitted;
         progress: (currentStep: number, totalSteps: number) => string;
         validator: (value: any, validations: Array<Validation>) => IValid;
         averageNumbersArray: (values: Array<number>) => number;
         teacherRatingAverage: (ratingsArr: Array<Object>) => number;
+        addUserIndentifyMixpanel: (userId: string) => void;
+        setUserMixpanel: (userData: app.models.user.Profile) => void;
+        setPropertyMixpanel: (property: Object) => void;
     }
 
     export interface IValid {
@@ -84,6 +89,39 @@ module app.core.util.functionsUtil {
         /**********************************/
         /*            METHODS             */
         /**********************************/
+
+
+        /**
+        * normalizeString
+        * @description - replace special characters from a string
+        * @use - this.FunctionsUtilService.normalizeString('Fábula Niño');
+        * @function
+        * @param {string} str - string to parse
+        * @return {string} string parsed (e.g. Fabula Nino)
+        */
+        normalizeString(str): string {
+            //VARIABLES
+            let from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç";
+            let to = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc";
+            let mapping = {};
+
+            for(var i = 0; i < from.length; i++ )
+              mapping[ from.charAt(i) ] = to.charAt(i);
+
+            var ret = [];
+            for( var i = 0; i < str.length; i++ ) {
+                var c = str.charAt(i);
+                if(mapping.hasOwnProperty(str.charAt(i)))
+                    ret.push(mapping[c]);
+                else
+                    ret.push(c);
+            }
+
+            return ret.join( '' );
+
+        }
+
+
 
         /**
         * generateGuid
@@ -159,15 +197,74 @@ module app.core.util.functionsUtil {
 
 
         /**
+        * dateFormat
+        * @description - format a date to 'YYYY-MM-DD'
+        * @use - this.FunctionsUtilService.dateFormat('June 10, 2016');
+        * @function
+        * @param {string} firstName - entity first name
+        * @param {string} lastName - entity last name
+        * @return {string} username - username generated
+        */
+        generateUsername(firstName, lastName): string {
+            //VARIABLES
+            let alias = '';
+            let username = '';
+            let randomCode = '';
+            let minLength = this.dataConfig.usernameMinLength;
+            let maxLength = this.dataConfig.usernameMaxLength;
+
+            //CONSTANTS
+            let ALPHABET = '0123456789';
+            let ID_LENGTH = 7;
+            let REMAINDER = maxLength - ID_LENGTH;
+            let EXTRAS = 2;
+
+            //Replace characters special
+            firstName = this.normalizeString(firstName);
+            //remove space and other characters to firstName
+            firstName = firstName.replace(/[^\w\s]/gi, '').replace(/\s/g, '');
+
+            //Replace characters special
+            lastName = this.normalizeString(lastName);
+            //remove space and other characters to lastName
+            lastName = lastName.replace(/[^\w\s]/gi, '').replace(/\s/g, '');
+
+            /* Validate if firstname is longer than
+               REMAINDER - EXTRAS (1 lastName letter + '-' character)*/
+            if(firstName.length > REMAINDER - EXTRAS) {
+                firstName = firstName.substring(0, REMAINDER - EXTRAS);
+            }
+
+            // Create Alias value
+            alias = (firstName + lastName.substring(0,1)).toLowerCase();
+
+            //Generate random code
+            for (var i = 0; i < ID_LENGTH; i++) {
+                randomCode += ALPHABET.charAt(Math.floor(Math.random() * ALPHABET.length));
+            }
+
+            //build username
+            username = alias + '-' + randomCode;
+
+            return username;
+        }
+
+
+
+        /**
         * changeLanguage
         * @description - change site language
         * @use - this.FunctionsUtilService.changeLanguage('es');
         * @function
-        * @params {string} language - language code
+        * @params {angular.IPromise<string>} language - language code
         * @return {void}
         */
-        changeLanguage(language): void {
-             this.$translate.use(language);
+        changeLanguage(language): angular.IPromise<string> {
+            return this.$translate.use(language).then(
+                function(data) {
+                    return data;
+                }
+            );
         }
 
 
@@ -264,10 +361,20 @@ module app.core.util.functionsUtil {
 
             if(dataSet) {
                 for (let i = 0; i < dataSet.length; i++) {
+
+                    let markerPosition = null;
+
+                    if(dataSet[i].profile) {
+                        markerPosition = new app.models.user.Position(dataSet[i].profile.location.position);
+                    } else if(dataSet[i].location) {
+                        markerPosition = new app.models.user.Position(dataSet[i].location.position);
+                    }
+
                     mapConfig.data.markers.push({
                         id: dataSet[i].id,
-                        position: dataSet[i].location.position
+                        position: markerPosition
                     });
+
                 }
             }
 
@@ -343,6 +450,8 @@ module app.core.util.functionsUtil {
         * (e.g. Null, String, Email, Number, Empty, etc)
         * @return {IValid} obj - object with validation result: valid and message
         */
+        //TODO: Hacer un refactor ya que voy a necesitar validar por min y max,
+        // asi que voy a tener que enviar el min y el max para que aqui lo valide.
         validator(value, validations = []): IValid {
             //CONSTANTS
             const NULL_MESSAGE = this.$filter('translate')('%global.validation.null.message.text');
@@ -414,7 +523,7 @@ module app.core.util.functionsUtil {
                         break;
 
                     case Validation.IsTrue:
-                        if(value !== true){
+                        if(value !== true) {
                             obj.message = TRUE_MESSAGE;
                             obj.valid = false;
                         }
@@ -490,6 +599,16 @@ module app.core.util.functionsUtil {
 
 
 
+        /**
+        * teacherRatingAverage
+        * @description - Calculate teacher rating average based on a ratings list given
+        * @use - this.FunctionsUtilService.teacherRatingAverage(ratingsArray);
+        * @function
+        * @param {Array<Object>} ratingsArr - list of rating objects
+        * @return {number} average - average value
+        */
+        //TODO: Analizar por que puse Array<Object> en vez de Array<Rating>
+        // y solucionar
         teacherRatingAverage(ratingsArr: Array<Object>): number {
             //VARIABLES
             let average = 0;
@@ -516,11 +635,67 @@ module app.core.util.functionsUtil {
         }
 
 
+
+        /**
+        * addUserIndentifyMixpanel
+        * @description - Assign a Identify number to your user on MixPanel
+        * @use - this.FunctionsUtilService.addUserIndentifyMixpanel('1');
+        * @function
+        * @param {app.models.user.Profile} userData - user profile information
+        * @return {void}
+        */
+        addUserIndentifyMixpanel(userId: string): void {
+            mixpanel.identify(userId);
+        }
+
+
+
+        /**
+        * setUserMixpanel
+        * @description - Set User on MixPanel service in order to track his behavior
+        * @use - this.FunctionsUtilService.setUserMixpanel(userObject);
+        * @function
+        * @param {app.models.user.Profile} userData - user profile information
+        * @return {void}
+        */
+        setUserMixpanel(userData: app.models.user.Profile): void {
+            mixpanel.people.set({
+                'username': userData.Username,
+                '$name': userData.FirstName + ' ' + userData.LastName,
+                'gender': userData.Gender,
+                '$email': userData.Email,
+                '$created': userData.DateJoined,
+                '$last_login': new Date()
+            });
+        }
+
+        /**
+        * setPropertyMixpanel
+        * @description - Set new property on user's MixPanel service
+        * @use - this.FunctionsUtilService.setPropertyMixpanel({key: 'value'});
+        * @function
+        * @param {Object} property - new property
+        * @return {void}
+        */
+        //TODO: Probar por que nunca se uso.
+        setPropertyMixpanel(property: Object): void {
+            let arr = [];
+            arr.push(property);
+            let setData = {};
+            _.mapKeys(arr, function(value, key) {
+                setData[key] = value;
+            });
+
+            mixpanel.people.set(setData);
+        }
+
+
     }
 
     /*-- MODULE DEFINITION --*/
     angular
     .module('mainApp.core.util', [])
     .service(FunctionsUtilService.serviceId, FunctionsUtilService);
+
 
 }

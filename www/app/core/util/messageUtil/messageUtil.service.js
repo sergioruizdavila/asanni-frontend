@@ -28,6 +28,8 @@ var app;
                         toastr.error(message);
                     };
                     messageUtilService.prototype.info = function (message) {
+                        toastr.options.closeButton = true;
+                        toastr.options.timeOut = 10000;
                         toastr.info(message);
                     };
                     messageUtilService.instance = function ($filter) {

@@ -36,8 +36,8 @@ var app;
                 UserProfilePageController.prototype.activate = function () {
                     var self = this;
                     console.log('userProfilePage controller actived');
-                    this.UserService.getUserById(this.$stateParams.id).then(function (response) {
-                        self.data = new app.models.user.User(response);
+                    this.UserService.getUserProfileById(this.$stateParams.id).then(function (response) {
+                        self.data = new app.models.user.Profile(response);
                     });
                 };
                 UserProfilePageController.prototype.onTimeSet = function (newDate, oldDate) {

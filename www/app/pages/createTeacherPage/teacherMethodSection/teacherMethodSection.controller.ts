@@ -35,6 +35,8 @@ module app.pages.createTeacherPage {
         methodology: app.core.util.functionsUtil.IValid;
         immersionActive: app.core.util.functionsUtil.IValid;
         typeOfImmersionList: app.core.util.functionsUtil.IValid;
+        otherCategory: app.core.util.functionsUtil.IValid;
+        globalValidate: app.core.util.functionsUtil.IValid;
     }
 
     /****************************************/
@@ -77,7 +79,7 @@ module app.pages.createTeacherPage {
         constructor(
             private dataConfig: IDataConfig,
             private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
-            private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService,
+            private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private $state: ng.ui.IStateService,
             private $filter: angular.IFilterService,
             private $scope: ITeacherMethodScope,
@@ -96,7 +98,7 @@ module app.pages.createTeacherPage {
             /*********************************/
 
             // Update progress bar width
-            this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(6, 9);
+            this.$scope.$parent.vm.progressWidth = this.functionsUtil.progress(6, 9);
 
             //Put Help Text Default
             this.helpText = {
@@ -120,7 +122,9 @@ module app.pages.createTeacherPage {
             this.validate = {
                 methodology: {valid: true, message: ''},
                 immersionActive: {valid: true, message: ''},
-                typeOfImmersionList: {valid: true, message: ''}
+                typeOfImmersionList: {valid: true, message: ''},
+                otherCategory: {valid: true, message: ''},
+                globalValidate: {valid: true, message: ''}
             };
 
             this.activate();
@@ -188,7 +192,7 @@ module app.pages.createTeacherPage {
         * @function
         * @return void
         */
-        goToBack(): void {            
+        goToBack(): void {
             this.$state.go(this.step5State, {reload: true});
         }
 
@@ -255,14 +259,14 @@ module app.pages.createTeacherPage {
             //CONSTANTS
             const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
             const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
-
+            const GLOBAL_MESSAGE = this.$filter('translate')('%create.teacher.method.validation.message.text');
             /***************************************************/
             //VARIABLES
             let formValid = true;
 
             //Validate 'Methodology' fields
             let methodology_rules = [NULL_ENUM, EMPTY_ENUM];
-            this.validate.methodology = this.functionsUtilService.validator(this.form.methodology, methodology_rules);
+            this.validate.methodology = this.functionsUtil.validator(this.form.methodology, methodology_rules);
             if(!this.validate.methodology.valid) {
                 formValid = this.validate.methodology.valid;
             }
@@ -271,9 +275,27 @@ module app.pages.createTeacherPage {
             if(this.form.immersion.Active) {
 
                 let typeOfImmersion_rules = [NULL_ENUM, EMPTY_ENUM];
-                this.validate.typeOfImmersionList = this.functionsUtilService.validator(this.form.immersion.Category, typeOfImmersion_rules);
-                if(!this.validate.typeOfImmersionList.valid) {
-                    formValid = this.validate.typeOfImmersionList.valid;
+                this.validate.typeOfImmersionList = this.functionsUtil.validator(this.form.immersion.Category, typeOfImmersion_rules);
+
+                let otherCategory_rules = [NULL_ENUM, EMPTY_ENUM];
+                this.validate.otherCategory = this.functionsUtil.validator(this.form.immersion.OtherCategory, otherCategory_rules);
+
+                if(this.validate.typeOfImmersionList.valid) {
+
+                    this.validate.globalValidate.valid = true;
+                    this.validate.globalValidate.message = '';
+
+                } else if(this.validate.otherCategory.valid) {
+
+                    this.validate.globalValidate.valid = true;
+                    this.validate.globalValidate.message = '';
+
+                } else {
+
+                    this.validate.globalValidate.valid = false;
+                    this.validate.globalValidate.message = GLOBAL_MESSAGE;
+                    formValid = this.validate.globalValidate.valid;
+
                 }
 
             }

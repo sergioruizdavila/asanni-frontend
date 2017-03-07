@@ -36,6 +36,7 @@ module app.pages.createTeacherPage {
         public static $inject = [
             '$state',
             '$scope',
+            '$rootScope',
             'mainApp.core.util.FunctionsUtilService'
         ];
 
@@ -45,6 +46,7 @@ module app.pages.createTeacherPage {
         constructor(
             private $state: ng.ui.IStateService,
             private $scope: ITeacherWelcomeScope,
+            private $rootScope: app.core.interfaces.IMainAppRootScope,
             private functionsUtilService: app.core.util.functionsUtil.IFunctionsUtilService) {
                 this._init();
         }
@@ -63,11 +65,13 @@ module app.pages.createTeacherPage {
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
+            //CONSTANTS
+            const ENTER_MIXPANEL = "Enter: Start Create Teacher Process";
             //LOG
             console.log('TeacherWelcomeSectionController controller actived');
 
             //MIXPANEL
-            mixpanel.track("Enter: Start Create Teacher Process");
+            mixpanel.track(ENTER_MIXPANEL);
         }
 
         /**********************************/
@@ -83,6 +87,12 @@ module app.pages.createTeacherPage {
         */
 
         goToStart(): void {
+            /* TODO: Muy mala idea lanzar el Save Data desde el Welcome, por que si
+            solo estoy curioseando esta sección, ya quedo marcado como profesor,
+            sin querer serlo. Esto lo coloque aqui por que al crear una experiencia
+            me pedia el id de profesor, y como no lo tengo en ese instante, rompe */
+            this.$rootScope.teacherData.Profile = this.$rootScope.profileData;
+            this.$scope.$emit('Save Data');
             this.$state.go(this.STEP1_STATE, {reload: true});
         }
 

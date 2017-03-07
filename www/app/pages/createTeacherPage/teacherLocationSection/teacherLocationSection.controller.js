@@ -16,7 +16,6 @@ var app;
                     this._init();
                 }
                 TeacherLocationSectionController.prototype._init = function () {
-                    var self = this;
                     this.STEP1_STATE = 'page.createTeacherPage.basicInfo';
                     this.STEP3_STATE = 'page.createTeacherPage.language';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.location.help_text.title.text');
@@ -36,7 +35,7 @@ var app;
                         positionLocation: new app.models.user.Position()
                     };
                     this.listCountries = this.getDataFromJson.getCountryi18n();
-                    this.mapConfig = self.functionsUtilService.buildMapConfig(null, 'drag-maker-map', null, null);
+                    this.mapConfig = this.functionsUtilService.buildMapConfig(null, 'drag-maker-map', null, null);
                     this.validate = {
                         countryLocation: { valid: true, message: '' },
                         cityLocation: { valid: true, message: '' },
@@ -48,18 +47,17 @@ var app;
                     this.activate();
                 };
                 TeacherLocationSectionController.prototype.activate = function () {
-                    console.log('TeacherLocationSectionController controller actived');
+                    DEBUG && console.log('TeacherLocationSectionController controller actived');
                     this._subscribeToEvents();
-                    if (this.$rootScope.teacherData) {
-                        this._fillForm(this.$rootScope.teacherData);
+                    if (this.$rootScope.profileData) {
+                        this._fillForm(this.$rootScope.profileData);
                     }
                 };
                 TeacherLocationSectionController.prototype.goToNext = function () {
-                    var CURRENT_STEP = 2;
                     var formValid = this._validateForm();
                     if (formValid) {
                         this._setDataModelFromForm();
-                        this.$scope.$emit('Save Data', CURRENT_STEP);
+                        this.$scope.$emit('Save Profile Data');
                         this.$state.go(this.STEP3_STATE, { reload: true });
                     }
                     else {
@@ -189,12 +187,12 @@ var app;
                 TeacherLocationSectionController.prototype._setDataModelFromForm = function () {
                     var countryCode = this.countryObject.code;
                     this.form.countryLocation = countryCode;
-                    this.$rootScope.teacherData.Location.Country = this.form.countryLocation;
-                    this.$rootScope.teacherData.Location.Address = this.form.addressLocation;
-                    this.$rootScope.teacherData.Location.City = this.form.cityLocation;
-                    this.$rootScope.teacherData.Location.State = this.form.stateLocation;
-                    this.$rootScope.teacherData.Location.ZipCode = this.form.zipCodeLocation;
-                    this.$rootScope.teacherData.Location.Position = this.form.positionLocation;
+                    this.$rootScope.profileData.Location.Country = this.form.countryLocation;
+                    this.$rootScope.profileData.Location.Address = this.form.addressLocation;
+                    this.$rootScope.profileData.Location.City = this.form.cityLocation;
+                    this.$rootScope.profileData.Location.State = this.form.stateLocation;
+                    this.$rootScope.profileData.Location.ZipCode = this.form.zipCodeLocation;
+                    this.$rootScope.profileData.Location.Position = this.form.positionLocation;
                     this.changeMapPosition();
                 };
                 TeacherLocationSectionController.prototype._subscribeToEvents = function () {

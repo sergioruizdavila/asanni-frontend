@@ -33,7 +33,7 @@ module app.core.util.messageUtil {
         }
 
         //methods
-        success(message: any): void {
+        success(message: string): void {
             toastr.success(message);
         }
 
@@ -50,7 +50,9 @@ module app.core.util.messageUtil {
             toastr.error(message);
         }
 
-        info(message: any): void {
+        info(message: string): void {
+            toastr.options.closeButton = true;
+            toastr.options.timeOut = 10000;
             toastr.info(message);
         }
 

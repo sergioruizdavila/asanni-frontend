@@ -5,9 +5,10 @@ var app;
         var createTeacherPage;
         (function (createTeacherPage) {
             var TeacherWelcomeSectionController = (function () {
-                function TeacherWelcomeSectionController($state, $scope, functionsUtilService) {
+                function TeacherWelcomeSectionController($state, $scope, $rootScope, functionsUtilService) {
                     this.$state = $state;
                     this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this.functionsUtilService = functionsUtilService;
                     this._init();
                 }
@@ -18,10 +19,13 @@ var app;
                     this.activate();
                 };
                 TeacherWelcomeSectionController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = "Enter: Start Create Teacher Process";
                     console.log('TeacherWelcomeSectionController controller actived');
-                    mixpanel.track("Enter: Start Create Teacher Process");
+                    mixpanel.track(ENTER_MIXPANEL);
                 };
                 TeacherWelcomeSectionController.prototype.goToStart = function () {
+                    this.$rootScope.teacherData.Profile = this.$rootScope.profileData;
+                    this.$scope.$emit('Save Data');
                     this.$state.go(this.STEP1_STATE, { reload: true });
                 };
                 return TeacherWelcomeSectionController;
@@ -30,6 +34,7 @@ var app;
             TeacherWelcomeSectionController.$inject = [
                 '$state',
                 '$scope',
+                '$rootScope',
                 'mainApp.core.util.FunctionsUtilService'
             ];
             createTeacherPage.TeacherWelcomeSectionController = TeacherWelcomeSectionController;

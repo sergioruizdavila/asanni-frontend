@@ -1,0 +1,64 @@
+<!----------------------------------------------------------------------------->
+<!--                               WELCOME MODAL                             -->
+<!----------------------------------------------------------------------------->
+
+<div class="ma-box">
+
+    <!--                              CONTENT                                -->
+    <!------------------------------------------------------------------------->
+    <div class="ma-box__content">
+
+        <!----------------------- START: WELCOME BLOCK ------------------------>
+        <section>
+
+            <! Logo >
+            <div class="row center-xs space-2">
+                <div class="col-xs-12 text-center">
+                    <i class="ma-logo
+                              ma-logo--primary-short
+                              ma-logo--primary-short--default"></i>
+                </div>
+            </div>
+
+            <! Welcome message >
+            <div class="row center-xs space-5">
+                <div class="col-xs-12 text-center">
+                    <h2 class="margin-reset" translate>
+                        %modal.welcome.title.text
+                    </h2>
+                </div>
+            </div>
+
+            <! Welcome description >
+            <div class="row center-xs space-7">
+                <div class="col-xs-12 text-center">
+                    <p class="ma-p ma-p--large margin-reset" translate>
+                        %modal.welcome.description.text
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="ma-separator-dashed-image space-top-5 space-3"></div>
+
+
+            <! Continue Button >
+            <div class="row center-xs">
+                <div class="col-xs-12">
+                    <button class="ma-btn
+                                    ma-btn--primary
+                                    ma-btn--large
+                                    ma-btn--block"
+                            ng-click="vm._openPhotoModal()"
+                            translate>
+                        %global.go.button.text
+                    </button>
+                </div>
+            </div>
+
+        </section>
+        <!--                      END: WELCOME BLOCK                         -->
+
+    </div>
+
+</div>

@@ -6,24 +6,29 @@ var app;
         (function (landingPage) {
             'use strict';
             var LandingPageService = (function () {
-                function LandingPageService(restApi) {
+                function LandingPageService(restApi, $q) {
                     this.restApi = restApi;
+                    this.$q = $q;
+                    this.EARLY_URI = 'early';
                 }
                 LandingPageService.prototype.createEarlyAdopter = function (userData) {
-                    var url = 'early';
-                    return this.restApi.create({ url: url }, userData).$promise
-                        .then(function (data) {
-                        return data;
-                    }).catch(function (err) {
-                        console.log(err);
-                        return err;
+                    var url = this.EARLY_URI;
+                    var deferred = this.$q.defer();
+                    this.restApi.create({ url: url }, userData).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        deferred.reject(error);
                     });
+                    return deferred.promise;
                 };
                 return LandingPageService;
             }());
             LandingPageService.serviceId = 'mainApp.pages.landingPage.LandingPageService';
             LandingPageService.$inject = [
-                'mainApp.core.restApi.restApiService'
+                'mainApp.core.restApi.restApiService',
+                '$q'
             ];
             landingPage.LandingPageService = LandingPageService;
             angular

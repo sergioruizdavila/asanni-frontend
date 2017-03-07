@@ -75,7 +75,6 @@ module components.header {
     }
 
     interface IHeaderForm {
-        language: string;
         whereTo: string;
     }
 
@@ -91,18 +90,22 @@ module components.header {
         /**********************************/
         private _slideout: boolean;
         form: IHeaderForm;
+        isAuthenticated: boolean;
+        isTeacher: boolean;
         // --------------------------------
 
 
         /*-- INJECT DEPENDENCIES --*/
         static $inject = [
             'mainApp.core.util.FunctionsUtilService',
+            'mainApp.auth.AuthService',
             '$uibModal',
             'dataConfig',
             '$filter',
             '$scope',
             '$rootScope',
-            '$state'
+            '$state',
+            'mainApp.localStorageService'
         ];
 
 
@@ -110,21 +113,31 @@ module components.header {
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
+                    private AuthService: app.auth.IAuthService,
                     private $uibModal: ng.ui.bootstrap.IModalService,
                     private dataConfig: IDataConfig,
                     private $filter: angular.IFilterService,
                     private $scope: angular.IScope,
-                    private $rootScope: angular.IRootScopeService,
-                    private $state: ng.ui.IStateService) {
+                    private $rootScope: app.core.interfaces.IMainAppRootScope,
+                    private $state: ng.ui.IStateService,
+                    private localStorage) {
             this.init();
         }
 
 
         /*-- INITIALIZE METHOD --*/
         private init() {
+
+            //Validate if user is Authenticated
+            this.isAuthenticated = this.AuthService.isAuthenticated();
+
+            //Validate if user is teacher
+            if(this.$rootScope.profileData) {
+                this.isTeacher = this.$rootScope.profileData.IsTeacher;
+            }
+
             //Init form
             this.form = {
-                language: this.functionsUtil.getCurrentLanguage() || 'en',
                 whereTo: this.$filter('translate')('%header.search.placeholder.text')
             };
 
@@ -137,6 +150,9 @@ module components.header {
         activate(): void {
             //LOG
             console.log('header controller actived');
+
+            //SUBSCRIBE TO EVENTS
+            this._subscribeToEvents();
         }
 
 
@@ -157,16 +173,28 @@ module components.header {
 
 
         /**
-        * changeLanguage
-        * @description - open Modal in order to add a New Teacher's Experience on Box
-        * @use - this._addEditExperience();
-        * @function
-        * @return {void}
+         * logout
+         * @description - Log out current logged user (call AuthService to revoke token)
+         * @use - this.logout();
+         * @function
+         * @return {void}
         */
 
-        changeLanguage(): void {
-            this.functionsUtil.changeLanguage(this.form.language);
-            mixpanel.track("Change Language on header");
+        logout(): void {
+            //VARIABLES
+            let self = this;
+
+            this.AuthService.logout().then(
+                function(response) {
+                    // Success
+                    window.location.reload();
+                },
+                function(response) {
+                    // Error
+                    /* This can occur if connection to server is lost or server is down */
+                    DEBUG && console.log('A problem occured while logging you out.');
+                }
+            );
         }
 
 
@@ -180,10 +208,14 @@ module components.header {
         */
 
         search(country): void {
+            //CONSTANTS
+            const CLICK_MIXPANEL = 'Click: Search Teacher on SearchBox';
             //VARIABLES
             //Get current state
             let currentState = this.$state.current.name;
             this.form.whereTo = country;
+            //MIXPANEL
+            mixpanel.track(CLICK_MIXPANEL);
 
             if(currentState !== 'page.searchPage') {
                 this.$state.go('page.searchPage', {country: country});
@@ -209,14 +241,94 @@ module components.header {
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,
+                size: 'sm',
                 templateUrl: this.dataConfig.modalSignUpTmpl,
-                controller: 'mainApp.components.modal.ModalSignUpController as vm'
+                controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            hasNextStep: false
+                        }
+                    }
+                }
+            };
+
+            var modalInstance = this.$uibModal.open(options);
+        }
+
+
+
+        /**
+        * _openLogInModal
+        * @description - open Modal in order to Log in action
+        * @use - this._openLogInModal();
+        * @function
+        * @return {void}
+        */
+        private _openLogInModal(): void {
+
+            //VARIABLES
+            let self = this;
+            // modal default options
+            let options: ng.ui.bootstrap.IModalSettings = {
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'sm',
+                templateUrl: this.dataConfig.modalLogInTmpl,
+                controller: 'mainApp.components.modal.ModalLogInController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            hasNextStep: false
+                        }
+                    }
+                }
             };
 
             var modalInstance = this.$uibModal.open(options);
 
-            //MIXPANEL
-            mixpanel.track("Click on 'Join as Student' main header");
+            /* When modal is closed,validate if user is Authenticated in order to
+            show current avatar user */
+            modalInstance.result.then(function () {
+                //Validate if user is Authenticated
+                self.$rootScope.$broadcast('Is Authenticated');
+            }, function () {
+                DEBUG && console.info('Modal dismissed at: ' + new Date());
+            });
+
+        }
+
+
+
+        /**
+        * _subscribeToEvents
+        * @description - this method subscribes HeaderController to Child's Events
+        * @use - this._subscribeToEvents();
+        * @function
+        * @return {void}
+        */
+        private _subscribeToEvents(): void {
+            // VARIABLES
+            let self = this;
+
+            /**
+            * Is Authenticated event
+            * @description - Parent (HeaderController) receive Child's
+                             event in order to know if user is authenticated
+            * @event
+            */
+            this.$scope.$on('Is Authenticated', function(event, args) {
+                //Validate if user is Authenticated
+                self.isAuthenticated = self.AuthService.isAuthenticated();
+                //Validate if user is teacher
+                if(self.$rootScope.profileData) {
+                    self.isTeacher = self.$rootScope.profileData.IsTeacher;
+                }
+            });
+
         }
 
     }

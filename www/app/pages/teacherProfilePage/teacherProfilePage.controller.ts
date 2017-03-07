@@ -62,8 +62,8 @@ module app.pages.teacherProfilePage {
         /*-- INITIALIZE METHOD --*/
         private _init() {
 
-            //Init teacher data
-            this.data = null;
+            //Init profile teacher data
+            this.data = new app.models.teacher.Teacher();
 
             //Init loading
             this.loading = true;
@@ -76,12 +76,15 @@ module app.pages.teacherProfilePage {
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
+            //CONSTANTS
+            const ENTER_MIXPANEL = 'Enter: Teacher Profile Page';
             //VARIABLES
             let self = this;
             //LOG
             console.log('teacherProfilePage controller actived');
             //MIXPANEL
-            mixpanel.track("Enter: Teacher Profile Details");
+            mixpanel.track(ENTER_MIXPANEL);
+
             // Get Teacher information
             this.TeacherService.getTeacherById(this.$stateParams.id).then(
                 function(response) {
@@ -89,17 +92,17 @@ module app.pages.teacherProfilePage {
                     self.mapConfig = self.functionsUtil.buildMapConfig(
                         [
                             {
-                                id: self.data.Location.Position.Id,
+                                id: self.data.Profile.Location.Position.Id,
                                 location: {
                                     position: {
-                                        lat: parseFloat(self.data.Location.Position.Lat),
-                                        lng: parseFloat(self.data.Location.Position.Lng)
+                                        lat: parseFloat(self.data.Profile.Location.Position.Lat),
+                                        lng: parseFloat(self.data.Profile.Location.Position.Lng)
                                     }
                                 }
                             }
                         ],
                         'location-circle-map',
-                        {lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng)},
+                        {lat: parseFloat(self.data.Profile.Location.Position.Lat), lng: parseFloat(self.data.Profile.Location.Position.Lng)},
                         null
                     );
                     self.loading = false;
@@ -128,13 +131,21 @@ module app.pages.teacherProfilePage {
             };
         }
 
+        /**
+        * goToConfirm
+        * @description - go to book a class with current teacher
+        * @use - this.goToConfirm();
+        * @function
+        * @return {void}
+        */
 
-        //TODO: Poner descripcion
         goToConfirm (): void {
+            //CONSTANTS
+            const CLICK_MIXPANEL = 'Click: Book a Class';
             //MIXPANEL
-            mixpanel.track("Click on book a class", {
+            mixpanel.track(CLICK_MIXPANEL, {
                 "teacher_id": this.data.Id,
-                "teacher_name": this.data.FirstName + ' ' + this.data.LastName
+                "teacher_name": this.data.Profile.FirstName + ' ' + this.data.Profile.LastName
             });
 
             var url = 'https://waysily.typeform.com/to/NDPRAb';
@@ -154,7 +165,7 @@ module app.pages.teacherProfilePage {
         */
 
         private _assignNative(language: string): boolean {
-            let native = this.data.Languages.Native;
+            let native = this.data.Profile.Languages.Native;
             let isNativeOfThisLanguage = false;
 
             for (let i = 0; i < native.length; i++) {
@@ -182,7 +193,7 @@ module app.pages.teacherProfilePage {
             //CONSTANTS
             const TOOLTIP_TEXT = this.$filter('translate')('%profile.teacher.native.lang.tooltip.text');
             //VARIABLES
-            let firstName = this.data.FirstName;
+            let firstName = this.data.Profile.FirstName;
             let tooltipText = null;
             let isNative = this._assignNative(language);
 

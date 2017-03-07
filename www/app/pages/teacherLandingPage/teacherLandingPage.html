@@ -79,11 +79,105 @@
 
 
 
+        <!---------------- START: PROFILE IMAGE (MD AND LG SCREEN) ------------>
+        <div ng-if="vm.isAuthenticated"
+             class="ma-header__block
+                    ma-header--transparent__block
+                    pull-right">
+
+            <!-- User menu options dropdown -->
+            <span uib-dropdown on-toggle="toggled(open)">
+                <a id="user-menu-options"
+                   class="ma-header__block__btn
+                          ma-header--transparent__block__btn
+                          link-reset dropdown-toggle"
+                   uib-dropdown-toggle href
+                   aria-haspopup="true" aria-expanded="true">
+                    <div class="ma-photo-profile
+                                ma-photo-profile--tiny
+                                round
+                                ma-header__block__btn__icon
+                                ma-header__block__btn__icon__ma-photo">
+                        <img width="32"
+                             height="32"
+                             ng-show="vm.$rootScope.profileData.avatar"
+                             ng-src="{{vm.$rootScope.profileData.avatar}}"
+                             alt="{{vm.$rootScope.profileData.firstName}}">
+                    </div>
+                </a>
+                <ul class="ma-dropdown
+                           dropdown-menu
+                           dropdown-menu-right"
+                    uib-dropdown-menu
+                    role="menu"
+                    aria-labelledby="user-menu-options">
+                    <li class="ma-dropdown__option">
+                        <a ui-sref="page.userEditProfilePage"
+                           class="ma-dropdown__option__btn"
+                           href>
+                            Edit Profile
+                        </a>
+                    </li>
+                    <li class="ma-dropdown__option hidden">
+                        <a ui-sref="page.userEditAgendaPage"
+                           class="ma-dropdown__option__btn"
+                           href>
+                            Edit Agenda</a>
+                    </li>
+
+                    <li class="ma-dropdown__option last-option">
+                        <a class="ma-dropdown__option__btn"
+                           ng-click="vm.logout()"
+                           href>
+                           Log Out
+                        </a>
+                    </li>
+                </ul>
+            </span>
+        </div>
+        <!--                END: PROFILE IMAGE (MD AND LG SCREEN)            -->
+
+
+
+        <!---------------- START: LOG IN BUTTON (MD AND LG SCREEN) ------------>
+        <div ng-if="!vm.isAuthenticated"
+             class="ma-header__block
+                    ma-header--transparent__block
+                    pull-right">
+            <a href class="ma-header__block__btn
+                           ma-header--transparent__block__btn
+                           ma-header--transparent__block__buttons-list__label
+                           text-shadow link-reset text-capitalize"
+               ng-click="vm._openLogInModal()" translate>
+                %global.login.label.text
+            </a>
+        </div>
+        <!--                END: LOG IN BUTTON (MD AND LG SCREEN)            -->
+
+
+
+        <!--------------- START: SIGN UP BUTTON (MD AND LG SCREEN) ------------>
+        <div ng-if="!vm.isAuthenticated"
+             class="ma-header__block
+                    ma-header--transparent__block
+                    pull-right">
+            <a href class="ma-header__block__btn
+                           ma-header--transparent__block__btn
+                           ma-header--transparent__block__buttons-list__label
+                           text-shadow link-reset text-capitalize"
+               ng-click="vm._openSignUpModal($event)" translate>
+                %global.signup.label.text
+            </a>
+        </div>
+        <!--               END: SIGN UP BUTTON (MD AND LG SCREEN)            -->
+
+
+
         <!-------------- START: CHANGE LANGUAGE (MD AND LG SCREEN) ------------>
         <div class="ma-header__block
                     ma-header--transparent__block
                     ma-header--transparent__block--right
-                    pull-right">
+                    pull-right hidden">
 
             <!-- Change Language Select Input -->
             <div class="form-group ma-form-group">
@@ -121,24 +215,27 @@
                     pull-right">
 
             <div class="ma-header--transparent__block__buttons-list">
-                <span class="ma-header--transparent__block__buttons-list__label"
+                <span class="ma-header--transparent__block__buttons-list__label
+                             space-right-2"
                       translate>
                     %landing.header.join.label.text
                 </span>
-                <button class="ma-header--transparent__block__buttons-list__btn
-                               ma-btn ma-btn--alert ma-btn--default"
-                        ng-click="vm._openSignUpModal()" translate>
+                <button ng-if="!vm.isAuthenticated"
+                        class="ma-header--transparent__block__buttons-list__btn
+                               ma-btn ma-btn--tertiary ma-btn--default space-right-1 hidden"
+                        ng-click="vm._openSignUpModal($event)" translate>
                     %global.student.text
                 </button>
-                <a class="ma-header--transparent__block__buttons-list__btn
-                               ma-btn ma-btn--alert ma-btn--default"
-                    ui-sref="page.teacherLandingPage"
-                    href
+                <button class="ma-header--transparent__block__buttons-list__btn
+                          ma-btn ma-btn--default
+                          ma-btn--tertiary
+                          space-right-1 hidden"
+                    ng-click="vm._goToTeacherLanding()"
                     translate>
                     %global.teacher.text
-                </a>
+                </button>
                 <a class="ma-header--transparent__block__buttons-list__btn
-                               ma-btn ma-btn--alert ma-btn--default"
+                          ma-btn ma-btn--tertiary ma-btn--default"
                    href="https://waysily.typeform.com/to/jvr0zW"
                    target="_blank" translate>
                     %global.school.text
@@ -186,8 +283,9 @@
                 </h2>
 
         		<div class="ma-hero__wrapper__btn-container">
-                    <button class="ma-btn ma-btn--primary text-uppercase ma-btn--large"
-                            ng-click="vm.goToCreate()" translate>
+                    <button id="hero-go-to-button"
+                            class="ma-btn ma-btn--primary text-uppercase ma-btn--large"
+                            ng-click="vm._openSignUpModal($event)" translate>
                        %global.go.button.text
                    </button>
         		</div>
@@ -553,16 +651,18 @@
 
     <!---------------------- START: WHO'S ELIGIBLE BLOCK ---------------------->
     <section class="landingPage__let-go-container
-                    row center-xs space-top-10 space-12">
+                    row center-xs space-top-10 space-15">
         <div class="col-xs-10 col-sm-8">
             <div class="row start-xs text-center">
                 <div class="col-xs-12">
-                    <button type="button"
+                    <!-- NOTE: Don´t change this id. it's connected with _openSignUpModal $event -->
+                    <button id="hero-go-to-button"
+                            type="button"
                             class="ma-btn
                                     ma-btn--large
                                     ma-btn--primary
                                     text-uppercase"
-                            ng-click="vm.goToCreate()" translate>
+                            ng-click="vm._openSignUpModal($event)" translate>
                         %global.join_now.button.text
                     </button>
                 </div>

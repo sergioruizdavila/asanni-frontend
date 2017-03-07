@@ -45,7 +45,7 @@
       &--clicked {
           &:hover {
             cursor: pointer;
-            color: shade(map-get($main-palette, primary), 100);
+            color: map-get($main-palette, secondary);
             font-weight: bold;
           }
       }

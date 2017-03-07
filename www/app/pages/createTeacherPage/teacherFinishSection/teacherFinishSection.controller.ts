@@ -65,11 +65,14 @@ module app.pages.createTeacherPage {
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
+            //CONSTANTS
+            const ENTER_MIXPANEL = "Enter: Finish Create Teacher Process";
+
             //LOG
             console.log('TeacherFinishSectionController controller actived');
 
             //MIXPANEL
-            mixpanel.track("Enter: Finish Create Teacher Process");
+            mixpanel.track(ENTER_MIXPANEL);
 
         }
 
@@ -78,19 +81,10 @@ module app.pages.createTeacherPage {
         /**********************************/
 
         _finishProcess() {
-            //Clean teacher id in localStorage
-            this.localStorage.setItem(this.dataConfig.teacherIdLocalStorage, '');
-            //Clean early adopter id in localStorage
-            this.localStorage.setItem(this.dataConfig.earlyIdLocalStorage, '');
-
-            //Go to teacher profile in order to show a preview profile
-            //this.$state.go('page.teacherProfilePage', {id: this.$scope.$parent.vm.teacherData.Id});
-            //MIXPANEL
-            mixpanel.track("Finish Process: Create Teacher", {
-                "id": this.$rootScope.teacherData.Id,
-                "name": this.$rootScope.teacherData.FirstName + ' ' + this.$rootScope.teacherData.LastName,
-                "email": this.$rootScope.teacherData.Email
-            });
+            //Remove early adopter id in localStorage
+            this.localStorage.removeItem(this.dataConfig.earlyIdLocalStorage);
+            //Remove teacher data in localStorage
+            this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
 
             this.$state.go('page.landingPage');
         }

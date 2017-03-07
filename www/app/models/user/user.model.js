@@ -10,27 +10,248 @@ var app;
                 Status[Status["validated"] = 1] = "validated";
                 Status[Status["verified"] = 2] = "verified";
             })(Status = user.Status || (user.Status = {}));
-            var User = (function () {
-                function User(obj) {
+            var Profile = (function () {
+                function Profile(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('User Model instanced');
-                    this.id = obj.id;
-                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
-                    this.avatar = obj.avatar;
+                    DEBUG && console.log('Profile Model instanced');
+                    if (obj === null)
+                        obj = {};
+                    this.userId = obj.userId || '';
+                    this.avatar = obj.avatar || '';
                     this.username = obj.username || '';
                     this.email = obj.email || '';
                     this.phoneNumber = obj.phoneNumber || '';
                     this.firstName = obj.firstName || '';
                     this.lastName = obj.lastName || '';
-                    this.sex = obj.sex || '';
-                    this.birthDate = obj.birthDate || '';
-                    this.born = obj.born || '';
+                    this.gender = obj.gender || '';
+                    this.birthDate = obj.birthDate || null;
+                    this.bornCountry = obj.bornCountry || '';
+                    this.bornCity = obj.bornCity || '';
                     this.about = obj.about || '';
+                    this.languages = new Language(obj.languages);
                     this.location = new Location(obj.location);
-                    this.status = obj.status || 'NW';
+                    this.isTeacher = obj.isTeacher || false;
+                    this.dateJoined = obj.dateJoined || '';
                     this.createdAt = obj.createdAt || '';
                 }
-                Object.defineProperty(User.prototype, "Id", {
+                Object.defineProperty(Profile.prototype, "UserId", {
+                    get: function () {
+                        return this.userId;
+                    },
+                    set: function (userId) {
+                        if (userId === undefined) {
+                            throw 'Please supply profile userId';
+                        }
+                        this.userId = userId;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "Avatar", {
+                    get: function () {
+                        return this.avatar;
+                    },
+                    set: function (avatar) {
+                        if (avatar === undefined) {
+                            throw 'Please supply profile avatar';
+                        }
+                        this.avatar = avatar;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "Username", {
+                    get: function () {
+                        return this.username;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "Email", {
+                    get: function () {
+                        return this.email;
+                    },
+                    set: function (email) {
+                        if (email === undefined) {
+                            throw 'Please supply profile email';
+                        }
+                        this.email = email;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "PhoneNumber", {
+                    get: function () {
+                        return this.phoneNumber;
+                    },
+                    set: function (phoneNumber) {
+                        if (phoneNumber === undefined) {
+                            throw 'Please supply profile phone number';
+                        }
+                        this.phoneNumber = phoneNumber;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "FirstName", {
+                    get: function () {
+                        return this.firstName;
+                    },
+                    set: function (firstName) {
+                        if (firstName === undefined) {
+                            throw 'Please supply profile first name';
+                        }
+                        this.firstName = firstName;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "LastName", {
+                    get: function () {
+                        return this.lastName;
+                    },
+                    set: function (lastName) {
+                        if (lastName === undefined) {
+                            throw 'Please supply profile last name';
+                        }
+                        this.lastName = lastName;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "Gender", {
+                    get: function () {
+                        return this.gender;
+                    },
+                    set: function (gender) {
+                        if (gender === undefined) {
+                            throw 'Please supply profile gender';
+                        }
+                        this.gender = gender;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "BirthDate", {
+                    get: function () {
+                        return this.birthDate;
+                    },
+                    set: function (birthDate) {
+                        if (birthDate === undefined) {
+                            throw 'Please supply profile birth date';
+                        }
+                        this.birthDate = birthDate;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "BornCountry", {
+                    get: function () {
+                        return this.bornCountry;
+                    },
+                    set: function (bornCountry) {
+                        if (bornCountry === undefined) {
+                            throw 'Please supply profile born country';
+                        }
+                        this.bornCountry = bornCountry;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "BornCity", {
+                    get: function () {
+                        return this.bornCity;
+                    },
+                    set: function (bornCity) {
+                        if (bornCity === undefined) {
+                            throw 'Please supply profile born city';
+                        }
+                        this.bornCity = bornCity;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "Languages", {
+                    get: function () {
+                        return this.languages;
+                    },
+                    set: function (languages) {
+                        if (languages === undefined) {
+                            throw 'Please supply profile languages';
+                        }
+                        this.languages = languages;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "Location", {
+                    get: function () {
+                        return this.location;
+                    },
+                    set: function (location) {
+                        if (location === undefined) {
+                            throw 'Please supply profile location';
+                        }
+                        this.location = location;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "About", {
+                    get: function () {
+                        return this.about;
+                    },
+                    set: function (about) {
+                        if (about === undefined) {
+                            throw 'Please supply profile location';
+                        }
+                        this.about = about;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "IsTeacher", {
+                    get: function () {
+                        return this.isTeacher;
+                    },
+                    set: function (isTeacher) {
+                        if (isTeacher === undefined) {
+                            throw 'Please supply profile IsTeacher value';
+                        }
+                        this.isTeacher = isTeacher;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "DateJoined", {
+                    get: function () {
+                        return this.dateJoined;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Profile.prototype, "CreatedAt", {
+                    get: function () {
+                        return this.createdAt;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Profile;
+            }());
+            user.Profile = Profile;
+            var Language = (function () {
+                function Language(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('Languages Model instanced');
+                    if (obj === null)
+                        obj = {};
+                    this.id = obj.id;
+                    this.native = obj.native || [];
+                    this.learn = obj.learn || [];
+                    this.teach = obj.teach || [];
+                }
+                Object.defineProperty(Language.prototype, "Id", {
                     get: function () {
                         return this.id;
                     },
@@ -43,190 +264,55 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Uid", {
+                Object.defineProperty(Language.prototype, "Native", {
                     get: function () {
-                        return this.uid;
+                        return this.native;
                     },
-                    set: function (uid) {
-                        if (uid === undefined) {
-                            throw 'Please supply user uid';
+                    set: function (native) {
+                        if (native === undefined) {
+                            throw 'Please supply native languages';
                         }
-                        this.uid = uid;
+                        this.native = native;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Avatar", {
+                Object.defineProperty(Language.prototype, "Learn", {
                     get: function () {
-                        return this.avatar;
+                        return this.learn;
                     },
-                    set: function (avatar) {
-                        if (avatar === undefined) {
-                            throw 'Please supply avatar';
+                    set: function (learn) {
+                        if (learn === undefined) {
+                            throw 'Please supply learn languages';
                         }
-                        this.avatar = avatar;
+                        this.learn = learn;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Username", {
+                Object.defineProperty(Language.prototype, "Teach", {
                     get: function () {
-                        return this.username;
+                        return this.teach;
                     },
-                    set: function (username) {
-                        if (username === undefined) {
-                            throw 'Please supply username';
+                    set: function (teach) {
+                        if (teach === undefined) {
+                            throw 'Please supply teach languages';
                         }
-                        this.username = username;
+                        this.teach = teach;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(User.prototype, "Email", {
-                    get: function () {
-                        return this.email;
-                    },
-                    set: function (email) {
-                        if (email === undefined) {
-                            throw 'Please supply email';
-                        }
-                        this.email = email;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "PhoneNumber", {
-                    get: function () {
-                        return this.phoneNumber;
-                    },
-                    set: function (phoneNumber) {
-                        if (phoneNumber === undefined) {
-                            throw 'Please supply phone number';
-                        }
-                        this.phoneNumber = phoneNumber;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "FirstName", {
-                    get: function () {
-                        return this.firstName;
-                    },
-                    set: function (firstName) {
-                        if (firstName === undefined) {
-                            throw 'Please supply first name';
-                        }
-                        this.firstName = firstName;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "LastName", {
-                    get: function () {
-                        return this.lastName;
-                    },
-                    set: function (lastName) {
-                        if (lastName === undefined) {
-                            throw 'Please supply last name';
-                        }
-                        this.lastName = lastName;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "Sex", {
-                    get: function () {
-                        return this.sex;
-                    },
-                    set: function (sex) {
-                        if (sex === undefined) {
-                            throw 'Please supply sex';
-                        }
-                        this.sex = sex;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "BirthDate", {
-                    get: function () {
-                        return this.birthDate;
-                    },
-                    set: function (birthDate) {
-                        if (birthDate === undefined) {
-                            throw 'Please supply birth date';
-                        }
-                        this.birthDate = birthDate;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "Born", {
-                    get: function () {
-                        return this.born;
-                    },
-                    set: function (born) {
-                        if (born === undefined) {
-                            throw 'Please supply born';
-                        }
-                        this.born = born;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "About", {
-                    get: function () {
-                        return this.about;
-                    },
-                    set: function (about) {
-                        if (about === undefined) {
-                            throw 'Please supply location';
-                        }
-                        this.about = about;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "Location", {
-                    get: function () {
-                        return this.location;
-                    },
-                    set: function (location) {
-                        if (location === undefined) {
-                            throw 'Please supply location';
-                        }
-                        this.location = location;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "Status", {
-                    get: function () {
-                        return this.status;
-                    },
-                    set: function (status) {
-                        if (status === undefined) {
-                            throw 'Please supply status value';
-                        }
-                        this.status = status;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(User.prototype, "CreatedAt", {
-                    get: function () {
-                        return this.createdAt;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                return User;
+                return Language;
             }());
-            user.User = User;
+            user.Language = Language;
             var Location = (function () {
                 function Location(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('User Model instanced');
-                    this.id = obj.id;
+                    DEBUG && console.log('Location Model instanced');
+                    if (obj === null)
+                        obj = {};
+                    this.id = obj.id || '';
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.country = obj.country || '';
                     this.address = obj.address || '';
@@ -345,8 +431,10 @@ var app;
             var Position = (function () {
                 function Position(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('User Model instanced');
-                    this.id = obj.id;
+                    DEBUG && console.log('Position Model instanced');
+                    if (obj === null)
+                        obj = {};
+                    this.id = obj.id || '';
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.lng = obj.lng || '';
                     this.lat = obj.lat || '';

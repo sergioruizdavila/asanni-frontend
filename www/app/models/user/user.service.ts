@@ -13,8 +13,9 @@ module app.models.user {
     /*           INTERFACES           */
     /**********************************/
     export interface IUserService {
-        getUserById: (id: string) => angular.IPromise<any>;
-        getAllUsers: () => angular.IPromise<any>;
+        getUserProfileById: (id: string) => angular.IPromise<any>;
+        getAllUsersProfile: () => angular.IPromise<any>;
+        updateUserProfile: (user: app.models.user.Profile) => angular.IPromise<any>;
     }
 
 
@@ -28,22 +29,27 @@ module app.models.user {
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
-
+        USER_URI: string;
         // --------------------------------
 
 
         /*-- INJECT DEPENDENCIES --*/
         static $inject = [
-            'mainApp.core.restApi.restApiService'
+            'mainApp.core.restApi.restApiService',
+            'mainApp.auth.AuthService'
         ];
 
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        constructor(private restApi: app.core.restApi.IRestApi) {
+        constructor(
+            private restApi: app.core.restApi.IRestApi,
+            private AuthService: app.auth.IAuthService) {
             //LOG
-            console.log('user service instanced');
+            DEBUG && console.log('user service instanced');
+            //CONSTANTS
+            this.USER_URI = 'users';
         }
 
         /**********************************/
@@ -51,40 +57,46 @@ module app.models.user {
         /**********************************/
 
         /**
-        * getUserById
+        * getUserProfileById
         * @description - get user by Id
-        * @use - this.UserService.getUserById('98d667ae');
+        * @use - this.UserService.getUserProfileById('98d667ae');
         * @function
         * @params {string} id - user id
-        * @return {angular.IPromise<any>} promise - return user by Id
+        * @return {angular.IPromise<any>} promise - return user profile by Id
         */
-        getUserById(id): angular.IPromise<any> {
+        getUserProfileById(id): angular.IPromise<any> {
             //VARIABLES
-            let url = 'users/';
+            let self = this;
+            let url = this.USER_URI;
 
             return this.restApi.show({url: url, id: id}).$promise
                 .then(
-                    function(data) {
-                        return data;
-                    }
-                ).catch(
-                    function(err) {
-                        console.log(err);
-                        return err;
+                    function (response) {
+                        return response;
+                    },
+                    function (error) {
+                        DEBUG && console.error(error);
+                        if(error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        return error;
                     }
                 );
         }
 
+
+
         /**
-        * getAllUsers
-        * @description - get all Users
+        * getAllUsersProfile
+        * @description - get all Users Profiles
         * @function
         * @return {angular.IPromise<any>} return a promise with
         * users list
         */
-        getAllUsers(): angular.IPromise<any> {
+        getAllUsersProfile(): angular.IPromise<any> {
             //VARIABLES
-            let url = 'users/';
+            let self = this;
+            let url = this.USER_URI;
 
             return this.restApi.query({url: url}).$promise
                 .then(
@@ -92,9 +104,42 @@ module app.models.user {
                         return data;
                     }
                 ).catch(
-                    function(err) {
-                        console.log(err);
-                        return err;
+                    function(error) {
+                        DEBUG && console.log(error);
+                        if(error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        return error;
+                    }
+                );
+        }
+
+
+
+        /**
+        * updateUserProfile
+        * @description - update User information entity on DB
+        * @function
+        * @params {app.models.user.Profile} user - user profile Object
+        * @return {promise} promise - Return a promise of "Updated User Profile".
+        * @return {object} response - Returns response about If request was success or error.
+        */
+        updateUserProfile(profile): ng.IPromise<any> {
+            //VARIABLES
+            let self = this;
+            let url = this.USER_URI;
+
+            return this.restApi.update({ url: url, id: profile.userId }, profile).$promise
+                .then(
+                    function (response) {
+                        return response;
+                    },
+                    function (error) {
+                        DEBUG && console.error(error);
+                        if(error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        return error;
                     }
                 );
         }

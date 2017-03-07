@@ -205,6 +205,10 @@
         &--primary {
             color: $label-simple-color-primary;
         }
+
+        &--alert {
+            color: $label-simple-color-alert;
+        }
     }
 
 }

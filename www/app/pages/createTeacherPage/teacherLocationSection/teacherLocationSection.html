@@ -26,7 +26,7 @@
                     <form class="form-horizontal
                                  ma-form--horizontal">
 
-                        <!-- Country Select List -->
+                        <! Country Location >
                         <div class="form-group
                                  ma-form-group
                                  ma-form-group--large"
@@ -58,7 +58,7 @@
                             </div>
                         </div>
 
-                        <!-- City Input -->
+                        <! City Location >
                         <div class="form-group
                                     ma-form-group
                                     ma-form-group--large"
@@ -81,7 +81,7 @@
                             </div>
                         </div>
 
-                        <!-- State Input -->
+                        <! State Location >
                         <div class="form-group
                                     ma-form-group
                                     ma-form-group--large"
@@ -126,7 +126,7 @@
                             </div>
                         </div>
 
-                        <!-- Street Address Input -->
+                        <! Street Address Location >
                         <div class="form-group
                                     ma-form-group
                                     ma-form-group--large"
@@ -138,9 +138,11 @@
                             <div class="col-xs-9 col-sm-9">
                                 <input id="teacher-address-location"
                                        type="text"
-                                       placeholder="House name/number + street/road"
+                                       translate
+                                       translate-attr-placeholder="%create.teacher.location.form.address.placeholder.text"
                                        ng-model="vm.form.addressLocation"
                                        ng-blur="vm.changeMapPosition()"
+                                       ng-keyup="vm.changeMapPosition()"
                                        class="ma-input ma-input--large"
                                        ng-class="{'ma-input--invalid': !vm.validate.addressLocation.valid}">
                                 <p class="ma-p ma-p--small ma-p--alert pull-right"

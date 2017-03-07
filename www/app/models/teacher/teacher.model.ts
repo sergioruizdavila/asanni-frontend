@@ -13,10 +13,11 @@ module app.models.teacher {
     /*           TEACHER CLASS DEFINITION           */
     /************************************************/
 
-    export class Teacher extends app.models.user.User {
+    export class Teacher {
 
         /*-- PROPERTIES --*/
-        private languages: Language;
+        private id: string;
+        private profile: app.models.user.Profile;
         private type: string;
         private teacherSince: string;
         private experiences: Array<Experience>;
@@ -26,6 +27,7 @@ module app.models.teacher {
         private immersion: Immersion;
         private price: Price;
         private ratings: Array<Rating>;
+        private status: string;
         private recommended: number;
 
         /**********************************/
@@ -35,13 +37,16 @@ module app.models.teacher {
             //LOG
             console.log('Teacher Model instanced');
 
+            if(obj === null) obj = {};
+
             //init properties
-            super(obj);
-            this.languages = new Language(obj.languages);
+            this.id = obj.id || '';
+            this.profile = new app.models.user.Profile(obj.profile);
             this.type = obj.type || '';
             this.teacherSince = obj.teacherSince || '';
             this.methodology = obj.methodology || '';
             this.immersion = new Immersion(obj.immersion);
+            this.status = obj.status || 'NW';
             this.price = new Price(obj.price);
 
             if(obj != {}) {
@@ -83,13 +88,22 @@ module app.models.teacher {
         /*             METHODS            */
         /**********************************/
 
-        get Languages() {
-            return this.languages;
+        get Id() {
+            return this.id;
         }
 
-        set Languages(languages: Language) {
-            if (languages === undefined) { throw 'Please supply languages'; }
-            this.languages = languages;
+        set Id(id: string) {
+            if (id === undefined) { throw 'Please supply id of teacher'; }
+            this.id = id;
+        }
+
+        get Profile() {
+            return this.profile;
+        }
+
+        set Profile(profile: app.models.user.Profile) {
+            if (profile === undefined) { throw 'Please supply teacher profile data'; }
+            this.profile = profile;
         }
 
         get Type() {
@@ -213,6 +227,15 @@ module app.models.teacher {
             });
         }
 
+        get Status() {
+            return this.status;
+        }
+
+        set Status(status: string) {
+            if (status === undefined) { throw 'Please supply profile status value'; }
+            this.status = status;
+        }
+
         get Recommended() {
             return this.recommended;
         }
@@ -223,89 +246,6 @@ module app.models.teacher {
         }
 
     }
-
-
-    /************************************************/
-    /*          LANGUAGE CLASS DEFINITION           */
-    /************************************************/
-
-    export class Language {
-
-        /*-- PROPERTIES --*/
-        private id: number;
-        private uid: string;
-        private native: Array<string>;
-        private learn: Array<string>;
-        private teach: Array<string>;
-
-        /**********************************/
-        /*           CONSTRUCTOR          */
-        /**********************************/
-        constructor(obj: any = {}) {
-            //LOG
-            console.log('Languages Model instanced');
-
-            //init properties
-            this.id = obj.id;
-            this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
-            this.native = obj.native || [];
-            this.learn = obj.learn || [];
-            this.teach = obj.teach || [];
-
-        }
-
-        /**********************************/
-        /*             METHODS            */
-        /**********************************/
-
-        get Id() {
-            return this.id;
-        }
-
-        set Id(id: number) {
-            if (id === undefined) { throw 'Please supply id'; }
-            this.id = id;
-        }
-
-        get Uid() {
-            return this.uid;
-        }
-
-        set Uid(uid: string) {
-            if (uid === undefined) { throw 'Please supply language uid'; }
-            this.uid = uid;
-        }
-
-        get Native() {
-            return this.native;
-        }
-
-        set Native(native: Array<string>) {
-            if (native === undefined) { throw 'Please supply native languages'; }
-            this.native = native;
-        }
-
-        get Learn() {
-            return this.learn;
-        }
-
-        set Learn(learn: Array<string>) {
-            if (learn === undefined) { throw 'Please supply learn languages'; }
-            this.learn = learn;
-        }
-
-        get Teach() {
-            return this.teach;
-        }
-
-        set Teach(teach: Array<string>) {
-            if (teach === undefined) { throw 'Please supply teach languages'; }
-            this.teach = teach;
-        }
-
-
-    }
-
 
 
     /************************************************/
@@ -331,6 +271,8 @@ module app.models.teacher {
         constructor(obj: any = {}) {
             //LOG
             console.log('Experience Model instanced');
+
+            if(obj === null) obj = {};
 
             //init properties
             this.id = obj.id;
@@ -458,6 +400,8 @@ module app.models.teacher {
             //LOG
             console.log('Education Model instanced');
 
+            if(obj === null) obj = {};
+
             //init properties
             this.id = obj.id;
             this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
@@ -572,6 +516,8 @@ module app.models.teacher {
             //LOG
             console.log('Certificate Model instanced');
 
+            if(obj === null) obj = {};
+
             //init properties
             this.id = obj.id;
             this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
@@ -665,6 +611,8 @@ module app.models.teacher {
             //LOG
             console.log('Certificate Model instanced');
 
+            if(obj === null) obj = {};
+
             //init properties
             this.id = obj.id;
             this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
@@ -745,6 +693,8 @@ module app.models.teacher {
             //LOG
             console.log('TypeOfImmersion Model instanced');
 
+            if(obj === null) obj = {};
+
             //init properties
             this.id = obj.id;
             this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
@@ -805,6 +755,8 @@ module app.models.teacher {
         constructor(obj: any = {}) {
             //LOG
             console.log('Price of Teacher Class Model instanced');
+
+            if(obj === null) obj = {};
 
             //init properties
             this.id = obj.id;
@@ -876,6 +828,8 @@ module app.models.teacher {
         constructor(obj: any = {}) {
             //LOG
             console.log('TypeOfPrice Model instanced');
+
+            if(obj === null) obj = {};
 
             //init properties
             this.id = obj.id;
@@ -950,6 +904,8 @@ module app.models.teacher {
         constructor(obj: any = {}) {
             //LOG
             console.log('Rating Model instanced');
+
+            if(obj === null) obj = {};
 
             //init properties
             this.id = obj.id;
