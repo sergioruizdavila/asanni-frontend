@@ -126,7 +126,19 @@ module components.floatMessageBar {
         /*            METHODS             */
         /**********************************/
 
-        //TODO: Poner descripcion
+        /**
+        * FIXME: Este metodo ya no funciona igual desde que agregamos el SignUp,
+        * es necesario arreglarlo ya que no esta llamando al modalSignUp sino me
+        * esta llevando de inmediato a crear un profesor, sin haber pasado antes
+        * por signUp.
+        * _join
+        * @description - 
+        * @use - this._assignNativeTooltip(language);
+        * @function
+        * @param {string} language - current language on the ng-repeat loop
+        * @return {boolean} tooltipText - return tooltip text
+        */
+
         _join(): void {
             //CONSTANTS
             const CREATE_TEACHER = 'page.createTeacherPage.start';

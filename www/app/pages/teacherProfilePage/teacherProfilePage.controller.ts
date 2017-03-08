@@ -204,13 +204,32 @@ module app.pages.teacherProfilePage {
         }
 
 
-        //TODO: poner description
+
+        /**
+        * _ratingTotalAverage
+        * @description - Calculate teacher rating average based on a ratings list given
+        * @use - this._ratingTotalAverage(ratingsArray);
+        * @function
+        * @param {Array<Object>} ratingsArr - list of rating objects
+        * @return {number} average - average value
+        */
+
         private _ratingTotalAverage(ratingsArr: Array<Object>): number {
             return this.functionsUtil.teacherRatingAverage(ratingsArr);
         }
 
 
-        //TODO: poner description
+
+        /**
+        * _ratingUnitAverage
+        * @description - Calculate teacher rating average per each
+        * criteria (methodology, communication, teaching)
+        * @use - this._ratingUnitAverage(language);
+        * @function
+        * @param {Array<Object>} ratingsArr - list of rating objects
+        * @return {number} average - average of type of criteria
+        */
+
         private _ratingUnitAverage(ratingsArr: Array<Object>, type): number {
             //VARIABLES
             let average = 0;

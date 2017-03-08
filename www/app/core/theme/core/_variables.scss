@@ -12,25 +12,25 @@
 //   6. DateTime Picker
 //   7. Dropdown
 //   8. Flags
-//   8. Form
-//   9. Header
-//   10. Header - Blocks (Tabs)
-//   11. Header - Search Bar
-//   12. Header - SubNav
-//   13. Icons
-//   14. Images
-//   15. Input Text
-//   16. Labels
-//   17. Left Nav (small devices)
-//   18. Links
-//   19. List
-//   20. Logo
-//   21. Paragraph
-//   22. Progress Bar
-//   23. Select List
-//   24. Stars
-//   25. Strong
-//   26. Switchs
+//   9. Form
+//   10. Header
+//   11. Header - Blocks (Tabs)
+//   12. Header - Search Bar
+//   13. Header - SubNav
+//   14. Icons
+//   15. Images
+//   16. Input Text
+//   17. Labels
+//   18. Left Nav (small devices)
+//   19. Links
+//   20. List
+//   21. Logo
+//   22. Paragraph
+//   23. Progress Bar
+//   24. Select List
+//   25. Stars
+//   26. Strong
+//   27. Switchs
 
 //**********************************************************
 
@@ -377,43 +377,6 @@ $header-subnav-list-option-tab-font-padding: 10px;
 $header-subnav-list-option-tab-border-hover: 3px solid map-get($main-palette, primary);
 
 $header-subnav-list-option-tab-border-active: 3px solid $dark-gray;
-
-
-// 5. Icons
-// ----------
-$icon-container-count-top: -5px;
-$icon-container-count-left: 14px;
-$icon-container-count-radius: 12px;
-
-$icon-container-count-background-primary: map-get($main-palette, primary);
-$icon-container-count-background-secondary: $white;
-$icon-container-count-background-alert: $white;
-
-$icon-container-count-font-color-primary: $white;
-$icon-container-count-font-color-secondary: map-get($main-palette, primary);
-$icon-container-count-font-color-alert: map-get($main-palette, alert);
-
-$icon-container-count-border-primary: 2px solid map-get($main-palette, primary);
-$icon-container-count-border-secondary: 2px solid map-get($main-palette, primary);
-$icon-container-count-border-alert: 2px solid map-get($main-palette, alert);
-
-$icon-container-count-paddings: (
-    tiny: 0px 4px,
-    small: 3px 6px,
-    default: 4px 7px,
-);
-
-$icon-container-count-lineHeight: (
-    tiny: 13px,
-    small: 11px,
-    default: 12px,
-);
-
-$icon-container-count-font-sizes: (
-    tiny: 10px,
-    small: 10px,
-    default: 12px,
-);
 
 // 5. Images
 // ----------

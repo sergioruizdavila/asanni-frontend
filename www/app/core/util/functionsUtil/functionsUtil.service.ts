@@ -342,10 +342,10 @@ module app.core.util.functionsUtil {
                                                           {lat: 6.175434,lng: -75.583329});
         * @function
         * TODO: Asignar un tipo de datos al Array, ya que esta muy complicado entender que es dataSet
-        * @params {Array<any>} dataSet - dataSet array
-        * @params {string} mapType - map type
-        * @params {components.map.IPosition} position - position on map (lat and lng)
-        * @params {number} zoom - zoom on the mapa
+        * @param {Array<any>} dataSet - dataSet array
+        * @param {string} mapType - map type
+        * @param {components.map.IPosition} position - position on map (lat and lng)
+        * @param {number} zoom - zoom on the mapa
         * @return {components.map.IMapConfig} mapConfig - google map config.
         */
         buildMapConfig(dataSet, mapType, position, zoom): components.map.IMapConfig {
@@ -677,7 +677,7 @@ module app.core.util.functionsUtil {
         * @param {Object} property - new property
         * @return {void}
         */
-        //TODO: Probar por que nunca se uso.
+        //TODO: Probar ya que nunca se uso.
         setPropertyMixpanel(property: Object): void {
             let arr = [];
             arr.push(property);

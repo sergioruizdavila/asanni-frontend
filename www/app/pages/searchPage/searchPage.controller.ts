@@ -184,7 +184,7 @@ module app.pages.searchPage {
         * _searchByCountry
         * @description - TODO: Este metodo es temporal, en realidad no deberia
         * buscar por un pais en particular, sino con la direccion que el user
-        * especifique en el buscador. Dejar esye metodo hasta cuando sea necesarios
+        * especifique en el buscador. Dejar este metodo hasta cuando sea necesarios
         * implementar el buscador completo
         * @use - this._subscribeToEvents();
         * @function

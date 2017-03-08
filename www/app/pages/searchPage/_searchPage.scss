@@ -197,6 +197,11 @@ $search-teacher-block-height: 500px;
 
                 &__container {
 
+                    .teacher-photo-container {
+                        position: relative;
+                        display: inline-block;
+                    }
+
                     .ma-icon-container {
                         position: absolute;
                         right: 0;

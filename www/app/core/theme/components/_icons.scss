@@ -1,3 +1,49 @@
+/**********************************************/
+/*                 VARIABLES                  */
+/**********************************************/
+
+$icon-container-count-top: -5px;
+$icon-container-count-left: 14px;
+$icon-container-count-radius: 12px;
+
+$icon-container-size: (
+    small: 25px,
+    default: 35px,
+    medium: 45px,
+    large: 55px,
+);
+
+$icon-container-count-background-primary: map-get($main-palette, primary);
+$icon-container-count-background-secondary: $white;
+$icon-container-count-background-alert: $white;
+
+$icon-container-count-font-color-primary: $white;
+$icon-container-count-font-color-secondary: map-get($main-palette, primary);
+$icon-container-count-font-color-alert: map-get($main-palette, alert);
+
+$icon-container-count-border-primary: 2px solid map-get($main-palette, primary);
+$icon-container-count-border-secondary: 2px solid map-get($main-palette, primary);
+$icon-container-count-border-alert: 2px solid map-get($main-palette, alert);
+
+$icon-container-count-paddings: (
+    tiny: 0px 4px,
+    small: 3px 6px,
+    default: 4px 7px,
+);
+
+$icon-container-count-lineHeight: (
+    tiny: 13px,
+    small: 11px,
+    default: 12px,
+);
+
+$icon-container-count-font-sizes: (
+    tiny: 10px,
+    small: 10px,
+    default: 12px,
+);
+
+
 /**********************************************************/
 /*                         ICONS                          */
 /**********************************************************/
@@ -105,21 +151,21 @@
 /**********************************************************/
 /*                     ICONS CONTAINER                    */
 /**********************************************************/
-//TODO: Pasar a variables
+
 .ma-icon-container {
     position: relative;
     text-align: center;
 
     /// WRAP COLOR
     &--primary {
-        background-color: #00b592;
+        background-color: map-get($main-palette, primary);
         color: $white;
-        border: 2px solid #00b592;
+        border: 2px solid map-get($main-palette, primary);
     }
 
     &--secondary {
-        border: 2px solid #00b592;
-        color: #00b592;
+        border: 2px solid map-get($main-palette, primary);
+        color: map-get($main-palette, primary);;
         background-color: $white;
     }
 
@@ -148,8 +194,8 @@
 
     /// WRAP SIZE
     &--small {
-        width: 25px;
-        height: 25px;
+        width: map-get($icon-container-size, small);
+        height: map-get($icon-container-size, small);
 
         &__icon {
             line-height: 22px;
@@ -158,8 +204,8 @@
     }
 
     &--default {
-        width: 35px;
-        height: 35px;
+        width: map-get($icon-container-size, default);
+        height: map-get($icon-container-size, default);
 
         &__icon {
             line-height: 31px;
@@ -168,8 +214,8 @@
     }
 
     &--medium {
-        width: 45px;
-        height: 45px;
+        width: map-get($icon-container-size, medium);
+        height: map-get($icon-container-size, medium);
 
         &__icon {
             line-height: 45px;
@@ -178,8 +224,8 @@
     }
 
     &--large {
-        width: 55px;
-        height: 55px;
+        width: map-get($icon-container-size, large);
+        height: map-get($icon-container-size, large);
 
         &__icon {
             line-height: 52px;
@@ -254,26 +300,26 @@
         /// BADGE SIZES
 
         &--small {
-            width: 25px;
-            height: 25px;
+            width: map-get($icon-container-size, small);
+            height: map-get($icon-container-size, small);
             background-size: 25px 25px;
         }
 
         &--default {
-            width: 35px;
-            height: 35px;
+            width: map-get($icon-container-size, default);
+            height: map-get($icon-container-size, default);
             background-size: 35px 35px;
         }
 
         &--medium {
-            width: 45px;
-            height: 45px;
+            width: map-get($icon-container-size, medium);
+            height: map-get($icon-container-size, medium);
             background-size: 45px 45px;
         }
 
         &--large {
-            width: 55px;
-            height: 55px;
+            width: map-get($icon-container-size, large);
+            height: map-get($icon-container-size, large);
             background-size: 55px 55px;
         }
     }

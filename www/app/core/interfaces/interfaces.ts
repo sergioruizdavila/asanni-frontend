@@ -31,18 +31,6 @@ module app.core.interfaces {
         groups: Array<string>;
     }
 
-    //TODO: Remover cuando ya no sea necesario
-    /***********************************/
-    /*   EARLY ADOPTER DATA INTERFACE  */
-    /***********************************/
-    export interface IEarlyAdopterData {
-        id: string;
-        firstName: string;
-        lastName: string;
-        email: string;
-        comment: string;
-    }
-
     /*******************************/
     /*   USER DATA AUTH INTERFACE  */
     /*******************************/
