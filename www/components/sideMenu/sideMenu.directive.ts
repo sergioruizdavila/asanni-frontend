@@ -140,7 +140,7 @@ module components.sideMenu {
             //VARIABLES
             let type = this.type;
             //CONSTANTS
-            const TEACH_OPTION = this.$filter('translate')('%modal.recommend.teacher.invitation.message.teach.label.text');
+            const TEACH_OPTION = this.$filter('translate')('%edit.teacher.menu.option.teach.label.text');
             const EXPERIENCE_OPTION = this.$filter('translate')('%landing.teacher.badge_explanation.get.first_requirement.title.text');
             const EDUCATION_OPTION = this.$filter('translate')('%edit.teacher.education.menu.option.text');
             const METHODOLOGY_OPTION = this.$filter('translate')('%search.container.teacher.methodology.title.text');

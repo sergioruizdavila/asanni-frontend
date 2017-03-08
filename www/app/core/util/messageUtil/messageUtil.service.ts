@@ -29,11 +29,13 @@ module app.core.util.messageUtil {
             toastr.options.positionClass = "toast-top-right";
             toastr.options.showDuration = 300;
             toastr.options.hideDuration = 300;
-            toastr.options.timeOut = 2000;
+            //With timeout = 0, doesn't hide until user press close button
+            toastr.options.timeOut = 0;
         }
 
         //methods
         success(message: string): void {
+            toastr.options.timeOut = 2000;
             toastr.success(message);
         }
 
@@ -43,7 +45,7 @@ module app.core.util.messageUtil {
             /***************************************/
             //default config
             toastr.options.closeButton = true;
-            toastr.options.timeOut = 10000;
+            toastr.options.timeOut = 0;
             if (!message) {
                 message = ERROR_SERVER_MESSAGE;
             }
@@ -52,7 +54,7 @@ module app.core.util.messageUtil {
 
         info(message: string): void {
             toastr.options.closeButton = true;
-            toastr.options.timeOut = 10000;
+            toastr.options.timeOut = 0;
             toastr.info(message);
         }
 

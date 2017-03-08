@@ -292,6 +292,9 @@
     "__EDIT PROFILE PAGE: PROFILE PHOTO__": "",
     "%edit.profile.photo.title.text": "foto de perfil",
 
+    "__EDIT PROFILE PAGE__": "",
+    "%edit.teacher.menu.option.teach.label.text": "enseñas",
+
     "__EDIT TEACHER PAGE: TEACHER EDUCATION__": "",
     "%edit.teacher.education.menu.option.text": "educación",
     "%edit.teacher.education.title.text": "¿Dónde estudiaste?",

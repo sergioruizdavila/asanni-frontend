@@ -13,15 +13,16 @@ var app;
                         toastr.options.positionClass = "toast-top-right";
                         toastr.options.showDuration = 300;
                         toastr.options.hideDuration = 300;
-                        toastr.options.timeOut = 2000;
+                        toastr.options.timeOut = 0;
                     }
                     messageUtilService.prototype.success = function (message) {
+                        toastr.options.timeOut = 2000;
                         toastr.success(message);
                     };
                     messageUtilService.prototype.error = function (message) {
                         var ERROR_SERVER_MESSAGE = this.$filter('translate')('%notification.error.server.text');
                         toastr.options.closeButton = true;
-                        toastr.options.timeOut = 10000;
+                        toastr.options.timeOut = 0;
                         if (!message) {
                             message = ERROR_SERVER_MESSAGE;
                         }
@@ -29,7 +30,7 @@ var app;
                     };
                     messageUtilService.prototype.info = function (message) {
                         toastr.options.closeButton = true;
-                        toastr.options.timeOut = 10000;
+                        toastr.options.timeOut = 0;
                         toastr.info(message);
                     };
                     messageUtilService.instance = function ($filter) {

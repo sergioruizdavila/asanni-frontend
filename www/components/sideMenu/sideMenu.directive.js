@@ -44,7 +44,7 @@ var components;
             };
             SideMenuController.prototype._buildSideMenunOptions = function () {
                 var type = this.type;
-                var TEACH_OPTION = this.$filter('translate')('%modal.recommend.teacher.invitation.message.teach.label.text');
+                var TEACH_OPTION = this.$filter('translate')('%edit.teacher.menu.option.teach.label.text');
                 var EXPERIENCE_OPTION = this.$filter('translate')('%landing.teacher.badge_explanation.get.first_requirement.title.text');
                 var EDUCATION_OPTION = this.$filter('translate')('%edit.teacher.education.menu.option.text');
                 var METHODOLOGY_OPTION = this.$filter('translate')('%search.container.teacher.methodology.title.text');
