@@ -70,7 +70,7 @@
             prefix: prefix,
             suffix: suffix
         });
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.preferredLanguage('es');
         $translateProvider.useCookieStorage();
     }
 })();
