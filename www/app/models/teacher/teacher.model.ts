@@ -891,7 +891,7 @@ module app.models.teacher {
         /*-- PROPERTIES --*/
         private id: number;
         private uid: string;
-        private author: app.models.student.Student;
+        private author: app.models.user.Profile;
         private methodologyValue: number;
         private teachingValue: number;
         private communicationValue: number;
@@ -910,7 +910,7 @@ module app.models.teacher {
             //init properties
             this.id = obj.id;
             this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
-            this.author = new app.models.student.Student(obj.author);
+            this.author = new app.models.user.Profile(obj.author);
             this.methodologyValue = obj.methodologyValue || 0;
             this.teachingValue = obj.teachingValue || 0;
             this.communicationValue = obj.communicationValue || 0;
@@ -944,7 +944,7 @@ module app.models.teacher {
             return this.author;
         }
 
-        set Author(author: app.models.student.Student) {
+        set Author(author: app.models.user.Profile) {
             if (author === undefined) { throw 'Please supply author'; }
             this.author = author;
         }
