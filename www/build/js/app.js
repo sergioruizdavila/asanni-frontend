@@ -2880,7 +2880,7 @@ var app;
                         obj = {};
                     this.id = obj.id;
                     this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
-                    this.author = new app.models.student.Student(obj.author);
+                    this.author = new app.models.user.Profile(obj.author);
                     this.methodologyValue = obj.methodologyValue || 0;
                     this.teachingValue = obj.teachingValue || 0;
                     this.communicationValue = obj.communicationValue || 0;
