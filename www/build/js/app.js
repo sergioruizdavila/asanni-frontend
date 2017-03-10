@@ -2013,8 +2013,10 @@ var app;
                     this.teacherSince = obj.teacherSince || '';
                     this.methodology = obj.methodology || '';
                     this.immersion = new Immersion(obj.immersion);
-                    this.status = obj.status || 'NW';
                     this.price = new Price(obj.price);
+                    this.status = obj.status || 'NW';
+                    this.recommended = obj.recomended || 0;
+                    this.createdAt = obj.createdAt || '';
                     if (obj != {}) {
                         this.experiences = [];
                         for (var key in obj.experiences) {
@@ -2249,6 +2251,13 @@ var app;
                             throw 'Please supply recommended early id';
                         }
                         this.recommended = recommended;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Teacher.prototype, "CreatedAt", {
+                    get: function () {
+                        return this.createdAt;
                     },
                     enumerable: true,
                     configurable: true

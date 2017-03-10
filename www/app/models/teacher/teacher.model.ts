@@ -29,6 +29,7 @@ module app.models.teacher {
         private ratings: Array<Rating>;
         private status: string;
         private recommended: number;
+        private createdAt: string;
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -46,8 +47,10 @@ module app.models.teacher {
             this.teacherSince = obj.teacherSince || '';
             this.methodology = obj.methodology || '';
             this.immersion = new Immersion(obj.immersion);
-            this.status = obj.status || 'NW';
             this.price = new Price(obj.price);
+            this.status = obj.status || 'NW';
+            this.recommended = obj.recomended || 0;
+            this.createdAt = obj.createdAt || '';
 
             if(obj != {}) {
 
@@ -243,6 +246,10 @@ module app.models.teacher {
         set Recommended(recommended: number) {
             if (recommended === undefined) { throw 'Please supply recommended early id'; }
             this.recommended = recommended;
+        }
+
+        get CreatedAt() {
+            return this.createdAt;
         }
 
     }
