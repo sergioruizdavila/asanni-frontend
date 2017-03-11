@@ -21,6 +21,7 @@
     "%global.join.button.text": "únete",
     "%global.join_now.button.text": "únete ahora",
     "%global.sending.button.text": "enviando...",
+    "%global.logout.button.text": "salir",
 
     "%global.more.label.text": "+ Más",
     "%global.email.label.text": "Correo Electrónico",
