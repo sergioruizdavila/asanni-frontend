@@ -23,8 +23,7 @@
         'mainApp.pages.searchPage',
         'mainApp.pages.createTeacherPage',
         'mainApp.pages.teacherProfilePage',
-        'mainApp.pages.userProfilePage',
-        'mainApp.pages.userEditProfilePage',
+        'mainApp.pages.editProfile',
         'mainApp.pages.userEditLocationPage',
         'mainApp.pages.userEditAgendaPage',
         'mainApp.pages.userEditMediaPage',
@@ -78,7 +77,6 @@
 (function () {
     'use strict';
     angular.module('mainApp.core', [
-        'ngRaven',
         'ngResource',
         'ngCookies',
         'ui.router',
@@ -92,7 +90,7 @@
     ]);
 })();
 //# sourceMappingURL=app.core.module.js.map
-DEBUG = false;
+DEBUG = true;
 (function () {
     'use strict';
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';

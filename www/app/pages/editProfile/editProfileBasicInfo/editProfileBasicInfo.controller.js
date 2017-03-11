@@ -343,7 +343,7 @@ var app;
                 };
                 return EditProfileBasicInfoController;
             }());
-            EditProfileBasicInfoController.controllerId = 'mainApp.pages.editProfileBasicInfo.EditProfileBasicInfoController';
+            EditProfileBasicInfoController.controllerId = 'mainApp.pages.editProfile.EditProfileBasicInfoController';
             EditProfileBasicInfoController.$inject = [
                 'dataConfig',
                 'mainApp.models.user.UserService',
@@ -358,7 +358,7 @@ var app;
             ];
             editProfileBasicInfo.EditProfileBasicInfoController = EditProfileBasicInfoController;
             angular
-                .module('mainApp.pages.editProfileBasicInfo')
+                .module('mainApp.pages.editProfile')
                 .controller(EditProfileBasicInfoController.controllerId, EditProfileBasicInfoController);
         })(editProfileBasicInfo = pages.editProfileBasicInfo || (pages.editProfileBasicInfo = {}));
     })(pages = app.pages || (app.pages = {}));

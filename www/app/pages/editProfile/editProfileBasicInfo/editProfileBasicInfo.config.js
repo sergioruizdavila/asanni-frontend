@@ -10,7 +10,7 @@
             views: {
                 'section': {
                     templateUrl: 'app/pages/editProfile/editProfileBasicInfo/editProfileBasicInfo.html',
-                    controller: 'mainApp.pages.editProfile.EditProfileBasicInfoPageController',
+                    controller: 'mainApp.pages.editProfile.EditProfileBasicInfoController',
                     controllerAs: 'vm'
                 }
             },

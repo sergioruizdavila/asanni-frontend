@@ -59,7 +59,7 @@ module app.pages.editProfileBasicInfo {
     /****************************************/
     export class EditProfileBasicInfoController implements IEditProfileBasicInfoController {
 
-        static controllerId = 'mainApp.pages.editProfileBasicInfo.EditProfileBasicInfoController';
+        static controllerId = 'mainApp.pages.editProfile.EditProfileBasicInfoController';
 
         /**********************************/
         /*           PROPERTIES           */
@@ -694,7 +694,7 @@ module app.pages.editProfileBasicInfo {
 
     /*-- MODULE DEFINITION --*/
     angular
-        .module('mainApp.pages.editProfileBasicInfo')
+        .module('mainApp.pages.editProfile')
         .controller(EditProfileBasicInfoController.controllerId, EditProfileBasicInfoController);
 
 }
