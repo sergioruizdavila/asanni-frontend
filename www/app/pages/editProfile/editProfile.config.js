@@ -1,16 +1,16 @@
 (function () {
     'use strict';
     angular
-        .module('mainApp.pages.userEditMediaPage', [])
+        .module('mainApp.pages.editProfile', [])
         .config(config);
     function config($stateProvider) {
         $stateProvider
-            .state('page.userEditMediaPage', {
-            url: '/users/edit/media',
+            .state('page.editProfile', {
+            url: '/users/edit',
             views: {
                 'container': {
-                    templateUrl: 'app/pages/editProfile/userEditMediaPage/userEditMediaPage.html',
-                    controller: 'mainApp.pages.userEditMediaPage.UserEditMediaPageController',
+                    templateUrl: 'app/pages/editProfile/editProfile.html',
+                    controller: 'mainApp.pages.editProfile.EditProfileController',
                     controllerAs: 'vm',
                     resolve: {
                         waitForAuth: ['mainApp.auth.AuthService', function (AuthService) {
@@ -31,4 +31,4 @@
         });
     }
 })();
-//# sourceMappingURL=userEditMediaPage.config.js.map
+//# sourceMappingURL=editProfile.config.js.map

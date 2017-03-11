@@ -1,33 +1,33 @@
 /**
- * EditTeacherController
- * @description - Create Teacher Page Controller
+ * EditProfileController
+ * @description - Edit User Profile Page Controller
  */
 
-module app.pages.editTeacher {
+module app.pages.editProfile {
 
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
-    export interface IEditTeacherController {
+    export interface IEditProfileController {
         activate: () => void;
     }
 
-    interface ICreateTeacherError {
+    interface IEditProfileError {
         message: string;
     }
 
     /****************************************/
     /*           CLASS DEFINITION           */
     /****************************************/
-    export class EditTeacherController implements IEditTeacherController {
+    export class EditProfileController implements IEditProfileController {
 
-        static controllerId = 'mainApp.pages.editTeacher.EditTeacherController';
+        static controllerId = 'mainApp.pages.editProfile.EditProfileController';
 
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
+        isTeacher: boolean;
         teacherData: app.models.teacher.Teacher;
-        showHeaderFixed: boolean;
         progressWidth: string;
         // --------------------------------
 
@@ -81,10 +81,10 @@ module app.pages.editTeacher {
             //Get current state
             let currentState = this.$state.current.name;
 
-            //Init teacher instance
-            this.$rootScope.teacherData = new app.models.teacher.Teacher();
-            //Connect with user logged
-            this.$rootScope.teacherData.Profile.UserId = loggedUserId;
+            if(this.$rootScope.profileData) {
+                //Validate if is teacher to change some text on view
+                this.isTeacher = this.$rootScope.profileData.IsTeacher;
+            }
 
             this.activate();
         }
@@ -92,12 +92,12 @@ module app.pages.editTeacher {
         /*-- ACTIVATE METHOD --*/
         activate(): void {
             //CONSTANTS
-            const ENTER_MIXPANEL = 'Enter: Edit Teacher Page';
+            const ENTER_MIXPANEL = 'Enter: Edit Profile Page';
             //VARIABLES
             let self = this;
 
             //LOG
-            console.log('editTeacher controller actived');
+            console.log('editProfile controller actived');
 
             //MIXPANEL
             mixpanel.track(ENTER_MIXPANEL);
@@ -107,9 +107,6 @@ module app.pages.editTeacher {
 
             //Charge user profile data
             this.fillFormWithProfileData();
-
-            //Charge teacher data if teacher entity exist on DB
-            this.fillFormWithTeacherData();
 
         }
 
@@ -124,9 +121,7 @@ module app.pages.editTeacher {
         * @function
         * @return void
         */
-        //TODO: Analizar si es necesario esta funcion aqui, ya que estoy editando
-        // la info del profesor no del profile (solo uso aqui el idioma que enseño)
-        // si es asi, colocar una Nota para que no se me olvide por que deje esta funcion
+
         fillFormWithProfileData(): void {
             // VARIABLES
             let self = this;
@@ -149,36 +144,6 @@ module app.pages.editTeacher {
         }
 
 
-        /**
-        * fillFormWithTeacherData
-        * @description - get teacher data from DB, and fill each field on form.
-        * @function
-        * @return void
-        */
-        fillFormWithTeacherData(): void {
-            // VARIABLES
-            let self = this;
-            let userId = this.$rootScope.userData.id;
-
-            //Get teacher info by user logged Id
-            this.teacherService.getTeacherByProfileId(userId).then(
-
-                function(response) {
-
-                    if(response.id) {
-
-                        self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
-                        self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
-
-                    }
-
-                }
-
-            );
-
-        }
-
-
 
         /**
         * _subscribeToEvents
@@ -192,8 +157,8 @@ module app.pages.editTeacher {
             let self = this;
 
             /**
-            * Save User Profile Data event
-            * @description - Parent (EditTeacherController) receive Child's
+            * Save Profile Data event
+            * @description - Parent (EditProfileController) receive Child's
                              event in order to save user profile data on BD
             * @event
             */
@@ -209,9 +174,6 @@ module app.pages.editTeacher {
                     .then(
                         function(response) {
                             if(response.userId) {
-                                //Show message
-                                //self.messageUtil.success(SUCCESS_MESSAGE);
-
                                 //Fill Form
                                 self.$rootScope.profileData = new app.models.user.Profile(response);
                                 //TODO: Validar si esto es necesario ya que estoy guardando todo en $rootScope
@@ -228,47 +190,6 @@ module app.pages.editTeacher {
                 }
             });
 
-
-            /**
-            * Save Data event
-            * @description - Parent (EditTeacherController) receive Child's
-                             event in order to save teacher data on BD
-            * @event
-            */
-            this.$scope.$on('Save Data', function(event, args) {
-                //CONSTANTS
-                const SUCCESS_MESSAGE = self.$filter('translate')('%notification.success.text');
-                /******************************/
-
-                if(self.$rootScope.teacherData.Id) {
-                    // UPDATE EXISTING TEACHER
-                    self.teacherService.updateTeacher(self.$rootScope.teacherData)
-                    .then(
-                        function(response) {
-                            if(response.id) {
-                                //Show message
-                                //self.messageUtil.success(SUCCESS_MESSAGE);
-                                //Fill Form
-                                self.$rootScope.teacherData = new app.models.teacher.Teacher(response);
-                                //TODO: Validar si esto es necesario ya que estoy guardando todo en $rootScope
-                                // ya deberia poder tener acceso en los hijos
-                                self.$scope.$broadcast('Fill Form', self.$rootScope.teacherData);
-                                self.$scope.$broadcast('Saved');
-                            }
-                        },
-                        function(error) {
-                            //Show error
-                            self.messageUtil.error('');
-                            self.$scope.$broadcast('Fill Form', 'error');
-                        }
-                    );
-                } else {
-                    //TODO: Validar cuando no haya un teacherData Id
-                    DEBUG && console.log('self.$rootScope.teacherData.Id doesn´t exist');
-                }
-
-            });
-
         }
 
     }
@@ -276,8 +197,8 @@ module app.pages.editTeacher {
 
     /*-- MODULE DEFINITION --*/
     angular
-        .module('mainApp.pages.editTeacher')
-        .controller(EditTeacherController.controllerId,
-                    EditTeacherController);
+        .module('mainApp.pages.editProfile')
+        .controller(EditProfileController.controllerId,
+                    EditProfileController);
 
 }

@@ -1,22 +1,22 @@
 /**
- * UserEditLocationPageController
- * @description - User Edit Location Page Controller
+ * EditProfileLocationController
+ * @description - Edit User Location Profile Page Controller
  */
 
-module app.pages.userEditLocationPage {
+module app.pages.editProfileLocation {
 
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
-    export interface IUserEditLocationPageController {
-        form: IUserEditLocationForm;
-        validate: IUserEditLocationValidate;
+    export interface IEditProfileLocationController {
+        form: IEditProfileLocationForm;
+        validate: IEditProfileLocationValidate;
         activate: () => void;
         goToEditMedia: () => void;
-        goToEditProfile: () => void;
+        goToEditLocation: () => void;
     }
 
-    export interface IUserEditLocationForm {
+    export interface IEditProfileLocationForm {
         countryLocation: string;
         addressLocation: string;
         cityLocation: string;
@@ -25,7 +25,7 @@ module app.pages.userEditLocationPage {
         positionLocation: app.models.user.Position;
     }
 
-    interface IUserEditLocationValidate {
+    interface IEditProfileLocationValidate {
         countryLocation: app.core.util.functionsUtil.IValid;
         addressLocation: app.core.util.functionsUtil.IValid;
         cityLocation: app.core.util.functionsUtil.IValid;
@@ -37,19 +37,18 @@ module app.pages.userEditLocationPage {
     /****************************************/
     /*           CLASS DEFINITION           */
     /****************************************/
-    export class UserEditLocationPageController implements IUserEditLocationPageController {
+    export class EditProfileLocationController implements IEditProfileLocationController {
 
-        static controllerId = 'mainApp.pages.userEditLocationPage.UserEditLocationPageController';
+        static controllerId = 'mainApp.pages.editProfile.EditProfileLocationController';
 
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
-        form: IUserEditLocationForm;
-        validate: IUserEditLocationValidate;
+        form: IEditProfileLocationForm;
+        validate: IEditProfileLocationValidate;
         saving: boolean;
         saved: boolean;
         error: boolean;
-        isTeacher: boolean;
         geocoder: google.maps.Geocoder;
         mapConfig: components.map.IMapConfig;
         listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
@@ -94,13 +93,6 @@ module app.pages.userEditLocationPage {
             //CONSTANTS
             this.TIME_SHOW_MESSAGE = 6000;
 
-            //Validate if user is teacher
-            //TODO: Esto deberia unificarse, no esta bien que tenga que ponerlo
-            // en cada sección del editar perfil
-            if(this.$rootScope.profileData) {
-                this.isTeacher = this.$rootScope.profileData.IsTeacher;
-            }
-
             // Init saving loading
             this.saving = false;
 
@@ -109,6 +101,9 @@ module app.pages.userEditLocationPage {
 
             // Init error message
             this.error = false;
+
+            // Country Select List Structure
+            this.countryObject = {code: '', value: ''};
 
             //Init form
             this.form = {
@@ -119,9 +114,6 @@ module app.pages.userEditLocationPage {
                 zipCodeLocation: '',
                 positionLocation: new app.models.user.Position()
             };
-
-            // Country Select List Structure
-            this.countryObject = {code: '', value: ''};
 
             // Build Countries select lists
             this.listCountries = this.getDataFromJson.getCountryi18n();
@@ -146,19 +138,14 @@ module app.pages.userEditLocationPage {
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
-            //CONSTANTS
-            const ENTER_MIXPANEL = 'Enter: Edit Profile Page (Location)';
             //LOG
-            DEBUG && console.log('UserEditLocationPage controller actived');
-            //MIXPANEL
-            mixpanel.track(ENTER_MIXPANEL);
-
-            //Charge user profile data
-            this.fillFormWithLocationData();
+            DEBUG && console.log('EditProfileLocation controller actived');
 
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
 
+            //FILL FORM FROM ROOTSCOPE USER INFO
+            this._fillForm(this.$rootScope.profileData);
         }
 
         /**********************************/
@@ -171,50 +158,18 @@ module app.pages.userEditLocationPage {
         * option
         */
         goToEditMedia(): void {
-            // Go to next page on calls stack
-            this.$state.go('page.userEditMediaPage');
+            this.$state.go('page.editProfile.media');
         }
+
 
 
         /*
         * Go to edit profile page
-        * @description this method is launched when user press 'Edit Profile' menu
+        * @description this method is launched when user press 'Edit Location' menu
         * option
         */
         goToEditProfile(): void {
-            this.$state.go('page.userEditProfilePage');
-        }
-
-
-
-        /**
-        * fillFormWithLocationData
-        * @description - get user profile data from DB, and fill each field on form.
-        * @function
-        * @return void
-        */
-        fillFormWithLocationData(): void {
-            // VARIABLES
-            let self = this;
-            let userId = this.$rootScope.userData.id;
-
-            //TODO: Analizar si este llamado es necesario, ya que cada vez que refresco
-            // en el run llamo a esta funcion y traigo la información del usuario
-            // asi que es bobada hacerlo 2 veces.
-            if(userId) {
-                // GET USER PROFILE DATA
-                this.userService.getUserProfileById(userId)
-                .then(
-                    function(response) {
-
-                        if(response.userId) {
-                            self.$rootScope.profileData = new app.models.user.Profile(response);
-                            self._fillForm(self.$rootScope.profileData);
-                        }
-
-                    }
-                );
-            }
+            this.$state.go('page.editProfile.basicInfo');
         }
 
 
@@ -378,18 +333,13 @@ module app.pages.userEditLocationPage {
             this.$rootScope.profileData.Location.State = this.form.stateLocation;
             this.$rootScope.profileData.Location.ZipCode = this.form.zipCodeLocation;
             this.$rootScope.profileData.Location.Position = this.form.positionLocation;
-            //FIXME: Si lo dejo, cuando le doy guardar, se me vuelve a poner el
-            // marker en la posicion anterior. Asi que no se si esta linea sea
-            // necesaria.
-            //get position on Map
-            //this.changeMapPosition();
         }
 
 
 
         /**
-        * saveBasicInfoSection
-        * @description - Update profile's basic data calling to save method
+        * saveLocationSection
+        * @description - Update profile's location data calling to save method
         * @function
         * @return void
         */
@@ -402,20 +352,8 @@ module app.pages.userEditLocationPage {
             if(formValid) {
                 //loading On
                 this.saving = true;
-
                 this._setLocationFromForm();
-                this.save().then(
-                    function(saved) {
-                        //loading Off
-                        self.saving = false;
-                        self.saved = saved;
-                        self.error = !saved;
-
-                        self.$timeout(function() {
-                            self.saved = false;
-                        }, self.TIME_SHOW_MESSAGE);
-                    }
-                );
+                this.$scope.$emit('Save Profile Data');
             } else {
                 //Go top pages
                 window.scrollTo(0, 0);
@@ -425,47 +363,17 @@ module app.pages.userEditLocationPage {
 
 
         /**
-        * save
-        * @description - Update location's languages data on DB
-        * @function
-        * @return {angular.IPromise<boolean>} saved - return if saved or not data
-        */
-        save(): angular.IPromise<boolean> {
-            //VARIABLES
-            let self = this;
-
-            // Save profile's updated data
-            return this.userService.updateUserProfile(this.$rootScope.profileData)
-            .then(
-                function(response) {
-                    let saved = false;
-                    if(response.userId) {
-                        //Fill Form
-                        self.$rootScope.profileData = new app.models.user.Profile(response);
-                        saved = true;
-                    }
-                    return saved;
-                },
-                function(error) {
-                    DEBUG && console.error(error);
-                    return false;
-                }
-            );
-        }
-
-
-
-        /**
         * _subscribeToEvents
-        * @description - this method subscribes Teacher Location Section to Parent Events
+        * @description - this method subscribes User Basic Info Section
+        * to Parent Events
         * @use - this._subscribeToEvents();
         * @function
         * @return {void}
         */
-
         private _subscribeToEvents(): void {
             //VARIABLES
             let self = this;
+
 
             /**
             * Return Position
@@ -479,13 +387,52 @@ module app.pages.userEditLocationPage {
                 self.form.positionLocation.Lng = args.lng;
                 self.form.positionLocation.Lat = args.lat;
             });
+
+
+            /**
+            * Fill Form event
+            * @parent - EditUserController
+            * @description - Parent send user profile data in order to
+            * Child fill the form's field
+            * @event
+            */
+            this.$scope.$on('Fill User Profile Form',
+                function(event, args) {
+                    self.error = false;
+                    if(args !== 'error') {
+                        self._fillForm(args);
+                    } else {
+                        self.error = true;
+                    }
+                }
+            );
+
+
+            /**
+            * Saved event
+            * @parent - EditProfileController
+            * @description - Parent notify that data was saved successful
+            * @event
+            */
+            this.$scope.$on('Saved',
+                function(event, args) {
+                    //loading Off
+                    self.saving = false;
+                    self.error = false;
+                    self.saved = true;
+
+                    self.$timeout(function() {
+                        self.saved = false;
+                    }, self.TIME_SHOW_MESSAGE);
+                }
+            );
         }
 
     }
 
     /*-- MODULE DEFINITION --*/
     angular
-        .module('mainApp.pages.userEditLocationPage')
-        .controller(UserEditLocationPageController.controllerId, UserEditLocationPageController);
+        .module('mainApp.pages.editProfile')
+        .controller(EditProfileLocationController.controllerId, EditProfileLocationController);
 
 }

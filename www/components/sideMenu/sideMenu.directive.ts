@@ -140,6 +140,10 @@ module components.sideMenu {
             //VARIABLES
             let type = this.type;
             //CONSTANTS
+            const BASIC_INFO_OPTION = this.$filter('translate')('%profile.teacher.edit_profile.button.text');
+            const PHOTO_OPTION = this.$filter('translate')('%edit.profile.edit_photo.option.button.text');
+            const LOCATION_OPTION = this.$filter('translate')('%edit.profile.edit_location.option.button.text');
+
             const TEACH_OPTION = this.$filter('translate')('%edit.teacher.menu.option.teach.label.text');
             const EXPERIENCE_OPTION = this.$filter('translate')('%landing.teacher.badge_explanation.get.first_requirement.title.text');
             const EDUCATION_OPTION = this.$filter('translate')('%edit.teacher.education.menu.option.text');
@@ -173,7 +177,20 @@ module components.sideMenu {
                     ];
                 break;
                 case 'edit-profile':
-
+                    this.optionsList = [
+                        {
+                            name: BASIC_INFO_OPTION,
+                            state: 'page.editProfile.basicInfo'
+                        },
+                        {
+                            name: PHOTO_OPTION,
+                            state: 'page.editProfile.media'
+                        },
+                        {
+                            name: LOCATION_OPTION,
+                            state: 'page.editProfile.location'
+                        }
+                    ];
                 break;
             }
         }

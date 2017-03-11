@@ -111,10 +111,10 @@
                     role="menu"
                     aria-labelledby="user-menu-options">
                     <li class="ma-dropdown__option">
-                        <a ui-sref="page.userEditProfilePage"
+                        <a ui-sref="page.editProfile.basicInfo"
                            class="ma-dropdown__option__btn"
-                           href>
-                            Edit Profile
+                           href translate>
+                            %profile.teacher.edit_profile.button.text
                         </a>
                     </li>
                     <li class="ma-dropdown__option hidden">
@@ -125,10 +125,10 @@
                     </li>
 
                     <li class="ma-dropdown__option last-option">
-                        <a class="ma-dropdown__option__btn"
+                        <a class="ma-dropdown__option__btn text-capitalize"
                            ng-click="vm.logout()"
-                           href>
-                           Log Out
+                           href translate>
+                           %global.logout.button.text
                         </a>
                     </li>
                 </ul>
