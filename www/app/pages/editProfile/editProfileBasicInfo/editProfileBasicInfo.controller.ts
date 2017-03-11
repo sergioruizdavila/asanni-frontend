@@ -1,16 +1,16 @@
 /**
- * UserEditProfilePageController
- * @description - User Edit Profile Page Controller
+ * EditProfileBasicInfoController
+ * @description - Edit User Basic info Profile Page Controller
  */
 
-module app.pages.userEditProfilePage {
+module app.pages.editProfileBasicInfo {
 
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
-    export interface IUserEditProfilePageController {
-        form: IUserEditProfileForm;
-        validate: IUserEditProfileValidate;
+    export interface IEditProfileBasicInfoController {
+        form: IEditProfileBasicInfoForm;
+        validate: IEditProfileBasicInfoValidate;
         activate: () => void;
         goToEditMedia: () => void;
         goToEditLocation: () => void;
@@ -26,7 +26,7 @@ module app.pages.userEditProfilePage {
         year: app.core.interfaces.ISelectListElement;
     }
 
-    export interface IUserEditProfileForm {
+    interface IEditProfileBasicInfoForm {
         firstName: string;
         lastName: string;
         phoneNumber: string;
@@ -40,7 +40,7 @@ module app.pages.userEditProfilePage {
         teach: Array<app.core.interfaces.IKeyValue>;
     }
 
-    interface IUserEditProfileValidate {
+    interface IEditProfileBasicInfoValidate {
         firstName: app.core.util.functionsUtil.IValid;
         lastName: app.core.util.functionsUtil.IValid;
         phoneNumber: app.core.util.functionsUtil.IValid;
@@ -57,19 +57,18 @@ module app.pages.userEditProfilePage {
     /****************************************/
     /*           CLASS DEFINITION           */
     /****************************************/
-    export class UserEditProfilePageController implements IUserEditProfilePageController {
+    export class EditProfileBasicInfoController implements IEditProfileBasicInfoController {
 
-        static controllerId = 'mainApp.pages.userEditProfilePage.UserEditProfilePageController';
+        static controllerId = 'mainApp.pages.editProfile.EditProfileBasicInfoController';
 
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
-        form: IUserEditProfileForm;
-        validate: IUserEditProfileValidate;
+        form: IEditProfileBasicInfoForm;
+        validate: IEditProfileBasicInfoValidate;
         saving: boolean;
         saved: boolean;
         error: boolean;
-        isTeacher: boolean;
         listMonths: Array<app.core.interfaces.IDataFromJsonI18n>;
         listGenders: Array<app.core.interfaces.IDataFromJsonI18n>;
         listDays: Array<app.core.interfaces.ISelectListElement>;
@@ -138,14 +137,6 @@ module app.pages.userEditProfilePage {
             // Birthdate Select List Structure
             this.dateObject = {day:{value:''}, month: {code:'', value:''}, year: {value:''}};
 
-            //Validate if user is teacher
-            //TODO: Esto deberia unificarse, no esta bien que tenga que ponerlo
-            // en cada sección del editar perfil
-            if(this.$rootScope.profileData) {
-                this.isTeacher = this.$rootScope.profileData.IsTeacher;
-            }
-
-
             //Init form
             this.form = {
                 firstName: '',
@@ -197,16 +188,14 @@ module app.pages.userEditProfilePage {
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
-            //CONSTANTS
-            const ENTER_MIXPANEL = 'Enter: Edit Profile Page (Basic Info)';
             //LOG
-            DEBUG && console.log('UserEditProfilePage controller actived');
-            //MIXPANEL
-            mixpanel.track(ENTER_MIXPANEL);
+            DEBUG && console.log('EditProfileBasicInfo controller actived');
 
-            //Charge user profile data
-            this.fillFormWithProfileData();
+            //SUBSCRIBE TO EVENTS
+            this._subscribeToEvents();
 
+            //FILL FORM FROM ROOTSCOPE USER INFO
+            this._fillForm(this.$rootScope.profileData);
         }
 
         /**********************************/
@@ -219,7 +208,7 @@ module app.pages.userEditProfilePage {
         * option
         */
         goToEditMedia(): void {
-            this.$state.go('page.userEditMediaPage');
+            this.$state.go('page.editProfile.media');
         }
 
 
@@ -229,39 +218,7 @@ module app.pages.userEditProfilePage {
         * option
         */
         goToEditLocation(): void {
-            this.$state.go('page.userEditLocationPage');
-        }
-
-
-
-        /**
-        * fillFormWithProfileData
-        * @description - get user profile data from DB, and fill each field on form.
-        * @function
-        * @return void
-        */
-        fillFormWithProfileData(): void {
-            // VARIABLES
-            let self = this;
-            let userId = this.$rootScope.userData.id;
-
-            //TODO: Analizar si este llamado es necesario, ya que cada vez que refresco
-            // en el run llamo a esta funcion y traigo la información del usuario
-            // asi que es bobada hacerlo 2 veces.
-            if(userId) {
-                // GET USER PROFILE DATA
-                this.userService.getUserProfileById(userId)
-                .then(
-                    function(response) {
-
-                        if(response.userId) {
-                            self.$rootScope.profileData = new app.models.user.Profile(response);
-                            self._fillForm(self.$rootScope.profileData);
-                        }
-
-                    }
-                );
-            }
+            this.$state.go('page.editProfile.location');
         }
 
 
@@ -655,20 +612,8 @@ module app.pages.userEditProfilePage {
             if(formValid) {
                 //loading On
                 this.saving = true;
-
                 this._setBasicInfoFromForm();
-                this.save().then(
-                    function(saved) {
-                        //loading Off
-                        self.saving = false;
-                        self.saved = saved;
-                        self.error = !saved;
-
-                        self.$timeout(function() {
-                            self.saved = false;
-                        }, self.TIME_SHOW_MESSAGE);
-                    }
-                );
+                this.$scope.$emit('Save Profile Data');
             }
         }
 
@@ -690,61 +635,69 @@ module app.pages.userEditProfilePage {
             if(formValid) {
                 //loading On
                 this.saving = true;
-
                 this._setLanguageFromForm();
-                this.save().then(
-                    function(saved) {
-                        //loading Off
-                        self.saving = false;
-                        self.saved = saved;
-                        self.error = !saved;
-
-                        self.$timeout(function() {
-                            self.saved = false;
-                        }, self.TIME_SHOW_MESSAGE);
-                    }
-                );
+                this.$scope.$emit('Save Profile Data');
             }
         }
 
 
 
         /**
-        * save
-        * @description - Update profile's languages data on DB
+        * _subscribeToEvents
+        * @description - this method subscribes User Basic Info Section
+        * to Parent Events
+        * @use - this._subscribeToEvents();
         * @function
-        * @return {angular.IPromise<boolean>} saved - return if saved or not data
+        * @return {void}
         */
-        save(): angular.IPromise<boolean> {
+        private _subscribeToEvents(): void {
             //VARIABLES
             let self = this;
 
-            // Save profile's updated data
-            return this.userService.updateUserProfile(this.$rootScope.profileData)
-            .then(
-                function(response) {
-                    let saved = false;
-                    if(response.userId) {
-                        //Fill Form
-                        self.$rootScope.profileData = new app.models.user.Profile(response);
-                        saved = true;
+            /**
+            * Fill Form event
+            * @parent - EditUserController
+            * @description - Parent send user profile data in order to
+            * Child fill the form's field
+            * @event
+            */
+            this.$scope.$on('Fill User Profile Form',
+                function(event, args) {
+                    self.error = false;
+                    if(args !== 'error') {
+                        self._fillForm(args);
+                    } else {
+                        self.error = true;
                     }
-                    return saved;
-                },
-                function(error) {
-                    DEBUG && console.error(error);
-                    return false;
+                }
+            );
+
+
+            /**
+            * Saved event
+            * @parent - EditProfileController
+            * @description - Parent notify that data was saved successful
+            * @event
+            */
+            this.$scope.$on('Saved',
+                function(event, args) {
+                    //loading Off
+                    self.saving = false;
+                    self.error = false;
+                    self.saved = true;
+
+                    self.$timeout(function() {
+                        self.saved = false;
+                    }, self.TIME_SHOW_MESSAGE);
                 }
             );
         }
-
-
 
     }
 
     /*-- MODULE DEFINITION --*/
     angular
-        .module('mainApp.pages.userEditProfilePage')
-        .controller(UserEditProfilePageController.controllerId, UserEditProfilePageController);
+        .module('mainApp.pages.editProfile')
+        .controller(EditProfileBasicInfoController.controllerId, EditProfileBasicInfoController);
 
 }

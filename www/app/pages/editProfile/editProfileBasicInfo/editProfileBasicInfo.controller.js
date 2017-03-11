@@ -2,10 +2,10 @@ var app;
 (function (app) {
     var pages;
     (function (pages) {
-        var userEditProfilePage;
-        (function (userEditProfilePage) {
-            var UserEditProfilePageController = (function () {
-                function UserEditProfilePageController(dataConfig, userService, getDataFromJson, functionsUtil, $state, $filter, $timeout, $uibModal, $scope, $rootScope) {
+        var editProfileBasicInfo;
+        (function (editProfileBasicInfo) {
+            var EditProfileBasicInfoController = (function () {
+                function EditProfileBasicInfoController(dataConfig, userService, getDataFromJson, functionsUtil, $state, $filter, $timeout, $uibModal, $scope, $rootScope) {
                     this.dataConfig = dataConfig;
                     this.userService = userService;
                     this.getDataFromJson = getDataFromJson;
@@ -18,7 +18,7 @@ var app;
                     this.$rootScope = $rootScope;
                     this._init();
                 }
-                UserEditProfilePageController.prototype._init = function () {
+                EditProfileBasicInfoController.prototype._init = function () {
                     this.TIME_SHOW_MESSAGE = 6000;
                     this.saving = false;
                     this.saved = false;
@@ -26,9 +26,6 @@ var app;
                     this.countryObject = { code: '', value: '' };
                     this.genderObject = { gender: { code: '', value: '' } };
                     this.dateObject = { day: { value: '' }, month: { code: '', value: '' }, year: { value: '' } };
-                    if (this.$rootScope.profileData) {
-                        this.isTeacher = this.$rootScope.profileData.IsTeacher;
-                    }
                     this.form = {
                         firstName: '',
                         lastName: '',
@@ -68,32 +65,18 @@ var app;
                     };
                     this.activate();
                 };
-                UserEditProfilePageController.prototype.activate = function () {
-                    var ENTER_MIXPANEL = 'Enter: Edit Profile Page (Basic Info)';
-                    DEBUG && console.log('UserEditProfilePage controller actived');
-                    mixpanel.track(ENTER_MIXPANEL);
-                    this.fillFormWithProfileData();
+                EditProfileBasicInfoController.prototype.activate = function () {
+                    DEBUG && console.log('EditProfileBasicInfo controller actived');
+                    this._subscribeToEvents();
+                    this._fillForm(this.$rootScope.profileData);
                 };
-                UserEditProfilePageController.prototype.goToEditMedia = function () {
-                    this.$state.go('page.userEditMediaPage');
+                EditProfileBasicInfoController.prototype.goToEditMedia = function () {
+                    this.$state.go('page.editProfile.media');
                 };
-                UserEditProfilePageController.prototype.goToEditLocation = function () {
-                    this.$state.go('page.userEditLocationPage');
+                EditProfileBasicInfoController.prototype.goToEditLocation = function () {
+                    this.$state.go('page.editProfile.location');
                 };
-                UserEditProfilePageController.prototype.fillFormWithProfileData = function () {
-                    var self = this;
-                    var userId = this.$rootScope.userData.id;
-                    if (userId) {
-                        this.userService.getUserProfileById(userId)
-                            .then(function (response) {
-                            if (response.userId) {
-                                self.$rootScope.profileData = new app.models.user.Profile(response);
-                                self._fillForm(self.$rootScope.profileData);
-                            }
-                        });
-                    }
-                };
-                UserEditProfilePageController.prototype._fillForm = function (data) {
+                EditProfileBasicInfoController.prototype._fillForm = function (data) {
                     this.form.firstName = data.FirstName;
                     this.form.lastName = data.LastName;
                     this.form.phoneNumber = data.PhoneNumber;
@@ -159,7 +142,7 @@ var app;
                         }
                     }
                 };
-                UserEditProfilePageController.prototype._validateBasicInfoForm = function () {
+                EditProfileBasicInfoController.prototype._validateBasicInfoForm = function () {
                     var NULL_ENUM = 2;
                     var NAN_ENUM = 8;
                     var EMPTY_ENUM = 3;
@@ -233,7 +216,7 @@ var app;
                     }
                     return formValid;
                 };
-                UserEditProfilePageController.prototype._validateLanguagesForm = function () {
+                EditProfileBasicInfoController.prototype._validateLanguagesForm = function () {
                     var NULL_ENUM = 2;
                     var NAN_ENUM = 8;
                     var EMPTY_ENUM = 3;
@@ -253,7 +236,7 @@ var app;
                     }
                     return formValid;
                 };
-                UserEditProfilePageController.prototype._addNewLanguages = function (type, $event) {
+                EditProfileBasicInfoController.prototype._addNewLanguages = function (type, $event) {
                     var self = this;
                     var options = {
                         animation: false,
@@ -278,13 +261,13 @@ var app;
                     });
                     $event.preventDefault();
                 };
-                UserEditProfilePageController.prototype._removeLanguage = function (key, type) {
+                EditProfileBasicInfoController.prototype._removeLanguage = function (key, type) {
                     var newArray = this.form[type].filter(function (el) {
                         return el.key !== key;
                     });
                     this.form[type] = newArray;
                 };
-                UserEditProfilePageController.prototype._setBasicInfoFromForm = function () {
+                EditProfileBasicInfoController.prototype._setBasicInfoFromForm = function () {
                     var dateFormatted = this.functionsUtil.joinDate(this.dateObject.day.value, this.dateObject.month.code, this.dateObject.year.value);
                     var genderCode = this.genderObject.gender.code;
                     var countryCode = this.countryObject.code;
@@ -298,7 +281,7 @@ var app;
                     this.$rootScope.profileData.BornCity = this.form.cityBirth;
                     this.$rootScope.profileData.About = this.form.about;
                 };
-                UserEditProfilePageController.prototype._setLanguageFromForm = function () {
+                EditProfileBasicInfoController.prototype._setLanguageFromForm = function () {
                     if (this.form.native) {
                         var native = [];
                         for (var i = 0; i < this.form.native.length; i++) {
@@ -321,57 +304,48 @@ var app;
                         this.$rootScope.profileData.Languages.Teach = teach;
                     }
                 };
-                UserEditProfilePageController.prototype.saveBasicInfoSection = function () {
+                EditProfileBasicInfoController.prototype.saveBasicInfoSection = function () {
                     var self = this;
                     var formValid = this._validateBasicInfoForm();
                     if (formValid) {
                         this.saving = true;
                         this._setBasicInfoFromForm();
-                        this.save().then(function (saved) {
-                            self.saving = false;
-                            self.saved = saved;
-                            self.error = !saved;
-                            self.$timeout(function () {
-                                self.saved = false;
-                            }, self.TIME_SHOW_MESSAGE);
-                        });
+                        this.$scope.$emit('Save Profile Data');
                     }
                 };
-                UserEditProfilePageController.prototype.saveLanguagesSection = function () {
+                EditProfileBasicInfoController.prototype.saveLanguagesSection = function () {
                     var self = this;
                     var formValid = this._validateLanguagesForm();
                     if (formValid) {
                         this.saving = true;
                         this._setLanguageFromForm();
-                        this.save().then(function (saved) {
-                            self.saving = false;
-                            self.saved = saved;
-                            self.error = !saved;
-                            self.$timeout(function () {
-                                self.saved = false;
-                            }, self.TIME_SHOW_MESSAGE);
-                        });
+                        this.$scope.$emit('Save Profile Data');
                     }
                 };
-                UserEditProfilePageController.prototype.save = function () {
+                EditProfileBasicInfoController.prototype._subscribeToEvents = function () {
                     var self = this;
-                    return this.userService.updateUserProfile(this.$rootScope.profileData)
-                        .then(function (response) {
-                        var saved = false;
-                        if (response.userId) {
-                            self.$rootScope.profileData = new app.models.user.Profile(response);
-                            saved = true;
+                    this.$scope.$on('Fill User Profile Form', function (event, args) {
+                        self.error = false;
+                        if (args !== 'error') {
+                            self._fillForm(args);
                         }
-                        return saved;
-                    }, function (error) {
-                        DEBUG && console.error(error);
-                        return false;
+                        else {
+                            self.error = true;
+                        }
+                    });
+                    this.$scope.$on('Saved', function (event, args) {
+                        self.saving = false;
+                        self.error = false;
+                        self.saved = true;
+                        self.$timeout(function () {
+                            self.saved = false;
+                        }, self.TIME_SHOW_MESSAGE);
                     });
                 };
-                return UserEditProfilePageController;
+                return EditProfileBasicInfoController;
             }());
-            UserEditProfilePageController.controllerId = 'mainApp.pages.userEditProfilePage.UserEditProfilePageController';
-            UserEditProfilePageController.$inject = [
+            EditProfileBasicInfoController.controllerId = 'mainApp.pages.editProfile.EditProfileBasicInfoController';
+            EditProfileBasicInfoController.$inject = [
                 'dataConfig',
                 'mainApp.models.user.UserService',
                 'mainApp.core.util.GetDataStaticJsonService',
@@ -383,11 +357,11 @@ var app;
                 '$scope',
                 '$rootScope'
             ];
-            userEditProfilePage.UserEditProfilePageController = UserEditProfilePageController;
+            editProfileBasicInfo.EditProfileBasicInfoController = EditProfileBasicInfoController;
             angular
-                .module('mainApp.pages.userEditProfilePage')
-                .controller(UserEditProfilePageController.controllerId, UserEditProfilePageController);
-        })(userEditProfilePage = pages.userEditProfilePage || (pages.userEditProfilePage = {}));
+                .module('mainApp.pages.editProfile')
+                .controller(EditProfileBasicInfoController.controllerId, EditProfileBasicInfoController);
+        })(editProfileBasicInfo = pages.editProfileBasicInfo || (pages.editProfileBasicInfo = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=userEditProfilePage.controller.js.map
+//# sourceMappingURL=editProfileBasicInfo.controller.js.map

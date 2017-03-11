@@ -7,15 +7,15 @@
     <div class="container">
         <ul class="ma-subnav__list text-center">
             <li class="ma-subnav__list__option">
-                <a class="ma-subnav__list__option__tab
-                          ma-subnav__list__option__tab--active"
+                <a class="ma-subnav__list__option__tab"
+                   ui-sref="page.editTeacher.teach"
                    href translate>
                    %subnav.user.dashboard.teacher.option.text
                 </a>
             </li>
             <li class="ma-subnav__list__option">
-                <a class="ma-subnav__list__option__tab"
-                   ui-sref="page.editProfile.basicInfo"
+                <a class="ma-subnav__list__option__tab
+                          ma-subnav__list__option__tab--active"
                    href translate>
                    %global.profile.text
                 </a>
@@ -29,19 +29,19 @@
 
 
 <!----------------------------------------------------------------------------->
-<!--                          USER EDIT TEACHER PAGE                         -->
+<!--                          USER EDIT PROFILE PAGE                         -->
 <!----------------------------------------------------------------------------->
 
-<div class="editTeacher container space-top-5">
+<div class="editProfile container space-top-5">
 
     <div class="row">
 
-        <!--                    START: EDIT TEACHER BLOCK                    -->
+        <!--                    START: EDIT PROFILE BLOCK                    -->
         <!--------------------------------------------------------------------->
-        <div id="editTeacher-main-block" class="col-xs-12">
+        <div id="editProfile-main-block" class="col-xs-12">
             <div ui-view="section" class="row space-14"></div>
         </div>
-        <!--                     END: EDIT TEACHER BLOCK                     -->
+        <!--                     END: EDIT PROFILE BLOCK                     -->
 
     </div>
 

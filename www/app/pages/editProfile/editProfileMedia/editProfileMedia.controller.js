@@ -2,10 +2,10 @@ var app;
 (function (app) {
     var pages;
     (function (pages) {
-        var userEditMediaPage;
-        (function (userEditMediaPage) {
-            var UserEditMediaPageController = (function () {
-                function UserEditMediaPageController(dataConfig, userService, S3UploadService, getDataFromJson, functionsUtil, Upload, $state, $filter, $timeout, $scope, $rootScope) {
+        var editProfileMedia;
+        (function (editProfileMedia) {
+            var EditProfileMediaController = (function () {
+                function EditProfileMediaController(dataConfig, userService, S3UploadService, getDataFromJson, functionsUtil, Upload, $state, $filter, $timeout, $scope, $rootScope) {
                     this.dataConfig = dataConfig;
                     this.userService = userService;
                     this.S3UploadService = S3UploadService;
@@ -19,11 +19,8 @@ var app;
                     this.$rootScope = $rootScope;
                     this._init();
                 }
-                UserEditMediaPageController.prototype._init = function () {
+                EditProfileMediaController.prototype._init = function () {
                     this.TIME_SHOW_MESSAGE = 6000;
-                    if (this.$rootScope.profileData) {
-                        this.isTeacher = this.$rootScope.profileData.IsTeacher;
-                    }
                     this.saving = false;
                     this.saved = false;
                     this.error = false;
@@ -39,18 +36,17 @@ var app;
                     };
                     this.activate();
                 };
-                UserEditMediaPageController.prototype.activate = function () {
-                    var ENTER_MIXPANEL = 'Enter: Edit Profile Page (Photo)';
-                    DEBUG && console.log('userEditMediaPage controller actived');
-                    mixpanel.track(ENTER_MIXPANEL);
+                EditProfileMediaController.prototype.activate = function () {
+                    DEBUG && console.log('EditProfileMedia controller actived');
+                    this._subscribeToEvents();
                 };
-                UserEditMediaPageController.prototype.goToEditProfile = function () {
-                    this.$state.go('page.userEditProfilePage');
+                EditProfileMediaController.prototype.goToEditProfile = function () {
+                    this.$state.go('page.editProfile.basicInfo');
                 };
-                UserEditMediaPageController.prototype.goToEditLocation = function () {
-                    this.$state.go('page.userEditLocationPage');
+                EditProfileMediaController.prototype.goToEditLocation = function () {
+                    this.$state.go('page.editProfile.location');
                 };
-                UserEditMediaPageController.prototype._validateForm = function () {
+                EditProfileMediaController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
                     var EMPTY_ENUM = 3;
                     var DEFINED_ENUM = 6;
@@ -75,7 +71,7 @@ var app;
                     }
                     return formValid;
                 };
-                UserEditMediaPageController.prototype._resizeImage = function () {
+                EditProfileMediaController.prototype._resizeImage = function () {
                     var self = this;
                     var newName = app.core.util.functionsUtil.FunctionsUtilService.generateGuid() + '.jpeg';
                     var options = {
@@ -93,7 +89,7 @@ var app;
                         });
                     });
                 };
-                UserEditMediaPageController.prototype._uploadImage = function (resizedFile) {
+                EditProfileMediaController.prototype._uploadImage = function (resizedFile) {
                     var self = this;
                     return this.S3UploadService.upload(resizedFile).then(function (result) {
                         return result;
@@ -102,10 +98,10 @@ var app;
                         return error;
                     });
                 };
-                UserEditMediaPageController.prototype._setDataModelFromForm = function (avatar) {
+                EditProfileMediaController.prototype._setDataModelFromForm = function (avatar) {
                     this.$rootScope.profileData.Avatar = avatar;
                 };
-                UserEditMediaPageController.prototype.saveImageSection = function () {
+                EditProfileMediaController.prototype.saveImageSection = function () {
                     var self = this;
                     var formValid = this._validateForm();
                     if (formValid) {
@@ -113,15 +109,7 @@ var app;
                         this._resizeImage().then(function (result) {
                             if (result.Location) {
                                 self._setDataModelFromForm(result.Location);
-                                self.save().then(function (saved) {
-                                    self.saving = false;
-                                    self.saved = saved;
-                                    self.error = !saved;
-                                    self.form.avatar = self.saved ? null : self.form.avatar;
-                                    self.$timeout(function () {
-                                        self.saved = false;
-                                    }, self.TIME_SHOW_MESSAGE);
-                                });
+                                self.$scope.$emit('Save Profile Data');
                             }
                             else {
                                 self.error = true;
@@ -132,25 +120,22 @@ var app;
                         window.scrollTo(0, 0);
                     }
                 };
-                UserEditMediaPageController.prototype.save = function () {
+                EditProfileMediaController.prototype._subscribeToEvents = function () {
                     var self = this;
-                    return this.userService.updateUserProfile(this.$rootScope.profileData)
-                        .then(function (response) {
-                        var saved = false;
-                        if (response.userId) {
-                            self.$rootScope.profileData = new app.models.user.Profile(response);
-                            saved = true;
-                        }
-                        return saved;
-                    }, function (error) {
-                        DEBUG && console.error(error);
-                        return false;
+                    this.$scope.$on('Saved', function (event, args) {
+                        self.saving = false;
+                        self.error = false;
+                        self.saved = true;
+                        self.form.avatar = self.saved ? null : self.form.avatar;
+                        self.$timeout(function () {
+                            self.saved = false;
+                        }, self.TIME_SHOW_MESSAGE);
                     });
                 };
-                return UserEditMediaPageController;
+                return EditProfileMediaController;
             }());
-            UserEditMediaPageController.controllerId = 'mainApp.pages.userEditMediaPage.UserEditMediaPageController';
-            UserEditMediaPageController.$inject = [
+            EditProfileMediaController.controllerId = 'mainApp.pages.editProfile.EditProfileMediaController';
+            EditProfileMediaController.$inject = [
                 'dataConfig',
                 'mainApp.models.user.UserService',
                 'mainApp.core.s3Upload.S3UploadService',
@@ -163,11 +148,11 @@ var app;
                 '$scope',
                 '$rootScope'
             ];
-            userEditMediaPage.UserEditMediaPageController = UserEditMediaPageController;
+            editProfileMedia.EditProfileMediaController = EditProfileMediaController;
             angular
-                .module('mainApp.pages.userEditMediaPage')
-                .controller(UserEditMediaPageController.controllerId, UserEditMediaPageController);
-        })(userEditMediaPage = pages.userEditMediaPage || (pages.userEditMediaPage = {}));
+                .module('mainApp.pages.editProfile')
+                .controller(EditProfileMediaController.controllerId, EditProfileMediaController);
+        })(editProfileMedia = pages.editProfileMedia || (pages.editProfileMedia = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=userEditMediaPage.controller.js.map
+//# sourceMappingURL=editProfileMedia.controller.js.map
