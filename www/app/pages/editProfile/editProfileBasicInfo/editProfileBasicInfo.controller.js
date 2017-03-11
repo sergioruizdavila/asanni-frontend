@@ -71,7 +71,7 @@ var app;
                     this._fillForm(this.$rootScope.profileData);
                 };
                 EditProfileBasicInfoController.prototype.goToEditMedia = function () {
-                    this.$state.go('page.userEditMediaPage');
+                    this.$state.go('page.editProfile.media');
                 };
                 EditProfileBasicInfoController.prototype.goToEditLocation = function () {
                     this.$state.go('page.userEditLocationPage');

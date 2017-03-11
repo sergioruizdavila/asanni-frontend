@@ -208,7 +208,7 @@ module app.pages.editProfileBasicInfo {
         * option
         */
         goToEditMedia(): void {
-            this.$state.go('page.userEditMediaPage');
+            this.$state.go('page.editProfile.media');
         }
 
 

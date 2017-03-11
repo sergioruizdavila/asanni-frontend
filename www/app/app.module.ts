@@ -35,7 +35,6 @@
             'mainApp.pages.editProfile',
             'mainApp.pages.userEditLocationPage',
             'mainApp.pages.userEditAgendaPage',
-            'mainApp.pages.userEditMediaPage',
             'mainApp.pages.editTeacher',
             'mainApp.pages.userInboxPage',
             'mainApp.pages.userInboxDetailsPage',

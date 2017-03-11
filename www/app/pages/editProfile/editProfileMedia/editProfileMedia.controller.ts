@@ -1,28 +1,28 @@
 /**
- * UserEditMediaPageController
- * @description - User Edit Media Page Controller
+ * EditProfileMediaController
+ * @description - Edit User Basic info Profile Page Controller
  */
 
-module app.pages.userEditMediaPage {
+module app.pages.editProfileMedia {
 
     /**********************************/
     /*           INTERFACES           */
     /**********************************/
-    export interface IUserEditMediaPageController {
-        form: IUserEditMediaForm;
-        validate: IUserEditMediaValidate;
+    interface IEditProfileMediaController {
+        form: IEditProfileMediaForm;
+        validate: IEditProfileMediaValidate;
         activate: () => void;
         goToEditProfile: () => void;
         goToEditLocation: () => void;
     }
 
-    interface IUserEditMediaForm {
+    interface IEditProfileMediaForm {
         avatar: File;
         croppedDataUrl: string;
         thumbnail: string;
     }
 
-    interface IUserEditMediaValidate {
+    interface IEditProfileMediaValidate {
         avatar: app.core.util.functionsUtil.IValid;
         thumbnail: app.core.util.functionsUtil.IValid;
         globalValidate: app.core.util.functionsUtil.IValid;
@@ -31,19 +31,18 @@ module app.pages.userEditMediaPage {
     /****************************************/
     /*           CLASS DEFINITION           */
     /****************************************/
-    export class UserEditMediaPageController implements IUserEditMediaPageController {
+    export class EditProfileMediaController implements IEditProfileMediaController {
 
-        static controllerId = 'mainApp.pages.userEditMediaPage.UserEditMediaPageController';
+        static controllerId = 'mainApp.pages.editProfile.EditProfileMediaController';
 
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
-        form: IUserEditMediaForm;
-        validate: IUserEditMediaValidate;
+        form: IEditProfileMediaForm;
+        validate: IEditProfileMediaValidate;
         saving: boolean;
         saved: boolean;
         error: boolean;
-        isTeacher: boolean;
         TIME_SHOW_MESSAGE: number;
         // --------------------------------
 
@@ -88,13 +87,6 @@ module app.pages.userEditMediaPage {
             //CONSTANTS
             this.TIME_SHOW_MESSAGE = 6000;
 
-            //Validate if user is teacher
-            //TODO: Esto deberia unificarse, no esta bien que tenga que ponerlo
-            // en cada sección del editar perfil
-            if(this.$rootScope.profileData) {
-                this.isTeacher = this.$rootScope.profileData.IsTeacher;
-            }
-
             // Init saving loading
             this.saving = false;
 
@@ -123,12 +115,12 @@ module app.pages.userEditMediaPage {
 
         /*-- ACTIVATE METHOD --*/
         activate(): void {
-            //CONSTANTS
-            const ENTER_MIXPANEL = 'Enter: Edit Profile Page (Photo)';
             //LOG
-            DEBUG && console.log('userEditMediaPage controller actived');
-            //MIXPANEL
-            mixpanel.track(ENTER_MIXPANEL);
+            DEBUG && console.log('EditProfileMedia controller actived');
+
+            //SUBSCRIBE TO EVENTS
+            this._subscribeToEvents();
+
         }
 
         /**********************************/
@@ -142,15 +134,14 @@ module app.pages.userEditMediaPage {
         */
         goToEditProfile(): void {
             // Go to next page on calls stack
-            this.$state.go('page.userEditProfilePage');
+            this.$state.go('page.editProfile.basicInfo');
         }
-
 
 
         /*
         * Go to edit location page
-        * @description this method is launched when user press 'Edit Location'
-        * menu option
+        * @description this method is launched when user press 'Edit Location' menu
+        * option
         */
         goToEditLocation(): void {
             this.$state.go('page.userEditLocationPage');
@@ -306,29 +297,18 @@ module app.pages.userEditMediaPage {
                 this.saving = true;
 
                 this._resizeImage().then(
-                    function(result){
+                    function(result) {
 
                         if(result.Location) {
                             self._setDataModelFromForm(result.Location);
-                            self.save().then(
-                                function(saved) {
-                                    //loading Off
-                                    self.saving = false;
-                                    self.saved = saved;
-                                    self.error = !saved;
-
-                                    self.form.avatar = self.saved ? null : self.form.avatar;
-
-                                    self.$timeout(function() {
-                                        self.saved = false;
-                                    }, self.TIME_SHOW_MESSAGE);
-                                }
-                            );
+                            self.$scope.$emit('Save Profile Data');
                         } else {
                             self.error = true;
                         }
+
                     }
                 );
+
             } else {
                 //Go top pages
                 window.scrollTo(0, 0);
@@ -338,40 +318,45 @@ module app.pages.userEditMediaPage {
 
 
         /**
-        * save
-        * @description - Update location's languages data on DB
+        * _subscribeToEvents
+        * @description - this method subscribes User Basic Info Section
+        * to Parent Events
+        * @use - this._subscribeToEvents();
         * @function
-        * @return {angular.IPromise<boolean>} saved - return if saved or not data
+        * @return {void}
         */
-        save(): angular.IPromise<boolean> {
+        private _subscribeToEvents(): void {
             //VARIABLES
             let self = this;
 
-            // Save profile's updated data
-            return this.userService.updateUserProfile(this.$rootScope.profileData)
-            .then(
-                function(response) {
-                    let saved = false;
-                    if(response.userId) {
-                        //Fill Form
-                        self.$rootScope.profileData = new app.models.user.Profile(response);
-                        saved = true;
-                    }
-                    return saved;
-                },
-                function(error) {
-                    DEBUG && console.error(error);
-                    return false;
+
+            /**
+            * Saved event
+            * @parent - EditProfileController
+            * @description - Parent notify that data was saved successful
+            * @event
+            */
+            this.$scope.$on('Saved',
+                function(event, args) {
+                    //loading Off
+                    self.saving = false;
+                    self.error = false;
+                    self.saved = true;
+
+                    self.form.avatar = self.saved ? null : self.form.avatar;
+
+                    self.$timeout(function() {
+                        self.saved = false;
+                    }, self.TIME_SHOW_MESSAGE);
                 }
             );
         }
-
 
     }
 
     /*-- MODULE DEFINITION --*/
     angular
-        .module('mainApp.pages.userEditMediaPage')
-        .controller(UserEditMediaPageController.controllerId, UserEditMediaPageController);
+        .module('mainApp.pages.editProfile')
+        .controller(EditProfileMediaController.controllerId, EditProfileMediaController);
 
 }
