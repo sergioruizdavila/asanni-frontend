@@ -24,7 +24,6 @@
         'mainApp.pages.createTeacherPage',
         'mainApp.pages.teacherProfilePage',
         'mainApp.pages.editProfile',
-        'mainApp.pages.userEditLocationPage',
         'mainApp.pages.userEditAgendaPage',
         'mainApp.pages.editTeacher',
         'mainApp.pages.userInboxPage',
@@ -3509,6 +3508,9 @@ var components;
             };
             SideMenuController.prototype._buildSideMenunOptions = function () {
                 var type = this.type;
+                var BASIC_INFO_OPTION = this.$filter('translate')('%profile.teacher.edit_profile.button.text');
+                var PHOTO_OPTION = this.$filter('translate')('%edit.profile.edit_photo.option.button.text');
+                var LOCATION_OPTION = this.$filter('translate')('%edit.profile.edit_location.option.button.text');
                 var TEACH_OPTION = this.$filter('translate')('%edit.teacher.menu.option.teach.label.text');
                 var EXPERIENCE_OPTION = this.$filter('translate')('%landing.teacher.badge_explanation.get.first_requirement.title.text');
                 var EDUCATION_OPTION = this.$filter('translate')('%edit.teacher.education.menu.option.text');
@@ -3540,6 +3542,20 @@ var components;
                         ];
                         break;
                     case 'edit-profile':
+                        this.optionsList = [
+                            {
+                                name: BASIC_INFO_OPTION,
+                                state: 'page.editProfile.basicInfo'
+                            },
+                            {
+                                name: PHOTO_OPTION,
+                                state: 'page.editProfile.media'
+                            },
+                            {
+                                name: LOCATION_OPTION,
+                                state: 'page.editProfile.location'
+                            }
+                        ];
                         break;
                 }
             };

@@ -13,36 +13,8 @@
 
         <div class="col-md-12">
 
-            <div class="ma-box ma-box">
-
-                <div class="ma-box__content ma-box__content--padding-reset">
-                    <div class="menu-box">
-                        <div class="menu-box__item
-                                    menu-box__item--active text-capitalize"
-                             translate>
-                            %profile.teacher.edit_profile.button.text
-                        </div>
-                        <div class="menu-box__item text-capitalize"
-                             ng-click="vm.goToEditMedia()"
-                             translate>
-                            %edit.profile.edit_photo.option.button.text
-                        </div>
-                        <div class="menu-box__item text-capitalize"
-                             ng-click="vm.goToEditLocation()"
-                             translate>
-                            %edit.profile.edit_location.option.button.text
-                        </div>
-                        <div class="menu-box__item menu-box__item--with-button hidden">
-                            <a class="ma-btn ma-btn--default ma-btn--primary
-                                      ma-btn--block text-capitalize"
-                               ng-click="vm.goToViewProfile()"
-                               href translate>
-                               %edit.profile.view_profile.option.button.text
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <ma-side-menu type="edit-profile"
+                          view-profile-btn="false"></ma-side-menu>
 
         </div>
 
