@@ -285,10 +285,12 @@
         </h2>
 
 		<div class="ma-hero__wrapper__btn-container">
-            <a class="ma-btn ma-btn--primary ma-btn--large"
-               ui-sref="page.searchPage" href translate>
-               %landing.explore.button.text
-            </a>
+            <button id="landingPage-explore-btn"
+                    class="ma-btn ma-btn--primary ma-btn--large"
+                    ng-click="vm.goToSearch('explore-btn')"
+                    translate>
+                %landing.explore.button.text
+           </button>
 		</div>
 
         <div class="hidden-xs ma-hero__wrapper__go-down row">
@@ -362,8 +364,10 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="row">
                     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 space-5">
-                        <div class="country-progress-block
-                                    country-progress-block--first text-left">
+                        <div id="landingPage-country-box-co"
+                             class="country-progress-block
+                                    country-progress-block--first text-left"
+                             ng-click="vm.goToSearch('country-box-co')">
                             <h2 class="country-progress-block__text
                                        margin-reset space-3" translate>
                                 %country.CO
