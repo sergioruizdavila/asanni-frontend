@@ -1,0 +1,48 @@
+
+<!--                          START: SUBNAV MENU                             -->
+<!----------------------------------------------------------------------------->
+
+<div class="ma-subnav">
+
+    <div class="container">
+        <ul class="ma-subnav__list text-center">
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab
+                          ma-subnav__list__option__tab--active"
+                   href translate>
+                   %subnav.user.dashboard.teacher.option.text
+                </a>
+            </li>
+            <li class="ma-subnav__list__option">
+                <a class="ma-subnav__list__option__tab"
+                   ui-sref="page.userEditProfilePage"
+                   href translate>
+                   %global.profile.text
+                </a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+<!--                             END: SUBNAV MENU                            -->
+
+
+
+<!----------------------------------------------------------------------------->
+<!--                          USER EDIT PROFILE PAGE                         -->
+<!----------------------------------------------------------------------------->
+
+<div class="editProfile container space-top-5">
+
+    <div class="row">
+
+        <!--                    START: EDIT PROFILE BLOCK                    -->
+        <!--------------------------------------------------------------------->
+        <div id="editProfile-main-block" class="col-xs-12">
+            <div ui-view="section" class="row space-14"></div>
+        </div>
+        <!--                     END: EDIT PROFILE BLOCK                     -->
+
+    </div>
+
+</div>
