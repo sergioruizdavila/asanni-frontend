@@ -191,6 +191,9 @@ module app.pages.editProfileBasicInfo {
             //LOG
             DEBUG && console.log('EditProfileBasicInfo controller actived');
 
+            //SUBSCRIBE TO EVENTS
+            this._subscribeToEvents();
+
             //FILL FORM FROM ROOTSCOPE USER INFO
             this._fillForm(this.$rootScope.profileData);
         }

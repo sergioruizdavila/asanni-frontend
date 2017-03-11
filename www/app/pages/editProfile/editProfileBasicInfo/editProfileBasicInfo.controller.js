@@ -67,6 +67,7 @@ var app;
                 };
                 EditProfileBasicInfoController.prototype.activate = function () {
                     DEBUG && console.log('EditProfileBasicInfo controller actived');
+                    this._subscribeToEvents();
                     this._fillForm(this.$rootScope.profileData);
                 };
                 EditProfileBasicInfoController.prototype.goToEditMedia = function () {
