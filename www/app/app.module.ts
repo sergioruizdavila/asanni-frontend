@@ -33,7 +33,6 @@
             'mainApp.pages.createTeacherPage',
             'mainApp.pages.teacherProfilePage',
             'mainApp.pages.editProfile',
-            'mainApp.pages.userEditLocationPage',
             'mainApp.pages.userEditAgendaPage',
             'mainApp.pages.editTeacher',
             'mainApp.pages.userInboxPage',

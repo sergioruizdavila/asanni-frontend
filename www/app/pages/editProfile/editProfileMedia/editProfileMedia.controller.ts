@@ -144,7 +144,7 @@ module app.pages.editProfileMedia {
         * option
         */
         goToEditLocation(): void {
-            this.$state.go('page.userEditLocationPage');
+            this.$state.go('page.editProfile.location');
         }
 
 

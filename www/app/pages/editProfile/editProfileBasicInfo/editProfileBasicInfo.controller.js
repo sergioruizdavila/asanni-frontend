@@ -74,7 +74,7 @@ var app;
                     this.$state.go('page.editProfile.media');
                 };
                 EditProfileBasicInfoController.prototype.goToEditLocation = function () {
-                    this.$state.go('page.userEditLocationPage');
+                    this.$state.go('page.editProfile.location');
                 };
                 EditProfileBasicInfoController.prototype._fillForm = function (data) {
                     this.form.firstName = data.FirstName;

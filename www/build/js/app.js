@@ -7595,10 +7595,10 @@ var app;
                     this._subscribeToEvents();
                 };
                 UserEditLocationPageController.prototype.goToEditMedia = function () {
-                    this.$state.go('page.userEditMediaPage');
+                    this.$state.go('page.editProfile.media');
                 };
                 UserEditLocationPageController.prototype.goToEditProfile = function () {
-                    this.$state.go('page.userEditProfilePage');
+                    this.$state.go('page.editProfile.location');
                 };
                 UserEditLocationPageController.prototype.fillFormWithLocationData = function () {
                     var self = this;

@@ -1,0 +1,316 @@
+<!----------------------------------------------------------------------------->
+<!--                          EDIT PROFILE LOCATION                          -->
+<!----------------------------------------------------------------------------->
+
+
+<!--                     START: LEFT COLUMN                          -->
+<!--------------------------------------------------------------------->
+<div id="editProfile-left-column" class="col-md-3 col-lg-3">
+
+    <!--------------------- START: LEFT MENU BLOCK -------------------->
+    <div id="editProfile-menu-block"
+         class="editProfile__block row">
+
+        <div class="col-md-12">
+
+            <div class="ma-box ma-box">
+
+                <div class="ma-box__content ma-box__content--padding-reset">
+                    <div class="menu-box">
+                        <div class="menu-box__item
+                                    text-capitalize"
+                             ng-click="vm.goToEditProfile()"
+                             translate>
+                            %profile.teacher.edit_profile.button.text
+                        </div>
+                        <div class="menu-box__item text-capitalize"
+                             ng-click="vm.goToEditMedia()"
+                             translate>
+                            %edit.profile.edit_photo.option.button.text
+                        </div>
+                        <div class="menu-box__item
+                                    menu-box__item--active text-capitalize"
+                             translate>
+                            %edit.profile.edit_location.option.button.text
+                        </div>
+                        <div class="menu-box__item menu-box__item--with-button hidden">
+                            <a class="ma-btn ma-btn--default ma-btn--primary
+                                      ma-btn--block text-capitalize"
+                               ng-click="vm.goToViewProfile()"
+                               href translate>
+                               %edit.profile.view_profile.option.button.text
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!--                    END: LEFT MENU BLOCK                     -->
+
+</div>
+<!--                        END: LEFT COLUMN                         -->
+
+
+
+<!--                     START: MIDDLE COLUMN                        -->
+<!--------------------------------------------------------------------->
+<div id="editProfile-middle-column"
+     class="col-md-9 col-lg-9 space-10">
+
+    <div id="editProfile-basicInfo-block"
+         class="editProfile__block row">
+
+        <div class="col-md-12">
+
+            <div class="ma-box">
+
+                <h4 class="ma-box__title margin-reset"
+                    translate>
+                    %edit.profile.location.title.text
+                </h4>
+
+                <div class="ma-box__content">
+
+                    <!----------- START: LOCATION INFO BLOCK ---------->
+
+                    <form class="form-horizontal
+                                 ma-form--horizontal">
+
+                        <! Country Location >
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--default">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                   for="user-country-location" translate>
+                                %create.teacher.location.form.cntry.text
+                            </label>
+                            <div class="col-xs-9 col-sm-9">
+                                <div class="ma-select-container
+                                            ma-select-container--default">
+                                    <select id="user-country-location"
+                                            class="ma-input ma-select
+                                                   ma-select--default"
+                                            ng-model="vm.countryObject"
+                                            ng-change="vm.changeMapPosition()"
+                                            ng-options="country.value | translate for country in vm.listCountries track by country.code"
+                                            ng-class="{'ma-input--invalid': !vm.validate.countryLocation.valid}"
+                                            name="user[country]">
+                                        <option value="" disabled selected translate>
+                                            %create.teacher.location.form.cntry.option_list.text
+                                        </option>
+                                    </select>
+                                    <p class="ma-p ma-p--small ma-p--alert
+                                              pull-right margin-reset"
+                                       ng-show="!vm.validate.countryLocation.valid">
+                                        <span>
+                                            {{vm.validate.countryLocation.message}}
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <! City Location >
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--default">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                   for="user-city-location" translate>
+                                %create.teacher.location.form.city.text
+                            </label>
+                            <div class="col-xs-9 col-sm-9">
+                                <input id="user-city-location"
+                                       type="text"
+                                       class="ma-input ma-input--default"
+                                       ng-class="{'ma-input--invalid': !vm.validate.cityLocation.valid}"
+                                       ng-model="vm.form.cityLocation"
+                                       ng-blur="vm.changeMapPosition()">
+                                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                    ng-show="!vm.validate.cityLocation.valid">
+                                   <span>{{vm.validate.cityLocation.message}}</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <! State Location >
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--default">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                   for="user-state-location" translate>
+                                %create.teacher.location.form.state.text
+                            </label>
+                            <div class="col-xs-9 col-sm-9">
+                                <input id="user-state-location"
+                                       type="text"
+                                       class="ma-input ma-input--default"
+                                       ng-class="{'ma-input--invalid': !vm.validate.stateLocation.valid}"
+                                       ng-model="vm.form.stateLocation"
+                                       ng-blur="vm.changeMapPosition()">
+                                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                    ng-show="!vm.validate.stateLocation.valid">
+                                   <span>{{vm.validate.stateLocation.message}}</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <! ZipCode Location >
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--default">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                   for="user-zipcode-location" translate>
+                                %create.teacher.location.form.zip_code.text
+                            </label>
+                            <div class="col-xs-9 col-sm-9">
+                                <input id="user-zipcode-location"
+                                       type="text"
+                                       class="ma-input ma-input--default"
+                                       ng-class="{'ma-input--invalid': !vm.validate.zipCodeLocation.valid}"
+                                       ng-model="vm.form.zipCodeLocation">
+                                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                    ng-show="!vm.validate.zipCodeLocation.valid">
+                                   <span>{{vm.validate.zipCodeLocation.message}}</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <! Street Address Location >
+                        <div class="form-group
+                                    ma-form-group
+                                    ma-form-group--default">
+                            <label class="text-right col-xs-3 col-sm-3"
+                                   for="user-address-location" translate>
+                                %create.teacher.location.form.address.text
+                            </label>
+                            <div class="col-xs-9 col-sm-9">
+                                <input id="user-address-location"
+                                       type="text"
+                                       translate
+                                       translate-attr-placeholder="%create.teacher.location.form.address.placeholder.text"
+                                       ng-model="vm.form.addressLocation"
+                                       ng-blur="vm.changeMapPosition()"
+                                       ng-keyup="vm.changeMapPosition()"
+                                       class="ma-input ma-input--large"
+                                       ng-class="{'ma-input--invalid': !vm.validate.addressLocation.valid}">
+                                <p class="ma-p ma-p--small ma-p--alert pull-right"
+                                   ng-show="!vm.validate.addressLocation.valid">
+                                    <span>{{vm.validate.addressLocation.message}}</span>
+                                </p>
+                                <p class="ma-p
+                                          ma-p--small space-top-1">
+                                   <i class="material-icons
+                                             md-12
+                                             md-primary
+                                             vertical-align-middle">
+                                       lock
+                                   </i>
+                                   <span translate>
+                                       %create.teacher.location.help_text.address.description.text
+                                   </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <!----------- START: LOCATION MAP BLOCK ------->
+
+                        <div id="createTeacher-map-block"
+                             class="row">
+
+                            <div class="col-xs-12" style="height: 300px;">
+                                <div class="location-map location-map--border"
+                                     ng-class="{'location-map--border--invalid': !vm.validate.positionLocation.valid}">
+                                    <ma-map map-config="vm.mapConfig"></ma-map>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <p class="ma-p ma-p--small ma-p--alert pull-right"
+                           ng-show="!vm.validate.positionLocation.valid">
+                            <span>{{vm.validate.positionLocation.message}}</span>
+                        </p>
+
+                        <p class="ma-p ma-p--large space-top-3" translate>
+                            %create.teacher.location.form.position.text
+                        </p>
+
+                        <!--          END: LOCATION MAP BLOCK        -->
+
+                    </form>
+
+                    <!--          END: LOCATION INFO BLOCK           -->
+
+                </div>
+
+                <div class="ma-box__footer">
+
+                    <div class="row middle-xs">
+
+                        <div class="col-xs-6 col-sm-4 text-left">
+
+                            <span class="ma-label
+                                         ma-label--simple
+                                         ma-label--simple--large
+                                         ma-label--simple--primary
+                                         margin-reset"
+                                  ng-class="{'hidden' : !vm.saved}">
+                                <i class="material-icons
+                                          md-30
+                                          md-primary
+                                          vertical-align-middle">
+                                    done
+                                </i>
+                                <span class="vertical-align-middle"
+                                      translate>
+                                    %notification.success.text
+                                </span>
+                            </span>
+
+                            <span class="ma-label
+                                         ma-label--simple
+                                         ma-label--simple--large
+                                         ma-label--simple--alert
+                                         margin-reset"
+                                  ng-class="{'hidden' : !vm.error}"
+                                  translate>
+                                %notification.error.server.text
+                            </span>
+
+                        </div>
+
+                        <div class="hidden-xs col-sm-4"></div>
+
+                        <div class="col-xs-6 col-sm-4 text-right">
+
+                            <button class="ma-btn
+                                           ma-btn--primary
+                                           ma-btn--medium"
+                                    ng-click="vm.saveLocationSection()"
+                                    ng-disabled="vm.saving">
+                                <span ng-class="{'hidden' : vm.saving}"
+                                      translate>
+                                    %global.save.button.text
+                                </span>
+                                <span ng-class="{'hidden' : !vm.saving}"
+                                      translate>
+                                    %global.saving.button.text
+                                </span>
+                           </button>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<!--                      END: MIDDLE COLUMN                         -->

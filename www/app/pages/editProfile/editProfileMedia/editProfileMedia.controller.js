@@ -44,7 +44,7 @@ var app;
                     this.$state.go('page.editProfile.basicInfo');
                 };
                 EditProfileMediaController.prototype.goToEditLocation = function () {
-                    this.$state.go('page.userEditLocationPage');
+                    this.$state.go('page.editProfile.location');
                 };
                 EditProfileMediaController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;

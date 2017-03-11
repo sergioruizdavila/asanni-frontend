@@ -2,10 +2,10 @@ var app;
 (function (app) {
     var pages;
     (function (pages) {
-        var userEditLocationPage;
-        (function (userEditLocationPage) {
-            var UserEditLocationPageController = (function () {
-                function UserEditLocationPageController(dataConfig, userService, getDataFromJson, functionsUtil, $state, $filter, $timeout, $scope, $rootScope) {
+        var editProfileLocation;
+        (function (editProfileLocation) {
+            var EditProfileLocationController = (function () {
+                function EditProfileLocationController(dataConfig, userService, getDataFromJson, functionsUtil, $state, $filter, $timeout, $scope, $rootScope) {
                     this.dataConfig = dataConfig;
                     this.userService = userService;
                     this.getDataFromJson = getDataFromJson;
@@ -17,14 +17,12 @@ var app;
                     this.$rootScope = $rootScope;
                     this._init();
                 }
-                UserEditLocationPageController.prototype._init = function () {
+                EditProfileLocationController.prototype._init = function () {
                     this.TIME_SHOW_MESSAGE = 6000;
-                    if (this.$rootScope.profileData) {
-                        this.isTeacher = this.$rootScope.profileData.IsTeacher;
-                    }
                     this.saving = false;
                     this.saved = false;
                     this.error = false;
+                    this.countryObject = { code: '', value: '' };
                     this.form = {
                         countryLocation: '',
                         cityLocation: '',
@@ -33,7 +31,6 @@ var app;
                         zipCodeLocation: '',
                         positionLocation: new app.models.user.Position()
                     };
-                    this.countryObject = { code: '', value: '' };
                     this.listCountries = this.getDataFromJson.getCountryi18n();
                     this.mapConfig = this.functionsUtil.buildMapConfig(null, 'drag-maker-map', null, null);
                     this.validate = {
@@ -46,33 +43,18 @@ var app;
                     };
                     this.activate();
                 };
-                UserEditLocationPageController.prototype.activate = function () {
-                    var ENTER_MIXPANEL = 'Enter: Edit Profile Page (Location)';
-                    DEBUG && console.log('UserEditLocationPage controller actived');
-                    mixpanel.track(ENTER_MIXPANEL);
-                    this.fillFormWithLocationData();
+                EditProfileLocationController.prototype.activate = function () {
+                    DEBUG && console.log('EditProfileLocation controller actived');
                     this._subscribeToEvents();
+                    this._fillForm(this.$rootScope.profileData);
                 };
-                UserEditLocationPageController.prototype.goToEditMedia = function () {
+                EditProfileLocationController.prototype.goToEditMedia = function () {
                     this.$state.go('page.editProfile.media');
                 };
-                UserEditLocationPageController.prototype.goToEditProfile = function () {
-                    this.$state.go('page.editProfile.location');
+                EditProfileLocationController.prototype.goToEditProfile = function () {
+                    this.$state.go('page.editProfile.basicInfo');
                 };
-                UserEditLocationPageController.prototype.fillFormWithLocationData = function () {
-                    var self = this;
-                    var userId = this.$rootScope.userData.id;
-                    if (userId) {
-                        this.userService.getUserProfileById(userId)
-                            .then(function (response) {
-                            if (response.userId) {
-                                self.$rootScope.profileData = new app.models.user.Profile(response);
-                                self._fillForm(self.$rootScope.profileData);
-                            }
-                        });
-                    }
-                };
-                UserEditLocationPageController.prototype._fillForm = function (data) {
+                EditProfileLocationController.prototype._fillForm = function (data) {
                     this.form.addressLocation = data.Location.Address;
                     this.form.cityLocation = data.Location.City;
                     this.form.stateLocation = data.Location.State;
@@ -92,7 +74,7 @@ var app;
                     ], 'drag-maker-map', { lat: parseFloat(this.form.positionLocation.Lat), lng: parseFloat(this.form.positionLocation.Lng) }, null);
                     this.$scope.$broadcast('BuildMarkers', this.mapConfig);
                 };
-                UserEditLocationPageController.prototype._validateLocationForm = function () {
+                EditProfileLocationController.prototype._validateLocationForm = function () {
                     var NULL_ENUM = 2;
                     var EMPTY_ENUM = 3;
                     var NUMBER_ENUM = 4;
@@ -132,7 +114,7 @@ var app;
                     }
                     return formValid;
                 };
-                UserEditLocationPageController.prototype.changeMapPosition = function () {
+                EditProfileLocationController.prototype.changeMapPosition = function () {
                     var self = this;
                     var countryCode = this.countryObject.code;
                     this.form.countryLocation = countryCode;
@@ -145,7 +127,7 @@ var app;
                         self.$scope.$broadcast('CodeAddress', location);
                     });
                 };
-                UserEditLocationPageController.prototype._setLocationFromForm = function () {
+                EditProfileLocationController.prototype._setLocationFromForm = function () {
                     var countryCode = this.countryObject.code;
                     this.form.countryLocation = countryCode;
                     this.$rootScope.profileData.Location.Country = this.form.countryLocation;
@@ -155,51 +137,46 @@ var app;
                     this.$rootScope.profileData.Location.ZipCode = this.form.zipCodeLocation;
                     this.$rootScope.profileData.Location.Position = this.form.positionLocation;
                 };
-                UserEditLocationPageController.prototype.saveLocationSection = function () {
+                EditProfileLocationController.prototype.saveLocationSection = function () {
                     var self = this;
                     var formValid = this._validateLocationForm();
                     if (formValid) {
                         this.saving = true;
                         this._setLocationFromForm();
-                        this.save().then(function (saved) {
-                            self.saving = false;
-                            self.saved = saved;
-                            self.error = !saved;
-                            self.$timeout(function () {
-                                self.saved = false;
-                            }, self.TIME_SHOW_MESSAGE);
-                        });
+                        this.$scope.$emit('Save Profile Data');
                     }
                     else {
                         window.scrollTo(0, 0);
                     }
                 };
-                UserEditLocationPageController.prototype.save = function () {
-                    var self = this;
-                    return this.userService.updateUserProfile(this.$rootScope.profileData)
-                        .then(function (response) {
-                        var saved = false;
-                        if (response.userId) {
-                            self.$rootScope.profileData = new app.models.user.Profile(response);
-                            saved = true;
-                        }
-                        return saved;
-                    }, function (error) {
-                        DEBUG && console.error(error);
-                        return false;
-                    });
-                };
-                UserEditLocationPageController.prototype._subscribeToEvents = function () {
+                EditProfileLocationController.prototype._subscribeToEvents = function () {
                     var self = this;
                     this.$scope.$on('Position', function (event, args) {
                         self.form.positionLocation.Lng = args.lng;
                         self.form.positionLocation.Lat = args.lat;
                     });
+                    this.$scope.$on('Fill User Profile Form', function (event, args) {
+                        self.error = false;
+                        if (args !== 'error') {
+                            self._fillForm(args);
+                        }
+                        else {
+                            self.error = true;
+                        }
+                    });
+                    this.$scope.$on('Saved', function (event, args) {
+                        self.saving = false;
+                        self.error = false;
+                        self.saved = true;
+                        self.$timeout(function () {
+                            self.saved = false;
+                        }, self.TIME_SHOW_MESSAGE);
+                    });
                 };
-                return UserEditLocationPageController;
+                return EditProfileLocationController;
             }());
-            UserEditLocationPageController.controllerId = 'mainApp.pages.userEditLocationPage.UserEditLocationPageController';
-            UserEditLocationPageController.$inject = [
+            EditProfileLocationController.controllerId = 'mainApp.pages.editProfile.EditProfileLocationController';
+            EditProfileLocationController.$inject = [
                 'dataConfig',
                 'mainApp.models.user.UserService',
                 'mainApp.core.util.GetDataStaticJsonService',
@@ -210,11 +187,11 @@ var app;
                 '$scope',
                 '$rootScope'
             ];
-            userEditLocationPage.UserEditLocationPageController = UserEditLocationPageController;
+            editProfileLocation.EditProfileLocationController = EditProfileLocationController;
             angular
-                .module('mainApp.pages.userEditLocationPage')
-                .controller(UserEditLocationPageController.controllerId, UserEditLocationPageController);
-        })(userEditLocationPage = pages.userEditLocationPage || (pages.userEditLocationPage = {}));
+                .module('mainApp.pages.editProfile')
+                .controller(EditProfileLocationController.controllerId, EditProfileLocationController);
+        })(editProfileLocation = pages.editProfileLocation || (pages.editProfileLocation = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=userEditLocationPage.controller.js.map
+//# sourceMappingURL=editProfileLocation.controller.js.map
