@@ -256,6 +256,27 @@ module app.pages.landingPage {
 
 
         /**
+        * goToSearch
+        * @description - go to search page
+        * @function
+        * @param {string} target - Section user clicked
+        * @return {void}
+        */
+        goToSearch(target: string): void {
+            //CONSTANTS
+            const SEARCH_PAGE_STATE = 'page.searchPage';
+            const GOTO_MIXPANEL = 'Go to Search from: ' + target;
+            /************************/
+
+            //MIXPANEL
+            mixpanel.track(GOTO_MIXPANEL);
+
+            this.$state.go(SEARCH_PAGE_STATE, {reload: true});
+        }
+
+
+
+        /**
         * _sendCountryFeedback
         * @description - save country feedback to database
         * @use - this._sendCountryFeedback();

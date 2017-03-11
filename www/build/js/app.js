@@ -6517,6 +6517,12 @@ var app;
                         DEBUG && console.log('A problem occured while logging you out.');
                     });
                 };
+                LandingPageController.prototype.goToSearch = function (target) {
+                    var SEARCH_PAGE_STATE = 'page.searchPage';
+                    var GOTO_MIXPANEL = 'Go to Search from: ' + target;
+                    mixpanel.track(GOTO_MIXPANEL);
+                    this.$state.go(SEARCH_PAGE_STATE, { reload: true });
+                };
                 LandingPageController.prototype._sendCountryFeedback = function () {
                     var ENTER_MIXPANEL = 'Click: Send Country Feedback';
                     var FEEDBACK_SUCCESS_MESSAGE = '¡Gracias por tu recomendación!. La revisaremos y pondremos manos a la obra.';
