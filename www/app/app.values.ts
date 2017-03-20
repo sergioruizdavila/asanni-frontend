@@ -8,7 +8,7 @@
 
  declare var DEBUG: boolean;
  /* This must be false in production */
- DEBUG = false;
+ DEBUG = true;
  /************************************/
 
 

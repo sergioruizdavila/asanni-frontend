@@ -1,5 +1,6 @@
 ﻿/**
- * module() Here inject dependencies of App modules and components, such as controllers, service, directive, etc
+ * module() Here inject dependencies of App modules and components,
+ * such as controllers, service, directive, etc
  * config() Here define the main state, routes, http interceptor
  *
  * @param {angular.ui.IUrlRouterProvider} $urlRouterProvider
