@@ -75,6 +75,7 @@ module app.models.school {
             this.location = new app.models.user.Location(obj.location);
             this.languageTeach = obj.languageTeach || [];
             this.immersion = new Immersion(obj.immersion);
+            this.languageExchange = obj.languageExchange || false;
             this.workExchange = new WorkExchange(obj.workExchange);
             this.volunteering = new Volunteering(obj.volunteering);
             this.tour = new Tour(obj.tour);
@@ -215,6 +216,24 @@ module app.models.school {
         set LanguageTeach(languageTeach: Array<string>) {
             if (languageTeach === undefined) { throw 'Please supply school language teach'; }
             this.languageTeach = languageTeach;
+        }
+
+        get Immersion() {
+            return this.immersion;
+        }
+
+        set Immersion(immersion: Immersion) {
+            if (immersion === undefined) { throw 'Please supply school immersion'; }
+            this.immersion = immersion;
+        }
+
+        get LanguageExchange() {
+            return this.languageExchange;
+        }
+
+        set LanguageExchange(languageExchange: boolean) {
+            if (languageExchange === undefined) { throw 'Please supply school language exchange'; }
+            this.languageExchange = languageExchange;
         }
 
         get WorkExchange() {

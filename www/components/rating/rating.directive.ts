@@ -126,7 +126,14 @@ module components.rating {
         /**********************************/
 
 
-        //TODO: colocar descripcion
+        /**
+        * _calcuteStars
+        * @description - this method builds each stars based on a rating value
+        * @use - this._calcuteStars();
+        * @function
+        * @return {void}
+        */
+
         private _calcuteStars(): void {
             let value = this.ratingValue;
             let halfValue = value / 2;
@@ -146,7 +153,14 @@ module components.rating {
         }
 
 
-        //TODO: colocar descripcion
+        /**
+        * _assignClass
+        * @description - this method assign the specific class to each stars
+        * @use - this._assignClass();
+        * @function
+        * @return {void}
+        */
+
         private _assignClass(): string {
             return 'ma-stars__icon--' + this.size;
         }

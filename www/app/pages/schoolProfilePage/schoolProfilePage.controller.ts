@@ -95,6 +95,19 @@ module app.pages.schoolProfilePage {
         /*            METHODS             */
         /**********************************/
 
+        goToSite (url: string): void {
+            //CONSTANTS
+            const EMAIL_REGEX = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
+
+            if(EMAIL_REGEX.test(url)) {
+                url = 'mailto:' + url;
+                window.open(url);
+            }
+
+            if(url) {
+                window.open(url,'_blank');
+            }
+        }
 
     }
 

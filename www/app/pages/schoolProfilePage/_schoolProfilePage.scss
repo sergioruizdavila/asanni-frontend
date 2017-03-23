@@ -1,8 +1,8 @@
 /**********************************************************/
-/*                   TEACHER PROFILE PAGE                 */
+/*                   SCHOOL PROFILE PAGE                  */
 /**********************************************************/
 
-.teacherProfilePage {
+.schoolProfilePage {
 
     &__preview-message {
         position: fixed;
@@ -10,28 +10,82 @@
         width: inherit;
     }
 
-    &__verified-block {
+    &__social-block {
 
-        .ma-box__title {
-            .material-icons {
-                position: relative;
-                bottom: 5px;
+        &__icons {
+            .icon {
+                font-size: 25px;
+                cursor: pointer;
+                vertical-align:middle;
+
+                &--web {
+                    color: #999;
+                    font-size: 23px;
+                    &:hover {
+                        color: map-get($main-palette, primary);
+                    }
+                }
+
+                &--email {
+                    color: #999;
+                    &:hover {
+                        color: $black;
+                    }
+                }
+
+                &--facebook {
+                    color: #999;
+                    &:hover {
+                        color: #4267b2;
+                    }
+                }
+
+                &--twitter {
+                    color: #999;
+                    &:hover {
+                        color: #1da1f2;
+                    }
+                }
+
+                &--instagram {
+                    color: #999;
+                    &:hover {
+                        color: #d31d72;
+                    }
+                }
+
+                &--meetup {
+                    color: #999;
+                    font-size: 35px;
+                    &:hover {
+                        color: #ed1c40;
+                    }
+                }
+
+                &--disabled {
+                    color: $cloud;
+                    cursor: not-allowed;
+                    &:hover {
+                        color: $cloud;
+                    }
+                }
             }
         }
     }
 
-    &__immersion-block {
-        .ma-box__title {
-            .material-icons {
-                position: relative;
-                bottom: 6px;
-            }
+    &__buttons-block {
+        &__left {
+            padding-left: 0px;
+        }
+
+        .ma-btn {
+            width: 100%;
         }
     }
 
-    &__booking-block {
-        .ma-box {
-            position: fixed;
+    &__main-block {
+        .ma-box__content {
+            padding: 30px;
         }
     }
 }
@@ -51,11 +105,13 @@
 
  /* Small Devices, Tablets */
  @media only screen and (min-width : 768px) {
-    .teacherProfilePage {
+    .schoolProfilePage {
         &__avatar-block {
-            .ma-photo-profile {
-                width: 170px;
-                height: 170px;
+            .ma-rectangle-photo-profile {
+                height: map-get($image-rectangle-photo-height-sizes, small);
+                min-height: map-get($image-rectangle-photo-height-sizes, small);
+                min-width: map-get($image-rectangle-photo-width-sizes, small);
+                width: map-get($image-rectangle-photo-width-sizes, small);
             }
         }
     }
@@ -64,11 +120,13 @@
  /* Medium Devices, Desktops */
  @media only screen and (min-width : 992px) {
 
-     .teacherProfilePage {
+     .schoolProfilePage {
          &__avatar-block {
-             .ma-photo-profile {
-                width: 170px;
-                height: 170px;
+             .ma-rectangle-photo-profile {
+                 height: map-get($image-rectangle-photo-height-sizes, default);
+                 min-height: map-get($image-rectangle-photo-height-sizes, default);
+                 min-width: map-get($image-rectangle-photo-width-sizes, default);
+                 width: map-get($image-rectangle-photo-width-sizes, default);
              }
          }
      }
@@ -78,11 +136,11 @@
  /* Large Devices, Wide Screens */
  @media only screen and (min-width : 1200px) {
 
-    .teacherProfilePage {
+    .schoolProfilePage {
         &__avatar-block {
-            .ma-photo-profile {
-                width: 240px;
-                height: 240px;
+            .ma-rectangle-photo-profile {
+                width: map-get($image-rectangle-photo-width-sizes, large);
+                height: map-get($image-rectangle-photo-height-sizes, large);
             }
         }
 
@@ -98,11 +156,11 @@
  /* Extra Large Devices, Wide Screens */
  @media only screen and (min-width : 1600px) {
 
-    .teacherProfilePage {
+    .schoolProfilePage {
         &__avatar-block {
-            .ma-photo-profile {
-                width: 240px;
-                height: 240px;
+            .ma-rectangle-photo-profile {
+                width: map-get($image-rectangle-photo-width-sizes, large);
+                height: map-get($image-rectangle-photo-height-sizes, large);
             }
         }
 

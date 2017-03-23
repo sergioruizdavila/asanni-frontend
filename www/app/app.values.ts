@@ -62,7 +62,7 @@ interface IDataConfig {
 
     /* Assign Environment values */
     if(DEBUG) {
-        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/profile-avatar-dev';
     }
 
@@ -75,6 +75,9 @@ interface IDataConfig {
     // DEV Heroku
     // baseUrl: 'https://waysily-server-dev.herokuapp.com/api/v1/'
     // bucketS3: 'waysily-img/teachers-avatar-dev'
+    // Staging Heroku
+    // baseUrl: 'https://waysily-server-staging.herokuapp.com/api/v1/'
+    // bucketS3: 'waysily-img/teachers-avatar-prd'
     // PRD Heroku
     // baseUrl: 'https://waysily-server.herokuapp.com/api/v1/'
     // bucketS3: 'waysily-img/teachers-avatar-prd'

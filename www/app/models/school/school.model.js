@@ -36,6 +36,7 @@ var app;
                     this.location = new app.models.user.Location(obj.location);
                     this.languageTeach = obj.languageTeach || [];
                     this.immersion = new Immersion(obj.immersion);
+                    this.languageExchange = obj.languageExchange || false;
                     this.workExchange = new WorkExchange(obj.workExchange);
                     this.volunteering = new Volunteering(obj.volunteering);
                     this.tour = new Tour(obj.tour);
@@ -223,6 +224,32 @@ var app;
                             throw 'Please supply school language teach';
                         }
                         this.languageTeach = languageTeach;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(School.prototype, "Immersion", {
+                    get: function () {
+                        return this.immersion;
+                    },
+                    set: function (immersion) {
+                        if (immersion === undefined) {
+                            throw 'Please supply school immersion';
+                        }
+                        this.immersion = immersion;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(School.prototype, "LanguageExchange", {
+                    get: function () {
+                        return this.languageExchange;
+                    },
+                    set: function (languageExchange) {
+                        if (languageExchange === undefined) {
+                            throw 'Please supply school language exchange';
+                        }
+                        this.languageExchange = languageExchange;
                     },
                     enumerable: true,
                     configurable: true

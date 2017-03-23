@@ -11,6 +11,24 @@
         border: $box-border-transparent;
     }
 
+    &--border-1 {
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+    }
+
+    &--border-2 {
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+    }
+
+    &--border-3 {
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        border-radius: 15px;
+    }
+
     &__title {
         border-bottom: $box-title-border;
         padding: $box-title-padding;

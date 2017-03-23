@@ -281,6 +281,39 @@
     border-radius: 50%;
 }
 
+.border-1 {
+    -webkit-border-radius: 6%;
+    -moz-border-radius: 6%;
+    border-radius: 6%;
+}
+
+.border-2 {
+    -webkit-border-radius: 12%;
+    -moz-border-radius: 12%;
+    border-radius: 12%;
+}
+
+.line-height-1 {
+    line-height: 6px;
+}
+
+.line-height-2 {
+    line-height: 12px;
+}
+
+.line-height-3 {
+    line-height: 18px;
+}
+
+.line-height-4 {
+    line-height: 24px;
+}
+
+.line-height-5 {
+    line-height: 30px;
+}
+
+
 .underline {
 
     &--primary {
@@ -358,8 +391,6 @@
     background-repeat: repeat-x;
     height: 4px;
     background-position: -12px center;
-    //margin-top: 20px;
-    //margin-bottom: 20px;
     border: 0;
 }
 

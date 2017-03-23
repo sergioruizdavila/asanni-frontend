@@ -109,12 +109,46 @@ module app.core.util.filters {
     }
 
 
+
+    /*-- INJECT DEPENDENCIES --*/
+    RangeFilter.$inject = ['$filter', 'mainApp.core.util.GetDataStaticJsonService'];
+
+    /**
+    * RangeFilter
+    * @description - Receive a number range (e.g. [-1, 1] or [1, 5]), and return
+    * a list of number in order to show inside a ng-repeat loop.
+    * @use - ng-repeat = "i in [-1,1] | RangeFilter"
+    * @function
+    * @return {Array<number>} result - number list to show in ng-repeat loop
+    */
+    export function RangeFilter() {
+        return function (value: Array<number>): Array<number> {
+            let lowBound, highBound;
+            if (value.length == 1) {
+              lowBound = 0;
+              highBound = +value[0] - 1;
+          } else if (value.length == 2) {
+              lowBound = +value[0];
+              highBound = +value[1];
+            }
+            var i = lowBound;
+            var result = [];
+            while (i <= highBound) {
+              result.push(i);
+              i++;
+            }
+            return result;
+        }
+    }
+
+
     /*-- MODULE DEFINITION --*/
     angular
         .module('mainApp.core.util')
         .filter('getI18nFilter', GetI18nFilter)
         .filter('getTypeOfTeacherFilter', GetTypeOfTeacherFilter)
         .filter('ageFilter', AgeFilter)
-        .filter('yearMonthFormatFilter', YearMonthFormatFilter);
+        .filter('yearMonthFormatFilter', YearMonthFormatFilter)
+        .filter('rangeFilter', RangeFilter);
 
 }

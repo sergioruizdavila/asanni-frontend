@@ -29,9 +29,11 @@
         'mainApp.pages.userInboxPage',
         'mainApp.pages.userInboxDetailsPage',
         'mainApp.pages.meetingConfirmationPage',
+        'mainApp.pages.schoolProfilePage',
         'mainApp.components.header',
         'mainApp.components.sideMenu',
         'mainApp.components.rating',
+        'mainApp.components.meter',
         'mainApp.components.map',
         'mainApp.components.modal',
         'mainApp.components.footer',
@@ -75,7 +77,6 @@
 (function () {
     'use strict';
     angular.module('mainApp.core', [
-        'ngRaven',
         'ngResource',
         'ngCookies',
         'ui.router',
@@ -95,7 +96,7 @@ DEBUG = true;
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/profile-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/profile-avatar-dev';
     }
     var dataConfig = {
@@ -927,12 +928,35 @@ var app;
                     };
                 }
                 filters.YearMonthFormatFilter = YearMonthFormatFilter;
+                RangeFilter.$inject = ['$filter', 'mainApp.core.util.GetDataStaticJsonService'];
+                function RangeFilter() {
+                    return function (value) {
+                        var lowBound, highBound;
+                        if (value.length == 1) {
+                            lowBound = 0;
+                            highBound = +value[0] - 1;
+                        }
+                        else if (value.length == 2) {
+                            lowBound = +value[0];
+                            highBound = +value[1];
+                        }
+                        var i = lowBound;
+                        var result = [];
+                        while (i <= highBound) {
+                            result.push(i);
+                            i++;
+                        }
+                        return result;
+                    };
+                }
+                filters.RangeFilter = RangeFilter;
                 angular
                     .module('mainApp.core.util')
                     .filter('getI18nFilter', GetI18nFilter)
                     .filter('getTypeOfTeacherFilter', GetTypeOfTeacherFilter)
                     .filter('ageFilter', AgeFilter)
-                    .filter('yearMonthFormatFilter', YearMonthFormatFilter);
+                    .filter('yearMonthFormatFilter', YearMonthFormatFilter)
+                    .filter('rangeFilter', RangeFilter);
             })(filters = util.filters || (util.filters = {}));
         })(util = core.util || (core.util = {}));
     })(core = app.core || (app.core = {}));
@@ -3271,6 +3295,7 @@ var app;
                     this.location = new app.models.user.Location(obj.location);
                     this.languageTeach = obj.languageTeach || [];
                     this.immersion = new Immersion(obj.immersion);
+                    this.languageExchange = obj.languageExchange || false;
                     this.workExchange = new WorkExchange(obj.workExchange);
                     this.volunteering = new Volunteering(obj.volunteering);
                     this.tour = new Tour(obj.tour);
@@ -3458,6 +3483,32 @@ var app;
                             throw 'Please supply school language teach';
                         }
                         this.languageTeach = languageTeach;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(School.prototype, "Immersion", {
+                    get: function () {
+                        return this.immersion;
+                    },
+                    set: function (immersion) {
+                        if (immersion === undefined) {
+                            throw 'Please supply school immersion';
+                        }
+                        this.immersion = immersion;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(School.prototype, "LanguageExchange", {
+                    get: function () {
+                        return this.languageExchange;
+                    },
+                    set: function (languageExchange) {
+                        if (languageExchange === undefined) {
+                            throw 'Please supply school language exchange';
+                        }
+                        this.languageExchange = languageExchange;
                     },
                     enumerable: true,
                     configurable: true
@@ -13547,3 +13598,92 @@ var app;
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
 //# sourceMappingURL=teacherProfilePage.controller.js.map
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.schoolProfilePage', [])
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.schoolProfilePage', {
+            url: '/schools/show/:id',
+            views: {
+                'container': {
+                    templateUrl: 'app/pages/schoolProfilePage/schoolProfilePage.html',
+                    controller: 'mainApp.pages.schoolProfilePage.SchoolProfilePageController',
+                    controllerAs: 'vm'
+                }
+            },
+            parent: 'page',
+            data: {
+                requireLogin: false
+            },
+            params: {
+                id: null
+            },
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = true;
+                    $rootScope.activeFooter = true;
+                }]
+        });
+    }
+})();
+//# sourceMappingURL=schoolProfilePage.config.js.map
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var schoolProfilePage;
+        (function (schoolProfilePage) {
+            var SchoolProfilePageController = (function () {
+                function SchoolProfilePageController(SchoolService, functionsUtil, $state, $stateParams, $filter) {
+                    this.SchoolService = SchoolService;
+                    this.functionsUtil = functionsUtil;
+                    this.$state = $state;
+                    this.$stateParams = $stateParams;
+                    this.$filter = $filter;
+                    this._init();
+                }
+                SchoolProfilePageController.prototype._init = function () {
+                    this.data = new app.models.school.School();
+                    this.loading = true;
+                    this.activate();
+                };
+                SchoolProfilePageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: School Profile Page';
+                    var self = this;
+                    console.log('schoolProfilePage controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
+                    this.SchoolService.getSchoolById(this.$stateParams.id).then(function (response) {
+                        self.data = new app.models.school.School(response);
+                        self.loading = false;
+                    });
+                };
+                SchoolProfilePageController.prototype.goToSite = function (url) {
+                    var EMAIL_REGEX = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
+                    if (EMAIL_REGEX.test(url)) {
+                        url = 'mailto:' + url;
+                        window.open(url);
+                    }
+                    if (url) {
+                        window.open(url, '_blank');
+                    }
+                };
+                return SchoolProfilePageController;
+            }());
+            SchoolProfilePageController.controllerId = 'mainApp.pages.schoolProfilePage.SchoolProfilePageController';
+            SchoolProfilePageController.$inject = [
+                'mainApp.models.school.SchoolService',
+                'mainApp.core.util.FunctionsUtilService',
+                '$state',
+                '$stateParams',
+                '$filter'
+            ];
+            schoolProfilePage.SchoolProfilePageController = SchoolProfilePageController;
+            angular
+                .module('mainApp.pages.schoolProfilePage')
+                .controller(SchoolProfilePageController.controllerId, SchoolProfilePageController);
+        })(schoolProfilePage = pages.schoolProfilePage || (pages.schoolProfilePage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+//# sourceMappingURL=schoolProfilePage.controller.js.map

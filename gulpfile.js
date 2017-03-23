@@ -46,6 +46,8 @@ var paths = {
         "www/components/sideMenu/sideMenu.directive.js",
         "www/components/rating/rating.config.js",
         "www/components/rating/rating.directive.js",
+        "www/components/meter/meter.config.js",
+        "www/components/meter/meter.directive.js",
         "www/components/footer/footer.config.js",
         "www/components/footer/footer.directive.js",
         "www/components/floatMessageBar/floatMessageBar.config.js",
@@ -135,7 +137,9 @@ var paths = {
         "www/app/pages/createTeacherPage/teacherFinishSection/teacherFinishSection.config.js",
         "www/app/pages/createTeacherPage/teacherFinishSection/teacherFinishSection.controller.js",
         "www/app/pages/teacherProfilePage/teacherProfilePage.config.js",
-        "www/app/pages/teacherProfilePage/teacherProfilePage.controller.js"
+        "www/app/pages/teacherProfilePage/teacherProfilePage.controller.js",
+        "www/app/pages/schoolProfilePage/schoolProfilePage.config.js",
+        "www/app/pages/schoolProfilePage/schoolProfilePage.controller.js",
     ],
     appLibsJs: [
         'www/libs/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',

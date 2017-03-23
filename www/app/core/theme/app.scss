@@ -57,6 +57,8 @@
 @import 'components/locationMap';
 // map Style
 @import 'components/map';
+// map Style
+@import 'components/meter';
 // modal Style
 @import 'components/modal';
 // notification Style
@@ -111,6 +113,8 @@
 @import '../../pages/createTeacherPage/createTeacherPage';
 // teacher Profile Page Style
 @import '../../pages/teacherProfilePage/teacherProfilePage';
+// school Profile Page Style
+@import '../../pages/schoolProfilePage/schoolProfilePage';
 // add meeting Point Modals Style
 @import '../../../components/modal/modalMeetingPoint/modalMeetingPoint';
 // recommend Teacher Modals Style

@@ -70,6 +70,25 @@
             }
         }
 
+        &--medium {
+            padding: map-get($label-box-paddings, medium);
+            font-size: map-get($label-font-sizes, medium);
+
+            &--with-icon {
+                padding: map-get($label-box-withIcon-paddings, medium);
+
+                &__icon {
+                    vertical-align: text-bottom;
+                    cursor: pointer;
+                    margin-left: map-get($label-box-withIcon-icon-margins, medium);
+                    font-size: map-get($label-box-withIcon-icon-font-size, medium);
+                    &:hover {
+                        color: map-get($main-palette, secondary);
+                    }
+                }
+            }
+        }
+
         &--large {
             padding: map-get($label-box-paddings, large);
             font-size: map-get($label-font-sizes, large);
