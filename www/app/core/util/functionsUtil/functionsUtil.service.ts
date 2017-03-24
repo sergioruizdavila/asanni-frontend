@@ -33,6 +33,9 @@ module app.core.util.functionsUtil {
         addUserIndentifyMixpanel: (userId: string) => void;
         setUserMixpanel: (userData: app.models.user.Profile) => void;
         setPropertyMixpanel: (property: Object) => void;
+    }
+
+
     export interface IValid {
         valid: boolean;
         message: string;
@@ -750,7 +753,7 @@ module app.core.util.functionsUtil {
                 },
                 {
                     key: '12',
-                    value: 'class-room' 
+                    value: 'class-room'
                 },
                 {
                     key: '13',

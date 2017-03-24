@@ -1067,6 +1067,7 @@ var app;
                     this.otherAmenities = obj.otherAmenities || '';
                     this.price = obj.price || 0;
                     this.amenities = obj.amenities || [];
+                    this.terms = obj.terms || '';
                 }
                 Object.defineProperty(AccommodationOption.prototype, "Id", {
                     get: function () {
@@ -1142,6 +1143,19 @@ var app;
                             throw 'Please supply amenities option value of Accommodation';
                         }
                         this.amenities = amenities;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(AccommodationOption.prototype, "Terms", {
+                    get: function () {
+                        return this.terms;
+                    },
+                    set: function (terms) {
+                        if (terms === undefined) {
+                            throw 'Please supply terms value of Accommodation';
+                        }
+                        this.terms = terms;
                     },
                     enumerable: true,
                     configurable: true

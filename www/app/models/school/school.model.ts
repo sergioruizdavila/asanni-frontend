@@ -1039,6 +1039,7 @@ module app.models.school {
         private otherAmenities: string;
         private price: number;
         private amenities: Array<string>;
+        private terms: string;
 
 
         /**********************************/
@@ -1057,6 +1058,7 @@ module app.models.school {
             this.otherAmenities = obj.otherAmenities || '';
             this.price = obj.price || 0;
             this.amenities = obj.amenities || [];
+            this.terms = obj.terms || '';
         }
 
 
@@ -1116,6 +1118,15 @@ module app.models.school {
         set Amenities(amenities: Array<string>) {
             if (amenities === undefined) { throw 'Please supply amenities option value of Accommodation'; }
             this.amenities = amenities;
+        }
+
+        get Terms() {
+            return this.terms;
+        }
+
+        set Terms(terms: string) {
+            if (terms === undefined) { throw 'Please supply terms value of Accommodation'; }
+            this.terms = terms;
         }
 
     }

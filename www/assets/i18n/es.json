@@ -40,6 +40,7 @@
     "%global.currency.text": "$US",
     "%global.currency.suffix.text": "USD",
     "%global.time.text": "/ semana",
+    "%global.per_week.text": "por semana",
     "%global.review.text": "evaluaciones",
     "%global.new.label.text": "nuevo",
     "%global.signup.label.text": "regístrate",
@@ -63,6 +64,8 @@
     "%global.share.label.text": "compartir",
     "%global.other.label.text": "otro",
     "%global.others.label.text": "otros",
+    "%global.terms.label.text": "Términos",
+    "%global.terms_and_details.label.text": "Términos y detalles",
 
     "%global.validation.null.message.text": "Valor requerido",
     "%global.validation.empty.message.text": "Valor requerido",
@@ -535,6 +538,8 @@
 
     "%profile.school.atmosphere.title.text": "atmósfera",
 
+    "%profile.school.accommodation.title.text": "alojamiento",
+
     "__TOOLTIPS__": "",
     "%tooltip.modal_born.birthdate.text": "Para activar tu cuenta, debes ser mayor de 18 años.",
     "%tooltip.modal_born.cntry_birth.text": "Es importante conocer en que país naciste e identificar tu lengua nativa.",
@@ -617,6 +622,13 @@
     "%amenities.school.13": "Sala con computadores",
     "%amenities.school.14": "Video proyector",
     "%amenities.school.15": "Sala de estar",
+
+    "__ACCOMMODATION CATEGORIES__": "",
+    "%accommodation.category.1": "Homestay",
+    "%accommodation.category.2": "Vive con un anfitrión local",
+    "%accommodation.category.3": "Hostel",
+    "%accommodation.category.4": "Apartamento compartido",
+    "%accommodation.category.5": "Apartamento privado",
 
     "__LANGUAGES__": "",
     "%language.1": "Bahasa Indonesia",

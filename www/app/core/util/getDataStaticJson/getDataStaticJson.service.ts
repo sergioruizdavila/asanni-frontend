@@ -11,7 +11,7 @@ module app.core.util.getDataStaticJson {
     /*           INTERFACES           */
     /**********************************/
     export interface IGetDataStaticJsonService {
-        returnValuei18n: (type: string, code: string) => string;
+        returnValuei18n: (type: string, code: any) => string;
         getMonthi18n: () => Array<app.core.interfaces.IDataFromJsonI18n>;
         getSexi18n: () => Array<app.core.interfaces.IDataFromJsonI18n>;
         getCountryi18n: () => Array<app.core.interfaces.IDataFromJsonI18n>;
@@ -59,7 +59,7 @@ module app.core.util.getDataStaticJson {
         * @function
         * @return {string} object's key from json i18n (e.g. '%country.CO')
         */
-        returnValuei18n(type, code): string {
+        returnValuei18n(type: string, code: any): string {
             //VARIABLES
             let jsonDoc = this.$translate.getTranslationTable();
             let key = '';
@@ -69,7 +69,7 @@ module app.core.util.getDataStaticJson {
 
                     let regex = new RegExp('%' + type + '.', 'g');
                     let codeFromJson = element.replace(regex,'');
-                    if(codeFromJson === code){
+                    if(codeFromJson == code) {
                         key = element;
                     }
 
