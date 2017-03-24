@@ -33,6 +33,7 @@ module app.core.util.functionsUtil {
         addUserIndentifyMixpanel: (userId: string) => void;
         setUserMixpanel: (userData: app.models.user.Profile) => void;
         setPropertyMixpanel: (property: Object) => void;
+        assignAmenitieIconClass: (type: string) => string;
     }
 
     export interface IValid {
@@ -56,6 +57,7 @@ module app.core.util.functionsUtil {
         IsTrue = 7,
         IsNotNaN = 8
     }
+
 
     /****************************************/
     /*           CLASS DEFINITION           */
@@ -669,6 +671,7 @@ module app.core.util.functionsUtil {
             });
         }
 
+
         /**
         * setPropertyMixpanel
         * @description - Set new property on user's MixPanel service
@@ -687,6 +690,93 @@ module app.core.util.functionsUtil {
             });
 
             mixpanel.people.set(setData);
+        }
+
+
+        /**
+        * assignAmenitieIconClass
+        * @description - Assign icon class based on a type of amenities
+        * @use - this.FunctionsUtilService.assignIconClass('2');
+        * @function
+        * @param {Object} property - new property
+        * @return {void}
+        */
+        assignAmenitieIconClass(amenitie: string): string {
+
+            //CONSTANTS
+            let iconClass = '';
+            let options = [
+                {
+                    key: '1',
+                    value: 'wifi'
+                },
+                {
+                    key: '2',
+                    value: 'laptop'
+                },
+                {
+                    key: '3',
+                    value: 'air-conditing'
+                },
+                {
+                    key: '4',
+                    value: 'heating'
+                },
+                {
+                    key: '5',
+                    value: 'breakfast'
+                },
+                {
+                    key: '6',
+                    value: 'lunch'
+                },
+                {
+                    key: '7',
+                    value: 'dinner'
+                },
+                {
+                    key: '8',
+                    value: 'snack'
+                },
+                {
+                    key: '9',
+                    value: 'coffee'
+                },
+                {
+                    key: '10',
+                    value: 'tea'
+                },
+                {
+                    key: '11',
+                    value: 'hammock'
+                },
+                {
+                    key: '12',
+                    value: 'classroom'
+                },
+                {
+                    key: '13',
+                    value: 'computer'
+                },
+                {
+                    key: '14',
+                    value: 'video-projector'
+                },
+                {
+                    key: '15',
+                    value: 'lounge'
+                }
+            ];
+
+
+            for (let i = 0; i < options.length; i++) {
+                if(options[i].key === amenitie) {
+                    iconClass = options[i].value;
+                    break;
+                }
+            }
+
+            return iconClass;
         }
 
 

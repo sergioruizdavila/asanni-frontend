@@ -374,19 +374,24 @@
                                     </div>
 
                                     <div class="row middle-xs space-5">
-                                        <div class="col-xs-6"
+                                        <div class="col-xs-6 space-1"
                                              ng-repeat="amenitie in vm.data.Amenities.Option | limitTo: (vm.data.Amenities.Option.length + 1) /2: 0">
-                                             <span>
-                                                 <i class="ma-amenitie-icon"
-                                                    ng-class=""></i>
+                                             <span class="space-right-1">
+                                                <i class="ma-liner-icons
+                                                          ma-liner-icons--default"
+                                                   ng-class="vm.assignAmenitieIconClass(amenitie)"></i>
                                              </span>
                                             <span class="ma-label ma-label--simple ma-label--simple--large">
                                                 {{amenitie | getI18nFilter:'amenities.school'}}
                                             </span>
                                         </div>
-                                        <div class="col-xs-6" ng-repeat="amenitie in vm.data.Amenities.Option | limitTo: vm.data.Amenities.Option.length /2: (vm.data.Amenities.Option.length + 1) /2">
-                                            <i class="ma-amenitie-icon"
-                                               ng-class=""></i>
+                                        <div class="col-xs-6 space-1"
+                                             ng-repeat="amenitie in vm.data.Amenities.Option | limitTo: vm.data.Amenities.Option.length /2: (vm.data.Amenities.Option.length + 1) /2">
+                                            <span class="space-right-1">
+                                               <i class="ma-liner-icons
+                                                         ma-liner-icons--default"
+                                                  ng-class="vm.assignAmenitieIconClass(amenitie)"></i>
+                                            </span>
                                             <span class="ma-label ma-label--simple ma-label--simple--large">
                                                 {{amenitie | getI18nFilter:'amenities.school'}}
                                             </span>
@@ -450,8 +455,6 @@
     </div>
 
 </div>
-
-
 
 
 
@@ -2827,4 +2830,283 @@
     </div>
     <!--                     END: MAIN LOADING  BLOCK                        -->
 
+
+    <div class="ma-separator-dashed-image space-10 space-top-10"></div>
+
+
+    <!------------------------START: ICONS SET SECTION ------------------------>
+
+    <div class="row space-4">
+        <div class="col-xs-12">
+            <h2>Icons Line Set</h2>
+        </div>
+    </div>
+
+    <div class="row space-3">
+        <div class="col-xs-12">
+
+            <h3>Small Icons Line</h3>
+
+            <! wifi >
+            <i class="ma-liner-icons
+                      ma-liner-icons--small
+                      ma-liner-icons--small--wifi
+                      space-right-2"></i>
+
+            <! air conditing >
+            <i class="ma-liner-icons
+                    ma-liner-icons--small
+                    ma-liner-icons--small--air-conditing
+                    space-right-2"></i>
+
+            <! bathroom >
+            <i class="ma-liner-icons
+                    ma-liner-icons--small
+                    ma-liner-icons--small--bathroom
+                    space-right-2"></i>
+
+            <! washer >
+            <i class="ma-liner-icons
+                    ma-liner-icons--small
+                    ma-liner-icons--small--washer
+                    space-right-2"></i>
+
+            <! video-projector >
+            <i class="ma-liner-icons
+                    ma-liner-icons--small
+                    ma-liner-icons--small--video-projector
+                    space-right-2"></i>
+
+            <! tv >
+            <i class="ma-liner-icons
+                      ma-liner-icons--small
+                      ma-liner-icons--small--tv
+                      space-right-2"></i>
+
+            <! tea >
+            <i class="ma-liner-icons
+                    ma-liner-icons--small
+                    ma-liner-icons--small--tea
+                    space-right-2"></i>
+
+            <! snack >
+            <i class="ma-liner-icons
+                    ma-liner-icons--small
+                    ma-liner-icons--small--snack
+                    space-right-2"></i>
+
+            <! pool >
+            <i class="ma-liner-icons
+                    ma-liner-icons--small
+                    ma-liner-icons--small--pool
+                    space-right-2"></i>
+
+            <! lunch >
+            <i class="ma-liner-icons
+                    ma-liner-icons--small
+                    ma-liner-icons--small--lunch
+                    space-right-2"></i>
+
+            <! lounge >
+            <i class="ma-liner-icons
+                    ma-liner-icons--small
+                    ma-liner-icons--small--lounge
+                    space-right-2"></i>
+
+            <! laptop >
+            <i class="ma-liner-icons
+                    ma-liner-icons--small
+                    ma-liner-icons--small--laptop
+                    space-right-2"></i>
+
+            <! kitchen >
+            <i class="ma-liner-icons
+                    ma-liner-icons--small
+                    ma-liner-icons--small--kitchen
+                    space-right-2"></i>
+
+            <! heating >
+            <i class="ma-liner-icons
+                    ma-liner-icons--small
+                    ma-liner-icons--small--heating
+                    space-right-2"></i>
+
+            <! hammock >
+            <i class="ma-liner-icons
+                    ma-liner-icons--small
+                    ma-liner-icons--small--hammock
+                    space-right-2"></i>
+
+            <! dinner >
+            <i class="ma-liner-icons
+                    ma-liner-icons--small
+                    ma-liner-icons--small--dinner
+                    space-right-2"></i>
+
+            <! computer >
+            <i class="ma-liner-icons
+                    ma-liner-icons--small
+                    ma-liner-icons--small--computer
+                    space-right-2"></i>
+
+            <! coffee >
+            <i class="ma-liner-icons
+                    ma-liner-icons--small
+                    ma-liner-icons--small--coffee
+                    space-right-2"></i>
+
+            <! class-room >
+            <i class="ma-liner-icons
+                    ma-liner-icons--small
+                    ma-liner-icons--small--class-room
+                    space-right-2"></i>
+
+            <! breakfast >
+            <i class="ma-liner-icons
+                    ma-liner-icons--small
+                    ma-liner-icons--small--breakfast
+                    space-right-2"></i>
+
+            <! big-bed >
+            <i class="ma-liner-icons
+                    ma-liner-icons--small
+                    ma-liner-icons--small--big-bed
+                    space-right-2"></i>
+        </div>
+    </div>
+
+    <div class="row space-12">
+        <div class="col-xs-12">
+
+            <h3>Default Icons Line</h3>
+
+            <! wifi >
+            <i class="ma-liner-icons
+                      ma-liner-icons--default
+                      ma-liner-icons--default--wifi
+                      space-right-2"></i>
+
+            <! air conditing >
+            <i class="ma-liner-icons
+                    ma-liner-icons--default
+                    ma-liner-icons--default--air-conditing
+                    space-right-2"></i>
+
+            <! bathroom >
+            <i class="ma-liner-icons
+                    ma-liner-icons--default
+                    ma-liner-icons--default--bathroom
+                    space-right-2"></i>
+
+            <! washer >
+            <i class="ma-liner-icons
+                    ma-liner-icons--default
+                    ma-liner-icons--default--washer
+                    space-right-2"></i>
+
+            <! video-projector >
+            <i class="ma-liner-icons
+                    ma-liner-icons--default
+                    ma-liner-icons--default--video-projector
+                    space-right-2"></i>
+
+            <! tv >
+            <i class="ma-liner-icons
+                      ma-liner-icons--default
+                      ma-liner-icons--default--tv
+                      space-right-2"></i>
+
+            <! tea >
+            <i class="ma-liner-icons
+                    ma-liner-icons--default
+                    ma-liner-icons--default--tea
+                    space-right-2"></i>
+
+            <! snack >
+            <i class="ma-liner-icons
+                    ma-liner-icons--default
+                    ma-liner-icons--default--snack
+                    space-right-2"></i>
+
+            <! pool >
+            <i class="ma-liner-icons
+                    ma-liner-icons--default
+                    ma-liner-icons--default--pool
+                    space-right-2"></i>
+
+            <! lunch >
+            <i class="ma-liner-icons
+                    ma-liner-icons--default
+                    ma-liner-icons--default--lunch
+                    space-right-2"></i>
+
+            <! lounge >
+            <i class="ma-liner-icons
+                    ma-liner-icons--default
+                    ma-liner-icons--default--lounge
+                    space-right-2"></i>
+
+            <! laptop >
+            <i class="ma-liner-icons
+                    ma-liner-icons--default
+                    ma-liner-icons--default--laptop
+                    space-right-2"></i>
+
+            <! kitchen >
+            <i class="ma-liner-icons
+                    ma-liner-icons--default
+                    ma-liner-icons--default--kitchen
+                    space-right-2"></i>
+
+            <! heating >
+            <i class="ma-liner-icons
+                    ma-liner-icons--default
+                    ma-liner-icons--default--heating
+                    space-right-2"></i>
+
+            <! hammock >
+            <i class="ma-liner-icons
+                    ma-liner-icons--default
+                    ma-liner-icons--default--hammock
+                    space-right-2"></i>
+
+            <! dinner >
+            <i class="ma-liner-icons
+                    ma-liner-icons--default
+                    ma-liner-icons--default--dinner
+                    space-right-2"></i>
+
+            <! computer >
+            <i class="ma-liner-icons
+                    ma-liner-icons--default
+                    ma-liner-icons--default--computer
+                    space-right-2"></i>
+
+            <! coffee >
+            <i class="ma-liner-icons
+                    ma-liner-icons--default
+                    ma-liner-icons--default--coffee
+                    space-right-2"></i>
+
+            <! class-room >
+            <i class="ma-liner-icons
+                    ma-liner-icons--default
+                    ma-liner-icons--default--class-room
+                    space-right-2"></i>
+
+            <! breakfast >
+            <i class="ma-liner-icons
+                    ma-liner-icons--default
+                    ma-liner-icons--default--breakfast
+                    space-right-2"></i>
+
+            <! big-bed >
+            <i class="ma-liner-icons
+                    ma-liner-icons--default
+                    ma-liner-icons--default--big-bed
+                    space-right-2"></i>
+        </div>
+    </div>
+
+    <!--                      END: ICONS SET SECTION                         -->
 </div>

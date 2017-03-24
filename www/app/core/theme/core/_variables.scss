@@ -82,6 +82,7 @@ $global-photo-default-file: "waysily-photo-default.svg";
 $global-school-photo-default-file: "waysily-school-photo-default.svg";
 $global-badge-file: "waysily-badge-teacher.svg";
 $global-flags-file: "waysily-countries-flags.svg";
+$global-line-icons-file: "icons.svg";
 
 $body-background: #fafafa;
 
@@ -378,6 +379,10 @@ $header-subnav-list-option-tab-font-padding: 10px;
 $header-subnav-list-option-tab-border-hover: 3px solid map-get($main-palette, primary);
 
 $header-subnav-list-option-tab-border-active: 3px solid $dark-gray;
+
+// 5. icons
+// ----------
+$line-icons-path: $global-image-path + '/' + $global-line-icons-file;
 
 // 5. Images
 // ----------

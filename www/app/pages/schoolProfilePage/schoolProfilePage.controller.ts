@@ -109,6 +109,15 @@ module app.pages.schoolProfilePage {
             }
         }
 
+
+        assignAmenitieIconClass(amenitie: string): string {
+            //CONSTANTS
+            let amenitiePrefixClass = 'ma-liner-icons--default--';
+            let iconClass = this.functionsUtil.assignAmenitieIconClass(amenitie);
+            
+            return amenitiePrefixClass + iconClass;
+        }
+
     }
 
     /*-- MODULE DEFINITION --*/
