@@ -750,7 +750,7 @@ module app.core.util.functionsUtil {
                 },
                 {
                     key: '12',
-                    value: 'class-room'
+                    value: 'class-room' 
                 },
                 {
                     key: '13',

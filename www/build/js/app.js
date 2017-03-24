@@ -750,7 +750,7 @@ var app;
                             },
                             {
                                 key: '12',
-                                value: 'classroom'
+                                value: 'class-room'
                             },
                             {
                                 key: '13',
