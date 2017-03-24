@@ -77,7 +77,7 @@ module app.pages.schoolProfilePage {
             //VARIABLES
             let self = this;
             //LOG
-            console.log('schoolProfilePage controller actived');
+            console.log('schoolProfilePage 20 controller actived');
             //MIXPANEL
             mixpanel.track(ENTER_MIXPANEL);
 
@@ -95,6 +95,17 @@ module app.pages.schoolProfilePage {
         /*            METHODS             */
         /**********************************/
 
+
+        /**
+        * goToSite
+        * @description - this method is launched when user press some url school button
+        * @use - this.FunctionsUtilService.goToSite('http://www.school.com');
+        * @function
+        * @param {string} url - School urls such as: facebook, twitter, instagram,
+        * email, website, etc.
+        * @return {void}
+        */
+
         goToSite (url: string): void {
             //CONSTANTS
             const EMAIL_REGEX = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
@@ -110,11 +121,23 @@ module app.pages.schoolProfilePage {
         }
 
 
-        assignAmenitieIconClass(amenitie: string): string {
-            //CONSTANTS
+
+        /**
+        * assignAmenitieIconClass
+        * @description - build amenities icons class
+        * (e.g. ma-liner-icons--default--wifi, ma-liner-icons--default--tv)
+        * @use - this.FunctionsUtilService.assignAmenitieIconClass('2');
+        * @function
+        * @param {string} url - School urls such as: facebook, twitter, instagram,
+        * email, website, etc.
+        * @return {void}
+        */
+
+        assignAmenitieIconClass (amenitie: string): string {
+            //VARIABLES
             let amenitiePrefixClass = 'ma-liner-icons--default--';
             let iconClass = this.functionsUtil.assignAmenitieIconClass(amenitie);
-            
+
             return amenitiePrefixClass + iconClass;
         }
 

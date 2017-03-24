@@ -33,9 +33,6 @@ module app.core.util.functionsUtil {
         addUserIndentifyMixpanel: (userId: string) => void;
         setUserMixpanel: (userData: app.models.user.Profile) => void;
         setPropertyMixpanel: (property: Object) => void;
-        assignAmenitieIconClass: (type: string) => string;
-    }
-
     export interface IValid {
         valid: boolean;
         message: string;
@@ -84,7 +81,7 @@ module app.core.util.functionsUtil {
         constructor(private $filter: angular.IFilterService,
                     private dataConfig: IDataConfig,
                     private $translate: angular.translate.ITranslateService) {
-            console.log('functionsUtil service called');
+            DEBUG && console.log('functionsUtil 2000 service called');
         }
 
 
@@ -703,9 +700,10 @@ module app.core.util.functionsUtil {
         */
         assignAmenitieIconClass(amenitie: string): string {
 
-            //CONSTANTS
+            //VARIABLES
             let iconClass = '';
-            let options = [
+            //CONSTANTS
+            const options = [
                 {
                     key: '1',
                     value: 'wifi'
@@ -752,7 +750,7 @@ module app.core.util.functionsUtil {
                 },
                 {
                     key: '12',
-                    value: 'classroom'
+                    value: 'class-room'
                 },
                 {
                     key: '13',
@@ -767,7 +765,6 @@ module app.core.util.functionsUtil {
                     value: 'lounge'
                 }
             ];
-
 
             for (let i = 0; i < options.length; i++) {
                 if(options[i].key === amenitie) {

@@ -73,7 +73,9 @@
         $translateProvider.useCookieStorage();
     }
 })();
-//# sourceMappingURL=app.module.js.map
+
+//# sourceMappingURL=../../maps/app/app.module.js.map
+
 (function () {
     'use strict';
     angular.module('mainApp.core', [
@@ -89,7 +91,9 @@
         'ngImgCrop'
     ]);
 })();
-//# sourceMappingURL=app.core.module.js.map
+
+//# sourceMappingURL=../../maps/app/app.core.module.js.map
+
 DEBUG = true;
 (function () {
     'use strict';
@@ -141,7 +145,9 @@ DEBUG = true;
         .module('mainApp')
         .constant('dataConfig', dataConfig);
 })();
-//# sourceMappingURL=app.values.js.map
+
+//# sourceMappingURL=../../maps/app/app.values.js.map
+
 (function () {
     'use strict';
     angular
@@ -203,7 +209,9 @@ DEBUG = true;
         .module('mainApp.localStorage', [])
         .factory('mainApp.localStorageService', localStorageServiceFactory);
 })(angular);
-//# sourceMappingURL=app.run.js.map
+
+//# sourceMappingURL=../../maps/app/app.run.js.map
+
 var app;
 (function (app) {
     var auth;
@@ -335,23 +343,25 @@ var app;
                 }, self.autoRefreshTokenInterval);
                 return deferred.promise;
             };
+            AuthService.serviceId = 'mainApp.auth.AuthService';
+            AuthService.$inject = ['$q',
+                '$timeout',
+                '$cookies',
+                'OAuth',
+                'mainApp.core.restApi.restApiService',
+                'dataConfig',
+                'mainApp.localStorageService'];
             return AuthService;
         }());
-        AuthService.serviceId = 'mainApp.auth.AuthService';
-        AuthService.$inject = ['$q',
-            '$timeout',
-            '$cookies',
-            'OAuth',
-            'mainApp.core.restApi.restApiService',
-            'dataConfig',
-            'mainApp.localStorageService'];
         auth.AuthService = AuthService;
         angular
             .module('mainApp.auth', [])
             .service(AuthService.serviceId, AuthService);
     })(auth = app.auth || (app.auth = {}));
 })(app || (app = {}));
-//# sourceMappingURL=auth.service.js.map
+
+//# sourceMappingURL=../../../maps/app/auth/auth.service.js.map
+
 var app;
 (function (app) {
     var account;
@@ -390,20 +400,22 @@ var app;
                 });
                 return deferred.promise;
             };
+            AccountService.serviceId = 'mainApp.account.AccountService';
+            AccountService.$inject = [
+                '$q',
+                'mainApp.core.restApi.restApiService'
+            ];
             return AccountService;
         }());
-        AccountService.serviceId = 'mainApp.account.AccountService';
-        AccountService.$inject = [
-            '$q',
-            'mainApp.core.restApi.restApiService'
-        ];
         account.AccountService = AccountService;
         angular
             .module('mainApp.account', [])
             .service(AccountService.serviceId, AccountService);
     })(account = app.account || (app.account = {}));
 })(app || (app = {}));
-//# sourceMappingURL=account.service.js.map
+
+//# sourceMappingURL=../../../maps/app/account/account.service.js.map
+
 var app;
 (function (app) {
     var core;
@@ -413,24 +425,12 @@ var app;
             var functionsUtil;
             (function (functionsUtil) {
                 'use strict';
-                var Validation;
-                (function (Validation) {
-                    Validation[Validation["Email"] = 0] = "Email";
-                    Validation[Validation["String"] = 1] = "String";
-                    Validation[Validation["Null"] = 2] = "Null";
-                    Validation[Validation["Empty"] = 3] = "Empty";
-                    Validation[Validation["Number"] = 4] = "Number";
-                    Validation[Validation["IsNotZero"] = 5] = "IsNotZero";
-                    Validation[Validation["Defined"] = 6] = "Defined";
-                    Validation[Validation["IsTrue"] = 7] = "IsTrue";
-                    Validation[Validation["IsNotNaN"] = 8] = "IsNotNaN";
-                })(Validation = functionsUtil.Validation || (functionsUtil.Validation = {}));
                 var FunctionsUtilService = (function () {
                     function FunctionsUtilService($filter, dataConfig, $translate) {
                         this.$filter = $filter;
                         this.dataConfig = dataConfig;
                         this.$translate = $translate;
-                        console.log('functionsUtil service called');
+                        DEBUG && console.log('functionsUtil 2000 service called');
                     }
                     FunctionsUtilService.prototype.normalizeString = function (str) {
                         var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç";
@@ -701,12 +701,84 @@ var app;
                         });
                         mixpanel.people.set(setData);
                     };
+                    FunctionsUtilService.prototype.assignAmenitieIconClass = function (amenitie) {
+                        var iconClass = '';
+                        var options = [
+                            {
+                                key: '1',
+                                value: 'wifi'
+                            },
+                            {
+                                key: '2',
+                                value: 'laptop'
+                            },
+                            {
+                                key: '3',
+                                value: 'air-conditing'
+                            },
+                            {
+                                key: '4',
+                                value: 'heating'
+                            },
+                            {
+                                key: '5',
+                                value: 'breakfast'
+                            },
+                            {
+                                key: '6',
+                                value: 'lunch'
+                            },
+                            {
+                                key: '7',
+                                value: 'dinner'
+                            },
+                            {
+                                key: '8',
+                                value: 'snack'
+                            },
+                            {
+                                key: '9',
+                                value: 'coffee'
+                            },
+                            {
+                                key: '10',
+                                value: 'tea'
+                            },
+                            {
+                                key: '11',
+                                value: 'hammock'
+                            },
+                            {
+                                key: '12',
+                                value: 'classroom'
+                            },
+                            {
+                                key: '13',
+                                value: 'computer'
+                            },
+                            {
+                                key: '14',
+                                value: 'video-projector'
+                            },
+                            {
+                                key: '15',
+                                value: 'lounge'
+                            }
+                        ];
+                        for (var i = 0; i < options.length; i++) {
+                            if (options[i].key === amenitie) {
+                                iconClass = options[i].value;
+                                break;
+                            }
+                        }
+                        return iconClass;
+                    };
+                    FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
+                    FunctionsUtilService.$inject = ['$filter',
+                        'dataConfig',
+                        '$translate'];
                     return FunctionsUtilService;
                 }());
-                FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
-                FunctionsUtilService.$inject = ['$filter',
-                    'dataConfig',
-                    '$translate'];
                 functionsUtil.FunctionsUtilService = FunctionsUtilService;
                 angular
                     .module('mainApp.core.util', [])
@@ -715,7 +787,9 @@ var app;
         })(util = core.util || (core.util = {}));
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
-//# sourceMappingURL=functionsUtil.service.js.map
+
+//# sourceMappingURL=../../../../../maps/app/core/util/functionsUtil/functionsUtil.service.js.map
+
 var app;
 (function (app) {
     var core;
@@ -811,10 +885,10 @@ var app;
                         }
                         return array;
                     };
+                    GetDataStaticJsonService.serviceId = 'mainApp.core.util.GetDataStaticJsonService';
+                    GetDataStaticJsonService.$inject = ['$translate'];
                     return GetDataStaticJsonService;
                 }());
-                GetDataStaticJsonService.serviceId = 'mainApp.core.util.GetDataStaticJsonService';
-                GetDataStaticJsonService.$inject = ['$translate'];
                 getDataStaticJson.GetDataStaticJsonService = GetDataStaticJsonService;
                 angular
                     .module('mainApp.core.util')
@@ -823,7 +897,9 @@ var app;
         })(util = core.util || (core.util = {}));
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
-//# sourceMappingURL=getDataStaticJson.service.js.map
+
+//# sourceMappingURL=../../../../../maps/app/core/util/getDataStaticJson/getDataStaticJson.service.js.map
+
 var app;
 (function (app) {
     var core;
@@ -862,10 +938,10 @@ var app;
                     messageUtilService.instance = function ($filter) {
                         return new messageUtilService($filter);
                     };
+                    messageUtilService.serviceId = 'mainApp.core.util.messageUtilService';
+                    messageUtilService.$inject = ['$filter'];
                     return messageUtilService;
                 }());
-                messageUtilService.serviceId = 'mainApp.core.util.messageUtilService';
-                messageUtilService.$inject = ['$filter'];
                 angular
                     .module('mainApp.core.util')
                     .factory(messageUtilService.serviceId, messageUtilService.instance);
@@ -873,7 +949,9 @@ var app;
         })(util = core.util || (core.util = {}));
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
-//# sourceMappingURL=messageUtil.service.js.map
+
+//# sourceMappingURL=../../../../../maps/app/core/util/messageUtil/messageUtil.service.js.map
+
 var app;
 (function (app) {
     var core;
@@ -961,7 +1039,9 @@ var app;
         })(util = core.util || (core.util = {}));
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
-//# sourceMappingURL=app.filter.js.map
+
+//# sourceMappingURL=../../../../../maps/app/core/util/filters/app.filter.js.map
+
 (function () {
     'use strict';
     angular
@@ -970,7 +1050,9 @@ var app;
     function config() {
     }
 })();
-//# sourceMappingURL=restApi.config.js.map
+
+//# sourceMappingURL=../../../../maps/app/core/restApi/restApi.config.js.map
+
 var app;
 (function (app) {
     var core;
@@ -993,13 +1075,13 @@ var app;
                     });
                     return resource;
                 };
+                RestApiService.serviceId = 'mainApp.core.restApi.restApiService';
+                RestApiService.$inject = [
+                    '$resource',
+                    'dataConfig'
+                ];
                 return RestApiService;
             }());
-            RestApiService.serviceId = 'mainApp.core.restApi.restApiService';
-            RestApiService.$inject = [
-                '$resource',
-                'dataConfig'
-            ];
             restApi.RestApiService = RestApiService;
             angular
                 .module('mainApp.core.restApi')
@@ -1028,7 +1110,9 @@ var app;
         })(restApi = core.restApi || (core.restApi = {}));
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
-//# sourceMappingURL=restApi.service.js.map
+
+//# sourceMappingURL=../../../../maps/app/core/restApi/restApi.service.js.map
+
 var app;
 (function (app) {
     var core;
@@ -1076,10 +1160,10 @@ var app;
                     });
                     return deferred.promise;
                 };
+                S3UploadService.serviceId = 'mainApp.core.s3Upload.S3UploadService';
+                S3UploadService.$inject = ['$q', 'dataConfig'];
                 return S3UploadService;
             }());
-            S3UploadService.serviceId = 'mainApp.core.s3Upload.S3UploadService';
-            S3UploadService.$inject = ['$q', 'dataConfig'];
             s3Upload.S3UploadService = S3UploadService;
             angular
                 .module('mainApp.core.s3Upload', [])
@@ -1087,7 +1171,9 @@ var app;
         })(s3Upload = core.s3Upload || (core.s3Upload = {}));
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
-//# sourceMappingURL=s3Upload.service.js.map
+
+//# sourceMappingURL=../../../../maps/app/core/s3Upload/s3Upload.service.js.map
+
 var app;
 (function (app) {
     var models;
@@ -1141,7 +1227,9 @@ var app;
         })(feedback = models.feedback || (models.feedback = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
-//# sourceMappingURL=feedback.model.js.map
+
+//# sourceMappingURL=../../../../maps/app/models/feedback/feedback.model.js.map
+
 var app;
 (function (app) {
     var models;
@@ -1178,12 +1266,12 @@ var app;
                         return err;
                     });
                 };
+                FeedbackService.serviceId = 'mainApp.models.feedback.FeedbackService';
+                FeedbackService.$inject = [
+                    'mainApp.core.restApi.restApiService'
+                ];
                 return FeedbackService;
             }());
-            FeedbackService.serviceId = 'mainApp.models.feedback.FeedbackService';
-            FeedbackService.$inject = [
-                'mainApp.core.restApi.restApiService'
-            ];
             feedback_1.FeedbackService = FeedbackService;
             angular
                 .module('mainApp.models.feedback', [])
@@ -1191,19 +1279,15 @@ var app;
         })(feedback = models.feedback || (models.feedback = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
-//# sourceMappingURL=feedback.service.js.map
+
+//# sourceMappingURL=../../../../maps/app/models/feedback/feedback.service.js.map
+
 var app;
 (function (app) {
     var models;
     (function (models) {
         var user;
         (function (user) {
-            var Status;
-            (function (Status) {
-                Status[Status["new"] = 0] = "new";
-                Status[Status["validated"] = 1] = "validated";
-                Status[Status["verified"] = 2] = "verified";
-            })(Status = user.Status || (user.Status = {}));
             var Profile = (function () {
                 function Profile(obj) {
                     if (obj === void 0) { obj = {}; }
@@ -1691,7 +1775,9 @@ var app;
         })(user = models.user || (models.user = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
-//# sourceMappingURL=user.model.js.map
+
+//# sourceMappingURL=../../../../maps/app/models/user/user.model.js.map
+
 var app;
 (function (app) {
     var models;
@@ -1748,13 +1834,13 @@ var app;
                         return error;
                     });
                 };
+                UserService.serviceId = 'mainApp.models.user.UserService';
+                UserService.$inject = [
+                    'mainApp.core.restApi.restApiService',
+                    'mainApp.auth.AuthService'
+                ];
                 return UserService;
             }());
-            UserService.serviceId = 'mainApp.models.user.UserService';
-            UserService.$inject = [
-                'mainApp.core.restApi.restApiService',
-                'mainApp.auth.AuthService'
-            ];
             user_1.UserService = UserService;
             angular
                 .module('mainApp.models.user', [])
@@ -1762,7 +1848,9 @@ var app;
         })(user = models.user || (models.user = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
-//# sourceMappingURL=user.service.js.map
+
+//# sourceMappingURL=../../../../maps/app/models/user/user.service.js.map
+
 var app;
 (function (app) {
     var register;
@@ -1814,20 +1902,22 @@ var app;
                 });
                 return deferred.promise;
             };
+            RegisterService.serviceId = 'mainApp.register.RegisterService';
+            RegisterService.$inject = [
+                '$q',
+                'mainApp.core.restApi.restApiService'
+            ];
             return RegisterService;
         }());
-        RegisterService.serviceId = 'mainApp.register.RegisterService';
-        RegisterService.$inject = [
-            '$q',
-            'mainApp.core.restApi.restApiService'
-        ];
         register.RegisterService = RegisterService;
         angular
             .module('mainApp.register', [])
             .service(RegisterService.serviceId, RegisterService);
     })(register = app.register || (app.register = {}));
 })(app || (app = {}));
-//# sourceMappingURL=register.service.js.map
+
+//# sourceMappingURL=../../../maps/app/register/register.service.js.map
+
 var app;
 (function (app) {
     var models;
@@ -1959,7 +2049,9 @@ var app;
         })(student = models.student || (models.student = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
-//# sourceMappingURL=student.model.js.map
+
+//# sourceMappingURL=../../../../maps/app/models/student/student.model.js.map
+
 var app;
 (function (app) {
     var models;
@@ -2002,12 +2094,12 @@ var app;
                         return err;
                     });
                 };
+                StudentService.serviceId = 'mainApp.models.student.StudentService';
+                StudentService.$inject = [
+                    'mainApp.core.restApi.restApiService'
+                ];
                 return StudentService;
             }());
-            StudentService.serviceId = 'mainApp.models.student.StudentService';
-            StudentService.$inject = [
-                'mainApp.core.restApi.restApiService'
-            ];
             student.StudentService = StudentService;
             angular
                 .module('mainApp.models.student', [])
@@ -2015,7 +2107,9 @@ var app;
         })(student = models.student || (models.student = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
-//# sourceMappingURL=student.service.js.map
+
+//# sourceMappingURL=../../../../maps/app/models/student/student.service.js.map
+
 var app;
 (function (app) {
     var models;
@@ -3021,7 +3115,9 @@ var app;
         })(teacher = models.teacher || (models.teacher = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
-//# sourceMappingURL=teacher.model.js.map
+
+//# sourceMappingURL=../../../../maps/app/models/teacher/teacher.model.js.map
+
 var app;
 (function (app) {
     var models;
@@ -3241,14 +3337,14 @@ var app;
                     });
                     return deferred.promise;
                 };
+                TeacherService.serviceId = 'mainApp.models.teacher.TeacherService';
+                TeacherService.$inject = [
+                    'mainApp.core.restApi.restApiService',
+                    'mainApp.auth.AuthService',
+                    '$q'
+                ];
                 return TeacherService;
             }());
-            TeacherService.serviceId = 'mainApp.models.teacher.TeacherService';
-            TeacherService.$inject = [
-                'mainApp.core.restApi.restApiService',
-                'mainApp.auth.AuthService',
-                '$q'
-            ];
             teacher_1.TeacherService = TeacherService;
             angular
                 .module('mainApp.models.teacher', [])
@@ -3256,17 +3352,14 @@ var app;
         })(teacher = models.teacher || (models.teacher = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
-//# sourceMappingURL=teacher.service.js.map
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
+
+//# sourceMappingURL=../../../../maps/app/models/teacher/teacher.service.js.map
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var app;
 (function (app) {
     var models;
@@ -4695,13 +4788,11 @@ var app;
                 __extends(GroupType, _super);
                 function GroupType(obj) {
                     if (obj === void 0) { obj = {}; }
-                    var _this = this;
                     console.log('School group classes Type Model instanced');
                     if (obj === null)
                         obj = {};
-                    _this = _super.call(this, obj) || this;
-                    _this.students = obj.students || [];
-                    return _this;
+                    _super.call(this, obj);
+                    this.students = obj.students || [];
                 }
                 Object.defineProperty(GroupType.prototype, "Students", {
                     get: function () {
@@ -4893,7 +4984,9 @@ var app;
         })(school = models.school || (models.school = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
-//# sourceMappingURL=school.model.js.map
+
+//# sourceMappingURL=../../../../maps/app/models/school/school.model.js.map
+
 var app;
 (function (app) {
     var models;
@@ -4965,14 +5058,14 @@ var app;
                     });
                     return deferred.promise;
                 };
+                SchoolService.serviceId = 'mainApp.models.school.SchoolService';
+                SchoolService.$inject = [
+                    'mainApp.core.restApi.restApiService',
+                    'mainApp.auth.AuthService',
+                    '$q'
+                ];
                 return SchoolService;
             }());
-            SchoolService.serviceId = 'mainApp.models.school.SchoolService';
-            SchoolService.$inject = [
-                'mainApp.core.restApi.restApiService',
-                'mainApp.auth.AuthService',
-                '$q'
-            ];
             school.SchoolService = SchoolService;
             angular
                 .module('mainApp.models.school', [])
@@ -4980,7 +5073,9 @@ var app;
         })(school = models.school || (models.school = {}));
     })(models = app.models || (app.models = {}));
 })(app || (app = {}));
-//# sourceMappingURL=school.service.js.map
+
+//# sourceMappingURL=../../../../maps/app/models/school/school.service.js.map
+
 (function () {
     'use strict';
     angular
@@ -4988,7 +5083,9 @@ var app;
         .config(config);
     function config() { }
 })();
-//# sourceMappingURL=header.config.js.map
+
+//# sourceMappingURL=../../../maps/components/header/header.config.js.map
+
 var components;
 (function (components) {
     var header;
@@ -5010,9 +5107,9 @@ var components;
             MaHeader.instance = function () {
                 return new MaHeader();
             };
+            MaHeader.directiveId = 'maHeader';
             return MaHeader;
         }());
-        MaHeader.directiveId = 'maHeader';
         angular
             .module('mainApp.components.header')
             .directive(MaHeader.directiveId, MaHeader.instance);
@@ -5119,26 +5216,28 @@ var components;
                     }
                 });
             };
+            HeaderController.controllerId = 'mainApp.components.header.HeaderController';
+            HeaderController.$inject = [
+                'mainApp.core.util.FunctionsUtilService',
+                'mainApp.auth.AuthService',
+                '$uibModal',
+                'dataConfig',
+                '$filter',
+                '$scope',
+                '$rootScope',
+                '$state',
+                'mainApp.localStorageService'
+            ];
             return HeaderController;
         }());
-        HeaderController.controllerId = 'mainApp.components.header.HeaderController';
-        HeaderController.$inject = [
-            'mainApp.core.util.FunctionsUtilService',
-            'mainApp.auth.AuthService',
-            '$uibModal',
-            'dataConfig',
-            '$filter',
-            '$scope',
-            '$rootScope',
-            '$state',
-            'mainApp.localStorageService'
-        ];
         header.HeaderController = HeaderController;
         angular.module('mainApp.components.header')
             .controller(HeaderController.controllerId, HeaderController);
     })(header = components.header || (components.header = {}));
 })(components || (components = {}));
-//# sourceMappingURL=header.directive.js.map
+
+//# sourceMappingURL=../../../maps/components/header/header.directive.js.map
+
 (function () {
     'use strict';
     angular
@@ -5146,7 +5245,9 @@ var components;
         .config(config);
     function config() { }
 })();
-//# sourceMappingURL=sideMenu.config.js.map
+
+//# sourceMappingURL=../../../maps/components/sideMenu/sideMenu.config.js.map
+
 var components;
 (function (components) {
     var sideMenu;
@@ -5172,9 +5273,9 @@ var components;
             MaSideMenu.instance = function () {
                 return new MaSideMenu();
             };
+            MaSideMenu.directiveId = 'maSideMenu';
             return MaSideMenu;
         }());
-        MaSideMenu.directiveId = 'maSideMenu';
         angular
             .module('mainApp.components.sideMenu')
             .directive(MaSideMenu.directiveId, MaSideMenu.instance);
@@ -5257,16 +5358,18 @@ var components;
                 var url = this.$state.href(state, { id: id });
                 window.open(url, '_blank');
             };
+            SideMenuController.controllerId = 'mainApp.components.sideMenu.SideMenuController';
+            SideMenuController.$inject = ['$state', '$filter'];
             return SideMenuController;
         }());
-        SideMenuController.controllerId = 'mainApp.components.sideMenu.SideMenuController';
-        SideMenuController.$inject = ['$state', '$filter'];
         sideMenu.SideMenuController = SideMenuController;
         angular.module('mainApp.components.sideMenu')
             .controller(SideMenuController.controllerId, SideMenuController);
     })(sideMenu = components.sideMenu || (components.sideMenu = {}));
 })(components || (components = {}));
-//# sourceMappingURL=sideMenu.directive.js.map
+
+//# sourceMappingURL=../../../maps/components/sideMenu/sideMenu.directive.js.map
+
 (function () {
     'use strict';
     angular
@@ -5274,7 +5377,9 @@ var components;
         .config(config);
     function config() { }
 })();
-//# sourceMappingURL=rating.config.js.map
+
+//# sourceMappingURL=../../../maps/components/rating/rating.config.js.map
+
 var components;
 (function (components) {
     var rating;
@@ -5299,9 +5404,9 @@ var components;
             MaRating.instance = function () {
                 return new MaRating();
             };
+            MaRating.directiveId = 'maRating';
             return MaRating;
         }());
-        MaRating.directiveId = 'maRating';
         angular
             .module('mainApp.components.rating')
             .directive(MaRating.directiveId, MaRating.instance);
@@ -5336,15 +5441,119 @@ var components;
             RatingController.prototype._assignClass = function () {
                 return 'ma-stars__icon--' + this.size;
             };
+            RatingController.controllerId = 'mainApp.components.rating.RatingController';
             return RatingController;
         }());
-        RatingController.controllerId = 'mainApp.components.rating.RatingController';
         rating.RatingController = RatingController;
         angular.module('mainApp.components.rating')
             .controller(RatingController.controllerId, RatingController);
     })(rating = components.rating || (components.rating = {}));
 })(components || (components = {}));
-//# sourceMappingURL=rating.directive.js.map
+
+//# sourceMappingURL=../../../maps/components/rating/rating.directive.js.map
+
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.components.meter', [])
+        .config(config);
+    function config() { }
+})();
+
+//# sourceMappingURL=../../../maps/components/meter/meter.config.js.map
+
+var components;
+(function (components) {
+    var meter;
+    (function (meter) {
+        'use strict';
+        var MaMeter = (function () {
+            function MaMeter() {
+                this.bindToController = true;
+                this.controller = MeterController.controllerId;
+                this.controllerAs = 'vm';
+                this.restrict = 'E';
+                this.scope = {
+                    meterValue: '=',
+                    size: '@'
+                };
+                this.templateUrl = 'components/meter/meter.html';
+                console.log('maMeter directive constructor');
+            }
+            MaMeter.prototype.link = function ($scope, elm, attr) {
+                console.log('maMeter link function');
+            };
+            MaMeter.instance = function () {
+                return new MaMeter();
+            };
+            MaMeter.directiveId = 'maMeter';
+            return MaMeter;
+        }());
+        angular
+            .module('mainApp.components.meter')
+            .directive(MaMeter.directiveId, MaMeter.instance);
+        var MeterController = (function () {
+            function MeterController($filter) {
+                this.$filter = $filter;
+                this.init();
+            }
+            MeterController.prototype.init = function () {
+                this.CIRCLES_AMOUNT = 5;
+                this._assignTitle();
+                this.activate();
+            };
+            MeterController.prototype.activate = function () {
+                console.log('meter controller actived');
+            };
+            MeterController.prototype._assignMeterClass = function () {
+                var ratingClass = 'ma-meter--rating-' + this.meterValue;
+                var meterClass = 'ma-meter--' + this.size;
+                return ratingClass + ' ' + meterClass;
+            };
+            MeterController.prototype._assignTitle = function () {
+                var BAD_TEXT = this.$filter('translate')('%global.rating.bad.label.text');
+                var REGULAR_TEXT = this.$filter('translate')('%global.rating.regular.label.text');
+                var OKAY_TEXT = this.$filter('translate')('%global.rating.okay.label.text');
+                var GOOD_TEXT = this.$filter('translate')('%global.rating.good.label.text');
+                var GREAT_TEXT = this.$filter('translate')('%global.rating.great.label.text');
+                var title = '';
+                switch (this.meterValue) {
+                    case 1:
+                        title = BAD_TEXT;
+                        break;
+                    case 2:
+                        title = REGULAR_TEXT;
+                        break;
+                    case 3:
+                        title = OKAY_TEXT;
+                        break;
+                    case 4:
+                        title = GOOD_TEXT;
+                        break;
+                    case 5:
+                        title = GREAT_TEXT;
+                        break;
+                    default:
+                        title = GOOD_TEXT;
+                        break;
+                }
+                this._title = title;
+            };
+            MeterController.prototype._assignCircleClass = function () {
+                return 'circle--' + this.size;
+            };
+            MeterController.controllerId = 'mainApp.components.meter.MeterController';
+            MeterController.$inject = ['$filter'];
+            return MeterController;
+        }());
+        meter.MeterController = MeterController;
+        angular.module('mainApp.components.meter')
+            .controller(MeterController.controllerId, MeterController);
+    })(meter = components.meter || (components.meter = {}));
+})(components || (components = {}));
+
+//# sourceMappingURL=../../../maps/components/meter/meter.directive.js.map
+
 (function () {
     'use strict';
     angular
@@ -5352,7 +5561,9 @@ var components;
         .config(config);
     function config() { }
 })();
-//# sourceMappingURL=footer.config.js.map
+
+//# sourceMappingURL=../../../maps/components/footer/footer.config.js.map
+
 var components;
 (function (components) {
     var footer;
@@ -5373,9 +5584,9 @@ var components;
             MaFooter.instance = function () {
                 return new MaFooter();
             };
+            MaFooter.directiveId = 'maFooter';
             return MaFooter;
         }());
-        MaFooter.directiveId = 'maFooter';
         angular
             .module('mainApp.components.footer')
             .directive(MaFooter.directiveId, MaFooter.instance);
@@ -5410,18 +5621,20 @@ var components;
                     }
                 });
             };
+            FooterController.controllerId = 'mainApp.components.footer.FooterController';
+            FooterController.$inject = [
+                'mainApp.core.util.FunctionsUtilService'
+            ];
             return FooterController;
         }());
-        FooterController.controllerId = 'mainApp.components.footer.FooterController';
-        FooterController.$inject = [
-            'mainApp.core.util.FunctionsUtilService'
-        ];
         footer.FooterController = FooterController;
         angular.module('mainApp.components.footer')
             .controller(FooterController.controllerId, FooterController);
     })(footer = components.footer || (components.footer = {}));
 })(components || (components = {}));
-//# sourceMappingURL=footer.directive.js.map
+
+//# sourceMappingURL=../../../maps/components/footer/footer.directive.js.map
+
 (function () {
     'use strict';
     angular
@@ -5429,7 +5642,9 @@ var components;
         .config(config);
     function config() { }
 })();
-//# sourceMappingURL=floatMessageBar.config.js.map
+
+//# sourceMappingURL=../../../maps/components/floatMessageBar/floatMessageBar.config.js.map
+
 var components;
 (function (components) {
     var floatMessageBar;
@@ -5451,9 +5666,9 @@ var components;
             MaFloatMessageBar.instance = function () {
                 return new MaFloatMessageBar();
             };
+            MaFloatMessageBar.directiveId = 'maFloatMessageBar';
             return MaFloatMessageBar;
         }());
-        MaFloatMessageBar.directiveId = 'maFloatMessageBar';
         angular
             .module('mainApp.components.floatMessageBar')
             .directive(MaFloatMessageBar.directiveId, MaFloatMessageBar.instance);
@@ -5478,22 +5693,24 @@ var components;
                 mixpanel.track(CLICK_MIXPANEL);
                 this.$state.go(CREATE_TEACHER, { reload: true });
             };
+            FloatMessageBarController.controllerId = 'mainApp.components.floatMessageBar.FloatMessageBarController';
+            FloatMessageBarController.$inject = [
+                'dataConfig',
+                '$filter',
+                '$scope',
+                '$rootScope',
+                '$state'
+            ];
             return FloatMessageBarController;
         }());
-        FloatMessageBarController.controllerId = 'mainApp.components.floatMessageBar.FloatMessageBarController';
-        FloatMessageBarController.$inject = [
-            'dataConfig',
-            '$filter',
-            '$scope',
-            '$rootScope',
-            '$state'
-        ];
         floatMessageBar.FloatMessageBarController = FloatMessageBarController;
         angular.module('mainApp.components.floatMessageBar')
             .controller(FloatMessageBarController.controllerId, FloatMessageBarController);
     })(floatMessageBar = components.floatMessageBar || (components.floatMessageBar = {}));
 })(components || (components = {}));
-//# sourceMappingURL=floatMessageBar.directive.js.map
+
+//# sourceMappingURL=../../../maps/components/floatMessageBar/floatMessageBar.directive.js.map
+
 (function () {
     'use strict';
     angular
@@ -5501,7 +5718,9 @@ var components;
         .config(config);
     function config() { }
 })();
-//# sourceMappingURL=map.config.js.map
+
+//# sourceMappingURL=../../../maps/components/map/map.config.js.map
+
 var components;
 (function (components) {
     var map;
@@ -5513,6 +5732,7 @@ var components;
                 this.controller = MapController.controllerId;
                 this.controllerAs = 'vm';
                 this.restrict = 'E';
+                this.transclude = true;
                 this.scope = {
                     mapConfig: '='
                 };
@@ -5525,9 +5745,9 @@ var components;
             MaMap.instance = function () {
                 return new MaMap();
             };
+            MaMap.directiveId = 'maMap';
             return MaMap;
         }());
-        MaMap.directiveId = 'maMap';
         angular
             .module('mainApp.components.map')
             .directive(MaMap.directiveId, MaMap.instance);
@@ -5858,16 +6078,18 @@ var components;
                     self._positionCountry(geocoder, args.country, args.address, args.city);
                 });
             };
+            MapController.controllerId = 'mainApp.components.map.MapController';
+            MapController.$inject = ['$scope', '$rootScope', '$timeout'];
             return MapController;
         }());
-        MapController.controllerId = 'mainApp.components.map.MapController';
-        MapController.$inject = ['$scope', '$rootScope', '$timeout'];
         map.MapController = MapController;
         angular.module('mainApp.components.map')
             .controller(MapController.controllerId, MapController);
     })(map = components.map || (components.map = {}));
 })(components || (components = {}));
-//# sourceMappingURL=map.directive.js.map
+
+//# sourceMappingURL=../../../maps/components/map/map.directive.js.map
+
 (function () {
     'use strict';
     angular
@@ -5875,7 +6097,9 @@ var components;
         .config(config);
     function config() { }
 })();
-//# sourceMappingURL=modal.config.js.map
+
+//# sourceMappingURL=../../../maps/components/modal/modal.config.js.map
+
 var components;
 (function (components) {
     var modal;
@@ -5909,20 +6133,22 @@ var components;
                     var modalInstance = this.$uibModal.open(options);
                     this.$uibModalInstance.close();
                 };
+                ModalWelcomeController.controllerId = 'mainApp.components.modal.ModalWelcomeController';
+                ModalWelcomeController.$inject = [
+                    '$uibModalInstance',
+                    'dataConfig',
+                    '$uibModal'
+                ];
                 return ModalWelcomeController;
             }());
-            ModalWelcomeController.controllerId = 'mainApp.components.modal.ModalWelcomeController';
-            ModalWelcomeController.$inject = [
-                '$uibModalInstance',
-                'dataConfig',
-                '$uibModal'
-            ];
             angular.module('mainApp.components.modal')
                 .controller(ModalWelcomeController.controllerId, ModalWelcomeController);
         })(modalWelcome = modal.modalWelcome || (modal.modalWelcome = {}));
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
-//# sourceMappingURL=modalWelcome.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/components/modal/modalCreateUser/modalWelcome/modalWelcome.controller.js.map
+
 var components;
 (function (components) {
     var modal;
@@ -6030,25 +6256,27 @@ var components;
                     var modalInstance = this.$uibModal.open(options);
                     this.$uibModalInstance.close();
                 };
+                ModalPhotoController.controllerId = 'mainApp.components.modal.ModalPhotoController';
+                ModalPhotoController.$inject = [
+                    'mainApp.models.user.UserService',
+                    'mainApp.core.s3Upload.S3UploadService',
+                    '$uibModalInstance',
+                    'mainApp.core.util.messageUtilService',
+                    'Upload',
+                    'dataConfig',
+                    '$uibModal',
+                    '$rootScope'
+                ];
                 return ModalPhotoController;
             }());
-            ModalPhotoController.controllerId = 'mainApp.components.modal.ModalPhotoController';
-            ModalPhotoController.$inject = [
-                'mainApp.models.user.UserService',
-                'mainApp.core.s3Upload.S3UploadService',
-                '$uibModalInstance',
-                'mainApp.core.util.messageUtilService',
-                'Upload',
-                'dataConfig',
-                '$uibModal',
-                '$rootScope'
-            ];
             angular.module('mainApp.components.modal')
                 .controller(ModalPhotoController.controllerId, ModalPhotoController);
         })(modalPhoto = modal.modalPhoto || (modal.modalPhoto = {}));
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
-//# sourceMappingURL=modalPhoto.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/components/modal/modalCreateUser/modalPhoto/modalPhoto.controller.js.map
+
 var components;
 (function (components) {
     var modal;
@@ -6185,25 +6413,27 @@ var components;
                 ModalBornController.prototype.close = function () {
                     this.$uibModalInstance.close();
                 };
+                ModalBornController.controllerId = 'mainApp.components.modal.ModalBornController';
+                ModalBornController.$inject = [
+                    'mainApp.models.user.UserService',
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    '$uibModalInstance',
+                    'dataConfig',
+                    '$filter',
+                    '$uibModal',
+                    '$rootScope'
+                ];
                 return ModalBornController;
             }());
-            ModalBornController.controllerId = 'mainApp.components.modal.ModalBornController';
-            ModalBornController.$inject = [
-                'mainApp.models.user.UserService',
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                '$uibModalInstance',
-                'dataConfig',
-                '$filter',
-                '$uibModal',
-                '$rootScope'
-            ];
             angular.module('mainApp.components.modal')
                 .controller(ModalBornController.controllerId, ModalBornController);
         })(modalBorn = modal.modalBorn || (modal.modalBorn = {}));
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
-//# sourceMappingURL=modalBorn.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/components/modal/modalCreateUser/modalBorn/modalBorn.controller.js.map
+
 var components;
 (function (components) {
     var modal;
@@ -6308,25 +6538,27 @@ var components;
                 ModalBasicInfoController.prototype.close = function () {
                     this.$uibModalInstance.close();
                 };
+                ModalBasicInfoController.controllerId = 'mainApp.components.modal.ModalBasicInfoController';
+                ModalBasicInfoController.$inject = [
+                    'mainApp.models.user.UserService',
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    '$uibModalInstance',
+                    'dataConfig',
+                    '$filter',
+                    '$uibModal',
+                    '$rootScope'
+                ];
                 return ModalBasicInfoController;
             }());
-            ModalBasicInfoController.controllerId = 'mainApp.components.modal.ModalBasicInfoController';
-            ModalBasicInfoController.$inject = [
-                'mainApp.models.user.UserService',
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                '$uibModalInstance',
-                'dataConfig',
-                '$filter',
-                '$uibModal',
-                '$rootScope'
-            ];
             angular.module('mainApp.components.modal')
                 .controller(ModalBasicInfoController.controllerId, ModalBasicInfoController);
         })(modalBasicInfo = modal.modalBasicInfo || (modal.modalBasicInfo = {}));
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
-//# sourceMappingURL=modalBasicInfo.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/components/modal/modalCreateUser/modalBasicInfo/modalBasicInfo.controller.js.map
+
 var components;
 (function (components) {
     var modal;
@@ -6350,20 +6582,22 @@ var components;
                 ModalFinishController.prototype.close = function () {
                     this.$uibModalInstance.close();
                 };
+                ModalFinishController.controllerId = 'mainApp.components.modal.ModalFinishController';
+                ModalFinishController.$inject = [
+                    '$uibModalInstance',
+                    'dataConfig',
+                    '$uibModal'
+                ];
                 return ModalFinishController;
             }());
-            ModalFinishController.controllerId = 'mainApp.components.modal.ModalFinishController';
-            ModalFinishController.$inject = [
-                '$uibModalInstance',
-                'dataConfig',
-                '$uibModal'
-            ];
             angular.module('mainApp.components.modal')
                 .controller(ModalFinishController.controllerId, ModalFinishController);
         })(modalFinish = modal.modalFinish || (modal.modalFinish = {}));
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
-//# sourceMappingURL=modalFinish.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/components/modal/modalCreateUser/modalFinish/modalFinish.controller.js.map
+
 var components;
 (function (components) {
     var modal;
@@ -6394,19 +6628,21 @@ var components;
                     this.$uibModalInstance.close();
                     event.preventDefault();
                 };
+                ModalMeetingPointController.controllerId = 'mainApp.components.modal.ModalMeetingPointController';
+                ModalMeetingPointController.$inject = [
+                    '$uibModalInstance',
+                    'dataSetModal'
+                ];
                 return ModalMeetingPointController;
             }());
-            ModalMeetingPointController.controllerId = 'mainApp.components.modal.ModalMeetingPointController';
-            ModalMeetingPointController.$inject = [
-                '$uibModalInstance',
-                'dataSetModal'
-            ];
             angular.module('mainApp.components.modal')
                 .controller(ModalMeetingPointController.controllerId, ModalMeetingPointController);
         })(modalMeetingPoint = modal.modalMeetingPoint || (modal.modalMeetingPoint = {}));
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
-//# sourceMappingURL=modalMeetingPoint.controller.js.map
+
+//# sourceMappingURL=../../../../maps/components/modal/modalMeetingPoint/modalMeetingPoint.controller.js.map
+
 var components;
 (function (components) {
     var modal;
@@ -6479,20 +6715,22 @@ var components;
                 ModalLanguagesController.prototype.close = function () {
                     this.$uibModalInstance.close();
                 };
+                ModalLanguagesController.controllerId = 'mainApp.components.modal.ModalLanguageController';
+                ModalLanguagesController.$inject = [
+                    '$uibModalInstance',
+                    'dataSetModal',
+                    '$timeout'
+                ];
                 return ModalLanguagesController;
             }());
-            ModalLanguagesController.controllerId = 'mainApp.components.modal.ModalLanguageController';
-            ModalLanguagesController.$inject = [
-                '$uibModalInstance',
-                'dataSetModal',
-                '$timeout'
-            ];
             angular.module('mainApp.components.modal')
                 .controller(ModalLanguagesController.controllerId, ModalLanguagesController);
         })(modalLanguages = modal.modalLanguages || (modal.modalLanguages = {}));
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
-//# sourceMappingURL=modalLanguages.controller.js.map
+
+//# sourceMappingURL=../../../../maps/components/modal/modalLanguages/modalLanguages.controller.js.map
+
 var components;
 (function (components) {
     var modal;
@@ -6624,24 +6862,26 @@ var components;
                 ModalExperienceController.prototype.close = function () {
                     this.$uibModalInstance.close();
                 };
+                ModalExperienceController.controllerId = 'mainApp.components.modal.ModalExperienceController';
+                ModalExperienceController.$inject = [
+                    '$uibModalInstance',
+                    'dataSetModal',
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.models.teacher.TeacherService',
+                    '$timeout',
+                    '$filter'
+                ];
                 return ModalExperienceController;
             }());
-            ModalExperienceController.controllerId = 'mainApp.components.modal.ModalExperienceController';
-            ModalExperienceController.$inject = [
-                '$uibModalInstance',
-                'dataSetModal',
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                'mainApp.models.teacher.TeacherService',
-                '$timeout',
-                '$filter'
-            ];
             angular.module('mainApp.components.modal')
                 .controller(ModalExperienceController.controllerId, ModalExperienceController);
         })(modalExperience = modal.modalExperience || (modal.modalExperience = {}));
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
-//# sourceMappingURL=modalExperience.controller.js.map
+
+//# sourceMappingURL=../../../../maps/components/modal/modalExperience/modalExperience.controller.js.map
+
 var components;
 (function (components) {
     var modal;
@@ -6765,24 +7005,26 @@ var components;
                 ModalEducationController.prototype.close = function () {
                     this.$uibModalInstance.close();
                 };
+                ModalEducationController.controllerId = 'mainApp.components.modal.ModalEducationController';
+                ModalEducationController.$inject = [
+                    '$uibModalInstance',
+                    'dataSetModal',
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.models.teacher.TeacherService',
+                    '$timeout',
+                    '$filter'
+                ];
                 return ModalEducationController;
             }());
-            ModalEducationController.controllerId = 'mainApp.components.modal.ModalEducationController';
-            ModalEducationController.$inject = [
-                '$uibModalInstance',
-                'dataSetModal',
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                'mainApp.models.teacher.TeacherService',
-                '$timeout',
-                '$filter'
-            ];
             angular.module('mainApp.components.modal')
                 .controller(ModalEducationController.controllerId, ModalEducationController);
         })(modalEducation = modal.modalEducation || (modal.modalEducation = {}));
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
-//# sourceMappingURL=modalEducation.controller.js.map
+
+//# sourceMappingURL=../../../../maps/components/modal/modalEducation/modalEducation.controller.js.map
+
 var components;
 (function (components) {
     var modal;
@@ -6883,24 +7125,26 @@ var components;
                 ModalCertificateController.prototype.close = function () {
                     this.$uibModalInstance.close();
                 };
+                ModalCertificateController.controllerId = 'mainApp.components.modal.ModalCertificateController';
+                ModalCertificateController.$inject = [
+                    '$uibModalInstance',
+                    'dataSetModal',
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.models.teacher.TeacherService',
+                    '$timeout',
+                    '$filter'
+                ];
                 return ModalCertificateController;
             }());
-            ModalCertificateController.controllerId = 'mainApp.components.modal.ModalCertificateController';
-            ModalCertificateController.$inject = [
-                '$uibModalInstance',
-                'dataSetModal',
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                'mainApp.models.teacher.TeacherService',
-                '$timeout',
-                '$filter'
-            ];
             angular.module('mainApp.components.modal')
                 .controller(ModalCertificateController.controllerId, ModalCertificateController);
         })(modalCertificate = modal.modalCertificate || (modal.modalCertificate = {}));
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
-//# sourceMappingURL=modalCertificate.controller.js.map
+
+//# sourceMappingURL=../../../../maps/components/modal/modalCertificate/modalCertificate.controller.js.map
+
 var components;
 (function (components) {
     var modal;
@@ -7107,29 +7351,31 @@ var components;
                 ModalSignUpController.prototype.close = function () {
                     this.$uibModalInstance.close();
                 };
+                ModalSignUpController.controllerId = 'mainApp.components.modal.ModalSignUpController';
+                ModalSignUpController.$inject = [
+                    '$rootScope',
+                    'mainApp.auth.AuthService',
+                    'mainApp.account.AccountService',
+                    'mainApp.register.RegisterService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.core.util.messageUtilService',
+                    '$filter',
+                    'mainApp.localStorageService',
+                    'dataSetModal',
+                    'dataConfig',
+                    '$uibModal',
+                    '$uibModalInstance'
+                ];
                 return ModalSignUpController;
             }());
-            ModalSignUpController.controllerId = 'mainApp.components.modal.ModalSignUpController';
-            ModalSignUpController.$inject = [
-                '$rootScope',
-                'mainApp.auth.AuthService',
-                'mainApp.account.AccountService',
-                'mainApp.register.RegisterService',
-                'mainApp.core.util.FunctionsUtilService',
-                'mainApp.core.util.messageUtilService',
-                '$filter',
-                'mainApp.localStorageService',
-                'dataSetModal',
-                'dataConfig',
-                '$uibModal',
-                '$uibModalInstance'
-            ];
             angular.module('mainApp.components.modal')
                 .controller(ModalSignUpController.controllerId, ModalSignUpController);
         })(modalSignUp = modal.modalSignUp || (modal.modalSignUp = {}));
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
-//# sourceMappingURL=modalSignUp.controller.js.map
+
+//# sourceMappingURL=../../../../maps/components/modal/modalSignUp/modalSignUp.controller.js.map
+
 var components;
 (function (components) {
     var modal;
@@ -7285,30 +7531,32 @@ var components;
                 ModalLogInController.prototype.close = function () {
                     this.$uibModalInstance.close();
                 };
+                ModalLogInController.controllerId = 'mainApp.components.modal.ModalLogInController';
+                ModalLogInController.$inject = [
+                    '$rootScope',
+                    '$state',
+                    'mainApp.auth.AuthService',
+                    'mainApp.account.AccountService',
+                    'mainApp.models.user.UserService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.core.util.messageUtilService',
+                    '$filter',
+                    'mainApp.localStorageService',
+                    'dataSetModal',
+                    'dataConfig',
+                    '$uibModal',
+                    '$uibModalInstance'
+                ];
                 return ModalLogInController;
             }());
-            ModalLogInController.controllerId = 'mainApp.components.modal.ModalLogInController';
-            ModalLogInController.$inject = [
-                '$rootScope',
-                '$state',
-                'mainApp.auth.AuthService',
-                'mainApp.account.AccountService',
-                'mainApp.models.user.UserService',
-                'mainApp.core.util.FunctionsUtilService',
-                'mainApp.core.util.messageUtilService',
-                '$filter',
-                'mainApp.localStorageService',
-                'dataSetModal',
-                'dataConfig',
-                '$uibModal',
-                '$uibModalInstance'
-            ];
             angular.module('mainApp.components.modal')
                 .controller(ModalLogInController.controllerId, ModalLogInController);
         })(modalLogIn = modal.modalLogIn || (modal.modalLogIn = {}));
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
-//# sourceMappingURL=modalLogIn.controller.js.map
+
+//# sourceMappingURL=../../../../maps/components/modal/modalLogIn/modalLogIn.controller.js.map
+
 var components;
 (function (components) {
     var modal;
@@ -7425,26 +7673,28 @@ var components;
                 ModalForgotPasswordController.prototype.close = function () {
                     this.$uibModalInstance.close();
                 };
+                ModalForgotPasswordController.controllerId = 'mainApp.components.modal.ModalForgotPasswordController';
+                ModalForgotPasswordController.$inject = [
+                    '$rootScope',
+                    'mainApp.auth.AuthService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.core.util.messageUtilService',
+                    'mainApp.register.RegisterService',
+                    '$filter',
+                    '$uibModal',
+                    '$uibModalInstance',
+                    'dataConfig'
+                ];
                 return ModalForgotPasswordController;
             }());
-            ModalForgotPasswordController.controllerId = 'mainApp.components.modal.ModalForgotPasswordController';
-            ModalForgotPasswordController.$inject = [
-                '$rootScope',
-                'mainApp.auth.AuthService',
-                'mainApp.core.util.FunctionsUtilService',
-                'mainApp.core.util.messageUtilService',
-                'mainApp.register.RegisterService',
-                '$filter',
-                '$uibModal',
-                '$uibModalInstance',
-                'dataConfig'
-            ];
             angular.module('mainApp.components.modal')
                 .controller(ModalForgotPasswordController.controllerId, ModalForgotPasswordController);
         })(modalForgotPassword = modal.modalForgotPassword || (modal.modalForgotPassword = {}));
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
-//# sourceMappingURL=modalForgotPassword.controller.js.map
+
+//# sourceMappingURL=../../../../maps/components/modal/modalForgotPassword/modalForgotPassword.controller.js.map
+
 var components;
 (function (components) {
     var modal;
@@ -7492,26 +7742,28 @@ var components;
                     this.$rootScope.activeMessageBar = true;
                     this.$uibModalInstance.close();
                 };
+                ModalRecommendTeacherController.controllerId = 'mainApp.components.modal.ModalRecommendTeacherController';
+                ModalRecommendTeacherController.$inject = [
+                    '$uibModalInstance',
+                    'dataSetModal',
+                    'mainApp.localStorageService',
+                    'mainApp.models.student.StudentService',
+                    '$state',
+                    'dataConfig',
+                    '$timeout',
+                    '$filter',
+                    '$rootScope'
+                ];
                 return ModalRecommendTeacherController;
             }());
-            ModalRecommendTeacherController.controllerId = 'mainApp.components.modal.ModalRecommendTeacherController';
-            ModalRecommendTeacherController.$inject = [
-                '$uibModalInstance',
-                'dataSetModal',
-                'mainApp.localStorageService',
-                'mainApp.models.student.StudentService',
-                '$state',
-                'dataConfig',
-                '$timeout',
-                '$filter',
-                '$rootScope'
-            ];
             angular.module('mainApp.components.modal')
                 .controller(ModalRecommendTeacherController.controllerId, ModalRecommendTeacherController);
         })(modalRecommendTeacher = modal.modalRecommendTeacher || (modal.modalRecommendTeacher = {}));
     })(modal = components.modal || (components.modal = {}));
 })(components || (components = {}));
-//# sourceMappingURL=modalRecommendTeacher.controller.js.map
+
+//# sourceMappingURL=../../../../maps/components/modal/modalRecommendTeacher/modalRecommendTeacher.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -7528,7 +7780,9 @@ var components;
         });
     }
 })();
-//# sourceMappingURL=main.config.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/main/main.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -7558,15 +7812,15 @@ var app;
                     }
                     console.log('main controller actived');
                 };
+                MainController.controllerId = 'mainApp.pages.main.MainController';
+                MainController.$inject = [
+                    '$state',
+                    '$rootScope',
+                    'mainApp.localStorageService',
+                    'dataConfig'
+                ];
                 return MainController;
             }());
-            MainController.controllerId = 'mainApp.pages.main.MainController';
-            MainController.$inject = [
-                '$state',
-                '$rootScope',
-                'mainApp.localStorageService',
-                'dataConfig'
-            ];
             main.MainController = MainController;
             angular
                 .module('mainApp.pages.main')
@@ -7574,7 +7828,9 @@ var app;
         })(main = pages.main || (pages.main = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=main.controller.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/main/main.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -7606,7 +7862,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=studentLandingPage.config.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/studentLandingPage/studentLandingPage.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -7671,12 +7929,12 @@ var app;
                         }
                     });
                 };
+                StudentLandingPageController.controllerId = 'mainApp.pages.studentLandingPage.StudentLandingPageController';
+                StudentLandingPageController.$inject = ['$state',
+                    'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.pages.studentLandingPage.StudentLandingPageService'];
                 return StudentLandingPageController;
             }());
-            StudentLandingPageController.controllerId = 'mainApp.pages.studentLandingPage.StudentLandingPageController';
-            StudentLandingPageController.$inject = ['$state',
-                'mainApp.core.util.FunctionsUtilService',
-                'mainApp.pages.studentLandingPage.StudentLandingPageService'];
             studentLandingPage.StudentLandingPageController = StudentLandingPageController;
             angular
                 .module('mainApp.pages.studentLandingPage')
@@ -7684,7 +7942,9 @@ var app;
         })(studentLandingPage = pages.studentLandingPage || (pages.studentLandingPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=studentLandingPage.controller.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/studentLandingPage/studentLandingPage.controller.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -7706,12 +7966,12 @@ var app;
                         return err;
                     });
                 };
+                StudentLandingPageService.serviceId = 'mainApp.pages.studentLandingPage.StudentLandingPageService';
+                StudentLandingPageService.$inject = [
+                    'mainApp.core.restApi.restApiService'
+                ];
                 return StudentLandingPageService;
             }());
-            StudentLandingPageService.serviceId = 'mainApp.pages.studentLandingPage.StudentLandingPageService';
-            StudentLandingPageService.$inject = [
-                'mainApp.core.restApi.restApiService'
-            ];
             studentLandingPage.StudentLandingPageService = StudentLandingPageService;
             angular
                 .module('mainApp.pages.studentLandingPage')
@@ -7719,7 +7979,9 @@ var app;
         })(studentLandingPage = pages.studentLandingPage || (pages.studentLandingPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=studentLandingPage.service.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/studentLandingPage/studentLandingPage.service.js.map
+
 (function () {
     'use strict';
     angular
@@ -7747,7 +8009,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=teacherLandingPage.config.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/teacherLandingPage/teacherLandingPage.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -7897,17 +8161,17 @@ var app;
                         }
                     });
                 };
+                TeacherLandingPageController.controllerId = 'mainApp.pages.teacherLandingPage.TeacherLandingPageController';
+                TeacherLandingPageController.$inject = ['$scope',
+                    'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.auth.AuthService',
+                    '$state',
+                    'dataConfig',
+                    '$uibModal',
+                    '$rootScope',
+                    'mainApp.localStorageService'];
                 return TeacherLandingPageController;
             }());
-            TeacherLandingPageController.controllerId = 'mainApp.pages.teacherLandingPage.TeacherLandingPageController';
-            TeacherLandingPageController.$inject = ['$scope',
-                'mainApp.core.util.FunctionsUtilService',
-                'mainApp.auth.AuthService',
-                '$state',
-                'dataConfig',
-                '$uibModal',
-                '$rootScope',
-                'mainApp.localStorageService'];
             teacherLandingPage.TeacherLandingPageController = TeacherLandingPageController;
             angular
                 .module('mainApp.pages.teacherLandingPage')
@@ -7915,7 +8179,9 @@ var app;
         })(teacherLandingPage = pages.teacherLandingPage || (pages.teacherLandingPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=teacherLandingPage.controller.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/teacherLandingPage/teacherLandingPage.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -7948,7 +8214,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=resetPasswordPage.config.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/resetPasswordPage/resetPasswordPage.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -8049,18 +8317,18 @@ var app;
                         });
                     }
                 };
+                ResetPasswordPageController.controllerId = 'mainApp.pages.resetPasswordPage.ResetPasswordPageController';
+                ResetPasswordPageController.$inject = [
+                    '$state',
+                    'dataConfig',
+                    '$filter',
+                    '$stateParams',
+                    'mainApp.auth.AuthService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.core.util.messageUtilService'
+                ];
                 return ResetPasswordPageController;
             }());
-            ResetPasswordPageController.controllerId = 'mainApp.pages.resetPasswordPage.ResetPasswordPageController';
-            ResetPasswordPageController.$inject = [
-                '$state',
-                'dataConfig',
-                '$filter',
-                '$stateParams',
-                'mainApp.auth.AuthService',
-                'mainApp.core.util.FunctionsUtilService',
-                'mainApp.core.util.messageUtilService'
-            ];
             resetPasswordPage.ResetPasswordPageController = ResetPasswordPageController;
             angular
                 .module('mainApp.pages.resetPasswordPage')
@@ -8068,7 +8336,9 @@ var app;
         })(resetPasswordPage = pages.resetPasswordPage || (pages.resetPasswordPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=resetPasswordPage.controller.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/resetPasswordPage/resetPasswordPage.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -8119,7 +8389,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=landingPage.config.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/landingPage/landingPage.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -8359,22 +8631,22 @@ var app;
                         }
                     });
                 };
+                LandingPageController.controllerId = 'mainApp.pages.landingPage.LandingPageController';
+                LandingPageController.$inject = ['$scope',
+                    '$state',
+                    '$stateParams',
+                    'dataConfig',
+                    '$uibModal',
+                    'mainApp.auth.AuthService',
+                    'mainApp.core.util.messageUtilService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.pages.landingPage.LandingPageService',
+                    'mainApp.models.feedback.FeedbackService',
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    '$rootScope',
+                    'mainApp.localStorageService'];
                 return LandingPageController;
             }());
-            LandingPageController.controllerId = 'mainApp.pages.landingPage.LandingPageController';
-            LandingPageController.$inject = ['$scope',
-                '$state',
-                '$stateParams',
-                'dataConfig',
-                '$uibModal',
-                'mainApp.auth.AuthService',
-                'mainApp.core.util.messageUtilService',
-                'mainApp.core.util.FunctionsUtilService',
-                'mainApp.pages.landingPage.LandingPageService',
-                'mainApp.models.feedback.FeedbackService',
-                'mainApp.core.util.GetDataStaticJsonService',
-                '$rootScope',
-                'mainApp.localStorageService'];
             landingPage.LandingPageController = LandingPageController;
             angular
                 .module('mainApp.pages.landingPage')
@@ -8382,7 +8654,9 @@ var app;
         })(landingPage = pages.landingPage || (pages.landingPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=landingPage.controller.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/landingPage/landingPage.controller.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -8408,13 +8682,13 @@ var app;
                     });
                     return deferred.promise;
                 };
+                LandingPageService.serviceId = 'mainApp.pages.landingPage.LandingPageService';
+                LandingPageService.$inject = [
+                    'mainApp.core.restApi.restApiService',
+                    '$q'
+                ];
                 return LandingPageService;
             }());
-            LandingPageService.serviceId = 'mainApp.pages.landingPage.LandingPageService';
-            LandingPageService.$inject = [
-                'mainApp.core.restApi.restApiService',
-                '$q'
-            ];
             landingPage.LandingPageService = LandingPageService;
             angular
                 .module('mainApp.pages.landingPage')
@@ -8422,7 +8696,9 @@ var app;
         })(landingPage = pages.landingPage || (pages.landingPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=landingPage.service.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/landingPage/landingPage.service.js.map
+
 (function () {
     'use strict';
     angular
@@ -8453,7 +8729,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=searchPage.config.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/searchPage/searchPage.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -8567,21 +8845,20 @@ var app;
                         self._searchByCountry(args);
                     });
                 };
+                SearchPageController.controllerId = 'mainApp.pages.searchPage.SearchPageController';
+                SearchPageController.$inject = [
+                    'mainApp.models.student.StudentService',
+                    'mainApp.models.teacher.TeacherService',
+                    'mainApp.models.school.SchoolService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    '$state',
+                    '$stateParams',
+                    '$filter',
+                    '$scope',
+                    '$rootScope',
+                    '$timeout'];
                 return SearchPageController;
             }());
-            SearchPageController.controllerId = 'mainApp.pages.searchPage.SearchPageController';
-            SearchPageController.$inject = [
-                'mainApp.models.student.StudentService',
-                'mainApp.models.teacher.TeacherService',
-                'mainApp.models.school.SchoolService',
-                'mainApp.core.util.FunctionsUtilService',
-                '$state',
-                '$stateParams',
-                '$filter',
-                '$scope',
-                '$rootScope',
-                '$timeout'
-            ];
             searchPage.SearchPageController = SearchPageController;
             angular
                 .module('mainApp.pages.searchPage')
@@ -8589,7 +8866,9 @@ var app;
         })(searchPage = pages.searchPage || (pages.searchPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=searchPage.controller.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/searchPage/searchPage.controller.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -8612,9 +8891,9 @@ var app;
                 MaTeacherResult.instance = function () {
                     return new MaTeacherResult();
                 };
+                MaTeacherResult.directiveId = 'maTeacherResult';
                 return MaTeacherResult;
             }());
-            MaTeacherResult.directiveId = 'maTeacherResult';
             angular
                 .module('mainApp.pages.searchPage')
                 .directive(MaTeacherResult.directiveId, MaTeacherResult.instance);
@@ -8661,24 +8940,26 @@ var app;
                     this._hoverDetail[id] = status;
                     this.$rootScope.$broadcast('ChangeMarker', args);
                 };
+                TeacherResultController.controllerId = 'mainApp.pages.searchPage.TeacherResultController';
+                TeacherResultController.$inject = [
+                    'mainApp.core.util.FunctionsUtilService',
+                    '$uibModal',
+                    'dataConfig',
+                    '$filter',
+                    '$state',
+                    '$rootScope'
+                ];
                 return TeacherResultController;
             }());
-            TeacherResultController.controllerId = 'mainApp.pages.searchPage.TeacherResultController';
-            TeacherResultController.$inject = [
-                'mainApp.core.util.FunctionsUtilService',
-                '$uibModal',
-                'dataConfig',
-                '$filter',
-                '$state',
-                '$rootScope'
-            ];
             searchPage.TeacherResultController = TeacherResultController;
             angular.module('mainApp.pages.searchPage')
                 .controller(TeacherResultController.controllerId, TeacherResultController);
         })(searchPage = pages.searchPage || (pages.searchPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=teacherResult.directive.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/searchPage/teacherResult/teacherResult.directive.js.map
+
 (function () {
     'use strict';
     angular
@@ -8703,7 +8984,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=userProfilePage.config.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/userProfilePage/userProfilePage.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -8757,16 +9040,15 @@ var app;
                 UserProfilePageController.prototype.goToConfirm = function () {
                     this.$state.go('page.meetingConfirmationPage');
                 };
+                UserProfilePageController.controllerId = 'mainApp.pages.userProfilePage.UserProfilePageController';
+                UserProfilePageController.$inject = [
+                    'mainApp.models.user.UserService',
+                    '$state',
+                    '$stateParams',
+                    '$filter',
+                    '$scope'];
                 return UserProfilePageController;
             }());
-            UserProfilePageController.controllerId = 'mainApp.pages.userProfilePage.UserProfilePageController';
-            UserProfilePageController.$inject = [
-                'mainApp.models.user.UserService',
-                '$state',
-                '$stateParams',
-                '$filter',
-                '$scope'
-            ];
             userProfilePage.UserProfilePageController = UserProfilePageController;
             angular
                 .module('mainApp.pages.userProfilePage')
@@ -8774,7 +9056,9 @@ var app;
         })(userProfilePage = pages.userProfilePage || (pages.userProfilePage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=userProfilePage.controller.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/userProfilePage/userProfilePage.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -8808,7 +9092,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=editProfile.config.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/editProfile/editProfile.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -8882,25 +9168,24 @@ var app;
                         }
                     });
                 };
+                EditProfileController.controllerId = 'mainApp.pages.editProfile.EditProfileController';
+                EditProfileController.$inject = [
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.models.user.UserService',
+                    'mainApp.models.teacher.TeacherService',
+                    'mainApp.core.util.messageUtilService',
+                    'dataConfig',
+                    '$state',
+                    '$stateParams',
+                    '$filter',
+                    '$scope',
+                    '$window',
+                    '$rootScope',
+                    '$uibModal',
+                    'waitForAuth'];
                 return EditProfileController;
             }());
-            EditProfileController.controllerId = 'mainApp.pages.editProfile.EditProfileController';
-            EditProfileController.$inject = [
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                'mainApp.models.user.UserService',
-                'mainApp.models.teacher.TeacherService',
-                'mainApp.core.util.messageUtilService',
-                'dataConfig',
-                '$state',
-                '$stateParams',
-                '$filter',
-                '$scope',
-                '$window',
-                '$rootScope',
-                '$uibModal',
-                'waitForAuth'
-            ];
             editProfile.EditProfileController = EditProfileController;
             angular
                 .module('mainApp.pages.editProfile')
@@ -8908,7 +9193,9 @@ var app;
         })(editProfile = pages.editProfile || (pages.editProfile = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=editProfile.controller.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/editProfile/editProfile.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -8929,7 +9216,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=editProfileBasicInfo.config.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/editProfile/editProfileBasicInfo/editProfileBasicInfo.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -9274,21 +9563,21 @@ var app;
                         }, self.TIME_SHOW_MESSAGE);
                     });
                 };
+                EditProfileBasicInfoController.controllerId = 'mainApp.pages.editProfile.EditProfileBasicInfoController';
+                EditProfileBasicInfoController.$inject = [
+                    'dataConfig',
+                    'mainApp.models.user.UserService',
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    '$state',
+                    '$filter',
+                    '$timeout',
+                    '$uibModal',
+                    '$scope',
+                    '$rootScope'
+                ];
                 return EditProfileBasicInfoController;
             }());
-            EditProfileBasicInfoController.controllerId = 'mainApp.pages.editProfile.EditProfileBasicInfoController';
-            EditProfileBasicInfoController.$inject = [
-                'dataConfig',
-                'mainApp.models.user.UserService',
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                '$state',
-                '$filter',
-                '$timeout',
-                '$uibModal',
-                '$scope',
-                '$rootScope'
-            ];
             editProfileBasicInfo.EditProfileBasicInfoController = EditProfileBasicInfoController;
             angular
                 .module('mainApp.pages.editProfile')
@@ -9296,7 +9585,9 @@ var app;
         })(editProfileBasicInfo = pages.editProfileBasicInfo || (pages.editProfileBasicInfo = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=editProfileBasicInfo.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/editProfile/editProfileBasicInfo/editProfileBasicInfo.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -9317,7 +9608,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=editProfileMedia.config.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/editProfile/editProfileMedia/editProfileMedia.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -9452,22 +9745,22 @@ var app;
                         }, self.TIME_SHOW_MESSAGE);
                     });
                 };
+                EditProfileMediaController.controllerId = 'mainApp.pages.editProfile.EditProfileMediaController';
+                EditProfileMediaController.$inject = [
+                    'dataConfig',
+                    'mainApp.models.user.UserService',
+                    'mainApp.core.s3Upload.S3UploadService',
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    'Upload',
+                    '$state',
+                    '$filter',
+                    '$timeout',
+                    '$scope',
+                    '$rootScope'
+                ];
                 return EditProfileMediaController;
             }());
-            EditProfileMediaController.controllerId = 'mainApp.pages.editProfile.EditProfileMediaController';
-            EditProfileMediaController.$inject = [
-                'dataConfig',
-                'mainApp.models.user.UserService',
-                'mainApp.core.s3Upload.S3UploadService',
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                'Upload',
-                '$state',
-                '$filter',
-                '$timeout',
-                '$scope',
-                '$rootScope'
-            ];
             editProfileMedia.EditProfileMediaController = EditProfileMediaController;
             angular
                 .module('mainApp.pages.editProfile')
@@ -9475,7 +9768,9 @@ var app;
         })(editProfileMedia = pages.editProfileMedia || (pages.editProfileMedia = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=editProfileMedia.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/editProfile/editProfileMedia/editProfileMedia.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -9496,7 +9791,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=editProfileLocation.config.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/editProfile/editProfileLocation/editProfileLocation.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -9672,20 +9969,20 @@ var app;
                         }, self.TIME_SHOW_MESSAGE);
                     });
                 };
+                EditProfileLocationController.controllerId = 'mainApp.pages.editProfile.EditProfileLocationController';
+                EditProfileLocationController.$inject = [
+                    'dataConfig',
+                    'mainApp.models.user.UserService',
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    '$state',
+                    '$filter',
+                    '$timeout',
+                    '$scope',
+                    '$rootScope'
+                ];
                 return EditProfileLocationController;
             }());
-            EditProfileLocationController.controllerId = 'mainApp.pages.editProfile.EditProfileLocationController';
-            EditProfileLocationController.$inject = [
-                'dataConfig',
-                'mainApp.models.user.UserService',
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                '$state',
-                '$filter',
-                '$timeout',
-                '$scope',
-                '$rootScope'
-            ];
             editProfileLocation.EditProfileLocationController = EditProfileLocationController;
             angular
                 .module('mainApp.pages.editProfile')
@@ -9693,7 +9990,9 @@ var app;
         })(editProfileLocation = pages.editProfileLocation || (pages.editProfileLocation = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=editProfileLocation.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/editProfile/editProfileLocation/editProfileLocation.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -9714,7 +10013,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=userEditAgendaPage.config.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/editProfile/userEditAgendaPage/userEditAgendaPage.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -9791,15 +10092,14 @@ var app;
                 UserEditAgendaPageController.prototype.goToEditMedia = function () {
                     this.$state.go('page.userEditMediaPage');
                 };
+                UserEditAgendaPageController.controllerId = 'mainApp.pages.userEditAgendaPage.UserEditAgendaPageController';
+                UserEditAgendaPageController.$inject = [
+                    '$state',
+                    '$filter',
+                    '$scope',
+                    'uiCalendarConfig'];
                 return UserEditAgendaPageController;
             }());
-            UserEditAgendaPageController.controllerId = 'mainApp.pages.userEditAgendaPage.UserEditAgendaPageController';
-            UserEditAgendaPageController.$inject = [
-                '$state',
-                '$filter',
-                '$scope',
-                'uiCalendarConfig'
-            ];
             userEditAgendaPage.UserEditAgendaPageController = UserEditAgendaPageController;
             angular
                 .module('mainApp.pages.userEditAgendaPage')
@@ -9807,7 +10107,9 @@ var app;
         })(userEditAgendaPage = pages.userEditAgendaPage || (pages.userEditAgendaPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=userEditAgendaPage.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/editProfile/userEditAgendaPage/userEditAgendaPage.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -9841,7 +10143,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=editTeacher.config.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/editTeacher/editTeacher.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -9944,25 +10248,24 @@ var app;
                         }
                     });
                 };
+                EditTeacherController.controllerId = 'mainApp.pages.editTeacher.EditTeacherController';
+                EditTeacherController.$inject = [
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.models.user.UserService',
+                    'mainApp.models.teacher.TeacherService',
+                    'mainApp.core.util.messageUtilService',
+                    'dataConfig',
+                    '$state',
+                    '$stateParams',
+                    '$filter',
+                    '$scope',
+                    '$window',
+                    '$rootScope',
+                    '$uibModal',
+                    'waitForAuth'];
                 return EditTeacherController;
             }());
-            EditTeacherController.controllerId = 'mainApp.pages.editTeacher.EditTeacherController';
-            EditTeacherController.$inject = [
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                'mainApp.models.user.UserService',
-                'mainApp.models.teacher.TeacherService',
-                'mainApp.core.util.messageUtilService',
-                'dataConfig',
-                '$state',
-                '$stateParams',
-                '$filter',
-                '$scope',
-                '$window',
-                '$rootScope',
-                '$uibModal',
-                'waitForAuth'
-            ];
             editTeacher.EditTeacherController = EditTeacherController;
             angular
                 .module('mainApp.pages.editTeacher')
@@ -9970,7 +10273,9 @@ var app;
         })(editTeacher = pages.editTeacher || (pages.editTeacher = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=editTeacher.controller.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/editTeacher/editTeacher.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -9991,7 +10296,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=editTeacherExperience.config.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/editTeacher/editTeacherExperience/editTeacherExperience.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -10175,19 +10482,19 @@ var app;
                         }, self.TIME_SHOW_MESSAGE);
                     });
                 };
+                EditTeacherExperienceController.controllerId = 'mainApp.pages.editTeacher.EditTeacherExperienceController';
+                EditTeacherExperienceController.$inject = [
+                    'dataConfig',
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    '$timeout',
+                    '$filter',
+                    '$scope',
+                    '$rootScope',
+                    '$uibModal'
+                ];
                 return EditTeacherExperienceController;
             }());
-            EditTeacherExperienceController.controllerId = 'mainApp.pages.editTeacher.EditTeacherExperienceController';
-            EditTeacherExperienceController.$inject = [
-                'dataConfig',
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                '$timeout',
-                '$filter',
-                '$scope',
-                '$rootScope',
-                '$uibModal'
-            ];
             editTeacher.EditTeacherExperienceController = EditTeacherExperienceController;
             angular
                 .module('mainApp.pages.editTeacher')
@@ -10195,7 +10502,9 @@ var app;
         })(editTeacher = pages.editTeacher || (pages.editTeacher = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=editTeacherExperience.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/editTeacher/editTeacherExperience/editTeacherExperience.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -10216,7 +10525,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=editTeacherEducation.config.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/editTeacher/editTeacherEducation/editTeacherEducation.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -10396,19 +10707,19 @@ var app;
                         }, self.TIME_SHOW_MESSAGE);
                     });
                 };
+                EditTeacherEducationController.controllerId = 'mainApp.pages.editTeacher.EditTeacherEducationController';
+                EditTeacherEducationController.$inject = [
+                    'dataConfig',
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    '$timeout',
+                    '$filter',
+                    '$scope',
+                    '$rootScope',
+                    '$uibModal'
+                ];
                 return EditTeacherEducationController;
             }());
-            EditTeacherEducationController.controllerId = 'mainApp.pages.editTeacher.EditTeacherEducationController';
-            EditTeacherEducationController.$inject = [
-                'dataConfig',
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                '$timeout',
-                '$filter',
-                '$scope',
-                '$rootScope',
-                '$uibModal'
-            ];
             editTeacher.EditTeacherEducationController = EditTeacherEducationController;
             angular
                 .module('mainApp.pages.editTeacher')
@@ -10416,7 +10727,9 @@ var app;
         })(editTeacher = pages.editTeacher || (pages.editTeacher = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=editTeacherEducation.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/editTeacher/editTeacherEducation/editTeacherEducation.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -10437,7 +10750,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=editTeacherTeach.config.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/editTeacher/editTeacherTeach/editTeacherTeach.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -10602,20 +10917,20 @@ var app;
                         }, self.TIME_SHOW_MESSAGE);
                     });
                 };
+                EditTeacherTeachController.controllerId = 'mainApp.pages.editTeacher.EditTeacherTeachController';
+                EditTeacherTeachController.$inject = [
+                    'dataConfig',
+                    'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    '$state',
+                    '$filter',
+                    '$timeout',
+                    '$scope',
+                    '$rootScope',
+                    '$uibModal'
+                ];
                 return EditTeacherTeachController;
             }());
-            EditTeacherTeachController.controllerId = 'mainApp.pages.editTeacher.EditTeacherTeachController';
-            EditTeacherTeachController.$inject = [
-                'dataConfig',
-                'mainApp.core.util.FunctionsUtilService',
-                'mainApp.core.util.GetDataStaticJsonService',
-                '$state',
-                '$filter',
-                '$timeout',
-                '$scope',
-                '$rootScope',
-                '$uibModal'
-            ];
             editTeacher.EditTeacherTeachController = EditTeacherTeachController;
             angular
                 .module('mainApp.pages.editTeacher')
@@ -10623,7 +10938,9 @@ var app;
         })(editTeacher = pages.editTeacher || (pages.editTeacher = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=editTeacherTeach.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/editTeacher/editTeacherTeach/editTeacherTeach.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -10644,7 +10961,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=editTeacherMethodology.config.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/editTeacher/editTeacherMethodology/editTeacherMethodology.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -10839,19 +11158,19 @@ var app;
                         }, self.TIME_SHOW_MESSAGE);
                     });
                 };
+                EditTeacherMethodologyController.controllerId = 'mainApp.pages.editTeacher.EditTeacherMethodologyController';
+                EditTeacherMethodologyController.$inject = [
+                    'dataConfig',
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    '$timeout',
+                    '$filter',
+                    '$scope',
+                    '$rootScope',
+                    '$uibModal'
+                ];
                 return EditTeacherMethodologyController;
             }());
-            EditTeacherMethodologyController.controllerId = 'mainApp.pages.editTeacher.EditTeacherMethodologyController';
-            EditTeacherMethodologyController.$inject = [
-                'dataConfig',
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                '$timeout',
-                '$filter',
-                '$scope',
-                '$rootScope',
-                '$uibModal'
-            ];
             editTeacher.EditTeacherMethodologyController = EditTeacherMethodologyController;
             angular
                 .module('mainApp.pages.editTeacher')
@@ -10859,7 +11178,9 @@ var app;
         })(editTeacher = pages.editTeacher || (pages.editTeacher = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=editTeacherMethodology.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/editTeacher/editTeacherMethodology/editTeacherMethodology.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -10880,7 +11201,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=editTeacherPrice.config.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/editTeacher/editTeacherPrice/editTeacherPrice.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -11028,19 +11351,19 @@ var app;
                         }, self.TIME_SHOW_MESSAGE);
                     });
                 };
+                EditTeacherPriceController.controllerId = 'mainApp.pages.editTeacher.EditTeacherPriceController';
+                EditTeacherPriceController.$inject = [
+                    'dataConfig',
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    '$timeout',
+                    '$filter',
+                    '$scope',
+                    '$rootScope',
+                    '$uibModal'
+                ];
                 return EditTeacherPriceController;
             }());
-            EditTeacherPriceController.controllerId = 'mainApp.pages.editTeacher.EditTeacherPriceController';
-            EditTeacherPriceController.$inject = [
-                'dataConfig',
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                '$timeout',
-                '$filter',
-                '$scope',
-                '$rootScope',
-                '$uibModal'
-            ];
             editTeacher.EditTeacherPriceController = EditTeacherPriceController;
             angular
                 .module('mainApp.pages.editTeacher')
@@ -11048,7 +11371,9 @@ var app;
         })(editTeacher = pages.editTeacher || (pages.editTeacher = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=editTeacherPrice.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/editTeacher/editTeacherPrice/editTeacherPrice.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -11072,7 +11397,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=meetingConfirmationPage.config.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/meetingConfirmationPage/meetingConfirmationPage.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -11159,16 +11486,15 @@ var app;
                 MeetingConfirmationPageController.prototype.edit = function () {
                     this.processCompleted = false;
                 };
+                MeetingConfirmationPageController.controllerId = 'mainApp.pages.meetingConfirmationPage.MeetingConfirmationPageController';
+                MeetingConfirmationPageController.$inject = [
+                    'dataConfig',
+                    '$state',
+                    '$filter',
+                    '$scope',
+                    '$uibModal'];
                 return MeetingConfirmationPageController;
             }());
-            MeetingConfirmationPageController.controllerId = 'mainApp.pages.meetingConfirmationPage.MeetingConfirmationPageController';
-            MeetingConfirmationPageController.$inject = [
-                'dataConfig',
-                '$state',
-                '$filter',
-                '$scope',
-                '$uibModal'
-            ];
             meetingConfirmationPage.MeetingConfirmationPageController = MeetingConfirmationPageController;
             angular
                 .module('mainApp.pages.meetingConfirmationPage')
@@ -11176,7 +11502,9 @@ var app;
         })(meetingConfirmationPage = pages.meetingConfirmationPage || (pages.meetingConfirmationPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=meetingConfirmationPage.controller.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/meetingConfirmationPage/meetingConfirmationPage.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -11200,7 +11528,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=userInboxPage.config.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/userInboxPage/userInboxPage.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -11226,13 +11556,12 @@ var app;
                 UserInboxPageController.prototype.goToDetail = function () {
                     this.$state.go('page.userInboxDetailsPage');
                 };
+                UserInboxPageController.controllerId = 'mainApp.pages.userInboxPage.UserInboxPageController';
+                UserInboxPageController.$inject = [
+                    '$state',
+                    '$scope'];
                 return UserInboxPageController;
             }());
-            UserInboxPageController.controllerId = 'mainApp.pages.userInboxPage.UserInboxPageController';
-            UserInboxPageController.$inject = [
-                '$state',
-                '$scope'
-            ];
             userInboxPage.UserInboxPageController = UserInboxPageController;
             angular
                 .module('mainApp.pages.userInboxPage')
@@ -11240,7 +11569,9 @@ var app;
         })(userInboxPage = pages.userInboxPage || (pages.userInboxPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=userInboxPage.controller.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/userInboxPage/userInboxPage.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -11265,7 +11596,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=userInboxDetailsPage.config.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/userInboxDetailsPage/userInboxDetailsPage.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -11288,13 +11621,12 @@ var app;
                 UserInboxDetailsPageController.prototype.activate = function () {
                     console.log('userInboxDetailsPage controller actived');
                 };
+                UserInboxDetailsPageController.controllerId = 'mainApp.pages.userInboxDetailsPage.UserInboxDetailsPageController';
+                UserInboxDetailsPageController.$inject = [
+                    '$state',
+                    '$scope'];
                 return UserInboxDetailsPageController;
             }());
-            UserInboxDetailsPageController.controllerId = 'mainApp.pages.userInboxDetailsPage.UserInboxDetailsPageController';
-            UserInboxDetailsPageController.$inject = [
-                '$state',
-                '$scope'
-            ];
             userInboxDetailsPage.UserInboxDetailsPageController = UserInboxDetailsPageController;
             angular
                 .module('mainApp.pages.userInboxDetailsPage')
@@ -11302,7 +11634,9 @@ var app;
         })(userInboxDetailsPage = pages.userInboxDetailsPage || (pages.userInboxDetailsPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=userInboxDetailsPage.controller.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/userInboxDetailsPage/userInboxDetailsPage.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -11339,7 +11673,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=createTeacherPage.config.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/createTeacherPage/createTeacherPage.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -11474,26 +11810,25 @@ var app;
                         }
                     });
                 };
+                CreateTeacherPageController.controllerId = 'mainApp.pages.createTeacherPage.CreateTeacherPageController';
+                CreateTeacherPageController.$inject = [
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.models.user.UserService',
+                    'mainApp.models.teacher.TeacherService',
+                    'mainApp.core.util.messageUtilService',
+                    'mainApp.localStorageService',
+                    'dataConfig',
+                    '$state',
+                    '$stateParams',
+                    '$filter',
+                    '$scope',
+                    '$window',
+                    '$rootScope',
+                    '$uibModal',
+                    'waitForAuth'];
                 return CreateTeacherPageController;
             }());
-            CreateTeacherPageController.controllerId = 'mainApp.pages.createTeacherPage.CreateTeacherPageController';
-            CreateTeacherPageController.$inject = [
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                'mainApp.models.user.UserService',
-                'mainApp.models.teacher.TeacherService',
-                'mainApp.core.util.messageUtilService',
-                'mainApp.localStorageService',
-                'dataConfig',
-                '$state',
-                '$stateParams',
-                '$filter',
-                '$scope',
-                '$window',
-                '$rootScope',
-                '$uibModal',
-                'waitForAuth'
-            ];
             createTeacherPage.CreateTeacherPageController = CreateTeacherPageController;
             angular
                 .module('mainApp.pages.createTeacherPage')
@@ -11501,7 +11836,9 @@ var app;
         })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=createTeacherPage.controller.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/createTeacherPage/createTeacherPage.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -11522,7 +11859,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=teacherWelcomeSection.config.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/createTeacherPage/teacherWelcomeSection/teacherWelcomeSection.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -11553,15 +11892,15 @@ var app;
                     this.$scope.$emit('Save Data');
                     this.$state.go(this.STEP1_STATE, { reload: true });
                 };
+                TeacherWelcomeSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherWelcomeSectionController';
+                TeacherWelcomeSectionController.$inject = [
+                    '$state',
+                    '$scope',
+                    '$rootScope',
+                    'mainApp.core.util.FunctionsUtilService'
+                ];
                 return TeacherWelcomeSectionController;
             }());
-            TeacherWelcomeSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherWelcomeSectionController';
-            TeacherWelcomeSectionController.$inject = [
-                '$state',
-                '$scope',
-                '$rootScope',
-                'mainApp.core.util.FunctionsUtilService'
-            ];
             createTeacherPage.TeacherWelcomeSectionController = TeacherWelcomeSectionController;
             angular
                 .module('mainApp.pages.createTeacherPage')
@@ -11569,7 +11908,9 @@ var app;
         })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=teacherWelcomeSection.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/createTeacherPage/teacherWelcomeSection/teacherWelcomeSection.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -11590,7 +11931,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=teacherInfoSection.config.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -11815,19 +12158,19 @@ var app;
                         self._fillForm(args);
                     });
                 };
+                TeacherInfoSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherInfoSectionController';
+                TeacherInfoSectionController.$inject = [
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.localStorageService',
+                    'dataConfig',
+                    '$state',
+                    '$filter',
+                    '$scope',
+                    '$rootScope'
+                ];
                 return TeacherInfoSectionController;
             }());
-            TeacherInfoSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherInfoSectionController';
-            TeacherInfoSectionController.$inject = [
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                'mainApp.localStorageService',
-                'dataConfig',
-                '$state',
-                '$filter',
-                '$scope',
-                '$rootScope'
-            ];
             createTeacherPage.TeacherInfoSectionController = TeacherInfoSectionController;
             angular
                 .module('mainApp.pages.createTeacherPage')
@@ -11835,7 +12178,9 @@ var app;
         })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=teacherInfoSection.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -11856,7 +12201,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=teacherLocationSection.config.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -12064,18 +12411,18 @@ var app;
                         self.form.positionLocation.Lat = args.lat;
                     });
                 };
+                TeacherLocationSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherLocationSectionController';
+                TeacherLocationSectionController.$inject = [
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    '$state',
+                    '$filter',
+                    '$scope',
+                    '$rootScope',
+                    '$timeout'
+                ];
                 return TeacherLocationSectionController;
             }());
-            TeacherLocationSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherLocationSectionController';
-            TeacherLocationSectionController.$inject = [
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                '$state',
-                '$filter',
-                '$scope',
-                '$rootScope',
-                '$timeout'
-            ];
             createTeacherPage.TeacherLocationSectionController = TeacherLocationSectionController;
             angular
                 .module('mainApp.pages.createTeacherPage')
@@ -12083,7 +12430,9 @@ var app;
         })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=teacherLocationSection.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -12104,7 +12453,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=teacherLanguageSection.config.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/createTeacherPage/teacherLanguageSection/teacherLanguageSection.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -12330,20 +12681,20 @@ var app;
                         self._fillForm(args);
                     });
                 };
+                TeacherLanguageSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherLanguageSectionController';
+                TeacherLanguageSectionController.$inject = [
+                    'dataConfig',
+                    'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    '$state',
+                    '$filter',
+                    '$scope',
+                    '$rootScope',
+                    '$timeout',
+                    '$uibModal'
+                ];
                 return TeacherLanguageSectionController;
             }());
-            TeacherLanguageSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherLanguageSectionController';
-            TeacherLanguageSectionController.$inject = [
-                'dataConfig',
-                'mainApp.core.util.FunctionsUtilService',
-                'mainApp.core.util.GetDataStaticJsonService',
-                '$state',
-                '$filter',
-                '$scope',
-                '$rootScope',
-                '$timeout',
-                '$uibModal'
-            ];
             createTeacherPage.TeacherLanguageSectionController = TeacherLanguageSectionController;
             angular
                 .module('mainApp.pages.createTeacherPage')
@@ -12351,7 +12702,9 @@ var app;
         })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=teacherLanguageSection.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/createTeacherPage/teacherLanguageSection/teacherLanguageSection.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -12372,7 +12725,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=teacherExperienceSection.config.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/createTeacherPage/teacherExperienceSection/teacherExperienceSection.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -12550,19 +12905,19 @@ var app;
                         self._fillForm(args);
                     });
                 };
+                TeacherExperienceSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherExperienceSectionController';
+                TeacherExperienceSectionController.$inject = [
+                    'dataConfig',
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    '$state',
+                    '$filter',
+                    '$scope',
+                    '$rootScope',
+                    '$uibModal'
+                ];
                 return TeacherExperienceSectionController;
             }());
-            TeacherExperienceSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherExperienceSectionController';
-            TeacherExperienceSectionController.$inject = [
-                'dataConfig',
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                '$state',
-                '$filter',
-                '$scope',
-                '$rootScope',
-                '$uibModal'
-            ];
             createTeacherPage.TeacherExperienceSectionController = TeacherExperienceSectionController;
             angular
                 .module('mainApp.pages.createTeacherPage')
@@ -12570,7 +12925,9 @@ var app;
         })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=teacherExperienceSection.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/createTeacherPage/teacherExperienceSection/teacherExperienceSection.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -12591,7 +12948,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=teacherEducationSection.config.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/createTeacherPage/teacherEducationSection/teacherEducationSection.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -12759,19 +13118,19 @@ var app;
                         self._fillForm(args);
                     });
                 };
+                TeacherEducationSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherEducationSectionController';
+                TeacherEducationSectionController.$inject = [
+                    'dataConfig',
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    '$state',
+                    '$filter',
+                    '$scope',
+                    '$rootScope',
+                    '$uibModal'
+                ];
                 return TeacherEducationSectionController;
             }());
-            TeacherEducationSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherEducationSectionController';
-            TeacherEducationSectionController.$inject = [
-                'dataConfig',
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                '$state',
-                '$filter',
-                '$scope',
-                '$rootScope',
-                '$uibModal'
-            ];
             createTeacherPage.TeacherEducationSectionController = TeacherEducationSectionController;
             angular
                 .module('mainApp.pages.createTeacherPage')
@@ -12779,7 +13138,9 @@ var app;
         })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=teacherEducationSection.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/createTeacherPage/teacherEducationSection/teacherEducationSection.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -12800,7 +13161,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=teacherMethodSection.config.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/createTeacherPage/teacherMethodSection/teacherMethodSection.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -12985,18 +13348,18 @@ var app;
                         self._fillForm(args);
                     });
                 };
+                TeacherMethodSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherMethodSectionController';
+                TeacherMethodSectionController.$inject = [
+                    'dataConfig',
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    '$state',
+                    '$filter',
+                    '$scope',
+                    '$rootScope'
+                ];
                 return TeacherMethodSectionController;
             }());
-            TeacherMethodSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherMethodSectionController';
-            TeacherMethodSectionController.$inject = [
-                'dataConfig',
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                '$state',
-                '$filter',
-                '$scope',
-                '$rootScope'
-            ];
             createTeacherPage.TeacherMethodSectionController = TeacherMethodSectionController;
             angular
                 .module('mainApp.pages.createTeacherPage')
@@ -13004,7 +13367,9 @@ var app;
         })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=teacherMethodSection.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/createTeacherPage/teacherMethodSection/teacherMethodSection.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -13025,7 +13390,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=teacherPriceSection.config.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/createTeacherPage/teacherPriceSection/teacherPriceSection.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -13160,18 +13527,18 @@ var app;
                         self._fillForm(args);
                     });
                 };
+                TeacherPriceSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherPriceSectionController';
+                TeacherPriceSectionController.$inject = [
+                    'dataConfig',
+                    'mainApp.core.util.GetDataStaticJsonService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    '$state',
+                    '$filter',
+                    '$scope',
+                    '$rootScope'
+                ];
                 return TeacherPriceSectionController;
             }());
-            TeacherPriceSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherPriceSectionController';
-            TeacherPriceSectionController.$inject = [
-                'dataConfig',
-                'mainApp.core.util.GetDataStaticJsonService',
-                'mainApp.core.util.FunctionsUtilService',
-                '$state',
-                '$filter',
-                '$scope',
-                '$rootScope'
-            ];
             createTeacherPage.TeacherPriceSectionController = TeacherPriceSectionController;
             angular
                 .module('mainApp.pages.createTeacherPage')
@@ -13179,7 +13546,9 @@ var app;
         })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=teacherPriceSection.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/createTeacherPage/teacherPriceSection/teacherPriceSection.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -13200,7 +13569,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=teacherPhotoSection.config.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/createTeacherPage/teacherPhotoSection/teacherPhotoSection.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -13355,19 +13726,19 @@ var app;
                         self._fillForm(args);
                     });
                 };
+                TeacherPhotoSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherPhotoSectionController';
+                TeacherPhotoSectionController.$inject = [
+                    'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.core.s3Upload.S3UploadService',
+                    'mainApp.core.util.messageUtilService',
+                    'Upload',
+                    '$state',
+                    '$filter',
+                    '$scope',
+                    '$rootScope'
+                ];
                 return TeacherPhotoSectionController;
             }());
-            TeacherPhotoSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherPhotoSectionController';
-            TeacherPhotoSectionController.$inject = [
-                'mainApp.core.util.FunctionsUtilService',
-                'mainApp.core.s3Upload.S3UploadService',
-                'mainApp.core.util.messageUtilService',
-                'Upload',
-                '$state',
-                '$filter',
-                '$scope',
-                '$rootScope'
-            ];
             createTeacherPage.TeacherPhotoSectionController = TeacherPhotoSectionController;
             angular
                 .module('mainApp.pages.createTeacherPage')
@@ -13375,7 +13746,9 @@ var app;
         })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=teacherPhotoSection.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/createTeacherPage/teacherPhotoSection/teacherPhotoSection.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -13396,7 +13769,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=teacherFinishSection.config.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/createTeacherPage/teacherFinishSection/teacherFinishSection.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -13427,17 +13802,17 @@ var app;
                     this.localStorage.removeItem(this.dataConfig.teacherDataLocalStorage);
                     this.$state.go('page.landingPage');
                 };
+                TeacherFinishSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherFinishSectionController';
+                TeacherFinishSectionController.$inject = [
+                    '$scope',
+                    '$rootScope',
+                    '$state',
+                    'dataConfig',
+                    'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.localStorageService'
+                ];
                 return TeacherFinishSectionController;
             }());
-            TeacherFinishSectionController.controllerId = 'mainApp.pages.createTeacherPage.TeacherFinishSectionController';
-            TeacherFinishSectionController.$inject = [
-                '$scope',
-                '$rootScope',
-                '$state',
-                'dataConfig',
-                'mainApp.core.util.FunctionsUtilService',
-                'mainApp.localStorageService'
-            ];
             createTeacherPage.TeacherFinishSectionController = TeacherFinishSectionController;
             angular
                 .module('mainApp.pages.createTeacherPage')
@@ -13445,7 +13820,9 @@ var app;
         })(createTeacherPage = pages.createTeacherPage || (pages.createTeacherPage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=teacherFinishSection.controller.js.map
+
+//# sourceMappingURL=../../../../../maps/app/pages/createTeacherPage/teacherFinishSection/teacherFinishSection.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -13476,7 +13853,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=teacherProfilePage.config.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/teacherProfilePage/teacherProfilePage.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -13580,16 +13959,15 @@ var app;
                     average = this.functionsUtil.averageNumbersArray(averageArr);
                     return average;
                 };
+                TeacherProfilePageController.controllerId = 'mainApp.pages.teacherProfilePage.TeacherProfilePageController';
+                TeacherProfilePageController.$inject = [
+                    'mainApp.models.teacher.TeacherService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    '$state',
+                    '$stateParams',
+                    '$filter'];
                 return TeacherProfilePageController;
             }());
-            TeacherProfilePageController.controllerId = 'mainApp.pages.teacherProfilePage.TeacherProfilePageController';
-            TeacherProfilePageController.$inject = [
-                'mainApp.models.teacher.TeacherService',
-                'mainApp.core.util.FunctionsUtilService',
-                '$state',
-                '$stateParams',
-                '$filter'
-            ];
             teacherProfilePage.TeacherProfilePageController = TeacherProfilePageController;
             angular
                 .module('mainApp.pages.teacherProfilePage')
@@ -13597,7 +13975,9 @@ var app;
         })(teacherProfilePage = pages.teacherProfilePage || (pages.teacherProfilePage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=teacherProfilePage.controller.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/teacherProfilePage/teacherProfilePage.controller.js.map
+
 (function () {
     'use strict';
     angular
@@ -13628,7 +14008,9 @@ var app;
         });
     }
 })();
-//# sourceMappingURL=schoolProfilePage.config.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/schoolProfilePage/schoolProfilePage.config.js.map
+
 var app;
 (function (app) {
     var pages;
@@ -13652,7 +14034,7 @@ var app;
                 SchoolProfilePageController.prototype.activate = function () {
                     var ENTER_MIXPANEL = 'Enter: School Profile Page';
                     var self = this;
-                    console.log('schoolProfilePage controller actived');
+                    console.log('schoolProfilePage 20 controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
                     this.SchoolService.getSchoolById(this.$stateParams.id).then(function (response) {
                         self.data = new app.models.school.School(response);
@@ -13669,16 +14051,20 @@ var app;
                         window.open(url, '_blank');
                     }
                 };
+                SchoolProfilePageController.prototype.assignAmenitieIconClass = function (amenitie) {
+                    var amenitiePrefixClass = 'ma-liner-icons--default--';
+                    var iconClass = this.functionsUtil.assignAmenitieIconClass(amenitie);
+                    return amenitiePrefixClass + iconClass;
+                };
+                SchoolProfilePageController.controllerId = 'mainApp.pages.schoolProfilePage.SchoolProfilePageController';
+                SchoolProfilePageController.$inject = [
+                    'mainApp.models.school.SchoolService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    '$state',
+                    '$stateParams',
+                    '$filter'];
                 return SchoolProfilePageController;
             }());
-            SchoolProfilePageController.controllerId = 'mainApp.pages.schoolProfilePage.SchoolProfilePageController';
-            SchoolProfilePageController.$inject = [
-                'mainApp.models.school.SchoolService',
-                'mainApp.core.util.FunctionsUtilService',
-                '$state',
-                '$stateParams',
-                '$filter'
-            ];
             schoolProfilePage.SchoolProfilePageController = SchoolProfilePageController;
             angular
                 .module('mainApp.pages.schoolProfilePage')
@@ -13686,4 +14072,5 @@ var app;
         })(schoolProfilePage = pages.schoolProfilePage || (pages.schoolProfilePage = {}));
     })(pages = app.pages || (app.pages = {}));
 })(app || (app = {}));
-//# sourceMappingURL=schoolProfilePage.controller.js.map
+
+//# sourceMappingURL=../../../../maps/app/pages/schoolProfilePage/schoolProfilePage.controller.js.map

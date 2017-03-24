@@ -1,0 +1,17 @@
+(function () {
+    'use strict';
+    angular.module('mainApp.core', [
+        'ngResource',
+        'ngCookies',
+        'ui.router',
+        'angular-oauth2',
+        'pascalprecht.translate',
+        'ui.bootstrap',
+        'ui.calendar',
+        'ui.bootstrap.datetimepicker',
+        'ngFileUpload',
+        'ngImgCrop'
+    ]);
+})();
+
+//# sourceMappingURL=../../maps/app/app.core.module.js.map

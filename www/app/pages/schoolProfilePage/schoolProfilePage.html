@@ -121,7 +121,8 @@
                         <div class="ma-box__footer">
                             <div class="row">
                                 <div class="col-xs-12">
-                                    <p class="ma-p ma-p--default strong"
+                                    <p class="ma-p ma-p--default strong
+                                              text-capitalize"
                                        translate>
                                         %global.group.label.text
                                     </p>
@@ -374,9 +375,9 @@
                                     </div>
 
                                     <div class="row middle-xs space-5">
-                                        <div class="col-xs-6 space-1"
+                                        <div class="col-xs-6 space-2"
                                              ng-repeat="amenitie in vm.data.Amenities.Option | limitTo: (vm.data.Amenities.Option.length + 1) /2: 0">
-                                             <span class="space-right-1">
+                                             <span class="space-right-2">
                                                 <i class="ma-liner-icons
                                                           ma-liner-icons--default"
                                                    ng-class="vm.assignAmenitieIconClass(amenitie)"></i>
@@ -385,9 +386,9 @@
                                                 {{amenitie | getI18nFilter:'amenities.school'}}
                                             </span>
                                         </div>
-                                        <div class="col-xs-6 space-1"
+                                        <div class="col-xs-6 space-2"
                                              ng-repeat="amenitie in vm.data.Amenities.Option | limitTo: vm.data.Amenities.Option.length /2: (vm.data.Amenities.Option.length + 1) /2">
-                                            <span class="space-right-1">
+                                            <span class="space-right-2">
                                                <i class="ma-liner-icons
                                                          ma-liner-icons--default"
                                                   ng-class="vm.assignAmenitieIconClass(amenitie)"></i>
