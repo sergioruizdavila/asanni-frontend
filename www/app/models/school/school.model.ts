@@ -209,6 +209,15 @@ module app.models.school {
             this.facebookGroup = facebookGroup;
         }
 
+        get Location() {
+            return this.location;
+        }
+
+        set Location(location: app.models.user.Location) {
+            if (location === undefined) { throw 'Please supply school location'; }
+            this.location = location;
+        }
+
         get LanguageTeach() {
             return this.languageTeach;
         }

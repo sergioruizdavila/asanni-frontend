@@ -210,6 +210,19 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
+                Object.defineProperty(School.prototype, "Location", {
+                    get: function () {
+                        return this.location;
+                    },
+                    set: function (location) {
+                        if (location === undefined) {
+                            throw 'Please supply school location';
+                        }
+                        this.location = location;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 Object.defineProperty(School.prototype, "LanguageTeach", {
                     get: function () {
                         return this.languageTeach;

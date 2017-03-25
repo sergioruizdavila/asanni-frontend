@@ -1496,7 +1496,7 @@ var app;
                     },
                     set: function (about) {
                         if (about === undefined) {
-                            throw 'Please supply profile location';
+                            throw 'Please supply profile about';
                         }
                         this.about = about;
                     },
@@ -14105,6 +14105,17 @@ var app;
                     mixpanel.track(ENTER_MIXPANEL);
                     this.SchoolService.getSchoolById(this.$stateParams.id).then(function (response) {
                         self.data = new app.models.school.School(response);
+                        self.mapConfig = self.functionsUtil.buildMapConfig([
+                            {
+                                id: self.data.Location.Position.Id,
+                                location: {
+                                    position: {
+                                        lat: parseFloat(self.data.Location.Position.Lat),
+                                        lng: parseFloat(self.data.Location.Position.Lng)
+                                    }
+                                }
+                            }
+                        ], 'location-circle-map', { lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng) }, null);
                         self.loading = false;
                     });
                 };

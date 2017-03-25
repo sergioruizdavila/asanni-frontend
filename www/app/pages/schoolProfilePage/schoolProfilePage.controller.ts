@@ -85,6 +85,23 @@ module app.pages.schoolProfilePage {
             this.SchoolService.getSchoolById(this.$stateParams.id).then(
                 function(response) {
                     self.data = new app.models.school.School(response);
+                    //Build location map
+                    self.mapConfig = self.functionsUtil.buildMapConfig(
+                        [
+                            {
+                                id: self.data.Location.Position.Id,
+                                location: {
+                                    position: {
+                                        lat: parseFloat(self.data.Location.Position.Lat),
+                                        lng: parseFloat(self.data.Location.Position.Lng)
+                                    }
+                                }
+                            }
+                        ],
+                        'location-circle-map',
+                        {lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng)},
+                        null
+                    );
                     self.loading = false;
                 }
             );

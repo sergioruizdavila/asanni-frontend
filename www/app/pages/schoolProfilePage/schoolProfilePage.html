@@ -1059,7 +1059,7 @@
                             </div>
 
                             <!-- Payment methods list -->
-                            <div class="row">
+                            <div class="row space-5">
                                 <div class="col-xs-12 text-center">
                                     <ol class="margin-reset" style="vertical-align: text-bottom;list-style: none;">
                                         <li class="space-right-5" style="display: inline-block;">
@@ -1090,6 +1090,84 @@
                                                       ma-payment-methods-icons--medium--cash"></i>
                                         </li>
                                     </ol>
+                                </div>
+                            </div>
+
+                            <!-- Other payment methods List -->
+                            <div class="row space-2">
+                                <div class="col-xs-12 text-left">
+                                    <h4 class="margin-reset text-capitalize"
+                                        translate>
+                                        %global.others.label.text
+                                    </h4>
+                                </div>
+                            </div>
+
+                            <div class="row space-5">
+                                <div class="col-xs-12">
+                                    <div ng-repeat="option in vm.data.PaymentMethod.Other"
+                                         class="ma-label
+                                                ma-label--box
+                                                ma-label--box--secondary
+                                                ma-label--box--space5
+                                                ma-label--box--default">
+                                        {{option}}
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="ma-separator-dashed-image space-10 space-top-10"></div>
+
+
+                            <! LOCATION >
+                            <div class="row space-4">
+                                <div class="col-xs-12">
+
+                                    <! Location Title >
+                                    <div class="row middle-xs space-8">
+                                        <div class="col-xs-6 text-left">
+                                            <h2 class="margin-reset"
+                                                style="padding: 7px 15px; background-image: linear-gradient(to right, rgba(111, 84, 153, 0.3), rgb(254, 254, 254));border-bottom-left-radius: 2px; border-top-left-radius: 10px;"
+                                                translate>
+                                                %profile.teacher.location.title.text
+                                            </h2>
+                                        </div>
+                                        <div class="col-xs-6 text-right"></div>
+                                    </div>
+
+
+                                    <! School Address >
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <p class="ma-p ma-p--default margin-reset">
+                                                {{vm.data.Name}} is located in {{vm.data.Location.City}}, {{vm.data.Location.State}}, {{vm.data.Location.Country | getI18nFilter:'country'}}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row space-1">
+                                        <div class="col-xs-12 space-2">
+                                            <p class="ma-p ma-p--large strong margin-reset">
+                                                {{vm.data.Location.Address}}
+                                            </p>
+                                        </div>
+                                    </div>
+
+
+                                    <! Location Map >
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="school-location-map" style="height: 400px;">
+                                                <div class="location-map">
+                                                    <ma-map ng-if="vm.mapConfig"
+                                                            map-config="vm.mapConfig"></ma-map>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                 </div>
                             </div>
 

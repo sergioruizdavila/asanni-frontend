@@ -202,7 +202,7 @@ module app.models.user {
         }
 
         set About(about: string) {
-            if (about === undefined) { throw 'Please supply profile location'; }
+            if (about === undefined) { throw 'Please supply profile about'; }
             this.about = about;
         }
 
