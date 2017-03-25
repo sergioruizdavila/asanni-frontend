@@ -540,6 +540,18 @@
 
     "%profile.school.accommodation.title.text": "alojamiento",
 
+    "%profile.school.volunteering.title.text": "voluntariado",
+    "%profile.school.volunteering.types.title.text": "Opciones de voluntariado",
+    "%profile.school.work_exchange.title.text": "Intercambio de trabajo",
+
+    "%profile.school.prices.text": "Clases y precios",
+    "%profile.school.prices.private.text": "Privadas",
+    "%profile.school.prices.group.text": "Grupo",
+    "%profile.school.prices.general_type.text": "General",
+    "%profile.school.prices.intensive_type.text": "Intensiva",
+    "%profile.school.prices.price_per_week.text": "Precio por semana",
+    "%profile.school.prices.hour_per_week.text": "Horas por semana",
+
     "__TOOLTIPS__": "",
     "%tooltip.modal_born.birthdate.text": "Para activar tu cuenta, debes ser mayor de 18 años.",
     "%tooltip.modal_born.cntry_birth.text": "Es importante conocer en que país naciste e identificar tu lengua nativa.",
@@ -629,6 +641,13 @@
     "%accommodation.category.3": "Hostel",
     "%accommodation.category.4": "Apartamento compartido",
     "%accommodation.category.5": "Apartamento privado",
+
+    "__WORKEXCHANGE CATEGORIES__": "",
+    "%work_exchange.category.1": "Alojamiento",
+    "%work_exchange.category.2": "Descuento en las clases",
+    "%work_exchange.category.3": "Desayuno",
+    "%work_exchange.category.4": "Almuerzo",
+    "%work_exchange.category.5": "Cena",
 
     "__LANGUAGES__": "",
     "%language.1": "Bahasa Indonesia",

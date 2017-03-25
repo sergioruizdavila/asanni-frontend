@@ -594,7 +594,7 @@ module app.models.school {
         /*-- PROPERTIES --*/
         private id: number;
         private active: boolean;
-        private workExchangeOption: WorkExchangeOption;
+        private workExchangeOption: Array<WorkExchangeOption>;
 
 
         /**********************************/
@@ -609,7 +609,18 @@ module app.models.school {
             //init properties
             this.id = obj.id;
             this.active = obj.active || false;
-            this.workExchangeOption = new WorkExchangeOption(obj.workExchangeOption);
+
+            if(obj != {}) {
+
+                this.workExchangeOption = [];
+                for (let key in obj.workExchangeOption) {
+                    let workExchangeOptionInstance = new WorkExchangeOption(obj.workExchangeOption[key]);
+                    this.addWorkExchangeOption(workExchangeOptionInstance);
+                }
+
+            } else {
+                this.workExchangeOption = [];
+            }
         }
 
         /**********************************/
@@ -638,9 +649,19 @@ module app.models.school {
             return this.workExchangeOption;
         }
 
-        set WorkExchangeOption(workExchangeOption: WorkExchangeOption) {
-            if (workExchangeOption === undefined) { throw 'Please supply option value of work exchange option'; }
-            this.workExchangeOption = workExchangeOption;
+        addWorkExchangeOption(workExchangeOption: WorkExchangeOption): void {
+            if(workExchangeOption === undefined) { throw 'Please supply work exchange option value (Add)'; }
+            this.workExchangeOption.push(workExchangeOption);
+        }
+
+        editWorkExchangeOption(workExchangeOption: WorkExchangeOption): void {
+            if(workExchangeOption === undefined) { throw 'Please supply work exchange Option value (Edit)'; }
+            //Edit existing WorkExchangeOption
+            this.workExchangeOption.forEach(function (element, index, array) {
+                if (workExchangeOption.Id === element.Id) {
+                    array[index] = workExchangeOption;
+                }
+            });
         }
 
     }
@@ -1437,7 +1458,7 @@ module app.models.school {
     export class GroupType extends ClassType {
 
         /*-- PROPERTIES --*/
-        private students: Array<number>;
+        private student: Array<number>;
 
 
         /**********************************/
@@ -1451,7 +1472,7 @@ module app.models.school {
 
             //init properties
             super(obj);
-            this.students = obj.students || [];
+            this.student = obj.student || [];
         }
 
 
@@ -1459,13 +1480,13 @@ module app.models.school {
         /*             METHODS            */
         /**********************************/
 
-        get Students() {
-            return this.students;
+        get Student() {
+            return this.student;
         }
 
-        set Students(students: Array<number>) {
-            if (students === undefined) { throw 'Please supply students value of School group classes type'; }
-            this.students = students;
+        set Student(student: Array<number>) {
+            if (student === undefined) { throw 'Please supply student value of School group classes type'; }
+            this.student = student;
         }
 
     }

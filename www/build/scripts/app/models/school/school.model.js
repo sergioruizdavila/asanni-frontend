@@ -648,7 +648,16 @@ var app;
                         obj = {};
                     this.id = obj.id;
                     this.active = obj.active || false;
-                    this.workExchangeOption = new WorkExchangeOption(obj.workExchangeOption);
+                    if (obj != {}) {
+                        this.workExchangeOption = [];
+                        for (var key in obj.workExchangeOption) {
+                            var workExchangeOptionInstance = new WorkExchangeOption(obj.workExchangeOption[key]);
+                            this.addWorkExchangeOption(workExchangeOptionInstance);
+                        }
+                    }
+                    else {
+                        this.workExchangeOption = [];
+                    }
                 }
                 Object.defineProperty(WorkExchange.prototype, "Id", {
                     get: function () {
@@ -680,15 +689,25 @@ var app;
                     get: function () {
                         return this.workExchangeOption;
                     },
-                    set: function (workExchangeOption) {
-                        if (workExchangeOption === undefined) {
-                            throw 'Please supply option value of work exchange option';
-                        }
-                        this.workExchangeOption = workExchangeOption;
-                    },
                     enumerable: true,
                     configurable: true
                 });
+                WorkExchange.prototype.addWorkExchangeOption = function (workExchangeOption) {
+                    if (workExchangeOption === undefined) {
+                        throw 'Please supply work exchange option value (Add)';
+                    }
+                    this.workExchangeOption.push(workExchangeOption);
+                };
+                WorkExchange.prototype.editWorkExchangeOption = function (workExchangeOption) {
+                    if (workExchangeOption === undefined) {
+                        throw 'Please supply work exchange Option value (Edit)';
+                    }
+                    this.workExchangeOption.forEach(function (element, index, array) {
+                        if (workExchangeOption.Id === element.Id) {
+                            array[index] = workExchangeOption;
+                        }
+                    });
+                };
                 return WorkExchange;
             }());
             school.WorkExchange = WorkExchange;
@@ -1449,17 +1468,17 @@ var app;
                     if (obj === null)
                         obj = {};
                     _super.call(this, obj);
-                    this.students = obj.students || [];
+                    this.student = obj.student || [];
                 }
-                Object.defineProperty(GroupType.prototype, "Students", {
+                Object.defineProperty(GroupType.prototype, "Student", {
                     get: function () {
-                        return this.students;
+                        return this.student;
                     },
-                    set: function (students) {
-                        if (students === undefined) {
-                            throw 'Please supply students value of School group classes type';
+                    set: function (student) {
+                        if (student === undefined) {
+                            throw 'Please supply student value of School group classes type';
                         }
-                        this.students = students;
+                        this.student = student;
                     },
                     enumerable: true,
                     configurable: true

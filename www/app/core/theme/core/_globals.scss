@@ -281,6 +281,10 @@
     border-radius: 50%;
 }
 
+.border-transparent {
+    border: 0 hidden transparent;
+}
+
 .border-1 {
     -webkit-border-radius: 6%;
     -moz-border-radius: 6%;

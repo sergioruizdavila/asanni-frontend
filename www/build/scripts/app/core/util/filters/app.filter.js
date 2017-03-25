@@ -52,7 +52,7 @@ var app;
                     };
                 }
                 filters.YearMonthFormatFilter = YearMonthFormatFilter;
-                RangeFilter.$inject = ['$filter', 'mainApp.core.util.GetDataStaticJsonService'];
+                RangeFilter.$inject = [];
                 function RangeFilter() {
                     return function (value) {
                         var lowBound, highBound;
@@ -74,13 +74,28 @@ var app;
                     };
                 }
                 filters.RangeFilter = RangeFilter;
+                RangeFormatFilter.$inject = [];
+                function RangeFormatFilter() {
+                    return function (value) {
+                        var result = '0';
+                        if (value.length === 1) {
+                            result = value[0];
+                        }
+                        else if (value.length === 2) {
+                            result = value[0] + ' - ' + value[1];
+                        }
+                        return result;
+                    };
+                }
+                filters.RangeFormatFilter = RangeFormatFilter;
                 angular
                     .module('mainApp.core.util')
                     .filter('getI18nFilter', GetI18nFilter)
                     .filter('getTypeOfTeacherFilter', GetTypeOfTeacherFilter)
                     .filter('ageFilter', AgeFilter)
                     .filter('yearMonthFormatFilter', YearMonthFormatFilter)
-                    .filter('rangeFilter', RangeFilter);
+                    .filter('rangeFilter', RangeFilter)
+                    .filter('rangeFormatFilter', RangeFormatFilter);
             })(filters = util.filters || (util.filters = {}));
         })(util = core.util || (core.util = {}));
     })(core = app.core || (app.core = {}));
