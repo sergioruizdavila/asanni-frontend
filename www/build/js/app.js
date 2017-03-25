@@ -1033,10 +1033,10 @@ var app;
                     return function (value) {
                         var result = '0';
                         if (value.length === 1) {
-                            label = value[0];
+                            result = value[0];
                         }
                         else if (value.length === 2) {
-                            label = value[0] + ' - ' + value[1];
+                            result = value[0] + ' - ' + value[1];
                         }
                         return result;
                     };
@@ -3888,7 +3888,16 @@ var app;
                         obj = {};
                     this.id = obj.id;
                     this.active = obj.active || false;
-                    this.packageOption = new PackageOption(obj.packageOption);
+                    if (obj != {}) {
+                        this.packageOption = [];
+                        for (var key in obj.packageOption) {
+                            var packageOptionInstance = new PackageOption(obj.packageOption[key]);
+                            this.addPackageOption(packageOptionInstance);
+                        }
+                    }
+                    else {
+                        this.packageOption = [];
+                    }
                 }
                 Object.defineProperty(Package.prototype, "Id", {
                     get: function () {
@@ -3920,15 +3929,25 @@ var app;
                     get: function () {
                         return this.packageOption;
                     },
-                    set: function (packageOption) {
-                        if (packageOption === undefined) {
-                            throw 'Please supply package option value of package school';
-                        }
-                        this.packageOption = packageOption;
-                    },
                     enumerable: true,
                     configurable: true
                 });
+                Package.prototype.addPackageOption = function (packageOption) {
+                    if (packageOption === undefined) {
+                        throw 'Please supply package option value (Add)';
+                    }
+                    this.packageOption.push(packageOption);
+                };
+                Package.prototype.editPackageOption = function (packageOption) {
+                    if (workExchangeOption === undefined) {
+                        throw 'Please supply work exchange Option value (Edit)';
+                    }
+                    this.workExchangeOption.forEach(function (element, index, array) {
+                        if (workExchangeOption.Id === element.Id) {
+                            array[index] = workExchangeOption;
+                        }
+                    });
+                };
                 return Package;
             }());
             school.Package = Package;

@@ -856,6 +856,241 @@
                                 </div>
                             </div>
 
+
+                            <div class="ma-separator-dashed-image space-10 space-top-10"></div>
+
+
+                            <! DISCOUNT >
+                            <div class="row space-6">
+                                <div class="col-xs-12">
+
+                                    <! Discount Title >
+                                    <div class="row middle-xs space-8">
+                                        <div class="col-xs-6 text-left">
+                                            <h2 class="margin-reset"
+                                                style="padding: 7px 15px; background-image: linear-gradient(to right, rgba(111, 84, 153, 0.3), rgb(254, 254, 254));border-bottom-left-radius: 2px; border-top-left-radius: 10px;"
+                                                translate>
+                                                %profile.school.discount.text
+                                            </h2>
+                                        </div>
+                                        <div class="col-xs-6 text-right"></div>
+                                    </div>
+
+
+
+                                    <! Discount Options List >
+                                    <div class="row space-2">
+                                        <div class="col-xs-12 text-left">
+                                            <h4 class="margin-reset"
+                                                translate>
+                                                %profile.school.discount.types.title.text
+                                            </h4>
+                                        </div>
+                                    </div>
+
+                                    <div class="row middle-xs">
+                                        <div class="col-xs-12 space-2">
+                                            <div class="ma-p ma-p--large
+                                                        ma-list ma-list--text-indent-30
+                                                        ma-list--bullet--arrow
+                                                        ma-list--bullet--alert
+                                                        ma-list--bullet--default space-left-9">
+                                                <li ng-repeat="option in vm.data.Discount.Option track by $index">
+                                                    {{option}}
+                                                </li>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <! PACKAGE >
+                            <div class="row space-5">
+                                <div class="col-xs-12">
+                                    <h3 class="margin-reset" translate>
+                                        %profile.school.package.text
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <!-- Package Options -->
+                            <div class="row
+                                        space-left-5
+                                        space-right-5
+                                        teacher-experience-box__item-block"
+                                 ng-repeat="package in vm.data.Package.PackageOption track by $index">
+
+                                <div class="col-xs-12">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <h3 class="margin-reset pull-left">
+                                                        {{package.Name}}
+                                                    </h3>
+                                                    <span class="ma-label
+                                                                 ma-label--simple
+                                                                 ma-label--simple--large
+                                                                 ma-label--simple--primary
+                                                                 pull-right">
+                                                       ${{vm.data.Price.PrivateClass.GeneralType.Value}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row space-top-2 space-2"
+                                         ng-if="package.description">
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <p class="ma-p
+                                                              ma-p--large
+                                                              margin-reset
+                                                              text-left
+                                                              teacher-experience-box__item-block__description">
+                                                        {{package.Description}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr ng-if="$index + 1 < vm.data.Package.PackageOption.length">
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="ma-separator-dashed-image space-10 space-top-10"></div>
+
+
+                            <! BOOKING FEE >
+                            <div class="row space-left-5">
+
+                                <! Booking Fee title >
+                                <div class="col-xs-6">
+                                    <h3 class="margin-reset">
+                                        <span translate>
+                                            %profile.school.booking_fee.text
+                                        </span>
+                                        <i class="material-icons
+                                                  md-18
+                                                  md-alert
+                                                  vertical-align-text-top">
+                                            lightbulb_outline
+                                        </i>
+                                    </h3>
+                                </div>
+
+                                <! Booking Fee Price >
+                                <div class="col-xs-6 text-center">
+                                    <h3 class="margin-reset">
+                                        <span class="ma-label
+                                                     ma-label--simple
+                                                     ma-label--simple--primary">
+                                            ${{vm.data.BookingFee.Price}}
+                                        </span>
+                                    </h3>
+                                </div>
+
+                            </div>
+
+
+                            <div class="ma-separator-dashed-image space-10 space-top-10"></div>
+
+
+                            <! CLASSES BEGIN >
+                            <div class="row space-left-5">
+
+                                <! Classes begin title >
+                                <div class="col-xs-6">
+                                    <h3 class="margin-reset">
+                                        <span translate>
+                                            %profile.school.classes_begin.text
+                                        </span>
+                                        <i class="material-icons
+                                                  md-18
+                                                  md-alert
+                                                  vertical-align-text-top">
+                                            lightbulb_outline
+                                        </i>
+                                    </h3>
+                                </div>
+
+                                <! Classes begin value >
+                                <div class="col-xs-6 text-center">
+                                    <h3 class="margin-reset"
+                                        ng-repeat="day in vm.data.ClassesBegin track by $index">
+                                        <span class="ma-label
+                                                     ma-label--simple
+                                                     ma-label--simple--gray
+                                                     strong">
+                                            {{ day | getI18nFilter:'day.list' }}
+                                        </span>
+                                    </h3>
+                                </div>
+
+                            </div>
+
+
+                            <div class="ma-separator-dashed-image space-10 space-top-10"></div>
+
+
+                            <!PAYMENT METHODS >
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h3 class="margin-reset">
+                                        <span translate>
+                                            %profile.school.payment_method.text
+                                        </span>
+                                        <i class="material-icons
+                                                  md-18
+                                                  md-alert
+                                                  vertical-align-text-top">
+                                            lightbulb_outline
+                                        </i>
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <!-- Payment methods list -->
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <ol class="margin-reset" style="display: inline-block;vertical-align: text-bottom;list-style: none;">
+                                        <li>
+                                            <i class="ma-payment-methods-icons
+                                                      ma-payment-methods-icons--default
+                                                      ma-payment-methods-icons--default--master-card"></i>
+                                        </li>
+                                        <li>
+                                            <i class="ma-payment-methods-icons
+                                                      ma-payment-methods-icons--default
+                                                      ma-payment-methods-icons--default--visa"></i>
+                                        </li>
+                                        <li>
+                                            <i class="ma-payment-methods-icons
+                                                      ma-payment-methods-icons--default
+                                                      ma-payment-methods-icons--default--american-express"></i>
+                                        </li>
+                                        <li>
+                                            <i class="ma-payment-methods-icons
+                                                      ma-payment-methods-icons--default
+                                                      ma-payment-methods-icons--default--paypal"></i>
+                                        </li>
+                                        <li>
+                                            <i class="ma-payment-methods-icons
+                                                      ma-payment-methods-icons--default
+                                                      ma-payment-methods-icons--default--cash"></i>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+
                         </div>
 
                     </div>

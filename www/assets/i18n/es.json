@@ -552,6 +552,16 @@
     "%profile.school.prices.price_per_week.text": "Precio por semana",
     "%profile.school.prices.hour_per_week.text": "Horas por semana",
 
+    "%profile.school.discount.text": "Descuentos",
+    "%profile.school.discount.types.title.text": "Opciones de descuento",
+    "%profile.school.package.text": "Paquetes",
+
+    "%profile.school.booking_fee.text": "Costo de reserva",
+
+    "%profile.school.classes_begin.text": "Las clases empiezan",
+
+    "%profile.school.payment_method.text": "Métodos de pago aceptados",
+
     "__TOOLTIPS__": "",
     "%tooltip.modal_born.birthdate.text": "Para activar tu cuenta, debes ser mayor de 18 años.",
     "%tooltip.modal_born.cntry_birth.text": "Es importante conocer en que país naciste e identificar tu lengua nativa.",
@@ -575,6 +585,15 @@
     "%sex.M": "Hombre",
     "%sex.F": "Mujer",
     "%sex.O": "Otro",
+
+    "__DAYS__": "",
+    "%day.list.1": "Lunes",
+    "%day.list.2": "Martes",
+    "%day.list.3": "Miércoles",
+    "%day.list.4": "Jueves",
+    "%day.list.5": "Viernes",
+    "%day.list.6": "Sábado",
+    "%day.list.7": "Domingo",
 
     "__MONTHS__": "",
     "%month.01": "Enero",

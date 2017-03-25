@@ -450,7 +450,7 @@ module app.models.school {
         /*-- PROPERTIES --*/
         private id: number;
         private active: boolean;
-        private packageOption: PackageOption;
+        private packageOption: Array<PackageOption>;
 
 
         /**********************************/
@@ -465,7 +465,19 @@ module app.models.school {
             //init properties
             this.id = obj.id;
             this.active = obj.active || false;
-            this.packageOption = new PackageOption(obj.packageOption);
+
+            if(obj != {}) {
+
+                this.packageOption = [];
+                for (let key in obj.packageOption) {
+                    let packageOptionInstance = new PackageOption(obj.packageOption[key]);
+                    this.addPackageOption(packageOptionInstance);
+                }
+
+            } else {
+                this.packageOption = [];
+            }
+
         }
 
 
@@ -495,9 +507,19 @@ module app.models.school {
             return this.packageOption;
         }
 
-        set PackageOption(packageOption: PackageOption) {
-            if (packageOption === undefined) { throw 'Please supply package option value of package school'; }
-            this.packageOption = packageOption;
+        addPackageOption(packageOption: PackageOption): void {
+            if(packageOption === undefined) { throw 'Please supply package option value (Add)'; }
+            this.packageOption.push(packageOption);
+        }
+
+        editPackageOption(packageOption: PackageOption): void {
+            if(packageOption === undefined) { throw 'Please supply package option value (Edit)'; }
+            //Edit existing packageOption
+            this.packageOption.forEach(function (element, index, array) {
+                if (packageOption.Id === element.Id) {
+                    array[index] = packageOption;
+                }
+            });
         }
 
     }

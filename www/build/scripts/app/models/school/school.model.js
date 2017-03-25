@@ -516,7 +516,16 @@ var app;
                         obj = {};
                     this.id = obj.id;
                     this.active = obj.active || false;
-                    this.packageOption = new PackageOption(obj.packageOption);
+                    if (obj != {}) {
+                        this.packageOption = [];
+                        for (var key in obj.packageOption) {
+                            var packageOptionInstance = new PackageOption(obj.packageOption[key]);
+                            this.addPackageOption(packageOptionInstance);
+                        }
+                    }
+                    else {
+                        this.packageOption = [];
+                    }
                 }
                 Object.defineProperty(Package.prototype, "Id", {
                     get: function () {
@@ -548,15 +557,25 @@ var app;
                     get: function () {
                         return this.packageOption;
                     },
-                    set: function (packageOption) {
-                        if (packageOption === undefined) {
-                            throw 'Please supply package option value of package school';
-                        }
-                        this.packageOption = packageOption;
-                    },
                     enumerable: true,
                     configurable: true
                 });
+                Package.prototype.addPackageOption = function (packageOption) {
+                    if (packageOption === undefined) {
+                        throw 'Please supply package option value (Add)';
+                    }
+                    this.packageOption.push(packageOption);
+                };
+                Package.prototype.editPackageOption = function (packageOption) {
+                    if (packageOption === undefined) {
+                        throw 'Please supply package option value (Edit)';
+                    }
+                    this.packageOption.forEach(function (element, index, array) {
+                        if (packageOption.Id === element.Id) {
+                            array[index] = packageOption;
+                        }
+                    });
+                };
                 return Package;
             }());
             school.Package = Package;
