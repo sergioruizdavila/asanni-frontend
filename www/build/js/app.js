@@ -3939,12 +3939,12 @@ var app;
                     this.packageOption.push(packageOption);
                 };
                 Package.prototype.editPackageOption = function (packageOption) {
-                    if (workExchangeOption === undefined) {
-                        throw 'Please supply work exchange Option value (Edit)';
+                    if (packageOption === undefined) {
+                        throw 'Please supply package option value (Edit)';
                     }
-                    this.workExchangeOption.forEach(function (element, index, array) {
-                        if (workExchangeOption.Id === element.Id) {
-                            array[index] = workExchangeOption;
+                    this.packageOption.forEach(function (element, index, array) {
+                        if (packageOption.Id === element.Id) {
+                            array[index] = packageOption;
                         }
                     });
                 };
