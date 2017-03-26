@@ -6,74 +6,33 @@ var app;
         (function (school) {
             'use strict';
             var SchoolService = (function () {
-                function SchoolService(restApi, AuthService, $q) {
+                function SchoolService(restApi) {
                     this.restApi = restApi;
-                    this.AuthService = AuthService;
-                    this.$q = $q;
-                    DEBUG && console.log('schools service instanced');
-                    this.SCHOOL_URI = 'schools';
-                    this.USER_SCHOOL_URI = 'schools?userId=';
+                    console.log('school service instanced');
                 }
                 SchoolService.prototype.getSchoolById = function (id) {
-                    var self = this;
-                    var url = this.SCHOOL_URI;
-                    var deferred = this.$q.defer();
-                    this.restApi.show({ url: url, id: id }).$promise
-                        .then(function (response) {
-                        deferred.resolve(response);
-                    }, function (error) {
-                        DEBUG && console.error(error);
-                        if (error.statusText == 'Unauthorized') {
-                            self.AuthService.logout();
-                        }
-                        deferred.reject(error);
+                    var url = 'schools/';
+                    return this.restApi.show({ url: url, id: id }).$promise
+                        .then(function (data) {
+                        return data;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
                     });
-                    return deferred.promise;
-                };
-                SchoolService.prototype.getSchoolByUserId = function (userId) {
-                    var self = this;
-                    var url = this.USER_SCHOOL_URI + userId;
-                    var deferred = this.$q.defer();
-                    this.restApi.queryObject({ url: url }).$promise
-                        .then(function (response) {
-                        if (response.results) {
-                            var res = response.results[0] ? response.results[0] : '';
-                            deferred.resolve(res);
-                        }
-                        else {
-                            DEBUG && console.error(response);
-                            deferred.reject(response);
-                        }
-                    }, function (error) {
-                        DEBUG && console.error(error);
-                        if (error.statusText == 'Unauthorized') {
-                            self.AuthService.logout();
-                        }
-                        deferred.reject(error);
-                    });
-                    return deferred.promise;
                 };
                 SchoolService.prototype.getAllSchools = function () {
-                    var self = this;
-                    var url = this.SCHOOL_URI;
-                    var deferred = this.$q.defer();
-                    this.restApi.queryObject({ url: url }).$promise
-                        .then(function (response) {
-                        deferred.resolve(response);
-                    }, function (error) {
-                        DEBUG && console.error(error);
-                        if (error.statusText == 'Unauthorized') {
-                            self.AuthService.logout();
-                        }
-                        deferred.reject(error);
+                    var url = 'schools/';
+                    return this.restApi.query({ url: url }).$promise
+                        .then(function (data) {
+                        return data;
+                    }).catch(function (err) {
+                        console.log(err);
+                        return err;
                     });
-                    return deferred.promise;
                 };
                 SchoolService.serviceId = 'mainApp.models.school.SchoolService';
                 SchoolService.$inject = [
-                    'mainApp.core.restApi.restApiService',
-                    'mainApp.auth.AuthService',
-                    '$q'
+                    'mainApp.core.restApi.restApiService'
                 ];
                 return SchoolService;
             }());

@@ -32,7 +32,7 @@ var app;
                 EditTeacherController.prototype.activate = function () {
                     var ENTER_MIXPANEL = 'Enter: Edit Teacher Page';
                     var self = this;
-                    console.log('editTeacher controller actived');
+                    DEBUG && console.log('editTeacher controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
                     this.fillFormWithProfileData();

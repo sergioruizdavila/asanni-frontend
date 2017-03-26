@@ -19,7 +19,7 @@ var app;
                             if (element.indexOf(type) >= 0) {
                                 var regex = new RegExp('%' + type + '.', 'g');
                                 var codeFromJson = element.replace(regex, '');
-                                if (codeFromJson == code) {
+                                if (codeFromJson === code) {
                                     key = element;
                                 }
                             }
