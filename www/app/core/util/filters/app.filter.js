@@ -52,12 +52,35 @@ var app;
                     };
                 }
                 filters.YearMonthFormatFilter = YearMonthFormatFilter;
+                RangeFilter.$inject = ['$filter', 'mainApp.core.util.GetDataStaticJsonService'];
+                function RangeFilter() {
+                    return function (value) {
+                        var lowBound, highBound;
+                        if (value.length == 1) {
+                            lowBound = 0;
+                            highBound = +value[0] - 1;
+                        }
+                        else if (value.length == 2) {
+                            lowBound = +value[0];
+                            highBound = +value[1];
+                        }
+                        var i = lowBound;
+                        var result = [];
+                        while (i <= highBound) {
+                            result.push(i);
+                            i++;
+                        }
+                        return result;
+                    };
+                }
+                filters.RangeFilter = RangeFilter;
                 angular
                     .module('mainApp.core.util')
                     .filter('getI18nFilter', GetI18nFilter)
                     .filter('getTypeOfTeacherFilter', GetTypeOfTeacherFilter)
                     .filter('ageFilter', AgeFilter)
-                    .filter('yearMonthFormatFilter', YearMonthFormatFilter);
+                    .filter('yearMonthFormatFilter', YearMonthFormatFilter)
+                    .filter('rangeFilter', RangeFilter);
             })(filters = util.filters || (util.filters = {}));
         })(util = core.util || (core.util = {}));
     })(core = app.core || (app.core = {}));

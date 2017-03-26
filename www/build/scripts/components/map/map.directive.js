@@ -39,6 +39,7 @@ var components;
                 this.RED_PIN = 'assets/images/red-pin.png';
                 this.POSITION_PIN = 'assets/images/red-pin.png';
                 this.GREEN_PIN = 'assets/images/green-pin.png';
+                this.SCHOOL_PIN = 'assets/images/school-pin.png';
                 var self = this;
                 this._map;
                 this._draggable = false;
@@ -55,6 +56,9 @@ var components;
                         break;
                     case 'location-circle-map':
                         this._locationCircleMapBuilder();
+                        break;
+                    case 'location-marker-map':
+                        this._locationMarkerMapBuilder();
                         break;
                 }
                 this.activate();
@@ -154,6 +158,32 @@ var components;
                             center: new google.maps.LatLng(center.lat, center.lng),
                             radius: circle_radius
                         });
+                    });
+                }
+            };
+            MapController.prototype._locationMarkerMapBuilder = function () {
+                var self = this;
+                var zoom = this.mapConfig.data.zoom || 16;
+                var center = this.mapConfig.data.position;
+                this._draggable = false;
+                this.$scope.options = {
+                    center: new google.maps.LatLng(center.lat, center.lng),
+                    zoom: zoom,
+                    mapTypeControl: false,
+                    zoomControl: true,
+                    streetViewControl: false,
+                    scrollwheel: false,
+                    zoomControlOptions: {
+                        position: google.maps.ControlPosition.TOP_RIGHT
+                    }
+                };
+                if (this._map === void 0) {
+                    this.$timeout(function () {
+                        self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
+                        for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
+                            var marker = self.mapConfig.data.markers[i];
+                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.SCHOOL_PIN);
+                        }
                     });
                 }
             };

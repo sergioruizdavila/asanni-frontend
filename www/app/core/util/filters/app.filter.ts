@@ -109,12 +109,75 @@ module app.core.util.filters {
     }
 
 
+
+    /*-- INJECT DEPENDENCIES --*/
+    RangeFilter.$inject = [];
+
+    /**
+    * RangeFilter
+    * @description - Receive a number range (e.g. [-1, 1] or [1, 5]), and return
+    * a list of number in order to show inside a ng-repeat loop.
+    * @use - ng-repeat = "i in [-1,1] | RangeFilter"
+    * @function
+    * @return {Array<number>} result - number list to show in ng-repeat loop
+    */
+    export function RangeFilter() {
+        return function (value: Array<number>): Array<number> {
+            let lowBound, highBound;
+            if (value.length == 1) {
+              lowBound = 0;
+              highBound = +value[0] - 1;
+          } else if (value.length == 2) {
+              lowBound = +value[0];
+              highBound = +value[1];
+            }
+            var i = lowBound;
+            var result = [];
+            while (i <= highBound) {
+              result.push(i);
+              i++;
+            }
+            return result;
+        }
+    }
+
+
+
+    /*-- INJECT DEPENDENCIES --*/
+    RangeFormatFilter.$inject = [];
+
+    /**
+    * RangeFormatFilter
+    * @description - Receive a number range (e.g. [-1, 1] or [1, 5]), and return
+    * this range formatted: '1 - 5' or '2 - 10'
+    * @use - {{ array<number> | rangeFormatFilter }}
+    * @function
+    * @param {Array<number>} value - number array with 1 or 2 elements (e.g [1, 4] or [7])
+    * @return {string} result - range formatted
+    */
+    export function RangeFormatFilter() {
+        return function (value: Array<number>): string {
+            let result = '0';
+
+            if(value.length === 1) {
+                result = value[0];
+            } else if(value.length === 2) {
+                result = value[0] + ' - ' + value[1];
+            }
+
+            return result;
+        }
+    }
+
+
     /*-- MODULE DEFINITION --*/
     angular
         .module('mainApp.core.util')
         .filter('getI18nFilter', GetI18nFilter)
         .filter('getTypeOfTeacherFilter', GetTypeOfTeacherFilter)
         .filter('ageFilter', AgeFilter)
-        .filter('yearMonthFormatFilter', YearMonthFormatFilter);
+        .filter('yearMonthFormatFilter', YearMonthFormatFilter)
+        .filter('rangeFilter', RangeFilter)
+        .filter('rangeFormatFilter', RangeFormatFilter);
 
 }

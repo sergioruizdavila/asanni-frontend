@@ -1,0 +1,174 @@
+/**********************************************************/
+/*                   SCHOOL PROFILE PAGE                  */
+/**********************************************************/
+
+.schoolProfilePage {
+
+    &__preview-message {
+        position: fixed;
+        z-index: 1;
+        width: inherit;
+    }
+
+    &__social-block {
+
+        &__icons {
+            .icon {
+                font-size: 25px;
+                cursor: pointer;
+                vertical-align:middle;
+
+                &--web {
+                    color: #999;
+                    font-size: 23px;
+                    &:hover {
+                        color: map-get($main-palette, primary);
+                    }
+                }
+
+                &--email {
+                    color: #999;
+                    &:hover {
+                        color: $black;
+                    }
+                }
+
+                &--facebook {
+                    color: #999;
+                    &:hover {
+                        color: #4267b2;
+                    }
+                }
+
+                &--twitter {
+                    color: #999;
+                    &:hover {
+                        color: #1da1f2;
+                    }
+                }
+
+                &--instagram {
+                    color: #999;
+                    &:hover {
+                        color: #d31d72;
+                    }
+                }
+
+                &--meetup {
+                    color: #999;
+                    font-size: 35px;
+                    &:hover {
+                        color: #ed1c40;
+                    }
+                }
+
+                &--disabled {
+                    color: $cloud;
+                    cursor: not-allowed;
+                    &:hover {
+                        color: $cloud;
+                    }
+                }
+            }
+        }
+    }
+
+    &__buttons-block {
+        &__left {
+            padding-left: 0px;
+        }
+
+        .ma-btn {
+            width: 100%;
+        }
+    }
+
+    &__main-block {
+        .ma-box__content {
+            padding: 30px;
+        }
+    }
+}
+
+
+/*==========  Mobile First Method  ==========*/
+
+ /* Custom, iPhone Retina */
+ @media only screen and (min-width : 320px) {
+
+ }
+
+ /* Extra Small Devices, Phones */
+ @media only screen and (min-width : 480px) {
+
+ }
+
+ /* Small Devices, Tablets */
+ @media only screen and (min-width : 768px) {
+    .schoolProfilePage {
+        &__avatar-block {
+            .ma-rectangle-photo-profile {
+                height: map-get($image-rectangle-photo-height-sizes, small);
+                min-height: map-get($image-rectangle-photo-height-sizes, small);
+                min-width: map-get($image-rectangle-photo-width-sizes, small);
+                width: map-get($image-rectangle-photo-width-sizes, small);
+            }
+        }
+    }
+ }
+
+ /* Medium Devices, Desktops */
+ @media only screen and (min-width : 992px) {
+
+     .schoolProfilePage {
+         &__avatar-block {
+             .ma-rectangle-photo-profile {
+                 height: map-get($image-rectangle-photo-height-sizes, default);
+                 min-height: map-get($image-rectangle-photo-height-sizes, default);
+                 min-width: map-get($image-rectangle-photo-width-sizes, default);
+                 width: map-get($image-rectangle-photo-width-sizes, default);
+             }
+         }
+     }
+
+ }
+
+ /* Large Devices, Wide Screens */
+ @media only screen and (min-width : 1200px) {
+
+    .schoolProfilePage {
+        &__avatar-block {
+            .ma-rectangle-photo-profile {
+                width: map-get($image-rectangle-photo-width-sizes, large);
+                height: map-get($image-rectangle-photo-height-sizes, large);
+            }
+        }
+
+        &__booking-block {
+            .ma-box {
+                width: 20.8%;
+            }
+        }
+    }
+
+ }
+
+ /* Extra Large Devices, Wide Screens */
+ @media only screen and (min-width : 1600px) {
+
+    .schoolProfilePage {
+        &__avatar-block {
+            .ma-rectangle-photo-profile {
+                width: map-get($image-rectangle-photo-width-sizes, large);
+                height: map-get($image-rectangle-photo-height-sizes, large);
+            }
+        }
+
+        &__booking-block {
+            .ma-box {
+                width: 16%;
+            }
+        }
+    }
+
+ }

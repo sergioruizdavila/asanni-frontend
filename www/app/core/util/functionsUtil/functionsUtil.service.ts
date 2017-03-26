@@ -82,7 +82,7 @@ module app.core.util.functionsUtil {
         constructor(private $filter: angular.IFilterService,
                     private dataConfig: IDataConfig,
                     private $translate: angular.translate.ITranslateService) {
-            console.log('functionsUtil service called');
+            DEBUG && console.log('functionsUtil service called');
         }
 
 
@@ -568,7 +568,7 @@ module app.core.util.functionsUtil {
                 countries_json["%country." + countryCode] = countryText;
             }
 
-            console.log(JSON.stringify(countries_json));
+            DEBUG && console.log(JSON.stringify(countries_json));
         }
 
 
@@ -687,6 +687,93 @@ module app.core.util.functionsUtil {
             });
 
             mixpanel.people.set(setData);
+        }
+
+
+        /**
+        * assignAmenitieIconClass
+        * @description - Assign icon class based on a type of amenities
+        * @use - this.FunctionsUtilService.assignIconClass('2');
+        * @function
+        * @param {Object} property - new property
+        * @return {void}
+        */
+        assignAmenitieIconClass(amenitie: string): string {
+
+            //VARIABLES
+            let iconClass = '';
+            //CONSTANTS
+            const options = [
+                {
+                    key: '1',
+                    value: 'wifi'
+                },
+                {
+                    key: '2',
+                    value: 'laptop'
+                },
+                {
+                    key: '3',
+                    value: 'air-conditing'
+                },
+                {
+                    key: '4',
+                    value: 'heating'
+                },
+                {
+                    key: '5',
+                    value: 'breakfast'
+                },
+                {
+                    key: '6',
+                    value: 'lunch'
+                },
+                {
+                    key: '7',
+                    value: 'dinner'
+                },
+                {
+                    key: '8',
+                    value: 'snack'
+                },
+                {
+                    key: '9',
+                    value: 'coffee'
+                },
+                {
+                    key: '10',
+                    value: 'tea'
+                },
+                {
+                    key: '11',
+                    value: 'hammock'
+                },
+                {
+                    key: '12',
+                    value: 'class-room'
+                },
+                {
+                    key: '13',
+                    value: 'computer'
+                },
+                {
+                    key: '14',
+                    value: 'video-projector'
+                },
+                {
+                    key: '15',
+                    value: 'lounge'
+                }
+            ];
+
+            for (let i = 0; i < options.length; i++) {
+                if(options[i].key === amenitie) {
+                    iconClass = options[i].value;
+                    break;
+                }
+            }
+
+            return iconClass;
         }
 
 

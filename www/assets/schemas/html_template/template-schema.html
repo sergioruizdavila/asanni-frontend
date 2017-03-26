@@ -1,7 +1,3 @@
-
-
-
-
 <div class="container">
     <!------------------------------>
     <!--         TITLES           -->
@@ -1084,6 +1080,11 @@
             <div class="ma-label
                         ma-label--box
                         ma-label--box--secondary
+                        ma-label--box--medium
+                        ma-label--box--space5">medium label box</div>
+            <div class="ma-label
+                        ma-label--box
+                        ma-label--box--secondary
                         ma-label--box--large
                         ma-label--box--space5">large label box</div>
 
@@ -1164,6 +1165,15 @@
                   <i class="ma-label--box--default--with-icon__icon
                                     material-icons">clear</i>
               </div>
+              <div class="ma-label ma-label--box
+                          ma-label--box--secondary
+                          ma-label--box--medium
+                          ma-label--box--medium--with-icon
+                          ma-label--box--space5">
+                   Medium Label Box
+                   <i class="ma-label--box--medium--with-icon__icon
+                                     material-icons">clear</i>
+               </div>
               <div class="ma-label ma-label--box
                           ma-label--box--secondary
                           ma-label--box--large
@@ -2015,93 +2025,269 @@
 
     </div>
 
+
     <hr>
+
+
+    <h2 style="text-decoration: none;
+                   letter-spacing: 0;
+                   font-style: normal;
+                   font-weight:bold;
+                   white-space: nowrap;">Square Profile Images</h2>
+
+   <!-- Tiny Square Profile Image -->
+   <div class="row margin-reset">
+
+       <div class="col-md-12">
+           <h3 style="text-decoration: none;
+                        letter-spacing: 0;
+                        font-style: normal;
+                        white-space: nowrap;">Tiny Square Profile Image</h3>
+
+           <div class="ma-rectangle-photo-profile
+                       ma-rectangle-photo-profile--tiny border-1">
+               <img src="https://s3.amazonaws.com/tinycards/image/5bd5092200f7fe41e1d926158b5e8243" alt="Sergio Ruiz">
+           </div>
+       </div>
+
+   </div>
+
+
+   <!-- Small Square Profile Image -->
+   <div class="row margin-reset">
+
+       <div class="col-md-12">
+           <h3 style="text-decoration: none;
+                        letter-spacing: 0;
+                        font-style: normal;
+                        white-space: nowrap;">Small Square Profile Image</h3>
+
+           <div class="ma-rectangle-photo-profile
+                       ma-rectangle-photo-profile--small border-1">
+               <img src="https://s3.amazonaws.com/tinycards/image/5bd5092200f7fe41e1d926158b5e8243" alt="Sergio Ruiz">
+           </div>
+       </div>
+
+   </div>
+
+   <!-- Default Square Profile Image -->
+   <div class="row margin-reset">
+
+       <div class="col-md-12">
+           <h3 style="text-decoration: none;
+                        letter-spacing: 0;
+                        font-style: normal;
+                        white-space: nowrap;">Default Square Profile Image</h3>
+
+           <div class="ma-rectangle-photo-profile
+                       ma-rectangle-photo-profile--default border-1">
+               <img src="https://s3.amazonaws.com/tinycards/image/5bd5092200f7fe41e1d926158b5e8243" alt="Sergio Ruiz">
+           </div>
+       </div>
+
+   </div>
+
+
+    <!-- Medium Square Profile Image -->
+    <div class="row margin-reset">
+
+        <div class="col-md-12">
+            <h3 style="text-decoration: none;
+                         letter-spacing: 0;
+                         font-style: normal;
+                         white-space: nowrap;">Medium Square Profile Image</h3>
+
+            <div class="ma-rectangle-photo-profile
+                        ma-rectangle-photo-profile--medium border-1">
+                <img src="https://s3.amazonaws.com/tinycards/image/5bd5092200f7fe41e1d926158b5e8243" alt="Sergio Ruiz">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Large Square Profile Image -->
+    <div class="row margin-reset">
+
+        <div class="col-md-12">
+            <h3 style="text-decoration: none;
+                         letter-spacing: 0;
+                         font-style: normal;
+                         white-space: nowrap;">Large Square Profile Image</h3>
+
+            <div class="ma-rectangle-photo-profile
+                        ma-rectangle-photo-profile--large border-1">
+                <img src="https://s3.amazonaws.com/tinycards/image/5bd5092200f7fe41e1d926158b5e8243" alt="Sergio Ruiz">
+            </div>
+        </div>
+
+    </div>
 
 
     <!------------------------------>
     <!--          METER           -->
     <!------------------------------>
-    <style media="screen">
-        .ma-meter {
-            border-radius: 4px;
-            border: 1px solid #e5e5e5;
-            padding: 4px 10px;
-            display: inline-block;
-        }
 
-        .ma-meter ol li {
-            display: inline-block;
-            background-color: #d8d8d8;
-            border-radius: 50%;
-            height: 8px;
-            width: 8px;
-            margin: 0 2px;
-        }
+    <div class="row">
+        <div class="col-xs-12">
+            <h3 style="text-decoration: none;
+                         letter-spacing: 0;
+                         font-style: normal;
+                         white-space: nowrap;">Meter color ratings</h3>
 
-        .ma-meter--1-selected ol li:first-child,
-        .ma-meter--2-selected ol li:nth-child(-n+2) {
-            background-color: #ff5a5f;
-        }
+                <div class="ma-meter ma-meter--border
+                            ma-meter--border-1 ma-meter--small
+                            ma-meter--rating-5">
+             		<p class="ma-p ma-p--default margin-reset space-right-4">
+                         Skill level
+                    </p>
+             		<ol class="margin-reset padding-reset">
+             			<li class="circle circle--small"><span class="u-visually-hidden">1</span></li>
+             			<li class="circle circle--small"><span class="u-visually-hidden">2</span></li>
+             			<li class="circle circle--small"><span class="u-visually-hidden">3</span></li>
+             			<li class="circle circle--small"><span class="u-visually-hidden">4</span></li>
+             			<li class="circle circle--small"><span class="u-visually-hidden">5</span></li>
+             		</ol>
+             	</div>
 
-        .ma-meter--3-selected ol li:nth-child(-n+3) {
-            background-color: #e89947;
-        }
+                <div class="ma-meter ma-meter--border
+                            ma-meter--border-1 ma-meter--small
+                            ma-meter--rating-4">
+             		<p class="ma-p ma-p--default margin-reset space-right-4">
+                         Skill level
+                    </p>
+             		<ol class="margin-reset padding-reset">
+             			<li class="circle circle--small"><span class="u-visually-hidden">1</span></li>
+             			<li class="circle circle--small"><span class="u-visually-hidden">2</span></li>
+             			<li class="circle circle--small"><span class="u-visually-hidden">3</span></li>
+             			<li class="circle circle--small"><span class="u-visually-hidden">4</span></li>
+             			<li class="circle circle--small"><span class="u-visually-hidden">5</span></li>
+             		</ol>
+             	</div>
 
-        .ma-meter--4-selected ol li:nth-child(-n+4) {
-            background-color: #e8ce47;
-        }
+                <div class="ma-meter ma-meter--border
+                            ma-meter--border-1 ma-meter--small
+                            ma-meter--rating-3">
+             		<p class="ma-p ma-p--default margin-reset space-right-4">
+                         Skill level
+                    </p>
+             		<ol class="margin-reset padding-reset">
+             			<li class="circle circle--small"><span class="u-visually-hidden">1</span></li>
+             			<li class="circle circle--small"><span class="u-visually-hidden">2</span></li>
+             			<li class="circle circle--small"><span class="u-visually-hidden">3</span></li>
+             			<li class="circle circle--small"><span class="u-visually-hidden">4</span></li>
+             			<li class="circle circle--small"><span class="u-visually-hidden">5</span></li>
+             		</ol>
+             	</div>
 
-        .ma-meter--5-selected ol li {
-            background-color: #82B541;
-        }
-        .u-visually-hidden {
-            border: 0!important;
-            clip: rect(1px 1px 1px 1px);
-            clip: rect(1px,1px,1px,1px);
-            height: 1px!important;
-            overflow: hidden;
-            padding: 0!important;
-            position: absolute!important;
-            width: 1px!important;
-        }
-    </style>
-    <div class="ma-meter ma-meter--2-selected">
-		<p class="ma-p ma-p--default" style="margin: 0 30px 0 0;display:inline-block;">
-            Skill level
-        </p>
-		<ol style="display: inline-block;list-style: none;padding: 0;margin: 0">
-			<li><span class="u-visually-hidden">1</span>
-			</li>
-			<li><span class="u-visually-hidden">2</span>
-			</li>
-			<li><span class="u-visually-hidden">3</span>
-			</li>
-			<li><span class="u-visually-hidden">4</span>
-			</li>
-			<li><span class="u-visually-hidden">5</span>
-			</li>
-		</ol>
-	</div>
+                <div class="ma-meter ma-meter--border
+                            ma-meter--border-1 ma-meter--small
+                            ma-meter--rating-2">
+             		<p class="ma-p ma-p--default margin-reset space-right-4">
+                         Skill level
+                    </p>
+             		<ol class="margin-reset padding-reset">
+             			<li class="circle circle--small"><span class="u-visually-hidden">1</span></li>
+             			<li class="circle circle--small"><span class="u-visually-hidden">2</span></li>
+             			<li class="circle circle--small"><span class="u-visually-hidden">3</span></li>
+             			<li class="circle circle--small"><span class="u-visually-hidden">4</span></li>
+             			<li class="circle circle--small"><span class="u-visually-hidden">5</span></li>
+             		</ol>
+             	</div>
+
+                <div class="ma-meter ma-meter--border
+                            ma-meter--border-1 ma-meter--small
+                            ma-meter--rating-1">
+             		<p class="ma-p ma-p--default margin-reset space-right-4">
+                         Skill level
+                    </p>
+             		<ol class="margin-reset padding-reset">
+             			<li class="circle circle--small"><span class="u-visually-hidden">1</span></li>
+             			<li class="circle circle--small"><span class="u-visually-hidden">2</span></li>
+             			<li class="circle circle--small"><span class="u-visually-hidden">3</span></li>
+             			<li class="circle circle--small"><span class="u-visually-hidden">4</span></li>
+             			<li class="circle circle--small"><span class="u-visually-hidden">5</span></li>
+             		</ol>
+             	</div>
+        </div>
+    </div>
+
+
 
     <hr>
 
-    <div class="ma-meter ma-meter--3-selected">
-		<p class="ma-p ma-p--default" style="margin: 0 30px 0 0;display:inline-block;">
-            Skill level
-        </p>
-		<ol style="display: inline-block;list-style: none;padding: 0;margin: 0">
-			<li><span class="u-visually-hidden">1</span>
-			</li>
-			<li><span class="u-visually-hidden">2</span>
-			</li>
-			<li><span class="u-visually-hidden">3</span>
-			</li>
-			<li><span class="u-visually-hidden">4</span>
-			</li>
-			<li><span class="u-visually-hidden">5</span>
-			</li>
-		</ol>
-	</div>
+    <div class="row">
+        <div class="col-xs-12">
+            <h3 style="text-decoration: none;
+                         letter-spacing: 0;
+                         font-style: normal;
+                         white-space: nowrap;">Meter size ratings</h3>
+
+                <! Small Meter >
+                <div class="ma-meter ma-meter--border
+                            ma-meter--border-1 ma-meter--small
+                            ma-meter--rating-5">
+                    <p class="ma-p ma-p--default margin-reset space-right-4">
+                         Small
+                    </p>
+                    <ol class="margin-reset padding-reset">
+                        <li class="circle circle--small"><span class="u-visually-hidden">1</span></li>
+                        <li class="circle circle--small"><span class="u-visually-hidden">2</span></li>
+                        <li class="circle circle--small"><span class="u-visually-hidden">3</span></li>
+                        <li class="circle circle--small"><span class="u-visually-hidden">4</span></li>
+                        <li class="circle circle--small"><span class="u-visually-hidden">5</span></li>
+                    </ol>
+                </div>
+
+                <! Default Meter >
+                <div class="ma-meter ma-meter--border
+                            ma-meter--border-1 ma-meter--default
+                            ma-meter--rating-4">
+                    <p class="ma-p ma-p--default margin-reset space-right-4">
+                         Default
+                    </p>
+                    <ol class="margin-reset padding-reset">
+                        <li class="circle circle--default"><span class="u-visually-hidden">1</span></li>
+                        <li class="circle circle--default"><span class="u-visually-hidden">2</span></li>
+                        <li class="circle circle--default"><span class="u-visually-hidden">3</span></li>
+                        <li class="circle circle--default"><span class="u-visually-hidden">4</span></li>
+                        <li class="circle circle--default"><span class="u-visually-hidden">5</span></li>
+                    </ol>
+                </div>
+
+                <! Medium Meter >
+                <div class="ma-meter ma-meter--border
+                            ma-meter--border-1 ma-meter--medium
+                            ma-meter--rating-3">
+                    <p class="ma-p ma-p--large margin-reset space-right-4">
+                         Medium
+                    </p>
+                    <ol class="margin-reset padding-reset">
+                        <li class="circle circle--medium"><span class="u-visually-hidden">1</span></li>
+                        <li class="circle circle--medium"><span class="u-visually-hidden">2</span></li>
+                        <li class="circle circle--medium"><span class="u-visually-hidden">3</span></li>
+                        <li class="circle circle--medium"><span class="u-visually-hidden">4</span></li>
+                        <li class="circle circle--medium"><span class="u-visually-hidden">5</span></li>
+                    </ol>
+                </div>
+
+                <! Large Meter >
+                <div class="ma-meter ma-meter--border
+                            ma-meter--border-1 ma-meter--large
+                            ma-meter--rating-2">
+                    <p class="ma-p ma-p--large margin-reset space-right-4">
+                         Large
+                    </p>
+                    <ol class="margin-reset padding-reset">
+                        <li class="circle circle--large"><span class="u-visually-hidden">1</span></li>
+                        <li class="circle circle--large"><span class="u-visually-hidden">2</span></li>
+                        <li class="circle circle--large"><span class="u-visually-hidden">3</span></li>
+                        <li class="circle circle--large"><span class="u-visually-hidden">4</span></li>
+                        <li class="circle circle--large"><span class="u-visually-hidden">5</span></li>
+                    </ol>
+                </div>
+
+        </div>
+    </div>
 
     <hr>
 

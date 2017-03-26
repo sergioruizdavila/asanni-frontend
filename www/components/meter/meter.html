@@ -1,0 +1,27 @@
+<!--------------------------------------------->
+<!--                  METER                  -->
+<!--------------------------------------------->
+
+<div class="ma-rating">
+    <i class="material-icons ma-stars__icon"
+              ng-class="vm._assignClass()"
+              ng-repeat="rating in vm._ratingList track by $index">
+        {{rating}}
+    </i>
+</div>
+
+<div class="ma-meter ma-meter--border
+            ma-meter--border-1 ma-meter--medium"
+     ng-class="vm._assignMeterClass()">
+    <p class="ma-p ma-p--large
+              margin-reset space-right-4 text-capitalize">
+         {{vm._title}}
+    </p>
+    <ol class="margin-reset padding-reset">
+        <li class="circle"
+            ng-class="vm._assignCircleClass()"
+            ng-repeat="circle in [1, vm.CIRCLES_AMOUNT] | rangeFilter">
+            <span class="u-visually-hidden">{circle}</span>
+        </li>
+    </ol>
+</div>

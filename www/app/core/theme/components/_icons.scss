@@ -144,6 +144,355 @@ $icon-container-count-font-sizes: (
 }
 
 
+/**********************************************************/
+/*                      LINER-ICONS                       */
+/**********************************************************/
+
+.ma-liner-icons {
+    background-color: transparent;
+    display: inline-block;
+    vertical-align: middle;
+    background-image: url($line-icons-path);
+
+    // SIZES
+    &--small {
+        width: 25px;
+        height: 25px;
+        background-size: 33px;
+
+        &--wifi {
+            background-position: -4px -664px;
+        }
+
+        &--air-conditing {
+            background-position: -4px -4px;
+        }
+
+        &--bathroom {
+            background-position: -4px -37px;
+        }
+
+        &--washer {
+            background-position: -4px 62px;
+        }
+
+        &--video-projector {
+            background-position: -4px 95px;
+        }
+
+        &--tv {
+            background-position: -4px 128px;
+        }
+
+        &--tea {
+            background-position: -4px 161px;
+        }
+
+        &--snack {
+            background-position: -4px 194px;
+        }
+
+        &--pool {
+            background-position: -4px 226px;
+        }
+
+        &--lunch {
+            background-position: -4px 260px;
+        }
+
+        &--lounge {
+            background-position: -4px 293px;
+        }
+
+        &--laptop {
+            background-position: -4px 327px;
+        }
+
+        &--kitchen {
+            background-position: -4px 359px;
+        }
+
+        &--heating {
+            background-position: -4px 392px;
+        }
+
+        &--hammock {
+            background-position: -4px 425px;
+        }
+
+        &--dinner {
+            background-position: -4px 458px;
+        }
+
+        &--computer {
+            width: 28px;
+            background-position: -4px 491px;
+        }
+
+        &--coffee {
+            background-position: -4px 524px;
+        }
+
+        &--class-room {
+            background-position: -4px 557px;
+        }
+
+        &--breakfast {
+            background-position: -4px 590px;
+        }
+
+        &--big-bed {
+            background-position: -4px 623px;
+        }
+
+    }
+
+    &--default {
+        width: 32px;
+        height: 32px;
+        background-size: 40px;
+
+        &--wifi {
+            background-position: -4px 36px;
+        }
+
+        &--air-conditing {
+            background-position: -4px -4px;
+        }
+
+        &--bathroom {
+            background-position: -4px -43px;
+        }
+
+        &--washer {
+            background-position: -4px 76px;
+        }
+
+        &--video-projector {
+            background-position: -4px 116px;
+        }
+
+        &--tv {
+            background-position: -4px 156px;
+        }
+
+        &--tea {
+            background-position: -4px 196px;
+        }
+
+        &--snack {
+            background-position: -4px 236px;
+        }
+
+        &--pool {
+            background-position: -4px 275px;
+        }
+
+        &--lunch {
+            background-position: -4px 316px;
+        }
+
+        &--lounge {
+            background-position: -4px 356px;
+        }
+
+        &--laptop {
+            background-position: -4px 397px;
+        }
+
+        &--kitchen {
+            background-position: -4px 436px;
+        }
+
+        &--heating {
+            background-position: -4px 476px;
+        }
+
+        &--hammock {
+            background-position: -4px 516px;
+        }
+
+        &--dinner {
+            background-position: -4px 556px;
+        }
+
+        &--computer {
+            width: 34px;
+            background-position: -4px 596px;
+        }
+
+        &--coffee {
+            background-position: -4px 636px;
+        }
+
+        &--class-room {
+            background-position: -4px 676px;
+        }
+
+        &--breakfast {
+            background-position: -4px 716px;
+        }
+
+        &--big-bed {
+            background-position: -4px 756px;
+        }
+    }
+
+    &--medium {
+        width: 35px;
+        height: 35px;
+        background-size: 90px;
+
+        &--wifi {
+            background-position: -4px -4px;
+        }
+
+        &--air-conditing {
+            background-position: -35px -4px;
+        }
+    }
+
+    &--large {
+        width: 45px;
+        height: 45px;
+        background-size: 123px;
+
+        &--wifi {
+            background-position: -4px -4px;
+        }
+
+        &--air-conditing {
+            background-position: -35px -4px;
+        }
+    }
+}
+
+
+
+/**********************************************************/
+/*                   PAYMENT-METHODS-ICONS                */
+/**********************************************************/
+
+
+.ma-payment-methods-icons {
+    background-color: transparent;
+    display: inline-block;
+    vertical-align: middle;
+    background-image: url($payment-methods-icons-path);
+
+    &--disabled {
+        opacity: 0.1;
+    }
+
+    // SIZES
+    &--small {
+        width: 25px;
+        height: 25px;
+        background-size: 33px;
+
+        &--master-card {
+            background-position: -4px 36px;
+        }
+
+        &--visa {
+            background-position: -4px -4px;
+        }
+
+        &--cash {
+            background-position: -4px -43px;
+        }
+
+        &--paypal {
+            background-position: -4px -43px;
+        }
+
+        &--american-express {
+            background-position: -4px -43px;
+        }
+
+    }
+
+    &--default {
+        width: 32px;
+        height: 32px;
+        background-size: 40px;
+
+        &--master-card {
+            background-position: -4px 36px;
+        }
+
+        &--visa {
+            background-position: -4px -4px;
+        }
+
+        &--cash {
+            background-position: -4px -43px;
+        }
+
+        &--paypal {
+            background-position: -4px -43px;
+        }
+
+        &--american-express {
+            background-position: -4px -43px;
+        }
+
+    }
+
+    &--medium {
+        width: 56px;
+        height: 41px;
+        background-size: 450px;
+
+        &--master-card {
+            background-position: -121px -57px;
+        }
+
+        &--visa {
+            background-position: -45px -57px;
+        }
+
+        &--cash {
+            background-position: -121px -178px;
+        }
+
+        &--paypal {
+            background-position: -272px -117px;
+        }
+
+        &--american-express {
+            background-position: -45px -117px;
+        }
+    }
+
+    &--large {
+        width: 45px;
+        height: 45px;
+        background-size: 123px;
+
+        &--master-card {
+            background-position: -4px 36px;
+        }
+
+        &--visa {
+            background-position: -4px -4px;
+        }
+
+        &--cash {
+            background-position: -4px -43px;
+        }
+
+        &--paypal {
+            background-position: -4px -43px;
+        }
+
+        &--american-express {
+            background-position: -4px -43px;
+        }
+    }
+}
+
+
 /********************** END - ICONS ***********************/
 
 
