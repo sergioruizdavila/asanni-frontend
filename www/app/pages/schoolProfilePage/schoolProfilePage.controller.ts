@@ -77,7 +77,7 @@ module app.pages.schoolProfilePage {
             //VARIABLES
             let self = this;
             //LOG
-            console.log('schoolProfilePage 20 controller actived');
+            DEBUG && console.log('schoolProfilePage controller actived');
             //MIXPANEL
             mixpanel.track(ENTER_MIXPANEL);
 

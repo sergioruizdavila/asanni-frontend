@@ -97,7 +97,7 @@ module app.pages.editProfile {
             let self = this;
 
             //LOG
-            console.log('editProfile controller actived');
+            DEBUG && console.log('editProfile controller actived');
 
             //MIXPANEL
             mixpanel.track(ENTER_MIXPANEL);

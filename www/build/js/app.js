@@ -101,7 +101,7 @@ DEBUG = true;
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/profile-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
+        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
         BUCKETS3 = 'waysily-img/profile-avatar-dev';
     }
     var dataConfig = {
@@ -431,7 +431,7 @@ var app;
                         this.$filter = $filter;
                         this.dataConfig = dataConfig;
                         this.$translate = $translate;
-                        DEBUG && console.log('functionsUtil 2000 service called');
+                        DEBUG && console.log('functionsUtil service called');
                     }
                     FunctionsUtilService.prototype.normalizeString = function (str) {
                         var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç";
@@ -652,7 +652,7 @@ var app;
                             var countryCode = html[i].attributes[0].nodeValue;
                             countries_json["%country." + countryCode] = countryText;
                         }
-                        console.log(JSON.stringify(countries_json));
+                        DEBUG && console.log(JSON.stringify(countries_json));
                     };
                     FunctionsUtilService.prototype.averageNumbersArray = function (values) {
                         var total = 0;

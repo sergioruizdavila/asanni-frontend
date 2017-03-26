@@ -12,7 +12,7 @@ var app;
                         this.$filter = $filter;
                         this.dataConfig = dataConfig;
                         this.$translate = $translate;
-                        DEBUG && console.log('functionsUtil 2000 service called');
+                        DEBUG && console.log('functionsUtil service called');
                     }
                     FunctionsUtilService.prototype.normalizeString = function (str) {
                         var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç";
@@ -233,7 +233,7 @@ var app;
                             var countryCode = html[i].attributes[0].nodeValue;
                             countries_json["%country." + countryCode] = countryText;
                         }
-                        console.log(JSON.stringify(countries_json));
+                        DEBUG && console.log(JSON.stringify(countries_json));
                     };
                     FunctionsUtilService.prototype.averageNumbersArray = function (values) {
                         var total = 0;

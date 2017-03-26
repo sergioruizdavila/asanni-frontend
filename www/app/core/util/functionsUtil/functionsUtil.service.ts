@@ -35,7 +35,6 @@ module app.core.util.functionsUtil {
         setPropertyMixpanel: (property: Object) => void;
     }
 
-
     export interface IValid {
         valid: boolean;
         message: string;
@@ -57,7 +56,6 @@ module app.core.util.functionsUtil {
         IsTrue = 7,
         IsNotNaN = 8
     }
-
 
     /****************************************/
     /*           CLASS DEFINITION           */
@@ -84,7 +82,7 @@ module app.core.util.functionsUtil {
         constructor(private $filter: angular.IFilterService,
                     private dataConfig: IDataConfig,
                     private $translate: angular.translate.ITranslateService) {
-            DEBUG && console.log('functionsUtil 2000 service called');
+            DEBUG && console.log('functionsUtil service called');
         }
 
 
@@ -570,7 +568,7 @@ module app.core.util.functionsUtil {
                 countries_json["%country." + countryCode] = countryText;
             }
 
-            console.log(JSON.stringify(countries_json));
+            DEBUG && console.log(JSON.stringify(countries_json));
         }
 
 
@@ -670,7 +668,6 @@ module app.core.util.functionsUtil {
                 '$last_login': new Date()
             });
         }
-
 
         /**
         * setPropertyMixpanel

@@ -33,7 +33,7 @@ var app;
                 EditProfileController.prototype.activate = function () {
                     var ENTER_MIXPANEL = 'Enter: Edit Profile Page';
                     var self = this;
-                    console.log('editProfile controller actived');
+                    DEBUG && console.log('editProfile controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
                     this.fillFormWithProfileData();

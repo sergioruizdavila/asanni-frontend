@@ -97,7 +97,7 @@ module app.pages.editTeacher {
             let self = this;
 
             //LOG
-            console.log('editTeacher controller actived');
+            DEBUG && console.log('editTeacher controller actived');
 
             //MIXPANEL
             mixpanel.track(ENTER_MIXPANEL);
