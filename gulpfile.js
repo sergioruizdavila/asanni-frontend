@@ -305,7 +305,7 @@ gulp.task('watch', function() {
 })
 
 /*BUILD VENDOR*/
-gulp.task('build-vendor', ['bowerJS', 'libsJS', 'appJS', 'vendorCSS']);
+gulp.task('build-vendor', ['bowerJS', 'libsJS', 'ts', 'appJS', 'vendorCSS']);
 /*DEV*/
 gulp.task('dev', ['sass', 'webserver', 'build-vendor', 'watch']);
 /*PROD*/

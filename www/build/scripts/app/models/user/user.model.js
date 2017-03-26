@@ -197,7 +197,7 @@ var app;
                     },
                     set: function (about) {
                         if (about === undefined) {
-                            throw 'Please supply profile location';
+                            throw 'Please supply profile about';
                         }
                         this.about = about;
                     },
