@@ -9241,7 +9241,7 @@ var app;
                 EditProfileController.prototype.activate = function () {
                     var ENTER_MIXPANEL = 'Enter: Edit Profile Page';
                     var self = this;
-                    console.log('editProfile controller actived');
+                    DEBUG && console.log('editProfile controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
                     this.fillFormWithProfileData();
@@ -14145,7 +14145,7 @@ var app;
                 SchoolProfilePageController.prototype.activate = function () {
                     var ENTER_MIXPANEL = 'Enter: School Profile Page';
                     var self = this;
-                    console.log('schoolProfilePage 20 controller actived');
+                    DEBUG && console.log('schoolProfilePage controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
                     this.SchoolService.getSchoolById(this.$stateParams.id).then(function (response) {
                         self.data = new app.models.school.School(response);

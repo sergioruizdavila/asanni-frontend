@@ -136,143 +136,18 @@ for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElemen
     <script src="build/js/vendor-libs.min.js"></script>
 
     <!-- Sentry -->
-    <!--script src="https://cdn.ravenjs.com/3.12.0/angular/raven.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.ravenjs.com/3.12.0/angular/raven.min.js" crossorigin="anonymous"></script>
     <script>
         Raven.config('https://9f7b4f7197dd4f4eab3a302055209abc@sentry.io/145020').install();
-    </script-->
+    </script>
 
     <!-- main App: PRD -->
-    <!--script src="build/js/app.js"></script-->
+    <script src="build/js/app.js"></script>
 
     <!-- TODO: Buscar una forma mas segura de incluir google map API ya que esta expuesto el KEY-->
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y&libraries=places">
     </script>
-
-    <!-- main App: DEV -->
-    <script src="build/scripts/app/app.module.js"></script>
-    <script src="build/scripts/app/app.core.module.js"></script>
-    <script src="build/scripts/app/app.values.js"></script>
-    <script src="build/scripts/app/app.run.js"></script>
-    <script src="build/scripts/app/auth/auth.service.js"></script>
-    <script src="build/scripts/app/account/account.service.js"></script>
-    <script src="build/scripts/app/core/util/functionsUtil/functionsUtil.service.js"></script>
-    <script src="build/scripts/app/core/util/getDataStaticJson/getDataStaticJson.service.js"></script>
-    <script src="build/scripts/app/core/util/messageUtil/messageUtil.service.js"></script>
-    <script src="build/scripts/app/core/util/filters/app.filter.js"></script>
-    <script src="build/scripts/app/core/restApi/restApi.config.js"></script>
-    <script src="build/scripts/app/core/restApi/restApi.service.js"></script>
-    <script src="build/scripts/app/core/s3Upload/s3Upload.service.js"></script>
-    <script src="build/scripts/app/models/feedback/feedback.model.js"></script>
-    <script src="build/scripts/app/models/feedback/feedback.service.js"></script>
-    <script src="build/scripts/app/models/user/user.model.js"></script>
-    <script src="build/scripts/app/models/user/user.service.js"></script>
-    <script src="build/scripts/app/register/register.service.js"></script>
-    <script src="build/scripts/app/models/student/student.model.js"></script>
-    <script src="build/scripts/app/models/student/student.service.js"></script>
-    <script src="build/scripts/app/models/teacher/teacher.model.js"></script>
-    <script src="build/scripts/app/models/teacher/teacher.service.js"></script>
-    <script src="build/scripts/app/models/school/school.model.js"></script>
-    <script src="build/scripts/app/models/school/school.service.js"></script>
-    <script src="build/scripts/components/header/header.config.js"></script>
-    <script src="build/scripts/components/header/header.directive.js"></script>
-    <script src="build/scripts/components/sideMenu/sideMenu.config.js"></script>
-    <script src="build/scripts/components/sideMenu/sideMenu.directive.js"></script>
-    <script src="build/scripts/components/rating/rating.config.js"></script>
-    <script src="build/scripts/components/rating/rating.directive.js"></script>
-    <script src="build/scripts/components/meter/meter.config.js"></script>
-    <script src="build/scripts/components/meter/meter.directive.js"></script>
-    <script src="build/scripts/components/footer/footer.config.js"></script>
-    <script src="build/scripts/components/footer/footer.directive.js"></script>
-    <script src="build/scripts/components/floatMessageBar/floatMessageBar.config.js"></script>
-    <script src="build/scripts/components/floatMessageBar/floatMessageBar.directive.js"></script>
-    <script src="build/scripts/components/map/map.config.js"></script>
-    <script src="build/scripts/components/map/map.directive.js"></script>
-    <script src="build/scripts/components/modal/modal.config.js"></script>
-    <script src="build/scripts/components/modal/modalCreateUser/modalWelcome/modalWelcome.controller.js"></script>
-    <script src="build/scripts/components/modal/modalCreateUser/modalPhoto/modalPhoto.controller.js"></script>
-    <script src="build/scripts/components/modal/modalCreateUser/modalBorn/modalBorn.controller.js"></script>
-    <script src="build/scripts/components/modal/modalCreateUser/modalBasicInfo/modalBasicInfo.controller.js"></script>
-    <script src="build/scripts/components/modal/modalCreateUser/modalFinish/modalFinish.controller.js"></script>
-    <script src="build/scripts/components/modal/modalMeetingPoint/modalMeetingPoint.controller.js"></script>
-    <script src="build/scripts/components/modal/modalLanguages/modalLanguages.controller.js"></script>
-    <script src="build/scripts/components/modal/modalExperience/modalExperience.controller.js"></script>
-    <script src="build/scripts/components/modal/modalEducation/modalEducation.controller.js"></script>
-    <script src="build/scripts/components/modal/modalCertificate/modalCertificate.controller.js"></script>
-    <script src="build/scripts/components/modal/modalSignUp/modalSignUp.controller.js"></script>
-    <script src="build/scripts/components/modal/modalLogIn/modalLogIn.controller.js"></script>
-    <script src="build/scripts/components/modal/modalForgotPassword/modalForgotPassword.controller.js"></script>
-    <script src="build/scripts/components/modal/modalRecommendTeacher/modalRecommendTeacher.controller.js"></script>
-    <script src="build/scripts/app/pages/main/main.config.js"></script>
-    <script src="build/scripts/app/pages/main/main.controller.js"></script>
-    <script src="build/scripts/app/pages/studentLandingPage/studentLandingPage.config.js"></script>
-    <script src="build/scripts/app/pages/studentLandingPage/studentLandingPage.controller.js"></script>
-    <script src="build/scripts/app/pages/studentLandingPage/studentLandingPage.service.js"></script>
-    <script src="build/scripts/app/pages/teacherLandingPage/teacherLandingPage.config.js"></script>
-    <script src="build/scripts/app/pages/teacherLandingPage/teacherLandingPage.controller.js"></script>
-    <script src="build/scripts/app/pages/resetPasswordPage/resetPasswordPage.config.js"></script>
-    <script src="build/scripts/app/pages/resetPasswordPage/resetPasswordPage.controller.js"></script>
-    <script src="build/scripts/app/pages/landingPage/landingPage.config.js"></script>
-    <script src="build/scripts/app/pages/landingPage/landingPage.controller.js"></script>
-    <script src="build/scripts/app/pages/landingPage/landingPage.service.js"></script>
-    <script src="build/scripts/app/pages/searchPage/searchPage.config.js"></script>
-    <script src="build/scripts/app/pages/searchPage/searchPage.controller.js"></script>
-    <script src="build/scripts/app/pages/searchPage/teacherResult/teacherResult.directive.js"></script>
-    <script src="build/scripts/app/pages/editProfile/editProfile.config.js"></script>
-    <script src="build/scripts/app/pages/editProfile/editProfile.controller.js"></script>
-    <script src="build/scripts/app/pages/editProfile/editProfileBasicInfo/editProfileBasicInfo.config.js"></script>
-    <script src="build/scripts/app/pages/editProfile/editProfileBasicInfo/editProfileBasicInfo.controller.js"></script>
-    <script src="build/scripts/app/pages/editProfile/editProfileMedia/editProfileMedia.config.js"></script>
-    <script src="build/scripts/app/pages/editProfile/editProfileMedia/editProfileMedia.controller.js"></script>
-    <script src="build/scripts/app/pages/editProfile/editProfileLocation/editProfileLocation.config.js"></script>
-    <script src="build/scripts/app/pages/editProfile/editProfileLocation/editProfileLocation.controller.js"></script>
-    <script src="build/scripts/app/pages/editProfile/userEditAgendaPage/userEditAgendaPage.config.js"></script>
-    <script src="build/scripts/app/pages/editProfile/userEditAgendaPage/userEditAgendaPage.controller.js"></script>
-    <script src="build/scripts/app/pages/editTeacher/editTeacher.config.js"></script>
-    <script src="build/scripts/app/pages/editTeacher/editTeacher.controller.js"></script>
-    <script src="build/scripts/app/pages/editTeacher/editTeacherTeach/editTeacherTeach.config.js"></script>
-    <script src="build/scripts/app/pages/editTeacher/editTeacherTeach/editTeacherTeach.controller.js"></script>
-    <script src="build/scripts/app/pages/editTeacher/editTeacherExperience/editTeacherExperience.config.js"></script>
-    <script src="build/scripts/app/pages/editTeacher/editTeacherExperience/editTeacherExperience.controller.js"></script>
-    <script src="build/scripts/app/pages/editTeacher/editTeacherEducation/editTeacherEducation.config.js"></script>
-    <script src="build/scripts/app/pages/editTeacher/editTeacherEducation/editTeacherEducation.controller.js"></script>
-    <script src="build/scripts/app/pages/editTeacher/editTeacherMethodology/editTeacherMethodology.config.js"></script>
-    <script src="build/scripts/app/pages/editTeacher/editTeacherMethodology/editTeacherMethodology.controller.js"></script>
-    <script src="build/scripts/app/pages/editTeacher/editTeacherPrice/editTeacherPrice.config.js"></script>
-    <script src="build/scripts/app/pages/editTeacher/editTeacherPrice/editTeacherPrice.controller.js"></script>
-    <script src="build/scripts/app/pages/meetingConfirmationPage/meetingConfirmationPage.config.js"></script>
-    <script src="build/scripts/app/pages/meetingConfirmationPage/meetingConfirmationPage.controller.js"></script>
-    <script src="build/scripts/app/pages/userInboxPage/userInboxPage.config.js"></script>
-    <script src="build/scripts/app/pages/userInboxPage/userInboxPage.controller.js"></script>
-    <script src="build/scripts/app/pages/userInboxDetailsPage/userInboxDetailsPage.config.js"></script>
-    <script src="build/scripts/app/pages/userInboxDetailsPage/userInboxDetailsPage.controller.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/createTeacherPage.config.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/createTeacherPage.controller.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/teacherWelcomeSection/teacherWelcomeSection.config.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/teacherWelcomeSection/teacherWelcomeSection.controller.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.config.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/teacherInfoSection/teacherInfoSection.controller.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.config.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/teacherLocationSection/teacherLocationSection.controller.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/teacherLanguageSection/teacherLanguageSection.config.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/teacherLanguageSection/teacherLanguageSection.controller.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/teacherExperienceSection/teacherExperienceSection.config.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/teacherExperienceSection/teacherExperienceSection.controller.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/teacherEducationSection/teacherEducationSection.config.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/teacherEducationSection/teacherEducationSection.controller.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/teacherMethodSection/teacherMethodSection.config.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/teacherMethodSection/teacherMethodSection.controller.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/teacherPriceSection/teacherPriceSection.config.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/teacherPriceSection/teacherPriceSection.controller.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/teacherPhotoSection/teacherPhotoSection.config.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/teacherPhotoSection/teacherPhotoSection.controller.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/teacherFinishSection/teacherFinishSection.config.js"></script>
-    <script src="build/scripts/app/pages/createTeacherPage/teacherFinishSection/teacherFinishSection.controller.js"></script>
-    <script src="build/scripts/app/pages/teacherProfilePage/teacherProfilePage.config.js"></script>
-    <script src="build/scripts/app/pages/teacherProfilePage/teacherProfilePage.controller.js"></script>
-    <script src="build/scripts/app/pages/schoolProfilePage/schoolProfilePage.config.js"></script>
-    <script src="build/scripts/app/pages/schoolProfilePage/schoolProfilePage.controller.js"></script>
-
 
 </body>
 
