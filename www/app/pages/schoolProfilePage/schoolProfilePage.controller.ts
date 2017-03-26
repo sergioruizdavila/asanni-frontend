@@ -98,7 +98,7 @@ module app.pages.schoolProfilePage {
                                 }
                             }
                         ],
-                        'location-circle-map',
+                        'location-marker-map',
                         {lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng)},
                         null
                     );

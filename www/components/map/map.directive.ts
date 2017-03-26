@@ -104,6 +104,7 @@ module components.map {
     export interface IMapConfig {
         type: string;
         data: IMapDataSet;
+        pin?: string;
     }
 
     export interface IMapDataSet {
@@ -137,6 +138,7 @@ module components.map {
         RED_PIN: string;
         POSITION_PIN: string;
         GREEN_PIN: string;
+        SCHOOL_PIN: string;
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/
@@ -158,6 +160,7 @@ module components.map {
             this.RED_PIN = 'assets/images/red-pin.png';
             this.POSITION_PIN = 'assets/images/red-pin.png';
             this.GREEN_PIN = 'assets/images/green-pin.png';
+            this.SCHOOL_PIN = 'assets/images/school-pin.png';
             /*********************************/
             //VARIABLES
             let self = this;
@@ -172,6 +175,8 @@ module components.map {
             this.$scope.options = null;
 
             //default map options
+            //TODO: Hacer una cambio importante ya que necesito seleccionar el tipo de pin,
+            // por entidad: escuela, profesor, estudiantes. Y este sistema no va a servir mucho.
             switch(this.mapConfig.type) {
                 case 'search-map':
                     this._searchMapBuilder();
@@ -181,6 +186,9 @@ module components.map {
                 break;
                 case 'location-circle-map':
                     this._locationCircleMapBuilder();
+                break;
+                case 'location-marker-map':
+                    this._locationMarkerMapBuilder();
                 break;
             }
 
@@ -268,7 +276,7 @@ module components.map {
         * @return {void}
         */
 
-        _dragMarkerMapBuilder(): void {
+        private _dragMarkerMapBuilder(): void {
             //VARIABLES
             let self = this;
             let zoom = this.mapConfig.data.zoom || 17;
@@ -323,21 +331,21 @@ module components.map {
         * @return {void}
         */
 
-        _locationCircleMapBuilder(): void {
+        private _locationCircleMapBuilder(): void {
             //VARIABLES
             let self = this;
             let zoom = this.mapConfig.data.zoom || 16;
             let center = this.mapConfig.data.position;
             let circle_strokeColor = '#ff5a5f';
-           let circle_strokeOpacity = 0.8;
-           let circle_strokeWeight = 2;
-           let circle_fillColor = '#ff5a5f';
-           let circle_fillOpacity = 0.35;
-           let circle_center = {
-               lat: 6.1739743,
-               lng: -75.5822414
-           };
-           let circle_radius = 140;
+            let circle_strokeOpacity = 0.8;
+            let circle_strokeWeight = 2;
+            let circle_fillColor = '#ff5a5f';
+            let circle_fillOpacity = 0.35;
+            let circle_center = {
+                lat: 6.1739743,
+                lng: -75.5822414
+            };
+            let circle_radius = 140;
             this._draggable = false;
             /********************/
 
@@ -376,6 +384,61 @@ module components.map {
                         center: new google.maps.LatLng(center.lat, center.lng),
                         radius: circle_radius
                     });
+
+                });
+            }
+
+        }
+
+
+
+        /**
+        * _locationMarkerMapBuilder
+        * @description - this method builds the location marker Map
+        * @use - this._locationMarkerMapBuilder();
+        * @function
+        * @return {void}
+        */
+
+        private _locationMarkerMapBuilder(): void {
+            //VARIABLES
+            let self = this;
+            let zoom = this.mapConfig.data.zoom || 16;
+            let center = this.mapConfig.data.position;
+            this._draggable = false;
+            /********************/
+
+            //Map options
+            this.$scope.options = {
+                center: new google.maps.LatLng(center.lat, center.lng),
+                zoom: zoom,
+                mapTypeControl: false,
+                zoomControl: true,
+                streetViewControl: false,
+                scrollwheel: false,
+                zoomControlOptions: {
+                    position: google.maps.ControlPosition.TOP_RIGHT
+                }
+            };
+
+            // Init map
+            if (this._map === void 0) {
+
+                this.$timeout(function() {
+
+                    //Init Map
+                    self._map = new google.maps.Map(
+                        document.getElementById(self.mapId),
+                        self.$scope.options
+                    );
+
+                    //set markers
+                    for (let i = 0; i < self.mapConfig.data.markers.length; i++) {
+                        let marker = self.mapConfig.data.markers[i];
+                        self._setMarker(marker.id,
+                                        new google.maps.LatLng(marker.position.lat, marker.position.lng),
+                                        self.SCHOOL_PIN);
+                    }
 
                 });
             }
