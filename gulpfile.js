@@ -8,6 +8,8 @@ var autoprefixer = require('gulp-autoprefixer');
 var connect = require('gulp-connect');
 var lib = require('bower-files')();
 var ngAnnotate = require('gulp-ng-annotate');
+var svgSprite = require('gulp-svg-sprite');
+var plumber = require('gulp-plumber');
 
 
 /*Path Files*/
@@ -154,6 +156,8 @@ var paths = {
         'www/bower_components/toastr/toastr.min.css',
         'www/bower_components/ng-img-crop/compile/minified/ng-img-crop.css'
     ],
+    svgFiles: 'www/assets/images/icons-svg',
+    images: 'www/assets/images',
     appSass: ['www/**/**/*.scss'],
     inputSass: 'www/app/core/theme/**/*.scss',
     outputSass: 'www/app/core/theme/',
@@ -290,6 +294,47 @@ gulp.task('appJS', function () {
     //.pipe(ngAnnotate())
     //.pipe(uglify())
     .pipe(gulp.dest('www/build/js'));
+});
+
+
+
+//TODO: Limpiar este codigo, y crear 4 tareas que creen cada uno de los tamaños
+// predeterminados de los lineal icons (small, default, medium, large)
+
+/**
+ * BUILD SVG SPRITE
+ * @desc This task is the responsible to build svg sprite and generate SCSS styles
+ */
+
+var svgConfig = {
+  svg: {
+    namespaceClassnames: false
+  },
+  shape: {
+        dimension: {
+            maxWidth: 32, //default size
+            maxHeight: 32, //default size
+            precision: 2,
+            attributes: false,
+        },
+		spacing: {
+			padding: 5
+		}
+  },
+  mode: {
+      css: {
+          dest: 'css',
+          render: {
+              scss: true
+          }
+      }
+  }
+};
+
+gulp.task('sprite', function() {
+    gulp.src('*.svg', {cwd: paths.svgFiles})
+        .pipe(svgSprite(svgConfig))
+        .pipe(gulp.dest(paths.images));
 });
 
 /**
