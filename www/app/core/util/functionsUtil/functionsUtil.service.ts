@@ -33,6 +33,7 @@ module app.core.util.functionsUtil {
         addUserIndentifyMixpanel: (userId: string) => void;
         setUserMixpanel: (userData: app.models.user.Profile) => void;
         setPropertyMixpanel: (property: Object) => void;
+        assignAmenitieIconClass: (amenitie: string) => string;
     }
 
     export interface IValid {
@@ -693,11 +694,14 @@ module app.core.util.functionsUtil {
         /**
         * assignAmenitieIconClass
         * @description - Assign icon class based on a type of amenities
-        * @use - this.FunctionsUtilService.assignIconClass('2');
+        * @use - this.FunctionsUtilService.assignAmenitieIconClass('2');
         * @function
         * @param {Object} property - new property
         * @return {void}
         */
+        //TODO: Mover esta lista de opcion de aqui, y llevar a un archivo global,
+        // (almacene variables globales) donde podamos llamar esta lista siempre
+        // que la necesite.
         assignAmenitieIconClass(amenitie: string): string {
 
             //VARIABLES

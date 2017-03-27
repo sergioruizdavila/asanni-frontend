@@ -147,7 +147,8 @@ $icon-container-count-font-sizes: (
 /**********************************************************/
 /*                      LINER-ICONS                       */
 /**********************************************************/
-
+/* NOTE: Warning this classes name are connected with a functionsUtil method.
+If you have to modified here, you should look for any reference */
 .ma-liner-icons {
     background-color: transparent;
     display: inline-block;
@@ -372,7 +373,8 @@ $icon-container-count-font-sizes: (
 /**********************************************************/
 /*                   PAYMENT-METHODS-ICONS                */
 /**********************************************************/
-
+/* NOTE: Warning this classes name are connected with a functionsUtil method.
+If you have to modified here, you should look for any reference */
 
 .ma-payment-methods-icons {
     background-color: transparent;
@@ -389,8 +391,8 @@ $icon-container-count-font-sizes: (
         width: 25px;
         height: 25px;
         background-size: 33px;
-
-        &--master-card {
+        //TODO: Modificar cuando se necesiten, no corresponden
+        &--mastercard {
             background-position: -4px 36px;
         }
 
@@ -416,8 +418,8 @@ $icon-container-count-font-sizes: (
         width: 32px;
         height: 32px;
         background-size: 40px;
-
-        &--master-card {
+        //TODO: Modificar cuando se necesiten, no corresponden
+        &--mastercard {
             background-position: -4px 36px;
         }
 
@@ -444,7 +446,7 @@ $icon-container-count-font-sizes: (
         height: 41px;
         background-size: 450px;
 
-        &--master-card {
+        &--mastercard {
             background-position: -121px -57px;
         }
 
@@ -469,8 +471,8 @@ $icon-container-count-font-sizes: (
         width: 45px;
         height: 45px;
         background-size: 123px;
-
-        &--master-card {
+        //TODO: Modificar cuando se necesiten, no corresponden 
+        &--mastercard {
             background-position: -4px 36px;
         }
 
