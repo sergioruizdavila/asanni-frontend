@@ -143,6 +143,13 @@ $icon-container-count-font-sizes: (
 
 }
 
+.test-icon {
+    @include sprite(air-condition);
+}
+
+.test-icon-bg {
+    @include sprite(air-condition, bg);
+}
 
 /**********************************************************/
 /*                      LINER-ICONS                       */
@@ -246,6 +253,22 @@ If you have to modified here, you should look for any reference */
             background-position: -4px 623px;
         }
 
+        &--cable-tv {
+            background-position: -4px 756px;
+        }
+
+        &--close-to {
+            background-position: -4px 756px;
+        }
+
+        &--private-room {
+            background-position: -4px 756px;
+        }
+
+        &--shared-room {
+            background-position: -4px 756px;
+        }
+
     }
 
     &--default {
@@ -335,6 +358,22 @@ If you have to modified here, you should look for any reference */
         }
 
         &--big-bed {
+            background-position: -4px 756px;
+        }
+
+        &--cable-tv {
+            background-position: -4px 756px;
+        }
+
+        &--close-to {
+            background-position: -4px 756px;
+        }
+
+        &--private-room {
+            background-position: -4px 756px;
+        }
+
+        &--shared-room {
             background-position: -4px 756px;
         }
     }
@@ -471,7 +510,7 @@ If you have to modified here, you should look for any reference */
         width: 45px;
         height: 45px;
         background-size: 123px;
-        //TODO: Modificar cuando se necesiten, no corresponden 
+        //TODO: Modificar cuando se necesiten, no corresponden
         &--mastercard {
             background-position: -4px 36px;
         }

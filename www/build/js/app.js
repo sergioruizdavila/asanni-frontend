@@ -79,7 +79,6 @@
 (function () {
     'use strict';
     angular.module('mainApp.core', [
-        'ngRaven',
         'ngResource',
         'ngCookies',
         'ui.router',
@@ -95,13 +94,13 @@
 
 //# sourceMappingURL=../../maps/app/app.core.module.js.map
 
-DEBUG = false;
+DEBUG = true;
 (function () {
     'use strict';
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/profile-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/profile-avatar-dev';
     }
     var dataConfig = {
@@ -764,6 +763,86 @@ var app;
                             {
                                 key: '15',
                                 value: 'lounge'
+                            },
+                            {
+                                key: '16',
+                                value: 'pool'
+                            }
+                        ];
+                        for (var i = 0; i < options.length; i++) {
+                            if (options[i].key === amenitie) {
+                                iconClass = options[i].value;
+                                break;
+                            }
+                        }
+                        return iconClass;
+                    };
+                    FunctionsUtilService.prototype.assignAccommodatioAmenitieIconClass = function (amenitie) {
+                        var iconClass = '';
+                        var options = [
+                            {
+                                key: '1',
+                                value: 'private-room'
+                            },
+                            {
+                                key: '2',
+                                value: 'shared-room'
+                            },
+                            {
+                                key: '3',
+                                value: 'bathroom'
+                            },
+                            {
+                                key: '4',
+                                value: 'breakfast'
+                            },
+                            {
+                                key: '5',
+                                value: 'lunch'
+                            },
+                            {
+                                key: '6',
+                                value: 'dinner'
+                            },
+                            {
+                                key: '7',
+                                value: 'snack'
+                            },
+                            {
+                                key: '8',
+                                value: 'coffee'
+                            },
+                            {
+                                key: '9',
+                                value: 'tea'
+                            },
+                            {
+                                key: '10',
+                                value: 'wifi'
+                            },
+                            {
+                                key: '11',
+                                value: 'close-to'
+                            },
+                            {
+                                key: '12',
+                                value: 'washer'
+                            },
+                            {
+                                key: '13',
+                                value: 'cable-tv'
+                            },
+                            {
+                                key: '14',
+                                value: 'tv'
+                            },
+                            {
+                                key: '15',
+                                value: 'kitchen'
+                            },
+                            {
+                                key: '16',
+                                value: 'pool'
                             }
                         ];
                         for (var i = 0; i < options.length; i++) {

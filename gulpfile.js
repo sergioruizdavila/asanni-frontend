@@ -156,7 +156,7 @@ var paths = {
         'www/bower_components/toastr/toastr.min.css',
         'www/bower_components/ng-img-crop/compile/minified/ng-img-crop.css'
     ],
-    svgFiles: 'www/assets/images/icons-svg',
+    svgFiles: 'www/assets/images/icons-svg-sources/*.svg',
     images: 'www/assets/images',
     appSass: ['www/**/**/*.scss'],
     inputSass: 'www/app/core/theme/**/*.scss',
@@ -296,13 +296,10 @@ gulp.task('appJS', function () {
     .pipe(gulp.dest('www/build/js'));
 });
 
-
-
-//TODO: Limpiar este codigo, y crear 4 tareas que creen cada uno de los tamaños
-// predeterminados de los lineal icons (small, default, medium, large)
+/******************************************************************************/
 
 /**
- * BUILD SVG SPRITE
+ * BUILD SVG SPRITE x32 (Default Size)
  * @desc This task is the responsible to build svg sprite and generate SCSS styles
  */
 
@@ -312,8 +309,8 @@ var svgConfig = {
   },
   shape: {
         dimension: {
-            maxWidth: 32, //default size
-            maxHeight: 32, //default size
+            maxWidth: 32,
+            maxHeight: 32,
             precision: 2,
             attributes: false,
         },
@@ -331,15 +328,48 @@ var svgConfig = {
   }
 };
 
-gulp.task('sprite', function() {
+
+gulp.task('sprite-default', function() {
     gulp.src('*.svg', {cwd: paths.svgFiles})
         .pipe(svgSprite(svgConfig))
         .pipe(gulp.dest(paths.images));
 });
 
+gulp.task('svg-sprite', function () {
+	return gulp.src(paths.svgFiles)
+		.pipe(svgSprite({
+			shape: {
+				spacing: {
+					padding: 5
+				}
+			},
+			mode: {
+				css: {
+					dest: "./",
+					sprite: "sprite-liner.svg",
+					bust: false,
+					render: {
+						scss: {
+							dest: "../../app/core/theme/core/_sprite.scss",
+							template: "www/build/tpl/sprite-template.scss"
+						}
+					}
+				}
+			},
+			variables: {
+				mapname: "sprite-liner"
+			}
+		}))
+		.pipe(gulp.dest(paths.images));
+});
+
+/******************************************************************************/
+
+
 /**
  * WATCH METHOD
- * @desc This task is the responsible to listen each change on some files in order to reload browser or
+ * @desc This task is the responsible to listen each change on some files in
+ * order to reload browser or
  * doing some special task
  */
 

@@ -1,8 +1,10 @@
 // App Shared Sass
 // --------------------------------------------------
 // All Core Sass files goes into the theme/core files (variables, globals)
+@import 'core/sprite';
 @import 'core/variables';
 @import 'core/globals';
+@import 'core/mixins';
 
 // All Utils Functions and Mixins
 // --------------------------------------------------

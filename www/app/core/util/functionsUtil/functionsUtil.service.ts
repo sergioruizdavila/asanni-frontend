@@ -34,6 +34,7 @@ module app.core.util.functionsUtil {
         setUserMixpanel: (userData: app.models.user.Profile) => void;
         setPropertyMixpanel: (property: Object) => void;
         assignAmenitieIconClass: (amenitie: string) => string;
+        assignAccommodatioAmenitieIconClass: (amenitie: string) => string;
     }
 
     export interface IValid {
@@ -767,6 +768,104 @@ module app.core.util.functionsUtil {
                 {
                     key: '15',
                     value: 'lounge'
+                },
+                {
+                    key: '16',
+                    value: 'pool'
+                }
+            ];
+
+            for (let i = 0; i < options.length; i++) {
+                if(options[i].key === amenitie) {
+                    iconClass = options[i].value;
+                    break;
+                }
+            }
+
+            return iconClass;
+        }
+
+
+        /**
+        * assignAccommodatioAmenitieIconClass
+        * @description - Assign icon class based on a type of accommodation amenities
+        * @use - this.FunctionsUtilService.assignAccommodatioAmenitieIconClass('2');
+        * @function
+        * @param {Object} property - new property
+        * @return {void}
+        */
+        //TODO: Mover esta lista de opcion de aqui, y llevar a un archivo global,
+        // (almacene variables globales) donde podamos llamar esta lista siempre
+        // que la necesite.
+        assignAccommodatioAmenitieIconClass(amenitie: string): string {
+
+            //VARIABLES
+            let iconClass = '';
+            //CONSTANTS
+            const options = [
+                {
+                    key: '1',
+                    value: 'private-room'
+                },
+                {
+                    key: '2',
+                    value: 'shared-room'
+                },
+                {
+                    key: '3',
+                    value: 'bathroom'
+                },
+                {
+                    key: '4',
+                    value: 'breakfast'
+                },
+                {
+                    key: '5',
+                    value: 'lunch'
+                },
+                {
+                    key: '6',
+                    value: 'dinner'
+                },
+                {
+                    key: '7',
+                    value: 'snack'
+                },
+                {
+                    key: '8',
+                    value: 'coffee'
+                },
+                {
+                    key: '9',
+                    value: 'tea'
+                },
+                {
+                    key: '10',
+                    value: 'wifi'
+                },
+                {
+                    key: '11',
+                    value: 'close-to'
+                },
+                {
+                    key: '12',
+                    value: 'washer'
+                },
+                {
+                    key: '13',
+                    value: 'cable-tv'
+                },
+                {
+                    key: '14',
+                    value: 'tv'
+                },
+                {
+                    key: '15',
+                    value: 'kitchen'
+                },
+                {
+                    key: '16',
+                    value: 'pool'
                 }
             ];
 
@@ -787,6 +886,5 @@ module app.core.util.functionsUtil {
     angular
     .module('mainApp.core.util', [])
     .service(FunctionsUtilService.serviceId, FunctionsUtilService);
-
 
 }
