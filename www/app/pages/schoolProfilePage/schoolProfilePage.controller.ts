@@ -170,6 +170,25 @@ module app.pages.schoolProfilePage {
         }
 
 
+        /**
+        * assignAccomoAmenitieIconClass
+        * @description - build accommodation amenities icons class
+        * (e.g. ma-liner-icons--default--wifi, ma-liner-icons--default--tv)
+        * @use - this.FunctionsUtilService.assignAccomoAmenitieIconClass('2');
+        * @function
+        * @param {string} amenitie - amenitie key value (e.g. '3')
+        * @return {void}
+        */
+
+        assignAccomoAmenitieIconClass (amenitie: string): string {
+            //VARIABLES
+            let amenitiePrefixClass = 'ma-liner-icons--default--';
+            let iconClass = this.functionsUtil.assignAccommodatioAmenitieIconClass(amenitie);
+
+            return amenitiePrefixClass + iconClass;
+        }
+
+
 
         /**
         * assignPaymentMethodsIconClass
