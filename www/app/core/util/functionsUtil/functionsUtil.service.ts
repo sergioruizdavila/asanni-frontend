@@ -34,7 +34,7 @@ module app.core.util.functionsUtil {
         setUserMixpanel: (userData: app.models.user.Profile) => void;
         setPropertyMixpanel: (property: Object) => void;
         assignAmenitieIconClass: (amenitie: string) => string;
-        assignAccommodatioAmenitieIconClass: (amenitie: string) => string;
+        assignAccommodationAmenitieIconClass: (amenitie: string) => string;
     }
 
     export interface IValid {
@@ -787,9 +787,9 @@ module app.core.util.functionsUtil {
 
 
         /**
-        * assignAccommodatioAmenitieIconClass
+        * assignAccommodationAmenitieIconClass
         * @description - Assign icon class based on a type of accommodation amenities
-        * @use - this.FunctionsUtilService.assignAccommodatioAmenitieIconClass('2');
+        * @use - this.FunctionsUtilService.assignAccommodationAmenitieIconClass('2');
         * @function
         * @param {Object} property - new property
         * @return {void}
@@ -797,7 +797,7 @@ module app.core.util.functionsUtil {
         //TODO: Mover esta lista de opcion de aqui, y llevar a un archivo global,
         // (almacene variables globales) donde podamos llamar esta lista siempre
         // que la necesite.
-        assignAccommodatioAmenitieIconClass(amenitie: string): string {
+        assignAccommodationAmenitieIconClass(amenitie: string): string {
 
             //VARIABLES
             let iconClass = '';

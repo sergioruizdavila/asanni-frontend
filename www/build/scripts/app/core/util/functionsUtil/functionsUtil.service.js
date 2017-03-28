@@ -359,7 +359,7 @@ var app;
                         }
                         return iconClass;
                     };
-                    FunctionsUtilService.prototype.assignAccommodatioAmenitieIconClass = function (amenitie) {
+                    FunctionsUtilService.prototype.assignAccommodationAmenitieIconClass = function (amenitie) {
                         var iconClass = '';
                         var options = [
                             {

@@ -778,7 +778,7 @@ var app;
                         }
                         return iconClass;
                     };
-                    FunctionsUtilService.prototype.assignAccommodatioAmenitieIconClass = function (amenitie) {
+                    FunctionsUtilService.prototype.assignAccommodationAmenitieIconClass = function (amenitie) {
                         var iconClass = '';
                         var options = [
                             {
@@ -14261,7 +14261,7 @@ var app;
                 };
                 SchoolProfilePageController.prototype.assignAccomoAmenitieIconClass = function (amenitie) {
                     var amenitiePrefixClass = 'ma-liner-icons--default--';
-                    var iconClass = this.functionsUtil.assignAmenitieIconClass(amenitie);
+                    var iconClass = this.functionsUtil.assignAccommodationAmenitieIconClass(amenitie);
                     return amenitiePrefixClass + iconClass;
                 };
                 SchoolProfilePageController.prototype.assignPaymentMethodsIconClass = function (method) {

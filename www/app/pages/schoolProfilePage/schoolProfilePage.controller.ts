@@ -183,7 +183,7 @@ module app.pages.schoolProfilePage {
         assignAccomoAmenitieIconClass (amenitie: string): string {
             //VARIABLES
             let amenitiePrefixClass = 'ma-liner-icons--default--';
-            let iconClass = this.functionsUtil.assignAccommodatioAmenitieIconClass(amenitie);
+            let iconClass = this.functionsUtil.assignAccommodationAmenitieIconClass(amenitie);
 
             return amenitiePrefixClass + iconClass;
         }
