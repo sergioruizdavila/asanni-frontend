@@ -373,13 +373,13 @@ gulp.task('watch', function() {
     gulp.watch(paths.appSass, ['sass', 'vendorCSS']);
     gulp.watch([paths.htmlTemplates], ['html']);
     gulp.watch([paths.appTypescript], ['appJS', 'ts']);
-    /*gulp.watch(paths.svgFiles, ['sprite']).on('change', function(evt) {
+    gulp.watch(paths.svgFiles, ['sprite']).on('change', function(evt) {
 		changeEvent(evt);
-	});*/
+	});
 })
 
 /*BUILD SPRITE*/
-//gulp.task('sprite', ['png-sprite']);
+gulp.task('sprite', ['png-sprite']);
 /*BUILD VENDOR*/
 gulp.task('build-vendor', ['bowerJS', 'libsJS', 'ts', 'appJS', 'vendorCSS']);
 /*DEV*/
