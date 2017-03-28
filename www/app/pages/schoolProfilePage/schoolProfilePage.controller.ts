@@ -12,6 +12,13 @@ module app.pages.schoolProfilePage {
         activate: () => void;
     }
 
+    export interface IPaymentMethodsClass {
+        key: string;
+        value: string;
+        name: string;
+        disabled?: boolean;
+    }
+
     /********************************/
     /*    STATEPARAMS INTERFACES    */
     /********************************/
@@ -31,6 +38,7 @@ module app.pages.schoolProfilePage {
         /*           PROPERTIES           */
         /**********************************/
         mapConfig: components.map.IMapConfig;
+        private _paymentMethodsList: Array<IPaymentMethodsClass>;
         data: app.models.school.School;
         loading: boolean;
         // --------------------------------
@@ -76,6 +84,10 @@ module app.pages.schoolProfilePage {
             const ENTER_MIXPANEL = 'Enter: School Profile Page';
             //VARIABLES
             let self = this;
+
+            //Build Payment Methods List
+            this._paymentMethodsList = this._buildPaymentMethodsClassList();
+
             //LOG
             DEBUG && console.log('schoolProfilePage controller actived');
             //MIXPANEL
@@ -145,8 +157,7 @@ module app.pages.schoolProfilePage {
         * (e.g. ma-liner-icons--default--wifi, ma-liner-icons--default--tv)
         * @use - this.FunctionsUtilService.assignAmenitieIconClass('2');
         * @function
-        * @param {string} url - School urls such as: facebook, twitter, instagram,
-        * email, website, etc.
+        * @param {string} amenitie - amenitie key value (e.g. '3')
         * @return {void}
         */
 
@@ -156,6 +167,107 @@ module app.pages.schoolProfilePage {
             let iconClass = this.functionsUtil.assignAmenitieIconClass(amenitie);
 
             return amenitiePrefixClass + iconClass;
+        }
+
+
+        /**
+        * assignAccommodationAmenitieIconClass
+        * @description - build accommodation amenities icons class
+        * (e.g. ma-liner-icons--default--wifi, ma-liner-icons--default--tv)
+        * @use - this.FunctionsUtilService.assignAccommodationAmenitieIconClass('2');
+        * @function
+        * @param {string} amenitie - amenitie key value (e.g. '3')
+        * @return {void}
+        */
+
+        assignAccommodationAmenitieIconClass (amenitie: string): string {
+            //VARIABLES
+            let amenitiePrefixClass = 'ma-liner-icons--default--';
+            let iconClass = this.functionsUtil.assignAccommodationAmenitieIconClass(amenitie);
+
+            return amenitiePrefixClass + iconClass;
+        }
+
+
+
+        /**
+        * assignPaymentMethodsIconClass
+        * @description - build payment methods icons class
+        * (e.g. ma-liner-icons--medium--mastercard, ma-liner-icons--medium--visa)
+        * @use - this.FunctionsUtilService.assignPaymentMethodsIconClass('4');
+        * @function
+        * @param {string} method - Payment Method key value (e.g. '2')
+        * @return {void}
+        */
+
+        assignPaymentMethodsIconClass (method: IPaymentMethodsClass): string {
+            //VARIABLES
+            let iconClass = 'ma-payment-methods-icons--medium--' + method.value;
+            let arr = this.data.PaymentMethod.Methods;
+
+            // Assign disable value to method that's not includes in PaymentMethod
+            for (let i = 0; i < arr.length; i++) {
+                if(arr[i] == method.key) {
+                    method.disabled = false;
+                }
+            }
+
+            // if method is not included in the PaymentMethod list, disable it
+            if(method.disabled) {
+                iconClass = iconClass + ' ma-payment-methods-icons--disabled';
+            }
+
+            return iconClass;
+        }
+
+
+
+        /**
+        * _buildPaymentMethodsClassList
+        * @description - build payment methods list to show on view
+        * @use - this.FunctionsUtilService._buildPaymentMethodsClassList();
+        * @function
+        * @return {Array<IPaymentMethodsClass>} options - Payment Methods Options
+        */
+        //TODO: Mover esta lista de opcion de aqui, y llevar a un archivo global,
+        // (almacene variables globales) donde podamos llamar esta lista siempre
+        // que la necesite.
+        private _buildPaymentMethodsClassList(): Array<IPaymentMethodsClass> {
+            //CONSTANTS
+            const options = [
+                {
+                    key: '1',
+                    value: 'visa',
+                    name: 'Visa',
+                    disabled: true
+                },
+                {
+                    key: '2',
+                    value: 'mastercard',
+                    name: 'MasterCard',
+                    disabled: true
+                },
+                {
+                    key: '3',
+                    value: 'american-express',
+                    name: 'American Express',
+                    disabled: true
+                },
+                {
+                    key: '4',
+                    value: 'paypal',
+                    name: 'Paypal',
+                    disabled: true
+                },
+                {
+                    key: '5',
+                    value: 'cash',
+                    name: 'Cash',
+                    disabled: true
+                }
+            ];
+
+            return options;
         }
 
     }
