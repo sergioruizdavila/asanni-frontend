@@ -14259,7 +14259,7 @@ var app;
                     var iconClass = this.functionsUtil.assignAmenitieIconClass(amenitie);
                     return amenitiePrefixClass + iconClass;
                 };
-                SchoolProfilePageController.prototype.assignAccomoAmenitieIconClass = function (amenitie) {
+                SchoolProfilePageController.prototype.assignAccommodationAmenitieIconClass = function (amenitie) {
                     var amenitiePrefixClass = 'ma-liner-icons--default--';
                     var iconClass = this.functionsUtil.assignAccommodationAmenitieIconClass(amenitie);
                     return amenitiePrefixClass + iconClass;
