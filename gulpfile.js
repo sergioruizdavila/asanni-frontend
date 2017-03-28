@@ -310,55 +310,38 @@ gulp.task('appJS', function () {
 };
 
 var svgConfig = {
-  svg: {
-    namespaceClassnames: false
-  },
-  shape: {
+    shape: {
         dimension: {
-            maxWidth: 32,
-            maxHeight: 32,
+            maxWidth: 45,
+            maxHeight: 45,
             precision: 2,
             attributes: false,
         },
-		spacing: {
-			padding: 5
-		}
-  },
-  mode: {
-      css: {
-          dest: 'css',
-          render: {
-              scss: true
-          }
-      }
-  }
+        spacing: {
+            padding: 5
+        }
+    },
+    mode: {
+        css: {
+            dest: "./",
+            sprite: "sprite-liner-default.svg",
+            bust: false,
+            render: {
+                scss: {
+                    dest: "../../app/core/theme/core/_sprite-default.scss",
+                    template: "www/build/tpl/sprite-template-default.scss"
+                }
+            }
+        }
+    },
+    variables: {
+        mapname: 'sprite-liner-default'
+    }
 };
 
-gulp.task('svg-sprite', function () {
+gulp.task('svg-sprite-default', function () {
 	return gulp.src(paths.svgFiles)
-		.pipe(svgSprite({
-			shape: {
-				spacing: {
-					padding: 5
-				}
-			},
-			mode: {
-				css: {
-					dest: "./",
-					sprite: "sprite-liner.svg",
-					bust: false,
-					render: {
-						scss: {
-							dest: "../../app/core/theme/core/_sprite.scss",
-							template: "www/build/tpl/sprite-template.scss"
-						}
-					}
-				}
-			},
-			variables: {
-				mapname: "sprite-liner"
-			}
-		}))
+		.pipe(svgSprite(svgConfig))
 		.pipe(gulp.dest(paths.images));
 });
 
@@ -367,8 +350,8 @@ gulp.task('svg-sprite', function () {
 // cambiar (options = {}) a (options) para solucionarlo localmente. Asi que cuando
 // se vuelva a correr el comando npm install, va a pisar este cambio, y va a volver
 // a romper.
-gulp.task('png-sprite', ['svg-sprite'], function() {
-	return gulp.src('www/assets/images/sprite-liner.svg')
+gulp.task('png-sprite', ['svg-sprite-default'], function() {
+	return gulp.src('www/assets/images/sprite-liner-default.svg')
 		.pipe(svg2png())
 		.pipe(size({
 			showFiles: true
