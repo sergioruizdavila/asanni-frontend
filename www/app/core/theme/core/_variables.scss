@@ -85,6 +85,13 @@ $global-flags-file: "waysily-countries-flags.svg";
 $global-line-icons-file: "icons.svg";
 $global-payment-methods-icons-file: "cards.svg";
 
+$ieSprite: '.lt-ie9' !default;
+$sprite: map-get($icons, sprite) !default;
+$baseFontSize: 16px !default;
+
+$global-sprite-icons-file: "sprite-liner.svg";
+$global-sprite-path: $global-image-path + $global-sprite-icons-file;
+
 $body-background: #fafafa;
 
 $body-font-color: $black;

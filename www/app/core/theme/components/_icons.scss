@@ -153,219 +153,112 @@ If you have to modified here, you should look for any reference */
     background-color: transparent;
     display: inline-block;
     vertical-align: middle;
-    background-image: url($line-icons-path);
 
     // SIZES
-    &--small {
-        width: 25px;
-        height: 25px;
-        background-size: 33px;
-
-        &--wifi {
-            background-position: -4px -664px;
-        }
-
-        &--air-conditing {
-            background-position: -4px -4px;
-        }
-
-        &--bathroom {
-            background-position: -4px -37px;
-        }
-
-        &--washer {
-            background-position: -4px 62px;
-        }
-
-        &--video-projector {
-            background-position: -4px 95px;
-        }
-
-        &--tv {
-            background-position: -4px 128px;
-        }
-
-        &--tea {
-            background-position: -4px 161px;
-        }
-
-        &--snack {
-            background-position: -4px 194px;
-        }
-
-        &--pool {
-            background-position: -4px 226px;
-        }
-
-        &--lunch {
-            background-position: -4px 260px;
-        }
-
-        &--lounge {
-            background-position: -4px 293px;
-        }
-
-        &--laptop {
-            background-position: -4px 327px;
-        }
-
-        &--kitchen {
-            background-position: -4px 359px;
-        }
-
-        &--heating {
-            background-position: -4px 392px;
-        }
-
-        &--hammock {
-            background-position: -4px 425px;
-        }
-
-        &--dinner {
-            background-position: -4px 458px;
-        }
-
-        &--computer {
-            width: 28px;
-            background-position: -4px 491px;
-        }
-
-        &--coffee {
-            background-position: -4px 524px;
-        }
-
-        &--class-room {
-            background-position: -4px 557px;
-        }
-
-        &--breakfast {
-            background-position: -4px 590px;
-        }
-
-        &--big-bed {
-            background-position: -4px 623px;
-        }
-
-    }
-
     &--default {
-        width: 32px;
-        height: 32px;
-        background-size: 40px;
 
         &--wifi {
-            background-position: -4px 36px;
+            @include sprite(wifi);
         }
 
         &--air-conditing {
-            background-position: -4px -4px;
+            @include sprite(air-condition);
         }
 
         &--bathroom {
-            background-position: -4px -43px;
+            @include sprite(bathroom);
         }
 
         &--washer {
-            background-position: -4px 76px;
+            @include sprite(washer);
         }
 
         &--video-projector {
-            background-position: -4px 116px;
+            @include sprite(video-projector);
         }
 
         &--tv {
-            background-position: -4px 156px;
+            @include sprite(tv);
         }
 
         &--tea {
-            background-position: -4px 196px;
+            @include sprite(tea);
         }
 
         &--snack {
-            background-position: -4px 236px;
+            @include sprite(snack);
         }
 
         &--pool {
-            background-position: -4px 275px;
+            @include sprite(pool);
         }
 
         &--lunch {
-            background-position: -4px 316px;
+            @include sprite(lunch);
         }
 
         &--lounge {
-            background-position: -4px 356px;
+            @include sprite(lounger);
         }
 
         &--laptop {
-            background-position: -4px 397px;
+            @include sprite(laptop);
         }
 
         &--kitchen {
-            background-position: -4px 436px;
+            @include sprite(kitchen);
         }
 
         &--heating {
-            background-position: -4px 476px;
+            @include sprite(heating);
         }
 
         &--hammock {
-            background-position: -4px 516px;
+            @include sprite(hammock);
         }
 
         &--dinner {
-            background-position: -4px 556px;
+            @include sprite(dinner);
         }
 
         &--computer {
-            width: 34px;
-            background-position: -4px 596px;
+            //width: 34px;
+            @include sprite(computer-room);
         }
 
         &--coffee {
-            background-position: -4px 636px;
+            @include sprite(coffee);
         }
 
         &--class-room {
-            background-position: -4px 676px;
+            @include sprite(classroom);
         }
 
         &--breakfast {
-            background-position: -4px 716px;
+            @include sprite(breakfast);
         }
 
         &--big-bed {
-            background-position: -4px 756px;
+            @include sprite(big-bed);
+        }
+
+        &--cable-tv {
+            @include sprite(tv-cable);
+        }
+
+        &--close-to {
+            @include sprite(close-to);
+        }
+
+        &--private-room {
+            @include sprite(person);
+        }
+
+        &--shared-room {
+            @include sprite(people);
         }
     }
 
-    &--medium {
-        width: 35px;
-        height: 35px;
-        background-size: 90px;
-
-        &--wifi {
-            background-position: -4px -4px;
-        }
-
-        &--air-conditing {
-            background-position: -35px -4px;
-        }
-    }
-
-    &--large {
-        width: 45px;
-        height: 45px;
-        background-size: 123px;
-
-        &--wifi {
-            background-position: -4px -4px;
-        }
-
-        &--air-conditing {
-            background-position: -35px -4px;
-        }
-    }
 }
 
 
@@ -471,7 +364,7 @@ If you have to modified here, you should look for any reference */
         width: 45px;
         height: 45px;
         background-size: 123px;
-        //TODO: Modificar cuando se necesiten, no corresponden 
+        //TODO: Modificar cuando se necesiten, no corresponden
         &--mastercard {
             background-position: -4px 36px;
         }

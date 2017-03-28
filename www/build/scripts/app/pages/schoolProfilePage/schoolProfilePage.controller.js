@@ -55,6 +55,11 @@ var app;
                     var iconClass = this.functionsUtil.assignAmenitieIconClass(amenitie);
                     return amenitiePrefixClass + iconClass;
                 };
+                SchoolProfilePageController.prototype.assignAccommodationAmenitieIconClass = function (amenitie) {
+                    var amenitiePrefixClass = 'ma-liner-icons--default--';
+                    var iconClass = this.functionsUtil.assignAccommodationAmenitieIconClass(amenitie);
+                    return amenitiePrefixClass + iconClass;
+                };
                 SchoolProfilePageController.prototype.assignPaymentMethodsIconClass = function (method) {
                     var iconClass = 'ma-payment-methods-icons--medium--' + method.value;
                     var arr = this.data.PaymentMethod.Methods;

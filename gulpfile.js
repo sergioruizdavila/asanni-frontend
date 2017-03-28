@@ -8,6 +8,10 @@ var autoprefixer = require('gulp-autoprefixer');
 var connect = require('gulp-connect');
 var lib = require('bower-files')();
 var ngAnnotate = require('gulp-ng-annotate');
+var svgSprite = require('gulp-svg-sprite');
+var svg2png = require('gulp-svg2png');
+var size = require('gulp-size');
+var plumber = require('gulp-plumber');
 
 
 /*Path Files*/
@@ -154,6 +158,8 @@ var paths = {
         'www/bower_components/toastr/toastr.min.css',
         'www/bower_components/ng-img-crop/compile/minified/ng-img-crop.css'
     ],
+    svgFiles: 'www/assets/images/icons-svg-sources/*.svg',
+    images: 'www/assets/images',
     appSass: ['www/**/**/*.scss'],
     inputSass: 'www/app/core/theme/**/*.scss',
     outputSass: 'www/app/core/theme/',
@@ -292,9 +298,74 @@ gulp.task('appJS', function () {
     .pipe(gulp.dest('www/build/js'));
 });
 
+/******************************************************************************/
+
+/**
+ * BUILD SVG SPRITE x32 (Default Size)
+ * @desc This task is the responsible to build svg sprite and generate SCSS styles
+ */
+
+ var changeEvent = function(evt) {
+	$.gutil.log('File', $.gutil.colors.cyan(evt.path.replace(new RegExp('/.*(?=/' + basePaths.src + ')/'), '')), 'was', $.gutil.colors.magenta(evt.type));
+};
+
+var svgConfig = {
+    shape: {
+        dimension: {
+            maxWidth: 45,
+            maxHeight: 45,
+            precision: 2,
+            attributes: false,
+        },
+        spacing: {
+            padding: 5
+        }
+    },
+    mode: {
+        css: {
+            dest: "./",
+            sprite: "sprite-liner-default.svg",
+            bust: false,
+            render: {
+                scss: {
+                    dest: "../../app/core/theme/core/_sprite-default.scss",
+                    template: "www/build/tpl/sprite-template-default.scss"
+                }
+            }
+        }
+    },
+    variables: {
+        mapname: 'sprite-liner-default'
+    }
+};
+
+gulp.task('svg-sprite-default', function () {
+	return gulp.src(paths.svgFiles)
+		.pipe(svgSprite(svgConfig))
+		.pipe(gulp.dest(paths.images));
+});
+
+//NOTE: Hay un error en el plugin: svg2png, en la linea 28:
+//node_modules/svg2png/lib/svg2png.js (Error: Unspected token =) fue necesario
+// cambiar (options = {}) a (options) para solucionarlo localmente. Asi que cuando
+// se vuelva a correr el comando npm install, va a pisar este cambio, y va a volver
+// a romper.
+gulp.task('png-sprite', ['svg-sprite-default'], function() {
+	return gulp.src('www/assets/images/sprite-liner-default.svg')
+		.pipe(svg2png())
+		.pipe(size({
+			showFiles: true
+		}))
+		.pipe(gulp.dest(paths.images));
+});
+
+/******************************************************************************/
+
+
 /**
  * WATCH METHOD
- * @desc This task is the responsible to listen each change on some files in order to reload browser or
+ * @desc This task is the responsible to listen each change on some files in
+ * order to reload browser or
  * doing some special task
  */
 
@@ -302,8 +373,13 @@ gulp.task('watch', function() {
     gulp.watch(paths.appSass, ['sass', 'vendorCSS']);
     gulp.watch([paths.htmlTemplates], ['html']);
     gulp.watch([paths.appTypescript], ['appJS', 'ts']);
+    gulp.watch(paths.svgFiles, ['sprite']).on('change', function(evt) {
+		changeEvent(evt);
+	});
 })
 
+/*BUILD SPRITE*/
+gulp.task('sprite', ['png-sprite']);
 /*BUILD VENDOR*/
 gulp.task('build-vendor', ['bowerJS', 'libsJS', 'ts', 'appJS', 'vendorCSS']);
 /*DEV*/
