@@ -559,6 +559,7 @@
     "%profile.school.booking_fee.text": "Costo de reserva",
 
     "%profile.school.classes_begin.text": "Las clases empiezan",
+    "%profile.school.classes_begin.validated.text": "Validar con la escuela",
 
     "%profile.school.payment_method.text": "Métodos de pago aceptados",
 

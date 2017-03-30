@@ -1197,6 +1197,15 @@
                                             {{ day | getI18nFilter:'day.list' }}
                                         </span>
                                     </h3>
+                                    <h4 ng-if="vm.data.ClassesBegin.length == 0"
+                                        class="margin-reset">
+                                        <span class="ma-label
+                                                     ma-label--simple
+                                                     ma-label--simple--gray
+                                                     strong" translate>
+                                            %profile.school.classes_begin.validated.text
+                                        </span>
+                                    </h4>
                                 </div>
 
                             </div>
