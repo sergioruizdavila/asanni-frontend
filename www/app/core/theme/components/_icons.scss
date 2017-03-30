@@ -155,6 +155,110 @@ If you have to modified here, you should look for any reference */
     vertical-align: middle;
 
     // SIZES
+    &--small {
+
+        &--wifi {
+            @include sprite(wifi);
+        }
+
+        &--air-conditing {
+            @include sprite(air-condition);
+        }
+
+        &--bathroom {
+            @include sprite(bathroom);
+        }
+
+        &--washer {
+            @include sprite(washer);
+        }
+
+        &--video-projector {
+            @include sprite(video-projector);
+        }
+
+        &--tv {
+            @include sprite(tv);
+        }
+
+        &--tea {
+            @include sprite(tea);
+        }
+
+        &--snack {
+            @include sprite(snack);
+        }
+
+        &--pool {
+            @include sprite(pool);
+        }
+
+        &--lunch {
+            @include sprite(lunch);
+        }
+
+        &--lounge {
+            @include sprite(lounger);
+        }
+
+        &--laptop {
+            @include sprite(laptop);
+        }
+
+        &--kitchen {
+            @include sprite(kitchen);
+        }
+
+        &--heating {
+            @include sprite(heating);
+        }
+
+        &--hammock {
+            @include sprite(hammock);
+        }
+
+        &--dinner {
+            @include sprite(dinner);
+        }
+
+        &--computer {
+            //width: 34px;
+            @include sprite(computer-room);
+        }
+
+        &--coffee {
+            @include sprite(coffee);
+        }
+
+        &--class-room {
+            @include sprite(classroom);
+        }
+
+        &--breakfast {
+            @include sprite(breakfast);
+        }
+
+        &--big-bed {
+            @include sprite(big-bed);
+        }
+
+        &--cable-tv {
+            @include sprite(tv-cable);
+        }
+
+        &--close-to {
+            @include sprite(close-to);
+        }
+
+        &--private-room {
+            @include sprite(person);
+        }
+
+        &--shared-room {
+            @include sprite(people);
+        }
+    }
+
     &--default {
 
         &--wifi {

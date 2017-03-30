@@ -301,7 +301,7 @@ gulp.task('appJS', function () {
 /******************************************************************************/
 
 /**
- * BUILD SVG SPRITE x32 (Default Size)
+ * BUILD SVG SPRITE x45 (Default Size)
  * @desc This task is the responsible to build svg sprite and generate SCSS styles
  */
 
@@ -309,37 +309,55 @@ gulp.task('appJS', function () {
 	$.gutil.log('File', $.gutil.colors.cyan(evt.path.replace(new RegExp('/.*(?=/' + basePaths.src + ')/'), '')), 'was', $.gutil.colors.magenta(evt.type));
 };
 
+//NOTE: Modify to get size
+var iconsType = 'small';
+
+var spriteSize = null;
+var spritePadding = null;
+var sprite = 'sprite-liner-'+ iconsType +'.svg';
+var dest = '../../app/core/theme/core/_sprite-'+ iconsType +'.scss';
+var template = 'www/build/tpl/sprite-template-'+ iconsType +'.scss';
+var mapname = 'sprite-liner-' + iconsType;
+
+if(iconsType === 'small') {
+    spriteSize = 32;
+    spritePadding = 3;
+} else if (iconsType === 'default') {
+    spriteSize = 45;
+    spritePadding = 5;
+}
+
 var svgConfig = {
     shape: {
         dimension: {
-            maxWidth: 45,
-            maxHeight: 45,
+            maxWidth: spriteSize,
+            maxHeight: spriteSize,
             precision: 2,
             attributes: false,
         },
         spacing: {
-            padding: 5
+            padding: spritePadding
         }
     },
     mode: {
         css: {
             dest: "./",
-            sprite: "sprite-liner-default.svg",
+            sprite: sprite,
             bust: false,
             render: {
                 scss: {
-                    dest: "../../app/core/theme/core/_sprite-default.scss",
-                    template: "www/build/tpl/sprite-template-default.scss"
+                    dest: dest,
+                    template: template
                 }
             }
         }
     },
     variables: {
-        mapname: 'sprite-liner-default'
+        mapname: mapname
     }
 };
 
-gulp.task('svg-sprite-default', function () {
+gulp.task('svg-sprite-' + iconsType, function () {
 	return gulp.src(paths.svgFiles)
 		.pipe(svgSprite(svgConfig))
 		.pipe(gulp.dest(paths.images));
@@ -350,8 +368,8 @@ gulp.task('svg-sprite-default', function () {
 // cambiar (options = {}) a (options) para solucionarlo localmente. Asi que cuando
 // se vuelva a correr el comando npm install, va a pisar este cambio, y va a volver
 // a romper.
-gulp.task('png-sprite', ['svg-sprite-default'], function() {
-	return gulp.src('www/assets/images/sprite-liner-default.svg')
+gulp.task('png-sprite-' + iconsType, ['svg-sprite-' + iconsType], function() {
+	return gulp.src(paths.images + sprite)
 		.pipe(svg2png())
 		.pipe(size({
 			showFiles: true
@@ -379,7 +397,7 @@ gulp.task('watch', function() {
 })
 
 /*BUILD SPRITE*/
-gulp.task('sprite', ['png-sprite']);
+gulp.task('sprite', ['png-sprite-' + iconsType]);
 /*BUILD VENDOR*/
 gulp.task('build-vendor', ['bowerJS', 'libsJS', 'ts', 'appJS', 'vendorCSS']);
 /*DEV*/

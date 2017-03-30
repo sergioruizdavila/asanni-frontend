@@ -66,6 +66,7 @@
     "%global.others.label.text": "otros",
     "%global.terms.label.text": "Términos",
     "%global.terms_and_details.label.text": "Términos y detalles",
+    "%global.average.label.text": "promedio",
 
     "%global.validation.null.message.text": "Valor requerido",
     "%global.validation.empty.message.text": "Valor requerido",
@@ -530,7 +531,7 @@
 
     "__SCHOOL PROFILE PAGE__": "",
     "%profile.school.language_exchange.title.text": "Intercambio de idiomas con locales",
-    "%profile.school.tour.title.text": "Recorridos y caminatas por la ciudad",
+    "%profile.school.tour.title.text": "tours",
     "%profile.school.city_tour.title.text": "Recorrido por la ciudad",
 
     "%profile.school.amenities_section.title.text": "comodidades",

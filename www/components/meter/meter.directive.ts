@@ -30,7 +30,9 @@ module components.meter {
         restrict: string = 'E';
         scope = {
             meterValue: '=',
-            size: '@'
+            size: '@',
+            showLabel: '=',
+            showBorder: '='
         };
         templateUrl: string = 'components/meter/meter.html';
         // --------------------------------
@@ -42,11 +44,11 @@ module components.meter {
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor() {
-            console.log('maMeter directive constructor');
+            DEBUG && console.log('maMeter directive constructor');
         }
 
         link($scope: angular.IScope, elm: Element, attr: angular.IAttributes): void {
-            console.log('maMeter link function');
+            DEBUG && console.log('maMeter link function');
         }
 
         /*-- INSTANCE FUNCTION --*/
@@ -89,6 +91,8 @@ module components.meter {
         CIRCLES_AMOUNT: number;
         meterValue: number;
         size: string;
+        showLabel: boolean;
+        showBorder: boolean;
         private _title: string;
         // --------------------------------
 
@@ -111,7 +115,10 @@ module components.meter {
             this.CIRCLES_AMOUNT = 5;
 
             // init label title
-            this._assignTitle();
+            this._title = '';
+            if(this.showLabel) {
+                this._assignTitle();
+            }
 
             this.activate();
         }
@@ -119,7 +126,7 @@ module components.meter {
         /*-- ACTIVATE METHOD --*/
         activate(): void {
             //LOG
-            console.log('meter controller actived');
+            DEBUG && console.log('meter controller actived');
 
         }
 
@@ -141,8 +148,17 @@ module components.meter {
         private _assignMeterClass(): string {
             let ratingClass = 'ma-meter--rating-' + this.meterValue;
             let meterClass = 'ma-meter--' + this.size;
+            let borderClass = 'ma-meter--border ma-meter--border-1';
+            let joinedClass = '';
 
-            return ratingClass + ' ' + meterClass;
+            if(this.showBorder) {
+                joinedClass = ratingClass + ' ' + meterClass + ' ' + borderClass;
+
+            } else {
+                joinedClass = ratingClass;
+            }
+
+            return joinedClass;
         }
 
 
@@ -157,7 +173,7 @@ module components.meter {
         */
 
         private _assignTitle(): void {
-            
+
             //CONSTANTS
             const BAD_TEXT = this.$filter('translate')('%global.rating.bad.label.text');
             const REGULAR_TEXT = this.$filter('translate')('%global.rating.regular.label.text');

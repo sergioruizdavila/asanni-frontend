@@ -66,6 +66,7 @@
     "%global.others.label.text": "others",
     "%global.terms.label.text": "Terms",
     "%global.terms_and_details.label.text": "Terms & details",
+    "%global.average.label.text": "average",
 
     "%global.validation.null.message.text": "Required",
     "%global.validation.empty.message.text": "Required",
@@ -530,7 +531,7 @@
 
     "__SCHOOL PROFILE PAGE__": "",
     "%profile.school.language_exchange.title.text": "Language exchange with Locals",
-    "%profile.school.tour.title.text": "Tours and walks around the city",
+    "%profile.school.tour.title.text": "tours",
     "%profile.school.city_tour.title.text": "City tour",
 
     "%profile.school.amenities_section.title.text": "amenities",
