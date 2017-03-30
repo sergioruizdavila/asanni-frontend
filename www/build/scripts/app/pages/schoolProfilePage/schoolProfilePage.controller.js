@@ -51,12 +51,14 @@ var app;
                     }
                 };
                 SchoolProfilePageController.prototype.assignAmenitieIconClass = function (amenitie) {
-                    var amenitiePrefixClass = 'ma-liner-icons--default--';
+                    var size = 'small';
+                    var amenitiePrefixClass = 'ma-liner-icons--' + size + '--';
                     var iconClass = this.functionsUtil.assignAmenitieIconClass(amenitie);
                     return amenitiePrefixClass + iconClass;
                 };
                 SchoolProfilePageController.prototype.assignAccommodationAmenitieIconClass = function (amenitie) {
-                    var amenitiePrefixClass = 'ma-liner-icons--default--';
+                    var size = 'small';
+                    var amenitiePrefixClass = 'ma-liner-icons--' + size + '--';
                     var iconClass = this.functionsUtil.assignAccommodationAmenitieIconClass(amenitie);
                     return amenitiePrefixClass + iconClass;
                 };
