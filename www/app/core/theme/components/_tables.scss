@@ -18,6 +18,10 @@ $table-border-color: #eee;
             font-size: 18px;
             vertical-align: middle!important;
 
+            &--disabled {
+                color: $medium-gray;
+            }
+
             &--large {
                 font-size: 23px;
             }
@@ -27,6 +31,12 @@ $table-border-color: #eee;
             border-right: 1px solid $table-border-color;
             padding: 12px!important;
             font-size: 20px;
+
+            &--disabled {
+                span {
+                    color: $medium-gray;
+                }
+            }
         }
     }
 }
