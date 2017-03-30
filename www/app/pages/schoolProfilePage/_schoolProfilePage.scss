@@ -2,6 +2,11 @@
 /*                   SCHOOL PROFILE PAGE                  */
 /**********************************************************/
 
+//VARIABLES
+$schoolProfilePage-social-icons-size: 17px;
+$schoolProfilePage-social-icons-web-size: 15px;
+$schoolProfilePage-social-icons-meetup-size: 25px;
+
 .schoolProfilePage {
 
     &__preview-message {
@@ -14,13 +19,13 @@
 
         &__icons {
             .icon {
-                font-size: 25px;
+                font-size: $schoolProfilePage-social-icons-size;
                 cursor: pointer;
                 vertical-align:middle;
 
                 &--web {
                     color: #999;
-                    font-size: 23px;
+                    font-size: $schoolProfilePage-social-icons-web-size;
                     &:hover {
                         color: map-get($main-palette, primary);
                     }
@@ -56,7 +61,7 @@
 
                 &--meetup {
                     color: #999;
-                    font-size: 35px;
+                    font-size: $schoolProfilePage-social-icons-meetup-size;
                     &:hover {
                         color: #ed1c40;
                     }
