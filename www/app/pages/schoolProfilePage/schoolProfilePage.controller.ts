@@ -162,8 +162,10 @@ module app.pages.schoolProfilePage {
         */
 
         assignAmenitieIconClass (amenitie: string): string {
+            //CONSTANTS
+            const size = 'small';
             //VARIABLES
-            let amenitiePrefixClass = 'ma-liner-icons--default--';
+            let amenitiePrefixClass = 'ma-liner-icons--'+ size +'--';
             let iconClass = this.functionsUtil.assignAmenitieIconClass(amenitie);
 
             return amenitiePrefixClass + iconClass;
@@ -181,8 +183,10 @@ module app.pages.schoolProfilePage {
         */
 
         assignAccommodationAmenitieIconClass (amenitie: string): string {
+            //CONSTANTS
+            const size = 'small';
             //VARIABLES
-            let amenitiePrefixClass = 'ma-liner-icons--default--';
+            let amenitiePrefixClass = 'ma-liner-icons--'+ size +'--';
             let iconClass = this.functionsUtil.assignAccommodationAmenitieIconClass(amenitie);
 
             return amenitiePrefixClass + iconClass;

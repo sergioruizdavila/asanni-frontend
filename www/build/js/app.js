@@ -79,7 +79,6 @@
 (function () {
     'use strict';
     angular.module('mainApp.core', [
-        'ngRaven',
         'ngResource',
         'ngCookies',
         'ui.router',
@@ -95,13 +94,13 @@
 
 //# sourceMappingURL=../../maps/app/app.core.module.js.map
 
-DEBUG = false;
+DEBUG = true;
 (function () {
     'use strict';
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/profile-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/profile-avatar-dev';
     }
     var dataConfig = {
@@ -5636,13 +5635,15 @@ var components;
                 this.restrict = 'E';
                 this.scope = {
                     meterValue: '=',
-                    size: '@'
+                    size: '@',
+                    showLabel: '=',
+                    showBorder: '='
                 };
                 this.templateUrl = 'components/meter/meter.html';
-                console.log('maMeter directive constructor');
+                DEBUG && console.log('maMeter directive constructor');
             }
             MaMeter.prototype.link = function ($scope, elm, attr) {
-                console.log('maMeter link function');
+                DEBUG && console.log('maMeter link function');
             };
             MaMeter.instance = function () {
                 return new MaMeter();
@@ -5660,16 +5661,27 @@ var components;
             }
             MeterController.prototype.init = function () {
                 this.CIRCLES_AMOUNT = 5;
-                this._assignTitle();
+                this._title = '';
+                if (this.showLabel) {
+                    this._assignTitle();
+                }
                 this.activate();
             };
             MeterController.prototype.activate = function () {
-                console.log('meter controller actived');
+                DEBUG && console.log('meter controller actived');
             };
             MeterController.prototype._assignMeterClass = function () {
                 var ratingClass = 'ma-meter--rating-' + this.meterValue;
                 var meterClass = 'ma-meter--' + this.size;
-                return ratingClass + ' ' + meterClass;
+                var borderClass = 'ma-meter--border ma-meter--border-1';
+                var joinedClass = '';
+                if (this.showBorder) {
+                    joinedClass = ratingClass + ' ' + meterClass + ' ' + borderClass;
+                }
+                else {
+                    joinedClass = ratingClass;
+                }
+                return joinedClass;
             };
             MeterController.prototype._assignTitle = function () {
                 var BAD_TEXT = this.$filter('translate')('%global.rating.bad.label.text');
@@ -14255,12 +14267,14 @@ var app;
                     }
                 };
                 SchoolProfilePageController.prototype.assignAmenitieIconClass = function (amenitie) {
-                    var amenitiePrefixClass = 'ma-liner-icons--default--';
+                    var size = 'small';
+                    var amenitiePrefixClass = 'ma-liner-icons--' + size + '--';
                     var iconClass = this.functionsUtil.assignAmenitieIconClass(amenitie);
                     return amenitiePrefixClass + iconClass;
                 };
                 SchoolProfilePageController.prototype.assignAccommodationAmenitieIconClass = function (amenitie) {
-                    var amenitiePrefixClass = 'ma-liner-icons--default--';
+                    var size = 'small';
+                    var amenitiePrefixClass = 'ma-liner-icons--' + size + '--';
                     var iconClass = this.functionsUtil.assignAccommodationAmenitieIconClass(amenitie);
                     return amenitiePrefixClass + iconClass;
                 };

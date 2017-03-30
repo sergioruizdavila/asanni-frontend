@@ -14,8 +14,8 @@ $table-border-color: #eee;
 
         &__table-header {
             border-right: 1px solid $table-border-color;
-            padding: 12px!important;
-            font-size: 18px;
+            //padding: 12px!important;
+            font-size: 16px;
             vertical-align: middle!important;
 
             &--disabled {
@@ -29,8 +29,8 @@ $table-border-color: #eee;
 
         &__table-row {
             border-right: 1px solid $table-border-color;
-            padding: 12px!important;
-            font-size: 20px;
+            //padding: 12px!important;
+            font-size: 18px;
 
             &--disabled {
                 span {
