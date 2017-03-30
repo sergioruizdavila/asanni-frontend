@@ -30,7 +30,7 @@
             <!-------------- START: SCHOOL PROFILE IMAGE BLOCK ---------------->
             <div id="schoolProfile-image-block"
                  class="schoolProfilePage__avatar-block
-                        row space-4 text-center center-xs">
+                        row space-2 text-center center-xs">
 
                 <div class="col-xs-12">
                     <div class="ma-rectangle-photo-profile
@@ -44,10 +44,27 @@
             </div>
             <!--              END: SCHOOL PROFILE IMAGE BLOCK                -->
 
+            <! Language Teach Section >
+            <div class="row space-3 space-left-2">
+                <div class="col-xs-4 text-left">
+                    <p class="ma-p ma-p--default strong margin-reset text-capitalize"
+                        style="color: #555"
+                        translate>
+                        %edit.teacher.menu.option.teach.label.text
+                    </p>
+                </div>
+                <div class="col-xs-8 text-center">
+                    <p ng-repeat="language in vm.data.LanguageTeach track by $index"
+                        style="color: #555"
+                       class="ma-p ma-p--default margin-reset">
+                       {{ language | getI18nFilter:'language' }}
+                    </p>
+                </div>
+            </div>
 
 
-            <!------------------ START: SCHOOL BASIC INFO BLOCK --------------->
-            <div class="row space-3">
+            <!------------- START: SCHOOL BASIC INFO BLOCK (LEGACY) ----------->
+            <div class="row space-3 hidden">
                 <div class="col-xs-12">
                     <h3 class="margin-reset text-center line-height-5">
                         {{vm.data.Name}}
@@ -55,35 +72,48 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row hidden">
                 <div class="col-xs-12">
                     <p class="ma-p ma-p--default margin-reset line-height-4">
                         {{vm.data.About}}
                     </p>
                 </div>
             </div>
+            <!--            END: SCHOOL BASIC INFO BLOCK (LEGACY)            -->
 
             <hr>
 
-            <div class="row space-4">
-                <div class="col-xs-4 text-left">
-                    <p class="ma-p ma-p--default strong margin-reset text-capitalize"
-                        translate>
-                        %edit.teacher.menu.option.teach.label.text
+
+            <! Meetups groups >
+            <div class="row middle-xs space-5 space-left-2">
+                <div class="col-xs-4">
+                    <p class="ma-p ma-p--default strong
+                              text-capitalize margin-reset"
+                       translate>
+                        %global.group.label.text
                     </p>
                 </div>
-                <div class="col-xs-8 text-center">
-                    <p ng-repeat="language in vm.data.LanguageTeach track by $index"
-                       class="ma-p ma-p--default margin-reset">
-                       {{ language | getI18nFilter:'language' }}
-                    </p>
+                <div class="schoolProfilePage__social-block__icons
+                            col-xs-8 text-center">
+                    <i class="icon icon--meetup fa fa-meetup
+                              space-right-3"
+                       ng-class="{'icon--disabled': !vm.data.MeetupGroup}"
+                       ng-click="vm.goToSite(vm.data.MeetupGroup)"
+                       aria-hidden="true"></i>
+                    <i class="icon icon--facebook fa fa-facebook-official"
+                       style="font-size: 20px;"
+                       ng-class="{'icon--disabled': !vm.data.FacebookGroup}"
+                       ng-click="vm.goToSite(vm.data.FacebookGroup)"
+                       aria-hidden="true"></i>
                 </div>
             </div>
+
+
             <!--                END: SCHOOL BASIC INFO BLOCK                 -->
 
 
             <!---------------- START: SOCIAL NETWORKS INFO BLOCK -------------->
-            <div class="schoolProfilePage__social-block row space-3">
+            <div class="schoolProfilePage__social-block row space-3 hidden">
                 <div class="col-xs-12">
                     <div class="ma-box ma-box--border-1">
                         <div class="ma-box__content">
@@ -189,6 +219,82 @@
 
                         <div class="ma-box__content">
 
+                            <! BASIC INFORMATION >
+                            <div class="row">
+                                <div class="col-xs-12">
+
+
+                                    <! School Name >
+                                    <div class="row space-1">
+                                        <div class="col-xs-12">
+                                            <h3 class="margin-reset line-height-5">
+                                                {{vm.data.Name}}
+                                            </h3>
+                                        </div>
+                                    </div>
+
+
+                                    <! School Location >
+                                    <div class="row space-3">
+                                        <div class="col-xs-12">
+                                            <p class="ma-label
+                                                      ma-label--simple
+                                                      ma-label--simple--large
+                                                      margin-reset">
+                                                {{vm.data.Location.City}}, {{vm.data.Location.Country | getI18nFilter:'country'}}
+                                            </p>
+                                        </div>
+                                    </div>
+
+
+                                    <! About School >
+                                    <div class="row  space-5">
+                                        <div class="col-xs-12">
+                                            <p class="ma-p ma-p--default margin-reset
+                                                      line-height-4">
+                                                {{vm.data.About}}
+                                            </p>
+                                        </div>
+                                    </div>
+
+
+                                    <! Social Links >
+                                    <div class="row">
+                                        <div class="schoolProfilePage__social-block__icons
+                                                    col-xs-12 text-right">
+                                                <i class="icon icon--web fa fa-link
+                                                          space-right-2"
+                                                   ng-class="{'icon--disabled': !vm.data.Website}"
+                                                   ng-click="vm.goToSite(vm.data.Website)"
+                                                   aria-hidden="true"></i>
+                                                <i class="icon icon--email fa fa-envelope-o space-right-2"
+                                                   ng-class="{'icon--disabled': !vm.data.Email}"
+                                                   ng-click="vm.goToSite(vm.data.Email)"
+                                                   aria-hidden="true"></i>
+                                                <i class="icon icon--facebook fa fa-facebook-official
+                                                          space-right-2"
+                                                   ng-class="{'icon--disabled': !vm.data.Facebook}"
+                                                   ng-click="vm.goToSite(vm.data.Facebook)"
+                                                   aria-hidden="true"></i>
+                                                <i class="icon icon--twitter fa fa-twitter
+                                                          space-right-2"
+                                                   ng-class="{'icon--disabled': !vm.data.Twitter}"
+                                                   ng-click="vm.goToSite(vm.data.Twitter)"
+                                                   aria-hidden="true"></i>
+                                                <i class="icon icon--instagram fa fa-instagram"
+                                                   ng-class="{'icon--disabled': !vm.data.Instagram}"
+                                                   ng-click="vm.goToSite(vm.data.Instagram)"
+                                                   aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="ma-separator-dashed-image space-10 space-top-5"></div>
+
+
                             <! IMMERSION SECTION >
                             <div class="row"
                                  ng-if="vm.data.Immersion.Active">
@@ -252,34 +358,8 @@
                                     </div>
 
 
-                                    <! Language Exchange >
-                                    <!-- TODO: Pasar como opcion de Immersion -->
-                                    <div class="row space-top-5 space-5 hidden">
-                                        <div class="col-xs-6">
-                                            <h4 class="margin-reset" translate>
-                                                %profile.school.language_exchange.title.text
-                                            </h4>
-                                        </div>
-                                        <div class="col-xs-6 text-center">
-                                            <h3 class="ma-label
-                                                        ma-label--simple
-                                                        ma-label--simple--gray
-                                                        strong
-                                                        margin-reset text-capitalize">
-                                                <span ng-if="vm.data.LanguageExchange"
-                                                      translate>
-                                                    %global.yes.button.text
-                                                </span>
-                                                <span ng-if="!vm.data.LanguageExchange"
-                                                      translate>
-                                                    %global.no.button.text
-                                                </span>
-                                            </h3>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="row margin-reset">
+                                    <div class="row margin-reset"
+                                         ng-if="vm.data.Immersion.OtherOption">
                                         <hr class="col-md-7 col-md-offset-5">
                                     </div>
 
@@ -394,7 +474,8 @@
                                     </div>
 
 
-                                    <div class="row margin-reset">
+                                    <div class="row margin-reset"
+                                         ng-if="vm.data.Amenities.OtherOption">
                                         <hr class="col-md-7 col-md-offset-5">
                                     </div>
 
@@ -449,8 +530,11 @@
                                              ng-if="accommodation.Active">
 
                                             <div class="col-xs-6 text-left">
-                                                <p class="ma-p ma-p--large strong margin-reset">
-                                                    <span>
+                                                <p class="ma-label
+                                                          ma-label--simple
+                                                          ma-label--simple--large
+                                                          margin-reset">
+                                                    <span class="underline underline--alert">
                                                         {{accommodation.Category | getI18nFilter:'accommodation.category'}}
                                                     </span>
                                                 </p>
@@ -589,7 +673,7 @@
 
                                     <! Volunteering Options List >
                                     <div class="row"
-                                         ng-if="vm.data.Amenities.OtherOption">
+                                         ng-if="vm.data.Volunteering.Active">
                                         <div class="col-xs-5 text-left">
                                             <h4 class="margin-reset space-top-2"
                                                 translate>
@@ -612,9 +696,18 @@
                                         </div>
                                     </div>
 
+                                </div>
+                            </div>
 
-                                    <div class="ma-separator-dashed-image space-10 space-top-10"></div>
 
+                            <div class="ma-separator-dashed-image space-10 space-top-10"
+                                 ng-if="vm.data.Volunteering.Active"></div>
+
+
+                            <!WORK EXCHANGE >
+                            <div class="row"
+                                 ng-if="vm.data.WorkExchange.Active">
+                                <div class="col-xs-12">
 
                                     <! Work Exchange Options List >
                                     <div class="row middle-xs space-5"
@@ -630,7 +723,7 @@
                                     </div>
 
 
-                                    <!-- Work Exchange Option other view -->
+                                    <! Work Exchange Option other view >
                                     <div ng-if="vm.data.WorkExchange.Active"
                                          ng-repeat="workExchange in vm.data.WorkExchange.WorkExchangeOption track by $index">
                                         <div class="row">
@@ -652,13 +745,12 @@
                                         <hr ng-if="$index + 1 < vm.data.WorkExchange.WorkExchangeOption.length">
 
                                     </div>
-
                                 </div>
                             </div>
 
 
                             <div class="ma-separator-dashed-image space-10 space-top-10"
-                                 ng-if="vm.data.Volunteering.Active"></div>
+                                 ng-if="vm.data.WorkExchange.Active"></div>
 
 
                             <! PRICES >
@@ -721,9 +813,16 @@
                                                         <!-- General Classes Title Label -->
                                                         <td class="ma-table--simple__table-header
                                                                    text-center"
-                                                            ng-class="{'ma-table--simple__table-header--disabled line-through': !vm.data.Price.PrivateClass.GeneralType.Active}"
-                                                            translate>
-                                                            %profile.school.prices.general_type.text
+                                                            ng-class="{'ma-table--simple__table-header--disabled line-through': !vm.data.Price.PrivateClass.GeneralType.Active}">
+                                                            <span translate>
+                                                                %profile.school.prices.general_type.text
+                                                            </span>
+                                                            <span class="ma-label
+                                                                         ma-label--simple
+                                                                         ma-label--simple--default" style="display: block;"
+                                                                  ng-if="vm.data.Price.PrivateClass.GeneralType.Active">
+                                                                (1 to 1)
+                                                            </span>
                                                         </td>
 
                                                         <!-- General Prices Label -->
@@ -769,9 +868,16 @@
                                                         <!-- Intensive Classes Title Label -->
                                                         <td class="ma-table--simple__table-header
                                                                    text-center"
-                                                            ng-class="{'ma-table--simple__table-header--disabled line-through': !vm.data.Price.PrivateClass.IntensiveType.Active}"
-                                                            translate>
-                                                            %profile.school.prices.intensive_type.text
+                                                            ng-class="{'ma-table--simple__table-header--disabled line-through': !vm.data.Price.PrivateClass.IntensiveType.Active}">
+                                                            <span translate>
+                                                                %profile.school.prices.intensive_type.text
+                                                            </span>
+                                                            <span class="ma-label
+                                                                         ma-label--simple
+                                                                         ma-label--simple--default" style="display: block;"
+                                                                  ng-if="vm.data.Price.PrivateClass.IntensiveType.Active">
+                                                                (1 to 1)
+                                                            </span>
                                                         </td>
 
                                                         <!-- Intensive Prices Label -->
@@ -982,6 +1088,41 @@
                             <div class="ma-separator-dashed-image space-10 space-top-10"></div>
 
 
+                            <! BOOKING FEE >
+                            <div class="row middle-xs">
+
+                                <! Booking Fee title >
+                                <div class="col-xs-6 text-center">
+                                    <h3 class="margin-reset" style="font-size: 22px;">
+                                        <span translate>
+                                            %profile.school.booking_fee.text
+                                        </span>
+                                        <i class="material-icons
+                                                  md-18
+                                                  md-alert
+                                                  vertical-align-text-top">
+                                            lightbulb_outline
+                                        </i>
+                                    </h3>
+                                </div>
+
+                                <! Booking Fee Price >
+                                <div class="col-xs-6 text-center">
+                                    <h3 class="margin-reset">
+                                        <span class="ma-label
+                                                     ma-label--simple
+                                                     ma-label--simple--primary">
+                                            ${{vm.data.BookingFee.Price}}
+                                        </span>
+                                    </h3>
+                                </div>
+
+                            </div>
+
+
+                            <div class="ma-separator-dashed-image space-10 space-top-10"></div>
+
+
                             <! DISCOUNT >
                             <div class="row space-6"
                                  ng-if="vm.data.Discount.Active">
@@ -1027,7 +1168,8 @@
                             </div>
 
 
-                            <div class="ma-separator-dashed-image space-10 space-top-10"></div>
+                            <div class="ma-separator-dashed-image space-10 space-top-10"
+                                 ng-if="vm.data.Discount.Active"></div>
 
 
                             <! PACKAGE >
@@ -1076,40 +1218,6 @@
                             <div class="ma-separator-dashed-image space-10 space-top-10"
                                  ng-if="vm.data.Package.Active"></div>
 
-
-                            <! BOOKING FEE >
-                            <div class="row">
-
-                                <! Booking Fee title >
-                                <div class="col-xs-6">
-                                    <h3 class="margin-reset" style="font-size: 22px;">
-                                        <span translate>
-                                            %profile.school.booking_fee.text
-                                        </span>
-                                        <i class="material-icons
-                                                  md-18
-                                                  md-alert
-                                                  vertical-align-text-top">
-                                            lightbulb_outline
-                                        </i>
-                                    </h3>
-                                </div>
-
-                                <! Booking Fee Price >
-                                <div class="col-xs-6 text-center">
-                                    <h3 class="margin-reset">
-                                        <span class="ma-label
-                                                     ma-label--simple
-                                                     ma-label--simple--primary">
-                                            ${{vm.data.BookingFee.Price}}
-                                        </span>
-                                    </h3>
-                                </div>
-
-                            </div>
-
-
-                            <div class="ma-separator-dashed-image space-10 space-top-10"></div>
 
 
                             <! CLASSES BEGIN >
