@@ -2,7 +2,7 @@
 <!--              SCHOOL PROFILE PAGE             -->
 <!-------------------------------------------------->
 
-<div class="schoolProfilePage container space-10">
+<div class="schoolProfilePage container">
 
     <!----------------------- START: MAIN LOADING BLOCK ----------------------->
     <div class="row
@@ -20,7 +20,7 @@
 
 
 
-    <div class="row space-top-5"
+    <div class="row space-top-5 space-10"
          ng-hide="vm.loading">
 
         <!--                       START: LEFT COLUMN                        -->
@@ -190,7 +190,8 @@
                         <div class="ma-box__content">
 
                             <! IMMERSION SECTION >
-                            <div class="row">
+                            <div class="row"
+                                 ng-if="vm.data.Immersion.Active">
                                 <div class="col-xs-12">
 
                                     <! Immersion Title >
@@ -237,7 +238,8 @@
 
 
                                     <! Other Immersion Type >
-                                    <div class="row space-2">
+                                    <div class="row space-2"
+                                         ng-if="vm.data.Immersion.OtherOption">
                                         <div class="col-xs-12 text-left">
                                             <h4 class="margin-reset text-capitalize"
                                                 translate>
@@ -246,7 +248,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="row">
+                                    <div class="row"
+                                         ng-if="vm.data.Immersion.OtherOption">
                                         <div class="col-xs-12">
                                             <p class="ma-p ma-p--large">
                                                 {{vm.data.Immersion.OtherOption}}
@@ -287,7 +290,8 @@
 
 
                                     <! Tours and walks around the city >
-                                    <div class="row space-top-7 space-3">
+                                    <div class="row space-top-7 space-3"
+                                         ng-if="vm.data.Tour.Active">
                                         <div class="col-xs-12 text-left">
                                             <h3 class="margin-reset" translate>
                                                 %profile.school.tour.title.text
@@ -295,7 +299,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="row space-7">
+                                    <div class="row space-7"
+                                         ng-if="vm.data.Tour.Active">
                                         <div class="col-xs-12">
                                             <div ng-repeat="option in vm.data.Tour.Option"
                                                  class="ma-label
@@ -397,7 +402,8 @@
                                     </div>
 
                                     <! Other Amenities Type >
-                                    <div class="row space-2">
+                                    <div class="row space-2"
+                                         ng-if="vm.data.Amenities.OtherOption">
                                         <div class="col-xs-12 text-left">
                                             <h4 class="margin-reset text-capitalize"
                                                 translate>
@@ -406,7 +412,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="row">
+                                    <div class="row"
+                                         ng-if="vm.data.Amenities.OtherOption">
                                         <div class="col-xs-12">
                                             <p class="ma-p ma-p--large">
                                                 {{vm.data.Amenities.OtherOption}}
@@ -443,7 +450,8 @@
 
 
                             <! ACCOMMODATION >
-                            <div class="row">
+                            <div class="row"
+                                 ng-if="vm.data.Accommodation.Active">
                                 <div class="col-xs-12">
 
                                     <! Accommodation Title >
@@ -467,7 +475,8 @@
                                     <! Accommodation List >
                                     <div ng-repeat="accommodation in vm.data.Accommodation.AccommodationOption track by $index">
 
-                                        <div class="row space-top-5 space-5">
+                                        <div class="row space-top-5 space-5"
+                                             ng-if="accommodation.Active">
 
                                             <!-- Accommodation category -->
                                             <div class="col-xs-6">
@@ -497,7 +506,8 @@
                                         </div>
 
                                         <!-- Accommodation Amenities -->
-                                        <div class="row space-2">
+                                        <div class="row space-2"
+                                             ng-if="accommodation.Active">
                                             <div class="col-xs-12 text-left">
                                                 <!-- Accommodation Amenities: Title -->
                                                 <h4 class="margin-reset" translate>
@@ -507,7 +517,8 @@
                                         </div>
 
                                         <!-- Accommodation Amenities: List -->
-                                        <div class="row middle-xs space-5">
+                                        <div class="row middle-xs space-5"
+                                             ng-if="accommodation.Active">
                                             <div class="col-xs-6 space-2"
                                                  ng-repeat="amenitie in accommodation.Amenities | limitTo: (accommodation.Amenities.length + 1) /2: 0">
                                                  <span class="space-right-2">
@@ -534,7 +545,7 @@
 
                                         <!-- Accommodation Amenities: Others -->
                                         <div class="row space-2"
-                                             ng-if="accommodation.OtherAmenities">
+                                             ng-if="accommodation.OtherAmenities && accommodation.Active">
                                             <div class="col-xs-12 text-left">
                                                 <h4 class="margin-reset text-capitalize"
                                                     translate>
@@ -544,7 +555,7 @@
                                         </div>
 
                                         <div class="row space-3"
-                                             ng-if="accommodation.OtherAmenities">
+                                             ng-if="accommodation.OtherAmenities && accommodation.Active">
                                             <div class="col-xs-12">
                                                 <p class="ma-p ma-p--large">
                                                     {{accommodation.OtherAmenities}}
@@ -554,7 +565,7 @@
 
                                         <!-- Accommodation Amenities: Terms -->
                                         <div class="row space-2"
-                                             ng-if="accommodation.Terms">
+                                             ng-if="accommodation.Terms && accommodation.Active">
                                             <div class="col-xs-12 text-left">
                                                 <h4 class="margin-reset"
                                                     translate>
@@ -564,7 +575,7 @@
                                         </div>
 
                                         <div class="row"
-                                             ng-if="accommodation.Terms">
+                                             ng-if="accommodation.Terms && accommodation.Active">
                                             <div class="col-xs-12">
                                                 <p class="ma-p ma-p--large">
                                                     {{accommodation.Terms}}
@@ -580,11 +591,13 @@
                             </div>
 
 
-                            <div class="ma-separator-dashed-image space-10 space-top-10"></div>
+                            <div class="ma-separator-dashed-image space-10 space-top-10"
+                                 ng-if="vm.data.Accommodation.Active"></div>
 
 
                             <! VOLUNTEERING >
-                            <div class="row">
+                            <div class="row"
+                                 ng-if="vm.data.Volunteering.Active">
                                 <div class="col-xs-12">
 
                                     <! Volunteering Title >
@@ -630,7 +643,8 @@
 
 
                                     <! Work Exchange Options List >
-                                    <div class="row space-4">
+                                    <div class="row space-4"
+                                         ng-if="vm.data.WorkExchange.Active">
                                         <div class="col-xs-12 text-left">
                                             <h4 class="margin-reset"
                                                 translate>
@@ -656,7 +670,8 @@
                                         </div>
                                     </div>
 
-                                    <div ng-repeat="workExchange in vm.data.WorkExchange.WorkExchangeOption track by $index">
+                                    <div ng-if="vm.data.WorkExchange.Active"
+                                         ng-repeat="workExchange in vm.data.WorkExchange.WorkExchangeOption track by $index">
                                         <div class="row space-3 space-left-3 space-right-3">
                                             <div class="col-xs-6" style="border-right: 1px solid #eee;">
                                                 <p class="ma-p ma-p--default strong">
@@ -705,7 +720,10 @@
                                                           ma-table--simple
                                                           margin-reset">
                                                 <tbody>
+
+                                                    <! PRIVATE: Header table's titles >
                                                     <tr class="border-transparent">
+                                                        <!-- Private Title Label -->
                                                         <th class="ma-table--simple__table-header
                                                                    ma-table--simple__table-header--large
                                                                    text-center">
@@ -715,53 +733,119 @@
                                                                 %profile.school.prices.private.text
                                                             </span>
                                                         </th>
+
+                                                        <!-- Price per week private Title Label -->
                                                         <th class="ma-table--simple__table-header
                                                                    text-center"
                                                             translate>
                                                             %profile.school.prices.price_per_week.text
                                                         </th>
+
+                                                        <!-- Hours per week private Title Label -->
                                                         <th class="ma-table--simple__table-header
                                                                    text-center"
                                                             translate>
                                                             %profile.school.prices.hour_per_week.text
                                                         </th>
+
                                                     </tr>
+
+                                                    <!PRIVATE: General Type Row>
                                                     <tr class="border-transparent">
+
+                                                        <!-- General Classes Title Label -->
                                                         <td class="ma-table--simple__table-header
-                                                                    text-center"
+                                                                   text-center"
+                                                            ng-class="{'ma-table--simple__table-header--disabled line-through': !vm.data.Price.PrivateClass.GeneralType.Active}"
                                                             translate>
                                                             %profile.school.prices.general_type.text
                                                         </td>
+
+                                                        <!-- General Prices Label -->
                                                         <td class="ma-table--simple__table-row
-                                                                   text-center">
+                                                                   text-center"
+                                                            ng-class="{'ma-table--simple__table-row--disabled': !vm.data.Price.PrivateClass.GeneralType.Active}">
+
+                                                            <!-- without value -->
                                                             <span class="ma-label
-                                                                        ma-label--simple
-                                                                        ma-label--simple--primary">
+                                                                         ma-label--simple
+                                                                         ma-label--simple--primary"
+                                                                  ng-if="!vm.data.Price.PrivateClass.GeneralType.Active">
+                                                                -
+                                                            </span>
+
+                                                            <!-- with value -->
+                                                            <span class="ma-label
+                                                                         ma-label--simple
+                                                                         ma-label--simple--primary"
+                                                                  ng-if="vm.data.Price.PrivateClass.GeneralType.Active">
                                                                ${{vm.data.Price.PrivateClass.GeneralType.Value}}
                                                             </span>
                                                         </td>
+
+                                                        <!-- General Hours Label -->
                                                         <td class="ma-table--simple__table-row
-                                                                   text-center">
-                                                            {{vm.data.Price.PrivateClass.GeneralType.Hour}} hrs
+                                                                   text-center"
+                                                            ng-class="{'ma-table--simple__table-row--disabled': !vm.data.Price.PrivateClass.GeneralType.Active}">
+                                                            <!-- without value -->
+                                                            <span ng-if="!vm.data.Price.PrivateClass.GeneralType.Active">
+                                                               -
+                                                            </span>
+                                                            <!-- with value -->
+                                                            <span ng-if="vm.data.Price.PrivateClass.GeneralType.Active">
+                                                                {{vm.data.Price.PrivateClass.GeneralType.Hour}} hrs
+                                                            </span>
                                                         </td>
                                                     </tr>
+
+                                                    <!PRIVATE: Intensive Type Row>
                                                     <tr class="border-transparent">
+
+                                                        <!-- Intensive Classes Title Label -->
                                                         <td class="ma-table--simple__table-header
                                                                    text-center"
+                                                            ng-class="{'ma-table--simple__table-header--disabled line-through': !vm.data.Price.PrivateClass.IntensiveType.Active}"
                                                             translate>
                                                             %profile.school.prices.intensive_type.text
                                                         </td>
+
+                                                        <!-- Intensive Prices Label -->
                                                         <td class="ma-table--simple__table-row
-                                                                   text-center">
+                                                                   text-center"
+                                                            ng-class="{'ma-table--simple__table-row--disabled': !vm.data.Price.PrivateClass.IntensiveType.Active}">
+
+                                                            <!-- without value -->
                                                             <span class="ma-label
-                                                                        ma-label--simple
-                                                                        ma-label--simple--primary">
+                                                                         ma-label--simple
+                                                                         ma-label--simple--primary"
+                                                                  ng-if="!vm.data.Price.PrivateClass.IntensiveType.Active">
+                                                                -
+                                                            </span>
+
+                                                            <!-- with value -->
+                                                            <span class="ma-label
+                                                                         ma-label--simple
+                                                                         ma-label--simple--primary"
+                                                                  ng-if="vm.data.Price.PrivateClass.IntensiveType.Active">
                                                                ${{vm.data.Price.PrivateClass.IntensiveType.Value}}
                                                             </span>
                                                         </td>
+
+                                                        <!-- Intensive Hours Label -->
                                                         <td class="ma-table--simple__table-row
-                                                                   text-center">
-                                                            {{vm.data.Price.PrivateClass.IntensiveType.Hour}} hrs
+                                                                   text-center"
+                                                            ng-class="{'ma-table--simple__table-row--disabled': !vm.data.Price.PrivateClass.IntensiveType.Active}">
+
+                                                            <!-- without value -->
+                                                            <span ng-if="!vm.data.Price.PrivateClass.IntensiveType.Active">
+                                                                -
+                                                            </span>
+
+                                                            <!-- with value -->
+                                                            <span ng-if="vm.data.Price.PrivateClass.IntensiveType.Active">
+                                                               {{vm.data.Price.PrivateClass.IntensiveType.Hour}} hrs
+                                                            </span>
+
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -779,7 +863,11 @@
                                                           ma-table--simple
                                                           margin-reset">
                                                 <tbody>
+
+                                                    <! GROUP: Header table's titles >
                                                     <tr class="border-transparent">
+
+                                                        <!-- Group Title Label -->
                                                         <th class="ma-table--simple__table-header
                                                                    ma-table--simple__table-header--large
                                                                    text-center">
@@ -787,65 +875,134 @@
                                                                 %profile.school.prices.group.text
                                                             </span>
                                                         </th>
+
+                                                        <!-- Price per week group Title Label -->
                                                         <th class="ma-table--simple__table-header
                                                                    text-center"
                                                             translate>
                                                             %profile.school.prices.price_per_week.text
                                                         </th>
+
+                                                        <!-- Hours per week group Title Label -->
                                                         <th class="ma-table--simple__table-header
                                                                    text-center"
                                                             translate>
                                                             %profile.school.prices.hour_per_week.text
                                                         </th>
+
                                                     </tr>
+
+                                                    <!GROUP: General Type Row>
                                                     <tr class="border-transparent">
+
+                                                        <!-- General Classes Title Label -->
                                                         <td class="ma-table--simple__table-header
-                                                                    text-center">
+                                                                    text-center"
+                                                            ng-class="{'ma-table--simple__table-header--disabled line-through': !vm.data.Price.GroupClass.GeneralType.Active}">
                                                             <span translate>
                                                                 %profile.school.prices.general_type.text
                                                             </span>
                                                             <span class="ma-label
                                                                          ma-label--simple
-                                                                         ma-label--simple--default" style="display: block;">
+                                                                         ma-label--simple--default" style="display: block;"
+                                                                  ng-if="vm.data.Price.GroupClass.GeneralType.Active">
                                                                 ({{vm.data.Price.GroupClass.GeneralType.Student | rangeFormatFilter}} students)
                                                             </span>
                                                         </td>
+
+                                                        <!-- General Prices Label -->
                                                         <td class="ma-table--simple__table-row
-                                                                   text-center">
-                                                            <span class="ma-label
-                                                                         ma-label--simple
-                                                                         ma-label--simple--primary">
-                                                                ${{vm.data.Price.GroupClass.GeneralType.Value}}
+                                                                   text-center"
+                                                            ng-class="{'ma-table--simple__table-row--disabled': !vm.data.Price.GroupClass.GeneralType.Active}">
+
+                                                           <!-- without value -->
+                                                           <span class="ma-label
+                                                                        ma-label--simple
+                                                                        ma-label--simple--primary"
+                                                                 ng-if="!vm.data.Price.GroupClass.GeneralType.Active">
+                                                               -
+                                                           </span>
+
+                                                           <!-- with value -->
+                                                           <span class="ma-label
+                                                                        ma-label--simple
+                                                                        ma-label--simple--primary"
+                                                                 ng-if="vm.data.Price.GroupClass.GeneralType.Active">
+                                                              ${{vm.data.Price.GroupClass.GeneralType.Value}}
+                                                           </span>
+                                                        </td>
+
+                                                        <!-- General Hours Label -->
+                                                        <td class="ma-table--simple__table-row
+                                                                   text-center"
+                                                            ng-class="{'ma-table--simple__table-row--disabled': !vm.data.Price.GroupClass.GeneralType.Active}">
+
+                                                            <!-- without value -->
+                                                            <span ng-if="!vm.data.Price.GroupClass.GeneralType.Active">
+                                                                -
+                                                            </span>
+
+                                                            <!-- with value -->
+                                                            <span ng-if="vm.data.Price.GroupClass.GeneralType.Active">
+                                                                {{vm.data.Price.GroupClass.GeneralType.Hour}} hrs
                                                             </span>
                                                         </td>
-                                                        <td class="ma-table--simple__table-row
-                                                                   text-center">
-                                                            {{vm.data.Price.GroupClass.GeneralType.Hour}} hrs
-                                                        </td>
                                                     </tr>
+
+                                                    <!GROUP: Intensive Type Row>
                                                     <tr class="border-transparent">
+
+                                                        <!-- Intensive Classes Title Label -->
                                                         <td class="ma-table--simple__table-header
-                                                                   text-center">
-                                                        <span translate>
-                                                            %profile.school.prices.intensive_type.text
-                                                        </span>
-                                                        <span class="ma-label
-                                                                     ma-label--simple
-                                                                     ma-label--simple--default" style="display: block;">
-                                                            ({{vm.data.Price.GroupClass.IntensiveType.Student | rangeFormatFilter}} students)
-                                                        </span>
-                                                        </td>
-                                                        <td class="ma-table--simple__table-row
-                                                                   text-center">
+                                                                   text-center"
+                                                            ng-class="{'ma-table--simple__table-header--disabled line-through': !vm.data.Price.GroupClass.IntensiveType.Active}">
+                                                            <span translate>
+                                                                %profile.school.prices.intensive_type.text
+                                                            </span>
                                                             <span class="ma-label
                                                                          ma-label--simple
-                                                                         ma-label--simple--primary">
+                                                                         ma-label--simple--default" style="display: block;"
+                                                                  ng-if="vm.data.Price.GroupClass.IntensiveType.Active">
+                                                                ({{vm.data.Price.GroupClass.IntensiveType.Student | rangeFormatFilter}} students)
+                                                            </span>
+                                                        </td>
+
+                                                        <!-- Intensive Prices Label -->
+                                                        <td class="ma-table--simple__table-row
+                                                                   text-center"
+                                                            ng-class="{'ma-table--simple__table-row--disabled': !vm.data.Price.GroupClass.IntensiveType.Active}">
+
+                                                            <!-- without value -->
+                                                            <span class="ma-label
+                                                                         ma-label--simple
+                                                                         ma-label--simple--primary"
+                                                                  ng-if="!vm.data.Price.GroupClass.IntensiveType.Active">
+                                                                -
+                                                            </span>
+
+                                                            <!-- with value -->
+                                                            <span class="ma-label
+                                                                         ma-label--simple
+                                                                         ma-label--simple--primary"
+                                                                  ng-if="vm.data.Price.GroupClass.IntensiveType.Active">
                                                                 ${{vm.data.Price.GroupClass.IntensiveType.Value}}
                                                             </span>
                                                         </td>
+
+                                                        <!-- Intensive Hours Label -->
                                                         <td class="ma-table--simple__table-row
-                                                                   text-center">
-                                                            {{vm.data.Price.GroupClass.IntensiveType.Hour}} hrs
+                                                                   text-center"
+                                                            ng-class="{'ma-table--simple__table-row--disabled': !vm.data.Price.GroupClass.IntensiveType.Active}">
+
+                                                            <!-- without value -->
+                                                            <span ng-if="!vm.data.Price.GroupClass.IntensiveType.Active">
+                                                                -
+                                                            </span>
+
+                                                            <!-- with value -->
+                                                            <span ng-if="vm.data.Price.GroupClass.IntensiveType.Active">
+                                                                {{vm.data.Price.GroupClass.IntensiveType.Hour}} hrs
+                                                            </span>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -861,7 +1018,8 @@
 
 
                             <! DISCOUNT >
-                            <div class="row space-6">
+                            <div class="row space-6"
+                                 ng-if="vm.data.Discount.Active">
                                 <div class="col-xs-12">
 
                                     <! Discount Title >
@@ -907,7 +1065,8 @@
 
 
                             <! PACKAGE >
-                            <div class="row space-5">
+                            <div class="row space-5"
+                                 ng-if="vm.data.Package.Active">
                                 <div class="col-xs-12">
                                     <h3 class="margin-reset" translate>
                                         %profile.school.package.text
@@ -920,9 +1079,12 @@
                                         space-left-5
                                         space-right-5
                                         teacher-experience-box__item-block"
+                                 ng-if="vm.data.Package.Active"
                                  ng-repeat="package in vm.data.Package.PackageOption track by $index">
 
-                                <div class="col-xs-12">
+                                <div class="col-xs-12"
+                                     ng-if="vm.data.Package.Active && package.Active">
+
                                     <div class="row">
                                         <div class="col-xs-12">
                                             <div class="row">
@@ -1075,7 +1237,8 @@
                             </div>
 
                             <!-- Other payment methods List -->
-                            <div class="row space-2">
+                            <div class="row space-2"
+                                 ng-if="vm.data.PaymentMethod.Other.length > 0">
                                 <div class="col-xs-12 text-left">
                                     <h4 class="margin-reset text-capitalize"
                                         translate>
@@ -1084,7 +1247,8 @@
                                 </div>
                             </div>
 
-                            <div class="row space-5">
+                            <div class="row space-5"
+                                 ng-if="vm.data.PaymentMethod.Other.length > 0">
                                 <div class="col-xs-12">
                                     <div ng-repeat="option in vm.data.PaymentMethod.Other"
                                          class="ma-label
