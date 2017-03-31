@@ -54,15 +54,21 @@
         if (AuthService.isAuthenticated()) {
             //VARIABLES
             let userAccountInfo = JSON.parse(localStorage.getItem(dataConfig.userDataLocalStorage));
-            $rootScope.userData = userAccountInfo;
-            //Get user profile data and save in $rootScope
-            userService.getUserProfileById($rootScope.userData.id).then(
-                function(response) {
-                    if(response.userId) {
-                        $rootScope.profileData = new app.models.user.Profile(response);
+
+            if(userAccountInfo) {
+                $rootScope.userData = userAccountInfo;
+                //Get user profile data and save in $rootScope
+                userService.getUserProfileById($rootScope.userData.id).then(
+                    function(response) {
+                        if(response.userId) {
+                            $rootScope.profileData = new app.models.user.Profile(response);
+                        }
                     }
-                }
-            );
+                );
+            } else {
+                AuthService.logout();
+            }
+
         }
 
         //Validate each state if require login
