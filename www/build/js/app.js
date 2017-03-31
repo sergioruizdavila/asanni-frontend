@@ -192,6 +192,7 @@ DEBUG = false;
                 });
             }
             else {
+                Raven.captureMessage('Error app.run.js method: userAccountInfo is null');
                 AuthService.logout();
             }
         }

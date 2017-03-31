@@ -12,6 +12,7 @@
     "lodash": "github:DefinitelyTyped/DefinitelyTyped/lodash/lodash.d.ts#9b94d577a8d15f2a56701a0df46b447a7535baf6",
     "mixpanel": "github:DefinitelyTyped/DefinitelyTyped/mixpanel/mixpanel.d.ts#3abf7a7bd48328caa63a30c0b26467f8c17bff12",
     "moment": "github:DefinitelyTyped/DefinitelyTyped/moment/moment.d.ts#9b94d577a8d15f2a56701a0df46b447a7535baf6",
+    "ravenjs": "registry:dt/ravenjs#0.0.0+20161018135108",
     "toastr": "github:DefinitelyTyped/DefinitelyTyped/toastr/toastr.d.ts#87b80408d2f0c3238727f75af67cb4ed54912185"
   },
   "dependencies": {
