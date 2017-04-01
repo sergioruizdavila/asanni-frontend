@@ -32,12 +32,18 @@
         }
         if (AuthService.isAuthenticated()) {
             var userAccountInfo = JSON.parse(localStorage.getItem(dataConfig.userDataLocalStorage));
-            $rootScope.userData = userAccountInfo;
-            userService.getUserProfileById($rootScope.userData.id).then(function (response) {
-                if (response.userId) {
-                    $rootScope.profileData = new app.models.user.Profile(response);
-                }
-            });
+            if (userAccountInfo) {
+                $rootScope.userData = userAccountInfo;
+                userService.getUserProfileById($rootScope.userData.id).then(function (response) {
+                    if (response.userId) {
+                        $rootScope.profileData = new app.models.user.Profile(response);
+                    }
+                });
+            }
+            else {
+                Raven.captureMessage('Error app.run.js method: userAccountInfo is null');
+                AuthService.logout();
+            }
         }
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
             if (toState.data.requireLogin && !AuthService.isAuthenticated()) {
