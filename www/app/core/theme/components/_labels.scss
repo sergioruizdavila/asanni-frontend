@@ -157,6 +157,20 @@
             }
         }
 
+        &--white-primary {
+            background: 0 0;
+            background-color: $label-box-white-primary-background;
+            border: 0 hidden transparent;
+            color: $label-box-white-primary-font-color;
+        }
+
+        &--white-alert {
+            background: 0 0;
+            background-color: $label-box-white-alert-background;
+            border: 0 hidden transparent;
+            color: $label-box-white-alert-font-color;
+        }
+
         ///OPACITY BOX
         &--opacity {
             cursor: pointer;

@@ -60,6 +60,8 @@ $search-map-padding: 0;
 
 $search-teacher-block-height: 500px;
 
+$search-school-block-height: 350px;
+
 
 /**********************************************************/
 /*                      SEARCH PAGE                       */
@@ -324,6 +326,46 @@ $search-teacher-block-height: 500px;
                                                      $excerpt-bg: transparent);
                 }
             }
+        }
+    }
+
+    //SCHOOL INFO SIDE
+    &__school {
+
+        &__block {
+            cursor: pointer;
+            height: $search-school-block-height;
+            overflow: hidden;
+
+            &--selected {
+                border: 1px solid #ccc;
+            }
+
+            &__content {
+                height: 100%;
+                position: relative;
+
+                .white-text {
+                    color: $white;
+                }
+
+                &--front {
+                    background-color: #666;
+                }
+
+                &--back {
+                    background-color: #FFF;
+                }
+
+                &__footer {
+                    bottom: 0px;
+                    left: 0px;
+                    position: absolute;
+                    width: 100%;
+                }
+
+            }
+
         }
     }
 

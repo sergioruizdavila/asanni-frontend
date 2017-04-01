@@ -294,15 +294,21 @@
 }
 
 .border-1 {
-    -webkit-border-radius: 6%;
-    -moz-border-radius: 6%;
-    border-radius: 6%;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
 }
 
 .border-2 {
-    -webkit-border-radius: 12%;
-    -moz-border-radius: 12%;
-    border-radius: 12%;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
+}
+
+.border-3 {
+    -webkit-border-radius: 18px;
+    -moz-border-radius: 18px;
+    border-radius: 18px;
 }
 
 .line-height-1 {

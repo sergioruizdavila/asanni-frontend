@@ -31,7 +31,7 @@ var app;
                 SearchPageController.prototype.activate = function () {
                     var ENTER_MIXPANEL = 'Enter: Search Page';
                     var self = this;
-                    console.log('searchPage controller actived');
+                    DEBUG && console.log('searchPage controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
                     this.TeacherService.getAllTeachersByStatus(this.VALIDATED).then(function (response) {
@@ -96,9 +96,9 @@ var app;
                     this.$scope.$on('Schools', function (event, args) {
                         self.SchoolService.getAllSchools().then(function (response) {
                             self.type = 'school';
-                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 }, 6);
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', { lat: 6.175434, lng: -75.583329 }, 6);
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);
-                            self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                            self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         });
                     });
                     this.$scope.$on('SelectContainer', function (event, args) {

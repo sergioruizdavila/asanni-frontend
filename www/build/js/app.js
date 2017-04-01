@@ -79,7 +79,6 @@
 (function () {
     'use strict';
     angular.module('mainApp.core', [
-        'ngRaven',
         'ngResource',
         'ngCookies',
         'ui.router',
@@ -95,13 +94,13 @@
 
 //# sourceMappingURL=../../maps/app/app.core.module.js.map
 
-DEBUG = false;
+DEBUG = true;
 (function () {
     'use strict';
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/profile-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/profile-avatar-dev';
     }
     var dataConfig = {
@@ -5989,6 +5988,7 @@ var components;
                 if (this._map === void 0) {
                     this.$timeout(function () {
                         self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
+                        self._createFilterButtons();
                         for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                             var marker = self.mapConfig.data.markers[i];
                             self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.GREEN_PIN);
@@ -8975,7 +8975,7 @@ var app;
                 SearchPageController.prototype.activate = function () {
                     var ENTER_MIXPANEL = 'Enter: Search Page';
                     var self = this;
-                    console.log('searchPage controller actived');
+                    DEBUG && console.log('searchPage controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
                     this.TeacherService.getAllTeachersByStatus(this.VALIDATED).then(function (response) {
