@@ -158,6 +158,7 @@
                                     ma-label--simple
                                     ma-label--simple--large
                                     text-capitalize"
+                             ng-class="{ 'ma-label--simple--disabled line-through': item.atmosphere === 0 }"
                              translate>
                             %profile.school.atmosphere.title.text
                         </div>
@@ -178,6 +179,7 @@
                                     ma-label--simple
                                     ma-label--simple--large
                                     text-capitalize"
+                             ng-class="{ 'ma-label--simple--disabled line-through': item.immersion.rating === 0 }"
                              translate>
                             %create.teacher.method.form.imm.text
                         </div>
@@ -198,6 +200,7 @@
                                     ma-label--simple
                                     ma-label--simple--large
                                     text-capitalize"
+                             ng-class="{ 'ma-label--simple--disabled line-through': item.volunteering.rating === 0 }"
                              translate>
                             %profile.school.volunteering.title.text
                         </div>
@@ -218,6 +221,7 @@
                                     ma-label--simple
                                     ma-label--simple--large
                                     text-capitalize"
+                             ng-class="{ 'ma-label--simple--disabled line-through': item.amenities.rating === 0 }"
                              translate>
                             %profile.school.amenities_section.title.text
                         </div>
@@ -238,6 +242,7 @@
                                     ma-label--simple
                                     ma-label--simple--large
                                     text-capitalize"
+                             ng-class="{ 'ma-label--simple--disabled line-through': item.accommodation.rating === 0 }"
                              translate>
                             %profile.school.accommodation.title.text
                         </div>
