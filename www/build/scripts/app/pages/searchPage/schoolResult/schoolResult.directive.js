@@ -48,19 +48,6 @@ var app;
                     var url = this.$state.href('page.schoolProfilePage', { id: containerId });
                     window.open(url, '_blank');
                 };
-                SchoolResultController.prototype._assignNativeClass = function (languages) {
-                    var native = languages.native;
-                    var teach = languages.teach;
-                    var isNative = false;
-                    for (var i = 0; i < native.length; i++) {
-                        for (var j = 0; j < teach.length; j++) {
-                            if (teach[j] === native[i]) {
-                                isNative = true;
-                            }
-                        }
-                    }
-                    return isNative;
-                };
                 SchoolResultController.prototype._hoverEvent = function (id, status) {
                     var args = { id: id, status: status };
                     this._hoverDetail[id] = status;
