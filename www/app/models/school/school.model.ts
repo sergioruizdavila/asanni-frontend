@@ -379,7 +379,7 @@ module app.models.school {
         private active: boolean;
         private option: Array<string>;
         private otherOption: string;
-        private rating: string;
+        private rating: number;
 
 
         /**********************************/
@@ -443,7 +443,7 @@ module app.models.school {
             return this.rating;
         }
 
-        set Rating(rating: string) {
+        set Rating(rating: number) {
             if (rating === undefined) { throw 'Please supply rating immersion value of school'; }
             this.rating = rating;
         }

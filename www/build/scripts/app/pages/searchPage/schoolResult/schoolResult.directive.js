@@ -49,6 +49,10 @@ var app;
                     var priceInstance = new app.models.school.Price(prices);
                     return this.SchoolService.getMinorSchoolPrice(priceInstance);
                 };
+                SchoolResultController.prototype._ratingFeatureAverage = function (school) {
+                    var schoolInstance = new app.models.school.School(school);
+                    return this.SchoolService.schoolFeatureRatingAverage(schoolInstance);
+                };
                 SchoolResultController.prototype.goToDetails = function (containerId) {
                     var url = this.$state.href('page.schoolProfilePage', { id: containerId });
                     window.open(url, '_blank');

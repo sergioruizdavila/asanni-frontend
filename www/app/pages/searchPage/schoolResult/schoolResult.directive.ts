@@ -156,12 +156,29 @@ module app.pages.searchPage {
                 return this.SchoolService.getMinorSchoolPrice(priceInstance);
             }
 
+
+
+            /**
+            * _ratingFeatureAverage
+            * @description - Calculate school rating feature average
+            * @use - this._ratingFeatureAverage();
+            * @function
+            * @return {number} average - average value
+            */
+
+            private _ratingFeatureAverage(school): number {
+                let schoolInstance = new app.models.school.School(school);
+                return this.SchoolService.schoolFeatureRatingAverage(schoolInstance);
+            }
+
+
+
             /**
             * goToDetails
             * @description - when user clicked a specific result, go to details
             * @use - this.goToDetails('2');
             * @function
-            * @params {string} containerId - entity id (school)
+            * @param {string} containerId - entity id (school)
             * @return {void}
             */
 

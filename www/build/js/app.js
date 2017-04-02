@@ -5158,11 +5158,12 @@ var app;
     var models;
     (function (models) {
         var school;
-        (function (school) {
+        (function (school_1) {
             'use strict';
             var SchoolService = (function () {
-                function SchoolService(restApi, AuthService, $q) {
+                function SchoolService(restApi, functionsUtil, AuthService, $q) {
                     this.restApi = restApi;
+                    this.functionsUtil = functionsUtil;
                     this.AuthService = AuthService;
                     this.$q = $q;
                     DEBUG && console.log('schools service instanced');
@@ -5248,15 +5249,28 @@ var app;
                     }
                     return minorValue;
                 };
+                SchoolService.prototype.schoolFeatureRatingAverage = function (school) {
+                    var middleValue = 2;
+                    var atmosphere = school.Atmosphere > 0 ? school.Atmosphere : middleValue;
+                    var immersion = school.Immersion.Rating > 0 ? school.Immersion.Rating : middleValue;
+                    var volunteering = school.Volunteering.Rating > 0 ? school.Volunteering.Rating : middleValue;
+                    var amenities = school.Amenities.Rating > 0 ? school.Amenities.Rating : middleValue;
+                    var accommodation = school.Accommodation.Rating > 0 ? school.Accommodation.Rating : middleValue;
+                    var average = 0;
+                    var newArr = [atmosphere, immersion, volunteering, amenities, accommodation];
+                    average = this.functionsUtil.averageNumbersArray(newArr);
+                    return average;
+                };
                 SchoolService.serviceId = 'mainApp.models.school.SchoolService';
                 SchoolService.$inject = [
                     'mainApp.core.restApi.restApiService',
+                    'mainApp.core.util.FunctionsUtilService',
                     'mainApp.auth.AuthService',
                     '$q'
                 ];
                 return SchoolService;
             }());
-            school.SchoolService = SchoolService;
+            school_1.SchoolService = SchoolService;
             angular
                 .module('mainApp.models.school', [])
                 .service(SchoolService.serviceId, SchoolService);
@@ -9244,6 +9258,10 @@ var app;
                 SchoolResultController.prototype._chooseMinorPrice = function (prices) {
                     var priceInstance = new app.models.school.Price(prices);
                     return this.SchoolService.getMinorSchoolPrice(priceInstance);
+                };
+                SchoolResultController.prototype._ratingFeatureAverage = function (school) {
+                    var schoolInstance = new app.models.school.School(school);
+                    return this.SchoolService.schoolFeatureRatingAverage(school);
                 };
                 SchoolResultController.prototype.goToDetails = function (containerId) {
                     var url = this.$state.href('page.schoolProfilePage', { id: containerId });
@@ -14402,6 +14420,9 @@ var app;
                         iconClass = iconClass + ' ma-payment-methods-icons--disabled';
                     }
                     return iconClass;
+                };
+                SchoolProfilePageController.prototype._ratingFeatureAverage = function (school) {
+                    return this.SchoolService.schoolFeatureRatingAverage(school);
                 };
                 SchoolProfilePageController.prototype._buildPaymentMethodsClassList = function () {
                     var options = [
