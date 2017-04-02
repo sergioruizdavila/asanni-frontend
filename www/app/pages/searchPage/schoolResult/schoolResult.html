@@ -82,11 +82,20 @@
                         <div class="white-text
                                     ma-label
                                     ma-label--simple
-                                    ma-label--simple--medium strong text-shadow">
-                            from
+                                    ma-label--simple--medium strong text-shadow"
+                            translate>
+                            %global.from.label.text
                         </div>
                         <h4 class="white-text margin-reset text-shadow">
-                            ${{item.price.groupClass.generalType.value}} / week
+                            <span>
+                                $
+                            </span>
+                            <span>
+                                {{vm._chooseMinorPrice(item.price)}}
+                            </span>
+                            <span translate>
+                                %global.time.text
+                            </span>
                         </h4>
                     </div>
                     <div class="col-xs-6">

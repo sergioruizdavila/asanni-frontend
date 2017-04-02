@@ -16,6 +16,7 @@ module app.models.school {
         getSchoolById: (id: string) => angular.IPromise<any>;
         getSchoolByUserId: (userId: string) => angular.IPromise<any>;
         getAllSchools: () => angular.IPromise<any>;
+        getMinorSchoolPrice: (prices: app.models.school.Price) => number;
     }
 
     export interface ISchoolQueryObject {
@@ -167,6 +168,48 @@ module app.models.school {
                 );
 
             return deferred.promise;
+        }
+
+
+
+        /**
+        * getMinorSchoolPrice
+        * @description - get the minor price of school
+        * @function
+        * @return {number} return minor price value
+        */
+        getMinorSchoolPrice(prices: app.models.school.Price): number {
+            //CONSTANTS
+            const privateGeneralValue = prices.PrivateClass.GeneralType.Value;
+            const privateIntensiveValue = prices.PrivateClass.IntensiveType.Value;
+            const groupGeneralValue = prices.GroupClass.GeneralType.Value;
+            const groupIntensiveValue = prices.GroupClass.IntensiveType.Value;
+
+            // VARIABLES
+            let minorValue = 0;
+
+            if(prices.PrivateClass.Active) {
+                if(prices.PrivateClass.GeneralType.Active) {
+                    minorValue = privateGeneralValue;
+                }
+
+                if(prices.PrivateClass.IntensiveType.Active) {
+                    minorValue = privateIntensiveValue < minorValue ? privateIntensiveValue : minorValue;
+                }
+            }
+
+            if(prices.GroupClass.Active) {
+                if(prices.GroupClass.GeneralType.Active) {
+                    minorValue = groupGeneralValue < minorValue ? groupGeneralValue : minorValue;
+                }
+
+                if(prices.GroupClass.IntensiveType.Active) {
+                    minorValue = groupIntensiveValue < minorValue ? groupIntensiveValue : minorValue;
+                }
+            }
+
+
+            return minorValue;
         }
 
 

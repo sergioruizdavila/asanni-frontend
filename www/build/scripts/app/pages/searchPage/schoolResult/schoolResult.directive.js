@@ -27,8 +27,9 @@ var app;
                 .module('mainApp.pages.searchPage')
                 .directive(MaSchoolResult.directiveId, MaSchoolResult.instance);
             var SchoolResultController = (function () {
-                function SchoolResultController(functionsUtil, $uibModal, dataConfig, $filter, $state, $rootScope) {
+                function SchoolResultController(functionsUtil, SchoolService, $uibModal, dataConfig, $filter, $state, $rootScope) {
                     this.functionsUtil = functionsUtil;
+                    this.SchoolService = SchoolService;
                     this.$uibModal = $uibModal;
                     this.dataConfig = dataConfig;
                     this.$filter = $filter;
@@ -44,6 +45,10 @@ var app;
                 SchoolResultController.prototype.activate = function () {
                     DEBUG && console.log('schoolResult controller actived');
                 };
+                SchoolResultController.prototype._chooseMinorPrice = function (prices) {
+                    var priceInstance = new app.models.school.Price(prices);
+                    return this.SchoolService.getMinorSchoolPrice(priceInstance);
+                };
                 SchoolResultController.prototype.goToDetails = function (containerId) {
                     var url = this.$state.href('page.schoolProfilePage', { id: containerId });
                     window.open(url, '_blank');
@@ -56,6 +61,7 @@ var app;
                 SchoolResultController.controllerId = 'mainApp.pages.searchPage.SchoolResultController';
                 SchoolResultController.$inject = [
                     'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.models.school.SchoolService',
                     '$uibModal',
                     'dataConfig',
                     '$filter',

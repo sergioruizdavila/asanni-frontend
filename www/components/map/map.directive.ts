@@ -28,7 +28,7 @@ module components.map {
         controller = MapController.controllerId;
         controllerAs: string = 'vm';
         restrict: string = 'E';
-        transclude: true;
+        transclude: boolean = true;
         scope = {
             mapConfig: '='
         };
@@ -250,7 +250,7 @@ module components.map {
                     );
 
                     //Create Filter Buttons
-                    //self._createFilterButtons();
+                    self._createFilterButtons();
 
                     //Set markers
                     for (let i = 0; i < self.mapConfig.data.markers.length; i++) {

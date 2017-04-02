@@ -93,6 +93,7 @@ module app.pages.searchPage {
             /*-- INJECT DEPENDENCIES --*/
             static $inject = [
                 'mainApp.core.util.FunctionsUtilService',
+                'mainApp.models.school.SchoolService',
                 '$uibModal',
                 'dataConfig',
                 '$filter',
@@ -105,6 +106,7 @@ module app.pages.searchPage {
             /*           CONSTRUCTOR          */
             /**********************************/
             constructor(private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
+                        private SchoolService: app.models.school.ISchoolService,
                         private $uibModal: ng.ui.bootstrap.IModalService,
                         private dataConfig: IDataConfig,
                         private $filter: angular.IFilterService,
@@ -140,6 +142,21 @@ module app.pages.searchPage {
             /**********************************/
 
             /**
+            * _chooseMinorPrice
+            * @description - take school ranking and calculate the rating average
+            * @use - this._chooseMinorPrice(priceSchoolObj);
+            * @function
+            * @param {any} prices - school's prices
+            * @return {number} minor price
+            */
+            /*NOTE: It's 'any' because the data that I receive is item.price not
+            vm.data.Price (A price instance)*/
+            private _chooseMinorPrice(prices: any): number {
+                let priceInstance = new app.models.school.Price(prices);
+                return this.SchoolService.getMinorSchoolPrice(priceInstance);
+            }
+
+            /**
             * goToDetails
             * @description - when user clicked a specific result, go to details
             * @use - this.goToDetails('2');
@@ -152,7 +169,7 @@ module app.pages.searchPage {
                 var url = this.$state.href('page.schoolProfilePage', {id: containerId});
                 window.open(url,'_blank');
             }
-            
+
 
 
             /**

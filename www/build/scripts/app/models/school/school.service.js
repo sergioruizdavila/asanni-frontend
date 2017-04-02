@@ -69,6 +69,30 @@ var app;
                     });
                     return deferred.promise;
                 };
+                SchoolService.prototype.getMinorSchoolPrice = function (prices) {
+                    var privateGeneralValue = prices.PrivateClass.GeneralType.Value;
+                    var privateIntensiveValue = prices.PrivateClass.IntensiveType.Value;
+                    var groupGeneralValue = prices.GroupClass.GeneralType.Value;
+                    var groupIntensiveValue = prices.GroupClass.IntensiveType.Value;
+                    var minorValue = 0;
+                    if (prices.PrivateClass.Active) {
+                        if (prices.PrivateClass.GeneralType.Active) {
+                            minorValue = privateGeneralValue;
+                        }
+                        if (prices.PrivateClass.IntensiveType.Active) {
+                            minorValue = privateIntensiveValue < minorValue ? privateIntensiveValue : minorValue;
+                        }
+                    }
+                    if (prices.GroupClass.Active) {
+                        if (prices.GroupClass.GeneralType.Active) {
+                            minorValue = groupGeneralValue < minorValue ? groupGeneralValue : minorValue;
+                        }
+                        if (prices.GroupClass.IntensiveType.Active) {
+                            minorValue = groupIntensiveValue < minorValue ? groupIntensiveValue : minorValue;
+                        }
+                    }
+                    return minorValue;
+                };
                 SchoolService.serviceId = 'mainApp.models.school.SchoolService';
                 SchoolService.$inject = [
                     'mainApp.core.restApi.restApiService',

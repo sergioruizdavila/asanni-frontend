@@ -79,7 +79,6 @@
 (function () {
     'use strict';
     angular.module('mainApp.core', [
-        'ngRaven',
         'ngResource',
         'ngCookies',
         'ui.router',
@@ -95,13 +94,13 @@
 
 //# sourceMappingURL=../../maps/app/app.core.module.js.map
 
-DEBUG = false;
+DEBUG = true;
 (function () {
     'use strict';
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/profile-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/profile-avatar-dev';
     }
     var dataConfig = {
@@ -5225,6 +5224,30 @@ var app;
                     });
                     return deferred.promise;
                 };
+                SchoolService.prototype.getMinorSchoolPrice = function (prices) {
+                    var privateGeneralValue = prices.PrivateClass.GeneralType.Value;
+                    var privateIntensiveValue = prices.PrivateClass.IntensiveType.Value;
+                    var groupGeneralValue = prices.GroupClass.GeneralType.Value;
+                    var groupIntensiveValue = prices.GroupClass.IntensiveType.Value;
+                    var minorValue = 0;
+                    if (prices.PrivateClass.Active) {
+                        if (prices.PrivateClass.GeneralType.Active) {
+                            minorValue = privateGeneralValue;
+                        }
+                        if (prices.PrivateClass.IntensiveType.Active) {
+                            minorValue = privateIntensiveValue < minorValue ? privateIntensiveValue : minorValue;
+                        }
+                    }
+                    if (prices.GroupClass.Active) {
+                        if (prices.GroupClass.GeneralType.Active) {
+                            minorValue = groupGeneralValue < minorValue ? groupGeneralValue : minorValue;
+                        }
+                        if (prices.GroupClass.IntensiveType.Active) {
+                            minorValue = groupIntensiveValue < minorValue ? groupIntensiveValue : minorValue;
+                        }
+                    }
+                    return minorValue;
+                };
                 SchoolService.serviceId = 'mainApp.models.school.SchoolService';
                 SchoolService.$inject = [
                     'mainApp.core.restApi.restApiService',
@@ -5989,6 +6012,7 @@ var components;
                 if (this._map === void 0) {
                     this.$timeout(function () {
                         self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
+                        self._createFilterButtons();
                         for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                             var marker = self.mapConfig.data.markers[i];
                             self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.GREEN_PIN);
@@ -9199,8 +9223,9 @@ var app;
                 .module('mainApp.pages.searchPage')
                 .directive(MaSchoolResult.directiveId, MaSchoolResult.instance);
             var SchoolResultController = (function () {
-                function SchoolResultController(functionsUtil, $uibModal, dataConfig, $filter, $state, $rootScope) {
+                function SchoolResultController(functionsUtil, SchoolService, $uibModal, dataConfig, $filter, $state, $rootScope) {
                     this.functionsUtil = functionsUtil;
+                    this.SchoolService = SchoolService;
                     this.$uibModal = $uibModal;
                     this.dataConfig = dataConfig;
                     this.$filter = $filter;
@@ -9216,6 +9241,10 @@ var app;
                 SchoolResultController.prototype.activate = function () {
                     DEBUG && console.log('schoolResult controller actived');
                 };
+                SchoolResultController.prototype._chooseMinorPrice = function (prices) {
+                    var priceInstance = new app.models.school.Price(prices);
+                    return this.SchoolService.getMinorSchoolPrice(priceInstance);
+                };
                 SchoolResultController.prototype.goToDetails = function (containerId) {
                     var url = this.$state.href('page.schoolProfilePage', { id: containerId });
                     window.open(url, '_blank');
@@ -9228,6 +9257,7 @@ var app;
                 SchoolResultController.controllerId = 'mainApp.pages.searchPage.SchoolResultController';
                 SchoolResultController.$inject = [
                     'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.models.school.SchoolService',
                     '$uibModal',
                     'dataConfig',
                     '$filter',

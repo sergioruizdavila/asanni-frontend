@@ -39,6 +39,7 @@
     "%global.teacher.type.professional.text": "Professional Teacher",
     "%global.currency.text": "$US",
     "%global.currency.suffix.text": "USD",
+    "%global.from.label.text": "from",
     "%global.time.text": "/ week",
     "%global.per_week.text": "per week",
     "%global.review.text": "reviews",
