@@ -13,9 +13,22 @@
      ng-click="vm.goToDetails(item.id)">
 
 
+    <!--div>
+        <img src="../../../../assets/images/colombiaimmersiontest.jpg"
+             alt="Colombia Immersion"
+             style="max-width: 106%;
+                    width: auto\9;
+                    height: auto;
+                    vertical-align: middle;
+                    border: 0;
+                    -ms-interpolation-mode: bicubic;">
+    </div-->
+
+
     <!-------------------- START: SCHOOL INFO BLOCK (MAIN FACE) --------------->
     <div class="search-result__school__block__content ma-box__content
                 search-result__school__block__content--front"
+         ng-style="{'background-image': 'url(' + item.photo + ')'}"
          ng-hide="vm._hoverDetail[item.id]">
 
         <! School Name  >
@@ -73,7 +86,7 @@
                             from
                         </div>
                         <h4 class="white-text margin-reset text-shadow">
-                            ${{item.price.groupClass.generalType.value}}/week
+                            ${{item.price.groupClass.generalType.value}} / week
                         </h4>
                     </div>
                     <div class="col-xs-6">
@@ -91,6 +104,8 @@
             </div>
 
         </div>
+
+        <div class="background-gradient"></div>
 
     </div>
     <!--                   END: SCHOOL INFO BLOCK (MAIN FACE)                -->

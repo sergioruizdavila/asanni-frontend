@@ -22,13 +22,13 @@
 
         <div class="row margin-reset space-left-2 space-right-2" ng-repeat="rows in vm.data">
 
-            <div class="col-xs-12 col-sm-12 col-md-6"
+            <div class="col-xs-12 col-sm-6 col-md-6"
                  ng-repeat="item in rows"
                  ng-if="vm.type === 'student'">
                 <!-- Dynamic section template: users, teachers or schools results -->
             </div>
 
-            <div class="col-xs-12 col-sm-12 col-md-6"
+            <div class="col-xs-12 col-sm-6 col-md-6"
                  ng-repeat="item in rows"
                  ng-if="vm.type === 'school'">
 

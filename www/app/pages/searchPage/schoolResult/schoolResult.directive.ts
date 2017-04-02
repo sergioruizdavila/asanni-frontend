@@ -152,36 +152,7 @@ module app.pages.searchPage {
                 var url = this.$state.href('page.schoolProfilePage', {id: containerId});
                 window.open(url,'_blank');
             }
-
-
-
-            /**
-            * _assignNativeClass
-            * @description - this method return if school is native or not
-            * result (students, schools, schools, etc)
-            * @use - this._assignNativeClass(languages);
-            * @function
-            * @param {native Array, learn Array and teach Array} languages
-            * school languages (native, teach and learn)
-            * @return {boolean} isNative
-            */
-
-            private _assignNativeClass(languages): boolean {
-                let native = languages.native;
-                let teach = languages.teach;
-                let isNative = false;
-
-                for (let i = 0; i < native.length; i++) {
-                    for (let j = 0; j < teach.length; j++) {
-                        if(teach[j] === native[i]) {
-                            isNative = true;
-                        }
-                    }
-                }
-
-                return isNative;
-            }
-
+            
 
 
             /**
