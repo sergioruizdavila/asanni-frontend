@@ -5989,7 +5989,6 @@ var components;
                 if (this._map === void 0) {
                     this.$timeout(function () {
                         self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
-                        self._createFilterButtons();
                         for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                             var marker = self.mapConfig.data.markers[i];
                             self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.GREEN_PIN);
