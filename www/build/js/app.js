@@ -5989,6 +5989,7 @@ var components;
                 if (this._map === void 0) {
                     this.$timeout(function () {
                         self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
+                        self._createFilterButtons();
                         for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                             var marker = self.mapConfig.data.markers[i];
                             self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.GREEN_PIN);
@@ -8975,7 +8976,7 @@ var app;
                 SearchPageController.prototype.activate = function () {
                     var ENTER_MIXPANEL = 'Enter: Search Page';
                     var self = this;
-                    console.log('searchPage controller actived');
+                    DEBUG && console.log('searchPage controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
                     this.TeacherService.getAllTeachersByStatus(this.VALIDATED).then(function (response) {
@@ -9040,9 +9041,9 @@ var app;
                     this.$scope.$on('Schools', function (event, args) {
                         self.SchoolService.getAllSchools().then(function (response) {
                             self.type = 'school';
-                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 }, 6);
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', { lat: 6.175434, lng: -75.583329 }, 6);
                             self.$scope.$broadcast('BuildMarkers', self.mapConfig);
-                            self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                            self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         });
                     });
                     this.$scope.$on('SelectContainer', function (event, args) {
@@ -9169,6 +9170,81 @@ var app;
 })(app || (app = {}));
 
 //# sourceMappingURL=../../../../../maps/app/pages/searchPage/teacherResult/teacherResult.directive.js.map
+
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var searchPage;
+        (function (searchPage) {
+            'use strict';
+            var MaSchoolResult = (function () {
+                function MaSchoolResult() {
+                    this.bindToController = true;
+                    this.controller = SchoolResultController.controllerId;
+                    this.controllerAs = 'vm';
+                    this.restrict = 'E';
+                    this.templateUrl = 'app/pages/searchPage/schoolResult/schoolResult.html';
+                    DEBUG && console.log('maSchoolResult directive constructor');
+                }
+                MaSchoolResult.prototype.link = function ($scope, elm, attr) {
+                    DEBUG && console.log('maSchoolResult link function');
+                };
+                MaSchoolResult.instance = function () {
+                    return new MaSchoolResult();
+                };
+                MaSchoolResult.directiveId = 'maSchoolResult';
+                return MaSchoolResult;
+            }());
+            angular
+                .module('mainApp.pages.searchPage')
+                .directive(MaSchoolResult.directiveId, MaSchoolResult.instance);
+            var SchoolResultController = (function () {
+                function SchoolResultController(functionsUtil, $uibModal, dataConfig, $filter, $state, $rootScope) {
+                    this.functionsUtil = functionsUtil;
+                    this.$uibModal = $uibModal;
+                    this.dataConfig = dataConfig;
+                    this.$filter = $filter;
+                    this.$state = $state;
+                    this.$rootScope = $rootScope;
+                    this.init();
+                }
+                SchoolResultController.prototype.init = function () {
+                    this.form = {};
+                    this._hoverDetail = [];
+                    this.activate();
+                };
+                SchoolResultController.prototype.activate = function () {
+                    DEBUG && console.log('schoolResult controller actived');
+                };
+                SchoolResultController.prototype.goToDetails = function (containerId) {
+                    var url = this.$state.href('page.schoolProfilePage', { id: containerId });
+                    window.open(url, '_blank');
+                };
+                SchoolResultController.prototype._hoverEvent = function (id, status) {
+                    var args = { id: id, status: status };
+                    this._hoverDetail[id] = status;
+                    this.$rootScope.$broadcast('ChangeMarker', args);
+                };
+                SchoolResultController.controllerId = 'mainApp.pages.searchPage.SchoolResultController';
+                SchoolResultController.$inject = [
+                    'mainApp.core.util.FunctionsUtilService',
+                    '$uibModal',
+                    'dataConfig',
+                    '$filter',
+                    '$state',
+                    '$rootScope'
+                ];
+                return SchoolResultController;
+            }());
+            searchPage.SchoolResultController = SchoolResultController;
+            angular.module('mainApp.pages.searchPage')
+                .controller(SchoolResultController.controllerId, SchoolResultController);
+        })(searchPage = pages.searchPage || (pages.searchPage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+
+//# sourceMappingURL=../../../../../maps/app/pages/searchPage/schoolResult/schoolResult.directive.js.map
 
 (function () {
     'use strict';

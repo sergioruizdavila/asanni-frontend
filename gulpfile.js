@@ -88,6 +88,7 @@ var paths = {
         "www/build/scripts/app/pages/searchPage/searchPage.config.js",
         "www/build/scripts/app/pages/searchPage/searchPage.controller.js",
         "www/build/scripts/app/pages/searchPage/teacherResult/teacherResult.directive.js",
+        "www/build/scripts/app/pages/searchPage/schoolResult/schoolResult.directive.js",
         "www/build/scripts/app/pages/userProfilePage/userProfilePage.config.js",
         "www/build/scripts/app/pages/userProfilePage/userProfilePage.controller.js",
         "www/build/scripts/app/pages/editProfile/editProfile.config.js",

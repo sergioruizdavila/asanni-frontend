@@ -24,6 +24,7 @@ module app.pages.searchPage {
         country: string;
     }
 
+
     /****************************************/
     /*           CLASS DEFINITION           */
     /****************************************/
@@ -105,7 +106,7 @@ module app.pages.searchPage {
             //VARIABLES
             let self = this;
             //LOG
-            console.log('searchPage controller actived');
+            DEBUG && console.log('searchPage controller actived');
             //MIXPANEL
             mixpanel.track(ENTER_MIXPANEL);
 
@@ -303,11 +304,11 @@ module app.pages.searchPage {
             this.$scope.$on('Schools', function(event, args) {
                 //Get All Schools of this zone
                 self.SchoolService.getAllSchools().then(
-                    function(response: Array<app.models.school.School>) {
+                    function(response: app.models.school.ISchoolQueryObject) {
 
                         self.type = 'school';
                         self.mapConfig = self.FunctionsUtilService.buildMapConfig(
-                            response,
+                            response.results,
                             'search-map',
                             {lat: 6.175434,lng: -75.583329},
                             6
@@ -319,7 +320,7 @@ module app.pages.searchPage {
                         */
                         self.$scope.$broadcast('BuildMarkers', self.mapConfig);
 
-                        self.data = self.FunctionsUtilService.splitToColumns(response, 2);
+                        self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                     }
                 );
             });
