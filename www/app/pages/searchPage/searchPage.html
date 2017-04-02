@@ -9,7 +9,7 @@
     <div id="search-result-left-column"
          class="search-result__info col-xs-12 col-sm-7 col-md-7">
 
-        <div class="row margin-reset" ng-show="vm.loading">
+        <!--div class="row margin-reset" ng-show="vm.loading">
             <div class="col-sm-12 col-md-6">
                 <div ng-include="vm._getResultLoading(vm.type)"></div>
             </div>
@@ -18,23 +18,25 @@
                 <div ng-include="vm._getResultLoading(vm.type)"></div>
             </div>
 
-        </div>
+        </div-->
 
-        <div class="row margin-reset" ng-repeat="rows in vm.data">
+        <div class="row margin-reset space-left-2 space-right-2" ng-repeat="rows in vm.data">
 
-            <div class="col-sm-12 col-md-6"
+            <div class="col-xs-12 col-sm-6 col-md-6"
                  ng-repeat="item in rows"
                  ng-if="vm.type === 'student'">
                 <!-- Dynamic section template: users, teachers or schools results -->
             </div>
 
-            <div class="col-sm-12 col-md-6"
+            <div class="col-xs-12 col-sm-6 col-md-6"
                  ng-repeat="item in rows"
                  ng-if="vm.type === 'school'">
-                <!-- Dynamic section template: users, teachers or schools results -->
+
+                <ma-school-result></ma-school-result>
+
             </div>
 
-            <div class="col-sm-12 col-md-6"
+            <div class="col-xs-12 col-sm-12 col-md-6"
                  ng-repeat="item in rows"
                  ng-if="vm.type === 'teacher'">
 

@@ -535,6 +535,12 @@ $label-box-gray-font-color: $black;
 $label-box-gray-background: $light-gray;
 $label-box-gray-secondary-border: 2px solid $light-gray;
 
+$label-box-white-primary-font-color: map-get($main-palette, primary);
+$label-box-white-primary-background: $white;
+
+$label-box-white-alert-font-color: map-get($main-palette, alert);
+$label-box-white-alert-background: $white;
+
 $labelsBox-dashed-border: 2px dashed $light-gray;
 $labelsBox-dashed-invalid-border: 2px dashed #ffd1c4;
 $labelsBox-dashed-height: 100px;

@@ -249,9 +249,8 @@ module components.map {
                         self.$scope.options
                     );
 
-                    //Create Filter Buttons (TODO: Descomentar cuando habilitemos
-                    // mostrar profesores, escuelas y estudiantes)
-                    //self._createFilterButtons();
+                    //Create Filter Buttons
+                    self._createFilterButtons();
 
                     //Set markers
                     for (let i = 0; i < self.mapConfig.data.markers.length; i++) {
