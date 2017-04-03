@@ -77,7 +77,7 @@ module app.pages.teacherProfilePage {
         /*-- ACTIVATE METHOD --*/
         activate(): void {
             //CONSTANTS
-            const ENTER_MIXPANEL = 'Enter: Teacher Profile Page';
+            const ENTER_MIXPANEL = 'Enter: Teacher Profile Page Id: ' + this.$stateParams.id;
             //VARIABLES
             let self = this;
             //LOG
