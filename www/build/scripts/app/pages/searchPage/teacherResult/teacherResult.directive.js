@@ -65,8 +65,14 @@ var app;
                     return this.functionsUtil.teacherRatingAverage(ratingsArr);
                 };
                 TeacherResultController.prototype._hoverEvent = function (id, status) {
-                    var args = { id: id, status: status };
+                    var hoverClass = 'ma-box--border-hover';
+                    var args = { id: id, status: status, typeOfMarker: 'round' };
                     this._hoverDetail[id] = status;
+                    var containers = document.getElementsByClassName(hoverClass);
+                    for (var i = 0; i < containers.length; i++) {
+                        var containerClasses = containers[i].classList;
+                        containerClasses.remove(hoverClass);
+                    }
                     this.$rootScope.$broadcast('ChangeMarker', args);
                 };
                 TeacherResultController.controllerId = 'mainApp.pages.searchPage.TeacherResultController';

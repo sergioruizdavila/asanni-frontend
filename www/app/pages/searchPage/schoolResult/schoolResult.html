@@ -13,18 +13,6 @@
      ng-click="vm.goToDetails(item.id)">
 
 
-    <!--div>
-        <img src="../../../../assets/images/colombiaimmersiontest.jpg"
-             alt="Colombia Immersion"
-             style="max-width: 106%;
-                    width: auto\9;
-                    height: auto;
-                    vertical-align: middle;
-                    border: 0;
-                    -ms-interpolation-mode: bicubic;">
-    </div-->
-
-
     <!-------------------- START: SCHOOL INFO BLOCK (MAIN FACE) --------------->
     <div class="search-result__school__block__content ma-box__content
                 search-result__school__block__content--front"
@@ -76,20 +64,34 @@
                 </div>
 
 
-                <! Price >
+                <! Price & Verified section >
                 <div class="row space-2">
-                    <div class="col-xs-6">
+
+                    <! Price >
+                    <div class="col-xs-12">
                         <div class="white-text
                                     ma-label
                                     ma-label--simple
-                                    ma-label--simple--medium strong text-shadow">
-                            from
+                                    ma-label--simple--medium strong text-shadow"
+                            translate>
+                            %global.from.label.text
                         </div>
                         <h4 class="white-text margin-reset text-shadow">
-                            ${{item.price.groupClass.generalType.value}} / week
+                            <span>
+                                $
+                            </span>
+                            <span>
+                                {{vm._chooseMinorPrice(item.price)}}
+                            </span>
+                            <span translate>
+                                %global.time.text
+                            </span>
                         </h4>
                     </div>
-                    <div class="col-xs-6">
+
+                    <! Verified >
+                    <!-- TODO: Hidden temporaly -->
+                    <div class="col-xs-5 hidden">
                         <div class="ma-icon-container
                                     ma-icon-container--white
                                     ma-icon-container--medium pull-right
@@ -129,7 +131,7 @@
                 </div>
             </div>
             <div class="col-xs-7 text-right">
-                <ma-meter meter-value="item.amenities.rating"
+                <ma-meter meter-value="vm._ratingFeatureAverage(item)"
                           size="large"
                           show-label="false"
                           show-border="false">
@@ -149,6 +151,7 @@
                                     ma-label--simple
                                     ma-label--simple--large
                                     text-capitalize"
+                             ng-class="{ 'ma-label--simple--disabled line-through': item.atmosphere === 0 }"
                              translate>
                             %profile.school.atmosphere.title.text
                         </div>
@@ -169,6 +172,7 @@
                                     ma-label--simple
                                     ma-label--simple--large
                                     text-capitalize"
+                             ng-class="{ 'ma-label--simple--disabled line-through': item.immersion.rating === 0 }"
                              translate>
                             %create.teacher.method.form.imm.text
                         </div>
@@ -189,6 +193,7 @@
                                     ma-label--simple
                                     ma-label--simple--large
                                     text-capitalize"
+                             ng-class="{ 'ma-label--simple--disabled line-through': item.volunteering.rating === 0 }"
                              translate>
                             %profile.school.volunteering.title.text
                         </div>
@@ -209,6 +214,7 @@
                                     ma-label--simple
                                     ma-label--simple--large
                                     text-capitalize"
+                             ng-class="{ 'ma-label--simple--disabled line-through': item.amenities.rating === 0 }"
                              translate>
                             %profile.school.amenities_section.title.text
                         </div>
@@ -229,6 +235,7 @@
                                     ma-label--simple
                                     ma-label--simple--large
                                     text-capitalize"
+                             ng-class="{ 'ma-label--simple--disabled line-through': item.accommodation.rating === 0 }"
                              translate>
                             %profile.school.accommodation.title.text
                         </div>

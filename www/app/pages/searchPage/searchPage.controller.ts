@@ -129,7 +129,9 @@ module app.pages.searchPage {
                     * Send event to child (MapController) in order to It draws
                     * each Marker on the Map
                     */
-                    self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                    //LEGACY
+                    //self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                    self.$scope.$broadcast('BuildMarkers', {mapConfig: self.mapConfig, typeOfMarker: 'round'});
 
                     self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
 
@@ -151,34 +153,6 @@ module app.pages.searchPage {
         /**********************************/
         /*            METHODS             */
         /**********************************/
-
-        /**
-        * _getResultLoading
-        * @description - this method return specific loading template
-        * based on type result (students, teachers, schools, etc)
-        * @use - this._getResultTemplate('student');
-        * @function
-        * @params {string} type - type of results list (students, teachers, schools, etc)
-        * @return {string} result template path
-        */
-
-        private _getResultLoading(type: string): string {
-            //CONSTANTS
-            const STUDENT_TYPE = 'student';
-            const TEACHER_TYPE = 'teacher';
-            const SCHOOL_TYPE = 'school';
-            /*********************************/
-
-            switch (type) {
-                case STUDENT_TYPE:
-                return 'app/pages/searchPage/studentResult/studentResult.html';
-                case TEACHER_TYPE:
-                return 'app/pages/searchPage/teacherLoading/teacherLoading.html';
-                case SCHOOL_TYPE:
-                return 'app/pages/searchPage/schoolResult/schoolResult.html';
-            }
-        }
-
 
 
         /**
@@ -250,7 +224,7 @@ module app.pages.searchPage {
                         * Send event to child (MapController) in order to It draws
                         * each Marker on the Map
                         */
-                        self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                        self.$scope.$broadcast('BuildMarkers', {mapConfig: self.mapConfig, typeOfMarker: 'round'});
 
                         self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                     }
@@ -284,7 +258,7 @@ module app.pages.searchPage {
                         * Send event to child (MapController) in order to It draws
                         * each Marker on the Map
                         */
-                        self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                        self.$scope.$broadcast('BuildMarkers', {mapConfig: self.mapConfig, typeOfMarker: 'round'});
 
                         self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                     }
@@ -318,7 +292,7 @@ module app.pages.searchPage {
                         * Send event to child (MapController) in order to It draws
                         * each Marker on the Map
                         */
-                        self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                        self.$scope.$broadcast('BuildMarkers', {mapConfig: self.mapConfig, typeOfMarker: 'long'});
 
                         self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                     }
@@ -336,10 +310,19 @@ module app.pages.searchPage {
             */
 
             this.$scope.$on('SelectContainer', function(event, args) {
+                //CONSTANTS
+                const hoverClass = 'ma-box--border-hover';
                 //VARIABLES
                 let containerId = '#container-' + args;
+
+                let containers = document.getElementsByClassName(hoverClass);
+
+                for (let i = 0; i < containers.length; i++) {
+                    containers[i].classList.remove(hoverClass);
+                }
+
                 let containerClasses = document.querySelector(containerId).classList;
-                containerClasses.add('search-result__teacher__block--selected');
+                containerClasses.add(hoverClass);
                 document.querySelector(containerId).scrollIntoView({ behavior: 'smooth' });
             });
 

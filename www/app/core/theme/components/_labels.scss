@@ -242,6 +242,10 @@
         &--alert {
             color: $label-simple-color-alert;
         }
+
+        &--disabled {
+            color: $label-simple-color-disabled;
+        }
     }
 
 }

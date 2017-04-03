@@ -75,6 +75,9 @@ var app;
                     }
                     return iconClass;
                 };
+                SchoolProfilePageController.prototype._ratingFeatureAverage = function (school) {
+                    return this.SchoolService.schoolFeatureRatingAverage(school);
+                };
                 SchoolProfilePageController.prototype._buildPaymentMethodsClassList = function () {
                     var options = [
                         {

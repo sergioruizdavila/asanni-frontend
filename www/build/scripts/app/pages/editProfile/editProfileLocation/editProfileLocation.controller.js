@@ -72,7 +72,7 @@ var app;
                             }
                         }
                     ], 'drag-maker-map', { lat: parseFloat(this.form.positionLocation.Lat), lng: parseFloat(this.form.positionLocation.Lng) }, null);
-                    this.$scope.$broadcast('BuildMarkers', this.mapConfig);
+                    this.$scope.$broadcast('BuildMarkers', { mapConfig: this.mapConfig, typeOfMarker: 'round' });
                 };
                 EditProfileLocationController.prototype._validateLocationForm = function () {
                     var NULL_ENUM = 2;

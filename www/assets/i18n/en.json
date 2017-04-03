@@ -39,6 +39,7 @@
     "%global.teacher.type.professional.text": "Professional Teacher",
     "%global.currency.text": "$US",
     "%global.currency.suffix.text": "USD",
+    "%global.from.label.text": "from",
     "%global.time.text": "/ week",
     "%global.per_week.text": "per week",
     "%global.review.text": "reviews",
@@ -685,6 +686,7 @@
     "%amenities.accommodation.14": "TV",
     "%amenities.accommodation.15": "Kitchen",
     "%amenities.accommodation.16": "Pool",
+    "%amenities.accommodation.17": "2 Beds",
 
     "__WORKEXCHANGE CATEGORIES__": "",
     "%work_exchange.category.1": "Accommodation",

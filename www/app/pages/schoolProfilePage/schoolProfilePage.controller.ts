@@ -227,6 +227,20 @@ module app.pages.schoolProfilePage {
 
 
         /**
+        * _ratingFeatureAverage
+        * @description - Calculate school rating feature average
+        * @use - this._ratingFeatureAverage();
+        * @function
+        * @return {number} average - average value
+        */
+
+        private _ratingFeatureAverage(school): number {
+            return this.SchoolService.schoolFeatureRatingAverage(school);
+        }
+
+
+
+        /**
         * _buildPaymentMethodsClassList
         * @description - build payment methods list to show on view
         * @use - this.FunctionsUtilService._buildPaymentMethodsClassList();

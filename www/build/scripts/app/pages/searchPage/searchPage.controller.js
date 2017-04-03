@@ -37,7 +37,7 @@ var app;
                     this.TeacherService.getAllTeachersByStatus(this.VALIDATED).then(function (response) {
                         self.type = 'teacher';
                         self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
-                        self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                        self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: 'round' });
                         self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         self.$timeout(function () {
                             self.loading = false;
@@ -48,19 +48,6 @@ var app;
                             });
                         }
                     });
-                };
-                SearchPageController.prototype._getResultLoading = function (type) {
-                    var STUDENT_TYPE = 'student';
-                    var TEACHER_TYPE = 'teacher';
-                    var SCHOOL_TYPE = 'school';
-                    switch (type) {
-                        case STUDENT_TYPE:
-                            return 'app/pages/searchPage/studentResult/studentResult.html';
-                        case TEACHER_TYPE:
-                            return 'app/pages/searchPage/teacherLoading/teacherLoading.html';
-                        case SCHOOL_TYPE:
-                            return 'app/pages/searchPage/schoolResult/schoolResult.html';
-                    }
                 };
                 SearchPageController.prototype._searchByCountry = function (country) {
                     var self = this;
@@ -81,7 +68,7 @@ var app;
                         self.StudentService.getAllStudents().then(function (response) {
                             self.type = 'student';
                             self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 }, 6);
-                            self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                            self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: 'round' });
                             self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                         });
                     });
@@ -89,7 +76,7 @@ var app;
                         self.TeacherService.getAllTeachersByStatus(self.VALIDATED).then(function (response) {
                             self.type = 'teacher';
                             self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
-                            self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                            self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: 'round' });
                             self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         });
                     });
@@ -97,14 +84,19 @@ var app;
                         self.SchoolService.getAllSchools().then(function (response) {
                             self.type = 'school';
                             self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', { lat: 6.175434, lng: -75.583329 }, 6);
-                            self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                            self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: 'long' });
                             self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         });
                     });
                     this.$scope.$on('SelectContainer', function (event, args) {
+                        var hoverClass = 'ma-box--border-hover';
                         var containerId = '#container-' + args;
+                        var containers = document.getElementsByClassName(hoverClass);
+                        for (var i = 0; i < containers.length; i++) {
+                            containers[i].classList.remove(hoverClass);
+                        }
                         var containerClasses = document.querySelector(containerId).classList;
-                        containerClasses.add('search-result__teacher__block--selected');
+                        containerClasses.add(hoverClass);
                         document.querySelector(containerId).scrollIntoView({ behavior: 'smooth' });
                     });
                     this.$scope.$on('SearchCountry', function (event, args) {

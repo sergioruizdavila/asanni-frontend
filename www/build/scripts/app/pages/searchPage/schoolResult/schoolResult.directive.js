@@ -27,8 +27,9 @@ var app;
                 .module('mainApp.pages.searchPage')
                 .directive(MaSchoolResult.directiveId, MaSchoolResult.instance);
             var SchoolResultController = (function () {
-                function SchoolResultController(functionsUtil, $uibModal, dataConfig, $filter, $state, $rootScope) {
+                function SchoolResultController(functionsUtil, SchoolService, $uibModal, dataConfig, $filter, $state, $rootScope) {
                     this.functionsUtil = functionsUtil;
+                    this.SchoolService = SchoolService;
                     this.$uibModal = $uibModal;
                     this.dataConfig = dataConfig;
                     this.$filter = $filter;
@@ -44,18 +45,33 @@ var app;
                 SchoolResultController.prototype.activate = function () {
                     DEBUG && console.log('schoolResult controller actived');
                 };
+                SchoolResultController.prototype._chooseMinorPrice = function (prices) {
+                    var priceInstance = new app.models.school.Price(prices);
+                    return this.SchoolService.getMinorSchoolPrice(priceInstance);
+                };
+                SchoolResultController.prototype._ratingFeatureAverage = function (school) {
+                    var schoolInstance = new app.models.school.School(school);
+                    return this.SchoolService.schoolFeatureRatingAverage(schoolInstance);
+                };
                 SchoolResultController.prototype.goToDetails = function (containerId) {
                     var url = this.$state.href('page.schoolProfilePage', { id: containerId });
                     window.open(url, '_blank');
                 };
                 SchoolResultController.prototype._hoverEvent = function (id, status) {
-                    var args = { id: id, status: status };
+                    var hoverClass = 'ma-box--border-hover';
+                    var args = { id: id, status: status, typeOfMarker: 'long' };
                     this._hoverDetail[id] = status;
+                    var containers = document.getElementsByClassName(hoverClass);
+                    for (var i = 0; i < containers.length; i++) {
+                        var containerClasses = containers[i].classList;
+                        containerClasses.remove(hoverClass);
+                    }
                     this.$rootScope.$broadcast('ChangeMarker', args);
                 };
                 SchoolResultController.controllerId = 'mainApp.pages.searchPage.SchoolResultController';
                 SchoolResultController.$inject = [
                     'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.models.school.SchoolService',
                     '$uibModal',
                     'dataConfig',
                     '$filter',

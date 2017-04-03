@@ -242,7 +242,10 @@ module app.pages.createTeacherPage {
             * Send event to child (MapController) in order to It draws
             * each Marker on the Map
             */
-            this.$scope.$broadcast('BuildMarkers', this.mapConfig);
+            //LEGACY
+            //this.$scope.$broadcast('BuildMarkers', this.mapConfig);
+            this.$scope.$broadcast('BuildMarkers', {mapConfig: this.mapConfig, typeOfMarker: 'round'});
+
         }
 
 

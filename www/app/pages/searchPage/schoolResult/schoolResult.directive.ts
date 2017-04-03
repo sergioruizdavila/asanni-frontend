@@ -93,6 +93,7 @@ module app.pages.searchPage {
             /*-- INJECT DEPENDENCIES --*/
             static $inject = [
                 'mainApp.core.util.FunctionsUtilService',
+                'mainApp.models.school.SchoolService',
                 '$uibModal',
                 'dataConfig',
                 '$filter',
@@ -105,6 +106,7 @@ module app.pages.searchPage {
             /*           CONSTRUCTOR          */
             /**********************************/
             constructor(private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
+                        private SchoolService: app.models.school.ISchoolService,
                         private $uibModal: ng.ui.bootstrap.IModalService,
                         private dataConfig: IDataConfig,
                         private $filter: angular.IFilterService,
@@ -140,11 +142,43 @@ module app.pages.searchPage {
             /**********************************/
 
             /**
+            * _chooseMinorPrice
+            * @description - take school ranking and calculate the rating average
+            * @use - this._chooseMinorPrice(priceSchoolObj);
+            * @function
+            * @param {any} prices - school's prices
+            * @return {number} minor price
+            */
+            /*NOTE: It's 'any' because the data that I receive is item.price not
+            vm.data.Price (A price instance)*/
+            private _chooseMinorPrice(prices: any): number {
+                let priceInstance = new app.models.school.Price(prices);
+                return this.SchoolService.getMinorSchoolPrice(priceInstance);
+            }
+
+
+
+            /**
+            * _ratingFeatureAverage
+            * @description - Calculate school rating feature average
+            * @use - this._ratingFeatureAverage();
+            * @function
+            * @return {number} average - average value
+            */
+
+            private _ratingFeatureAverage(school): number {
+                let schoolInstance = new app.models.school.School(school);
+                return this.SchoolService.schoolFeatureRatingAverage(schoolInstance);
+            }
+
+
+
+            /**
             * goToDetails
             * @description - when user clicked a specific result, go to details
             * @use - this.goToDetails('2');
             * @function
-            * @params {string} containerId - entity id (school)
+            * @param {string} containerId - entity id (school)
             * @return {void}
             */
 
@@ -152,7 +186,7 @@ module app.pages.searchPage {
                 var url = this.$state.href('page.schoolProfilePage', {id: containerId});
                 window.open(url,'_blank');
             }
-            
+
 
 
             /**
@@ -182,9 +216,19 @@ module app.pages.searchPage {
             */
 
             private _hoverEvent(id: string, status: boolean): void {
+                //CONSTANTS
+                const hoverClass = 'ma-box--border-hover';
                 //VARIABLES
-                let args = {id: id, status: status};
+                let args = {id: id, status: status, typeOfMarker: 'long'};
                 this._hoverDetail[id] = status;
+
+                let containers = document.getElementsByClassName(hoverClass);
+
+                for (let i = 0; i < containers.length; i++) {
+                    let containerClasses = containers[i].classList;
+                    containerClasses.remove(hoverClass);
+                }
+
                 /*
                 * Send event to child (MapController) in order to It changes icon in
                 * specific Marker on the Map

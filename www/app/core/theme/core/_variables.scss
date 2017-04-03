@@ -136,6 +136,7 @@ $agenda-view-body-timeContainer-event-font-size: 15px;
 // ----------
 $box-background: $white;
 $box-border: 1px solid $light-gray;
+$box-border-primary: 1px solid map-get($main-palette, primary);
 $box-border-transparent: 0 hidden transparent;
 
 $box-title-border: $global-border-dashed;
@@ -409,7 +410,7 @@ $image-rectangle-photo-width-sizes: (
     small: 140px,
     default: 175px,
     medium: 224px,
-    large: 240px,
+    large: 260px,
 );
 $image-rectangle-photo-height-sizes: (
     tiny: 140px,
@@ -515,6 +516,7 @@ $label-box-width-block: 99%;
 $label-simple-color-gray: $dark-gray;
 $label-simple-color-primary: map-get($main-palette, primary);
 $label-simple-color-alert: map-get($main-palette, alert);
+$label-simple-color-disabled: $medium-gray;
 
 $label-box-primary-font-color: $white;
 $label-box-primary-background: map-get($main-palette, primary);

@@ -58,6 +58,7 @@ var paths = {
         "www/build/scripts/components/floatMessageBar/floatMessageBar.directive.js",
         "www/build/scripts/components/map/map.config.js",
         "www/build/scripts/components/map/map.directive.js",
+        "www/build/scripts/components/map/map.service.js",
         "www/build/scripts/components/modal/modal.config.js",
         "www/build/scripts/components/modal/modalCreateUser/modalWelcome/modalWelcome.controller.js",
         "www/build/scripts/components/modal/modalCreateUser/modalPhoto/modalPhoto.controller.js",

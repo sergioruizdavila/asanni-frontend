@@ -208,12 +208,22 @@ module app.pages.searchPage {
             * @function
             * @param {string} id - container result id
             * @param {boolean} status - mouseover = true / mouseleave = false
-            */
+            */ 
 
             private _hoverEvent(id: string, status: boolean): void {
+                //CONSTANTS
+                const hoverClass = 'ma-box--border-hover';
                 //VARIABLES
-                let args = {id: id, status: status};
+                let args = {id: id, status: status, typeOfMarker: 'round'};
                 this._hoverDetail[id] = status;
+
+                let containers = document.getElementsByClassName(hoverClass);
+
+                for (let i = 0; i < containers.length; i++) {
+                    let containerClasses = containers[i].classList;
+                    containerClasses.remove(hoverClass);
+                }
+
                 /*
                 * Send event to child (MapController) in order to It changes icon in
                 * specific Marker on the Map

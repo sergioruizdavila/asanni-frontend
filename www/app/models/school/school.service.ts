@@ -16,6 +16,8 @@ module app.models.school {
         getSchoolById: (id: string) => angular.IPromise<any>;
         getSchoolByUserId: (userId: string) => angular.IPromise<any>;
         getAllSchools: () => angular.IPromise<any>;
+        getMinorSchoolPrice: (prices: app.models.school.Price) => number;
+        schoolFeatureRatingAverage: (school: app.models.school.School) => number;
     }
 
     export interface ISchoolQueryObject {
@@ -44,6 +46,7 @@ module app.models.school {
         /*-- INJECT DEPENDENCIES --*/
         static $inject = [
             'mainApp.core.restApi.restApiService',
+            'mainApp.core.util.FunctionsUtilService',
             'mainApp.auth.AuthService',
             '$q'
         ];
@@ -54,6 +57,7 @@ module app.models.school {
         /**********************************/
         constructor(
             private restApi: app.core.restApi.IRestApi,
+            private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private AuthService: app.auth.IAuthService,
             private $q: angular.IQService) {
 
@@ -169,6 +173,78 @@ module app.models.school {
             return deferred.promise;
         }
 
+
+
+        /**
+        * getMinorSchoolPrice
+        * @description - get the minor price of school
+        * @function
+        * @return {number} return minor price value
+        */
+        getMinorSchoolPrice(prices: app.models.school.Price): number {
+            //CONSTANTS
+            const privateGeneralValue = prices.PrivateClass.GeneralType.Value;
+            const privateIntensiveValue = prices.PrivateClass.IntensiveType.Value;
+            const groupGeneralValue = prices.GroupClass.GeneralType.Value;
+            const groupIntensiveValue = prices.GroupClass.IntensiveType.Value;
+
+            // VARIABLES
+            let minorValue = 0;
+
+            if(prices.PrivateClass.Active) {
+                if(prices.PrivateClass.GeneralType.Active) {
+                    minorValue = privateGeneralValue;
+                }
+
+                if(prices.PrivateClass.IntensiveType.Active) {
+                    minorValue = privateIntensiveValue < minorValue ? privateIntensiveValue : minorValue;
+                }
+            }
+
+            if(prices.GroupClass.Active) {
+                if(prices.GroupClass.GeneralType.Active) {
+                    minorValue = groupGeneralValue < minorValue ? groupGeneralValue : minorValue;
+                }
+
+                if(prices.GroupClass.IntensiveType.Active) {
+                    minorValue = groupIntensiveValue < minorValue ? groupIntensiveValue : minorValue;
+                }
+            }
+
+
+            return minorValue;
+        }
+
+
+
+        /**
+        * schoolFeatureRatingAverage
+        * @description - Calculate school feature rating average
+        * @function
+        * @param {app.models.school.School} school - School Object
+        * @return {number} average - return school feature rating average
+        */
+        schoolFeatureRatingAverage(school: app.models.school.School): number {
+            //CONSTANTS
+            //NOTE: We added this value if the school not offer some features,
+            // in order to not affect so much to global average.
+            const middleValue = 2;
+
+            //VARIABLES
+            let atmosphere = school.Atmosphere > 0 ? school.Atmosphere : middleValue;
+            let immersion = school.Immersion.Rating > 0 ? school.Immersion.Rating : middleValue;
+            let volunteering = school.Volunteering.Rating > 0 ? school.Volunteering.Rating : middleValue;
+            let amenities = school.Amenities.Rating > 0 ? school.Amenities.Rating : middleValue;
+            let accommodation = school.Accommodation.Rating > 0 ? school.Accommodation.Rating : middleValue;
+
+            let average = 0;
+
+            let newArr = [atmosphere, immersion, volunteering, amenities, accommodation];
+
+            average = this.functionsUtil.averageNumbersArray(newArr);
+
+            return average;
+        }
 
     }
 

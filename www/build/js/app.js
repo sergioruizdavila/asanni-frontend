@@ -79,7 +79,6 @@
 (function () {
     'use strict';
     angular.module('mainApp.core', [
-        'ngRaven',
         'ngResource',
         'ngCookies',
         'ui.router',
@@ -95,13 +94,13 @@
 
 //# sourceMappingURL=../../maps/app/app.core.module.js.map
 
-DEBUG = false;
+DEBUG = true;
 (function () {
     'use strict';
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/profile-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/profile-avatar-dev';
     }
     var dataConfig = {
@@ -850,6 +849,10 @@ var app;
                             {
                                 key: '16',
                                 value: 'pool'
+                            },
+                            {
+                                key: '17',
+                                value: 'big-bed'
                             }
                         ];
                         for (var i = 0; i < options.length; i++) {
@@ -5159,11 +5162,12 @@ var app;
     var models;
     (function (models) {
         var school;
-        (function (school) {
+        (function (school_1) {
             'use strict';
             var SchoolService = (function () {
-                function SchoolService(restApi, AuthService, $q) {
+                function SchoolService(restApi, functionsUtil, AuthService, $q) {
                     this.restApi = restApi;
+                    this.functionsUtil = functionsUtil;
                     this.AuthService = AuthService;
                     this.$q = $q;
                     DEBUG && console.log('schools service instanced');
@@ -5225,15 +5229,52 @@ var app;
                     });
                     return deferred.promise;
                 };
+                SchoolService.prototype.getMinorSchoolPrice = function (prices) {
+                    var privateGeneralValue = prices.PrivateClass.GeneralType.Value;
+                    var privateIntensiveValue = prices.PrivateClass.IntensiveType.Value;
+                    var groupGeneralValue = prices.GroupClass.GeneralType.Value;
+                    var groupIntensiveValue = prices.GroupClass.IntensiveType.Value;
+                    var minorValue = 0;
+                    if (prices.PrivateClass.Active) {
+                        if (prices.PrivateClass.GeneralType.Active) {
+                            minorValue = privateGeneralValue;
+                        }
+                        if (prices.PrivateClass.IntensiveType.Active) {
+                            minorValue = privateIntensiveValue < minorValue ? privateIntensiveValue : minorValue;
+                        }
+                    }
+                    if (prices.GroupClass.Active) {
+                        if (prices.GroupClass.GeneralType.Active) {
+                            minorValue = groupGeneralValue < minorValue ? groupGeneralValue : minorValue;
+                        }
+                        if (prices.GroupClass.IntensiveType.Active) {
+                            minorValue = groupIntensiveValue < minorValue ? groupIntensiveValue : minorValue;
+                        }
+                    }
+                    return minorValue;
+                };
+                SchoolService.prototype.schoolFeatureRatingAverage = function (school) {
+                    var middleValue = 2;
+                    var atmosphere = school.Atmosphere > 0 ? school.Atmosphere : middleValue;
+                    var immersion = school.Immersion.Rating > 0 ? school.Immersion.Rating : middleValue;
+                    var volunteering = school.Volunteering.Rating > 0 ? school.Volunteering.Rating : middleValue;
+                    var amenities = school.Amenities.Rating > 0 ? school.Amenities.Rating : middleValue;
+                    var accommodation = school.Accommodation.Rating > 0 ? school.Accommodation.Rating : middleValue;
+                    var average = 0;
+                    var newArr = [atmosphere, immersion, volunteering, amenities, accommodation];
+                    average = this.functionsUtil.averageNumbersArray(newArr);
+                    return average;
+                };
                 SchoolService.serviceId = 'mainApp.models.school.SchoolService';
                 SchoolService.$inject = [
                     'mainApp.core.restApi.restApiService',
+                    'mainApp.core.util.FunctionsUtilService',
                     'mainApp.auth.AuthService',
                     '$q'
                 ];
                 return SchoolService;
             }());
-            school.SchoolService = SchoolService;
+            school_1.SchoolService = SchoolService;
             angular
                 .module('mainApp.models.school', [])
                 .service(SchoolService.serviceId, SchoolService);
@@ -5914,7 +5955,10 @@ var components;
                 this.restrict = 'E';
                 this.transclude = true;
                 this.scope = {
-                    mapConfig: '='
+                    mapConfig: '=',
+                    circle: '=',
+                    draggable: '=',
+                    typeOfMarker: '@'
                 };
                 this.templateUrl = 'components/map/map.html';
                 console.log('maMap directive constructor');
@@ -5932,17 +5976,14 @@ var components;
             .module('mainApp.components.map')
             .directive(MaMap.directiveId, MaMap.instance);
         var MapController = (function () {
-            function MapController($scope, $rootScope, $timeout) {
+            function MapController($scope, $rootScope, $timeout, MapService) {
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
                 this.$timeout = $timeout;
+                this.MapService = MapService;
                 this.init();
             }
             MapController.prototype.init = function () {
-                this.RED_PIN = 'assets/images/red-pin.png';
-                this.POSITION_PIN = 'assets/images/red-pin.png';
-                this.GREEN_PIN = 'assets/images/green-pin.png';
-                this.SCHOOL_PIN = 'assets/images/school-pin.png';
                 var self = this;
                 this._map;
                 this._draggable = false;
@@ -5950,6 +5991,7 @@ var components;
                 this._infoWindow = null;
                 this._markers = [];
                 this.$scope.options = null;
+                this._markerStatus = this.MapService.selectMarker(this.typeOfMarker);
                 switch (this.mapConfig.type) {
                     case 'search-map':
                         this._searchMapBuilder();
@@ -5992,7 +6034,7 @@ var components;
                         self._createFilterButtons();
                         for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                             var marker = self.mapConfig.data.markers[i];
-                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.GREEN_PIN);
+                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self._markerStatus.normal);
                         }
                     });
                 }
@@ -6018,7 +6060,7 @@ var components;
                         self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
                         for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                             var marker = self.mapConfig.data.markers[i];
-                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.POSITION_PIN);
+                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self._markerStatus.normal);
                         }
                     });
                 }
@@ -6027,16 +6069,6 @@ var components;
                 var self = this;
                 var zoom = this.mapConfig.data.zoom || 16;
                 var center = this.mapConfig.data.position;
-                var circle_strokeColor = '#ff5a5f';
-                var circle_strokeOpacity = 0.8;
-                var circle_strokeWeight = 2;
-                var circle_fillColor = '#ff5a5f';
-                var circle_fillOpacity = 0.35;
-                var circle_center = {
-                    lat: 6.1739743,
-                    lng: -75.5822414
-                };
-                var circle_radius = 140;
                 this._draggable = false;
                 this.$scope.options = {
                     center: new google.maps.LatLng(center.lat, center.lng),
@@ -6052,16 +6084,7 @@ var components;
                 if (this._map === void 0) {
                     this.$timeout(function () {
                         self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
-                        var circle = new google.maps.Circle({
-                            strokeColor: circle_strokeColor,
-                            strokeOpacity: circle_strokeOpacity,
-                            strokeWeight: circle_strokeWeight,
-                            fillColor: circle_fillColor,
-                            fillOpacity: circle_fillOpacity,
-                            map: self._map,
-                            center: new google.maps.LatLng(center.lat, center.lng),
-                            radius: circle_radius
-                        });
+                        var circle = self.MapService.buildCircle(self._map, center);
                     });
                 }
             };
@@ -6086,7 +6109,7 @@ var components;
                         self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
                         for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                             var marker = self.mapConfig.data.markers[i];
-                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.SCHOOL_PIN);
+                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self._markerStatus.normal);
                         }
                     });
                 }
@@ -6119,10 +6142,10 @@ var components;
                     google.maps.event.addListener(marker, 'click', function (event) {
                         for (var i = 0; i < self._markers.length; i++) {
                             if (self._markers[i].id === marker.id) {
-                                self._markers[i].setIcon(self.GREEN_PIN);
+                                self._markers[i].setIcon(self._markerStatus.hover);
                             }
                             else {
-                                self._markers[i].setIcon(self.RED_PIN);
+                                self._markers[i].setIcon(self._markerStatus.normal);
                             }
                         }
                         self.$scope.$emit('SelectContainer', marker.id);
@@ -6135,7 +6158,7 @@ var components;
                 }
             };
             MapController.prototype._createFilterButtons = function () {
-                var buttons = ['Students', 'Teachers', 'Schools'];
+                var buttons = ['Teachers', 'Schools'];
                 for (var i = 0; i < buttons.length; i++) {
                     var controlDiv = document.createElement('div');
                     var control = this._filterControl(controlDiv, buttons[i]);
@@ -6224,7 +6247,7 @@ var components;
                 }, function (results, status) {
                     if (status == 'OK') {
                         self._removeMarkers();
-                        self._setMarker('1', results[0].geometry.location, self.RED_PIN);
+                        self._setMarker('1', results[0].geometry.location, self._markerStatus.normal);
                         var position = {
                             lng: results[0].geometry.location.lng(),
                             lat: results[0].geometry.location.lat()
@@ -6256,27 +6279,29 @@ var components;
             MapController.prototype._subscribeToEvents = function () {
                 var self = this;
                 this.$scope.$on('BuildMarkers', function (event, args) {
-                    self.mapConfig = args;
+                    self.mapConfig = args.mapConfig;
+                    self._markerStatus = self.MapService.selectMarker(args.typeOfMarker);
                     self._removeMarkers();
                     for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                         var marker = self.mapConfig.data.markers[i];
-                        self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.RED_PIN);
+                        self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self._markerStatus.normal);
                     }
                 });
                 this.$scope.$on('ChangeMarker', function (event, args) {
                     var markerId = args.id;
                     var status = args.status;
+                    self._markerStatus = self.MapService.selectMarker(args.typeOfMarker);
                     for (var i = 0; i < self._markers.length; i++) {
                         if (self._markers[i].id === markerId) {
                             if (status === true) {
-                                self._markers[i].setIcon(self.GREEN_PIN);
+                                self._markers[i].setIcon(self._markerStatus.hover);
                             }
                             else {
-                                self._markers[i].setIcon(self.RED_PIN);
+                                self._markers[i].setIcon(self._markerStatus.normal);
                             }
                         }
                         else {
-                            self._markers[i].setIcon(self.RED_PIN);
+                            self._markers[i].setIcon(self._markerStatus.normal);
                         }
                     }
                 });
@@ -6290,7 +6315,10 @@ var components;
                 });
             };
             MapController.controllerId = 'mainApp.components.map.MapController';
-            MapController.$inject = ['$scope', '$rootScope', '$timeout'];
+            MapController.$inject = ['$scope',
+                '$rootScope',
+                '$timeout',
+                'mainApp.components.map.MapService'];
             return MapController;
         }());
         map.MapController = MapController;
@@ -6300,6 +6328,69 @@ var components;
 })(components || (components = {}));
 
 //# sourceMappingURL=../../../maps/components/map/map.directive.js.map
+
+var components;
+(function (components) {
+    var map;
+    (function (map_1) {
+        'use strict';
+        var MapService = (function () {
+            function MapService() {
+            }
+            MapService.prototype.buildCircle = function (map, circlePosition) {
+                var circle_strokeColor = '#ff5a5f';
+                var circle_strokeOpacity = 0.8;
+                var circle_strokeWeight = 2;
+                var circle_fillColor = '#ff5a5f';
+                var circle_fillOpacity = 0.35;
+                var circle_radius = 140;
+                var circle = new google.maps.Circle({
+                    strokeColor: circle_strokeColor,
+                    strokeOpacity: circle_strokeOpacity,
+                    strokeWeight: circle_strokeWeight,
+                    fillColor: circle_fillColor,
+                    fillOpacity: circle_fillOpacity,
+                    map: map,
+                    center: new google.maps.LatLng(circlePosition.lat, circlePosition.lng),
+                    radius: circle_radius
+                });
+                return circle;
+            };
+            MapService.prototype.selectMarker = function (type) {
+                var imagePath = 'assets/images/';
+                var round = 'round-red-marker.png';
+                var roundHover = 'round-green-marker.png';
+                var long = 'long-red-marker.png';
+                var longHover = 'long-green-marker.png';
+                var markerStatus = { normal: '', hover: '' };
+                switch (type) {
+                    case 'round':
+                        markerStatus.normal = imagePath + round;
+                        markerStatus.hover = imagePath + roundHover;
+                        break;
+                    case 'long':
+                        markerStatus.normal = imagePath + long;
+                        markerStatus.hover = imagePath + longHover;
+                        break;
+                    default:
+                        markerStatus.normal = imagePath + round;
+                        markerStatus.hover = imagePath + roundHover;
+                        break;
+                }
+                return markerStatus;
+            };
+            MapService.serviceId = 'mainApp.components.map.MapService';
+            MapService.$inject = [];
+            return MapService;
+        }());
+        map_1.MapService = MapService;
+        angular
+            .module('mainApp.components.map')
+            .service(MapService.serviceId, MapService);
+    })(map = components.map || (components.map = {}));
+})(components || (components = {}));
+
+//# sourceMappingURL=../../../maps/components/map/map.service.js.map
 
 (function () {
     'use strict';
@@ -8982,7 +9073,7 @@ var app;
                     this.TeacherService.getAllTeachersByStatus(this.VALIDATED).then(function (response) {
                         self.type = 'teacher';
                         self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
-                        self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                        self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: 'round' });
                         self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         self.$timeout(function () {
                             self.loading = false;
@@ -8993,19 +9084,6 @@ var app;
                             });
                         }
                     });
-                };
-                SearchPageController.prototype._getResultLoading = function (type) {
-                    var STUDENT_TYPE = 'student';
-                    var TEACHER_TYPE = 'teacher';
-                    var SCHOOL_TYPE = 'school';
-                    switch (type) {
-                        case STUDENT_TYPE:
-                            return 'app/pages/searchPage/studentResult/studentResult.html';
-                        case TEACHER_TYPE:
-                            return 'app/pages/searchPage/teacherLoading/teacherLoading.html';
-                        case SCHOOL_TYPE:
-                            return 'app/pages/searchPage/schoolResult/schoolResult.html';
-                    }
                 };
                 SearchPageController.prototype._searchByCountry = function (country) {
                     var self = this;
@@ -9026,7 +9104,7 @@ var app;
                         self.StudentService.getAllStudents().then(function (response) {
                             self.type = 'student';
                             self.mapConfig = self.FunctionsUtilService.buildMapConfig(response, 'search-map', { lat: 6.175434, lng: -75.583329 }, 6);
-                            self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                            self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: 'round' });
                             self.data = self.FunctionsUtilService.splitToColumns(response, 2);
                         });
                     });
@@ -9034,7 +9112,7 @@ var app;
                         self.TeacherService.getAllTeachersByStatus(self.VALIDATED).then(function (response) {
                             self.type = 'teacher';
                             self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
-                            self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                            self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: 'round' });
                             self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         });
                     });
@@ -9042,14 +9120,19 @@ var app;
                         self.SchoolService.getAllSchools().then(function (response) {
                             self.type = 'school';
                             self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', { lat: 6.175434, lng: -75.583329 }, 6);
-                            self.$scope.$broadcast('BuildMarkers', self.mapConfig);
+                            self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: 'long' });
                             self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         });
                     });
                     this.$scope.$on('SelectContainer', function (event, args) {
+                        var hoverClass = 'ma-box--border-hover';
                         var containerId = '#container-' + args;
+                        var containers = document.getElementsByClassName(hoverClass);
+                        for (var i = 0; i < containers.length; i++) {
+                            containers[i].classList.remove(hoverClass);
+                        }
                         var containerClasses = document.querySelector(containerId).classList;
-                        containerClasses.add('search-result__teacher__block--selected');
+                        containerClasses.add(hoverClass);
                         document.querySelector(containerId).scrollIntoView({ behavior: 'smooth' });
                     });
                     this.$scope.$on('SearchCountry', function (event, args) {
@@ -9147,8 +9230,14 @@ var app;
                     return this.functionsUtil.teacherRatingAverage(ratingsArr);
                 };
                 TeacherResultController.prototype._hoverEvent = function (id, status) {
-                    var args = { id: id, status: status };
+                    var hoverClass = 'ma-box--border-hover';
+                    var args = { id: id, status: status, typeOfMarker: 'round' };
                     this._hoverDetail[id] = status;
+                    var containers = document.getElementsByClassName(hoverClass);
+                    for (var i = 0; i < containers.length; i++) {
+                        var containerClasses = containers[i].classList;
+                        containerClasses.remove(hoverClass);
+                    }
                     this.$rootScope.$broadcast('ChangeMarker', args);
                 };
                 TeacherResultController.controllerId = 'mainApp.pages.searchPage.TeacherResultController';
@@ -9200,8 +9289,9 @@ var app;
                 .module('mainApp.pages.searchPage')
                 .directive(MaSchoolResult.directiveId, MaSchoolResult.instance);
             var SchoolResultController = (function () {
-                function SchoolResultController(functionsUtil, $uibModal, dataConfig, $filter, $state, $rootScope) {
+                function SchoolResultController(functionsUtil, SchoolService, $uibModal, dataConfig, $filter, $state, $rootScope) {
                     this.functionsUtil = functionsUtil;
+                    this.SchoolService = SchoolService;
                     this.$uibModal = $uibModal;
                     this.dataConfig = dataConfig;
                     this.$filter = $filter;
@@ -9217,18 +9307,33 @@ var app;
                 SchoolResultController.prototype.activate = function () {
                     DEBUG && console.log('schoolResult controller actived');
                 };
+                SchoolResultController.prototype._chooseMinorPrice = function (prices) {
+                    var priceInstance = new app.models.school.Price(prices);
+                    return this.SchoolService.getMinorSchoolPrice(priceInstance);
+                };
+                SchoolResultController.prototype._ratingFeatureAverage = function (school) {
+                    var schoolInstance = new app.models.school.School(school);
+                    return this.SchoolService.schoolFeatureRatingAverage(schoolInstance);
+                };
                 SchoolResultController.prototype.goToDetails = function (containerId) {
                     var url = this.$state.href('page.schoolProfilePage', { id: containerId });
                     window.open(url, '_blank');
                 };
                 SchoolResultController.prototype._hoverEvent = function (id, status) {
-                    var args = { id: id, status: status };
+                    var hoverClass = 'ma-box--border-hover';
+                    var args = { id: id, status: status, typeOfMarker: 'long' };
                     this._hoverDetail[id] = status;
+                    var containers = document.getElementsByClassName(hoverClass);
+                    for (var i = 0; i < containers.length; i++) {
+                        var containerClasses = containers[i].classList;
+                        containerClasses.remove(hoverClass);
+                    }
                     this.$rootScope.$broadcast('ChangeMarker', args);
                 };
                 SchoolResultController.controllerId = 'mainApp.pages.searchPage.SchoolResultController';
                 SchoolResultController.$inject = [
                     'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.models.school.SchoolService',
                     '$uibModal',
                     'dataConfig',
                     '$filter',
@@ -10154,7 +10259,7 @@ var app;
                             }
                         }
                     ], 'drag-maker-map', { lat: parseFloat(this.form.positionLocation.Lat), lng: parseFloat(this.form.positionLocation.Lng) }, null);
-                    this.$scope.$broadcast('BuildMarkers', this.mapConfig);
+                    this.$scope.$broadcast('BuildMarkers', { mapConfig: this.mapConfig, typeOfMarker: 'round' });
                 };
                 EditProfileLocationController.prototype._validateLocationForm = function () {
                     var NULL_ENUM = 2;
@@ -12577,7 +12682,7 @@ var app;
                             }
                         }
                     ], 'drag-maker-map', { lat: parseFloat(this.form.positionLocation.Lat), lng: parseFloat(this.form.positionLocation.Lng) }, null);
-                    this.$scope.$broadcast('BuildMarkers', this.mapConfig);
+                    this.$scope.$broadcast('BuildMarkers', { mapConfig: this.mapConfig, typeOfMarker: 'round' });
                 };
                 TeacherLocationSectionController.prototype._validateForm = function () {
                     var NULL_ENUM = 2;
@@ -14373,6 +14478,9 @@ var app;
                         iconClass = iconClass + ' ma-payment-methods-icons--disabled';
                     }
                     return iconClass;
+                };
+                SchoolProfilePageController.prototype._ratingFeatureAverage = function (school) {
+                    return this.SchoolService.schoolFeatureRatingAverage(school);
                 };
                 SchoolProfilePageController.prototype._buildPaymentMethodsClassList = function () {
                     var options = [

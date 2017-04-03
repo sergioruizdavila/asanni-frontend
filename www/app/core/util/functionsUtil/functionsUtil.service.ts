@@ -866,6 +866,10 @@ module app.core.util.functionsUtil {
                 {
                     key: '16',
                     value: 'pool'
+                },
+                {
+                    key: '17',
+                    value: 'big-bed'
                 }
             ];
 

@@ -425,6 +425,10 @@ var app;
                             {
                                 key: '16',
                                 value: 'pool'
+                            },
+                            {
+                                key: '17',
+                                value: 'big-bed'
                             }
                         ];
                         for (var i = 0; i < options.length; i++) {
