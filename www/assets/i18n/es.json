@@ -645,7 +645,7 @@
     "%immersion.school.11": "Intercambio de idiomas con locales",
 
     "__AMENITIES SCHOOLS__": "",
-    "%amenities.school.1": "Internet inalámbrico (wifi)",
+    "%amenities.school.1": "Internet (wifi)",
     "%amenities.school.2": "Zona para trabajar con portátiles",
     "%amenities.school.3": "Aire acondicionado",
     "%amenities.school.4": "Calefacción",
@@ -670,8 +670,8 @@
     "%accommodation.category.5": "Apartamento privado",
 
     "__AMENITIES ACCOMMODATION__": "",
-    "%amenities.accommodation.1": "Habitación privada",
-    "%amenities.accommodation.2": "Habitación compartida",
+    "%amenities.accommodation.1": "Cuarto privada",
+    "%amenities.accommodation.2": "Cuarto compartida",
     "%amenities.accommodation.3": "baño privado",
     "%amenities.accommodation.4": "Desayuno",
     "%amenities.accommodation.5": "Almuerzo",
@@ -679,7 +679,7 @@
     "%amenities.accommodation.7": "Refrigerio",
     "%amenities.accommodation.8": "Café",
     "%amenities.accommodation.9": "Té",
-    "%amenities.accommodation.10": "Internet inalámbrico (wifi)",
+    "%amenities.accommodation.10": "Internet (wifi)",
     "%amenities.accommodation.11": "Cerca a la escuela",
     "%amenities.accommodation.12": "Lavadora",
     "%amenities.accommodation.13": "TV Cable",
