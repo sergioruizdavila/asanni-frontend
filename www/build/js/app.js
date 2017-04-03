@@ -14269,7 +14269,7 @@ var app;
                     this.activate();
                 };
                 TeacherProfilePageController.prototype.activate = function () {
-                    var ENTER_MIXPANEL = 'Enter: Teacher Profile Page';
+                    var ENTER_MIXPANEL = 'Enter: Teacher Profile Page Id: ' + this.$stateParams.id;
                     var self = this;
                     console.log('teacherProfilePage controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
