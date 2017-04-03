@@ -65,7 +65,7 @@ var app;
                     return this.functionsUtil.teacherRatingAverage(ratingsArr);
                 };
                 TeacherResultController.prototype._hoverEvent = function (id, status) {
-                    var args = { id: id, status: status };
+                    var args = { id: id, status: status, typeOfMarker: 'round' };
                     this._hoverDetail[id] = status;
                     this.$rootScope.$broadcast('ChangeMarker', args);
                 };

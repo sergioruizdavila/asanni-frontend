@@ -217,7 +217,7 @@ module app.pages.searchPage {
 
             private _hoverEvent(id: string, status: boolean): void {
                 //VARIABLES
-                let args = {id: id, status: status};
+                let args = {id: id, status: status, typeOfMarker: 'long'};
                 this._hoverDetail[id] = status;
                 /*
                 * Send event to child (MapController) in order to It changes icon in

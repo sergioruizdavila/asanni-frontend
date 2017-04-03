@@ -30,7 +30,10 @@ module components.map {
         restrict: string = 'E';
         transclude: boolean = true;
         scope = {
-            mapConfig: '='
+            mapConfig: '=',
+            circle: '=',
+            draggable: '=',
+            typeOfMarker: '@'
         };
         templateUrl: string = 'components/map/map.html';
         // --------------------------------
@@ -132,17 +135,18 @@ module components.map {
         private _draggable: boolean;
         private _infoWindow: google.maps.InfoWindow;
         private _markers: Array<IMapMarkers>;
+        private _markerStatus: components.map.IMarkerStatus;
         form: IMapForm;
         mapId: string;
         mapConfig: IMapConfig;
-        RED_PIN: string;
-        POSITION_PIN: string;
-        GREEN_PIN: string;
-        SCHOOL_PIN: string;
+        typeOfMarker: string;
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/
-        static $inject = ['$scope', '$rootScope', '$timeout'];
+        static $inject = ['$scope',
+                          '$rootScope',
+                          '$timeout',
+                          'mainApp.components.map.MapService'];
 
 
         /**********************************/
@@ -150,18 +154,14 @@ module components.map {
         /**********************************/
         constructor(public $scope: IMapScope,
                     public $rootScope: app.core.interfaces.IMainAppRootScope,
-                    private $timeout: angular.ITimeoutService) {
+                    private $timeout: angular.ITimeoutService,
+                    private MapService: components.map.IMapService) {
             this.init();
         }
 
         /*-- INITIALIZE METHOD --*/
         private init() {
-            //CONSTANTS
-            this.RED_PIN = 'assets/images/red-pin.png';
-            this.POSITION_PIN = 'assets/images/red-pin.png';
-            this.GREEN_PIN = 'assets/images/green-pin.png';
-            this.SCHOOL_PIN = 'assets/images/school-pin.png';
-            /*********************************/
+
             //VARIABLES
             let self = this;
             /********************/
@@ -173,6 +173,7 @@ module components.map {
             this._infoWindow = null;
             this._markers = [];
             this.$scope.options = null;
+            this._markerStatus = this.MapService.selectMarker(this.typeOfMarker);
 
             //default map options
             //TODO: Hacer una cambio importante ya que necesito seleccionar el tipo de pin,
@@ -257,7 +258,7 @@ module components.map {
                         let marker = self.mapConfig.data.markers[i];
                         self._setMarker(marker.id,
                                         new google.maps.LatLng(marker.position.lat, marker.position.lng),
-                                        self.GREEN_PIN);
+                                        self._markerStatus.normal);
                     }
 
                 });
@@ -312,7 +313,7 @@ module components.map {
                         let marker = self.mapConfig.data.markers[i];
                         self._setMarker(marker.id,
                                         new google.maps.LatLng(marker.position.lat, marker.position.lng),
-                                        self.POSITION_PIN);
+                                        self._markerStatus.normal);
                     }
 
                 });
@@ -335,16 +336,6 @@ module components.map {
             let self = this;
             let zoom = this.mapConfig.data.zoom || 16;
             let center = this.mapConfig.data.position;
-            let circle_strokeColor = '#ff5a5f';
-            let circle_strokeOpacity = 0.8;
-            let circle_strokeWeight = 2;
-            let circle_fillColor = '#ff5a5f';
-            let circle_fillOpacity = 0.35;
-            let circle_center = {
-                lat: 6.1739743,
-                lng: -75.5822414
-            };
-            let circle_radius = 140;
             this._draggable = false;
             /********************/
 
@@ -373,16 +364,7 @@ module components.map {
                     );
 
                     //Init Circle
-                    let circle = new google.maps.Circle ({
-                        strokeColor: circle_strokeColor,
-                        strokeOpacity: circle_strokeOpacity,
-                        strokeWeight: circle_strokeWeight,
-                        fillColor: circle_fillColor,
-                        fillOpacity: circle_fillOpacity,
-                        map: self._map,
-                        center: new google.maps.LatLng(center.lat, center.lng),
-                        radius: circle_radius
-                    });
+                    let circle = self.MapService.buildCircle(self._map, center);
 
                 });
             }
@@ -436,7 +418,7 @@ module components.map {
                         let marker = self.mapConfig.data.markers[i];
                         self._setMarker(marker.id,
                                         new google.maps.LatLng(marker.position.lat, marker.position.lng),
-                                        self.SCHOOL_PIN);
+                                        self._markerStatus.normal);
                     }
 
                 });
@@ -506,9 +488,9 @@ module components.map {
                     //Change marker
                     for (let i = 0; i < self._markers.length; i++) {
                         if(self._markers[i].id === marker.id) {
-                            self._markers[i].setIcon(self.GREEN_PIN);
+                            self._markers[i].setIcon(self._markerStatus.hover);
                         } else {
-                            self._markers[i].setIcon(self.RED_PIN);
+                            self._markers[i].setIcon(self._markerStatus.normal);
                         }
                     }
                     //Emit event to parent in order to selected result container
@@ -694,7 +676,7 @@ module components.map {
                   self._removeMarkers();
                   self._setMarker('1',
                                   results[0].geometry.location,
-                                  self.RED_PIN);
+                                  self._markerStatus.normal);
                   let position = {
                       lng: results[0].geometry.location.lng(),
                       lat: results[0].geometry.location.lat()
@@ -779,7 +761,9 @@ module components.map {
             * @event
             */
             this.$scope.$on('BuildMarkers', function(event, args) {
-                self.mapConfig = args;
+                self.mapConfig = args.mapConfig;
+                let markerStatus = self.MapService.selectMarker(args.typeOfMarker);
+
                 //remove last markers
                 self._removeMarkers();
                 //set markers
@@ -787,7 +771,7 @@ module components.map {
                     let marker = self.mapConfig.data.markers[i];
                     self._setMarker(marker.id,
                                     new google.maps.LatLng(marker.position.lat, marker.position.lng),
-                                    self.RED_PIN);
+                                    markerStatus.normal);
                 }
             });
 
@@ -803,17 +787,18 @@ module components.map {
                 //VARIABLES
                 let markerId = args.id;
                 let status = args.status;
+                let markerStatus = self.MapService.selectMarker(args.typeOfMarker);
 
                 //Change marker
                 for (let i = 0; i < self._markers.length; i++) {
                     if(self._markers[i].id === markerId) {
                         if(status === true){
-                            self._markers[i].setIcon(self.GREEN_PIN);
+                            self._markers[i].setIcon(markerStatus.hover);
                         } else {
-                            self._markers[i].setIcon(self.RED_PIN);
+                            self._markers[i].setIcon(markerStatus.normal);
                         }
                     } else {
-                        self._markers[i].setIcon(self.RED_PIN);
+                        self._markers[i].setIcon(markerStatus.normal);
                     }
                 }
 

@@ -58,7 +58,7 @@ var app;
                     window.open(url, '_blank');
                 };
                 SchoolResultController.prototype._hoverEvent = function (id, status) {
-                    var args = { id: id, status: status };
+                    var args = { id: id, status: status, typeOfMarker: 'long' };
                     this._hoverDetail[id] = status;
                     this.$rootScope.$broadcast('ChangeMarker', args);
                 };

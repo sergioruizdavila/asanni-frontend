@@ -11,7 +11,10 @@ var components;
                 this.restrict = 'E';
                 this.transclude = true;
                 this.scope = {
-                    mapConfig: '='
+                    mapConfig: '=',
+                    circle: '=',
+                    draggable: '=',
+                    typeOfMarker: '@'
                 };
                 this.templateUrl = 'components/map/map.html';
                 console.log('maMap directive constructor');
@@ -29,17 +32,14 @@ var components;
             .module('mainApp.components.map')
             .directive(MaMap.directiveId, MaMap.instance);
         var MapController = (function () {
-            function MapController($scope, $rootScope, $timeout) {
+            function MapController($scope, $rootScope, $timeout, MapService) {
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
                 this.$timeout = $timeout;
+                this.MapService = MapService;
                 this.init();
             }
             MapController.prototype.init = function () {
-                this.RED_PIN = 'assets/images/red-pin.png';
-                this.POSITION_PIN = 'assets/images/red-pin.png';
-                this.GREEN_PIN = 'assets/images/green-pin.png';
-                this.SCHOOL_PIN = 'assets/images/school-pin.png';
                 var self = this;
                 this._map;
                 this._draggable = false;
@@ -47,6 +47,7 @@ var components;
                 this._infoWindow = null;
                 this._markers = [];
                 this.$scope.options = null;
+                this._markerStatus = this.MapService.selectMarker(this.typeOfMarker);
                 switch (this.mapConfig.type) {
                     case 'search-map':
                         this._searchMapBuilder();
@@ -89,7 +90,7 @@ var components;
                         self._createFilterButtons();
                         for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                             var marker = self.mapConfig.data.markers[i];
-                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.GREEN_PIN);
+                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self._markerStatus.normal);
                         }
                     });
                 }
@@ -115,7 +116,7 @@ var components;
                         self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
                         for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                             var marker = self.mapConfig.data.markers[i];
-                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.POSITION_PIN);
+                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self._markerStatus.normal);
                         }
                     });
                 }
@@ -124,16 +125,6 @@ var components;
                 var self = this;
                 var zoom = this.mapConfig.data.zoom || 16;
                 var center = this.mapConfig.data.position;
-                var circle_strokeColor = '#ff5a5f';
-                var circle_strokeOpacity = 0.8;
-                var circle_strokeWeight = 2;
-                var circle_fillColor = '#ff5a5f';
-                var circle_fillOpacity = 0.35;
-                var circle_center = {
-                    lat: 6.1739743,
-                    lng: -75.5822414
-                };
-                var circle_radius = 140;
                 this._draggable = false;
                 this.$scope.options = {
                     center: new google.maps.LatLng(center.lat, center.lng),
@@ -149,16 +140,7 @@ var components;
                 if (this._map === void 0) {
                     this.$timeout(function () {
                         self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
-                        var circle = new google.maps.Circle({
-                            strokeColor: circle_strokeColor,
-                            strokeOpacity: circle_strokeOpacity,
-                            strokeWeight: circle_strokeWeight,
-                            fillColor: circle_fillColor,
-                            fillOpacity: circle_fillOpacity,
-                            map: self._map,
-                            center: new google.maps.LatLng(center.lat, center.lng),
-                            radius: circle_radius
-                        });
+                        var circle = self.MapService.buildCircle(self._map, center);
                     });
                 }
             };
@@ -183,7 +165,7 @@ var components;
                         self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
                         for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                             var marker = self.mapConfig.data.markers[i];
-                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.SCHOOL_PIN);
+                            self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self._markerStatus.normal);
                         }
                     });
                 }
@@ -216,10 +198,10 @@ var components;
                     google.maps.event.addListener(marker, 'click', function (event) {
                         for (var i = 0; i < self._markers.length; i++) {
                             if (self._markers[i].id === marker.id) {
-                                self._markers[i].setIcon(self.GREEN_PIN);
+                                self._markers[i].setIcon(self._markerStatus.hover);
                             }
                             else {
-                                self._markers[i].setIcon(self.RED_PIN);
+                                self._markers[i].setIcon(self._markerStatus.normal);
                             }
                         }
                         self.$scope.$emit('SelectContainer', marker.id);
@@ -321,7 +303,7 @@ var components;
                 }, function (results, status) {
                     if (status == 'OK') {
                         self._removeMarkers();
-                        self._setMarker('1', results[0].geometry.location, self.RED_PIN);
+                        self._setMarker('1', results[0].geometry.location, self._markerStatus.normal);
                         var position = {
                             lng: results[0].geometry.location.lng(),
                             lat: results[0].geometry.location.lat()
@@ -353,27 +335,29 @@ var components;
             MapController.prototype._subscribeToEvents = function () {
                 var self = this;
                 this.$scope.$on('BuildMarkers', function (event, args) {
-                    self.mapConfig = args;
+                    self.mapConfig = args.mapConfig;
+                    var markerStatus = self.MapService.selectMarker(args.typeOfMarker);
                     self._removeMarkers();
                     for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                         var marker = self.mapConfig.data.markers[i];
-                        self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self.RED_PIN);
+                        self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), markerStatus.normal);
                     }
                 });
                 this.$scope.$on('ChangeMarker', function (event, args) {
                     var markerId = args.id;
                     var status = args.status;
+                    var markerStatus = self.MapService.selectMarker(args.typeOfMarker);
                     for (var i = 0; i < self._markers.length; i++) {
                         if (self._markers[i].id === markerId) {
                             if (status === true) {
-                                self._markers[i].setIcon(self.GREEN_PIN);
+                                self._markers[i].setIcon(markerStatus.hover);
                             }
                             else {
-                                self._markers[i].setIcon(self.RED_PIN);
+                                self._markers[i].setIcon(markerStatus.normal);
                             }
                         }
                         else {
-                            self._markers[i].setIcon(self.RED_PIN);
+                            self._markers[i].setIcon(markerStatus.normal);
                         }
                     }
                 });
@@ -387,7 +371,10 @@ var components;
                 });
             };
             MapController.controllerId = 'mainApp.components.map.MapController';
-            MapController.$inject = ['$scope', '$rootScope', '$timeout'];
+            MapController.$inject = ['$scope',
+                '$rootScope',
+                '$timeout',
+                'mainApp.components.map.MapService'];
             return MapController;
         }());
         map.MapController = MapController;

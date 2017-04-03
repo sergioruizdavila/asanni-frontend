@@ -13,7 +13,7 @@ module app.pages.editProfileLocation {
         validate: IEditProfileLocationValidate;
         activate: () => void;
         goToEditMedia: () => void;
-        goToEditLocation: () => void;
+        goToEditProfile: () => void;
     }
 
     export interface IEditProfileLocationForm {
@@ -213,7 +213,9 @@ module app.pages.editProfileLocation {
             * Send event to child (MapController) in order to It draws
             * each Marker on the Map
             */
-            this.$scope.$broadcast('BuildMarkers', this.mapConfig);
+            //LEGACY
+            //this.$scope.$broadcast('BuildMarkers', this.mapConfig);
+            this.$scope.$broadcast('BuildMarkers', {mapConfig: this.mapConfig, typeOfMarker: 'round'});
         }
 
 
