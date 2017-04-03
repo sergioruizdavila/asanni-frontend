@@ -6243,7 +6243,7 @@ var components;
                 }, function (results, status) {
                     if (status == 'OK') {
                         self._removeMarkers();
-                        self._setMarker('1', results[0].geometry.location, self.RED_PIN);
+                        self._setMarker('1', results[0].geometry.location, self._markerStatus.normal);
                         var position = {
                             lng: results[0].geometry.location.lng(),
                             lat: results[0].geometry.location.lat()
