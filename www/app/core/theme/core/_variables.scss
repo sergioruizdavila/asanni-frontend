@@ -136,6 +136,7 @@ $agenda-view-body-timeContainer-event-font-size: 15px;
 // ----------
 $box-background: $white;
 $box-border: 1px solid $light-gray;
+$box-border-primary: 1px solid map-get($main-palette, primary);
 $box-border-transparent: 0 hidden transparent;
 
 $box-title-border: $global-border-dashed;

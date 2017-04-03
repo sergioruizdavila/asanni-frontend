@@ -89,9 +89,14 @@ var app;
                         });
                     });
                     this.$scope.$on('SelectContainer', function (event, args) {
+                        var hoverClass = 'ma-box--border-hover';
                         var containerId = '#container-' + args;
+                        var containers = document.getElementsByClassName(hoverClass);
+                        for (var i = 0; i < containers.length; i++) {
+                            containers[i].classList.remove(hoverClass);
+                        }
                         var containerClasses = document.querySelector(containerId).classList;
-                        containerClasses.add('search-result__teacher__block--selected');
+                        containerClasses.add(hoverClass);
                         document.querySelector(containerId).scrollIntoView({ behavior: 'smooth' });
                     });
                     this.$scope.$on('SearchCountry', function (event, args) {

@@ -310,10 +310,19 @@ module app.pages.searchPage {
             */
 
             this.$scope.$on('SelectContainer', function(event, args) {
+                //CONSTANTS
+                const hoverClass = 'ma-box--border-hover';
                 //VARIABLES
                 let containerId = '#container-' + args;
+
+                let containers = document.getElementsByClassName(hoverClass);
+
+                for (let i = 0; i < containers.length; i++) {
+                    containers[i].classList.remove(hoverClass);
+                }
+
                 let containerClasses = document.querySelector(containerId).classList;
-                containerClasses.add('search-result__teacher__block--selected');
+                containerClasses.add(hoverClass);
                 document.querySelector(containerId).scrollIntoView({ behavior: 'smooth' });
             });
 

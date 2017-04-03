@@ -527,7 +527,8 @@ module components.map {
         */
 
         private _createFilterButtons(): void {
-            let buttons = ['Students', 'Teachers', 'Schools'];
+            //let buttons = ['Students', 'Teachers', 'Schools'];
+            let buttons = ['Teachers', 'Schools'];
 
             for (let i = 0; i < buttons.length; i++) {
                 let controlDiv: HTMLDivElement = document.createElement('div');
@@ -762,7 +763,7 @@ module components.map {
             */
             this.$scope.$on('BuildMarkers', function(event, args) {
                 self.mapConfig = args.mapConfig;
-                let markerStatus = self.MapService.selectMarker(args.typeOfMarker);
+                self._markerStatus = self.MapService.selectMarker(args.typeOfMarker);
 
                 //remove last markers
                 self._removeMarkers();
@@ -771,7 +772,7 @@ module components.map {
                     let marker = self.mapConfig.data.markers[i];
                     self._setMarker(marker.id,
                                     new google.maps.LatLng(marker.position.lat, marker.position.lng),
-                                    markerStatus.normal);
+                                    self._markerStatus.normal);
                 }
             });
 
@@ -787,18 +788,18 @@ module components.map {
                 //VARIABLES
                 let markerId = args.id;
                 let status = args.status;
-                let markerStatus = self.MapService.selectMarker(args.typeOfMarker);
+                self._markerStatus = self.MapService.selectMarker(args.typeOfMarker);
 
                 //Change marker
                 for (let i = 0; i < self._markers.length; i++) {
                     if(self._markers[i].id === markerId) {
                         if(status === true){
-                            self._markers[i].setIcon(markerStatus.hover);
+                            self._markers[i].setIcon(self._markerStatus.hover);
                         } else {
-                            self._markers[i].setIcon(markerStatus.normal);
+                            self._markers[i].setIcon(self._markerStatus.normal);
                         }
                     } else {
-                        self._markers[i].setIcon(markerStatus.normal);
+                        self._markers[i].setIcon(self._markerStatus.normal);
                     }
                 }
 

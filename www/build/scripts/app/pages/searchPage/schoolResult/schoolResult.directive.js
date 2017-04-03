@@ -58,8 +58,14 @@ var app;
                     window.open(url, '_blank');
                 };
                 SchoolResultController.prototype._hoverEvent = function (id, status) {
+                    var hoverClass = 'ma-box--border-hover';
                     var args = { id: id, status: status, typeOfMarker: 'long' };
                     this._hoverDetail[id] = status;
+                    var containers = document.getElementsByClassName(hoverClass);
+                    for (var i = 0; i < containers.length; i++) {
+                        var containerClasses = containers[i].classList;
+                        containerClasses.remove(hoverClass);
+                    }
                     this.$rootScope.$broadcast('ChangeMarker', args);
                 };
                 SchoolResultController.controllerId = 'mainApp.pages.searchPage.SchoolResultController';

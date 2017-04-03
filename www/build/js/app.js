@@ -849,6 +849,10 @@ var app;
                             {
                                 key: '16',
                                 value: 'pool'
+                            },
+                            {
+                                key: '17',
+                                value: 'big-bed'
                             }
                         ];
                         for (var i = 0; i < options.length; i++) {
@@ -6154,7 +6158,7 @@ var components;
                 }
             };
             MapController.prototype._createFilterButtons = function () {
-                var buttons = ['Students', 'Teachers', 'Schools'];
+                var buttons = ['Teachers', 'Schools'];
                 for (var i = 0; i < buttons.length; i++) {
                     var controlDiv = document.createElement('div');
                     var control = this._filterControl(controlDiv, buttons[i]);
@@ -6276,28 +6280,28 @@ var components;
                 var self = this;
                 this.$scope.$on('BuildMarkers', function (event, args) {
                     self.mapConfig = args.mapConfig;
-                    var markerStatus = self.MapService.selectMarker(args.typeOfMarker);
+                    self._markerStatus = self.MapService.selectMarker(args.typeOfMarker);
                     self._removeMarkers();
                     for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                         var marker = self.mapConfig.data.markers[i];
-                        self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), markerStatus.normal);
+                        self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self._markerStatus.normal);
                     }
                 });
                 this.$scope.$on('ChangeMarker', function (event, args) {
                     var markerId = args.id;
                     var status = args.status;
-                    var markerStatus = self.MapService.selectMarker(args.typeOfMarker);
+                    self._markerStatus = self.MapService.selectMarker(args.typeOfMarker);
                     for (var i = 0; i < self._markers.length; i++) {
                         if (self._markers[i].id === markerId) {
                             if (status === true) {
-                                self._markers[i].setIcon(markerStatus.hover);
+                                self._markers[i].setIcon(self._markerStatus.hover);
                             }
                             else {
-                                self._markers[i].setIcon(markerStatus.normal);
+                                self._markers[i].setIcon(self._markerStatus.normal);
                             }
                         }
                         else {
-                            self._markers[i].setIcon(markerStatus.normal);
+                            self._markers[i].setIcon(self._markerStatus.normal);
                         }
                     }
                 });
@@ -9058,9 +9062,14 @@ var app;
                         });
                     });
                     this.$scope.$on('SelectContainer', function (event, args) {
+                        var hoverClass = 'ma-box--border-hover';
                         var containerId = '#container-' + args;
+                        var containers = document.getElementsByClassName(hoverClass);
+                        for (var i = 0; i < containers.length; i++) {
+                            containers[i].classList.remove(hoverClass);
+                        }
                         var containerClasses = document.querySelector(containerId).classList;
-                        containerClasses.add('search-result__teacher__block--selected');
+                        containerClasses.add(hoverClass);
                         document.querySelector(containerId).scrollIntoView({ behavior: 'smooth' });
                     });
                     this.$scope.$on('SearchCountry', function (event, args) {
@@ -9160,6 +9169,11 @@ var app;
                 TeacherResultController.prototype._hoverEvent = function (id, status) {
                     var args = { id: id, status: status, typeOfMarker: 'round' };
                     this._hoverDetail[id] = status;
+                    var containers = document.getElementsByClassName('ma-box--border-primary');
+                    for (var i = 0; i < containers.length; i++) {
+                        var containerClasses = containers[i].classList;
+                        containerClasses.remove('ma-box--border-primary');
+                    }
                     this.$rootScope.$broadcast('ChangeMarker', args);
                 };
                 TeacherResultController.controllerId = 'mainApp.pages.searchPage.TeacherResultController';
@@ -9242,8 +9256,14 @@ var app;
                     window.open(url, '_blank');
                 };
                 SchoolResultController.prototype._hoverEvent = function (id, status) {
+                    var hoverClass = 'ma-box--border-hover';
                     var args = { id: id, status: status, typeOfMarker: 'long' };
                     this._hoverDetail[id] = status;
+                    var containers = document.getElementsByClassName(hoverClass);
+                    for (var i = 0; i < containers.length; i++) {
+                        var containerClasses = containers[i].classList;
+                        containerClasses.remove(hoverClass);
+                    }
                     this.$rootScope.$broadcast('ChangeMarker', args);
                 };
                 SchoolResultController.controllerId = 'mainApp.pages.searchPage.SchoolResultController';
