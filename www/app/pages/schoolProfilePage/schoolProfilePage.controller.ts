@@ -81,7 +81,7 @@ module app.pages.schoolProfilePage {
         /*-- ACTIVATE METHOD --*/
         activate(): void {
             //CONSTANTS
-            const ENTER_MIXPANEL = 'Enter: School Profile Page';
+            const ENTER_MIXPANEL = 'Enter: School Profile Page Id: ' + this.$stateParams.id;
             //VARIABLES
             let self = this;
 

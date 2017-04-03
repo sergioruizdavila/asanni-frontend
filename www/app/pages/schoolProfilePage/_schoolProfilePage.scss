@@ -4,6 +4,7 @@
 
 //VARIABLES
 $schoolProfilePage-social-icons-size: 17px;
+$schoolProfilePage-social-icons-facebook-size: 20px;
 $schoolProfilePage-social-icons-web-size: 15px;
 $schoolProfilePage-social-icons-meetup-size: 25px;
 
@@ -13,6 +14,12 @@ $schoolProfilePage-social-icons-meetup-size: 25px;
         position: fixed;
         z-index: 1;
         width: inherit;
+    }
+
+    &__language-block {
+        .ma-p {
+            color: $black;
+        }
     }
 
     &__social-block {
@@ -39,6 +46,7 @@ $schoolProfilePage-social-icons-meetup-size: 25px;
                 }
 
                 &--facebook {
+                    font-size: $schoolProfilePage-social-icons-facebook-size;
                     color: #999;
                     &:hover {
                         color: #4267b2;
@@ -89,11 +97,28 @@ $schoolProfilePage-social-icons-meetup-size: 25px;
     }
 
     &__main-block {
+
+        &__title {
+            font-size: 22px;
+            padding: 7px 15px;
+            background-image: linear-gradient(to right, rgb(218, 246, 255), rgb(254, 254, 254));
+            -webkit-border-bottom-left-radius: 10px;
+            -moz-border-bottom-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            -webkit-border-top-left-radius: 10px;
+            -moz-border-top-left-radius: 10px;
+            border-top-left-radius: 10px;
+        }
+
         .ma-box__content {
             padding: 30px;
 
             h4 {
                 font-size: 16px;
+            }
+
+            .school-location-map {
+                height: 400px;
             }
         }
     }

@@ -45,17 +45,17 @@
             <!--              END: SCHOOL PROFILE IMAGE BLOCK                -->
 
             <! Language Teach Section >
-            <div class="row space-3 space-left-2">
+            <div class="schoolProfilePage__language-block
+                        row space-3 space-left-2">
                 <div class="col-xs-4 text-left">
-                    <p class="ma-p ma-p--default strong margin-reset text-capitalize"
-                        style="color: #555"
+                    <p class="ma-p ma-p--default strong margin-reset
+                              text-capitalize"
                         translate>
                         %edit.teacher.menu.option.teach.label.text
                     </p>
                 </div>
                 <div class="col-xs-8 text-center">
                     <p ng-repeat="language in vm.data.LanguageTeach track by $index"
-                        style="color: #555"
                        class="ma-p ma-p--default margin-reset">
                        {{ language | getI18nFilter:'language' }}
                     </p>
@@ -101,7 +101,6 @@
                        ng-click="vm.goToSite(vm.data.MeetupGroup)"
                        aria-hidden="true"></i>
                     <i class="icon icon--facebook fa fa-facebook-official"
-                       style="font-size: 20px;"
                        ng-class="{'icon--disabled': !vm.data.FacebookGroup}"
                        ng-click="vm.goToSite(vm.data.FacebookGroup)"
                        aria-hidden="true"></i>
@@ -178,7 +177,8 @@
 
 
             <!------------------ START: VARIETY BUTTONS BLOCK ----------------->
-            <div class="schoolProfilePage__buttons-block row center-xs margin-reset">
+            <!-- TODO: Hidden temporally -->
+            <div class="schoolProfilePage__buttons-block row center-xs margin-reset hidden">
                 <div class="schoolProfilePage__buttons-block__left
                             col-xs-5 col-sm-12 col-md-5 text-center space-2">
                     <button class="ma-btn
@@ -303,8 +303,8 @@
                                     <! Immersion Title >
                                     <div class="row middle-xs space-5">
                                         <div class="col-xs-8 text-left">
-                                            <h3 class="margin-reset"
-                                                style="font-size: 22px;padding: 7px 15px; background-image: linear-gradient(to right, rgb(218, 246, 255), rgb(254, 254, 254));    border-bottom-left-radius: 10px;border-top-left-radius: 10px;"
+                                            <h3 class="schoolProfilePage__main-block__title
+                                                       margin-reset"
                                                 translate>
                                                 %create.teacher.method.form.imm.text
                                             </h3>
@@ -429,8 +429,8 @@
                                     <! Amenities Title >
                                     <div class="row middle-xs space-5">
                                         <div class="col-xs-8 text-left">
-                                            <h3 class="margin-reset text-capitalize"
-                                                style="font-size: 22px;padding: 7px 15px; background-image: linear-gradient(to right, rgb(218, 246, 255), rgb(254, 254, 254));    border-bottom-left-radius: 10px;border-top-left-radius: 10px;"
+                                            <h3 class="schoolProfilePage__main-block__title
+                                                        margin-reset text-capitalize"
                                                 translate>
                                                 %profile.school.amenities_section.title.text
                                             </h3>
@@ -512,8 +512,8 @@
                                     <! Accommodation Title >
                                     <div class="row middle-xs space-5">
                                         <div class="col-xs-8 text-left">
-                                            <h3 class="margin-reset text-capitalize"
-                                                style="font-size: 22px;padding: 7px 15px; background-image: linear-gradient(to right, rgb(218, 246, 255), rgb(254, 254, 254));    border-bottom-left-radius: 10px;border-top-left-radius: 10px;"
+                                            <h3 class="schoolProfilePage__main-block__title
+                                                       margin-reset text-capitalize"
                                                 translate>
                                                 %profile.school.accommodation.title.text
                                             </h3>
@@ -661,8 +661,8 @@
                                     <! Volunteering Title >
                                     <div class="row middle-xs space-5">
                                         <div class="col-xs-8 text-left">
-                                            <h3 class="margin-reset text-capitalize"
-                                                style="font-size: 22px;padding: 7px 15px; background-image: linear-gradient(to right, rgb(218, 246, 255), rgb(254, 254, 254));    border-bottom-left-radius: 10px;border-top-left-radius: 10px;"
+                                            <h3 class="schoolProfilePage__main-block__title
+                                                       margin-reset text-capitalize"
                                                 translate>
                                                 %profile.school.volunteering.title.text
                                             </h3>
@@ -713,8 +713,8 @@
                                     <div class="row middle-xs space-5"
                                          ng-if="vm.data.WorkExchange.Active">
                                         <div class="col-xs-8 text-left">
-                                            <h3 class="margin-reset"
-                                                style="font-size: 22px;padding: 7px 15px; background-image: linear-gradient(to right, rgb(218, 246, 255), rgb(254, 254, 254));    border-bottom-left-radius: 10px;border-top-left-radius: 10px;"
+                                            <h3 class="schoolProfilePage__main-block__title
+                                                       margin-reset"
                                                 translate>
                                                 %profile.school.work_exchange.title.text
                                             </h3>
@@ -760,8 +760,8 @@
                                     <! Prices Title >
                                     <div class="row middle-xs space-5">
                                         <div class="col-xs-8 text-left">
-                                            <h3 class="margin-reset"
-                                                style="font-size: 22px;padding: 7px 15px; background-image: linear-gradient(to right, rgb(218, 246, 255), rgb(254, 254, 254));    border-bottom-left-radius: 10px;border-top-left-radius: 10px;"
+                                            <h3 class="schoolProfilePage__main-block__title
+                                                       margin-reset"
                                                 translate>
                                                 %profile.school.prices.text
                                             </h3>
@@ -1131,8 +1131,8 @@
                                     <! Discount Title >
                                     <div class="row middle-xs space-5">
                                         <div class="col-xs-8 text-left">
-                                            <h3 class="margin-reset"
-                                                style="font-size: 22px;padding: 7px 15px; background-image: linear-gradient(to right, rgb(218, 246, 255), rgb(254, 254, 254));    border-bottom-left-radius: 10px;border-top-left-radius: 10px;"
+                                            <h3 class="schoolProfilePage__main-block__title
+                                                        margin-reset"
                                                 translate>
                                                 %profile.school.discount.text
                                             </h3>
@@ -1176,8 +1176,8 @@
                             <div class="row middle-xs space-5"
                                  ng-if="vm.data.Package.Active">
                                 <div class="col-xs-8 text-left">
-                                    <h3 class="margin-reset"
-                                        style="font-size: 22px;padding: 7px 15px; background-image: linear-gradient(to right, rgb(218, 246, 255), rgb(254, 254, 254));    border-bottom-left-radius: 10px;border-top-left-radius: 10px;"
+                                    <h3 class="schoolProfilePage__main-block__title
+                                               margin-reset"
                                         translate>
                                         %profile.school.package.text
                                     </h3>
@@ -1338,8 +1338,8 @@
                                     <! Location Title >
                                     <div class="row middle-xs space-5">
                                         <div class="col-xs-8 text-left">
-                                            <h3 class="margin-reset"
-                                                style="font-size: 22px;padding: 7px 15px; background-image: linear-gradient(to right, rgb(218, 246, 255), rgb(254, 254, 254));    border-bottom-left-radius: 10px;border-top-left-radius: 10px;"
+                                            <h3 class="schoolProfilePage__main-block__title
+                                                       margin-reset"
                                                 translate>
                                                 %profile.teacher.location.title.text
                                             </h3>
@@ -1369,7 +1369,7 @@
                                     <! Location Map >
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            <div class="school-location-map" style="height: 400px;">
+                                            <div class="school-location-map">
                                                 <div class="location-map">
                                                     <ma-map ng-if="vm.mapConfig"
                                                             map-config="vm.mapConfig"

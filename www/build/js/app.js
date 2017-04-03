@@ -14423,7 +14423,7 @@ var app;
                     this.activate();
                 };
                 SchoolProfilePageController.prototype.activate = function () {
-                    var ENTER_MIXPANEL = 'Enter: School Profile Page';
+                    var ENTER_MIXPANEL = 'Enter: School Profile Page Id: ' + this.$stateParams.id;
                     var self = this;
                     this._paymentMethodsList = this._buildPaymentMethodsClassList();
                     DEBUG && console.log('schoolProfilePage controller actived');

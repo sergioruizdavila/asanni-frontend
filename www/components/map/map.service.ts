@@ -50,6 +50,17 @@ module components.map {
         /*            METHODS             */
         /**********************************/
 
+
+        /**
+        * buildCircle
+        * @description - Build Circle on map
+        * @use - this.buildCircle(map, circlePosition);
+        * @function
+        * @param {google.maps.Map} map - map instance
+        * @param {IPosition} circlePosition - circle position (lat and lng values)
+        * @return {google.maps.Circle} circle - return a circle instance
+        */
+
         buildCircle(map: google.maps.Map, circlePosition: IPosition): google.maps.Circle {
             //VARIABLES
             let circle_strokeColor = '#ff5a5f';
@@ -75,6 +86,16 @@ module components.map {
         }
 
 
+
+        /**
+        * selectMarker
+        * @description - Choose marker image based on type of of pin required
+        * @use - this.selectMarker('round');
+        * @function
+        * @param {string} type - type of pin (round, long, etc)
+        * @return {IMarkerStatus} markerStatus - return an object with 'normal'
+        * and 'hover' image path
+        */
 
         selectMarker(type: string): IMarkerStatus {
             //CONSTANTS
