@@ -553,7 +553,7 @@ module components.map {
         private _filterControl(controlDiv: HTMLDivElement, type: string): void {
             // VARIABLES
             let self = this;
-            let defaultBtn = 'Students';
+            let defaultBtn = 'Teachers';
             let className = 'filterBtnMap';
             let background_color = 'rgb(255, 255, 255)';
             let background_color_active = '#00B592';

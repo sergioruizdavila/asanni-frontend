@@ -22,7 +22,7 @@ var app;
                     this.VALIDATED = 'VA';
                     this.data = [];
                     this.type = 'teacher';
-                    this.loading = true;
+                    this.rightLoading = true;
                     this.error = {
                         message: ''
                     };
@@ -40,7 +40,7 @@ var app;
                         self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: 'round' });
                         self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         self.$timeout(function () {
-                            self.loading = false;
+                            self.rightLoading = false;
                         });
                         if (self.$stateParams.country) {
                             self.$timeout(function () {
@@ -73,17 +73,21 @@ var app;
                         });
                     });
                     this.$scope.$on('Teachers', function (event, args) {
+                        self.leftLoading = true;
                         self.TeacherService.getAllTeachersByStatus(self.VALIDATED).then(function (response) {
                             self.type = 'teacher';
                             self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
+                            self.leftLoading = false;
                             self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: 'round' });
                             self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         });
                     });
                     this.$scope.$on('Schools', function (event, args) {
+                        self.leftLoading = true;
                         self.SchoolService.getAllSchools().then(function (response) {
                             self.type = 'school';
                             self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', { lat: 6.175434, lng: -75.583329 }, 6);
+                            self.leftLoading = false;
                             self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: 'long' });
                             self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         });

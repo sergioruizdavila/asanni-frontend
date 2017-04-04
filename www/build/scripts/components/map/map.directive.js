@@ -223,7 +223,7 @@ var components;
             };
             MapController.prototype._filterControl = function (controlDiv, type) {
                 var self = this;
-                var defaultBtn = 'Students';
+                var defaultBtn = 'Teachers';
                 var className = 'filterBtnMap';
                 var background_color = 'rgb(255, 255, 255)';
                 var background_color_active = '#00B592';
