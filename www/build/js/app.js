@@ -94,13 +94,13 @@
 
 //# sourceMappingURL=../../maps/app/app.core.module.js.map
 
-DEBUG = true;
+DEBUG = false;
 (function () {
     'use strict';
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/profile-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
+        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
         BUCKETS3 = 'waysily-img/profile-avatar-dev';
     }
     var dataConfig = {
@@ -5240,15 +5240,30 @@ var app;
                             minorValue = privateGeneralValue;
                         }
                         if (prices.PrivateClass.IntensiveType.Active) {
-                            minorValue = privateIntensiveValue < minorValue ? privateIntensiveValue : minorValue;
+                            if (minorValue > 0) {
+                                minorValue = privateIntensiveValue < minorValue ? privateIntensiveValue : minorValue;
+                            }
+                            else {
+                                minorValue = privateIntensiveValue;
+                            }
                         }
                     }
                     if (prices.GroupClass.Active) {
                         if (prices.GroupClass.GeneralType.Active) {
-                            minorValue = groupGeneralValue < minorValue ? groupGeneralValue : minorValue;
+                            if (minorValue > 0) {
+                                minorValue = groupGeneralValue < minorValue ? groupGeneralValue : minorValue;
+                            }
+                            else {
+                                minorValue = groupGeneralValue;
+                            }
                         }
                         if (prices.GroupClass.IntensiveType.Active) {
-                            minorValue = groupIntensiveValue < minorValue ? groupIntensiveValue : minorValue;
+                            if (minorValue > 0) {
+                                minorValue = groupIntensiveValue < minorValue ? groupIntensiveValue : minorValue;
+                            }
+                            else {
+                                minorValue = groupIntensiveValue;
+                            }
                         }
                     }
                     return minorValue;
@@ -6167,7 +6182,7 @@ var components;
             };
             MapController.prototype._filterControl = function (controlDiv, type) {
                 var self = this;
-                var defaultBtn = 'Students';
+                var defaultBtn = 'Teachers';
                 var className = 'filterBtnMap';
                 var background_color = 'rgb(255, 255, 255)';
                 var background_color_active = '#00B592';
@@ -6225,9 +6240,11 @@ var components;
                 }
                 controlUI.appendChild(controlText);
                 controlUI.addEventListener('click', function (e) {
+                    var SEARCH_MIXPANEL = "Click on map's filter button: " + e.currentTarget.innerText;
                     var element = this;
                     var child = this.children[0];
                     var filterBtn = document.getElementsByClassName(className);
+                    mixpanel.track(SEARCH_MIXPANEL);
                     for (var i = 0; i < filterBtn.length; i++) {
                         filterBtn[i].style.backgroundColor = background_color;
                         filterBtn[i].style.borderBottom = border_bottom;
@@ -9058,7 +9075,7 @@ var app;
                     this.VALIDATED = 'VA';
                     this.data = [];
                     this.type = 'teacher';
-                    this.loading = true;
+                    this.rightLoading = true;
                     this.error = {
                         message: ''
                     };
@@ -9076,7 +9093,7 @@ var app;
                         self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: 'round' });
                         self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         self.$timeout(function () {
-                            self.loading = false;
+                            self.rightLoading = false;
                         });
                         if (self.$stateParams.country) {
                             self.$timeout(function () {
@@ -9109,17 +9126,21 @@ var app;
                         });
                     });
                     this.$scope.$on('Teachers', function (event, args) {
+                        self.leftLoading = true;
                         self.TeacherService.getAllTeachersByStatus(self.VALIDATED).then(function (response) {
                             self.type = 'teacher';
                             self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
+                            self.leftLoading = false;
                             self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: 'round' });
                             self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         });
                     });
                     this.$scope.$on('Schools', function (event, args) {
+                        self.leftLoading = true;
                         self.SchoolService.getAllSchools().then(function (response) {
                             self.type = 'school';
                             self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', { lat: 6.175434, lng: -75.583329 }, 6);
+                            self.leftLoading = false;
                             self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: 'long' });
                             self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         });
@@ -9289,9 +9310,10 @@ var app;
                 .module('mainApp.pages.searchPage')
                 .directive(MaSchoolResult.directiveId, MaSchoolResult.instance);
             var SchoolResultController = (function () {
-                function SchoolResultController(functionsUtil, SchoolService, $uibModal, dataConfig, $filter, $state, $rootScope) {
+                function SchoolResultController(functionsUtil, SchoolService, AuthService, $uibModal, dataConfig, $filter, $state, $rootScope) {
                     this.functionsUtil = functionsUtil;
                     this.SchoolService = SchoolService;
+                    this.AuthService = AuthService;
                     this.$uibModal = $uibModal;
                     this.dataConfig = dataConfig;
                     this.$filter = $filter;
@@ -9300,12 +9322,30 @@ var app;
                     this.init();
                 }
                 SchoolResultController.prototype.init = function () {
-                    this.form = {};
                     this._hoverDetail = [];
                     this.activate();
                 };
                 SchoolResultController.prototype.activate = function () {
                     DEBUG && console.log('schoolResult controller actived');
+                };
+                SchoolResultController.prototype._openSignUpModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        size: 'sm',
+                        templateUrl: this.dataConfig.modalSignUpTmpl,
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
                 };
                 SchoolResultController.prototype._chooseMinorPrice = function (prices) {
                     var priceInstance = new app.models.school.Price(prices);
@@ -9316,8 +9356,17 @@ var app;
                     return this.SchoolService.schoolFeatureRatingAverage(schoolInstance);
                 };
                 SchoolResultController.prototype.goToDetails = function (containerId) {
-                    var url = this.$state.href('page.schoolProfilePage', { id: containerId });
-                    window.open(url, '_blank');
+                    var GOTO_MIXPANEL = 'Go to School Details: ' + containerId;
+                    mixpanel.track(GOTO_MIXPANEL);
+                    this.isAuthenticated = this.AuthService.isAuthenticated();
+                    if (this.isAuthenticated) {
+                        var url = this.$state.href('page.schoolProfilePage', { id: containerId });
+                        window.open(url, '_blank');
+                        return;
+                    }
+                    else {
+                        this._openSignUpModal();
+                    }
                 };
                 SchoolResultController.prototype._hoverEvent = function (id, status) {
                     var hoverClass = 'ma-box--border-hover';
@@ -9334,6 +9383,7 @@ var app;
                 SchoolResultController.$inject = [
                     'mainApp.core.util.FunctionsUtilService',
                     'mainApp.models.school.SchoolService',
+                    'mainApp.auth.AuthService',
                     '$uibModal',
                     'dataConfig',
                     '$filter',
@@ -14254,11 +14304,14 @@ var app;
         var teacherProfilePage;
         (function (teacherProfilePage) {
             var TeacherProfilePageController = (function () {
-                function TeacherProfilePageController(TeacherService, functionsUtil, $state, $stateParams, $filter) {
+                function TeacherProfilePageController(TeacherService, functionsUtil, AuthService, $uibModal, $state, $stateParams, dataConfig, $filter) {
                     this.TeacherService = TeacherService;
                     this.functionsUtil = functionsUtil;
+                    this.AuthService = AuthService;
+                    this.$uibModal = $uibModal;
                     this.$state = $state;
                     this.$stateParams = $stateParams;
+                    this.dataConfig = dataConfig;
                     this.$filter = $filter;
                     this._init();
                 }
@@ -14271,7 +14324,7 @@ var app;
                 TeacherProfilePageController.prototype.activate = function () {
                     var ENTER_MIXPANEL = 'Enter: Teacher Profile Page Id: ' + this.$stateParams.id;
                     var self = this;
-                    console.log('teacherProfilePage controller actived');
+                    DEBUG && console.log('teacherProfilePage controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
                     this.TeacherService.getTeacherById(this.$stateParams.id).then(function (response) {
                         self.data = new app.models.teacher.Teacher(response);
@@ -14289,6 +14342,25 @@ var app;
                         self.loading = false;
                     });
                 };
+                TeacherProfilePageController.prototype._openSignUpModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        size: 'sm',
+                        templateUrl: this.dataConfig.modalSignUpTmpl,
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                };
                 TeacherProfilePageController.prototype._initNativeTooltip = function () {
                     this.nativeTooltipOptions = {
                         placement: 'top',
@@ -14302,8 +14374,14 @@ var app;
                         "teacher_id": this.data.Id,
                         "teacher_name": this.data.Profile.FirstName + ' ' + this.data.Profile.LastName
                     });
-                    var url = 'https://waysily.typeform.com/to/NDPRAb';
-                    window.open(url, '_blank');
+                    this.isAuthenticated = this.AuthService.isAuthenticated();
+                    if (this.isAuthenticated) {
+                        var url = 'https://waysily.typeform.com/to/NDPRAb';
+                        window.open(url, '_blank');
+                    }
+                    else {
+                        this._openSignUpModal();
+                    }
                 };
                 TeacherProfilePageController.prototype._assignNative = function (language) {
                     var native = this.data.Profile.Languages.Native;
@@ -14354,8 +14432,11 @@ var app;
                 TeacherProfilePageController.$inject = [
                     'mainApp.models.teacher.TeacherService',
                     'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.auth.AuthService',
+                    '$uibModal',
                     '$state',
                     '$stateParams',
+                    'dataConfig',
                     '$filter'];
                 return TeacherProfilePageController;
             }());
@@ -14382,12 +14463,17 @@ var app;
                 'container': {
                     templateUrl: 'app/pages/schoolProfilePage/schoolProfilePage.html',
                     controller: 'mainApp.pages.schoolProfilePage.SchoolProfilePageController',
-                    controllerAs: 'vm'
+                    controllerAs: 'vm',
+                    resolve: {
+                        waitForAuth: ['mainApp.auth.AuthService', function (AuthService) {
+                                return AuthService.autoRefreshToken();
+                            }]
+                    }
                 }
             },
             parent: 'page',
             data: {
-                requireLogin: false
+                requireLogin: true
             },
             params: {
                 id: null

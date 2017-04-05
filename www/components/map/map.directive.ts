@@ -553,7 +553,7 @@ module components.map {
         private _filterControl(controlDiv: HTMLDivElement, type: string): void {
             // VARIABLES
             let self = this;
-            let defaultBtn = 'Students';
+            let defaultBtn = 'Teachers';
             let className = 'filterBtnMap';
             let background_color = 'rgb(255, 255, 255)';
             let background_color_active = '#00B592';
@@ -619,11 +619,18 @@ module components.map {
             controlUI.appendChild(controlText);
 
             // Click event listener
-            controlUI.addEventListener('click', function(e) {
+            controlUI.addEventListener('click', function(e: any) {
+                //CONSTANTS
+                const SEARCH_MIXPANEL = "Click on map's filter button: " + e.currentTarget.innerText;
+
                 // VARIABLES
                 let element = this;
                 let child:any = this.children[0];
                 let filterBtn:any = document.getElementsByClassName(className);
+                /************************/
+
+                //MIXPANEL
+                mixpanel.track(SEARCH_MIXPANEL);
 
                 // Clean button state
                 for (let i = 0; i < filterBtn.length; i++) {

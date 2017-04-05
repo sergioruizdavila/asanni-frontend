@@ -11,12 +11,17 @@
                 'container': {
                     templateUrl: 'app/pages/schoolProfilePage/schoolProfilePage.html',
                     controller: 'mainApp.pages.schoolProfilePage.SchoolProfilePageController',
-                    controllerAs: 'vm'
+                    controllerAs: 'vm',
+                    resolve: {
+                        waitForAuth: ['mainApp.auth.AuthService', function (AuthService) {
+                                return AuthService.autoRefreshToken();
+                            }]
+                    }
                 }
             },
             parent: 'page',
             data: {
-                requireLogin: false
+                requireLogin: true
             },
             params: {
                 id: null

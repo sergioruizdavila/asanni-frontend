@@ -68,6 +68,7 @@
     "%global.terms.label.text": "Terms",
     "%global.terms_and_details.label.text": "Terms & details",
     "%global.average.label.text": "average",
+    "%global.only.label.text": "only",
 
     "%global.validation.null.message.text": "Required",
     "%global.validation.empty.message.text": "Required",
@@ -556,7 +557,7 @@
 
     "%profile.school.discount.text": "Discounts",
     "%profile.school.discount.types.title.text": "Discount options",
-    "%profile.school.package.text": "Packages",
+    "%profile.school.package.text": "packages",
 
     "%profile.school.booking_fee.text": "Booking Fee",
 
@@ -583,6 +584,7 @@
     "%footer.contact_us.title.text": "Contact us",
     "%footer.made.label.text": "Made with",
     "%footer.by.label.text": "by",
+    "%footer.in.label.text": "in",
 
     "__SEX__": "",
     "%sex.M": "Male",
@@ -642,7 +644,7 @@
     "%immersion.school.8": "Cooking local food",
     "%immersion.school.9": "Local movies night",
     "%immersion.school.10": "Practice local sports",
-    "%immersion.school.11": "Language exchange with Locals",
+    "%immersion.school.11": "Language exchange with locals",
 
     "__AMENITIES SCHOOLS__": "",
     "%amenities.school.1": "Wireless Internet",

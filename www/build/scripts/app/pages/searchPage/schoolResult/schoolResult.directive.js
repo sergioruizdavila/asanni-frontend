@@ -27,9 +27,10 @@ var app;
                 .module('mainApp.pages.searchPage')
                 .directive(MaSchoolResult.directiveId, MaSchoolResult.instance);
             var SchoolResultController = (function () {
-                function SchoolResultController(functionsUtil, SchoolService, $uibModal, dataConfig, $filter, $state, $rootScope) {
+                function SchoolResultController(functionsUtil, SchoolService, AuthService, $uibModal, dataConfig, $filter, $state, $rootScope) {
                     this.functionsUtil = functionsUtil;
                     this.SchoolService = SchoolService;
+                    this.AuthService = AuthService;
                     this.$uibModal = $uibModal;
                     this.dataConfig = dataConfig;
                     this.$filter = $filter;
@@ -38,12 +39,30 @@ var app;
                     this.init();
                 }
                 SchoolResultController.prototype.init = function () {
-                    this.form = {};
                     this._hoverDetail = [];
                     this.activate();
                 };
                 SchoolResultController.prototype.activate = function () {
                     DEBUG && console.log('schoolResult controller actived');
+                };
+                SchoolResultController.prototype._openSignUpModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        size: 'sm',
+                        templateUrl: this.dataConfig.modalSignUpTmpl,
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
                 };
                 SchoolResultController.prototype._chooseMinorPrice = function (prices) {
                     var priceInstance = new app.models.school.Price(prices);
@@ -54,8 +73,17 @@ var app;
                     return this.SchoolService.schoolFeatureRatingAverage(schoolInstance);
                 };
                 SchoolResultController.prototype.goToDetails = function (containerId) {
-                    var url = this.$state.href('page.schoolProfilePage', { id: containerId });
-                    window.open(url, '_blank');
+                    var GOTO_MIXPANEL = 'Go to School Details: ' + containerId;
+                    mixpanel.track(GOTO_MIXPANEL);
+                    this.isAuthenticated = this.AuthService.isAuthenticated();
+                    if (this.isAuthenticated) {
+                        var url = this.$state.href('page.schoolProfilePage', { id: containerId });
+                        window.open(url, '_blank');
+                        return;
+                    }
+                    else {
+                        this._openSignUpModal();
+                    }
                 };
                 SchoolResultController.prototype._hoverEvent = function (id, status) {
                     var hoverClass = 'ma-box--border-hover';
@@ -72,6 +100,7 @@ var app;
                 SchoolResultController.$inject = [
                     'mainApp.core.util.FunctionsUtilService',
                     'mainApp.models.school.SchoolService',
+                    'mainApp.auth.AuthService',
                     '$uibModal',
                     'dataConfig',
                     '$filter',

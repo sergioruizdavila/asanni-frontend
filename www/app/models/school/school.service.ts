@@ -197,17 +197,29 @@ module app.models.school {
                 }
 
                 if(prices.PrivateClass.IntensiveType.Active) {
-                    minorValue = privateIntensiveValue < minorValue ? privateIntensiveValue : minorValue;
+                    if(minorValue > 0) {
+                        minorValue = privateIntensiveValue < minorValue ? privateIntensiveValue : minorValue;
+                    } else {
+                        minorValue = privateIntensiveValue;
+                    }
                 }
             }
 
             if(prices.GroupClass.Active) {
                 if(prices.GroupClass.GeneralType.Active) {
-                    minorValue = groupGeneralValue < minorValue ? groupGeneralValue : minorValue;
+                    if(minorValue > 0) {
+                        minorValue = groupGeneralValue < minorValue ? groupGeneralValue : minorValue;
+                    } else {
+                        minorValue = groupGeneralValue;
+                    }
                 }
 
                 if(prices.GroupClass.IntensiveType.Active) {
-                    minorValue = groupIntensiveValue < minorValue ? groupIntensiveValue : minorValue;
+                    if(minorValue > 0){
+                        minorValue = groupIntensiveValue < minorValue ? groupIntensiveValue : minorValue;
+                    } else {
+                        minorValue = groupIntensiveValue;
+                    }
                 }
             }
 

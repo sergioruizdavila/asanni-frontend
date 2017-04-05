@@ -223,7 +223,7 @@ var components;
             };
             MapController.prototype._filterControl = function (controlDiv, type) {
                 var self = this;
-                var defaultBtn = 'Students';
+                var defaultBtn = 'Teachers';
                 var className = 'filterBtnMap';
                 var background_color = 'rgb(255, 255, 255)';
                 var background_color_active = '#00B592';
@@ -281,9 +281,11 @@ var components;
                 }
                 controlUI.appendChild(controlText);
                 controlUI.addEventListener('click', function (e) {
+                    var SEARCH_MIXPANEL = "Click on map's filter button: " + e.currentTarget.innerText;
                     var element = this;
                     var child = this.children[0];
                     var filterBtn = document.getElementsByClassName(className);
+                    mixpanel.track(SEARCH_MIXPANEL);
                     for (var i = 0; i < filterBtn.length; i++) {
                         filterBtn[i].style.backgroundColor = background_color;
                         filterBtn[i].style.borderBottom = border_bottom;

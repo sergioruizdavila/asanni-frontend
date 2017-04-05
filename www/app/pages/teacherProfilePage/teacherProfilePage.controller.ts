@@ -32,6 +32,7 @@ module app.pages.teacherProfilePage {
         /**********************************/
         mapConfig: components.map.IMapConfig;
         nativeTooltipOptions: app.core.interfaces.ITooltipOptions;
+        isAuthenticated: boolean;
         data: app.models.teacher.Teacher;
         loading: boolean;
         // --------------------------------
@@ -41,8 +42,11 @@ module app.pages.teacherProfilePage {
         public static $inject = [
             'mainApp.models.teacher.TeacherService',
             'mainApp.core.util.FunctionsUtilService',
+            'mainApp.auth.AuthService',
+            '$uibModal',
             '$state',
             '$stateParams',
+            'dataConfig',
             '$filter'];
 
         /**********************************/
@@ -51,8 +55,11 @@ module app.pages.teacherProfilePage {
         constructor(
             private TeacherService: app.models.teacher.ITeacherService,
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
+            private AuthService: app.auth.IAuthService,
+            private $uibModal: ng.ui.bootstrap.IModalService,
             private $state: ng.ui.IStateService,
             private $stateParams: ITeacherParams,
+            private dataConfig: IDataConfig,
             private $filter: angular.IFilterService) {
 
             this._init();
@@ -81,7 +88,7 @@ module app.pages.teacherProfilePage {
             //VARIABLES
             let self = this;
             //LOG
-            console.log('teacherProfilePage controller actived');
+            DEBUG && console.log('teacherProfilePage controller actived');
             //MIXPANEL
             mixpanel.track(ENTER_MIXPANEL);
 
@@ -115,6 +122,42 @@ module app.pages.teacherProfilePage {
         /*            METHODS             */
         /**********************************/
 
+
+        /**
+        * _openSignUpModal
+        * @description - open Modal in order to sign up current user
+        * @use - this._openSignUpModal();
+        * @function
+        * @return {void}
+        */
+
+        private _openSignUpModal(): void {
+            let self = this;
+
+            // modal default options
+            let options: ng.ui.bootstrap.IModalSettings = {
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'sm',
+                templateUrl: this.dataConfig.modalSignUpTmpl,
+                controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            hasNextStep: false
+                        }
+                    }
+                }
+            };
+
+            var modalInstance = this.$uibModal.open(options);
+
+        }
+
+
+
         /**
         * _initNativeTooltip
         * @description - this method create a default Native Tooltip Option.
@@ -131,6 +174,8 @@ module app.pages.teacherProfilePage {
             };
         }
 
+
+
         /**
         * goToConfirm
         * @description - go to book a class with current teacher
@@ -139,7 +184,7 @@ module app.pages.teacherProfilePage {
         * @return {void}
         */
 
-        goToConfirm (): void {
+        goToConfirm(): void {
             //CONSTANTS
             const CLICK_MIXPANEL = 'Click: Book a Class';
             //MIXPANEL
@@ -148,9 +193,19 @@ module app.pages.teacherProfilePage {
                 "teacher_name": this.data.Profile.FirstName + ' ' + this.data.Profile.LastName
             });
 
-            var url = 'https://waysily.typeform.com/to/NDPRAb';
-            window.open(url,'_blank');
+            //Validate if user is Authenticated
+            this.isAuthenticated = this.AuthService.isAuthenticated();
+
+            if(this.isAuthenticated) {
+                var url = 'https://waysily.typeform.com/to/NDPRAb';
+                window.open(url,'_blank');
+            } else {
+                this._openSignUpModal();
+            }
+
+
         }
+
 
 
         /**

@@ -68,6 +68,7 @@
     "%global.terms.label.text": "Términos",
     "%global.terms_and_details.label.text": "Términos y detalles",
     "%global.average.label.text": "promedio",
+    "%global.only.label.text": "solo",
 
     "%global.validation.null.message.text": "Valor requerido",
     "%global.validation.empty.message.text": "Valor requerido",
@@ -556,7 +557,7 @@
 
     "%profile.school.discount.text": "Descuentos",
     "%profile.school.discount.types.title.text": "Opciones de descuento",
-    "%profile.school.package.text": "Paquetes",
+    "%profile.school.package.text": "paquetes",
 
     "%profile.school.booking_fee.text": "Costo de reserva",
 
@@ -583,6 +584,7 @@
     "%footer.contact_us.title.text": "Contáctanos",
     "%footer.made.label.text": "Hecho con",
     "%footer.by.label.text": "por",
+    "%footer.in.label.text": "en",
 
     "__SEX__": "",
     "%sex.M": "Hombre",

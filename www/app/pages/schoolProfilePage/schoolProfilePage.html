@@ -754,7 +754,8 @@
 
 
                             <! PRICES >
-                            <div class="row">
+                            <div class="row"
+                                 ng-if="vm.data.Price.Active">
                                 <div class="col-xs-12">
 
                                     <! Prices Title >
@@ -1085,7 +1086,8 @@
                             </div>
 
 
-                            <div class="ma-separator-dashed-image space-10 space-top-10"></div>
+                            <div class="ma-separator-dashed-image space-10 space-top-10"
+                                 ng-if="vm.data.Price.Active"></div>
 
 
                             <! BOOKING FEE >
@@ -1177,6 +1179,7 @@
                                  ng-if="vm.data.Package.Active">
                                 <div class="col-xs-8 text-left">
                                     <h3 class="schoolProfilePage__main-block__title
+                                               text-capitalize
                                                margin-reset"
                                         translate>
                                         %profile.school.package.text

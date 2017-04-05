@@ -40,7 +40,8 @@ module app.pages.searchPage {
         data: Array<app.models.student.Student>;
         type: string;
         VALIDATED: string;
-        loading: boolean;
+        rightLoading: boolean;
+        leftLoading: boolean;
         // --------------------------------
 
 
@@ -89,8 +90,8 @@ module app.pages.searchPage {
             //Type of results (student, teacher, school)
             this.type = 'teacher';
 
-            //Init loading
-            this.loading = true;
+            //Init right loading
+            this.rightLoading = true;
 
             this.error = {
                 message: ''
@@ -136,7 +137,7 @@ module app.pages.searchPage {
                     self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
 
                     self.$timeout(function(){
-                        self.loading = false;
+                        self.rightLoading = false;
                     });
 
                     //Center Map on Country selected
@@ -242,6 +243,10 @@ module app.pages.searchPage {
             */
 
             this.$scope.$on('Teachers', function(event, args) {
+
+                //Init left loading
+                self.leftLoading = true;
+
                 //Get All Teachers of this zone
                 self.TeacherService.getAllTeachersByStatus(self.VALIDATED).then(
                     function(response: app.models.teacher.ITeacherQueryObject) {
@@ -253,6 +258,8 @@ module app.pages.searchPage {
                             null,
                             6
                         );
+
+                        self.leftLoading = false;
 
                         /*
                         * Send event to child (MapController) in order to It draws
@@ -276,6 +283,10 @@ module app.pages.searchPage {
             */
 
             this.$scope.$on('Schools', function(event, args) {
+
+                //Init left loading
+                self.leftLoading = true;
+
                 //Get All Schools of this zone
                 self.SchoolService.getAllSchools().then(
                     function(response: app.models.school.ISchoolQueryObject) {
@@ -287,6 +298,8 @@ module app.pages.searchPage {
                             {lat: 6.175434,lng: -75.583329},
                             6
                         );
+
+                        self.leftLoading = false;
 
                         /*
                         * Send event to child (MapController) in order to It draws
