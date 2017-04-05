@@ -9356,7 +9356,7 @@ var app;
                     return this.SchoolService.schoolFeatureRatingAverage(schoolInstance);
                 };
                 SchoolResultController.prototype.goToDetails = function (containerId) {
-                    var GOTO_MIXPANEL = 'Go to Details from: ';
+                    var GOTO_MIXPANEL = 'Go to School Details: ' + containerId;
                     mixpanel.track(GOTO_MIXPANEL);
                     this.isAuthenticated = this.AuthService.isAuthenticated();
                     if (this.isAuthenticated) {
