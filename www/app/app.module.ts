@@ -109,7 +109,7 @@
             suffix: suffix
         });
 
-        $translateProvider.preferredLanguage('es');
+        $translateProvider.preferredLanguage('en');
 
         //Save language on cookie Storage
         $translateProvider.useCookieStorage();

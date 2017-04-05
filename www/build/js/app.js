@@ -69,7 +69,7 @@
             prefix: prefix,
             suffix: suffix
         });
-        $translateProvider.preferredLanguage('es');
+        $translateProvider.preferredLanguage('en');
         $translateProvider.useCookieStorage();
     }
 })();
@@ -79,6 +79,7 @@
 (function () {
     'use strict';
     angular.module('mainApp.core', [
+        'ngRaven',
         'ngResource',
         'ngCookies',
         'ui.router',
