@@ -5,11 +5,14 @@ var app;
         var teacherProfilePage;
         (function (teacherProfilePage) {
             var TeacherProfilePageController = (function () {
-                function TeacherProfilePageController(TeacherService, functionsUtil, $state, $stateParams, $filter) {
+                function TeacherProfilePageController(TeacherService, functionsUtil, AuthService, $uibModal, $state, $stateParams, dataConfig, $filter) {
                     this.TeacherService = TeacherService;
                     this.functionsUtil = functionsUtil;
+                    this.AuthService = AuthService;
+                    this.$uibModal = $uibModal;
                     this.$state = $state;
                     this.$stateParams = $stateParams;
+                    this.dataConfig = dataConfig;
                     this.$filter = $filter;
                     this._init();
                 }
@@ -22,7 +25,7 @@ var app;
                 TeacherProfilePageController.prototype.activate = function () {
                     var ENTER_MIXPANEL = 'Enter: Teacher Profile Page Id: ' + this.$stateParams.id;
                     var self = this;
-                    console.log('teacherProfilePage controller actived');
+                    DEBUG && console.log('teacherProfilePage controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
                     this.TeacherService.getTeacherById(this.$stateParams.id).then(function (response) {
                         self.data = new app.models.teacher.Teacher(response);
@@ -40,6 +43,25 @@ var app;
                         self.loading = false;
                     });
                 };
+                TeacherProfilePageController.prototype._openSignUpModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        size: 'sm',
+                        templateUrl: this.dataConfig.modalSignUpTmpl,
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                };
                 TeacherProfilePageController.prototype._initNativeTooltip = function () {
                     this.nativeTooltipOptions = {
                         placement: 'top',
@@ -53,8 +75,14 @@ var app;
                         "teacher_id": this.data.Id,
                         "teacher_name": this.data.Profile.FirstName + ' ' + this.data.Profile.LastName
                     });
-                    var url = 'https://waysily.typeform.com/to/NDPRAb';
-                    window.open(url, '_blank');
+                    this.isAuthenticated = this.AuthService.isAuthenticated();
+                    if (this.isAuthenticated) {
+                        var url = 'https://waysily.typeform.com/to/NDPRAb';
+                        window.open(url, '_blank');
+                    }
+                    else {
+                        this._openSignUpModal();
+                    }
                 };
                 TeacherProfilePageController.prototype._assignNative = function (language) {
                     var native = this.data.Profile.Languages.Native;
@@ -105,8 +133,11 @@ var app;
                 TeacherProfilePageController.$inject = [
                     'mainApp.models.teacher.TeacherService',
                     'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.auth.AuthService',
+                    '$uibModal',
                     '$state',
                     '$stateParams',
+                    'dataConfig',
                     '$filter'];
                 return TeacherProfilePageController;
             }());

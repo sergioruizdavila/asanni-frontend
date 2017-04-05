@@ -72,9 +72,6 @@ module app.pages.searchPage {
             activate: () => void;
         }
 
-        interface ISchoolResultForm {
-        }
-
         /****************************************/
         /*           CLASS DEFINITION           */
         /****************************************/
@@ -85,8 +82,8 @@ module app.pages.searchPage {
             /**********************************/
             /*           PROPERTIES           */
             /**********************************/
-            form: ISchoolResultForm;
             private _hoverDetail: Array<boolean>;
+            isAuthenticated: boolean;
             // --------------------------------
 
 
@@ -94,6 +91,7 @@ module app.pages.searchPage {
             static $inject = [
                 'mainApp.core.util.FunctionsUtilService',
                 'mainApp.models.school.SchoolService',
+                'mainApp.auth.AuthService',
                 '$uibModal',
                 'dataConfig',
                 '$filter',
@@ -107,6 +105,7 @@ module app.pages.searchPage {
             /**********************************/
             constructor(private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
                         private SchoolService: app.models.school.ISchoolService,
+                        private AuthService: app.auth.IAuthService,
                         private $uibModal: ng.ui.bootstrap.IModalService,
                         private dataConfig: IDataConfig,
                         private $filter: angular.IFilterService,
@@ -118,11 +117,6 @@ module app.pages.searchPage {
 
             /*-- INITIALIZE METHOD --*/
             private init() {
-
-                //Init form
-                this.form = {
-
-                };
 
                 //Init hoverDetail array
                 this._hoverDetail = [];
@@ -140,6 +134,42 @@ module app.pages.searchPage {
             /**********************************/
             /*            METHODS             */
             /**********************************/
+
+
+            /**
+            * _openSignUpModal
+            * @description - open Modal in order to sign up current user
+            * @use - this._openSignUpModal();
+            * @function
+            * @return {void}
+            */
+
+            private _openSignUpModal(): void {
+                let self = this;
+
+                // modal default options
+                let options: ng.ui.bootstrap.IModalSettings = {
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    size: 'sm',
+                    templateUrl: this.dataConfig.modalSignUpTmpl,
+                    controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                    resolve: {
+                        //one way to send data from this scope to modal
+                        dataSetModal: function () {
+                            return {
+                                hasNextStep: false
+                            }
+                        }
+                    }
+                };
+
+                var modalInstance = this.$uibModal.open(options);
+
+            }
+
+
 
             /**
             * _chooseMinorPrice
@@ -183,25 +213,25 @@ module app.pages.searchPage {
             */
 
             goToDetails(containerId: string): void {
-                var url = this.$state.href('page.schoolProfilePage', {id: containerId});
-                window.open(url,'_blank');
+                const GOTO_MIXPANEL = 'Go to School Details: ' + containerId;
+                /************************/
+
+                //MIXPANEL
+                mixpanel.track(GOTO_MIXPANEL);
+
+                //Validate if user is Authenticated
+                this.isAuthenticated = this.AuthService.isAuthenticated();
+
+                //If user is logged, go to createTeacher page
+                if(this.isAuthenticated) {
+                    var url = this.$state.href('page.schoolProfilePage', {id: containerId});
+                    window.open(url,'_blank');
+                    return
+                } else {
+                    this._openSignUpModal();
+                }
+
             }
-
-
-
-            /**
-            * _ratingAverage
-            * @description - take school ranking and calculate the rating average
-            * @use - this._ratingAverage(ratingsArray);
-            * @function
-            * @param {Array<Object>} ratingsArr - list of rating objects
-            * @return {number} rating average value
-            */
-            //TODO: Analizar por que puse Array<Object> en vez de Array<Rating>
-            // y solucionar
-            /*private _ratingAverage(ratingsArr: Array<Object>): number {
-                return this.functionsUtil.schoolRatingAverage(ratingsArr);
-            }*/
 
 
 

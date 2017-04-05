@@ -228,8 +228,8 @@ module components.header {
 
         /**
         * _openSignUpModal
-        * @description - open Modal in order to add a New Teacher's Experience on Box
-        * @use - this._addEditExperience();
+        * @description - open Modal in order to sign up current user
+        * @use - this._openSignUpModal();
         * @function
         * @return {void}
         */
