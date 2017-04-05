@@ -69,7 +69,7 @@
             prefix: prefix,
             suffix: suffix
         });
-        $translateProvider.preferredLanguage('es');
+        $translateProvider.preferredLanguage('en');
         $translateProvider.useCookieStorage();
     }
 })();
