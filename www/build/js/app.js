@@ -965,12 +965,23 @@ var app;
                         }
                         return array;
                     };
-                    GetDataStaticJsonService.prototype.getTypeOfImmersioni18n = function () {
+                    GetDataStaticJsonService.prototype.getTypeOfImmersionTeacheri18n = function () {
                         var jsonDoc = this.$translate.getTranslationTable();
                         var array = [];
                         for (var element in jsonDoc) {
-                            if (element.indexOf("immersion") >= 0) {
-                                var code = element.replace(/%immersion./g, '');
+                            if (element.indexOf("immersion.teacher") >= 0) {
+                                var code = element.replace(/%immersion.teacher./g, '');
+                                array.push({ value: element, code: code });
+                            }
+                        }
+                        return array;
+                    };
+                    GetDataStaticJsonService.prototype.getTypeOfImmersionSchooli18n = function () {
+                        var jsonDoc = this.$translate.getTranslationTable();
+                        var array = [];
+                        for (var element in jsonDoc) {
+                            if (element.indexOf("immersion.school") >= 0) {
+                                var code = element.replace(/%immersion.school./g, '');
                                 array.push({ value: element, code: code });
                             }
                         }
@@ -11439,7 +11450,7 @@ var app;
                         methodology: '',
                         immersion: new app.models.teacher.Immersion
                     };
-                    this.typeOfImmersionList = this.getDataFromJson.getTypeOfImmersioni18n();
+                    this.typeOfImmersionList = this.getDataFromJson.getTypeOfImmersionTeacheri18n();
                     this.typeOfImmersionOptionBox = [];
                     this.validate = {
                         methodology: { valid: true, message: '' },
@@ -11476,7 +11487,7 @@ var app;
                     this.form.immersion = data.Immersion;
                     if (this.form.immersion.Active) {
                         if (this.typeOfImmersionOptionBox.length === 0) {
-                            var immersionArray = this.getDataFromJson.getTypeOfImmersioni18n();
+                            var immersionArray = this.getDataFromJson.getTypeOfImmersionTeacheri18n();
                             var newArray = [];
                             for (var i = 0; i < immersionArray.length; i++) {
                                 for (var j = 0; j < this.form.immersion.Category.length; j++) {
@@ -13637,7 +13648,7 @@ var app;
                         methodology: '',
                         immersion: new app.models.teacher.Immersion
                     };
-                    this.typeOfImmersionList = this.getDataFromJson.getTypeOfImmersioni18n();
+                    this.typeOfImmersionList = this.getDataFromJson.getTypeOfImmersionTeacheri18n();
                     this.typeOfImmersionOptionBox = [];
                     this.validate = {
                         methodology: { valid: true, message: '' },
@@ -13683,7 +13694,7 @@ var app;
                     this.form.immersion = data.Immersion;
                     if (this.form.immersion.Active) {
                         if (this.typeOfImmersionOptionBox.length === 0) {
-                            var immersionArray = this.getDataFromJson.getTypeOfImmersioni18n();
+                            var immersionArray = this.getDataFromJson.getTypeOfImmersionTeacheri18n();
                             var newArray = [];
                             for (var i = 0; i < immersionArray.length; i++) {
                                 for (var j = 0; j < this.form.immersion.Category.length; j++) {

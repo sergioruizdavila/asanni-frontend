@@ -113,7 +113,7 @@ module app.pages.createTeacherPage {
             };
 
             // Build Type of Immersion select lists
-            this.typeOfImmersionList = this.getDataFromJson.getTypeOfImmersioni18n();
+            this.typeOfImmersionList = this.getDataFromJson.getTypeOfImmersionTeacheri18n();
 
             // Init Type of Immersion options box
             this.typeOfImmersionOptionBox = [];
@@ -222,7 +222,7 @@ module app.pages.createTeacherPage {
                 // type of immersion list was already filled
                 if(this.typeOfImmersionOptionBox.length === 0) {
 
-                    let immersionArray = this.getDataFromJson.getTypeOfImmersioni18n();
+                    let immersionArray = this.getDataFromJson.getTypeOfImmersionTeacheri18n();
                     let newArray: Array<app.core.interfaces.IKeyValue> = [];
 
                     for (let i = 0; i < immersionArray.length; i++) {

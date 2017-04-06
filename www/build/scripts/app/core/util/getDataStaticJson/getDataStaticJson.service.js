@@ -82,12 +82,23 @@ var app;
                         }
                         return array;
                     };
-                    GetDataStaticJsonService.prototype.getTypeOfImmersioni18n = function () {
+                    GetDataStaticJsonService.prototype.getTypeOfImmersionTeacheri18n = function () {
                         var jsonDoc = this.$translate.getTranslationTable();
                         var array = [];
                         for (var element in jsonDoc) {
-                            if (element.indexOf("immersion") >= 0) {
-                                var code = element.replace(/%immersion./g, '');
+                            if (element.indexOf("immersion.teacher") >= 0) {
+                                var code = element.replace(/%immersion.teacher./g, '');
+                                array.push({ value: element, code: code });
+                            }
+                        }
+                        return array;
+                    };
+                    GetDataStaticJsonService.prototype.getTypeOfImmersionSchooli18n = function () {
+                        var jsonDoc = this.$translate.getTranslationTable();
+                        var array = [];
+                        for (var element in jsonDoc) {
+                            if (element.indexOf("immersion.school") >= 0) {
+                                var code = element.replace(/%immersion.school./g, '');
                                 array.push({ value: element, code: code });
                             }
                         }
