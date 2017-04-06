@@ -70,7 +70,7 @@ module app.models.teacher {
             private AuthService: app.auth.IAuthService,
             private $q: angular.IQService) {
             //LOG
-            console.log('teacher service instanced');
+            DEBUG && console.log('teacher service instanced');
 
             //CONSTANTS
             this.TEACHER_URI = 'teachers';

@@ -84,7 +84,7 @@ var app;
                     });
                     this.$scope.$on('Schools', function (event, args) {
                         self.leftLoading = true;
-                        self.SchoolService.getAllSchools().then(function (response) {
+                        self.SchoolService.getAllSchoolsByStatus(self.VALIDATED).then(function (response) {
                             self.type = 'school';
                             self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', { lat: 6.175434, lng: -75.583329 }, 6);
                             self.leftLoading = false;

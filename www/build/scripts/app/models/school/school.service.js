@@ -14,6 +14,7 @@ var app;
                     DEBUG && console.log('schools service instanced');
                     this.SCHOOL_URI = 'schools';
                     this.USER_SCHOOL_URI = 'schools?userId=';
+                    this.STATUS_SCHOOL_URI = 'schools?status=';
                 }
                 SchoolService.prototype.getSchoolById = function (id) {
                     var self = this;
@@ -57,6 +58,22 @@ var app;
                 SchoolService.prototype.getAllSchools = function () {
                     var self = this;
                     var url = this.SCHOOL_URI;
+                    var deferred = this.$q.defer();
+                    this.restApi.queryObject({ url: url }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+                SchoolService.prototype.getAllSchoolsByStatus = function (status) {
+                    var self = this;
+                    var url = this.STATUS_SCHOOL_URI + status;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {

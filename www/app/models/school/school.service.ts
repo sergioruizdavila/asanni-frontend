@@ -16,6 +16,7 @@ module app.models.school {
         getSchoolById: (id: string) => angular.IPromise<any>;
         getSchoolByUserId: (userId: string) => angular.IPromise<any>;
         getAllSchools: () => angular.IPromise<any>;
+        getAllSchoolsByStatus: (status) => angular.IPromise<any>;
         getMinorSchoolPrice: (prices: app.models.school.Price) => number;
         schoolFeatureRatingAverage: (school: app.models.school.School) => number;
     }
@@ -40,6 +41,7 @@ module app.models.school {
         /**********************************/
         SCHOOL_URI: string;
         USER_SCHOOL_URI: string;
+        STATUS_SCHOOL_URI: string;
         // --------------------------------
 
 
@@ -67,6 +69,7 @@ module app.models.school {
             //CONSTANTS
             this.SCHOOL_URI = 'schools';
             this.USER_SCHOOL_URI = 'schools?userId=';
+            this.STATUS_SCHOOL_URI = 'schools?status=';
 
         }
 
@@ -154,6 +157,37 @@ module app.models.school {
             //VARIABLES
             let self = this;
             let url = this.SCHOOL_URI;
+            let deferred = this.$q.defer();
+
+            this.restApi.queryObject({url: url}).$promise
+                .then(
+                    function(response) {
+                        deferred.resolve(response);
+                    },
+                    function(error) {
+                        DEBUG && console.error(error);
+                        if(error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    }
+                );
+
+            return deferred.promise;
+        }
+
+
+
+        /**
+        * getAllSchoolsByStatus
+        * @description - get all Schools by status filter value
+        * @function
+        * @return {angular.IPromise<any>} return a promise with teachers list
+        */
+        getAllSchoolsByStatus(status): angular.IPromise<any> {
+            //VARIABLES
+            let self = this;
+            let url = this.STATUS_SCHOOL_URI + status;
             let deferred = this.$q.defer();
 
             this.restApi.queryObject({url: url}).$promise

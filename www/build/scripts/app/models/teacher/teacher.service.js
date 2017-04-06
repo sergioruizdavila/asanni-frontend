@@ -10,7 +10,7 @@ var app;
                     this.restApi = restApi;
                     this.AuthService = AuthService;
                     this.$q = $q;
-                    console.log('teacher service instanced');
+                    DEBUG && console.log('teacher service instanced');
                     this.TEACHER_URI = 'teachers';
                     this.PROFILE_TEACHER_URI = 'teachers?profileId=';
                     this.STATUS_TEACHER_URI = 'teachers?status=';

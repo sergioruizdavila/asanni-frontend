@@ -288,7 +288,7 @@ module app.pages.searchPage {
                 self.leftLoading = true;
 
                 //Get All Schools of this zone
-                self.SchoolService.getAllSchools().then(
+                self.SchoolService.getAllSchoolsByStatus(self.VALIDATED).then(
                     function(response: app.models.school.ISchoolQueryObject) {
 
                         self.type = 'school';
