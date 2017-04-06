@@ -1,0 +1,43 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+	ignorecase = true
+	precomposeunicode = true
+[remote "origin"]
+	url = https://github.com/sergioruizdavila/waysily-client.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "develop"]
+	remote = dev
+	merge = refs/heads/develop
+[user]
+[user]
+	name = sergioruizdavila
+	email = sergioruizdavila@gmail.com
+[remote "dev"]
+	url = https://git.heroku.com/waysily-client-dev.git
+	fetch = +refs/heads/*:refs/remotes/dev/*
+[remote "staging"]
+	url = https://git.heroku.com/waysily-client-staging.git
+	fetch = +refs/heads/*:refs/remotes/staging/*
+[remote "production"]
+	url = https://git.heroku.com/waysily-client-production.git
+	fetch = +refs/heads/*:refs/remotes/production/*
+[heroku]
+	remote = staging
+[branch "master"]
+	remote = staging
+	merge = refs/heads/master
+[gitflow "branch"]
+	master = master
+	develop = develop
+[gitflow "prefix"]
+	feature = feature/
+	release = release/
+	hotfix = hotfix/
+	support = support/
+	versiontag = 
+[branch "feature/add_validation_system_on_School_#334"]
+	remote = origin
+	merge = "refs/heads/feature/add_validation_system_on_School_#334"
