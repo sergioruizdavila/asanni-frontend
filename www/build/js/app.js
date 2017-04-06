@@ -95,13 +95,13 @@
 
 //# sourceMappingURL=../../maps/app/app.core.module.js.map
 
-DEBUG = false;
+DEBUG = true;
 (function () {
     'use strict';
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/profile-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'https://waysily-server-dev.herokuapp.com/api/v1/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/profile-avatar-dev';
     }
     var dataConfig = {
@@ -3247,7 +3247,7 @@ var app;
                     this.restApi = restApi;
                     this.AuthService = AuthService;
                     this.$q = $q;
-                    console.log('teacher service instanced');
+                    DEBUG && console.log('teacher service instanced');
                     this.TEACHER_URI = 'teachers';
                     this.PROFILE_TEACHER_URI = 'teachers?profileId=';
                     this.STATUS_TEACHER_URI = 'teachers?status=';
@@ -5185,6 +5185,7 @@ var app;
                     DEBUG && console.log('schools service instanced');
                     this.SCHOOL_URI = 'schools';
                     this.USER_SCHOOL_URI = 'schools?userId=';
+                    this.STATUS_SCHOOL_URI = 'schools?status=';
                 }
                 SchoolService.prototype.getSchoolById = function (id) {
                     var self = this;
@@ -5228,6 +5229,22 @@ var app;
                 SchoolService.prototype.getAllSchools = function () {
                     var self = this;
                     var url = this.SCHOOL_URI;
+                    var deferred = this.$q.defer();
+                    this.restApi.queryObject({ url: url }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+                SchoolService.prototype.getAllSchoolsByStatus = function (status) {
+                    var self = this;
+                    var url = this.STATUS_SCHOOL_URI + status;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {
@@ -9149,7 +9166,7 @@ var app;
                     });
                     this.$scope.$on('Schools', function (event, args) {
                         self.leftLoading = true;
-                        self.SchoolService.getAllSchools().then(function (response) {
+                        self.SchoolService.getAllSchoolsByStatus(self.VALIDATED).then(function (response) {
                             self.type = 'school';
                             self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', { lat: 6.175434, lng: -75.583329 }, 6);
                             self.leftLoading = false;
