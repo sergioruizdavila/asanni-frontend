@@ -31,7 +31,7 @@ var app;
                         methodology: '',
                         immersion: new app.models.teacher.Immersion
                     };
-                    this.typeOfImmersionList = this.getDataFromJson.getTypeOfImmersioni18n();
+                    this.typeOfImmersionList = this.getDataFromJson.getTypeOfImmersionTeacheri18n();
                     this.typeOfImmersionOptionBox = [];
                     this.validate = {
                         methodology: { valid: true, message: '' },
@@ -68,7 +68,7 @@ var app;
                     this.form.immersion = data.Immersion;
                     if (this.form.immersion.Active) {
                         if (this.typeOfImmersionOptionBox.length === 0) {
-                            var immersionArray = this.getDataFromJson.getTypeOfImmersioni18n();
+                            var immersionArray = this.getDataFromJson.getTypeOfImmersionTeacheri18n();
                             var newArray = [];
                             for (var i = 0; i < immersionArray.length; i++) {
                                 for (var j = 0; j < this.form.immersion.Category.length; j++) {

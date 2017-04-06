@@ -214,7 +214,8 @@
                     pull-right">
 
             <div class="ma-header--transparent__block__buttons-list">
-                <span class="ma-header--transparent__block__buttons-list__label
+                <span ng-if="!vm.isTeacher"
+                      class="ma-header--transparent__block__buttons-list__label
                              space-right-2 text-shadow"
                       translate>
                     %landing.header.join.label.text
@@ -374,14 +375,14 @@
                             </h2>
                             <p class="country-progress-block__text
                                       country-progress-block__text--strong
-                                      ma-p ma-p--large text-right margin-reset hidden">
-                                <span>30 </span>
+                                      ma-p ma-p--large text-right margin-reset">
+                                <span>21 </span>
                                 <span translate>%global.schools.text</span>
                             </p>
                             <p class="country-progress-block__text
                                       country-progress-block__text--strong
-                                      ma-p ma-p--large text-right margin-reset hidden">
-                                <span>30 </span>
+                                      ma-p ma-p--large text-right margin-reset">
+                                <span>23 </span>
                                 <span translate>%global.teachers.text</span>
                             </p>
                         </div>
