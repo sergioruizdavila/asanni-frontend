@@ -89,8 +89,7 @@
         'ui.calendar',
         'ui.bootstrap.datetimepicker',
         'ngFileUpload',
-        'ngImgCrop',
-        'seo'
+        'ngImgCrop'
     ]);
 })();
 
