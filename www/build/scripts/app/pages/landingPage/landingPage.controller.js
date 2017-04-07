@@ -81,7 +81,6 @@ var app;
                         this._openLogInModal();
                     }
                     this._subscribeToEvents();
-                    this.$scope.htmlReady();
                 };
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);

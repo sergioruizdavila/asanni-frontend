@@ -208,8 +208,6 @@ module app.pages.landingPage {
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
 
-            this.$scope.htmlReady();
-
         }
 
         /**********************************/
