@@ -21,7 +21,8 @@
         'ui.calendar',
         'ui.bootstrap.datetimepicker',
         'ngFileUpload',
-        'ngImgCrop'
+        'ngImgCrop',
+        'seo'
     ]);
 
 })();
