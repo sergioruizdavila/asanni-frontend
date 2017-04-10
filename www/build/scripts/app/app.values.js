@@ -1,10 +1,10 @@
-DEBUG = false;
+DEBUG = true;
 (function () {
     'use strict';
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/profile-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
+        BASE_URL = 'https://waysily-server-staging.herokuapp.com/api/v1/';
         BUCKETS3 = 'waysily-img/profile-avatar-dev';
     }
     var dataConfig = {
@@ -35,6 +35,7 @@ DEBUG = false;
         modalLogInTmpl: 'components/modal/modalLogIn/modalLogIn.html',
         modalForgotPasswordTmpl: 'components/modal/modalForgotPassword/modalForgotPassword.html',
         modalRecommendTeacherTmpl: 'components/modal/modalRecommendTeacher/modalRecommendTeacher.html',
+        modalSurveyTmpl: 'components/modal/modalSurvey/modalSurvey.html',
         bucketS3: BUCKETS3,
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',

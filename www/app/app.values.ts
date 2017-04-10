@@ -8,7 +8,7 @@
 
  declare var DEBUG: boolean;
  /* This must be false in production */
- DEBUG = false;
+ DEBUG = true;
  /************************************/
 
 
@@ -41,6 +41,7 @@ interface IDataConfig {
     modalLogInTmpl: string;
     modalForgotPasswordTmpl: string;
     modalRecommendTeacherTmpl: string;
+    modalSurveyTmpl: string;
     bucketS3: string;
     regionS3: string;
     accessKeyIdS3: string;
@@ -62,7 +63,7 @@ interface IDataConfig {
 
     /* Assign Environment values */
     if(DEBUG) {
-        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
+        BASE_URL = 'https://waysily-server-staging.herokuapp.com/api/v1/';
         BUCKETS3 = 'waysily-img/profile-avatar-dev';
     }
 
@@ -109,6 +110,7 @@ interface IDataConfig {
         modalLogInTmpl: 'components/modal/modalLogIn/modalLogIn.html',
         modalForgotPasswordTmpl: 'components/modal/modalForgotPassword/modalForgotPassword.html',
         modalRecommendTeacherTmpl: 'components/modal/modalRecommendTeacher/modalRecommendTeacher.html',
+        modalSurveyTmpl: 'components/modal/modalSurvey/modalSurvey.html',
         bucketS3: BUCKETS3,
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
