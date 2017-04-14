@@ -20,6 +20,7 @@
             'mainApp.auth',
             'mainApp.register',
             'mainApp.account',
+            'mainApp.models.feature',
             'mainApp.models.feedback',
             'mainApp.models.user',
             'mainApp.models.student',
@@ -46,6 +47,7 @@
             'mainApp.components.meter',
             'mainApp.components.map',
             'mainApp.components.modal',
+            'mainApp.components.survey',
             'mainApp.components.footer',
             'mainApp.components.floatMessageBar'
         ])

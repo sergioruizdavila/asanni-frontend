@@ -6,6 +6,25 @@ var app;
         (function (util) {
             var filters;
             (function (filters) {
+                TranslateFilter.$inject = ['$filter', 'mainApp.core.util.FunctionsUtilService'];
+                function TranslateFilter($filter, functionsUtil) {
+                    return function (obj, typeLabel) {
+                        var currentLanguageCode = functionsUtil.getCurrentLanguage() || 'en';
+                        var regex = new RegExp(typeLabel, 'g');
+                        var translated = '';
+                        for (var prop in obj) {
+                            if (prop.indexOf(typeLabel) >= 0) {
+                                var codeFromJson = prop.replace(regex, '').toLowerCase();
+                                if (codeFromJson === currentLanguageCode) {
+                                    translated = obj[prop];
+                                    break;
+                                }
+                            }
+                        }
+                        return translated;
+                    };
+                }
+                filters.TranslateFilter = TranslateFilter;
                 GetI18nFilter.$inject = ['$filter', 'mainApp.core.util.GetDataStaticJsonService'];
                 function GetI18nFilter($filter, getDataFromJson) {
                     return function (value, type) {
@@ -90,6 +109,7 @@ var app;
                 filters.RangeFormatFilter = RangeFormatFilter;
                 angular
                     .module('mainApp.core.util')
+                    .filter('translateFilter', TranslateFilter)
                     .filter('getI18nFilter', GetI18nFilter)
                     .filter('getTypeOfTeacherFilter', GetTypeOfTeacherFilter)
                     .filter('ageFilter', AgeFilter)

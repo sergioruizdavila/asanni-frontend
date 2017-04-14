@@ -1,4 +1,4 @@
-DEBUG = false;
+DEBUG = true;
 (function () {
     'use strict';
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
@@ -17,6 +17,7 @@ DEBUG = false;
         usernameMaxLength: 80,
         passwordMinLength: 8,
         passwordMaxLength: 80,
+        featureMinId: 1,
         localOAuth2Key: 'fCY4EWQIPuixOGhA9xRIxzVLNgKJVmG1CVnwXssq',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',
@@ -35,6 +36,7 @@ DEBUG = false;
         modalLogInTmpl: 'components/modal/modalLogIn/modalLogIn.html',
         modalForgotPasswordTmpl: 'components/modal/modalForgotPassword/modalForgotPassword.html',
         modalRecommendTeacherTmpl: 'components/modal/modalRecommendTeacher/modalRecommendTeacher.html',
+        modalSurveyTmpl: 'components/modal/modalSurvey/modalSurvey.html',
         bucketS3: BUCKETS3,
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',

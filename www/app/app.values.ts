@@ -8,7 +8,7 @@
 
  declare var DEBUG: boolean;
  /* This must be false in production */
- DEBUG = false;
+ DEBUG = true;
  /************************************/
 
 
@@ -23,6 +23,7 @@ interface IDataConfig {
     usernameMaxLength: number;
     passwordMinLength: number;
     passwordMaxLength: number;
+    featureMinId: number;
     localOAuth2Key: string;
     googleMapKey: string;
     mixpanelTokenPRD: string;
@@ -41,6 +42,7 @@ interface IDataConfig {
     modalLogInTmpl: string;
     modalForgotPasswordTmpl: string;
     modalRecommendTeacherTmpl: string;
+    modalSurveyTmpl: string;
     bucketS3: string;
     regionS3: string;
     accessKeyIdS3: string;
@@ -91,6 +93,7 @@ interface IDataConfig {
         usernameMaxLength: 80,
         passwordMinLength: 8,
         passwordMaxLength: 80,
+        featureMinId: 1,
         localOAuth2Key: 'fCY4EWQIPuixOGhA9xRIxzVLNgKJVmG1CVnwXssq',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',
@@ -109,6 +112,7 @@ interface IDataConfig {
         modalLogInTmpl: 'components/modal/modalLogIn/modalLogIn.html',
         modalForgotPasswordTmpl: 'components/modal/modalForgotPassword/modalForgotPassword.html',
         modalRecommendTeacherTmpl: 'components/modal/modalRecommendTeacher/modalRecommendTeacher.html',
+        modalSurveyTmpl: 'components/modal/modalSurvey/modalSurvey.html',
         bucketS3: BUCKETS3,
         regionS3: 'us-east-1',
         accessKeyIdS3: 'AKIAIHKBYIUQD4KBIRLQ',
