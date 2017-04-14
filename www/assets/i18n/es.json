@@ -174,9 +174,9 @@
     "%modal.recommend.teacher.invitation.message.teach.label.text": "enseñar",
     "%modal.recommend.teacher.create_profile.label.text": "¡Crea tu perfil, es gratis!",
 
-    "%modal.survey.description.text": "Construyamos está comunidad juntos. <br> Cual te gustaria que fuera la siguiente funcionalidad:",
+    "%modal.survey.description.text": "Construyamos está comunidad juntos. <br>Cual te gustaría que fuera la siguiente funcionalidad:",
     "%modal.survey.sent.title.text": "¡Tu recomendación fue enviada!",
-    "%modal.survey.sent.description.text": "Gracias por tu recomendación, revisaremos todas las recomendaciones recibidas, y estaremos trabajando en las más solicitadas por todos los usuarios. Estaremos publicando las nuevas características en nuestro Twitter.",
+    "%modal.survey.sent.description.text": "Muchas gracias, revisaremos todas las recomendaciones recibidas, y estaremos trabajando en las más solicitadas por los usuarios. Publicaremos las nuevas características en nuestro Twitter.",
 
     "__LANDING PAGE__": "",
     "%landing.header.join.label.text.legacy": "Unirse como:",
