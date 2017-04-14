@@ -174,9 +174,11 @@
     "%modal.recommend.teacher.invitation.message.teach.label.text": "Teach",
     "%modal.recommend.teacher.create_profile.label.text": "Create your profile, it's free!",
 
-    "%modal.survey.description.text": "Let's build Waysily together. <br> Which would you like the following functionality to be:",
+    "%modal.survey.title.text": "Let's build Waysily together",
+    "%modal.survey.description.text": "Which would you like the following functionality to be:",
     "%modal.survey.sent.title.text": "Your recommendation was sent!",
     "%modal.survey.sent.description.text": "Thanks for your recommendation, we'll review all recommendations received, and we'll be working on the most requested by all our users. We will be posting the new features on Twitter.",
+    "%modal.survey.help_text.text": "Press the option you want",
 
     "__LANDING PAGE__": "",
     "legacy": "",

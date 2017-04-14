@@ -524,6 +524,10 @@ $label-box-primary-background: map-get($main-palette, primary);
 $label-box-secondary-font-color: map-get($main-palette, primary);
 $label-box-secondary-border: 2px solid map-get($main-palette, primary);
 
+$label-box-secondary-hover-font-color: $white;
+$label-box-secondary-hover-background: map-get($main-palette, secondary);
+$label-box-secondary-hover-border: 2px solid map-get($main-palette, secondary);
+
 $label-box-primary-altern-font-color: $white;
 $label-box-primary-altern-background: map-get($main-palette, secondary);
 

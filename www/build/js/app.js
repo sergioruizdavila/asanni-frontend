@@ -81,6 +81,7 @@
 (function () {
     'use strict';
     angular.module('mainApp.core', [
+        'ngRaven',
         'ngResource',
         'ngCookies',
         'ui.router',
@@ -96,7 +97,7 @@
 
 //# sourceMappingURL=../../maps/app/app.core.module.js.map
 
-DEBUG = true;
+DEBUG = false;
 (function () {
     'use strict';
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
