@@ -9,8 +9,8 @@
     top: 10em;
     left: 0;
     margin: 0;
-    width: 52px;
-    height: 52px;
+    width: 48px;
+    height: 48px;
     padding: 4px;
     background-color: #fff;
     z-index: 1;
@@ -22,6 +22,8 @@
     align-content: center;
 
     &--default {
-        font-size: map-get($strong-font-sizes, default);
+        i {
+            font-size: 32px!important;
+        }
     }
 }

@@ -33,16 +33,20 @@ module components.modal.modalSurvey {
         /*           PROPERTIES           */
         /**********************************/
         form: IModalSurveyForm;
-        sending: boolean;
+        loading: boolean;
+        success: boolean;
+        optionsList: any;
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/
         static $inject = [
             '$rootScope',
             '$filter',
-            '$uibModal',
             '$uibModalInstance',
-            'dataConfig'
+            'dataConfig',
+            'mainApp.models.feature.FeatureService',
+            'mainApp.models.feedback.FeedbackService',
+            'mainApp.core.util.messageUtilService'
         ];
 
 
@@ -53,7 +57,10 @@ module components.modal.modalSurvey {
             private $rootScope: app.core.interfaces.IMainAppRootScope,
             private $filter: angular.IFilterService,
             private $uibModalInstance: ng.ui.bootstrap.IModalServiceInstance,
-            private dataConfig: IDataConfig) {
+            private dataConfig: IDataConfig,
+            private FeatureService: app.models.feature.IFeatureService,
+            private FeedbackService: app.models.feedback.IFeedbackService,
+            private messageUtil: app.core.util.messageUtil.IMessageUtilService) {
 
             this._init();
 
@@ -64,8 +71,14 @@ module components.modal.modalSurvey {
             //VARIABLES
             let self = this;
 
-            // Init sending loading
-            this.sending = false;
+            // Init loading
+            this.loading = true;
+
+            // Init success message
+            this.success = false;
+
+            // Init options List
+            this.optionsList = [];
 
             //Init form
             this.form = {
@@ -79,15 +92,61 @@ module components.modal.modalSurvey {
         activate(): void {
             //CONSTANTS
             const CLICK_MIXPANEL = 'Click: Open Survey Modal';
+            //VARIABLES
+            let self = this;
             //LOG
             DEBUG && console.log('modalSurvey controller actived');
             //MIXPANEL
             mixpanel.track(CLICK_MIXPANEL);
+
+            // Get Features by Range
+            this.FeatureService.getFeaturesByRange(this.dataConfig.featureMinId).then(
+                function(response: app.models.teacher.ITeacherQueryObject) {
+                    self.optionsList = response.results;
+                    self.loading = false;
+                }
+            );
+
         }
 
         /**********************************/
         /*            METHODS             */
         /**********************************/
+
+
+        /**
+        * saveOption
+        * @description - when user click select one survey option, send this one
+        * to FeatureService in order to save it on database
+        * @use - this.saveOption(option);
+        * @function
+        * @return {void}
+        */
+
+        saveOption(option): void {
+            //CONSTANTS
+            const CLICK_MIXPANEL = 'Click: Selected feature option ' + option.id;
+            //VARIABLES
+            let self = this;
+            let feedback = new app.models.feedback.Feedback();
+            feedback.NextFeature = option.id;
+
+            this.loading = true;
+
+            this.FeedbackService.createFeedback(feedback).then(
+                function(response) {
+                    if(response.id) {
+                        //Show success message
+                        self.success = true;
+                        self.loading = false;
+                    }
+                },
+                function(error) {
+                    //Show error
+                    self.messageUtil.error('');
+                }
+            );
+        }
 
 
         /**
@@ -97,6 +156,7 @@ module components.modal.modalSurvey {
         * @function
         * @return {void}
         */
+
         close(): void {
             this.$uibModalInstance.close();
         }

@@ -10,6 +10,7 @@
         'mainApp.auth',
         'mainApp.register',
         'mainApp.account',
+        'mainApp.models.feature',
         'mainApp.models.feedback',
         'mainApp.models.user',
         'mainApp.models.student',
@@ -101,7 +102,7 @@ DEBUG = true;
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/profile-avatar-prd';
     if (DEBUG) {
-        BASE_URL = 'https://waysily-server-staging.herokuapp.com/api/v1/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/profile-avatar-dev';
     }
     var dataConfig = {
@@ -114,6 +115,7 @@ DEBUG = true;
         usernameMaxLength: 80,
         passwordMinLength: 8,
         passwordMaxLength: 80,
+        featureMinId: 1,
         localOAuth2Key: 'fCY4EWQIPuixOGhA9xRIxzVLNgKJVmG1CVnwXssq',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',
@@ -1063,6 +1065,25 @@ var app;
         (function (util) {
             var filters;
             (function (filters) {
+                TranslateFilter.$inject = ['$filter', 'mainApp.core.util.FunctionsUtilService'];
+                function TranslateFilter($filter, functionsUtil) {
+                    return function (obj, typeLabel) {
+                        var currentLanguageCode = functionsUtil.getCurrentLanguage() || 'en';
+                        var regex = new RegExp(typeLabel, 'g');
+                        var translated = '';
+                        for (var prop in obj) {
+                            if (prop.indexOf(typeLabel) >= 0) {
+                                var codeFromJson = prop.replace(regex, '').toLowerCase();
+                                if (codeFromJson === currentLanguageCode) {
+                                    translated = obj[prop];
+                                    break;
+                                }
+                            }
+                        }
+                        return translated;
+                    };
+                }
+                filters.TranslateFilter = TranslateFilter;
                 GetI18nFilter.$inject = ['$filter', 'mainApp.core.util.GetDataStaticJsonService'];
                 function GetI18nFilter($filter, getDataFromJson) {
                     return function (value, type) {
@@ -1147,6 +1168,7 @@ var app;
                 filters.RangeFormatFilter = RangeFormatFilter;
                 angular
                     .module('mainApp.core.util')
+                    .filter('translateFilter', TranslateFilter)
                     .filter('getI18nFilter', GetI18nFilter)
                     .filter('getTypeOfTeacherFilter', GetTypeOfTeacherFilter)
                     .filter('ageFilter', AgeFilter)
@@ -1296,6 +1318,139 @@ var app;
 (function (app) {
     var models;
     (function (models) {
+        var feature;
+        (function (feature) {
+            var Feature = (function () {
+                function Feature(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    console.log('Feature Model instanced');
+                    this.id = obj.id;
+                    this.featureEn = obj.featureEn || '';
+                    this.featureEs = obj.featureEs || '';
+                    this.descriptionEn = obj.descriptionEn || '';
+                    this.descriptionEs = obj.descriptionEs || '';
+                }
+                Object.defineProperty(Feature.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Feature.prototype, "FeatureEn", {
+                    get: function () {
+                        return this.featureEn;
+                    },
+                    set: function (featureEn) {
+                        if (featureEn === undefined) {
+                            throw 'Please supply feature en value';
+                        }
+                        this.featureEn = featureEn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Feature.prototype, "FeatureEs", {
+                    get: function () {
+                        return this.featureEs;
+                    },
+                    set: function (featureEs) {
+                        if (featureEs === undefined) {
+                            throw 'Please supply feature es value';
+                        }
+                        this.featureEs = featureEs;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Feature.prototype, "DescriptionEn", {
+                    get: function () {
+                        return this.descriptionEn;
+                    },
+                    set: function (descriptionEn) {
+                        if (descriptionEn === undefined) {
+                            throw 'Please supply description en value';
+                        }
+                        this.descriptionEn = descriptionEn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Feature.prototype, "DescriptionEs", {
+                    get: function () {
+                        return this.descriptionEs;
+                    },
+                    set: function (descriptionEs) {
+                        if (descriptionEs === undefined) {
+                            throw 'Please supply description es value';
+                        }
+                        this.descriptionEs = descriptionEs;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Feature;
+            }());
+            feature.Feature = Feature;
+        })(feature = models.feature || (models.feature = {}));
+    })(models = app.models || (app.models = {}));
+})(app || (app = {}));
+
+//# sourceMappingURL=../../../../maps/app/models/feature/feature.model.js.map
+
+var app;
+(function (app) {
+    var models;
+    (function (models) {
+        var feature;
+        (function (feature) {
+            'use strict';
+            var FeatureService = (function () {
+                function FeatureService(restApi, AuthService, $q) {
+                    this.restApi = restApi;
+                    this.AuthService = AuthService;
+                    this.$q = $q;
+                    DEBUG && console.log('feature service instanced');
+                    this.FEATURE_URI = 'features';
+                }
+                FeatureService.prototype.getFeaturesByRange = function (minId) {
+                    var self = this;
+                    var url = this.FEATURE_URI + '?minId=' + minId;
+                    var deferred = this.$q.defer();
+                    this.restApi.queryObject({ url: url }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+                FeatureService.serviceId = 'mainApp.models.feature.FeatureService';
+                FeatureService.$inject = [
+                    'mainApp.core.restApi.restApiService',
+                    'mainApp.auth.AuthService',
+                    '$q'
+                ];
+                return FeatureService;
+            }());
+            feature.FeatureService = FeatureService;
+            angular
+                .module('mainApp.models.feature', [])
+                .service(FeatureService.serviceId, FeatureService);
+        })(feature = models.feature || (models.feature = {}));
+    })(models = app.models || (app.models = {}));
+})(app || (app = {}));
+
+//# sourceMappingURL=../../../../maps/app/models/feature/feature.service.js.map
+
+var app;
+(function (app) {
+    var models;
+    (function (models) {
         var feedback;
         (function (feedback) {
             var Feedback = (function () {
@@ -1303,25 +1458,12 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('Feedback Model instanced');
                     this.id = obj.id;
-                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.nextCountry = obj.nextCountry || '';
+                    this.nextFeature = obj.nextFeature || 0;
                 }
                 Object.defineProperty(Feedback.prototype, "Id", {
                     get: function () {
                         return this.id;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(Feedback.prototype, "Uid", {
-                    get: function () {
-                        return this.uid;
-                    },
-                    set: function (uid) {
-                        if (uid === undefined) {
-                            throw 'Please supply next country uid';
-                        }
-                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -1335,6 +1477,19 @@ var app;
                             throw 'Please supply next country';
                         }
                         this.nextCountry = nextCountry;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Feedback.prototype, "NextFeature", {
+                    get: function () {
+                        return this.nextFeature;
+                    },
+                    set: function (nextFeature) {
+                        if (nextFeature === undefined) {
+                            throw 'Please supply next feature';
+                        }
+                        this.nextFeature = nextFeature;
                     },
                     enumerable: true,
                     configurable: true
@@ -5823,6 +5978,88 @@ var components;
 (function () {
     'use strict';
     angular
+        .module('mainApp.components.survey', [])
+        .config(config);
+    function config() { }
+})();
+
+//# sourceMappingURL=../../../maps/components/survey/survey.config.js.map
+
+var components;
+(function (components) {
+    var survey;
+    (function (survey) {
+        'use strict';
+        var MaSurvey = (function () {
+            function MaSurvey() {
+                this.bindToController = true;
+                this.controller = SurveyController.controllerId;
+                this.controllerAs = 'vm';
+                this.restrict = 'E';
+                this.scope = {
+                    surveyValue: '=',
+                    size: '@',
+                    showLabel: '=',
+                    showBorder: '='
+                };
+                this.templateUrl = 'components/survey/survey.html';
+                DEBUG && console.log('maSurvey directive constructor');
+            }
+            MaSurvey.prototype.link = function ($scope, elm, attr) {
+                DEBUG && console.log('maSurvey link function');
+            };
+            MaSurvey.instance = function () {
+                return new MaSurvey();
+            };
+            MaSurvey.directiveId = 'maSurvey';
+            return MaSurvey;
+        }());
+        angular
+            .module('mainApp.components.survey')
+            .directive(MaSurvey.directiveId, MaSurvey.instance);
+        var SurveyController = (function () {
+            function SurveyController($filter, $uibModal, dataConfig) {
+                this.$filter = $filter;
+                this.$uibModal = $uibModal;
+                this.dataConfig = dataConfig;
+                this.init();
+            }
+            SurveyController.prototype.init = function () {
+                this.activate();
+            };
+            SurveyController.prototype.activate = function () {
+                DEBUG && console.log('survey controller actived');
+            };
+            SurveyController.prototype._openSurveyModal = function () {
+                var CLICK_MIXPANEL = 'Click on Survey Button';
+                var self = this;
+                var options = {
+                    animation: false,
+                    keyboard: true,
+                    size: 'sm',
+                    templateUrl: this.dataConfig.modalSurveyTmpl,
+                    controller: 'mainApp.components.modal.ModalSurveyController as vm'
+                };
+                var modalInstance = this.$uibModal.open(options);
+                mixpanel.track(CLICK_MIXPANEL);
+            };
+            SurveyController.controllerId = 'mainApp.components.survey.SurveyController';
+            SurveyController.$inject = ['$filter',
+                '$uibModal',
+                'dataConfig'];
+            return SurveyController;
+        }());
+        survey.SurveyController = SurveyController;
+        angular.module('mainApp.components.survey')
+            .controller(SurveyController.controllerId, SurveyController);
+    })(survey = components.survey || (components.survey = {}));
+})(components || (components = {}));
+
+//# sourceMappingURL=../../../maps/components/survey/survey.directive.js.map
+
+(function () {
+    'use strict';
+    angular
         .module('mainApp.components.footer', [])
         .config(config);
     function config() { }
@@ -8112,6 +8349,81 @@ var components;
 })(components || (components = {}));
 
 //# sourceMappingURL=../../../../maps/components/modal/modalRecommendTeacher/modalRecommendTeacher.controller.js.map
+
+var components;
+(function (components) {
+    var modal;
+    (function (modal) {
+        var modalSurvey;
+        (function (modalSurvey) {
+            var ModalSurveyController = (function () {
+                function ModalSurveyController($rootScope, $filter, $uibModalInstance, dataConfig, FeatureService, FeedbackService, messageUtil) {
+                    this.$rootScope = $rootScope;
+                    this.$filter = $filter;
+                    this.$uibModalInstance = $uibModalInstance;
+                    this.dataConfig = dataConfig;
+                    this.FeatureService = FeatureService;
+                    this.FeedbackService = FeedbackService;
+                    this.messageUtil = messageUtil;
+                    this._init();
+                }
+                ModalSurveyController.prototype._init = function () {
+                    var self = this;
+                    this.loading = true;
+                    this.success = false;
+                    this.optionsList = [];
+                    this.form = {
+                        option: ''
+                    };
+                    this.activate();
+                };
+                ModalSurveyController.prototype.activate = function () {
+                    var CLICK_MIXPANEL = 'Click: Open Survey Modal';
+                    var self = this;
+                    DEBUG && console.log('modalSurvey controller actived');
+                    mixpanel.track(CLICK_MIXPANEL);
+                    this.FeatureService.getFeaturesByRange(this.dataConfig.featureMinId).then(function (response) {
+                        self.optionsList = response.results;
+                        self.loading = false;
+                    });
+                };
+                ModalSurveyController.prototype.saveOption = function (option) {
+                    var CLICK_MIXPANEL = 'Click: Open Survey Modal';
+                    var self = this;
+                    var feedback = new app.models.feedback.Feedback();
+                    feedback.NextFeature = option.id;
+                    this.loading = true;
+                    this.FeedbackService.createFeedback(feedback).then(function (response) {
+                        if (response.id) {
+                            self.success = true;
+                            self.loading = false;
+                        }
+                    }, function (error) {
+                        self.messageUtil.error('');
+                    });
+                };
+                ModalSurveyController.prototype.close = function () {
+                    this.$uibModalInstance.close();
+                };
+                ModalSurveyController.controllerId = 'mainApp.components.modal.ModalSurveyController';
+                ModalSurveyController.$inject = [
+                    '$rootScope',
+                    '$filter',
+                    '$uibModalInstance',
+                    'dataConfig',
+                    'mainApp.models.feature.FeatureService',
+                    'mainApp.models.feedback.FeedbackService',
+                    'mainApp.core.util.messageUtilService'
+                ];
+                return ModalSurveyController;
+            }());
+            angular.module('mainApp.components.modal')
+                .controller(ModalSurveyController.controllerId, ModalSurveyController);
+        })(modalSurvey = modal.modalSurvey || (modal.modalSurvey = {}));
+    })(modal = components.modal || (components.modal = {}));
+})(components || (components = {}));
+
+//# sourceMappingURL=../../../../maps/components/modal/modalSurvey/modalSurvey.controller.js.map
 
 (function () {
     'use strict';

@@ -20,6 +20,7 @@
             'mainApp.auth',
             'mainApp.register',
             'mainApp.account',
+            'mainApp.models.feature',
             'mainApp.models.feedback',
             'mainApp.models.user',
             'mainApp.models.student',

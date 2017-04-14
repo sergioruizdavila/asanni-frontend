@@ -48,7 +48,6 @@ var components;
                 var self = this;
                 var options = {
                     animation: false,
-                    backdrop: 'static',
                     keyboard: true,
                     size: 'sm',
                     templateUrl: this.dataConfig.modalSurveyTmpl,

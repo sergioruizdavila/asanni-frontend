@@ -147,7 +147,6 @@ module components.survey {
             // modal default options
             let options: ng.ui.bootstrap.IModalSettings = {
                 animation: false,
-                backdrop: 'static',
                 keyboard: true,
                 size:'sm',
                 templateUrl: this.dataConfig.modalSurveyTmpl,

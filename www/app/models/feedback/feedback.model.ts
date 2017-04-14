@@ -18,8 +18,8 @@ module app.models.feedback {
 
         /*-- PROPERTIES --*/
         private id: string;
-        private uid: string;
         private nextCountry: string;
+        private nextFeature: number;
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -30,8 +30,8 @@ module app.models.feedback {
 
             //init properties
             this.id = obj.id;
-            this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
             this.nextCountry = obj.nextCountry || '';
+            this.nextFeature = obj.nextFeature || 0;
 
         }
 
@@ -43,15 +43,6 @@ module app.models.feedback {
             return this.id;
         }
 
-        get Uid() {
-            return this.uid;
-        }
-
-        set Uid(uid: string) {
-            if (uid === undefined) { throw 'Please supply next country uid'; }
-            this.uid = uid;
-        }
-
         get NextCountry() {
             return this.nextCountry;
         }
@@ -59,6 +50,15 @@ module app.models.feedback {
         set NextCountry(nextCountry: string) {
             if (nextCountry === undefined) { throw 'Please supply next country'; }
             this.nextCountry = nextCountry;
+        }
+
+        get NextFeature() {
+            return this.nextFeature;
+        }
+
+        set NextFeature(nextFeature: number) {
+            if (nextFeature === undefined) { throw 'Please supply next feature'; }
+            this.nextFeature = nextFeature;
         }
 
     }

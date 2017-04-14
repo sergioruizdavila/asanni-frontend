@@ -23,6 +23,7 @@ interface IDataConfig {
     usernameMaxLength: number;
     passwordMinLength: number;
     passwordMaxLength: number;
+    featureMinId: number;
     localOAuth2Key: string;
     googleMapKey: string;
     mixpanelTokenPRD: string;
@@ -63,7 +64,7 @@ interface IDataConfig {
 
     /* Assign Environment values */
     if(DEBUG) {
-        BASE_URL = 'https://waysily-server-staging.herokuapp.com/api/v1/';
+        BASE_URL = 'http://127.0.0.1:8000/api/v1/';
         BUCKETS3 = 'waysily-img/profile-avatar-dev';
     }
 
@@ -92,6 +93,7 @@ interface IDataConfig {
         usernameMaxLength: 80,
         passwordMinLength: 8,
         passwordMaxLength: 80,
+        featureMinId: 1,
         localOAuth2Key: 'fCY4EWQIPuixOGhA9xRIxzVLNgKJVmG1CVnwXssq',
         googleMapKey: 'AIzaSyD-vO1--MMK-XmQurzNQrxW4zauddCJh5Y',
         mixpanelTokenPRD: '86a48c88274599c662ad64edb74b12da',

@@ -20,57 +20,66 @@
         <!------------------- START: SURVEY OPTIONS BLOCK --------------------->
         <section>
 
-            <! description text >
-            <div class="row center-xs space-2">
+            <! Loading >
+            <div class="ma-loading-container centered" ng-show="vm.loading">
+                <i class="ma-loading
+                          ma-loading--medium-gray
+                          fa fa-spinner fa-spin fa-fw fa-3x"></i>
+                <span class="sr-only">Loading...</span>
+            </div>
+
+            <! Success Message >
+            <div ng-if="vm.success"
+                 ng-class="{'invisible': vm.loading}"
+                 class="row middle-xs center-xs space-4">
+                <div class="col-xs-12">
+                    <i class="material-icons
+                              md-primary
+                              md-48
+                              space-top-3
+                              space-3">flight_takeoff</i>
+                    <h3 class="margin-reset space-2" translate>
+                        %modal.survey.sent.title.text
+                    </h3>
+                    <p class="ma-p ma-p--small margin-reset space-2"
+                        translate>
+                        %modal.survey.sent.description.text
+                    </p>
+                    <a class="ma-link
+                              ma-link--box
+                              ma-link--box--small
+                              ma-link--box--underline
+                              ma-link--box--underline--primary"
+                        href="https://twitter.com/waysily">@waysily</a>
+                </div>
+            </div>
+
+            <! Description text >
+            <div ng-if="!vm.success"
+                 ng-class="{'invisible': vm.loading}"
+                 class="row center-xs space-3 space-top-3">
                 <div class="col-xs-12 text-left">
                     <p class="ma-p ma-p--default margin-reset" translate>
-                        Siguientes caracteristicas en la lista:
+                        %modal.survey.description.text
                     </p>
                 </div>
             </div>
 
             <! Survey options list >
-            <div class="row center-xs space-2">
+            <div ng-if="!vm.success"
+                 ng-class="{'invisible': vm.loading}"
+                 class="row center-xs space-2">
                 <div class="col-xs-12 text-center">
-                    <div class="ma-label
-                            ma-label--box
-                            ma-label--box--secondary
-                            ma-label--box--block
-                            ma-label--box--default
-                            ma-label--box--check
-                            ma-label--box--space5"
-                        data-checked="false">
-                        Face to Face between travelers and locals
-                    </div>
-                    <div class="ma-label
-                            ma-label--box
-                            ma-label--box--secondary
-                            ma-label--box--block
-                            ma-label--box--default
-                            ma-label--box--check
-                            ma-label--box--space5"
-                        data-checked="false">
-                        Be able to create meetups and events
-                    </div>
-                    <div class="ma-label
-                            ma-label--box
-                            ma-label--box--secondary
-                            ma-label--box--block
-                            ma-label--box--default
-                            ma-label--box--check
-                            ma-label--box--space5"
-                        data-checked="false">
-                        Include a forum to interchange language information
-                    </div>
-                    <div class="ma-label
-                            ma-label--box
-                            ma-label--box--secondary
-                            ma-label--box--block
-                            ma-label--box--default
-                            ma-label--box--check
-                            ma-label--box--space5"
-                        data-checked="false">
-                        Create school groups chats
+                    <div ng-repeat="option in vm.optionsList"
+                         ng-click="vm.saveOption(option)"
+                         class="ma-label
+                                ma-label--box
+                                ma-label--box--secondary
+                                ma-label--box--block
+                                ma-label--box--default
+                                ma-label--box--check
+                                ma-label--box--space5">
+                        {{option | translateFilter: 'feature'}}
                     </div>
                 </div>
             </div>

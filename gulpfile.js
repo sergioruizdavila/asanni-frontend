@@ -33,6 +33,8 @@ var paths = {
         "www/build/scripts/app/core/restApi/restApi.config.js",
         "www/build/scripts/app/core/restApi/restApi.service.js",
         "www/build/scripts/app/core/s3Upload/s3Upload.service.js",
+        "www/build/scripts/app/models/feature/feature.model.js",
+        "www/build/scripts/app/models/feature/feature.service.js",
         "www/build/scripts/app/models/feedback/feedback.model.js",
         "www/build/scripts/app/models/feedback/feedback.service.js",
         "www/build/scripts/app/models/user/user.model.js",

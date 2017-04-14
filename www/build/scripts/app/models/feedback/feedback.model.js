@@ -9,25 +9,12 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     console.log('Feedback Model instanced');
                     this.id = obj.id;
-                    this.uid = obj.uid || app.core.util.functionsUtil.FunctionsUtilService.generateGuid();
                     this.nextCountry = obj.nextCountry || '';
+                    this.nextFeature = obj.nextFeature || 0;
                 }
                 Object.defineProperty(Feedback.prototype, "Id", {
                     get: function () {
                         return this.id;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(Feedback.prototype, "Uid", {
-                    get: function () {
-                        return this.uid;
-                    },
-                    set: function (uid) {
-                        if (uid === undefined) {
-                            throw 'Please supply next country uid';
-                        }
-                        this.uid = uid;
                     },
                     enumerable: true,
                     configurable: true
@@ -41,6 +28,19 @@ var app;
                             throw 'Please supply next country';
                         }
                         this.nextCountry = nextCountry;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Feedback.prototype, "NextFeature", {
+                    get: function () {
+                        return this.nextFeature;
+                    },
+                    set: function (nextFeature) {
+                        if (nextFeature === undefined) {
+                            throw 'Please supply next feature';
+                        }
+                        this.nextFeature = nextFeature;
                     },
                     enumerable: true,
                     configurable: true
