@@ -36,7 +36,7 @@ var components;
                     });
                 };
                 ModalSurveyController.prototype.saveOption = function (option) {
-                    var CLICK_MIXPANEL = 'Click: Selected feature option' + option.id;
+                    var CLICK_MIXPANEL = 'Click: Selected feature option ' + option.id;
                     var self = this;
                     var feedback = new app.models.feedback.Feedback();
                     feedback.NextFeature = option.id;
