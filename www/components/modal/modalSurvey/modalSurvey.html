@@ -4,27 +4,30 @@
 
 <div class="ma-box">
 
+    <!--                               TITLE                                 -->
+    <!------------------------------------------------------------------------->
+    <h4 class="ma-box__title margin-reset">
+        <span translate>%modal.survey.title.text</span>
+        <div class="ma-box__title__right-block pull-right">
+            <i class="material-icons
+                      md-18
+                      md-dark md-dark--clicked"
+                      ng-click="vm.close()">close</i>
+        </div>
+    </h4>
+
     <!--                              CONTENT                                -->
     <!------------------------------------------------------------------------->
     <div class="ma-box__content">
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <i class="material-icons
-                          md-18
-                          md-dark md-dark--clicked
-                          pull-right"
-                          ng-click="vm.close()">close</i>
-            </div>
-        </div>
 
         <!------------------- START: SURVEY OPTIONS BLOCK --------------------->
-        <section>
+        <section style="position: relative;">
 
             <! Loading >
             <div class="ma-loading-container centered" ng-show="vm.loading">
                 <i class="ma-loading
                           ma-loading--medium-gray
-                          fa fa-spinner fa-spin fa-fw fa-3x"></i>
+                          fa fa-refresh fa-spin fa-fw fa-3x"></i>
                 <span class="sr-only">Loading...</span>
             </div>
 
@@ -57,7 +60,7 @@
             <! Description text >
             <div ng-if="!vm.success"
                  ng-class="{'invisible': vm.loading}"
-                 class="row center-xs space-3 space-top-3">
+                 class="row center-xs space-3">
                 <div class="col-xs-12 text-left">
                     <p class="ma-p ma-p--default margin-reset" translate>
                         %modal.survey.description.text
@@ -68,19 +71,32 @@
             <! Survey options list >
             <div ng-if="!vm.success"
                  ng-class="{'invisible': vm.loading}"
-                 class="row center-xs space-2">
+                 class="row center-xs space-1">
                 <div class="col-xs-12 text-center">
                     <div ng-repeat="option in vm.optionsList"
                          ng-click="vm.saveOption(option)"
                          class="ma-label
                                 ma-label--box
                                 ma-label--box--secondary
+                                ma-label--box--secondary-hover
                                 ma-label--box--block
                                 ma-label--box--default
-                                ma-label--box--check
-                                ma-label--box--space5">
+                                ma-label--box--check space-2">
                         {{option | translateFilter: 'feature'}}
                     </div>
+                </div>
+            </div>
+
+            <! Help text information >
+            <div ng-if="!vm.success"
+                 ng-class="{'invisible': vm.loading}"
+                 class="row">
+                <div class="col-xs-12 text-right">
+                    <p class="ma-label
+                              ma-label--simple
+                              ma-label--simple--primary" translate>
+                        %modal.survey.help_text.text
+                    </p>
                 </div>
             </div>
 

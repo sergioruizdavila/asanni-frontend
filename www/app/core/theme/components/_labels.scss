@@ -4,7 +4,7 @@
 
 .ma-label {
     display: inline-block;
-    margin-bottom: 0;
+    //margin-bottom: 0;
     vertical-align: middle;
     line-height: $label-lineheight;
     cursor: default;
@@ -126,6 +126,15 @@
             background: 0 0;
             border: $label-box-secondary-border;
             color: $label-box-secondary-font-color;
+        }
+
+        &--secondary-hover {
+            &:hover {
+                background: 0 0;
+                background-color: $label-box-secondary-hover-background;
+                border: $label-box-secondary-hover-border;
+                color: $label-box-secondary-hover-font-color;
+            }
         }
 
         &--primary-altern {
