@@ -19,6 +19,7 @@ var app;
                 TeacherProfilePageController.prototype._init = function () {
                     this.data = new app.models.teacher.Teacher();
                     this.loading = true;
+                    this.marker = 'round';
                     this._initNativeTooltip();
                     this.activate();
                 };

@@ -33,7 +33,9 @@ module components.map {
             mapConfig: '=',
             circle: '=',
             draggable: '=',
-            typeOfMarker: '@'
+            typeOfMarker: '=',
+            btnFilter: '=',
+            btnFilterTarget: '=',
         };
         templateUrl: string = 'components/map/map.html';
         // --------------------------------
@@ -140,6 +142,8 @@ module components.map {
         mapId: string;
         mapConfig: IMapConfig;
         typeOfMarker: string;
+        btnFilter: boolean;
+        btnFilterTarget: string;
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/
@@ -173,7 +177,9 @@ module components.map {
             this._infoWindow = null;
             this._markers = [];
             this.$scope.options = null;
-            this._markerStatus = this.MapService.selectMarker(this.typeOfMarker);
+            if(this.typeOfMarker) {
+                this._markerStatus = this.MapService.selectMarker(this.typeOfMarker);
+            }
 
             //default map options
             //TODO: Hacer una cambio importante ya que necesito seleccionar el tipo de pin,
@@ -251,7 +257,9 @@ module components.map {
                     );
 
                     //Create Filter Buttons
-                    self._createFilterButtons();
+                    if(self.btnFilter) {
+                        self._createFilterButtons(self.btnFilterTarget);
+                    }
 
                     //Set markers
                     for (let i = 0; i < self.mapConfig.data.markers.length; i++) {
@@ -523,16 +531,17 @@ module components.map {
         * @description - this method builds every filter button on the Map
         * @use - this._createFilterButtons();
         * @function
+        * @param {string} btnFilterTarget - button filter default
         * @return {void}
         */
 
-        private _createFilterButtons(): void {
+        private _createFilterButtons(btnFilterTarget: string): void {
             //let buttons = ['Students', 'Teachers', 'Schools'];
             let buttons = ['Teachers', 'Schools'];
 
             for (let i = 0; i < buttons.length; i++) {
                 let controlDiv: HTMLDivElement = document.createElement('div');
-                let control = this._filterControl(controlDiv, buttons[i]);
+                let control = this._filterControl(controlDiv, buttons[i], btnFilterTarget);
                 this._map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
             }
         }
@@ -545,15 +554,18 @@ module components.map {
         * @use - this._filterControl(document.createElement('div'),
                                     'Stundents');
         * @function
-        * @params {HTMLDivElement} controlDiv - html div element
-        * @params {string} type - filter button type
+        * @param {HTMLDivElement} controlDiv - html div element
+        * @param {string} type - filter button type
+        * @param {string} btnFilterTarget - button filter default
         * @return {void}
         */
 
-        private _filterControl(controlDiv: HTMLDivElement, type: string): void {
+        private _filterControl(controlDiv: HTMLDivElement,
+                               type: string,
+                               btnFilterTarget: string): void {
             // VARIABLES
             let self = this;
-            let defaultBtn = 'Teachers';
+            let defaultBtn =  btnFilterTarget === 'teacher' ? 'Teachers' : 'Schools';
             let className = 'filterBtnMap';
             let background_color = 'rgb(255, 255, 255)';
             let background_color_active = '#00B592';

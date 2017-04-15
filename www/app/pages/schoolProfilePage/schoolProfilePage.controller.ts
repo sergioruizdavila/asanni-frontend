@@ -38,6 +38,7 @@ module app.pages.schoolProfilePage {
         /*           PROPERTIES           */
         /**********************************/
         mapConfig: components.map.IMapConfig;
+        marker: string;
         private _paymentMethodsList: Array<IPaymentMethodsClass>;
         data: app.models.school.School;
         loading: boolean;
@@ -74,6 +75,9 @@ module app.pages.schoolProfilePage {
 
             //Init loading
             this.loading = true;
+
+            //Assign marker map
+            this.marker = 'long';
 
             this.activate();
         }

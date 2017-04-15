@@ -62,6 +62,7 @@ module app.pages.createTeacherPage {
         helpText: app.core.interfaces.IHelpTextStep;
         geocoder: google.maps.Geocoder;
         mapConfig: components.map.IMapConfig;
+        marker: string;
         listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
         countryObject: app.core.interfaces.IDataFromJsonI18n;
         STEP1_STATE: string;
@@ -104,6 +105,9 @@ module app.pages.createTeacherPage {
             this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.location.help_text.title.text');
             this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.description.text');
             /*********************************/
+
+            //Assign maker on map
+            this.marker = 'round';
 
             // Update progress bar width
             this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(2, 9);

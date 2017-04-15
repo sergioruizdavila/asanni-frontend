@@ -19,7 +19,8 @@
             },
             parent: 'page',
             params: {
-                country: null
+                country: null,
+                target: null
             },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = true;

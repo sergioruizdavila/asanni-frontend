@@ -95,9 +95,9 @@ var app;
                 };
                 LandingPageController.prototype.goToSearch = function (target) {
                     var SEARCH_PAGE_STATE = 'page.searchPage';
-                    var GOTO_MIXPANEL = 'Go to Search from: ' + target;
+                    var GOTO_MIXPANEL = 'Go to Search from: ' + target + ' btn';
                     mixpanel.track(GOTO_MIXPANEL);
-                    this.$state.go(SEARCH_PAGE_STATE, { reload: true });
+                    this.$state.go(SEARCH_PAGE_STATE, { target: target }, { reload: true });
                 };
                 LandingPageController.prototype._sendCountryFeedback = function () {
                     var ENTER_MIXPANEL = 'Click: Send Country Feedback';

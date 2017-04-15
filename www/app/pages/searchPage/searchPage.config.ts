@@ -36,7 +36,8 @@
                 },
                 parent: 'page',
                 params: {
-                    country: null
+                    country: null,
+                    target: null
                 },
                 onEnter: ['$rootScope', function ($rootScope) {
                     // Show/Hide header & footer

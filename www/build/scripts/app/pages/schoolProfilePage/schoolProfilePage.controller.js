@@ -16,6 +16,7 @@ var app;
                 SchoolProfilePageController.prototype._init = function () {
                     this.data = new app.models.school.School();
                     this.loading = true;
+                    this.marker = 'long';
                     this.activate();
                 };
                 SchoolProfilePageController.prototype.activate = function () {

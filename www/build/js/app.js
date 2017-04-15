@@ -6241,7 +6241,9 @@ var components;
                     mapConfig: '=',
                     circle: '=',
                     draggable: '=',
-                    typeOfMarker: '@'
+                    typeOfMarker: '=',
+                    btnFilter: '=',
+                    btnFilterTarget: '=',
                 };
                 this.templateUrl = 'components/map/map.html';
                 console.log('maMap directive constructor');
@@ -6274,7 +6276,9 @@ var components;
                 this._infoWindow = null;
                 this._markers = [];
                 this.$scope.options = null;
-                this._markerStatus = this.MapService.selectMarker(this.typeOfMarker);
+                if (this.typeOfMarker) {
+                    this._markerStatus = this.MapService.selectMarker(this.typeOfMarker);
+                }
                 switch (this.mapConfig.type) {
                     case 'search-map':
                         this._searchMapBuilder();
@@ -6314,7 +6318,9 @@ var components;
                 if (this._map === void 0) {
                     this.$timeout(function () {
                         self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
-                        self._createFilterButtons();
+                        if (self.btnFilter) {
+                            self._createFilterButtons(self.btnFilterTarget);
+                        }
                         for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                             var marker = self.mapConfig.data.markers[i];
                             self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self._markerStatus.normal);
@@ -6440,17 +6446,17 @@ var components;
                     this._markers[i].setMap(null);
                 }
             };
-            MapController.prototype._createFilterButtons = function () {
+            MapController.prototype._createFilterButtons = function (btnFilterTarget) {
                 var buttons = ['Teachers', 'Schools'];
                 for (var i = 0; i < buttons.length; i++) {
                     var controlDiv = document.createElement('div');
-                    var control = this._filterControl(controlDiv, buttons[i]);
+                    var control = this._filterControl(controlDiv, buttons[i], btnFilterTarget);
                     this._map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
                 }
             };
-            MapController.prototype._filterControl = function (controlDiv, type) {
+            MapController.prototype._filterControl = function (controlDiv, type, btnFilterTarget) {
                 var self = this;
-                var defaultBtn = 'Teachers';
+                var defaultBtn = btnFilterTarget === 'teacher' ? 'Teachers' : 'Schools';
                 var className = 'filterBtnMap';
                 var background_color = 'rgb(255, 255, 255)';
                 var background_color_active = '#00B592';
@@ -9151,9 +9157,9 @@ var app;
                 };
                 LandingPageController.prototype.goToSearch = function (target) {
                     var SEARCH_PAGE_STATE = 'page.searchPage';
-                    var GOTO_MIXPANEL = 'Go to Search from: ' + target;
+                    var GOTO_MIXPANEL = 'Go to Search from: ' + target + ' btn';
                     mixpanel.track(GOTO_MIXPANEL);
-                    this.$state.go(SEARCH_PAGE_STATE, { reload: true });
+                    this.$state.go(SEARCH_PAGE_STATE, { target: target }, { reload: true });
                 };
                 LandingPageController.prototype._sendCountryFeedback = function () {
                     var ENTER_MIXPANEL = 'Click: Send Country Feedback';
@@ -9382,7 +9388,8 @@ var app;
             },
             parent: 'page',
             params: {
-                country: null
+                country: null,
+                target: null
             },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = true;
@@ -9417,7 +9424,8 @@ var app;
                 SearchPageController.prototype._init = function () {
                     this.VALIDATED = 'VA';
                     this.data = [];
-                    this.type = 'teacher';
+                    this.type = 'school';
+                    this.marker = null;
                     this.rightLoading = true;
                     this.error = {
                         message: ''
@@ -9430,20 +9438,47 @@ var app;
                     DEBUG && console.log('searchPage controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
-                    this.TeacherService.getAllTeachersByStatus(this.VALIDATED).then(function (response) {
-                        self.type = 'teacher';
-                        self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
-                        self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: 'round' });
-                        self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
-                        self.$timeout(function () {
-                            self.rightLoading = false;
-                        });
-                        if (self.$stateParams.country) {
+                    this._firstFetchData(this.$stateParams.target);
+                };
+                SearchPageController.prototype._firstFetchData = function (target) {
+                    var TARGET_TEACHER = 'teacher';
+                    var TARGET_SCHOOL = 'school';
+                    var self = this;
+                    target = target || TARGET_SCHOOL;
+                    if (target === TARGET_TEACHER) {
+                        this.TeacherService.getAllTeachersByStatus(this.VALIDATED).then(function (response) {
+                            self.type = 'teacher';
+                            self.marker = 'round';
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
+                            self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: self.marker });
+                            self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
+                            if (self.$stateParams.country) {
+                                self.$timeout(function () {
+                                    self._searchByCountry(self.$stateParams.country);
+                                });
+                            }
                             self.$timeout(function () {
-                                self._searchByCountry(self.$stateParams.country);
+                                self.rightLoading = false;
                             });
-                        }
-                    });
+                        });
+                    }
+                    else if (target === TARGET_SCHOOL) {
+                        this.SchoolService.getAllSchoolsByStatus(this.VALIDATED).then(function (response) {
+                            self.type = 'school';
+                            self.marker = 'long';
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
+                            self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: self.marker });
+                            self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
+                            if (self.$stateParams.country) {
+                                self.$timeout(function () {
+                                    self._searchByCountry(self.$stateParams.country);
+                                });
+                            }
+                            self.$timeout(function () {
+                                self.rightLoading = false;
+                            });
+                        });
+                    }
                 };
                 SearchPageController.prototype._searchByCountry = function (country) {
                     var self = this;
@@ -10612,6 +10647,7 @@ var app;
                         positionLocation: new app.models.user.Position()
                     };
                     this.listCountries = this.getDataFromJson.getCountryi18n();
+                    this.marker = 'round';
                     this.mapConfig = this.functionsUtil.buildMapConfig(null, 'drag-maker-map', null, null);
                     this.validate = {
                         countryLocation: { valid: true, message: '' },
@@ -13010,6 +13046,7 @@ var app;
                     this.STEP3_STATE = 'page.createTeacherPage.language';
                     this.HELP_TEXT_TITLE = this.$filter('translate')('%create.teacher.location.help_text.title.text');
                     this.HELP_TEXT_DESCRIPTION = this.$filter('translate')('%create.teacher.location.help_text.description.text');
+                    this.marker = 'round';
                     this.$scope.$parent.vm.progressWidth = this.functionsUtilService.progress(2, 9);
                     this.helpText = {
                         title: this.HELP_TEXT_TITLE,
@@ -14661,6 +14698,7 @@ var app;
                 TeacherProfilePageController.prototype._init = function () {
                     this.data = new app.models.teacher.Teacher();
                     this.loading = true;
+                    this.marker = 'round';
                     this._initNativeTooltip();
                     this.activate();
                 };
@@ -14849,6 +14887,7 @@ var app;
                 SchoolProfilePageController.prototype._init = function () {
                     this.data = new app.models.school.School();
                     this.loading = true;
+                    this.marker = 'long';
                     this.activate();
                 };
                 SchoolProfilePageController.prototype.activate = function () {

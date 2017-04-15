@@ -14,7 +14,9 @@ var components;
                     mapConfig: '=',
                     circle: '=',
                     draggable: '=',
-                    typeOfMarker: '@'
+                    typeOfMarker: '=',
+                    btnFilter: '=',
+                    btnFilterTarget: '=',
                 };
                 this.templateUrl = 'components/map/map.html';
                 console.log('maMap directive constructor');
@@ -47,7 +49,9 @@ var components;
                 this._infoWindow = null;
                 this._markers = [];
                 this.$scope.options = null;
-                this._markerStatus = this.MapService.selectMarker(this.typeOfMarker);
+                if (this.typeOfMarker) {
+                    this._markerStatus = this.MapService.selectMarker(this.typeOfMarker);
+                }
                 switch (this.mapConfig.type) {
                     case 'search-map':
                         this._searchMapBuilder();
@@ -87,7 +91,9 @@ var components;
                 if (this._map === void 0) {
                     this.$timeout(function () {
                         self._map = new google.maps.Map(document.getElementById(self.mapId), self.$scope.options);
-                        self._createFilterButtons();
+                        if (self.btnFilter) {
+                            self._createFilterButtons(self.btnFilterTarget);
+                        }
                         for (var i = 0; i < self.mapConfig.data.markers.length; i++) {
                             var marker = self.mapConfig.data.markers[i];
                             self._setMarker(marker.id, new google.maps.LatLng(marker.position.lat, marker.position.lng), self._markerStatus.normal);
@@ -213,17 +219,17 @@ var components;
                     this._markers[i].setMap(null);
                 }
             };
-            MapController.prototype._createFilterButtons = function () {
+            MapController.prototype._createFilterButtons = function (btnFilterTarget) {
                 var buttons = ['Teachers', 'Schools'];
                 for (var i = 0; i < buttons.length; i++) {
                     var controlDiv = document.createElement('div');
-                    var control = this._filterControl(controlDiv, buttons[i]);
+                    var control = this._filterControl(controlDiv, buttons[i], btnFilterTarget);
                     this._map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
                 }
             };
-            MapController.prototype._filterControl = function (controlDiv, type) {
+            MapController.prototype._filterControl = function (controlDiv, type, btnFilterTarget) {
                 var self = this;
-                var defaultBtn = 'Teachers';
+                var defaultBtn = btnFilterTarget === 'teacher' ? 'Teachers' : 'Schools';
                 var className = 'filterBtnMap';
                 var background_color = 'rgb(255, 255, 255)';
                 var background_color_active = '#00B592';

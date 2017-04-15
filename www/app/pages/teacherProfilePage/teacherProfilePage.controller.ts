@@ -31,6 +31,7 @@ module app.pages.teacherProfilePage {
         /*           PROPERTIES           */
         /**********************************/
         mapConfig: components.map.IMapConfig;
+        marker: string;
         nativeTooltipOptions: app.core.interfaces.ITooltipOptions;
         isAuthenticated: boolean;
         data: app.models.teacher.Teacher;
@@ -74,6 +75,9 @@ module app.pages.teacherProfilePage {
 
             //Init loading
             this.loading = true;
+
+            //Assign marker map
+            this.marker = 'round';
 
             //Init native tooltip
             this._initNativeTooltip();
