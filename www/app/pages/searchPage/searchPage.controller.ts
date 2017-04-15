@@ -22,6 +22,7 @@ module app.pages.searchPage {
     /********************************/
     export interface ISearchPageParams extends ng.ui.IStateParamsService {
         country: string;
+        target: string;
     }
 
 
@@ -39,6 +40,7 @@ module app.pages.searchPage {
         mapConfig: components.map.IMapConfig;
         data: Array<app.models.student.Student>;
         type: string;
+        marker: string;
         VALIDATED: string;
         rightLoading: boolean;
         leftLoading: boolean;
@@ -88,7 +90,8 @@ module app.pages.searchPage {
             this.data = [];
 
             //Type of results (student, teacher, school)
-            this.type = 'teacher';
+            this.type = 'school';
+            this.marker = null;
 
             //Init right loading
             this.rightLoading = true;
@@ -114,46 +117,106 @@ module app.pages.searchPage {
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
 
-            //Get All Teacher of this zone (Default results)
-            this.TeacherService.getAllTeachersByStatus(this.VALIDATED).then(
-                function(response: app.models.teacher.ITeacherQueryObject) {
-
-                    self.type = 'teacher';
-                    self.mapConfig = self.FunctionsUtilService.buildMapConfig(
-                        response.results,
-                        'search-map',
-                        null,
-                        6
-                    );
-
-                    /*
-                    * Send event to child (MapController) in order to It draws
-                    * each Marker on the Map
-                    */
-                    //LEGACY
-                    //self.$scope.$broadcast('BuildMarkers', self.mapConfig);
-                    self.$scope.$broadcast('BuildMarkers', {mapConfig: self.mapConfig, typeOfMarker: 'round'});
-
-                    self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
-
-                    self.$timeout(function(){
-                        self.rightLoading = false;
-                    });
-
-                    //Center Map on Country selected
-                    if(self.$stateParams.country) {
-                        self.$timeout(function(){
-                            self._searchByCountry(self.$stateParams.country);
-                        });
-                    }
-                }
-            );
+            this._firstFetchData(this.$stateParams.target);
 
         }
 
         /**********************************/
         /*            METHODS             */
         /**********************************/
+
+
+        /**
+        * _firstFetchData
+        * @description - TODO: Este metodo es temporal, en realidad no deberia
+        * buscar por un pais en particular, sino con la direccion que el user
+        * especifique en el buscador. Dejar este metodo hasta cuando sea necesarios
+        * implementar el buscador completo
+        * @use - this._subscribeToEvents();
+        * @function
+        * @return {void}
+        */
+
+        private _firstFetchData(target): void {
+            //CONSTANTS
+            const TARGET_TEACHER = 'teacher';
+            const TARGET_SCHOOL = 'school';
+            //VARIABLES
+            let self = this;
+            //If target is null, assign school as a default
+            target = target || TARGET_SCHOOL;
+
+            if(target === TARGET_TEACHER) {
+                //Get All Teacher of this zone
+                this.TeacherService.getAllTeachersByStatus(this.VALIDATED).then(
+                    function(response: app.models.teacher.ITeacherQueryObject) {
+
+                        self.type = 'teacher';
+                        self.marker = 'round';
+                        self.mapConfig = self.FunctionsUtilService.buildMapConfig(
+                            response.results,
+                            'search-map',
+                            null,
+                            6
+                        );
+
+                        /*
+                        * Send event to child (MapController) in order to It draws
+                        * each Marker on the Map
+                        */
+                        self.$scope.$broadcast('BuildMarkers', {mapConfig: self.mapConfig, typeOfMarker: self.marker});
+
+                        self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
+
+                        //Center Map on Country selected
+                        if(self.$stateParams.country) {
+                            self.$timeout(function(){
+                                self._searchByCountry(self.$stateParams.country);
+                            });
+                        }
+
+                        self.$timeout(function(){
+                            self.rightLoading = false;
+                        });
+                    }
+                );
+            } else if(target === TARGET_SCHOOL) {
+
+                //Get All Schools of this zone
+                this.SchoolService.getAllSchoolsByStatus(this.VALIDATED).then(
+                    function(response: app.models.school.ISchoolQueryObject) {
+
+                        self.type = 'school';
+                        self.marker = 'long';
+                        self.mapConfig = self.FunctionsUtilService.buildMapConfig(
+                            response.results,
+                            'search-map',
+                            null,
+                            6
+                        );
+
+                        /*
+                        * Send event to child (MapController) in order to It draws
+                        * each Marker on the Map
+                        */
+                        self.$scope.$broadcast('BuildMarkers', {mapConfig: self.mapConfig, typeOfMarker: self.marker});
+
+                        self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
+
+                        //Center Map on Country selected
+                        if(self.$stateParams.country) {
+                            self.$timeout(function(){
+                                self._searchByCountry(self.$stateParams.country);
+                            });
+                        }
+
+                        self.$timeout(function(){
+                            self.rightLoading = false;
+                        });
+                    }
+                );
+            }
+        }
 
 
         /**

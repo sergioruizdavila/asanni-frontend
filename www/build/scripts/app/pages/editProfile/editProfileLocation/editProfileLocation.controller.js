@@ -32,6 +32,7 @@ var app;
                         positionLocation: new app.models.user.Position()
                     };
                     this.listCountries = this.getDataFromJson.getCountryi18n();
+                    this.marker = 'round';
                     this.mapConfig = this.functionsUtil.buildMapConfig(null, 'drag-maker-map', null, null);
                     this.validate = {
                         countryLocation: { valid: true, message: '' },

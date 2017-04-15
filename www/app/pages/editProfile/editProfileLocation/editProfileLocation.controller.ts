@@ -51,6 +51,7 @@ module app.pages.editProfileLocation {
         error: boolean;
         geocoder: google.maps.Geocoder;
         mapConfig: components.map.IMapConfig;
+        marker: string;
         listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
         countryObject: app.core.interfaces.IDataFromJsonI18n;
         TIME_SHOW_MESSAGE: number;
@@ -119,6 +120,7 @@ module app.pages.editProfileLocation {
             this.listCountries = this.getDataFromJson.getCountryi18n();
 
             // Init Map
+            this.marker = 'round';
             this.mapConfig = this.functionsUtil.buildMapConfig(
                 null, 'drag-maker-map', null, null
             );

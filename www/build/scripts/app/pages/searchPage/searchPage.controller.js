@@ -21,7 +21,8 @@ var app;
                 SearchPageController.prototype._init = function () {
                     this.VALIDATED = 'VA';
                     this.data = [];
-                    this.type = 'teacher';
+                    this.type = 'school';
+                    this.marker = null;
                     this.rightLoading = true;
                     this.error = {
                         message: ''
@@ -34,20 +35,47 @@ var app;
                     DEBUG && console.log('searchPage controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
-                    this.TeacherService.getAllTeachersByStatus(this.VALIDATED).then(function (response) {
-                        self.type = 'teacher';
-                        self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
-                        self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: 'round' });
-                        self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
-                        self.$timeout(function () {
-                            self.rightLoading = false;
-                        });
-                        if (self.$stateParams.country) {
+                    this._firstFetchData(this.$stateParams.target);
+                };
+                SearchPageController.prototype._firstFetchData = function (target) {
+                    var TARGET_TEACHER = 'teacher';
+                    var TARGET_SCHOOL = 'school';
+                    var self = this;
+                    target = target || TARGET_SCHOOL;
+                    if (target === TARGET_TEACHER) {
+                        this.TeacherService.getAllTeachersByStatus(this.VALIDATED).then(function (response) {
+                            self.type = 'teacher';
+                            self.marker = 'round';
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
+                            self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: self.marker });
+                            self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
+                            if (self.$stateParams.country) {
+                                self.$timeout(function () {
+                                    self._searchByCountry(self.$stateParams.country);
+                                });
+                            }
                             self.$timeout(function () {
-                                self._searchByCountry(self.$stateParams.country);
+                                self.rightLoading = false;
                             });
-                        }
-                    });
+                        });
+                    }
+                    else if (target === TARGET_SCHOOL) {
+                        this.SchoolService.getAllSchoolsByStatus(this.VALIDATED).then(function (response) {
+                            self.type = 'school';
+                            self.marker = 'long';
+                            self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
+                            self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: self.marker });
+                            self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
+                            if (self.$stateParams.country) {
+                                self.$timeout(function () {
+                                    self._searchByCountry(self.$stateParams.country);
+                                });
+                            }
+                            self.$timeout(function () {
+                                self.rightLoading = false;
+                            });
+                        });
+                    }
                 };
                 SearchPageController.prototype._searchByCountry = function (country) {
                     var self = this;

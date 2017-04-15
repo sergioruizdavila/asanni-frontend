@@ -265,13 +265,13 @@ module app.pages.landingPage {
         goToSearch(target: string): void {
             //CONSTANTS
             const SEARCH_PAGE_STATE = 'page.searchPage';
-            const GOTO_MIXPANEL = 'Go to Search from: ' + target;
+            const GOTO_MIXPANEL = 'Go to Search from: ' + target + ' btn';
             /************************/
 
             //MIXPANEL
             mixpanel.track(GOTO_MIXPANEL);
 
-            this.$state.go(SEARCH_PAGE_STATE, {reload: true});
+            this.$state.go(SEARCH_PAGE_STATE, {target: target}, {reload: true});
         }
 
 
