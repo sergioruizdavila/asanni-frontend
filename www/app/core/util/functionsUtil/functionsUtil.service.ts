@@ -35,6 +35,9 @@ module app.core.util.functionsUtil {
         setPropertyMixpanel: (property: Object) => void;
         assignAmenitieIconClass: (amenitie: string) => string;
         assignAccommodationAmenitieIconClass: (amenitie: string) => string;
+        showMainLoading:() => void;
+        hideMainLoading:() => void;
+
     }
 
     export interface IValid {
@@ -881,6 +884,39 @@ module app.core.util.functionsUtil {
             }
 
             return iconClass;
+        }
+
+
+        /**
+        * showMainLoading
+        * @description - If page has a main loading, show it
+        * @use - this.FunctionsUtilService.showMainLoading();
+        * @function
+        * @return {void}
+        */
+        showMainLoading(): void {
+            //CONSTANTS
+            const regex = /(?:^|\s)hidden(?!\S)/g;
+
+            let loading = document.getElementById('mainLoading');
+            if(loading){
+                loading.className = loading.className.replace(regex, '' );
+            }
+        }
+
+
+        /**
+        * hideMainLoading
+        * @description - If page has a main loading, hide it
+        * @use - this.FunctionsUtilService.hideMainLoading();
+        * @function
+        * @return {void}
+        */
+        hideMainLoading(): void {
+            let loading = document.getElementById('mainLoading');
+            if(loading){
+                loading.className += ' hidden';
+            }
         }
 
 

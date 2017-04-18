@@ -28,26 +28,49 @@ module app.pages.searchPage {
         controller = SchoolResultController.controllerId;
         controllerAs: string = 'vm';
         restrict: string = 'E';
+        scope: { id: '=' };
         templateUrl: string = 'app/pages/searchPage/schoolResult/schoolResult.html';
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/
-        //static $inject = ['dataConfig'];
+        static $inject = ['$timeout'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        constructor() {
+        constructor(private $timeout) {
             DEBUG && console.log('maSchoolResult directive constructor');
         }
 
-        link($scope: angular.IScope, elm: Element, attr: angular.IAttributes): void {
+        link($scope: angular.IScope, elm: ng.IAugmentedJQuery, attr, ctrl): void {
             DEBUG && console.log('maSchoolResult link function');
+            let frontFace: any = '';
+            let backFace: any = '';
+            this.$timeout(function(){
+                frontFace = elm.find('#container-' + attr.id + ' .search-result__school__block__content--front');
+                backFace = elm.find('#container-' + attr.id + ' .search-result__school__block__content--back')
+            });
+
+
+            elm.bind('mouseenter', function() {
+                frontFace.addClass('hidden');
+                backFace.removeClass('hidden');
+                ctrl.hoverEvent(parseInt(attr.id), true);
+            });
+            elm.bind('mouseleave', function() {
+                frontFace.removeClass('hidden');
+                backFace.addClass('hidden');
+                ctrl.hoverEvent(parseInt(attr.id), false);
+            });
+            elm.bind('click', function() {
+                ctrl.goToDetails(parseInt(attr.id));
+            });
+
         }
 
         /*-- INSTANCE FUNCTION --*/
-        static instance(): ISchoolResult {
-            return new MaSchoolResult();
+        static instance($timeout): ISchoolResult {
+            return new MaSchoolResult($timeout);
         }
     }
 
@@ -69,6 +92,7 @@ module app.pages.searchPage {
         /*           INTERFACES           */
         /**********************************/
         interface ISchoolResultController {
+            hoverEvent: (id: number, status: boolean) => void;
             activate: () => void;
         }
 
@@ -82,7 +106,6 @@ module app.pages.searchPage {
             /**********************************/
             /*           PROPERTIES           */
             /**********************************/
-            private _hoverDetail: Array<boolean>;
             isAuthenticated: boolean;
             // --------------------------------
 
@@ -117,9 +140,6 @@ module app.pages.searchPage {
 
             /*-- INITIALIZE METHOD --*/
             private init() {
-
-                //Init hoverDetail array
-                this._hoverDetail = [];
 
                 this.activate();
             }
@@ -166,6 +186,11 @@ module app.pages.searchPage {
                 };
 
                 var modalInstance = this.$uibModal.open(options);
+
+                //Hide Loading when modal is rendered
+                modalInstance.rendered.then(function() {
+                    self.functionsUtil.hideMainLoading();
+                });
 
             }
 
@@ -228,6 +253,7 @@ module app.pages.searchPage {
                     window.open(url,'_blank');
                     return
                 } else {
+                    this.functionsUtil.showMainLoading();
                     this._openSignUpModal();
                 }
 
@@ -236,21 +262,20 @@ module app.pages.searchPage {
 
 
             /**
-            * _hoverEvent
+            * hoverEvent
             * @description - this method is launched  when user launchs
             * mouseover/mouseleave event on result container
             * @use - this._hoverEvent('10', true);
             * @function
-            * @param {string} id - container result id
+            * @param {number} id - container result id
             * @param {boolean} status - mouseover = true / mouseleave = false
             */
 
-            private _hoverEvent(id: string, status: boolean): void {
+            hoverEvent(id: number, status: boolean): void {
                 //CONSTANTS
                 const hoverClass = 'ma-box--border-hover';
                 //VARIABLES
                 let args = {id: id, status: status, typeOfMarker: 'long'};
-                this._hoverDetail[id] = status;
 
                 let containers = document.getElementsByClassName(hoverClass);
 
