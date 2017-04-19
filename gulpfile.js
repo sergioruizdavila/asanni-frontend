@@ -215,7 +215,7 @@ gulp.task('serveprod', function() {
       https: true,
       middleware: function(req, res, next) {
         if (req.headers['x-forwarded-proto'] != 'https') {
-            res.redirect('302', 'https://' + req.hostname + req.originalUrl);
+            res.end('https://' + req.hostname + req.originalUrl);
         }
         else {
             next();
