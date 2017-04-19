@@ -182,13 +182,13 @@ var paths = {
  * @desc This task is the responsible to run a local server in order to work locally
  */
 
-gulp.task('webserver', function() {
+/*gulp.task('webserver', function() {
   connect.server({
     root: 'www',
     livereload: true,
     fallback: 'www/index.html'
   });
-});
+});*/
 
 /**
  * REMOTE SERVER
