@@ -212,7 +212,15 @@ gulp.task('serveprod', function() {
       livereload: false,
       fallback: 'www/index.html',
       open: true,
-      https: false
+      https: false,
+      middleware: function(req, res, next) {
+        if (req.headers['x-forwarded-proto'] != 'https') {
+            res.redirect('302', 'https://' + req.hostname + req.originalUrl);
+        }
+        else {
+            next();
+        }
+      }
     }));
 });
 
