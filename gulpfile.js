@@ -195,6 +195,7 @@ gulp.task('webserver', function() {
 gulp.task('serveprod', function() {
   connect.server({
     root: 'www',
+    host: 'www.waysily.com',
     port: process.env.PORT || 5000,
     livereload: false,
     fallback: 'www/index.html',
