@@ -195,16 +195,16 @@ var paths = {
  * @desc This task is the responsible to run a remote server
  */
 
-/*gulp.task('serveprod', function() {
+gulp.task('serveprod', function() {
   connect.server({
     root: 'www',
     port: process.env.PORT || 5000,
     livereload: false,
     fallback: 'www/index.html'
   });
-});*/
+});
 
-gulp.task('serveprod', function() {
+/*gulp.task('serveprod', function() {
   gulp.src('www')
     .pipe(webserver({
       host: '0.0.0.0',
@@ -222,7 +222,7 @@ gulp.task('serveprod', function() {
         }
       }
     }));
-});
+});*/
 
 /**
  * SASS to CSS - based on http://www.sitepoint.com/simple-gulpy-workflow-sass/
