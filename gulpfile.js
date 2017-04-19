@@ -210,7 +210,7 @@ gulp.task('serveprod', function() {
       port: process.env.PORT || 5000,
       livereload: false,
       fallback: 'www/index.html',
-      open: true,
+      open: false,
       https: true
     }));
 });
