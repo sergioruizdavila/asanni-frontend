@@ -215,7 +215,7 @@ gulp.task('serveprod', function() {
       https: false,
       middleware: function(req, res, next) {
         if (req.headers['x-forwarded-proto'] != 'https') {
-            res.end('https://' + req.hostname + req.originalUrl);
+            res.end('https://www.waysily.com' + req.originalUrl);
         }
         else {
             next();
