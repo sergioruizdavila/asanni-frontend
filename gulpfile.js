@@ -12,6 +12,8 @@ var svgSprite = require('gulp-svg-sprite');
 var svg2png = require('gulp-svg2png');
 var size = require('gulp-size');
 var plumber = require('gulp-plumber');
+var imagemin = require('gulp-imagemin');
+var pngcrush = require('imagemin-pngcrush');
 
 
 /*Path Files*/
@@ -223,6 +225,21 @@ gulp.task('sass', function() {
 });
 
 /**
+ * IMAGE COMPRESS
+ * @desc This task take each images (SVG, PNG, JPG, etc) and compress them
+ */
+
+gulp.task('images', function() {
+  gulp.src('www/assets/images/*.{png,jpg,jpeg,gif}')
+    .pipe(imagemin({
+      progressive: true,
+      svgoPlugins: [{removeViewBox: false}],
+      use: [pngcrush()]
+    }))
+    .pipe(gulp.dest(paths.images));
+});
+
+/**
  * HTML RELOAD
  * @desc This task is the responsible to reload browser when one html has changed
  */
@@ -406,7 +423,7 @@ gulp.task('watch', function() {
 /*BUILD SPRITE*/
 gulp.task('sprite', ['png-sprite-' + iconsType]);
 /*BUILD VENDOR*/
-gulp.task('build-vendor', ['bowerJS', 'libsJS', 'ts', 'appJS', 'vendorCSS']);
+gulp.task('build-vendor', ['bowerJS', 'libsJS', 'ts', 'appJS', 'vendorCSS', 'images']);
 /*DEV*/
 gulp.task('dev', ['sass', 'webserver', 'build-vendor', 'watch']);
 /*PROD*/
