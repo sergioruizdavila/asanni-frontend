@@ -197,7 +197,8 @@ gulp.task('serveprod', function() {
     root: 'www',
     port: process.env.PORT || 5000,
     livereload: false,
-    fallback: 'www/index.html'
+    fallback: 'www/index.html',
+    https: true
   });
 });
 
