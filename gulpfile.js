@@ -207,7 +207,6 @@ var paths = {
 gulp.task('serveprod', function() {
   gulp.src('www')
     .pipe(webserver({
-      port: process.env.PORT || 5000,
       livereload: false,
       fallback: 'www/index.html',
       open: false,
