@@ -5,7 +5,8 @@ var ts = require('gulp-typescript');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
-var connect = require('gulp-connect');
+//var connect = require('gulp-connect');
+var webserver = require('gulp-webserver');
 var lib = require('bower-files')();
 var ngAnnotate = require('gulp-ng-annotate');
 var svgSprite = require('gulp-svg-sprite');
@@ -194,13 +195,24 @@ gulp.task('webserver', function() {
  * @desc This task is the responsible to run a remote server
  */
 
-gulp.task('serveprod', function() {
+/*gulp.task('serveprod', function() {
   connect.server({
     root: 'www',
     port: process.env.PORT || 5000,
     livereload: false,
     fallback: 'www/index.html'
   });
+});*/
+
+gulp.task('serveprod', function() {
+  gulp.src('www')
+    .pipe(webserver({
+      port: process.env.PORT || 5000,
+      livereload: false,
+      fallback: 'www/index.html',
+      open: true,
+      https: true
+    }));
 });
 
 /**
