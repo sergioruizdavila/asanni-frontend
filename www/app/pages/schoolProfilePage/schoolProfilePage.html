@@ -1,7 +1,7 @@
 <!-------------------------------------------------->
 <!--                SEO: SCHEMAS.ORG              -->
 <!-------------------------------------------------->
-<script type="application/ld+json">
+<!--script type="application/ld+json">
     { "@context": "http://schema.org",
       "@type": "BreadcrumbList", "itemListElement": [
             {
@@ -9,8 +9,8 @@
                 "item":
                 {
                     "@id": "https://nomadlist.com/ubud-bali-indonesia",
-                    "name": "Ubud",
-                    "image": "https://nomadlist.com/assets/img/cities/ubud-bali-indonesia-1000px.jpg"
+                    "name": "{{vm.data.Name}}",
+                    "image": "{{vm.data.Photo}}"
                 }
             },
             {
@@ -22,7 +22,7 @@
             }
         ]
     }
-</script>
+</script-->
 
 <div itemscope itemtype="http://schema.org/School">
     <div class="hidden"
@@ -37,24 +37,9 @@
         </span>
         reviews
     </div>
-    <span class="hidden"
-          itemprop="geo"
-          itemscope
-          itemtype="http://schema.org/GeoCoordinates">
-        <meta itemprop="latitude" content="{{vm.data.Location.Position.Lat}}">
-        <meta itemprop="longitude" content="{{vm.data.Location.Position.Lng}}">
-    </span>
-    <span class="hidden"
-          itemprop="hasMap"
-          itemscope
-          itemtype="http://schema.org/Map">
-        <a itemprop="url"
-           href="https://www.google.com/maps?ie=UTF8&amp;hq&amp;ll=-8.5078,115.2644&amp;z=13">
-        </a>
-    </span>
     <meta itemprop="description"
           content="Esta escuela tiene una atmosfera de 4.5, tiene muchas comodidades, pero sobretodos ofrece una inmersión asombrosa.">
-    <meta itemprop="image" content="/assets/images/waysily-shared.png">
+    <meta itemprop="image" content="{{vm.data.Photo}}">
 
 
     <!-------------------------------------------------->
