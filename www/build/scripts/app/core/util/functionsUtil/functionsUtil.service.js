@@ -439,6 +439,19 @@ var app;
                         }
                         return iconClass;
                     };
+                    FunctionsUtilService.prototype.showMainLoading = function () {
+                        var regex = /(?:^|\s)hidden(?!\S)/g;
+                        var loading = document.getElementById('mainLoading');
+                        if (loading) {
+                            loading.className = loading.className.replace(regex, '');
+                        }
+                    };
+                    FunctionsUtilService.prototype.hideMainLoading = function () {
+                        var loading = document.getElementById('mainLoading');
+                        if (loading) {
+                            loading.className += ' hidden';
+                        }
+                    };
                     FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
                     FunctionsUtilService.$inject = ['$filter',
                         'dataConfig',

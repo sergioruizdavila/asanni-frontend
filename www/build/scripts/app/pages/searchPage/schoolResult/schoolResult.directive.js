@@ -6,7 +6,8 @@ var app;
         (function (searchPage) {
             'use strict';
             var MaSchoolResult = (function () {
-                function MaSchoolResult() {
+                function MaSchoolResult($timeout) {
+                    this.$timeout = $timeout;
                     this.bindToController = true;
                     this.controller = SchoolResultController.controllerId;
                     this.controllerAs = 'vm';
@@ -14,13 +15,33 @@ var app;
                     this.templateUrl = 'app/pages/searchPage/schoolResult/schoolResult.html';
                     DEBUG && console.log('maSchoolResult directive constructor');
                 }
-                MaSchoolResult.prototype.link = function ($scope, elm, attr) {
+                MaSchoolResult.prototype.link = function ($scope, elm, attr, ctrl) {
                     DEBUG && console.log('maSchoolResult link function');
+                    var frontFace = '';
+                    var backFace = '';
+                    this.$timeout(function () {
+                        frontFace = elm.find('#container-' + attr.id + ' .search-result__school__block__content--front');
+                        backFace = elm.find('#container-' + attr.id + ' .search-result__school__block__content--back');
+                    });
+                    elm.bind('mouseenter', function () {
+                        frontFace.addClass('hidden');
+                        backFace.removeClass('hidden');
+                        ctrl.hoverEvent(parseInt(attr.id), true);
+                    });
+                    elm.bind('mouseleave', function () {
+                        frontFace.removeClass('hidden');
+                        backFace.addClass('hidden');
+                        ctrl.hoverEvent(parseInt(attr.id), false);
+                    });
+                    elm.bind('click', function () {
+                        ctrl.goToDetails(parseInt(attr.id));
+                    });
                 };
-                MaSchoolResult.instance = function () {
-                    return new MaSchoolResult();
+                MaSchoolResult.instance = function ($timeout) {
+                    return new MaSchoolResult($timeout);
                 };
                 MaSchoolResult.directiveId = 'maSchoolResult';
+                MaSchoolResult.$inject = ['$timeout'];
                 return MaSchoolResult;
             }());
             angular
@@ -39,7 +60,6 @@ var app;
                     this.init();
                 }
                 SchoolResultController.prototype.init = function () {
-                    this._hoverDetail = [];
                     this.activate();
                 };
                 SchoolResultController.prototype.activate = function () {
@@ -63,6 +83,9 @@ var app;
                         }
                     };
                     var modalInstance = this.$uibModal.open(options);
+                    modalInstance.rendered.then(function () {
+                        self.functionsUtil.hideMainLoading();
+                    });
                 };
                 SchoolResultController.prototype._chooseMinorPrice = function (prices) {
                     var priceInstance = new app.models.school.Price(prices);
@@ -82,13 +105,13 @@ var app;
                         return;
                     }
                     else {
+                        this.functionsUtil.showMainLoading();
                         this._openSignUpModal();
                     }
                 };
-                SchoolResultController.prototype._hoverEvent = function (id, status) {
+                SchoolResultController.prototype.hoverEvent = function (id, status) {
                     var hoverClass = 'ma-box--border-hover';
                     var args = { id: id, status: status, typeOfMarker: 'long' };
-                    this._hoverDetail[id] = status;
                     var containers = document.getElementsByClassName(hoverClass);
                     for (var i = 0; i < containers.length; i++) {
                         var containerClasses = containers[i].classList;

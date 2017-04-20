@@ -6,12 +6,15 @@ var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
 var connect = require('gulp-connect');
+var webserver = require('gulp-webserver');
 var lib = require('bower-files')();
 var ngAnnotate = require('gulp-ng-annotate');
 var svgSprite = require('gulp-svg-sprite');
 var svg2png = require('gulp-svg2png');
 var size = require('gulp-size');
 var plumber = require('gulp-plumber');
+var imagemin = require('gulp-imagemin');
+var pngcrush = require('imagemin-pngcrush');
 
 
 /*Path Files*/
@@ -179,13 +182,13 @@ var paths = {
  * @desc This task is the responsible to run a local server in order to work locally
  */
 
-gulp.task('webserver', function() {
+/*gulp.task('webserver', function() {
   connect.server({
     root: 'www',
     livereload: true,
     fallback: 'www/index.html'
   });
-});
+});*/
 
 /**
  * REMOTE SERVER
@@ -200,6 +203,26 @@ gulp.task('serveprod', function() {
     fallback: 'www/index.html'
   });
 });
+
+/*gulp.task('serveprod', function() {
+  gulp.src('www')
+    .pipe(webserver({
+      host: '0.0.0.0',
+      port: process.env.PORT || 5000,
+      livereload: false,
+      fallback: 'www/index.html',
+      open: true,
+      https: false,
+      middleware: function(req, res, next) {
+        if (req.headers['x-forwarded-proto'] != 'https') {
+            res.end('https://www.waysily.com' + req.originalUrl);
+        }
+        else {
+            next();
+        }
+      }
+    }));
+});*/
 
 /**
  * SASS to CSS - based on http://www.sitepoint.com/simple-gulpy-workflow-sass/
@@ -220,6 +243,21 @@ gulp.task('sass', function() {
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.outputSass))
     .pipe(connect.reload());
+});
+
+/**
+ * IMAGE COMPRESS
+ * @desc This task take each images (SVG, PNG, JPG, etc) and compress them
+ */
+
+gulp.task('images', function() {
+  gulp.src('www/assets/images/*.{png,jpg,jpeg,gif}')
+    .pipe(imagemin({
+      progressive: true,
+      svgoPlugins: [{removeViewBox: false}],
+      use: [pngcrush()]
+    }))
+    .pipe(gulp.dest(paths.images));
 });
 
 /**
@@ -406,7 +444,7 @@ gulp.task('watch', function() {
 /*BUILD SPRITE*/
 gulp.task('sprite', ['png-sprite-' + iconsType]);
 /*BUILD VENDOR*/
-gulp.task('build-vendor', ['bowerJS', 'libsJS', 'ts', 'appJS', 'vendorCSS']);
+gulp.task('build-vendor', ['bowerJS', 'libsJS', 'ts', 'appJS', 'vendorCSS', 'images']);
 /*DEV*/
 gulp.task('dev', ['sass', 'webserver', 'build-vendor', 'watch']);
 /*PROD*/

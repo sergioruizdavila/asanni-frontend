@@ -88,3 +88,24 @@
     }
 
 }
+
+//LOADING PAGE COMPLETE
+.ma-mainLoading {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    background-color: rgba(254, 254, 254, 0.78);
+    overflow-x: hidden;
+    transition: 0.5s;
+
+    .content-loading {
+        position: relative;
+        top: 25%;
+        width: 100%;
+        text-align: center;
+        margin-top: 30px;
+    }
+}

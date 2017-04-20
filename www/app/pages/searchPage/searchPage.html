@@ -4,23 +4,25 @@
 
 <div class="search-result row margin-reset">
 
+    <!----------------------- START: MAIN LOADING BLOCK ----------------------->
+    <div id="mainLoading" class="ma-mainLoading hidden">
+        <div class="content-loading">
+            <i class="ma-loading
+                      ma-loading--medium-gray
+                      fa fa-refresh fa-spin fa-5x fa-fw"></i>
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!--                      END: MAIN LOADING  BLOCK                       -->
+
+
+
     <!--                    START: INFO SIDE (LEFT COLUMN)                   -->
     <!------------------------------------------------------------------------->
     <div id="search-result-left-column"
          class="search-result__info col-xs-12 col-sm-7 col-md-7">
 
-        <!--div class="row margin-reset" ng-show="vm.loading">
-            <div class="col-sm-12 col-md-6">
-                <div ng-include="vm._getResultLoading(vm.type)"></div>
-            </div>
-
-            <div class="col-sm-12 col-md-6">
-                <div ng-include="vm._getResultLoading(vm.type)"></div>
-            </div>
-
-        </div-->
-
-        <!---------------------- START: MAIN LOADING BLOCK -------------------->
+        <!---------------------- START: LEFT LOADING BLOCK -------------------->
         <div class="row
                     ma-loading-container
                     ma-loading-container--center-screen"
@@ -32,7 +34,7 @@
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
-        <!--                    END: MAIN LOADING  BLOCK                     -->
+        <!--                    END: LEFT LOADING  BLOCK                     -->
 
 
 
@@ -41,22 +43,23 @@
              ng-repeat="rows in vm.data">
 
             <div class="col-xs-12 col-sm-6 col-md-6"
-                 ng-repeat="item in rows"
+                 ng-repeat="item in ::rows"
                  ng-if="vm.type === 'student'">
                 <!-- Dynamic section template: users, teachers or schools results -->
             </div>
 
             <div class="col-xs-12 col-sm-6 col-md-6"
-                 ng-repeat="item in rows"
-                 ng-if="vm.type === 'school'">
+                 ng-repeat="item in ::rows"
+                 ng-if="::vm.type === 'school'">
 
-                <ma-school-result></ma-school-result>
+                <ma-school-result data-id="{{::item.id}}">
+                </ma-school-result>
 
             </div>
 
             <div class="col-xs-12 col-sm-12 col-md-6"
-                 ng-repeat="item in rows"
-                 ng-if="vm.type === 'teacher'">
+                 ng-repeat="item in ::rows"
+                 ng-if="::vm.type === 'teacher'">
 
                 <ma-teacher-result></ma-teacher-result>
 
@@ -79,7 +82,7 @@
                 visible-lg visible-md visible-sm">
 
 
-        <!---------------------- START: MAIN LOADING BLOCK -------------------->
+        <!--------------------- START: RIGHT LOADING BLOCK -------------------->
         <div class="row
                     ma-loading-container
                     ma-loading-container--center-screen"
@@ -91,7 +94,7 @@
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
-        <!--                    END: MAIN LOADING  BLOCK                     -->
+        <!--                   END: RIGHT LOADING  BLOCK                     -->
 
 
         <div class="search-map">
