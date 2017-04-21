@@ -64,6 +64,7 @@
         .config(config);
     function config($locationProvider, $urlRouterProvider, $translateProvider) {
         $locationProvider.html5Mode(true);
+        $locationProvider.hashPrefix('!');
         $urlRouterProvider.otherwise('/page/main');
         var prefix = 'assets/i18n/';
         var suffix = '.json';
