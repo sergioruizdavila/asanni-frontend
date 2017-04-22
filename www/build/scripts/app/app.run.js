@@ -51,6 +51,12 @@
                 $state.go('page.landingPage');
             }
         });
+        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+            $rootScope.title = toParams.title;
+            $rootScope.description = toParams.description;
+            $rootScope.url = toParams.url;
+            $rootScope.robots = toParams.robots;
+        });
     }
 })();
 (function (angular) {

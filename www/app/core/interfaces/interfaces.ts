@@ -8,6 +8,10 @@ module app.core.interfaces {
     /*     ROOTSCOPE INTERFACE     */
     /*******************************/
     export interface IMainAppRootScope extends angular.IRootScopeService {
+        title?: string;
+        description?: string;
+        url?: string;
+        robots?: string;
         userData: IUserData;
         profileData: app.models.user.Profile;
         teacher_id: string;

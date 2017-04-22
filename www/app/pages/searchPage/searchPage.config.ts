@@ -36,14 +36,20 @@
                 },
                 parent: 'page',
                 params: {
+                    title: 'Use Waysily to find language teachers and schools, have a complete immersion',
+                    description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
+                    url: 'https://www.waysily.com/search',
+                    robots: 'follow,index',
                     country: null,
                     target: null
                 },
-                onEnter: ['$rootScope', function ($rootScope) {
-                    // Show/Hide header & footer
-                    $rootScope.activeHeader = true;
-                    $rootScope.activeFooter = false;
-                }]
+                onEnter: ['$rootScope',
+                    function ($rootScope) {
+                        // Show/Hide header & footer
+                        $rootScope.activeHeader = true;
+                        $rootScope.activeFooter = false;
+                    }
+                ]
             });
 
     }

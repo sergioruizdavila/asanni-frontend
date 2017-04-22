@@ -73,15 +73,26 @@
         }
 
         //Validate each state if require login
-        $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+        $rootScope.$on('$stateChangeStart',
+            function(event, toState, toParams, fromState, fromParams) {
 
-            if(toState.data.requireLogin && !AuthService.isAuthenticated()) {
-                /* Unauthenticated request to a route requiring auth is
-                   redirected to main page (page.landingPage) */
-                event.preventDefault();
-                $state.go('page.landingPage');
-            }
+                if(toState.data.requireLogin && !AuthService.isAuthenticated()) {
+                    /* Unauthenticated request to a route requiring auth is
+                       redirected to main page (page.landingPage) */
+                    event.preventDefault();
+                    $state.go('page.landingPage');
+                }
+
         });
+
+        $rootScope.$on('$stateChangeSuccess',
+            function(event, toState, toParams, fromState, fromParams) {
+                $rootScope.title = toParams.title;
+    			$rootScope.description = toParams.description;
+    			$rootScope.url = toParams.url;
+    			$rootScope.robots = toParams.robots;
+            }
+        );
     }
 
 })();
