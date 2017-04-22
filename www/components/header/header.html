@@ -406,8 +406,8 @@
                 aria-labelledby="user-menu-options">
                 <li class="ma-dropdown__option">
                     <a class="ma-dropdown__option__btn"
-                       ng-click="vm.search('Colombia')"
-                       href>
+                       ng-click="vm.search('Colombia');$event.preventDefault()"
+                       href="https://www.waysily.com/page/search">
                        <span translate>
                            %country.CO
                        </span>
