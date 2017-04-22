@@ -387,7 +387,7 @@ module app.models.school {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('Immersion Model instanced');
+            DEBUG && console.log('Immersion Model instanced');
 
             if(obj === null) obj = {};
 
@@ -467,7 +467,7 @@ module app.models.school {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('Package Model instanced');
+            DEBUG && console.log('Package Model instanced');
 
             if(obj === null) obj = {};
 
@@ -552,7 +552,7 @@ module app.models.school {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('Package Option Model instanced');
+            DEBUG && console.log('Package Option Model instanced');
 
             if(obj === null) obj = {};
 
@@ -633,7 +633,7 @@ module app.models.school {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('Work Exchange Model instanced');
+            DEBUG && console.log('Work Exchange Model instanced');
 
             if(obj === null) obj = {};
 
@@ -712,7 +712,7 @@ module app.models.school {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('Work Exchange Option Model instanced');
+            DEBUG && console.log('Work Exchange Option Model instanced');
 
             if(obj === null) obj = {};
 
@@ -782,7 +782,7 @@ module app.models.school {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('Volunteering Model instanced');
+            DEBUG && console.log('Volunteering Model instanced');
 
             if(obj === null) obj = {};
 
@@ -851,7 +851,7 @@ module app.models.school {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('Tours Model instanced');
+            DEBUG && console.log('Tours Model instanced');
 
             if(obj === null) obj = {};
 
@@ -922,7 +922,7 @@ module app.models.school {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('Amenities Model instanced');
+            DEBUG && console.log('Amenities Model instanced');
 
             if(obj === null) obj = {};
 
@@ -1003,7 +1003,7 @@ module app.models.school {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('Accommodation Model instanced');
+            DEBUG && console.log('Accommodation Model instanced');
 
             if(obj === null) obj = {};
 
@@ -1099,7 +1099,7 @@ module app.models.school {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('Accommodation Model instanced');
+            DEBUG && console.log('Accommodation Model instanced');
 
             if(obj === null) obj = {};
 
@@ -1201,7 +1201,7 @@ module app.models.school {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('School Price Model instanced');
+            DEBUG && console.log('School Price Model instanced');
 
             if(obj === null) obj = {};
 
@@ -1273,7 +1273,7 @@ module app.models.school {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('School Private classes Model instanced');
+            DEBUG && console.log('School Private classes Model instanced');
 
             if(obj === null) obj = {};
 
@@ -1345,7 +1345,7 @@ module app.models.school {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('School Group classes Model instanced');
+            DEBUG && console.log('School Group classes Model instanced');
 
             if(obj === null) obj = {};
 
@@ -1418,7 +1418,7 @@ module app.models.school {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('School classes Type Model instanced');
+            DEBUG && console.log('School classes Type Model instanced');
 
             if(obj === null) obj = {};
 
@@ -1497,7 +1497,7 @@ module app.models.school {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('School group classes Type Model instanced');
+            DEBUG && console.log('School group classes Type Model instanced');
 
             if(obj === null) obj = {};
 
@@ -1539,7 +1539,7 @@ module app.models.school {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('School Discount Model instanced');
+            DEBUG && console.log('School Discount Model instanced');
 
             if(obj === null) obj = {};
 
@@ -1601,7 +1601,7 @@ module app.models.school {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('School Payment Methods Model instanced');
+            DEBUG && console.log('School Payment Methods Model instanced');
 
             if(obj === null) obj = {};
 
@@ -1671,7 +1671,7 @@ module app.models.school {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('School Booking Fee Model instanced');
+            DEBUG && console.log('School Booking Fee Model instanced');
 
             if(obj === null) obj = {};
 

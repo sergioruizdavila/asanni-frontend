@@ -207,6 +207,13 @@ DEBUG = false;
                 $state.go('page.landingPage');
             }
         });
+        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+            $rootScope.title = toParams.title;
+            $rootScope.description = toParams.description;
+            $rootScope.url = toParams.url;
+            $rootScope.robots = toParams.robots;
+            $rootScope.image = toParams.image;
+        });
     }
 })();
 (function (angular) {
@@ -4089,7 +4096,7 @@ var app;
             var Immersion = (function () {
                 function Immersion(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('Immersion Model instanced');
+                    DEBUG && console.log('Immersion Model instanced');
                     if (obj === null)
                         obj = {};
                     this.id = obj.id;
@@ -4169,7 +4176,7 @@ var app;
             var Package = (function () {
                 function Package(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('Package Model instanced');
+                    DEBUG && console.log('Package Model instanced');
                     if (obj === null)
                         obj = {};
                     this.id = obj.id;
@@ -4240,7 +4247,7 @@ var app;
             var PackageOption = (function () {
                 function PackageOption(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('Package Option Model instanced');
+                    DEBUG && console.log('Package Option Model instanced');
                     if (obj === null)
                         obj = {};
                     this.id = obj.id;
@@ -4320,7 +4327,7 @@ var app;
             var WorkExchange = (function () {
                 function WorkExchange(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('Work Exchange Model instanced');
+                    DEBUG && console.log('Work Exchange Model instanced');
                     if (obj === null)
                         obj = {};
                     this.id = obj.id;
@@ -4391,7 +4398,7 @@ var app;
             var WorkExchangeOption = (function () {
                 function WorkExchangeOption(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('Work Exchange Option Model instanced');
+                    DEBUG && console.log('Work Exchange Option Model instanced');
                     if (obj === null)
                         obj = {};
                     this.id = obj.id;
@@ -4457,7 +4464,7 @@ var app;
             var Volunteering = (function () {
                 function Volunteering(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('Volunteering Model instanced');
+                    DEBUG && console.log('Volunteering Model instanced');
                     if (obj === null)
                         obj = {};
                     this.id = obj.id;
@@ -4523,7 +4530,7 @@ var app;
             var Tour = (function () {
                 function Tour(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('Tours Model instanced');
+                    DEBUG && console.log('Tours Model instanced');
                     if (obj === null)
                         obj = {};
                     this.id = obj.id;
@@ -4589,7 +4596,7 @@ var app;
             var Amenities = (function () {
                 function Amenities(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('Amenities Model instanced');
+                    DEBUG && console.log('Amenities Model instanced');
                     if (obj === null)
                         obj = {};
                     this.id = obj.id;
@@ -4669,7 +4676,7 @@ var app;
             var Accommodation = (function () {
                 function Accommodation(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('Accommodation Model instanced');
+                    DEBUG && console.log('Accommodation Model instanced');
                     if (obj === null)
                         obj = {};
                     this.id = obj.id;
@@ -4754,7 +4761,7 @@ var app;
             var AccommodationOption = (function () {
                 function AccommodationOption(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('Accommodation Model instanced');
+                    DEBUG && console.log('Accommodation Model instanced');
                     if (obj === null)
                         obj = {};
                     this.id = obj.id;
@@ -4862,7 +4869,7 @@ var app;
             var Price = (function () {
                 function Price(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('School Price Model instanced');
+                    DEBUG && console.log('School Price Model instanced');
                     if (obj === null)
                         obj = {};
                     this.id = obj.id;
@@ -4928,7 +4935,7 @@ var app;
             var PrivateClass = (function () {
                 function PrivateClass(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('School Private classes Model instanced');
+                    DEBUG && console.log('School Private classes Model instanced');
                     if (obj === null)
                         obj = {};
                     this.id = obj.id;
@@ -4994,7 +5001,7 @@ var app;
             var GroupClass = (function () {
                 function GroupClass(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('School Group classes Model instanced');
+                    DEBUG && console.log('School Group classes Model instanced');
                     if (obj === null)
                         obj = {};
                     this.id = obj.id;
@@ -5060,7 +5067,7 @@ var app;
             var ClassType = (function () {
                 function ClassType(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('School classes Type Model instanced');
+                    DEBUG && console.log('School classes Type Model instanced');
                     if (obj === null)
                         obj = {};
                     this.id = obj.id;
@@ -5141,7 +5148,7 @@ var app;
                 __extends(GroupType, _super);
                 function GroupType(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('School group classes Type Model instanced');
+                    DEBUG && console.log('School group classes Type Model instanced');
                     if (obj === null)
                         obj = {};
                     _super.call(this, obj);
@@ -5166,7 +5173,7 @@ var app;
             var Discount = (function () {
                 function Discount(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('School Discount Model instanced');
+                    DEBUG && console.log('School Discount Model instanced');
                     if (obj === null)
                         obj = {};
                     this.id = obj.id;
@@ -5218,7 +5225,7 @@ var app;
             var PaymentMethod = (function () {
                 function PaymentMethod(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('School Payment Methods Model instanced');
+                    DEBUG && console.log('School Payment Methods Model instanced');
                     if (obj === null)
                         obj = {};
                     this.id = obj.id;
@@ -5284,7 +5291,7 @@ var app;
             var BookingFee = (function () {
                 function BookingFee(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('School Booking Fee Model instanced');
+                    DEBUG && console.log('School Booking Fee Model instanced');
                     if (obj === null)
                         obj = {};
                     this.id = obj.id;
@@ -8680,6 +8687,14 @@ var app;
                     controllerAs: 'vm'
                 }
             },
+            params: {
+                id: null,
+                title: 'Join as a language teacher, and teach to travelers in your area | Waysily',
+                description: 'Build a reputation, become visible and earn 340 USD on average doing what you most passionate about.',
+                url: 'https://www.waysily.com/main/teacher',
+                image: 'https://www.waysily.com/assets/images/waysily-shared.png',
+                robots: 'follow,index'
+            },
             parent: 'page',
             data: {
                 requireLogin: false
@@ -9042,6 +9057,11 @@ var app;
                 requireLogin: false
             },
             params: {
+                title: 'Use Waysily to find language teachers and schools, have a complete immersion',
+                description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
+                url: 'https://www.waysily.com/',
+                robots: 'follow,index',
+                image: 'https://www.waysily.com/assets/images/waysily-shared.png',
                 showLogin: false,
             },
             cache: false,
@@ -9060,7 +9080,12 @@ var app;
                 }
             },
             params: {
-                id: null
+                id: null,
+                title: 'Use Waysily to find language teachers and schools, have a complete immersion',
+                description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
+                url: 'https://www.waysily.com/main/recommendation',
+                image: 'https://www.waysily.com/assets/images/waysily-shared.png',
+                robots: 'noindex'
             },
             parent: 'page',
             cache: false,
@@ -9402,13 +9427,20 @@ var app;
             },
             parent: 'page',
             params: {
+                title: 'Use Waysily to find language teachers and schools, have a complete immersion',
+                description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
+                url: 'https://www.waysily.com/search',
+                robots: 'follow,index',
+                image: 'https://www.waysily.com/assets/images/waysily-shared.png',
                 country: null,
                 target: null
             },
-            onEnter: ['$rootScope', function ($rootScope) {
+            onEnter: ['$rootScope',
+                function ($rootScope) {
                     $rootScope.activeHeader = true;
                     $rootScope.activeFooter = false;
-                }]
+                }
+            ]
         });
     }
 })();
