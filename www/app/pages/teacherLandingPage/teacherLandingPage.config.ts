@@ -26,7 +26,7 @@
                 },
                 params: {
                     id: null,
-                    title: 'Join as a language teacher, and teach to travelers in your area | Waysily',
+                    title: 'Join as a language teacher, and teach to travelers in your area',
                     description: 'Build a reputation, become visible and earn 340 USD on average doing what you most passionate about.',
                     url: 'https://www.waysily.com/main/teacher',
                     image: 'https://www.waysily.com/assets/images/waysily-shared.png',
