@@ -212,6 +212,7 @@ DEBUG = false;
             $rootScope.description = toParams.description;
             $rootScope.url = toParams.url;
             $rootScope.robots = toParams.robots;
+            $rootScope.image = toParams.image;
         });
     }
 })();
@@ -9059,6 +9060,7 @@ var app;
                 description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
                 url: 'https://www.waysily.com/',
                 robots: 'follow,index',
+                image: 'https://www.waysily.com/assets/images/waysily-shared.png',
                 showLogin: false,
             },
             cache: false,
@@ -9428,6 +9430,7 @@ var app;
                 description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
                 url: 'https://www.waysily.com/search',
                 robots: 'follow,index',
+                image: 'https://www.waysily.com/assets/images/waysily-shared.png',
                 country: null,
                 target: null
             },

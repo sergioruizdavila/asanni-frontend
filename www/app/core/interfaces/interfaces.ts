@@ -12,6 +12,7 @@ module app.core.interfaces {
         description?: string;
         url?: string;
         robots?: string;
+        image?: string;
         userData: IUserData;
         profileData: app.models.user.Profile;
         teacher_id: string;

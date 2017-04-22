@@ -56,6 +56,7 @@
             $rootScope.description = toParams.description;
             $rootScope.url = toParams.url;
             $rootScope.robots = toParams.robots;
+            $rootScope.image = toParams.image;
         });
     }
 })();

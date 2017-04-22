@@ -33,6 +33,7 @@
                     description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
                     url: 'https://www.waysily.com/',
                     robots: 'follow,index',
+                    image: 'https://www.waysily.com/assets/images/waysily-shared.png',
                     showLogin: false,
                 },
                 cache: false,
