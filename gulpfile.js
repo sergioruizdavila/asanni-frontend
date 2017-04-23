@@ -16,6 +16,10 @@ var plumber = require('gulp-plumber');
 var imagemin = require('gulp-imagemin');
 var pngcrush = require('imagemin-pngcrush');
 
+var express = require('express');
+
+var app = express();
+
 
 /*Path Files*/
 var paths = {
@@ -186,6 +190,9 @@ gulp.task('webserver', function() {
   connect.server({
     root: 'www',
     livereload: true,
+    middleware: function(connect, opt) {
+      return [app.use(require('prerender-node').set('prerenderServiceUrl', 'http://service.prerender.io/').set('prerenderToken', 'JV1wlWf2vRAaydCSuqs7'))];
+    },
     fallback: 'www/index.html'
   });
 });
@@ -200,6 +207,9 @@ gulp.task('serveprod', function() {
     root: 'www',
     port: process.env.PORT || 5000,
     livereload: false,
+    middleware: function(connect, opt) {
+      return [app.use(require('prerender-node').set('prerenderServiceUrl', 'http://service.prerender.io/').set('prerenderToken', 'JV1wlWf2vRAaydCSuqs7'))];
+    },
     fallback: 'www/index.html'
   });
 });
@@ -447,5 +457,6 @@ gulp.task('sprite', ['png-sprite-' + iconsType]);
 gulp.task('build-vendor', ['bowerJS', 'libsJS', 'ts', 'appJS', 'vendorCSS', 'images']);
 /*DEV*/
 gulp.task('dev', ['sass', 'webserver', 'build-vendor', 'watch']);
+/*gulp.task('dev', ['sass', 'build-vendor', 'watch']);*/
 /*PROD*/
 gulp.task('heroku:production', ['sass', 'serveprod']);
