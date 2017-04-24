@@ -69,6 +69,7 @@ module app.pages.landingPage {
         validate: ILandingValidate;
         isAuthenticated: boolean;
         isTeacher: boolean;
+        private _slideout: boolean;
         countryObject: app.core.interfaces.IDataFromJsonI18n;
         listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
         // --------------------------------
@@ -117,11 +118,6 @@ module app.pages.landingPage {
             //Validate if user is Authenticated
             this.isAuthenticated = this.AuthService.isAuthenticated();
 
-            //Validate if user is teacher
-            if(this.$rootScope.profileData) {
-                this.isTeacher = this.$rootScope.profileData.IsTeacher;
-            }
-
             //Init form
             this.form = {
                 userData: {
@@ -132,6 +128,9 @@ module app.pages.landingPage {
                 language: this.functionsUtil.getCurrentLanguage() || 'en',
                 feedback: new app.models.feedback.Feedback()
             };
+
+            //Hide left menu
+            this._slideout = false;
 
             //Build Countries select lists
             this.listCountries = this.getDataFromJson.getCountryi18n();
@@ -213,6 +212,16 @@ module app.pages.landingPage {
         /**********************************/
         /*            METHODS             */
         /**********************************/
+
+        /**
+        * slideNavMenu method
+        * @description - Show or Hide Nav Menu when user press 'menu' button
+        * (small devices)
+        */
+
+        slideNavMenu(): void {
+            this._slideout = !this._slideout;
+        }
 
         /**
         * changeLanguage

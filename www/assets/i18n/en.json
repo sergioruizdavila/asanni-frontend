@@ -22,6 +22,7 @@
     "%global.join_now.button.text": "join now",
     "%global.sending.button.text": "sending...",
     "%global.logout.button.text": "log out",
+    "%global.home.button.text": "home",
 
     "%global.more.label.text": "+ More",
     "%global.email.label.text": "Email Address",

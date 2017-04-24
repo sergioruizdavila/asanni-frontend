@@ -23,9 +23,6 @@ var app;
                 }
                 LandingPageController.prototype._init = function () {
                     this.isAuthenticated = this.AuthService.isAuthenticated();
-                    if (this.$rootScope.profileData) {
-                        this.isTeacher = this.$rootScope.profileData.IsTeacher;
-                    }
                     this.form = {
                         userData: {
                             name: '',
@@ -35,6 +32,7 @@ var app;
                         language: this.functionsUtil.getCurrentLanguage() || 'en',
                         feedback: new app.models.feedback.Feedback()
                     };
+                    this._slideout = false;
                     this.listCountries = this.getDataFromJson.getCountryi18n();
                     this.countryObject = { code: '', value: '' };
                     this.infoCountry = {
@@ -81,6 +79,9 @@ var app;
                         this._openLogInModal();
                     }
                     this._subscribeToEvents();
+                };
+                LandingPageController.prototype.slideNavMenu = function () {
+                    this._slideout = !this._slideout;
                 };
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
