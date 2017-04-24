@@ -28,7 +28,7 @@
                     id: null,
                     title: 'Join as a language teacher, and teach to travelers in your area',
                     description: 'Build a reputation, become visible and earn 340 USD on average doing what you most passionate about.',
-                    url: 'https://www.waysily.com/main/teacher',
+                    url: 'https://www.waysily.com/page/main/teacher',
                     image: 'https://www.waysily.com/assets/images/waysily-shared.png',
                     robots: 'follow,index'
                 },
