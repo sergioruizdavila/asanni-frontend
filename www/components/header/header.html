@@ -276,39 +276,6 @@
 
 
 
-        <!-------------- START: CHANGE LANGUAGE (MD AND LG SCREEN) ------------>
-        <div class="ma-header__block
-                    ma-header--transparent__block
-                    ma-header--transparent__block--right
-                    pull-right hidden">
-
-            <!-- Change Language Select Input -->
-            <div class="form-group ma-form-group">
-                <div class="ma-select-container
-                            ma-select-container--small">
-
-                    <select id="languageSelect"
-                            class="ma-input ma-select
-                                   ma-select--small
-                                   ma-select--border-round"
-                            ng-model="vm.form.language"
-                            ng-change="vm.changeLanguage()"
-                            name="language">
-                        <option value="es" selected="selected" translate>
-                            %header.lang.options.es.text
-                        </option>
-                        <option value="en" translate>
-                            %header.lang.options.en.text
-                        </option>
-                    </select>
-                </div>
-            </div>
-
-        </div>
-        <!--             END: CHANGE LANGUAGE (MD AND LG SCREEN)             -->
-
-
-
         <!--------------- START: JOIN SECTION (MD AND LG SCREEN) -------------->
         <div class="ma-header__block
                     ma-header--transparent__block
@@ -407,7 +374,7 @@
                 <li class="ma-dropdown__option">
                     <a class="ma-dropdown__option__btn"
                        ng-click="vm.search('Colombia');$event.preventDefault()"
-                       href="https://www.waysily.com/page/search">
+                       href="/page/search">
                        <span translate>
                            %country.CO
                        </span>
