@@ -9,43 +9,12 @@
     <!------------------------------------------------------------------------->
     <header class="visible-xs clearfix">
 
-        <!---------------- START: CHANGE LANGUAGE (SMALL SCREEN) -------------->
-        <div class="ma-header__block
-                    ma-header--transparent__block
-                    ma-header--transparent__block--right
-                    pull-right">
-
-            <!-- Change Language Select Input -->
-            <div class="form-group ma-form-group">
-                <div class="ma-select-container
-                            ma-select-container--small
-                            ma-select-container--tertiary">
-                    <select id="languageSelect"
-                            class="ma-input ma-select
-                                   ma-select--small
-                                   ma-select--tertiary
-                                   ma-select--border-round"
-                            ng-model="vm.form.language"
-                            ng-change="vm.changeLanguage()"
-                            name="language">
-                        <option value="es" selected="selected" translate>
-                            %header.lang.options.es.text
-                        </option>
-                        <option value="en" translate>
-                            %header.lang.options.en.text
-                        </option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <!--              END: CHANGE LANGUAGE (SMALL SCREEN)            -->
-
-
         <!--------------------- START: LOGO (SMALL SCREEN) -------------------->
         <div class="ma-header__block ma-header--transparent__block pull-left">
-            <a ui-sref="page.landingPage" class="ma-header__block__btn
-                                                ma-header__block__logo-wrapper
-                                                link-reset" aria-label="Waysily">
+            <a href="/page/main"
+               class="ma-header__block__btn
+                      ma-header__block__logo-wrapper
+                      link-reset" aria-label="Waysily">
                 <i class="ma-logo
                           ma-logo--secondary-short
                           ma-header__block__btn__ma-logo"></i>
@@ -66,9 +35,10 @@
 
         <!-------------------- START: LOGO (MD AND LG SCREEN) ----------------->
         <div class="ma-header__block ma-header--transparent__block pull-left">
-            <a ui-sref="page.landingPage" class="ma-header__block__btn
-                                                ma-header__block__logo-wrapper
-                                                link-reset" aria-label="Waysily">
+            <a href="/page/main"
+               class="ma-header__block__btn
+                      ma-header__block__logo-wrapper
+                      link-reset" aria-label="Waysily">
                 <i class="ma-logo
                           ma-logo--secondary
                           ma-header__block__btn__ma-logo"></i>
@@ -111,15 +81,25 @@
                     role="menu"
                     aria-labelledby="user-menu-options">
                     <li class="ma-dropdown__option">
-                        <a ui-sref="page.editProfile.basicInfo"
+                        <a href="/page/users/edit/info"
+                           rel="nofollow"
                            class="ma-dropdown__option__btn"
-                           href translate>
+                           translate>
                             %profile.teacher.edit_profile.button.text
+                        </a>
+                    </li>
+                    <li class="ma-dropdown__option">
+                        <a ng-if="!vm.isTeacher"
+                           href="/page/main/teacher"
+                           class="ma-dropdown__option__btn"
+                           translate>
+                            %header.join.teacher.button.text
                         </a>
                     </li>
                     <li class="ma-dropdown__option hidden">
                         <a ui-sref="page.userEditAgendaPage"
                            class="ma-dropdown__option__btn"
+                           rel="nofollow"
                            href>
                             Edit Agenda</a>
                     </li>
@@ -127,6 +107,7 @@
                     <li class="ma-dropdown__option last-option">
                         <a class="ma-dropdown__option__btn text-capitalize"
                            ng-click="vm.logout()"
+                           rel="nofollow"
                            href translate>
                            %global.logout.button.text
                         </a>
@@ -147,6 +128,7 @@
                            ma-header--transparent__block__btn
                            ma-header--transparent__block__buttons-list__label
                            text-shadow link-reset text-capitalize"
+               rel="nofollow"
                ng-click="vm._openLogInModal()" translate>
                 %global.login.label.text
             </a>
@@ -164,46 +146,12 @@
                            ma-header--transparent__block__btn
                            ma-header--transparent__block__buttons-list__label
                            text-shadow link-reset text-capitalize"
+               rel="nofollow"
                ng-click="vm._openSignUpModal()" translate>
                 %global.signup.label.text
             </a>
         </div>
         <!--               END: SIGN UP BUTTON (MD AND LG SCREEN)            -->
-
-
-
-        <!-------------- START: CHANGE LANGUAGE (MD AND LG SCREEN) ------------>
-        <div class="ma-header__block
-                    ma-header--transparent__block
-                    ma-header--transparent__block--right
-                    pull-right hidden">
-
-            <! Change Language Select Input >
-            <div class="form-group ma-form-group">
-                <div class="ma-select-container
-                            ma-select-container--small
-                            ma-select-container--tertiary">
-
-                    <select id="languageSelect"
-                            class="ma-input ma-select
-                                   ma-select--small
-                                   ma-select--tertiary
-                                   ma-select--border-round"
-                            ng-model="vm.form.language"
-                            ng-change="vm.changeLanguage()"
-                            name="language">
-                        <option value="es" selected="selected" translate>
-                            %header.lang.options.es.text
-                        </option>
-                        <option value="en" translate>
-                            %header.lang.options.en.text
-                        </option>
-                    </select>
-                </div>
-            </div>
-
-        </div>
-        <!--             END: CHANGE LANGUAGE (MD AND LG SCREEN)             -->
 
 
 
@@ -230,18 +178,18 @@
                 <a ng-if="!vm.isTeacher"
                    class="ma-header--transparent__block__buttons-list__btn
                           ma-btn ma-btn--tertiary ma-btn--default space-right-1"
-                    ui-sref="page.teacherLandingPage"
                     uib-tooltip-template="'headerTooltip.tmpl.html'"
                     tooltip-placement="bottom"
                     tooltip-animation="false"
                     tooltip-class="ma-tooltip ma-tooltip--gray ma-tooltip--small"
-                    href="/main/teacher"
+                    href="/page/main/teacher"
                     translate>
                     %global.teacher.text
                 </a>
                 <a class="ma-header--transparent__block__buttons-list__btn
                           ma-btn ma-btn--tertiary ma-btn--default hidden"
                    href="https://waysily.typeform.com/to/jvr0zW"
+                   rel="nofollow"
                    target="_blank" translate>
                     %global.school.text
                 </a>
@@ -382,57 +330,78 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="row">
                     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 space-5">
-                        <div id="landingPage-country-box-co"
-                             class="country-progress-block
-                                    country-progress-block--first text-left"
-                             ng-click="vm.goToSearch('school')">
-                            <h2 class="country-progress-block__text
-                                       margin-reset space-3" translate>
-                                %country.CO
-                            </h2>
-                            <p class="country-progress-block__text
-                                      country-progress-block__text--strong
-                                      ma-p ma-p--large text-right margin-reset">
-                                <span>21 </span>
-                                <span translate>%global.schools.text</span>
-                            </p>
-                            <p class="country-progress-block__text
-                                      country-progress-block__text--strong
-                                      ma-p ma-p--large text-right margin-reset">
-                                <span>23 </span>
-                                <span translate>%global.teachers.text</span>
-                            </p>
-                        </div>
+
+                        <! Colombia Country Box >
+                        <a href="/page/search"
+                           class="link-reset"
+                           ng-click="vm.goToSearch('school');$event.preventDefault()">
+                            <div id="landingPage-country-box-co"
+                                 class="country-progress-block
+                                        country-progress-block--first text-left">
+                                <h2 class="country-progress-block__text
+                                           margin-reset space-3" translate>
+                                    %country.CO
+                                </h2>
+                                <p class="country-progress-block__text
+                                          country-progress-block__text--strong
+                                          ma-p ma-p--large text-right margin-reset">
+                                    <span>21 </span>
+                                    <span translate>%global.schools.text</span>
+                                </p>
+                                <p class="country-progress-block__text
+                                          country-progress-block__text--strong
+                                          ma-p ma-p--large text-right margin-reset">
+                                    <span>24 </span>
+                                    <span translate>%global.teachers.text</span>
+                                </p>
+                            </div>
+                        </a>
+
+                    </div>
+
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 space-5">
+
+                        <! Guatemala Country Box >
+                        <a href="/page/search"
+                           class="link-reset"
+                           ng-click="$event.preventDefault()">
+                            <div class="country-progress-block
+                                        country-progress-block--second
+                                        country-progress-block--coming-soon text-left">
+                                <h2 class="country-progress-block__text
+                                           margin-reset space-3" translate>
+                                    %country.GT
+                                </h2>
+                                <p class="country-progress-block__text
+                                          country-progress-block__text--strong
+                                          ma-p ma-p--large text-center" translate>
+                                    %global.coming_soon.text
+                                </p>
+                            </div>
+                        </a>
+
                     </div>
                     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 space-5">
-                        <div class="country-progress-block
-                                    country-progress-block--second
-                                    country-progress-block--coming-soon text-left">
-                            <h2 class="country-progress-block__text
-                                       margin-reset space-3" translate>
-                                %country.GT
-                            </h2>
-                            <p class="country-progress-block__text
-                                      country-progress-block__text--strong
-                                      ma-p ma-p--large text-center" translate>
-                                %global.coming_soon.text
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 space-5">
-                        <div class="country-progress-block
-                                    country-progress-block--third
-                                    country-progress-block--coming-soon text-left">
-                            <h2 class="country-progress-block__text
-                                       margin-reset space-3" translate>
-                                %country.MX
-                            </h2>
-                            <p class="country-progress-block__text
-                                      country-progress-block__text--strong
-                                      ma-p ma-p--large text-center" translate>
-                                %global.coming_soon.text
-                            </p>
-                        </div>
+
+                        <! Mexico Country Box >
+                        <a href="/page/search"
+                           class="link-reset"
+                           ng-click="$event.preventDefault()">
+                            <div class="country-progress-block
+                                        country-progress-block--third
+                                        country-progress-block--coming-soon text-left">
+                                <h2 class="country-progress-block__text
+                                           margin-reset space-3" translate>
+                                    %country.MX
+                                </h2>
+                                <p class="country-progress-block__text
+                                          country-progress-block__text--strong
+                                          ma-p ma-p--large text-center" translate>
+                                    %global.coming_soon.text
+                                </p>
+                            </div>  
+                        </a>
+
                     </div>
                 </div>
             </div>
@@ -645,44 +614,6 @@
                             </span>
                         </button>
 
-
-
-
-                        <!--form class="form-inline">
-                          <div class="form-group space-right-1">
-                            <label class="sr-only" for="exampleInputAmount"
-                                   translate>
-                                %landing.get_user.input_email.placeholder.text
-                            </label>
-                            <div class="input-group">
-                              <input class="ma-input
-                                            ma-input--large
-                                            ma-input--border-round"
-                                     type="text"
-                                     ng-model="vm.form.userData.email"
-                                     ng-class="{'ma-input--invalid': !vm.validate.email.valid}"
-                                     translate
-                                     translate-attr-placeholder="%landing.get_user.input_email.placeholder.text"
-                                     name="" value="">
-                            </div>
-                          </div>
-                          <!-- Send Button -->
-                          <!--button class="ma-btn
-                                         ma-btn--primary
-                                         ma-btn--large
-                                         ma-btn--onlyIcon
-                                         ma-btn--onlyIcon--large"
-                                  ng-click="vm._createEarlyAdopter()"
-                                  ng-disabled="vm.infoNewUser.disabled">
-                              <i ng-show="vm.infoNewUser.sent"
-                                 class="fa fa-paper-plane" aria-hidden="true"></i>
-                              <i ng-show="vm.infoNewUser.sending"
-                                 class="fa fa-cog fa-spin fa-fw"></i>
-                              <span class="sr-only" translate>
-                                  %global.loading.text
-                              </span>
-                          </button>
-                      </form-->
                     </div>
                 </div>
             </div>

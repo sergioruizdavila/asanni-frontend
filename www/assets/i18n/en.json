@@ -82,6 +82,7 @@
     "%header.lang.options.en.text": "English",
     "%header.lang.options.es.text": "Spanish",
     "%header.search.placeholder.text": "Where to?",
+    "%header.join.teacher.button.text": "Join as a Teacher",
     "%header.join.teacher.tooltip.first_part.text.legacy": "You could earn",
     "%header.join.teacher.tooltip.first_part.text.legacy2": "A private teacher earns",
     "%header.join.teacher.tooltip.first_part.text": "You could earn",

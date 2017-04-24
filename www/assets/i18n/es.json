@@ -82,6 +82,7 @@
     "%header.lang.options.en.text": "Inglés",
     "%header.lang.options.es.text": "Español",
     "%header.search.placeholder.text": "¿Dónde ir?",
+    "%header.join.teacher.button.text": "Únete como profesor",
     "%header.join.teacher.tooltip.first_part.text.legacy": "Un profesor en Waysily gana",
     "%header.join.teacher.tooltip.first_part.text.legacy2": "Un profesor privado gana",
     "%header.join.teacher.tooltip.first_part.text": "Podrías ganar",
