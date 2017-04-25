@@ -30,7 +30,12 @@
                 },
                 cache: false,
                 params: {
-                    type: '',
+                    title: 'Join as a teacher',
+                    description: 'Build a reputation, become visible and earn 340 USD on average doing what you most passionate about.',
+                    url: 'https://www.waysily.com/page/users/edit/info',
+                    robots: 'nofollow',
+                    image: 'https://www.waysily.com/assets/images/waysily-shared.png',
+                    type: ''
                 },
                 data: {
                     requireLogin: true

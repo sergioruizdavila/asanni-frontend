@@ -29,6 +29,13 @@
                     }
                 },
                 cache: false,
+                params: {
+                    title: 'Teacher Profile',
+                    description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
+                    url: 'https://www.waysily.com/page/teachers/edit/teach',
+                    robots: 'nofollow',
+                    image: 'https://www.waysily.com/assets/images/waysily-shared.png'
+                },
                 data: {
                     requireLogin: true
                 },
