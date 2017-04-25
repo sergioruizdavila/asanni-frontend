@@ -64,6 +64,12 @@ var components;
                     DEBUG && console.log('A problem occured while logging you out.');
                 });
             };
+            HeaderController.prototype.goToSearch = function (target) {
+                var SEARCH_PAGE_STATE = 'page.searchPage';
+                var GOTO_MIXPANEL = 'Go to Search from dropdown header';
+                mixpanel.track(GOTO_MIXPANEL);
+                this.$state.go(SEARCH_PAGE_STATE, { target: target }, { reload: true });
+            };
             HeaderController.prototype.search = function (country) {
                 var CLICK_MIXPANEL = 'Click: Search Teacher on SearchBox';
                 var currentState = this.$state.current.name;

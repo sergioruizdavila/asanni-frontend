@@ -22,6 +22,9 @@
 
                 <i class="material-icons
                           md-light md-30 vertical-align-middle">more_vert</i>
+                <span class="screen-reader-only">
+                    Waysily
+                </span>
             </a>
         </div>
         <!--                     END: LOGO (SMALL SCREEN)                    -->
@@ -81,13 +84,23 @@
                                        list-unstyled">
 
                                 <! Home Option >
-                                <li class="space-top-2"
-                                    ng-if="!vm.isAuthenticated">
+                                <li class="space-top-2">
                                     <a href="/page/main"
                                        class="link-reset menu-item
                                               text-capitalize"
                                               translate>
                                         %global.home.button.text
+                                    </a>
+                                </li>
+
+                                <! Explore Option >
+                                <li>
+                                    <a href="/page/search"
+                                       class="link-reset menu-item
+                                              text-capitalize"
+                                       ng-click="vm.goToSearch('school');$event.preventDefault()"
+                                       translate>
+                                        %landing.explore.button.text
                                     </a>
                                 </li>
 
@@ -235,6 +248,17 @@
                            rel="nofollow"
                            href>
                             Edit Agenda</a>
+                    </li>
+
+                    <! Explore Option >
+                    <li class="ma-dropdown__option">
+                        <a href="/page/search"
+                           class="ma-dropdown__option__btn
+                                  text-capitalize"
+                           ng-click="vm.goToSearch('school');$event.preventDefault()"
+                           translate>
+                            %landing.explore.button.text
+                        </a>
                     </li>
 
                     <li class="ma-dropdown__option last-option">

@@ -223,6 +223,8 @@ module app.pages.landingPage {
             this._slideout = !this._slideout;
         }
 
+        
+
         /**
         * changeLanguage
         * @description - open Modal in order to add a New Teacher's Experience on Box

@@ -42,6 +42,7 @@ module app.pages.teacherLandingPage {
         teacherFake: app.models.teacher.Teacher;
         isAuthenticated: boolean;
         TEACHER_FAKE_TMPL: string;
+        private _slideout: boolean;
         private _hoverDetail: Array<boolean>;
         // --------------------------------
 
@@ -84,6 +85,9 @@ module app.pages.teacherLandingPage {
                 language: this.functionsUtil.getCurrentLanguage() || 'en'
             };
 
+            //Hide left menu
+            this._slideout = false;
+
             //Init hoverDetail array
             this._hoverDetail = [];
 
@@ -117,6 +121,18 @@ module app.pages.teacherLandingPage {
         /**********************************/
 
         /**
+        * slideNavMenu method
+        * @description - Show or Hide Nav Menu when user press 'menu' button
+        * (small devices)
+        */
+
+        slideNavMenu(): void {
+            this._slideout = !this._slideout;
+        }
+
+
+
+        /**
         * changeLanguage
         * @description - open Modal in order to add a New Teacher's Experience on Box
         * @use - this._addEditExperience();
@@ -126,6 +142,27 @@ module app.pages.teacherLandingPage {
 
         changeLanguage(): void {
              this.functionsUtil.changeLanguage(this.form.language);
+        }
+
+
+
+        /**
+        * goToSearch
+        * @description - go to search page
+        * @function
+        * @param {string} target - Section user clicked
+        * @return {void}
+        */
+        goToSearch(target: string): void {
+            //CONSTANTS
+            const SEARCH_PAGE_STATE = 'page.searchPage';
+            const GOTO_MIXPANEL = 'Go to Search from teacherLandingPage';
+            /************************/
+
+            //MIXPANEL
+            mixpanel.track(GOTO_MIXPANEL);
+
+            this.$state.go(SEARCH_PAGE_STATE, {target: target}, {reload: true});
         }
 
 

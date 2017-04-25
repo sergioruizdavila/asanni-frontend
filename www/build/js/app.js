@@ -5577,6 +5577,12 @@ var components;
                     DEBUG && console.log('A problem occured while logging you out.');
                 });
             };
+            HeaderController.prototype.goToSearch = function (target) {
+                var SEARCH_PAGE_STATE = 'page.searchPage';
+                var GOTO_MIXPANEL = 'Go to Search from dropdown header';
+                mixpanel.track(GOTO_MIXPANEL);
+                this.$state.go(SEARCH_PAGE_STATE, { target: target }, { reload: true });
+            };
             HeaderController.prototype.search = function (country) {
                 var CLICK_MIXPANEL = 'Click: Search Teacher on SearchBox';
                 var currentState = this.$state.current.name;
@@ -8682,6 +8688,7 @@ var app;
                     this.form = {
                         language: this.functionsUtil.getCurrentLanguage() || 'en'
                     };
+                    this._slideout = false;
                     this._hoverDetail = [];
                     this._buildFakeTeacher();
                     this.activate();
@@ -8694,8 +8701,17 @@ var app;
                     mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
                 };
+                TeacherLandingPageController.prototype.slideNavMenu = function () {
+                    this._slideout = !this._slideout;
+                };
                 TeacherLandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
+                };
+                TeacherLandingPageController.prototype.goToSearch = function (target) {
+                    var SEARCH_PAGE_STATE = 'page.searchPage';
+                    var GOTO_MIXPANEL = 'Go to Search from teacherLandingPage';
+                    mixpanel.track(GOTO_MIXPANEL);
+                    this.$state.go(SEARCH_PAGE_STATE, { target: target }, { reload: true });
                 };
                 TeacherLandingPageController.prototype._openSignUpModal = function (event) {
                     var self = this;
@@ -9074,9 +9090,6 @@ var app;
                 }
                 LandingPageController.prototype._init = function () {
                     this.isAuthenticated = this.AuthService.isAuthenticated();
-                    if (this.$rootScope.profileData) {
-                        this.isTeacher = this.$rootScope.profileData.IsTeacher;
-                    }
                     this.form = {
                         userData: {
                             name: '',
@@ -9427,6 +9440,12 @@ var app;
                     this.type = 'school';
                     this.marker = null;
                     this.rightLoading = true;
+                    this._teacherChecked = this.$stateParams.target === 'teacher';
+                    this._schoolChecked = this.$stateParams.target === 'school';
+                    if (!this._teacherChecked && !this._schoolChecked) {
+                        this._teacherChecked = this.$stateParams.target === this.type;
+                        this._schoolChecked = this.$stateParams.target === this.type;
+                    }
                     this.error = {
                         message: ''
                     };
@@ -9479,6 +9498,12 @@ var app;
                             });
                         });
                     }
+                };
+                SearchPageController.prototype.goToSearch = function (target) {
+                    var SEARCH_PAGE_STATE = 'page.searchPage';
+                    var CLICK_MIXPANEL = 'SearchPage: Click on ' + target + 'btn';
+                    mixpanel.track(CLICK_MIXPANEL);
+                    this.$state.go(SEARCH_PAGE_STATE, { target: target }, { reload: true });
                 };
                 SearchPageController.prototype._searchByCountry = function (country) {
                     var self = this;

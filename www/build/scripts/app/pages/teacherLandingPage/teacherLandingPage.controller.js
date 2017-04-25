@@ -21,6 +21,7 @@ var app;
                     this.form = {
                         language: this.functionsUtil.getCurrentLanguage() || 'en'
                     };
+                    this._slideout = false;
                     this._hoverDetail = [];
                     this._buildFakeTeacher();
                     this.activate();
@@ -33,8 +34,17 @@ var app;
                     mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
                 };
+                TeacherLandingPageController.prototype.slideNavMenu = function () {
+                    this._slideout = !this._slideout;
+                };
                 TeacherLandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
+                };
+                TeacherLandingPageController.prototype.goToSearch = function (target) {
+                    var SEARCH_PAGE_STATE = 'page.searchPage';
+                    var GOTO_MIXPANEL = 'Go to Search from teacherLandingPage';
+                    mixpanel.track(GOTO_MIXPANEL);
+                    this.$state.go(SEARCH_PAGE_STATE, { target: target }, { reload: true });
                 };
                 TeacherLandingPageController.prototype._openSignUpModal = function (event) {
                     var self = this;

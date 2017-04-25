@@ -38,6 +38,33 @@
 
 
 
+        <div class="row margin-reset
+                    space-top-2 space-left-2 space-right-2">
+            <div class="col-xs-6">
+                <a id="landingPage-teacher-btn"
+                        href="/page/search"
+                        class="ma-btn ma-btn--block ma-btn--default"
+                        ng-class="vm._teacherChecked ? 'ma-btn--primary' : 'ma-btn--white ma-btn--box-shadow'"
+                        ng-click="vm.goToSearch('teacher');$event.preventDefault()"
+                        translate>
+                    %global.teachers.text
+               </a>
+            </div>
+
+            <div class="col-xs-6">
+                <a id="landingPage-school-btn"
+                        href="/page/search"
+                        class="ma-btn ma-btn--block ma-btn--default"
+                        ng-class="vm._schoolChecked ? 'ma-btn--primary' : 'ma-btn--white ma-btn--box-shadow'"
+                        ng-click="vm.goToSearch('school');$event.preventDefault()"
+                        translate>
+                    %global.schools.text
+                </a>
+            </div>
+        </div>
+
+
+
         <div class="row margin-reset space-left-2 space-right-2"
              ng-show="!vm.leftLoading"
              ng-repeat="rows in vm.data">

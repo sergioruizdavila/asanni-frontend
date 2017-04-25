@@ -44,6 +44,8 @@ module app.pages.searchPage {
         VALIDATED: string;
         rightLoading: boolean;
         leftLoading: boolean;
+        private _teacherChecked: boolean;
+        private _schoolChecked: boolean;
         // --------------------------------
 
 
@@ -95,6 +97,15 @@ module app.pages.searchPage {
 
             //Init right loading
             this.rightLoading = true;
+
+            //Init small device filter button
+            this._teacherChecked = this.$stateParams.target === 'teacher';
+            this._schoolChecked = this.$stateParams.target === 'school';
+
+            if(!this._teacherChecked && !this._schoolChecked) {
+                this._teacherChecked = this.type === 'teacher';
+                this._schoolChecked = this.type === 'school';
+            }
 
             this.error = {
                 message: ''
@@ -217,6 +228,28 @@ module app.pages.searchPage {
                 );
             }
         }
+
+
+
+        /**
+        * goToSearch
+        * @description - go to search page
+        * @function
+        * @param {string} target - Section user clicked
+        * @return {void}
+        */
+        goToSearch(target: string): void {
+            //CONSTANTS
+            const SEARCH_PAGE_STATE = 'page.searchPage';
+            const CLICK_MIXPANEL = 'SearchPage: Click on ' + target + 'btn';
+            /************************/
+
+            //MIXPANEL
+            mixpanel.track(CLICK_MIXPANEL);
+
+            this.$state.go(SEARCH_PAGE_STATE, {target: target}, {reload: true});
+        }
+
 
 
         /**

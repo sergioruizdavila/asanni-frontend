@@ -24,6 +24,12 @@ var app;
                     this.type = 'school';
                     this.marker = null;
                     this.rightLoading = true;
+                    this._teacherChecked = this.$stateParams.target === 'teacher';
+                    this._schoolChecked = this.$stateParams.target === 'school';
+                    if (!this._teacherChecked && !this._schoolChecked) {
+                        this._teacherChecked = this.type === 'teacher';
+                        this._schoolChecked = this.type === 'school';
+                    }
                     this.error = {
                         message: ''
                     };
@@ -76,6 +82,12 @@ var app;
                             });
                         });
                     }
+                };
+                SearchPageController.prototype.goToSearch = function (target) {
+                    var SEARCH_PAGE_STATE = 'page.searchPage';
+                    var CLICK_MIXPANEL = 'SearchPage: Click on ' + target + 'btn';
+                    mixpanel.track(CLICK_MIXPANEL);
+                    this.$state.go(SEARCH_PAGE_STATE, { target: target }, { reload: true });
                 };
                 SearchPageController.prototype._searchByCountry = function (country) {
                     var self = this;
