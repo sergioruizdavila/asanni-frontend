@@ -78,6 +78,7 @@
 (function () {
     'use strict';
     angular.module('mainApp.core', [
+        'ngRaven',
         'ngResource',
         'ngCookies',
         'ui.router',
@@ -9549,7 +9550,6 @@ var app;
                         self.shadowsLoading = true;
                         self.type = 'teacher';
                         self.TeacherService.getAllTeachersByStatus(self.VALIDATED).then(function (response) {
-                            self.type = 'teacher';
                             self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
                             self.shadowsLoading = false;
                             self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: 'round' });
@@ -9558,8 +9558,8 @@ var app;
                     });
                     this.$scope.$on('Schools', function (event, args) {
                         self.shadowsLoading = true;
+                        self.type = 'school';
                         self.SchoolService.getAllSchoolsByStatus(self.VALIDATED).then(function (response) {
-                            self.type = 'school';
                             self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', { lat: 6.175434, lng: -75.583329 }, 6);
                             self.shadowsLoading = false;
                             self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: 'long' });
