@@ -44,6 +44,7 @@ module app.pages.searchPage {
         VALIDATED: string;
         rightLoading: boolean;
         leftLoading: boolean;
+        shadowsLoading: boolean;
         private _teacherChecked: boolean;
         private _schoolChecked: boolean;
         // --------------------------------
@@ -92,11 +93,17 @@ module app.pages.searchPage {
             this.data = [];
 
             //Type of results (student, teacher, school)
-            this.type = 'school';
+            this.type = this.$stateParams.target || 'school';
             this.marker = null;
+
+            //Init left loading
+            this.leftLoading = false;
 
             //Init right loading
             this.rightLoading = true;
+
+            //Init shadows loading
+            this.shadowsLoading = true;
 
             //Init small device filter button
             this._teacherChecked = this.$stateParams.target === 'teacher';
@@ -135,6 +142,34 @@ module app.pages.searchPage {
         /**********************************/
         /*            METHODS             */
         /**********************************/
+
+
+        /**
+        * _getResultLoading
+        * @description - this method return specific loading template
+        * based on type result (students, teachers, schools, etc)
+        * @use - this._getResultTemplate('student');
+        * @function
+        * @params {string} type - type of results list (students, teachers, schools, etc)
+        * @return {string} result template path
+        */
+
+        private _getResultLoading(type: string): string {
+            //CONSTANTS
+            const STUDENT_TYPE = 'student';
+            const TEACHER_TYPE = 'teacher';
+            const SCHOOL_TYPE = 'school';
+            /*********************************/
+
+            switch (type) {
+                case STUDENT_TYPE:
+                return 'app/pages/searchPage/studentResult/studentResult.html';
+                case TEACHER_TYPE:
+                return 'app/pages/searchPage/teacherLoading/teacherLoading.html';
+                case SCHOOL_TYPE:
+                return 'app/pages/searchPage/schoolLoading/schoolLoading.html';
+            }
+        }
 
 
         /**
@@ -188,6 +223,7 @@ module app.pages.searchPage {
 
                         self.$timeout(function(){
                             self.rightLoading = false;
+                            self.shadowsLoading = false;
                         });
                     }
                 );
@@ -223,6 +259,7 @@ module app.pages.searchPage {
 
                         self.$timeout(function(){
                             self.rightLoading = false;
+                            self.shadowsLoading = false;
                         });
                     }
                 );
@@ -341,13 +378,14 @@ module app.pages.searchPage {
             this.$scope.$on('Teachers', function(event, args) {
 
                 //Init left loading
-                self.leftLoading = true;
+                self.shadowsLoading = true;
+
+                self.type = 'teacher';
 
                 //Get All Teachers of this zone
                 self.TeacherService.getAllTeachersByStatus(self.VALIDATED).then(
                     function(response: app.models.teacher.ITeacherQueryObject) {
 
-                        self.type = 'teacher';
                         self.mapConfig = self.FunctionsUtilService.buildMapConfig(
                             response.results,
                             'search-map',
@@ -355,7 +393,7 @@ module app.pages.searchPage {
                             6
                         );
 
-                        self.leftLoading = false;
+                        self.shadowsLoading = false;
 
                         /*
                         * Send event to child (MapController) in order to It draws
@@ -381,13 +419,14 @@ module app.pages.searchPage {
             this.$scope.$on('Schools', function(event, args) {
 
                 //Init left loading
-                self.leftLoading = true;
+                self.shadowsLoading = true;
+
+                self.type = 'school';
 
                 //Get All Schools of this zone
                 self.SchoolService.getAllSchoolsByStatus(self.VALIDATED).then(
                     function(response: app.models.school.ISchoolQueryObject) {
 
-                        self.type = 'school';
                         self.mapConfig = self.FunctionsUtilService.buildMapConfig(
                             response.results,
                             'search-map',
@@ -395,7 +434,7 @@ module app.pages.searchPage {
                             6
                         );
 
-                        self.leftLoading = false;
+                        self.shadowsLoading = false;
 
                         /*
                         * Send event to child (MapController) in order to It draws
