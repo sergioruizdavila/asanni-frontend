@@ -17,9 +17,16 @@ var imagemin = require('gulp-imagemin');
 var pngcrush = require('imagemin-pngcrush');
 
 var express = require('express');
+var forceHttps = require('express-force-https');
 
 var app = express();
 
+/* TODO: IMPORTANT - Validar si haber sacado esta linea del middleware de gulp-connect
+permite que siga funcionando el prerender, en cuanto se valide que todo sigue funcionando
+bien, eliminar este comentario. */
+app.use(require('prerender-node').set('prerenderServiceUrl', 'http://service.prerender.io/').set('prerenderToken', 'JV1wlWf2vRAaydCSuqs7'));
+// Force https
+app.use(forceHttps);
 
 /*Path Files*/
 var paths = {
@@ -179,7 +186,7 @@ gulp.task('webserver', function() {
     root: 'www',
     livereload: true,
     middleware: function(connect, opt) {
-      return [app.use(require('prerender-node').set('prerenderServiceUrl', 'http://service.prerender.io/').set('prerenderToken', 'JV1wlWf2vRAaydCSuqs7'))];
+      return [app];
     },
     fallback: 'www/index.html'
   });
@@ -272,11 +279,6 @@ gulp.task('html', function () {
  * TS RELOAD
  * @desc This task is the responsible to reload browser when one .ts has changed
  */
-
-gulp.task('ts2', function () {
-  gulp.src(paths.appTypescript)
-    .pipe(connect.reload());
-});
 
 var tsProject = ts.createProject("tsconfig.json");
 
