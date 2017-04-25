@@ -78,7 +78,6 @@
 (function () {
     'use strict';
     angular.module('mainApp.core', [
-        'ngRaven',
         'ngResource',
         'ngCookies',
         'ui.router',
@@ -5578,6 +5577,12 @@ var components;
                     DEBUG && console.log('A problem occured while logging you out.');
                 });
             };
+            HeaderController.prototype.goToSearch = function (target) {
+                var SEARCH_PAGE_STATE = 'page.searchPage';
+                var GOTO_MIXPANEL = 'Go to Search from dropdown header';
+                mixpanel.track(GOTO_MIXPANEL);
+                this.$state.go(SEARCH_PAGE_STATE, { target: target }, { reload: true });
+            };
             HeaderController.prototype.search = function (country) {
                 var CLICK_MIXPANEL = 'Click: Search Teacher on SearchBox';
                 var currentState = this.$state.current.name;
@@ -8683,6 +8688,7 @@ var app;
                     this.form = {
                         language: this.functionsUtil.getCurrentLanguage() || 'en'
                     };
+                    this._slideout = false;
                     this._hoverDetail = [];
                     this._buildFakeTeacher();
                     this.activate();
@@ -8695,8 +8701,17 @@ var app;
                     mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
                 };
+                TeacherLandingPageController.prototype.slideNavMenu = function () {
+                    this._slideout = !this._slideout;
+                };
                 TeacherLandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
+                };
+                TeacherLandingPageController.prototype.goToSearch = function (target) {
+                    var SEARCH_PAGE_STATE = 'page.searchPage';
+                    var GOTO_MIXPANEL = 'Go to Search from teacherLandingPage';
+                    mixpanel.track(GOTO_MIXPANEL);
+                    this.$state.go(SEARCH_PAGE_STATE, { target: target }, { reload: true });
                 };
                 TeacherLandingPageController.prototype._openSignUpModal = function (event) {
                     var self = this;
@@ -9075,9 +9090,6 @@ var app;
                 }
                 LandingPageController.prototype._init = function () {
                     this.isAuthenticated = this.AuthService.isAuthenticated();
-                    if (this.$rootScope.profileData) {
-                        this.isTeacher = this.$rootScope.profileData.IsTeacher;
-                    }
                     this.form = {
                         userData: {
                             name: '',
@@ -9087,6 +9099,7 @@ var app;
                         language: this.functionsUtil.getCurrentLanguage() || 'en',
                         feedback: new app.models.feedback.Feedback()
                     };
+                    this._slideout = false;
                     this.listCountries = this.getDataFromJson.getCountryi18n();
                     this.countryObject = { code: '', value: '' };
                     this.infoCountry = {
@@ -9133,6 +9146,9 @@ var app;
                         this._openLogInModal();
                     }
                     this._subscribeToEvents();
+                };
+                LandingPageController.prototype.slideNavMenu = function () {
+                    this._slideout = !this._slideout;
                 };
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);
@@ -9421,9 +9437,17 @@ var app;
                 SearchPageController.prototype._init = function () {
                     this.VALIDATED = 'VA';
                     this.data = [];
-                    this.type = 'school';
+                    this.type = this.$stateParams.target || 'school';
                     this.marker = null;
+                    this.leftLoading = false;
                     this.rightLoading = true;
+                    this.shadowsLoading = true;
+                    this._teacherChecked = this.$stateParams.target === 'teacher';
+                    this._schoolChecked = this.$stateParams.target === 'school';
+                    if (!this._teacherChecked && !this._schoolChecked) {
+                        this._teacherChecked = this.type === 'teacher';
+                        this._schoolChecked = this.type === 'school';
+                    }
                     this.error = {
                         message: ''
                     };
@@ -9436,6 +9460,19 @@ var app;
                     mixpanel.track(ENTER_MIXPANEL);
                     this._subscribeToEvents();
                     this._firstFetchData(this.$stateParams.target);
+                };
+                SearchPageController.prototype._getResultLoading = function (type) {
+                    var STUDENT_TYPE = 'student';
+                    var TEACHER_TYPE = 'teacher';
+                    var SCHOOL_TYPE = 'school';
+                    switch (type) {
+                        case STUDENT_TYPE:
+                            return 'app/pages/searchPage/studentResult/studentResult.html';
+                        case TEACHER_TYPE:
+                            return 'app/pages/searchPage/teacherLoading/teacherLoading.html';
+                        case SCHOOL_TYPE:
+                            return 'app/pages/searchPage/schoolLoading/schoolLoading.html';
+                    }
                 };
                 SearchPageController.prototype._firstFetchData = function (target) {
                     var TARGET_TEACHER = 'teacher';
@@ -9456,6 +9493,7 @@ var app;
                             }
                             self.$timeout(function () {
                                 self.rightLoading = false;
+                                self.shadowsLoading = false;
                             });
                         });
                     }
@@ -9473,9 +9511,16 @@ var app;
                             }
                             self.$timeout(function () {
                                 self.rightLoading = false;
+                                self.shadowsLoading = false;
                             });
                         });
                     }
+                };
+                SearchPageController.prototype.goToSearch = function (target) {
+                    var SEARCH_PAGE_STATE = 'page.searchPage';
+                    var CLICK_MIXPANEL = 'SearchPage: Click on ' + target + 'btn';
+                    mixpanel.track(CLICK_MIXPANEL);
+                    this.$state.go(SEARCH_PAGE_STATE, { target: target }, { reload: true });
                 };
                 SearchPageController.prototype._searchByCountry = function (country) {
                     var self = this;
@@ -9501,21 +9546,22 @@ var app;
                         });
                     });
                     this.$scope.$on('Teachers', function (event, args) {
-                        self.leftLoading = true;
+                        self.shadowsLoading = true;
+                        self.type = 'teacher';
                         self.TeacherService.getAllTeachersByStatus(self.VALIDATED).then(function (response) {
                             self.type = 'teacher';
                             self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', null, 6);
-                            self.leftLoading = false;
+                            self.shadowsLoading = false;
                             self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: 'round' });
                             self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         });
                     });
                     this.$scope.$on('Schools', function (event, args) {
-                        self.leftLoading = true;
+                        self.shadowsLoading = true;
                         self.SchoolService.getAllSchoolsByStatus(self.VALIDATED).then(function (response) {
                             self.type = 'school';
                             self.mapConfig = self.FunctionsUtilService.buildMapConfig(response.results, 'search-map', { lat: 6.175434, lng: -75.583329 }, 6);
-                            self.leftLoading = false;
+                            self.shadowsLoading = false;
                             self.$scope.$broadcast('BuildMarkers', { mapConfig: self.mapConfig, typeOfMarker: 'long' });
                             self.data = self.FunctionsUtilService.splitToColumns(response.results, 2);
                         });

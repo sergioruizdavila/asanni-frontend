@@ -37,9 +37,53 @@
         <!--                    END: LEFT LOADING  BLOCK                     -->
 
 
+        <!--------------- START: FILTER BUTTON (SMALL SCREEN) ----------------->
+        <div class="row margin-reset
+                    space-top-2 space-left-2 space-right-2 visible-xs">
+            <div class="col-xs-6">
+                <a id="landingPage-teacher-btn"
+                        href="/page/search"
+                        class="ma-btn ma-btn--block ma-btn--default"
+                        ng-class="vm._teacherChecked ? 'ma-btn--primary' : 'ma-btn--white ma-btn--box-shadow'"
+                        ng-click="vm.goToSearch('teacher');$event.preventDefault()"
+                        translate>
+                    %global.teachers.text
+               </a>
+            </div>
+
+            <div class="col-xs-6">
+                <a id="landingPage-school-btn"
+                        href="/page/search"
+                        class="ma-btn ma-btn--block ma-btn--default"
+                        ng-class="vm._schoolChecked ? 'ma-btn--primary' : 'ma-btn--white ma-btn--box-shadow'"
+                        ng-click="vm.goToSearch('school');$event.preventDefault()"
+                        translate>
+                    %global.schools.text
+                </a>
+            </div>
+        </div>
+        <!--                 END: FILTER BUTTON (SMALL SCREEN)               -->
+
+
+        <!-------------- START: CONTAINER CLONES LOADING BLOCK ---------------->
+        <div class="row margin-reset space-left-2 space-right-2"
+             ng-show="vm.shadowsLoading">
+
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <div ng-include="vm._getResultLoading(vm.type)"></div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <div ng-include="vm._getResultLoading(vm.type)"></div>
+            </div>
+
+        </div>
+        <!--              END: CONTAINER CLONES LOADING BLOCK                -->
+
+
 
         <div class="row margin-reset space-left-2 space-right-2"
-             ng-show="!vm.leftLoading"
+             ng-show="!vm.shadowsLoading"
              ng-repeat="rows in vm.data">
 
             <div class="col-xs-12 col-sm-6 col-md-6"

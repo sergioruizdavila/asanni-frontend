@@ -10,7 +10,7 @@
 
     angular.module('mainApp.core', [
         /*Angular Modules*/
-        'ngRaven',
+        /*'ngRaven',*/
         'ngResource',
         'ngCookies',
         'ui.router',
@@ -23,6 +23,6 @@
         'ngFileUpload',
         'ngImgCrop'
     ]);
-    
+
 
 })();

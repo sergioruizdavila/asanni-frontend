@@ -166,6 +166,30 @@
         }
     }
 
+    &--white {
+        background-color: $white;
+        color: $button-primary-background;
+        border: 0 hidden transparent;
+        font-weight: normal;
+
+        &:hover {
+            background-color: $button-primary-background-hover;
+            text-decoration: none;
+            color: $button-font-color;
+        }
+
+        &:focus {
+            background-color: $button-primary-background;
+            color: $button-font-color;
+            border-bottom-color: $button-primary-border-color;
+            text-decoration: none;
+        }
+    }
+
+    &--box-shadow {
+        box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+    }
+
     /// SIMPLE BUTTON WITH ICON
     &--withIcon {
         .material-icons {
@@ -174,21 +198,21 @@
     }
 
     /// BUTTON WITH ICON AND WITHOUT TEXT
-        &--onlyIcon {
+    &--onlyIcon {
 
-            &--small {
-                padding: 4px 9px 4px 8px;
-            }
-
-            &--default {
-                padding: 7px 12px 7px 11px;
-            }
-
-            &--large {
-                padding: 12px 17px 12px 15px;
-            }
-
+        &--small {
+            padding: 4px 9px 4px 8px;
         }
+
+        &--default {
+            padding: 7px 12px 7px 11px;
+        }
+
+        &--large {
+            padding: 12px 17px 12px 15px;
+        }
+
+    }
 
 }
 

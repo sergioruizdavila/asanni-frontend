@@ -9,52 +9,163 @@
     <!------------------------------------------------------------------------->
     <header class="visible-xs clearfix">
 
-        <!---------------- START: CHANGE LANGUAGE (SMALL SCREEN) -------------->
-        <div class="ma-header__block
-                    ma-header--transparent__block
-                    ma-header--transparent__block--right
-                    pull-right">
-
-            <!-- Change Language Select Input -->
-            <div class="form-group ma-form-group">
-                <div class="ma-select-container
-                            ma-select-container--small
-                            ma-select-container--tertiary">
-                    <select id="languageSelect"
-                            class="ma-input ma-select
-                                   ma-select--small
-                                   ma-select--tertiary
-                                   ma-select--border-round"
-                            ng-model="vm.form.language"
-                            ng-change="vm.changeLanguage()"
-                            name="language">
-                        <option value="es" selected="selected" translate>
-                            %header.lang.options.es.text
-                        </option>
-                        <option value="en" translate>
-                            %header.lang.options.en.text
-                        </option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <!--              END: CHANGE LANGUAGE (SMALL SCREEN)            -->
-
-
         <!--------------------- START: LOGO (SMALL SCREEN) -------------------->
-        <div class="ma-header__block
-                    ma-header--transparent__block pull-left">
+        <div class="ma-header__block ma-header--transparent__block pull-left">
             <a href="/page/main"
+               ng-click="vm.slideNavMenu();$event.preventDefault()"
                class="ma-header__block__btn
                       ma-header__block__logo-wrapper
                       link-reset" aria-label="Waysily">
                 <i class="ma-logo
                           ma-logo--secondary-short
                           ma-header__block__btn__ma-logo"></i>
+
+                <i class="material-icons
+                          md-light md-30 vertical-align-middle">more_vert</i>
             </a>
         </div>
         <!--                     END: LOGO (SMALL SCREEN)                    -->
 
+
+        <!---------------------- START: NAV (SMALL SCREEN) -------------------->
+        <nav class="ma-nav--small"
+             ng-class="{'ma-nav--small--active': vm._slideout}"
+             role="navigation">
+
+            <div class="ma-nav--small__mask"
+                 ng-class="{'ma-nav--small__mask--active': vm._slideout}"
+                 ng-click="vm.slideNavMenu()"></div>
+
+            <! Slide Left Menu Nav >
+            <div class="ma-nav--small__content ma-nav-content"
+                 ng-class="{'ma-nav--small__content--active': vm._slideout}">
+
+
+                 <! Nav Header >
+                <div ng-if="vm.isAuthenticated" class="ma-nav-content__header">
+                    <div class="ma-nav-content__header__profile">
+
+                        <div class="ma-nav-content__header__profile__user-item">
+                            <div class="ma-photo-profile
+                                        ma-photo-profile--tiny
+                                        round">
+                                <img width="32"
+                                     height="32"
+                                     ng-show="vm.$rootScope.profileData.avatar"
+                                     ng-src="{{vm.$rootScope.profileData.avatar}}"
+                                     alt="{{vm.$rootScope.profileData.firstName}}">
+                            </div>
+                            <div class="ma-label
+                                        ma-label--simple
+                                        ma-label--simple--medium
+                                        ma-label--simple--primary
+                                        margin-reset
+                                        text-truncate">{{vm.$rootScope.profileData.firstName}}</div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <hr ng-if="vm.isAuthenticated">
+
+
+                <! Nav Menu >
+                <div class="nav-menu-wrapper">
+                    <div class="nav-menu-wrapper__container">
+                        <div class="nav-menu-wrapper__container__menu">
+
+                            <! Nav Menu Options >
+                            <ul class="nav-menu-wrapper__container__menu__group
+                                       nav-menu-wrapper__container__menu__group--first
+                                       list-unstyled">
+
+                                <! Home Option >
+                                <li class="space-top-2"
+                                    ng-if="!vm.isAuthenticated">
+                                    <a href="/page/main"
+                                       class="link-reset menu-item
+                                              text-capitalize"
+                                              translate>
+                                        %global.home.button.text
+                                    </a>
+                                </li>
+
+                                <! Explore Option >
+                                <li>
+                                    <a href="/page/search"
+                                       class="link-reset menu-item
+                                              text-capitalize"
+                                       ng-click="vm.goToSearch('school');$event.preventDefault()"
+                                       translate>
+                                        %landing.explore.button.text
+                                    </a>
+                                </li>
+
+                                <hr ng-if="!vm.isAuthenticated">
+
+                                <! Sign up Option >
+                                <li ng-if="!vm.isAuthenticated">
+                                    <a href
+                                       rel="nofollow"
+                                       ng-click="vm._openSignUpModal()"
+                                       class="link-reset menu-item
+                                              text-capitalize" translate>
+                                        %global.signup.label.text
+                                    </a>
+                                </li>
+
+                                <! Log in Option >
+                                <li ng-if="!vm.isAuthenticated">
+                                    <a href
+                                       rel="nofollow"
+                                       ng-click="vm._openLogInModal()"
+                                       class="link-reset menu-item
+                                              text-capitalize" translate>
+                                        %global.login.label.text
+                                    </a>
+                                </li>
+
+                                <! Edit profile Option >
+                                <li ng-if="vm.isAuthenticated">
+                                    <a href="/page/users/edit/info"
+                                       rel="nofollow"
+                                       class="link-reset menu-item" translate>
+                                        %profile.teacher.edit_profile.button.text
+                                    </a>
+                                </li>
+
+                                <! Join as a teacher Option >
+                                <li ng-if="!profileData.IsTeacher">
+                                    <a href="/page/main/teacher"
+                                       class="link-reset menu-item"
+                                       translate>
+                                        %header.join.teacher.button.text
+                                    </a>
+                                </li>
+
+                            </ul>
+
+                            <! Secondary Nav Menu Options >
+                            <ul class="nav-menu-wrapper__container__menu__group list-unstyled">
+                                <li ng-if="vm.isAuthenticated" class="items-logged-in">
+                                    <a  class="link-reset menu-item
+                                               text-capitalize"
+                                        ng-click="vm.logout()"
+                                        rel="nofollow"
+                                        href translate>
+                                        %global.logout.button.text
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </nav>
+        <!--                     END: NAV (SMALL SCREEN)                     -->
 
 
     </header>
@@ -87,7 +198,7 @@
                     ma-header--transparent__block
                     pull-right">
 
-            <!-- User menu options dropdown -->
+            <! User menu options dropdown >
             <span uib-dropdown on-toggle="toggled(open)">
                 <a id="user-menu-options"
                    class="ma-header__block__btn
@@ -113,6 +224,7 @@
                     uib-dropdown-menu
                     role="menu"
                     aria-labelledby="user-menu-options">
+
                     <li class="ma-dropdown__option">
                         <a href="/page/users/edit/info"
                            class="ma-dropdown__option__btn"
@@ -121,12 +233,24 @@
                             %profile.teacher.edit_profile.button.text
                         </a>
                     </li>
+
                     <li class="ma-dropdown__option hidden">
                         <a ui-sref="page.userEditAgendaPage"
                            class="ma-dropdown__option__btn"
                            rel="nofollow"
                            href>
                             Edit Agenda</a>
+                    </li>
+
+                    <! Explore Option >
+                    <li class="ma-dropdown__option">
+                        <a href="/page/search"
+                           class="ma-dropdown__option__btn
+                                  text-capitalize"
+                           ng-click="vm.goToSearch('school');$event.preventDefault()"
+                           translate>
+                            %landing.explore.button.text
+                        </a>
                     </li>
 
                     <li class="ma-dropdown__option last-option">

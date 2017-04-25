@@ -200,6 +200,27 @@ module components.header {
 
 
         /**
+        * goToSearch
+        * @description - go to search page
+        * @function
+        * @param {string} target - Section user clicked
+        * @return {void}
+        */
+        goToSearch(target: string): void {
+            //CONSTANTS
+            const SEARCH_PAGE_STATE = 'page.searchPage';
+            const GOTO_MIXPANEL = 'Go to Search from dropdown header';
+            /************************/
+
+            //MIXPANEL
+            mixpanel.track(GOTO_MIXPANEL);
+
+            this.$state.go(SEARCH_PAGE_STATE, {target: target}, {reload: true});
+        }
+
+
+
+        /**
         * search
         * @description - TODO
         * @use - this.search('Colombia');

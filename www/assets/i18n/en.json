@@ -22,6 +22,7 @@
     "%global.join_now.button.text": "join now",
     "%global.sending.button.text": "sending...",
     "%global.logout.button.text": "log out",
+    "%global.home.button.text": "home",
 
     "%global.more.label.text": "+ More",
     "%global.email.label.text": "Email Address",
@@ -179,14 +180,14 @@
     "%modal.survey.description.text": "Which would you like the following functionality to be:",
     "%modal.survey.sent.title.text": "Your recommendation was sent!",
     "%modal.survey.sent.description.text": "Thanks for your recommendation, we'll review all recommendations received, and we'll be working on the most requested by all our users. We will be posting the new features on Twitter.",
-    "%modal.survey.help_text.text": "Press the option you want",
+    "%modal.survey.help_text.text": "Select the option you want",
 
     "__LANDING PAGE__": "",
     "legacy": "",
     "%landing.header.join.label.text": "Join as:",
     "%landing.puv": "Find a language Teacher / School",
     "%landing.puv.description": "Waysily is a free community-based platform that helps you find local language tutors / schools in your area.",
-    "%landing.explore.button.text": "EXPLORE",
+    "%landing.explore.button.text": "explore",
 
     "%landing.mission.title.text": "Our mission",
     "%landing.mission.description.text": "To give everyone the perfect place to find teachers, schools, and people around the world to learn a language.",
