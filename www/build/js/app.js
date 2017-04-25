@@ -12181,7 +12181,7 @@ var app;
             cache: false,
             params: {
                 title: 'Join as a teacher',
-                description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
+                description: 'Build a reputation, become visible and earn 340 USD on average doing what you most passionate about.',
                 url: 'https://www.waysily.com/page/users/edit/info',
                 robots: 'nofollow',
                 image: 'https://www.waysily.com/assets/images/waysily-shared.png',
