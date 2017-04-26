@@ -885,6 +885,13 @@ var app;
                             loading.className += ' hidden';
                         }
                     };
+                    FunctionsUtilService.prototype.toUrlFormat = function (value) {
+                        var valueParsed = '';
+                        var valueNormalized = '';
+                        valueNormalized = this.normalizeString(value);
+                        valueParsed = valueNormalized.toLowerCase().split(' ').join('-');
+                        return valueParsed;
+                    };
                     FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
                     FunctionsUtilService.$inject = ['$filter',
                         'dataConfig',
@@ -3667,6 +3674,7 @@ var app;
                     this.user = obj.user || '';
                     this.photo = obj.photo || '';
                     this.name = obj.name || '';
+                    this.aliasSchool = obj.aliasSchool || '';
                     this.email = obj.email || '';
                     this.about = obj.about || '';
                     this.website = obj.website || '';
@@ -3737,6 +3745,19 @@ var app;
                             throw 'Please supply school name';
                         }
                         this.name = name;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(School.prototype, "AliasSchool", {
+                    get: function () {
+                        return this.aliasSchool;
+                    },
+                    set: function (aliasSchool) {
+                        if (aliasSchool === undefined) {
+                            throw 'Please supply school aliasSchool';
+                        }
+                        this.aliasSchool = aliasSchool;
                     },
                     enumerable: true,
                     configurable: true
@@ -5366,6 +5387,22 @@ var app;
                     var url = this.SCHOOL_URI;
                     var deferred = this.$q.defer();
                     this.restApi.show({ url: url, id: id }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+                SchoolService.prototype.getSchoolByAlias = function (aliasSchool) {
+                    var self = this;
+                    var url = this.SCHOOL_URI + '/' + aliasSchool;
+                    var deferred = this.$q.defer();
+                    this.restApi.show({ url: url }).$promise
                         .then(function (response) {
                         deferred.resolve(response);
                     }, function (error) {
@@ -9738,7 +9775,7 @@ var app;
                         ctrl.hoverEvent(parseInt(attr.id), false);
                     });
                     elm.bind('click', function () {
-                        ctrl.goToDetails(parseInt(attr.id));
+                        ctrl.goToDetails(attr.alias);
                     });
                 };
                 MaSchoolResult.instance = function ($timeout) {
@@ -9799,12 +9836,12 @@ var app;
                     var schoolInstance = new app.models.school.School(school);
                     return this.SchoolService.schoolFeatureRatingAverage(schoolInstance);
                 };
-                SchoolResultController.prototype.goToDetails = function (containerId) {
-                    var GOTO_MIXPANEL = 'Go to School Details: ' + containerId;
+                SchoolResultController.prototype.goToDetails = function (aliasSchool) {
+                    var GOTO_MIXPANEL = 'Go to School Details: ' + aliasSchool;
                     mixpanel.track(GOTO_MIXPANEL);
                     this.isAuthenticated = this.AuthService.isAuthenticated();
                     if (this.isAuthenticated) {
-                        var url = this.$state.href('page.schoolProfilePage', { id: containerId });
+                        var url = this.$state.href('page.schoolProfilePage', { aliasSchool: aliasSchool });
                         window.open(url, '_blank');
                         return;
                     }
@@ -14544,7 +14581,7 @@ var app;
     function config($stateProvider) {
         $stateProvider
             .state('page.schoolProfilePage', {
-            url: '/schools/show/:id',
+            url: '/school/:aliasSchool',
             views: {
                 'container': {
                     templateUrl: 'app/pages/schoolProfilePage/schoolProfilePage.html',
@@ -14562,7 +14599,7 @@ var app;
                 requireLogin: true
             },
             params: {
-                id: null
+                aliasSchool: null
             },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = true;
@@ -14596,12 +14633,12 @@ var app;
                     this.activate();
                 };
                 SchoolProfilePageController.prototype.activate = function () {
-                    var ENTER_MIXPANEL = 'Enter: School Profile Page Id: ' + this.$stateParams.id;
+                    var ENTER_MIXPANEL = 'Enter: School Profile Page Id: ' + this.$stateParams.aliasSchool;
                     var self = this;
                     this._paymentMethodsList = this._buildPaymentMethodsClassList();
                     DEBUG && console.log('schoolProfilePage controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
-                    this.SchoolService.getSchoolById(this.$stateParams.id).then(function (response) {
+                    this.SchoolService.getSchoolByAlias(this.$stateParams.aliasSchool).then(function (response) {
                         self.data = new app.models.school.School(response);
                         self.mapConfig = self.functionsUtil.buildMapConfig([
                             {

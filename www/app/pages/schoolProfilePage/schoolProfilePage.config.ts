@@ -16,7 +16,7 @@
 
         $stateProvider
             .state('page.schoolProfilePage', {
-                url: '/schools/show/:id',
+                url: '/school/:aliasSchool',
                 views: {
                     'container': {
                         templateUrl: 'app/pages/schoolProfilePage/schoolProfilePage.html',
@@ -34,7 +34,7 @@
                     requireLogin: true
                 },
                 params: {
-                    id: null
+                    aliasSchool: null
                 },
                 onEnter: ['$rootScope', function ($rootScope) {
                     // Show/Hide header & footer

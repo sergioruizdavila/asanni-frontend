@@ -96,7 +96,7 @@
                  ng-repeat="item in ::rows"
                  ng-if="::vm.type === 'school'">
 
-                <ma-school-result data-id="{{::item.id}}">
+                <ma-school-result data-id="{{::item.id}}" data-alias="{{::item.aliasSchool}}">
                 </ma-school-result>
 
             </div>
