@@ -20,6 +20,7 @@ module app.models.school {
         private user: string;
         private photo: string;
         private name: string;
+        private aliasSchool: string;
         private email: string;
         private about: string;
         private website: string;
@@ -63,6 +64,7 @@ module app.models.school {
             this.user = obj.user || '';
             this.photo = obj.photo || '';
             this.name = obj.name || '';
+            this.aliasSchool = obj.aliasSchool || '';
             this.email = obj.email || '';
             this.about = obj.about || '';
             this.website = obj.website || '';
@@ -126,6 +128,15 @@ module app.models.school {
         set Name(name: string) {
             if (name === undefined) { throw 'Please supply school name'; }
             this.name = name;
+        }
+
+        get AliasSchool() {
+            return this.aliasSchool;
+        }
+
+        set AliasSchool(aliasSchool: string) {
+            if (aliasSchool === undefined) { throw 'Please supply school aliasSchool'; }
+            this.aliasSchool = aliasSchool;
         }
 
         get Email() {

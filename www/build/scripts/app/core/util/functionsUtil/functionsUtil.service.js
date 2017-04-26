@@ -452,6 +452,13 @@ var app;
                             loading.className += ' hidden';
                         }
                     };
+                    FunctionsUtilService.prototype.toUrlFormat = function (value) {
+                        var valueParsed = '';
+                        var valueNormalized = '';
+                        valueNormalized = this.normalizeString(value);
+                        valueParsed = valueNormalized.toLowerCase().split(' ').join('-');
+                        return valueParsed;
+                    };
                     FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
                     FunctionsUtilService.$inject = ['$filter',
                         'dataConfig',

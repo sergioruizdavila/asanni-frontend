@@ -63,7 +63,7 @@ module app.pages.searchPage {
                 ctrl.hoverEvent(parseInt(attr.id), false);
             });
             elm.bind('click', function() {
-                ctrl.goToDetails(parseInt(attr.id));
+                ctrl.goToDetails(attr.alias);
             });
 
         }
@@ -231,14 +231,14 @@ module app.pages.searchPage {
             /**
             * goToDetails
             * @description - when user clicked a specific result, go to details
-            * @use - this.goToDetails('2');
+            * @use - this.goToDetails('colombia-immersion-2');
             * @function
-            * @param {string} containerId - entity id (school)
+            * @param {string} aliasSchool - entity aliasSchool (school)
             * @return {void}
             */
 
-            goToDetails(containerId: string): void {
-                const GOTO_MIXPANEL = 'Go to School Details: ' + containerId;
+            goToDetails(aliasSchool: string): void {
+                const GOTO_MIXPANEL = 'Go to School Details: ' + aliasSchool;
                 /************************/
 
                 //MIXPANEL
@@ -249,7 +249,7 @@ module app.pages.searchPage {
 
                 //If user is logged, go to createTeacher page
                 if(this.isAuthenticated) {
-                    var url = this.$state.href('page.schoolProfilePage', {id: containerId});
+                    var url = this.$state.href('page.schoolProfilePage', {aliasSchool: aliasSchool});
                     window.open(url,'_blank');
                     return
                 } else {

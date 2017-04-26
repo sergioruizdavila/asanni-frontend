@@ -37,6 +37,7 @@ module app.core.util.functionsUtil {
         assignAccommodationAmenitieIconClass: (amenitie: string) => string;
         showMainLoading:() => void;
         hideMainLoading:() => void;
+        toUrlFormat:(value) => string;
 
     }
 
@@ -917,6 +918,31 @@ module app.core.util.functionsUtil {
             if(loading){
                 loading.className += ' hidden';
             }
+        }
+
+
+        /**
+        * toUrlFormat
+        * @description - take a string and formatting it to url format ('colombia-immersion')
+        * @use - this.FunctionsUtilService.normalizeString('Colombia Immersion');
+        * @function
+        * @param {string} value - string to parse
+        * @return {string} string parsed (e.g. colombia-immersion)
+        */
+        /*TODO: No se ha probado aún, será necesario usarlo cuando se vayan a cargar
+         escuelas u otra entidad desde Waysily, por ahora no es necesario.*/
+        toUrlFormat(value: string): string {
+            //VARIABLES
+            let valueParsed = '';
+            let valueNormalized = '';
+
+            //Remove special characters
+            valueNormalized = this.normalizeString(value);
+            //To lower case, split and join with - between them
+            valueParsed = valueNormalized.toLowerCase().split(' ').join('-');
+
+            return valueParsed;
+
         }
 
 

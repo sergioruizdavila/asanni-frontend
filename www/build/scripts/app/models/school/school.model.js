@@ -19,6 +19,7 @@ var app;
                     this.user = obj.user || '';
                     this.photo = obj.photo || '';
                     this.name = obj.name || '';
+                    this.aliasSchool = obj.aliasSchool || '';
                     this.email = obj.email || '';
                     this.about = obj.about || '';
                     this.website = obj.website || '';
@@ -89,6 +90,19 @@ var app;
                             throw 'Please supply school name';
                         }
                         this.name = name;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(School.prototype, "AliasSchool", {
+                    get: function () {
+                        return this.aliasSchool;
+                    },
+                    set: function (aliasSchool) {
+                        if (aliasSchool === undefined) {
+                            throw 'Please supply school aliasSchool';
+                        }
+                        this.aliasSchool = aliasSchool;
                     },
                     enumerable: true,
                     configurable: true

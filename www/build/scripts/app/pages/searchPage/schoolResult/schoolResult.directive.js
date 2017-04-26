@@ -34,7 +34,7 @@ var app;
                         ctrl.hoverEvent(parseInt(attr.id), false);
                     });
                     elm.bind('click', function () {
-                        ctrl.goToDetails(parseInt(attr.id));
+                        ctrl.goToDetails(attr.alias);
                     });
                 };
                 MaSchoolResult.instance = function ($timeout) {
@@ -95,12 +95,12 @@ var app;
                     var schoolInstance = new app.models.school.School(school);
                     return this.SchoolService.schoolFeatureRatingAverage(schoolInstance);
                 };
-                SchoolResultController.prototype.goToDetails = function (containerId) {
-                    var GOTO_MIXPANEL = 'Go to School Details: ' + containerId;
+                SchoolResultController.prototype.goToDetails = function (aliasSchool) {
+                    var GOTO_MIXPANEL = 'Go to School Details: ' + aliasSchool;
                     mixpanel.track(GOTO_MIXPANEL);
                     this.isAuthenticated = this.AuthService.isAuthenticated();
                     if (this.isAuthenticated) {
-                        var url = this.$state.href('page.schoolProfilePage', { id: containerId });
+                        var url = this.$state.href('page.schoolProfilePage', { aliasSchool: aliasSchool });
                         window.open(url, '_blank');
                         return;
                     }

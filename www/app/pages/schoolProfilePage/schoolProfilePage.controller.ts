@@ -23,7 +23,7 @@ module app.pages.schoolProfilePage {
     /*    STATEPARAMS INTERFACES    */
     /********************************/
     export interface ISchoolParams extends ng.ui.IStateParamsService {
-        id: string;
+        aliasSchool: string;
     }
 
 
@@ -85,7 +85,7 @@ module app.pages.schoolProfilePage {
         /*-- ACTIVATE METHOD --*/
         activate(): void {
             //CONSTANTS
-            const ENTER_MIXPANEL = 'Enter: School Profile Page Id: ' + this.$stateParams.id;
+            const ENTER_MIXPANEL = 'Enter: School Profile Page Id: ' + this.$stateParams.aliasSchool;
             //VARIABLES
             let self = this;
 
@@ -98,7 +98,7 @@ module app.pages.schoolProfilePage {
             mixpanel.track(ENTER_MIXPANEL);
 
             // Get School information
-            this.SchoolService.getSchoolById(this.$stateParams.id).then(
+            this.SchoolService.getSchoolByAlias(this.$stateParams.aliasSchool).then(
                 function(response) {
                     self.data = new app.models.school.School(response);
                     //Build location map

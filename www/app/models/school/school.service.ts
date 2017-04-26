@@ -14,6 +14,7 @@ module app.models.school {
     /**********************************/
     export interface ISchoolService {
         getSchoolById: (id: string) => angular.IPromise<any>;
+        getSchoolByAlias: (aliasSchool: string) => angular.IPromise<any>;
         getSchoolByUserId: (userId: string) => angular.IPromise<any>;
         getAllSchools: () => angular.IPromise<any>;
         getAllSchoolsByStatus: (status) => angular.IPromise<any>;
@@ -92,6 +93,39 @@ module app.models.school {
             let deferred = this.$q.defer();
 
             this.restApi.show({url: url, id: id}).$promise
+                .then(
+                    function(response) {
+                        deferred.resolve(response);
+                    },
+                    function(error) {
+                        DEBUG && console.error(error);
+                        if(error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    }
+                );
+
+            return deferred.promise;
+        }
+
+
+
+        /**
+        * getSchoolByAlias
+        * @description - get school by Alias School
+        * @use - this.SchoolService.getSchoolByAlias('colombia-immersion-2');
+        * @function
+        * @param {string} aliasSchool - alias school value
+        * @return {angular.IPromise<any>} promise - return school by Alias
+        */
+        getSchoolByAlias(aliasSchool: string): angular.IPromise<any> {
+            //VARIABLES
+            let self = this;
+            let url = this.SCHOOL_URI + '/' + aliasSchool;
+            let deferred = this.$q.defer();
+
+            this.restApi.show({url: url}).$promise
                 .then(
                     function(response) {
                         deferred.resolve(response);
