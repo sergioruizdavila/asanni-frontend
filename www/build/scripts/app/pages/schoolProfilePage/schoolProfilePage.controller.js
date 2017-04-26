@@ -20,12 +20,12 @@ var app;
                     this.activate();
                 };
                 SchoolProfilePageController.prototype.activate = function () {
-                    var ENTER_MIXPANEL = 'Enter: School Profile Page Id: ' + this.$stateParams.id;
+                    var ENTER_MIXPANEL = 'Enter: School Profile Page Id: ' + this.$stateParams.aliasSchool;
                     var self = this;
                     this._paymentMethodsList = this._buildPaymentMethodsClassList();
                     DEBUG && console.log('schoolProfilePage controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
-                    this.SchoolService.getSchoolById(this.$stateParams.id).then(function (response) {
+                    this.SchoolService.getSchoolByAlias(this.$stateParams.aliasSchool).then(function (response) {
                         self.data = new app.models.school.School(response);
                         self.mapConfig = self.functionsUtil.buildMapConfig([
                             {
