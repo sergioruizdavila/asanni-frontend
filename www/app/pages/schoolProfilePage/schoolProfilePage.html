@@ -30,15 +30,15 @@
          itemscope
          itemtype="http://schema.org/aggregateRating">
         <span itemprop="ratingValue">
-            4.6733255249002
+            {{vm._ratingFeatureAverage(vm.data)}}
         </span>
         <span itemprop="reviewCount">
-            50
+            57
         </span>
         reviews
     </div>
     <meta itemprop="description"
-          content="Esta escuela tiene una atmosfera de 4.5, tiene muchas comodidades, pero sobretodos ofrece una inmersión asombrosa.">
+          content="{{description}}">
     <meta itemprop="image" content="{{vm.data.Photo}}">
 
 

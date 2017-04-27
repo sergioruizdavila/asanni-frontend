@@ -47,6 +47,7 @@ module app.pages.schoolProfilePage {
 
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = [
+            '$rootScope',
             'mainApp.models.school.SchoolService',
             'mainApp.core.util.FunctionsUtilService',
             '$state',
@@ -57,6 +58,7 @@ module app.pages.schoolProfilePage {
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
+            private $rootScope: app.core.interfaces.IMainAppRootScope,
             private SchoolService: app.models.school.ISchoolService,
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private $state: ng.ui.IStateService,
@@ -101,6 +103,9 @@ module app.pages.schoolProfilePage {
             this.SchoolService.getSchoolByAlias(this.$stateParams.aliasSchool).then(
                 function(response) {
                     self.data = new app.models.school.School(response);
+                    //Build meta tags
+                    self._buildMetaTags(self.data);
+
                     //Build location map
                     self.mapConfig = self.functionsUtil.buildMapConfig(
                         [
@@ -127,6 +132,27 @@ module app.pages.schoolProfilePage {
         /**********************************/
         /*            METHODS             */
         /**********************************/
+
+        /**
+        * _buildMetaTags
+        * @description - this method is launched when user press some url school button
+        * @use - this.FunctionsUtilService.goToSite('http://www.school.com');
+        * @function
+        * @param {string} url - School urls such as: facebook, twitter, instagram,
+        * email, website, etc.
+        * @return {void}
+        */
+
+        private _buildMetaTags (school: app.models.school.School): void {
+            //VARIABLES
+            let metaTags = this.SchoolService.buildMetaTagValue(school);
+
+            this.$rootScope.title = metaTags.title;
+            this.$rootScope.description = metaTags.description;
+            this.$rootScope.url = metaTags.url;
+            this.$rootScope.robots = metaTags.robots;
+            this.$rootScope.image = metaTags.image;
+        }
 
 
         /**

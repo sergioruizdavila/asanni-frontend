@@ -5372,10 +5372,11 @@ var app;
         (function (school_1) {
             'use strict';
             var SchoolService = (function () {
-                function SchoolService(restApi, functionsUtil, AuthService, $q) {
+                function SchoolService(restApi, functionsUtil, AuthService, dataConfig, $q) {
                     this.restApi = restApi;
                     this.functionsUtil = functionsUtil;
                     this.AuthService = AuthService;
+                    this.dataConfig = dataConfig;
                     this.$q = $q;
                     DEBUG && console.log('schools service instanced');
                     this.SCHOOL_URI = 'schools';
@@ -5508,6 +5509,27 @@ var app;
                     }
                     return minorValue;
                 };
+                SchoolService.prototype.getMinorSchoolPackagePrice = function (pkg) {
+                    var minorValue = null;
+                    var price = 0;
+                    if (pkg.Active) {
+                        for (var i = 0; i < pkg.PackageOption.length; i++) {
+                            if (pkg.PackageOption[i].Active) {
+                                price = pkg.PackageOption[i].Price;
+                                if (minorValue) {
+                                    minorValue = price < minorValue ? price : minorValue;
+                                }
+                                else {
+                                    minorValue = price;
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        minorValue = 0;
+                    }
+                    return minorValue;
+                };
                 SchoolService.prototype.schoolFeatureRatingAverage = function (school) {
                     var middleValue = 2;
                     var atmosphere = school.Atmosphere > 0 ? school.Atmosphere : middleValue;
@@ -5520,11 +5542,46 @@ var app;
                     average = this.functionsUtil.averageNumbersArray(newArr);
                     return average;
                 };
+                SchoolService.prototype.buildMetaTagValue = function (school) {
+                    var imageUrl = 'https://www.waysily.com/assets/images/waysily-shared.png';
+                    var metaTags = { title: '', description: '', image: '', robots: '', url: '' };
+                    metaTags.title = school.Name;
+                    if (school.Price.Active) {
+                        var minorPrice = this.getMinorSchoolPrice(school.Price);
+                        metaTags.description = 'Classes from $' + minorPrice + ' per week. ';
+                    }
+                    else {
+                        var packageMinorPrice = this.getMinorSchoolPackagePrice(school.Package);
+                        metaTags.description = 'Package from $' + packageMinorPrice + '. ';
+                    }
+                    if (school.Immersion.Active) {
+                        metaTags.description += 'Offers immersion, language exchange';
+                    }
+                    if (school.Accommodation.Active) {
+                        metaTags.description += ', accomodation';
+                    }
+                    if (school.Volunteering.Active) {
+                        metaTags.description += ', volunteering';
+                    }
+                    if (school.Tour.Active) {
+                        var city = school.Location.City;
+                        metaTags.description += ', tour in the city of ' + city + '. ';
+                    }
+                    else {
+                        metaTags.description += '. ';
+                    }
+                    metaTags.description += 'Find everything ' + school.Name + ' offers to learn a language.';
+                    metaTags.image = imageUrl;
+                    metaTags.robots = 'follow,index';
+                    metaTags.url = 'https://' + this.dataConfig.domain + '/page/school/' + school.AliasSchool;
+                    return metaTags;
+                };
                 SchoolService.serviceId = 'mainApp.models.school.SchoolService';
                 SchoolService.$inject = [
                     'mainApp.core.restApi.restApiService',
                     'mainApp.core.util.FunctionsUtilService',
                     'mainApp.auth.AuthService',
+                    'dataConfig',
                     '$q'
                 ];
                 return SchoolService;
@@ -14591,9 +14648,9 @@ var app;
             },
             params: {
                 aliasSchool: null,
-                title: 'Colombia Immersion Spanish School',
-                description: 'Offer classes from $100 per week, volunteering, immersion, accomodation, discounts, package.',
-                url: 'https://www.waysily.com/page/school/colombia-immersion-spanish-school-20',
+                title: 'Compare and find the best language school',
+                description: 'The best way to fit in a country when you travel is by learning their language. Find a language school and immerse yourself in the local culture.',
+                url: 'https://www.waysily.com/page/school',
                 image: 'https://s3.amazonaws.com/waysily-img/school-photo-prd/20-34d2e9a3-6a6a-424d-bbcf-da5966c2b51d.jpg',
                 robots: 'follow,index'
             },
@@ -14618,7 +14675,8 @@ var app;
         var schoolProfilePage;
         (function (schoolProfilePage) {
             var SchoolProfilePageController = (function () {
-                function SchoolProfilePageController(SchoolService, functionsUtil, $state, $stateParams, $filter) {
+                function SchoolProfilePageController($rootScope, SchoolService, functionsUtil, $state, $stateParams, $filter) {
+                    this.$rootScope = $rootScope;
                     this.SchoolService = SchoolService;
                     this.functionsUtil = functionsUtil;
                     this.$state = $state;
@@ -14640,6 +14698,7 @@ var app;
                     mixpanel.track(ENTER_MIXPANEL);
                     this.SchoolService.getSchoolByAlias(this.$stateParams.aliasSchool).then(function (response) {
                         self.data = new app.models.school.School(response);
+                        self._buildMetaTags(self.data);
                         self.mapConfig = self.functionsUtil.buildMapConfig([
                             {
                                 id: self.data.Location.Position.Id,
@@ -14653,6 +14712,14 @@ var app;
                         ], 'location-marker-map', { lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng) }, null);
                         self.loading = false;
                     });
+                };
+                SchoolProfilePageController.prototype._buildMetaTags = function (school) {
+                    var metaTags = this.SchoolService.buildMetaTagValue(school);
+                    this.$rootScope.title = metaTags.title;
+                    this.$rootScope.description = metaTags.description;
+                    this.$rootScope.url = metaTags.url;
+                    this.$rootScope.robots = metaTags.robots;
+                    this.$rootScope.image = metaTags.image;
                 };
                 SchoolProfilePageController.prototype.goToSite = function (url) {
                     var EMAIL_REGEX = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
@@ -14729,6 +14796,7 @@ var app;
                 };
                 SchoolProfilePageController.controllerId = 'mainApp.pages.schoolProfilePage.SchoolProfilePageController';
                 SchoolProfilePageController.$inject = [
+                    '$rootScope',
                     'mainApp.models.school.SchoolService',
                     'mainApp.core.util.FunctionsUtilService',
                     '$state',

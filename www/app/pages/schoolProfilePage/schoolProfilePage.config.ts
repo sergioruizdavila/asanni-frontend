@@ -26,9 +26,9 @@
                 },
                 params: {
                     aliasSchool: null,
-                    title: 'Colombia Immersion Spanish School',
-                    description: 'Offer classes from $100 per week, volunteering, immersion, accomodation, discounts, package.',
-                    url: 'https://www.waysily.com/page/school/colombia-immersion-spanish-school-20',
+                    title: 'Compare and find the best language school',
+                    description: 'The best way to fit in a country when you travel is by learning their language. Find a language school and immerse yourself in the local culture.',
+                    url: 'https://www.waysily.com/page/school',
                     image: 'https://s3.amazonaws.com/waysily-img/school-photo-prd/20-34d2e9a3-6a6a-424d-bbcf-da5966c2b51d.jpg',
                     robots: 'follow,index'
                 },
