@@ -138,6 +138,18 @@ module app.core.interfaces {
         message: string
     }
 
+
+    /********************************/
+    /*    BIRTHDATE VALIDATE FORM   */
+    /********************************/
+    export interface IMetaTag {
+        title: string,
+        description: string,
+        url: string,
+        image: string,
+        robots: string
+    }
+
 }
 
 

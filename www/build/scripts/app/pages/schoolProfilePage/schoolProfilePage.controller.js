@@ -5,7 +5,8 @@ var app;
         var schoolProfilePage;
         (function (schoolProfilePage) {
             var SchoolProfilePageController = (function () {
-                function SchoolProfilePageController(SchoolService, functionsUtil, $state, $stateParams, $filter) {
+                function SchoolProfilePageController($rootScope, SchoolService, functionsUtil, $state, $stateParams, $filter) {
+                    this.$rootScope = $rootScope;
                     this.SchoolService = SchoolService;
                     this.functionsUtil = functionsUtil;
                     this.$state = $state;
@@ -27,6 +28,7 @@ var app;
                     mixpanel.track(ENTER_MIXPANEL);
                     this.SchoolService.getSchoolByAlias(this.$stateParams.aliasSchool).then(function (response) {
                         self.data = new app.models.school.School(response);
+                        self._buildMetaTags(self.data);
                         self.mapConfig = self.functionsUtil.buildMapConfig([
                             {
                                 id: self.data.Location.Position.Id,
@@ -40,6 +42,14 @@ var app;
                         ], 'location-marker-map', { lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng) }, null);
                         self.loading = false;
                     });
+                };
+                SchoolProfilePageController.prototype._buildMetaTags = function (school) {
+                    var metaTags = this.SchoolService.buildMetaTagValue(school);
+                    this.$rootScope.title = metaTags.title;
+                    this.$rootScope.description = metaTags.description;
+                    this.$rootScope.url = metaTags.url;
+                    this.$rootScope.robots = metaTags.robots;
+                    this.$rootScope.image = metaTags.image;
                 };
                 SchoolProfilePageController.prototype.goToSite = function (url) {
                     var EMAIL_REGEX = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
@@ -116,6 +126,7 @@ var app;
                 };
                 SchoolProfilePageController.controllerId = 'mainApp.pages.schoolProfilePage.SchoolProfilePageController';
                 SchoolProfilePageController.$inject = [
+                    '$rootScope',
                     'mainApp.models.school.SchoolService',
                     'mainApp.core.util.FunctionsUtilService',
                     '$state',

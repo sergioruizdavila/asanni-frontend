@@ -6,10 +6,11 @@ var app;
         (function (school_1) {
             'use strict';
             var SchoolService = (function () {
-                function SchoolService(restApi, functionsUtil, AuthService, $q) {
+                function SchoolService(restApi, functionsUtil, AuthService, dataConfig, $q) {
                     this.restApi = restApi;
                     this.functionsUtil = functionsUtil;
                     this.AuthService = AuthService;
+                    this.dataConfig = dataConfig;
                     this.$q = $q;
                     DEBUG && console.log('schools service instanced');
                     this.SCHOOL_URI = 'schools';
@@ -142,6 +143,27 @@ var app;
                     }
                     return minorValue;
                 };
+                SchoolService.prototype.getMinorSchoolPackagePrice = function (pkg) {
+                    var minorValue = null;
+                    var price = 0;
+                    if (pkg.Active) {
+                        for (var i = 0; i < pkg.PackageOption.length; i++) {
+                            if (pkg.PackageOption[i].Active) {
+                                price = pkg.PackageOption[i].Price;
+                                if (minorValue) {
+                                    minorValue = price < minorValue ? price : minorValue;
+                                }
+                                else {
+                                    minorValue = price;
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        minorValue = 0;
+                    }
+                    return minorValue;
+                };
                 SchoolService.prototype.schoolFeatureRatingAverage = function (school) {
                     var middleValue = 2;
                     var atmosphere = school.Atmosphere > 0 ? school.Atmosphere : middleValue;
@@ -154,11 +176,46 @@ var app;
                     average = this.functionsUtil.averageNumbersArray(newArr);
                     return average;
                 };
+                SchoolService.prototype.buildMetaTagValue = function (school) {
+                    var imageUrl = 'https://www.waysily.com/assets/images/waysily-shared.png';
+                    var metaTags = { title: '', description: '', image: '', robots: '', url: '' };
+                    metaTags.title = school.Name;
+                    if (school.Price.Active) {
+                        var minorPrice = this.getMinorSchoolPrice(school.Price);
+                        metaTags.description = 'Classes from $' + minorPrice + ' per week. ';
+                    }
+                    else {
+                        var packageMinorPrice = this.getMinorSchoolPackagePrice(school.Package);
+                        metaTags.description = 'Package from $' + packageMinorPrice + '. ';
+                    }
+                    if (school.Immersion.Active) {
+                        metaTags.description += 'Offers Immersion, language exchange';
+                    }
+                    if (school.Accommodation.Active) {
+                        metaTags.description += ', accomodation';
+                    }
+                    if (school.Volunteering.Active) {
+                        metaTags.description += ', volunteering';
+                    }
+                    if (school.Tour.Active) {
+                        var city = school.Location.City;
+                        metaTags.description += ', tour in the city of ' + city + '. ';
+                    }
+                    else {
+                        metaTags.description += '. ';
+                    }
+                    metaTags.description += 'Find everything ' + school.Name + ' offers to learn a language.';
+                    metaTags.image = imageUrl;
+                    metaTags.robots = 'follow,index';
+                    metaTags.url = 'https://' + this.dataConfig.domain + '/page/school/' + school.AliasSchool;
+                    return metaTags;
+                };
                 SchoolService.serviceId = 'mainApp.models.school.SchoolService';
                 SchoolService.$inject = [
                     'mainApp.core.restApi.restApiService',
                     'mainApp.core.util.FunctionsUtilService',
                     'mainApp.auth.AuthService',
+                    'dataConfig',
                     '$q'
                 ];
                 return SchoolService;

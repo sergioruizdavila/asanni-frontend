@@ -20,6 +20,7 @@ module app.models.school {
         getAllSchoolsByStatus: (status) => angular.IPromise<any>;
         getMinorSchoolPrice: (prices: app.models.school.Price) => number;
         schoolFeatureRatingAverage: (school: app.models.school.School) => number;
+        buildMetaTagValue: (school: app.models.school.School) => app.core.interfaces.IMetaTag;
     }
 
     export interface ISchoolQueryObject {
@@ -51,6 +52,7 @@ module app.models.school {
             'mainApp.core.restApi.restApiService',
             'mainApp.core.util.FunctionsUtilService',
             'mainApp.auth.AuthService',
+            'dataConfig',
             '$q'
         ];
 
@@ -62,6 +64,7 @@ module app.models.school {
             private restApi: app.core.restApi.IRestApi,
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private AuthService: app.auth.IAuthService,
+            private dataConfig: IDataConfig,
             private $q: angular.IQService) {
 
             //LOG
@@ -298,6 +301,40 @@ module app.models.school {
 
 
         /**
+        * getMinorSchoolPackagePrice
+        * @description - get the minor package price of school
+        * @function
+        * @param {app.models.school.Package} pkg - school's package object
+        * @return {number} return minor package price value
+        */
+        getMinorSchoolPackagePrice(pkg: app.models.school.Package): number {
+            // VARIABLES
+            let minorValue = null;
+            let price = 0;
+
+            if(pkg.Active) {
+                for (let i = 0; i < pkg.PackageOption.length; i++) {
+
+                    if(pkg.PackageOption[i].Active) {
+                        price = pkg.PackageOption[i].Price;
+                        if(minorValue) {
+                            minorValue = price < minorValue ? price : minorValue;
+                        } else {
+                            minorValue = price;
+                        }
+                    }
+
+                }
+            } else {
+                minorValue = 0;
+            }
+
+            return minorValue;
+        }
+
+
+
+        /**
         * schoolFeatureRatingAverage
         * @description - Calculate school feature rating average
         * @function
@@ -324,6 +361,67 @@ module app.models.school {
             average = this.functionsUtil.averageNumbersArray(newArr);
 
             return average;
+        }
+
+
+
+        /**
+        * buildMetaTagValue
+        * @description - Build meta tags on school entity
+        * @function
+        * @param {app.models.school.School} school - School Object
+        * @return {app.core.interfaces.IMetaTag} metaTags - meta tags object
+        */
+
+        buildMetaTagValue (school: app.models.school.School): app.core.interfaces.IMetaTag {
+            //CONSTANTS
+            const imageUrl = 'https://www.waysily.com/assets/images/waysily-shared.png';
+            //VARIABLES
+            let metaTags: app.core.interfaces.IMetaTag = {title:'',description:'',image:'',robots:'', url:''};
+
+            //Build Title
+            metaTags.title = school.Name;
+
+            //Build description
+            if(school.Price.Active) {
+                let minorPrice = this.getMinorSchoolPrice(school.Price);
+                metaTags.description = 'Classes from $' + minorPrice + ' per week. ';
+            } else {
+                let packageMinorPrice = this.getMinorSchoolPackagePrice(school.Package);
+                metaTags.description = 'Package from $' + packageMinorPrice + '. ';
+            }
+
+            if(school.Immersion.Active) {
+                metaTags.description += 'Offers immersion, language exchange';
+            }
+
+            if(school.Accommodation.Active) {
+                metaTags.description += ', accomodation';
+            }
+
+            if(school.Volunteering.Active) {
+                metaTags.description += ', volunteering';
+            }
+
+            if(school.Tour.Active) {
+                let city = school.Location.City;
+                metaTags.description += ', tour in the city of ' + city + '. ';
+            } else {
+                metaTags.description += '. ';
+            }
+
+            metaTags.description += 'Find everything ' + school.Name + ' offers to learn a language.';
+
+            //Build image url
+            metaTags.image = imageUrl;
+
+            //Build robots
+            metaTags.robots = 'follow,index';
+
+            //Build canonical url
+            metaTags.url = 'https://' + this.dataConfig.domain + '/page/school/' + school.AliasSchool;
+
+            return metaTags;
         }
 
     }
