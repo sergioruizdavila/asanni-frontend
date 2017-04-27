@@ -14594,7 +14594,7 @@ var app;
                 title: 'Colombia Immersion Spanish School',
                 description: 'Offer classes from $100 per week, volunteering, immersion, accomodation, discounts, package.',
                 url: 'https://www.waysily.com/page/school/colombia-immersion-spanish-school-20',
-                image: 'https://www.waysily.com/assets/images/waysily-shared.png',
+                image: 'https://s3.amazonaws.com/waysily-img/school-photo-prd/20-34d2e9a3-6a6a-424d-bbcf-da5966c2b51d.jpg',
                 robots: 'follow,index'
             },
             parent: 'page',
