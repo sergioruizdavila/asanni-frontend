@@ -14586,20 +14586,20 @@ var app;
                 'container': {
                     templateUrl: 'app/pages/schoolProfilePage/schoolProfilePage.html',
                     controller: 'mainApp.pages.schoolProfilePage.SchoolProfilePageController',
-                    controllerAs: 'vm',
-                    resolve: {
-                        waitForAuth: ['mainApp.auth.AuthService', function (AuthService) {
-                                return AuthService.autoRefreshToken();
-                            }]
-                    }
+                    controllerAs: 'vm'
                 }
+            },
+            params: {
+                aliasSchool: null,
+                title: 'Colombia Immersion Spanish School',
+                description: 'Offer classes from $100 per week, volunteering, immersion, accomodation, discounts, package.',
+                url: 'https://www.waysily.com/page/school/colombia-immersion-spanish-school-20',
+                image: 'https://www.waysily.com/assets/images/waysily-shared.png',
+                robots: 'follow,index'
             },
             parent: 'page',
             data: {
-                requireLogin: true
-            },
-            params: {
-                aliasSchool: null
+                requireLogin: false
             },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = true;
