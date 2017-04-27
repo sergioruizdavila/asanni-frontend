@@ -189,7 +189,7 @@ var app;
                         metaTags.description = 'Package from $' + packageMinorPrice + '. ';
                     }
                     if (school.Immersion.Active) {
-                        metaTags.description += 'Offers Immersion, language exchange';
+                        metaTags.description += 'Offers immersion, language exchange';
                     }
                     if (school.Accommodation.Active) {
                         metaTags.description += ', accomodation';
