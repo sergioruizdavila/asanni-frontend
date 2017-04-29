@@ -690,7 +690,7 @@
     "__AMENITIES ACCOMMODATION__": "",
     "%amenities.accommodation.1": "Cuarto privado",
     "%amenities.accommodation.2": "Cuarto compartido",
-    "%amenities.accommodation.3": "baño privado",
+    "%amenities.accommodation.3": "Baño privado",
     "%amenities.accommodation.4": "Desayuno",
     "%amenities.accommodation.5": "Almuerzo",
     "%amenities.accommodation.6": "Cenar",
@@ -705,6 +705,7 @@
     "%amenities.accommodation.15": "Cocina",
     "%amenities.accommodation.16": "Piscina",
     "%amenities.accommodation.17": "2 Camas",
+    "%amenities.accommodation.18": "Baño compartido",
 
     "__WORKEXCHANGE CATEGORIES__": "",
     "%work_exchange.category.1": "Alojamiento",
