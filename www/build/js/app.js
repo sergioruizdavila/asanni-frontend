@@ -9728,22 +9728,19 @@ var app;
                 .module('mainApp.pages.searchPage')
                 .directive(MaTeacherResult.directiveId, MaTeacherResult.instance);
             var TeacherResultController = (function () {
-                function TeacherResultController(functionsUtil, $uibModal, dataConfig, $filter, $state, $rootScope) {
+                function TeacherResultController(functionsUtil, $filter, $state, $rootScope) {
                     this.functionsUtil = functionsUtil;
-                    this.$uibModal = $uibModal;
-                    this.dataConfig = dataConfig;
                     this.$filter = $filter;
                     this.$state = $state;
                     this.$rootScope = $rootScope;
                     this.init();
                 }
                 TeacherResultController.prototype.init = function () {
-                    this.form = {};
                     this._hoverDetail = [];
                     this.activate();
                 };
                 TeacherResultController.prototype.activate = function () {
-                    console.log('teacherResult controller actived');
+                    DEBUG && console.log('teacherResult controller actived');
                 };
                 TeacherResultController.prototype.goToDetails = function (containerId) {
                     var url = this.$state.href('page.teacherProfilePage', { id: containerId });
@@ -9779,8 +9776,6 @@ var app;
                 TeacherResultController.controllerId = 'mainApp.pages.searchPage.TeacherResultController';
                 TeacherResultController.$inject = [
                     'mainApp.core.util.FunctionsUtilService',
-                    '$uibModal',
-                    'dataConfig',
                     '$filter',
                     '$state',
                     '$rootScope'

@@ -93,9 +93,6 @@ module app.pages.searchPage {
             /*-- INJECT DEPENDENCIES --*/
             static $inject = [
                 'mainApp.core.util.FunctionsUtilService',
-                '$uibModal',
-                'dataConfig',
-                '$filter',
                 '$state',
                 '$rootScope'
             ];
@@ -105,9 +102,6 @@ module app.pages.searchPage {
             /*           CONSTRUCTOR          */
             /**********************************/
             constructor(private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
-                        private $uibModal: ng.ui.bootstrap.IModalService,
-                        private dataConfig: IDataConfig,
-                        private $filter: angular.IFilterService,
                         private $state: ng.ui.IStateService,
                         private $rootScope: angular.IRootScopeService) {
                 this.init();
@@ -116,11 +110,6 @@ module app.pages.searchPage {
 
             /*-- INITIALIZE METHOD --*/
             private init() {
-
-                //Init form
-                this.form = {
-
-                };
 
                 //Init hoverDetail array
                 this._hoverDetail = [];
@@ -131,7 +120,7 @@ module app.pages.searchPage {
             /*-- ACTIVATE METHOD --*/
             activate(): void {
                 //LOG
-                console.log('teacherResult controller actived');
+                DEBUG && console.log('teacherResult controller actived');
             }
 
 
@@ -208,7 +197,7 @@ module app.pages.searchPage {
             * @function
             * @param {string} id - container result id
             * @param {boolean} status - mouseover = true / mouseleave = false
-            */ 
+            */
 
             private _hoverEvent(id: string, status: boolean): void {
                 //CONSTANTS
