@@ -5,6 +5,7 @@ $search-info-padding: 0;
 $search-info-left: 0;
 $search-info-bottom: 0;
 $search-info-top: 61px;
+$search-info-background: #F6F6F6;
 
 $search-info-block-height: 520px;
 $search-info-block-background: $white;
@@ -58,7 +59,7 @@ $search-map-bottom: 0;
 $search-map-top: 61px;
 $search-map-padding: 0;
 
-$search-teacher-block-height: 500px;
+$search-teacher-block-height: 350px;
 
 $search-school-block-height: 350px;
 
@@ -77,6 +78,7 @@ $search-school-block-height: 350px;
         left: $search-info-left;
         bottom: $search-info-bottom;
         top: $search-info-top;
+        background-color: $search-info-background;
 
         &__block {
             text-align: left;
@@ -189,13 +191,19 @@ $search-school-block-height: 350px;
         &__block {
             cursor: pointer;
             height: $search-teacher-block-height;
-            overflow: hidden;
+
+            .ma-box__content {
+                position: relative;
+            }
 
             &--selected {
                 border: 1px solid #ccc;
             }
 
             &__avatar {
+                position: absolute;
+                width: 100%;
+                top: -50px;
 
                 &__container {
 
