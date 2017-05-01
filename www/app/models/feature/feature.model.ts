@@ -28,7 +28,7 @@ module app.models.feature {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('Feature Model instanced');
+            DEBUG && console.log('Feature Model instanced');
 
             //init properties
             this.id = obj.id;
