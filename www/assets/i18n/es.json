@@ -193,7 +193,8 @@
     "%landing.mission.description.text": "Darle a todos el lugar perfecto para encontrar profesores, escuelas y personas alrededor del mundo para aprender un idioma.",
     "%landing.mission.description.free.text": "(Gratis, y siempre lo será)",
 
-    "%landing.progress.title.text": "Nuestro progreso",
+    "%landing.best_countries.title.text": "Paises increibles",
+    "%landing.best_countries.description.text": "Los mejores destinos para los viajeros que quieren aprender un idioma",
 
     "%landing.recommend.cntry.text": "¿Qué país te gustaría que incluyéramos en Waysily?",
     "%landing.recommend.teacher.text.legacy": "¿Conoces algún profesor que recomendarias para que haga parte de Waysily?",
