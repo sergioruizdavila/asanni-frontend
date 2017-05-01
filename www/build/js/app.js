@@ -21,6 +21,7 @@
         'mainApp.pages.studentLandingPage',
         'mainApp.pages.teacherLandingPage',
         'mainApp.pages.landingPage',
+        'mainApp.pages.countryProfilePage',
         'mainApp.pages.resetPasswordPage',
         'mainApp.pages.searchPage',
         'mainApp.pages.createTeacherPage',
@@ -3609,6 +3610,7 @@ var app;
                     this.TEACHER_URI = 'teachers';
                     this.PROFILE_TEACHER_URI = 'teachers?profileId=';
                     this.STATUS_TEACHER_URI = 'teachers?status=';
+                    this.COUNTRY_TEACHER_URI = 'teachers?country=';
                     this.EXPERIENCES_URI = 'experiences';
                     this.EDUCATIONS_URI = 'educations';
                     this.CERTIFICATES_URI = 'certificates';
@@ -3655,6 +3657,22 @@ var app;
                 TeacherService.prototype.getAllTeachersByStatus = function (status) {
                     var self = this;
                     var url = this.STATUS_TEACHER_URI + status;
+                    var deferred = this.$q.defer();
+                    this.restApi.queryObject({ url: url }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+                TeacherService.prototype.getAllTeachersByCountry = function (countryId) {
+                    var self = this;
+                    var url = this.COUNTRY_TEACHER_URI + countryId;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {
@@ -5559,6 +5577,7 @@ var app;
                     this.SCHOOL_URI = 'schools';
                     this.USER_SCHOOL_URI = 'schools?userId=';
                     this.STATUS_SCHOOL_URI = 'schools?status=';
+                    this.COUNTRY_SCHOOL_URI = 'schools?country=';
                 }
                 SchoolService.prototype.getSchoolById = function (id) {
                     var self = this;
@@ -5634,6 +5653,22 @@ var app;
                 SchoolService.prototype.getAllSchoolsByStatus = function (status) {
                     var self = this;
                     var url = this.STATUS_SCHOOL_URI + status;
+                    var deferred = this.$q.defer();
+                    this.restApi.queryObject({ url: url }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+                SchoolService.prototype.getAllSchoolsByCountry = function (countryId) {
+                    var self = this;
+                    var url = this.COUNTRY_SCHOOL_URI + countryId;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {
@@ -9395,7 +9430,7 @@ var app;
                 LandingPageController.prototype.activate = function () {
                     var ENTER_MIXPANEL = 'Enter: Main Landing Page';
                     var self = this;
-                    console.log('landingPage controller actived');
+                    DEBUG && console.log('landingPage controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
                     if (this.$stateParams.id) {
                         var options = {
@@ -9445,8 +9480,15 @@ var app;
                     this.countryService.getAllCountries().then(function (response) {
                         self._countryContainers = response.results;
                     }, function (error) {
-                        Raven.captureMessage('Error landingPage.controller.js method: _buildCountryContainers');
+                        var ERROR_MESSAGE = 'Error landingPage.controller.js method: _buildCountryContainers';
+                        Raven.captureMessage(ERROR_MESSAGE, error);
                     });
+                };
+                LandingPageController.prototype.goToCountryDetails = function (aliasCountry) {
+                    var GOTO_MIXPANEL = 'Go to Country Details: ' + aliasCountry;
+                    mixpanel.track(GOTO_MIXPANEL);
+                    var url = this.$state.href('page.countryProfilePage', { aliasCountry: aliasCountry });
+                    window.open(url);
                 };
                 LandingPageController.prototype._sendCountryFeedback = function () {
                     var ENTER_MIXPANEL = 'Click: Send Country Feedback';
@@ -9653,6 +9695,121 @@ var app;
 })(app || (app = {}));
 
 //# sourceMappingURL=../../../../maps/app/pages/landingPage/landingPage.service.js.map
+
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.countryProfilePage', [])
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.countryProfilePage', {
+            url: '/country/:aliasCountry',
+            views: {
+                'container': {
+                    templateUrl: 'app/pages/countryProfilePage/countryProfilePage.html',
+                    controller: 'mainApp.pages.countryProfilePage.CountryProfilePageController',
+                    controllerAs: 'vm'
+                }
+            },
+            parent: 'page',
+            data: {
+                requireLogin: false
+            },
+            params: {
+                aliasCountry: null,
+                title: 'Use Waysily to find language teachers and schools, have a complete immersion',
+                description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
+                url: 'https://www.waysily.com/',
+                robots: 'follow,index',
+                image: 'https://www.waysily.com/assets/images/waysily-shared.png'
+            },
+            cache: false,
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = true;
+                    $rootScope.activeFooter = true;
+                }]
+        });
+    }
+})();
+
+//# sourceMappingURL=../../../../maps/app/pages/countryProfilePage/countryProfilePage.config.js.map
+
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var countryProfilePage;
+        (function (countryProfilePage) {
+            var CountryProfilePageController = (function () {
+                function CountryProfilePageController($scope, $state, $stateParams, dataConfig, AuthService, CountryService, SchoolService, TeacherService, $rootScope) {
+                    this.$scope = $scope;
+                    this.$state = $state;
+                    this.$stateParams = $stateParams;
+                    this.dataConfig = dataConfig;
+                    this.AuthService = AuthService;
+                    this.CountryService = CountryService;
+                    this.SchoolService = SchoolService;
+                    this.TeacherService = TeacherService;
+                    this.$rootScope = $rootScope;
+                    this._init();
+                }
+                CountryProfilePageController.prototype._init = function () {
+                    this.data = new app.models.country.Country();
+                    this.loading = true;
+                    this.activate();
+                };
+                CountryProfilePageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Country Profile Page: ' + this.$stateParams.aliasCountry;
+                    var self = this;
+                    DEBUG && console.log('countryProfilePage controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
+                    this.CountryService.getCountryByAlias(this.$stateParams.aliasCountry).then(function (response) {
+                        self.data = new app.models.country.Country(response);
+                        self._buildSchoolCards(self.data);
+                        self._buildTeacherCards(self.data);
+                        self.loading = false;
+                    });
+                };
+                CountryProfilePageController.prototype._buildTeacherCards = function (country) {
+                    var self = this;
+                    this.TeacherService.getAllTeachersByCountry(country.Id).then(function (response) {
+                        self._teachersList = response.results;
+                    }, function (error) {
+                        var ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _buildTeacherCards ';
+                        Raven.captureMessage(ERROR_MESSAGE, error);
+                    });
+                };
+                CountryProfilePageController.prototype._buildSchoolCards = function (country) {
+                    var self = this;
+                    this.SchoolService.getAllSchoolsByCountry(country.Id).then(function (response) {
+                        self._schoolsList = response.results;
+                    }, function (error) {
+                        var ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _buildSchoolCards ';
+                        Raven.captureMessage(ERROR_MESSAGE, error);
+                    });
+                };
+                CountryProfilePageController.controllerId = 'mainApp.pages.countryProfilePage.CountryProfilePageController';
+                CountryProfilePageController.$inject = ['$scope',
+                    '$state',
+                    '$stateParams',
+                    'dataConfig',
+                    'mainApp.auth.AuthService',
+                    'mainApp.models.country.CountryService',
+                    'mainApp.models.school.SchoolService',
+                    'mainApp.models.teacher.TeacherService',
+                    '$rootScope'];
+                return CountryProfilePageController;
+            }());
+            countryProfilePage.CountryProfilePageController = CountryProfilePageController;
+            angular
+                .module('mainApp.pages.countryProfilePage')
+                .controller(CountryProfilePageController.controllerId, CountryProfilePageController);
+        })(countryProfilePage = pages.countryProfilePage || (pages.countryProfilePage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+
+//# sourceMappingURL=../../../../maps/app/pages/countryProfilePage/countryProfilePage.controller.js.map
 
 (function () {
     'use strict';
@@ -14825,6 +14982,10 @@ var app;
                     controllerAs: 'vm'
                 }
             },
+            parent: 'page',
+            data: {
+                requireLogin: false
+            },
             params: {
                 aliasSchool: null,
                 title: 'Compare and find the best language school',
@@ -14832,10 +14993,6 @@ var app;
                 url: 'https://www.waysily.com/page/school',
                 image: 'https://s3.amazonaws.com/waysily-img/school-photo-prd/20-34d2e9a3-6a6a-424d-bbcf-da5966c2b51d.jpg',
                 robots: 'follow,index'
-            },
-            parent: 'page',
-            data: {
-                requireLogin: false
             },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = true;

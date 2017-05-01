@@ -106,6 +106,8 @@ var paths = {
         "www/build/scripts/app/pages/landingPage/landingPage.config.js",
         "www/build/scripts/app/pages/landingPage/landingPage.controller.js",
         "www/build/scripts/app/pages/landingPage/landingPage.service.js",
+        "www/build/scripts/app/pages/countryProfilePage/countryProfilePage.config.js",
+        "www/build/scripts/app/pages/countryProfilePage/countryProfilePage.controller.js",
         "www/build/scripts/app/pages/searchPage/searchPage.config.js",
         "www/build/scripts/app/pages/searchPage/searchPage.controller.js",
         "www/build/scripts/app/pages/searchPage/teacherResult/teacherResult.directive.js",

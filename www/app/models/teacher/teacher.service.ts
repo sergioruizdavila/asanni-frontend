@@ -17,6 +17,7 @@ module app.models.teacher {
         getTeacherByProfileId: (profileId: string) => angular.IPromise<any>;
         getAllTeachers: () => angular.IPromise<any>;
         getAllTeachersByStatus: (status) => angular.IPromise<any>;
+        getAllTeachersByCountry: (countryId) => angular.IPromise<any>;
         createTeacher: (teacher: app.models.teacher.Teacher) => angular.IPromise<any>;
         updateTeacher: (teacher: app.models.teacher.Teacher) => angular.IPromise<any>;
         createExperience: (teacherId: string, experience: app.models.teacher.Experience) => angular.IPromise<any>;
@@ -48,6 +49,7 @@ module app.models.teacher {
         TEACHER_URI: string;
         PROFILE_TEACHER_URI: string;
         STATUS_TEACHER_URI: string;
+        COUNTRY_TEACHER_URI: string;
         EXPERIENCES_URI: string;
         EDUCATIONS_URI: string;
         CERTIFICATES_URI: string;
@@ -76,6 +78,7 @@ module app.models.teacher {
             this.TEACHER_URI = 'teachers';
             this.PROFILE_TEACHER_URI = 'teachers?profileId=';
             this.STATUS_TEACHER_URI = 'teachers?status=';
+            this.COUNTRY_TEACHER_URI = 'teachers?country=';
             this.EXPERIENCES_URI = 'experiences';
             this.EDUCATIONS_URI = 'educations';
             this.CERTIFICATES_URI = 'certificates';
@@ -165,6 +168,38 @@ module app.models.teacher {
             //VARIABLES
             let self = this;
             let url = this.STATUS_TEACHER_URI + status;
+            let deferred = this.$q.defer();
+
+            this.restApi.queryObject({url: url}).$promise
+                .then(
+                    function(response) {
+                        deferred.resolve(response);
+                    },
+                    function(error) {
+                        DEBUG && console.error(error);
+                        if(error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    }
+                );
+
+            return deferred.promise;
+        }
+
+
+
+        /**
+        * getAllTeachersByCountry
+        * @description - get all Teachers by status filter value
+        * @function
+        * @param {number} countryId - country id
+        * @return {angular.IPromise<any>} return a promise with teachers list
+        */
+        getAllTeachersByCountry(countryId): angular.IPromise<any> {
+            //VARIABLES
+            let self = this;
+            let url = this.COUNTRY_TEACHER_URI + countryId;
             let deferred = this.$q.defer();
 
             this.restApi.queryObject({url: url}).$promise

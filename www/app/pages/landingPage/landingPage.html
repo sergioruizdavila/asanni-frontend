@@ -493,9 +493,9 @@
                          ng-repeat="country in ::vm._countryContainers track by $index">
 
                         <! Colombia Country Box >
-                        <a href="/page/search"
+                        <a ng-href="/page/country/{{country.aliasCountry}}"
                            class="link-reset"
-                           ng-click="vm.goToSearch('school');$event.preventDefault()">
+                           ng-click="vm.goToCountryDetails(country.aliasCountry);$event.preventDefault()">
                             <div id="landingPage-country-box-{{::country.code}}"
                                  class="country-progress-block
                                         country-progress-block--first text-left"

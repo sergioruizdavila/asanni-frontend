@@ -14,6 +14,10 @@
                     controllerAs: 'vm'
                 }
             },
+            parent: 'page',
+            data: {
+                requireLogin: false
+            },
             params: {
                 aliasSchool: null,
                 title: 'Compare and find the best language school',
@@ -21,10 +25,6 @@
                 url: 'https://www.waysily.com/page/school',
                 image: 'https://s3.amazonaws.com/waysily-img/school-photo-prd/20-34d2e9a3-6a6a-424d-bbcf-da5966c2b51d.jpg',
                 robots: 'follow,index'
-            },
-            parent: 'page',
-            data: {
-                requireLogin: false
             },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = true;

@@ -178,7 +178,7 @@ module app.pages.landingPage {
             //VARIABLES
             let self = this;
             //LOG
-            console.log('landingPage controller actived');
+            DEBUG && console.log('landingPage controller actived');
 
             //MIXPANEL
             mixpanel.track(ENTER_MIXPANEL);
@@ -313,9 +313,35 @@ module app.pages.landingPage {
                     self._countryContainers = response.results;
                 },
                 function(error) {
-                    Raven.captureMessage('Error landingPage.controller.js method: _buildCountryContainers');
+                    //CONSTANTS
+                    const ERROR_MESSAGE = 'Error landingPage.controller.js method: _buildCountryContainers';
+                    Raven.captureMessage(ERROR_MESSAGE, error);
                 }
             );
+        }
+
+
+
+        /**
+        * goToCountryDetails
+        * @description - when user clicked a specific country container, go to
+        * details
+        * @use - this.goToCountryDetails('new-zealand');
+        * @function
+        * @param {string} aliasCountry - entity aliasCountry (country)
+        * @return {void}
+        */
+
+        goToCountryDetails(aliasCountry: string): void {
+            const GOTO_MIXPANEL = 'Go to Country Details: ' + aliasCountry;
+            /************************/
+
+            //MIXPANEL
+            mixpanel.track(GOTO_MIXPANEL);
+
+            var url = this.$state.href('page.countryProfilePage', {aliasCountry: aliasCountry});
+            window.open(url);
+
         }
 
 
