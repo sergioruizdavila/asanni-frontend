@@ -9728,9 +9728,8 @@ var app;
                 .module('mainApp.pages.searchPage')
                 .directive(MaTeacherResult.directiveId, MaTeacherResult.instance);
             var TeacherResultController = (function () {
-                function TeacherResultController(functionsUtil, $filter, $state, $rootScope) {
+                function TeacherResultController(functionsUtil, $state, $rootScope) {
                     this.functionsUtil = functionsUtil;
-                    this.$filter = $filter;
                     this.$state = $state;
                     this.$rootScope = $rootScope;
                     this.init();
@@ -9776,7 +9775,6 @@ var app;
                 TeacherResultController.controllerId = 'mainApp.pages.searchPage.TeacherResultController';
                 TeacherResultController.$inject = [
                     'mainApp.core.util.FunctionsUtilService',
-                    '$filter',
                     '$state',
                     '$rootScope'
                 ];
