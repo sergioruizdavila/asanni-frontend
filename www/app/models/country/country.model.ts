@@ -30,7 +30,7 @@ module app.models.country {
         /**********************************/
         constructor(obj: any = {}) {
             //LOG
-            console.log('Country Model instanced');
+            DEBUG && console.log('Country Model instanced');
 
             //init properties
             this.id = obj.id;

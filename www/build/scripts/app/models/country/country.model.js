@@ -7,7 +7,7 @@ var app;
             var Country = (function () {
                 function Country(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('Country Model instanced');
+                    DEBUG && console.log('Country Model instanced');
                     this.id = obj.id;
                     this.nameEn = obj.nameEn || '';
                     this.nameEs = obj.nameEs || '';
