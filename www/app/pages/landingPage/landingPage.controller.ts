@@ -49,6 +49,13 @@ module app.pages.landingPage {
         email: app.core.util.functionsUtil.IValid;
     }
 
+    interface ICountryQueryObject {
+        next: string;
+        previous: string;
+        count: number;
+        results: Array<app.models.country.Country>;
+    }
+
     export interface ILandingError {
         message: string;
     }
@@ -72,6 +79,7 @@ module app.pages.landingPage {
         private _slideout: boolean;
         countryObject: app.core.interfaces.IDataFromJsonI18n;
         listCountries: Array<app.core.interfaces.IDataFromJsonI18n>;
+        private _countryContainers: Array<app.models.country.Country>;
         // --------------------------------
 
 
@@ -87,8 +95,8 @@ module app.pages.landingPage {
                                  'mainApp.pages.landingPage.LandingPageService',
                                  'mainApp.models.feedback.FeedbackService',
                                  'mainApp.core.util.GetDataStaticJsonService',
-                                 '$rootScope',
-                                 'mainApp.localStorageService'];
+                                 'mainApp.models.country.CountryService',
+                                 '$rootScope'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -105,8 +113,8 @@ module app.pages.landingPage {
             private LandingPageService: app.pages.landingPage.ILandingPageService,
             private FeedbackService: app.models.feedback.IFeedbackService,
             private getDataFromJson: app.core.util.getDataStaticJson.IGetDataStaticJsonService,
-            private $rootScope: app.core.interfaces.IMainAppRootScope,
-            private localStorage) {
+            private countryService: app.models.country.ICountryService,
+            private $rootScope: app.core.interfaces.IMainAppRootScope) {
 
             this._init();
 
@@ -204,6 +212,9 @@ module app.pages.landingPage {
                 this._openLogInModal();
             }
 
+            // Build country containers list
+            this._buildCountryContainers();
+
             //SUBSCRIBE TO EVENTS
             this._subscribeToEvents();
 
@@ -223,7 +234,7 @@ module app.pages.landingPage {
             this._slideout = !this._slideout;
         }
 
-        
+
 
         /**
         * changeLanguage
@@ -283,6 +294,28 @@ module app.pages.landingPage {
             mixpanel.track(GOTO_MIXPANEL);
 
             this.$state.go(SEARCH_PAGE_STATE, {target: target}, {reload: true});
+        }
+
+
+
+        /**
+        * _buildCountryContainers
+        * @description - Get Country list in order to build each country container
+        * calling country service
+        */
+
+        private  _buildCountryContainers(): void {
+            //VARIABLES
+            let self = this;
+
+            this.countryService.getAllCountries().then(
+                function(response: ICountryQueryObject) {
+                    self._countryContainers = response.results;
+                },
+                function(error) {
+                    Raven.captureMessage('Error landingPage.controller.js method: _buildCountryContainers');
+                }
+            );
         }
 
 

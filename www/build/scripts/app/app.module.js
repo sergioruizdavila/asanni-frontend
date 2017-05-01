@@ -10,6 +10,7 @@
         'mainApp.auth',
         'mainApp.register',
         'mainApp.account',
+        'mainApp.models.country',
         'mainApp.models.feature',
         'mainApp.models.feedback',
         'mainApp.models.user',

@@ -7,7 +7,7 @@ var app;
             var Feature = (function () {
                 function Feature(obj) {
                     if (obj === void 0) { obj = {}; }
-                    console.log('Feature Model instanced');
+                    DEBUG && console.log('Feature Model instanced');
                     this.id = obj.id;
                     this.featureEn = obj.featureEn || '';
                     this.featureEs = obj.featureEs || '';

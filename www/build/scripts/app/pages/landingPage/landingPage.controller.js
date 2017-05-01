@@ -5,7 +5,7 @@ var app;
         var landingPage;
         (function (landingPage) {
             var LandingPageController = (function () {
-                function LandingPageController($scope, $state, $stateParams, dataConfig, $uibModal, AuthService, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, $rootScope, localStorage) {
+                function LandingPageController($scope, $state, $stateParams, dataConfig, $uibModal, AuthService, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, countryService, $rootScope) {
                     this.$scope = $scope;
                     this.$state = $state;
                     this.$stateParams = $stateParams;
@@ -17,8 +17,8 @@ var app;
                     this.LandingPageService = LandingPageService;
                     this.FeedbackService = FeedbackService;
                     this.getDataFromJson = getDataFromJson;
+                    this.countryService = countryService;
                     this.$rootScope = $rootScope;
-                    this.localStorage = localStorage;
                     this._init();
                 }
                 LandingPageController.prototype._init = function () {
@@ -78,6 +78,7 @@ var app;
                     if (this.$stateParams.showLogin) {
                         this._openLogInModal();
                     }
+                    this._buildCountryContainers();
                     this._subscribeToEvents();
                 };
                 LandingPageController.prototype.slideNavMenu = function () {
@@ -99,6 +100,14 @@ var app;
                     var GOTO_MIXPANEL = 'Go to Search from: ' + target + ' btn';
                     mixpanel.track(GOTO_MIXPANEL);
                     this.$state.go(SEARCH_PAGE_STATE, { target: target }, { reload: true });
+                };
+                LandingPageController.prototype._buildCountryContainers = function () {
+                    var self = this;
+                    this.countryService.getAllCountries().then(function (response) {
+                        self._countryContainers = response.results;
+                    }, function (error) {
+                        Raven.captureMessage('Error landingPage.controller.js method: _buildCountryContainers');
+                    });
                 };
                 LandingPageController.prototype._sendCountryFeedback = function () {
                     var ENTER_MIXPANEL = 'Click: Send Country Feedback';
@@ -250,8 +259,8 @@ var app;
                     'mainApp.pages.landingPage.LandingPageService',
                     'mainApp.models.feedback.FeedbackService',
                     'mainApp.core.util.GetDataStaticJsonService',
-                    '$rootScope',
-                    'mainApp.localStorageService'];
+                    'mainApp.models.country.CountryService',
+                    '$rootScope'];
                 return LandingPageController;
             }());
             landingPage.LandingPageController = LandingPageController;
