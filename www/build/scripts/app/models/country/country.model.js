@@ -9,10 +9,14 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     DEBUG && console.log('Country Model instanced');
                     this.id = obj.id;
+                    this.aliasCountry = obj.aliasCountry || '';
                     this.nameEn = obj.nameEn || '';
                     this.nameEs = obj.nameEs || '';
-                    this.aliasCountry = obj.aliasCountry || '';
+                    this.descriptionEn = obj.descriptionEn || '';
+                    this.descriptionEs = obj.descriptionEs || '';
                     this.code = obj.code || '';
+                    this.currencyCode = obj.currencyCode || '';
+                    this.currencyName = obj.currencyName || '';
                     this.photo = obj.photo || '';
                     this.thumbnail = obj.thumbnail || '';
                 }
@@ -49,6 +53,32 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
+                Object.defineProperty(Country.prototype, "DescriptionEn", {
+                    get: function () {
+                        return this.descriptionEn;
+                    },
+                    set: function (descriptionEn) {
+                        if (descriptionEn === undefined) {
+                            throw 'Please supply country description EN value';
+                        }
+                        this.descriptionEn = descriptionEn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "DescriptionEs", {
+                    get: function () {
+                        return this.descriptionEs;
+                    },
+                    set: function (descriptionEs) {
+                        if (descriptionEs === undefined) {
+                            throw 'Please supply country description ES value';
+                        }
+                        this.descriptionEs = descriptionEs;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 Object.defineProperty(Country.prototype, "AliasCountry", {
                     get: function () {
                         return this.aliasCountry;
@@ -71,6 +101,32 @@ var app;
                             throw 'Please supply country code value';
                         }
                         this.code = code;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "CurrencyCode", {
+                    get: function () {
+                        return this.currencyCode;
+                    },
+                    set: function (currencyCode) {
+                        if (currencyCode === undefined) {
+                            throw 'Please supply country currency code value';
+                        }
+                        this.currencyCode = currencyCode;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "CurrencyName", {
+                    get: function () {
+                        return this.currencyName;
+                    },
+                    set: function (currencyName) {
+                        if (currencyName === undefined) {
+                            throw 'Please supply country currency name value';
+                        }
+                        this.currencyName = currencyName;
                     },
                     enumerable: true,
                     configurable: true

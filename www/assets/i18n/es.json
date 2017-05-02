@@ -38,6 +38,7 @@
     "%global.loading.text": "Cargando...",
     "%global.teacher.type.hobby.text": "Tutor de la comunidad",
     "%global.teacher.type.professional.text": "Profesor Profesional",
+    "%global.currency.label.text": "moneda",
     "%global.currency.text": "$US",
     "%global.currency.suffix.text": "USD",
     "%global.from.label.text": "desde",
@@ -345,6 +346,11 @@
     "%search.container.teacher.price.private.title.text": "Privado",
     "%search.container.teacher.price.group.title.text": "Grupal",
     "%search.container.teacher.methodology.title.text": "Metodología",
+
+    "__COUNTRY PROFILE PAGE__": "",
+    "%profile.country.title.text": "La magia de {{name}}",
+    "%profile.country.top_schools.title.text": "mejores escuelas",
+    "%profile.country.top_teachers.title.text": "mejores profesores",
 
     "__TEACHER PROFILE PAGE__": "",
     "%profile.teacher.large_message.text.legacy": "Asi se veria tu perfil cuando terminemos de validar tu información",

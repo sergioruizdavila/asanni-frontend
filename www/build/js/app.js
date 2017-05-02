@@ -442,10 +442,13 @@ var app;
             (function (functionsUtil) {
                 'use strict';
                 var FunctionsUtilService = (function () {
-                    function FunctionsUtilService($filter, dataConfig, $translate) {
+                    function FunctionsUtilService(externalRestApi, $filter, dataConfig, $translate, $q, $http) {
+                        this.externalRestApi = externalRestApi;
                         this.$filter = $filter;
                         this.dataConfig = dataConfig;
                         this.$translate = $translate;
+                        this.$q = $q;
+                        this.$http = $http;
                         DEBUG && console.log('functionsUtil service called');
                     }
                     FunctionsUtilService.prototype.normalizeString = function (str) {
@@ -893,10 +896,30 @@ var app;
                         valueParsed = valueNormalized.toLowerCase().split(' ').join('-');
                         return valueParsed;
                     };
+                    FunctionsUtilService.prototype.getCurrencyConverted = function (code) {
+                        var BASE_API_URL = 'http://free.currencyconverterapi.com/api/v3/convert';
+                        var self = this;
+                        var joinedCode = 'USD_' + code;
+                        var url = BASE_API_URL + '?q=' + joinedCode + '&compact=y&callback=JSON_CALLBACK';
+                        var deferred = this.$q.defer();
+                        this.$http.jsonp(url)
+                            .success(function (data) {
+                            var value = data[joinedCode].val || '-';
+                            deferred.resolve(value);
+                        })
+                            .error(function (error) {
+                            DEBUG && console.error(error);
+                            deferred.reject(error);
+                        });
+                        return deferred.promise;
+                    };
                     FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
-                    FunctionsUtilService.$inject = ['$filter',
+                    FunctionsUtilService.$inject = ['mainApp.core.restApi.externalRestApiService',
+                        '$filter',
                         'dataConfig',
-                        '$translate'];
+                        '$translate',
+                        '$q',
+                        '$http'];
                     return FunctionsUtilService;
                 }());
                 functionsUtil.FunctionsUtilService = FunctionsUtilService;
@@ -1249,9 +1272,33 @@ var app;
                 return RestApiService;
             }());
             restApi.RestApiService = RestApiService;
+            var ExternalRestApiService = (function () {
+                function ExternalRestApiService($resource, dataConfig) {
+                    this.$resource = $resource;
+                }
+                ExternalRestApiService.Api = function ($resource, dataConfig) {
+                    var resource = $resource(':url/:id', { url: '@url' }, {
+                        show: { method: 'GET', params: { id: '@id' } },
+                        query: { method: 'GET', isArray: true },
+                        queryObject: { method: 'GET', isArray: false },
+                        create: { method: 'POST' },
+                        update: { method: 'PUT', params: { id: '@id' } },
+                        remove: { method: 'DELETE', params: { id: '@id' } }
+                    });
+                    return resource;
+                };
+                ExternalRestApiService.serviceId = 'mainApp.core.restApi.externalRestApiService';
+                ExternalRestApiService.$inject = [
+                    '$resource',
+                    'dataConfig'
+                ];
+                return ExternalRestApiService;
+            }());
+            restApi.ExternalRestApiService = ExternalRestApiService;
             angular
                 .module('mainApp.core.restApi')
                 .factory(RestApiService.serviceId, RestApiService.Api)
+                .factory(ExternalRestApiService.serviceId, ExternalRestApiService.Api)
                 .factory('customHttpInterceptor', customHttpInterceptor)
                 .config(configApi);
             configApi.$inject = ['$httpProvider'];
@@ -1339,6 +1386,239 @@ var app;
 })(app || (app = {}));
 
 //# sourceMappingURL=../../../../maps/app/core/s3Upload/s3Upload.service.js.map
+
+var app;
+(function (app) {
+    var models;
+    (function (models) {
+        var country;
+        (function (country) {
+            var Country = (function () {
+                function Country(obj) {
+                    if (obj === void 0) { obj = {}; }
+                    DEBUG && console.log('Country Model instanced');
+                    this.id = obj.id;
+                    this.aliasCountry = obj.aliasCountry || '';
+                    this.nameEn = obj.nameEn || '';
+                    this.nameEs = obj.nameEs || '';
+                    this.descriptionEn = obj.descriptionEn || '';
+                    this.descriptionEs = obj.descriptionEs || '';
+                    this.code = obj.code || '';
+                    this.currencyCode = obj.currencyCode || '';
+                    this.currencyName = obj.currencyName || '';
+                    this.photo = obj.photo || '';
+                    this.thumbnail = obj.thumbnail || '';
+                }
+                Object.defineProperty(Country.prototype, "Id", {
+                    get: function () {
+                        return this.id;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "NameEn", {
+                    get: function () {
+                        return this.nameEn;
+                    },
+                    set: function (nameEn) {
+                        if (nameEn === undefined) {
+                            throw 'Please supply country EN value';
+                        }
+                        this.nameEn = nameEn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "NameEs", {
+                    get: function () {
+                        return this.nameEs;
+                    },
+                    set: function (nameEs) {
+                        if (nameEs === undefined) {
+                            throw 'Please supply name ES value';
+                        }
+                        this.nameEs = nameEs;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "DescriptionEn", {
+                    get: function () {
+                        return this.descriptionEn;
+                    },
+                    set: function (descriptionEn) {
+                        if (descriptionEn === undefined) {
+                            throw 'Please supply country description EN value';
+                        }
+                        this.descriptionEn = descriptionEn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "DescriptionEs", {
+                    get: function () {
+                        return this.descriptionEs;
+                    },
+                    set: function (descriptionEs) {
+                        if (descriptionEs === undefined) {
+                            throw 'Please supply country description ES value';
+                        }
+                        this.descriptionEs = descriptionEs;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "AliasCountry", {
+                    get: function () {
+                        return this.aliasCountry;
+                    },
+                    set: function (aliasCountry) {
+                        if (aliasCountry === undefined) {
+                            throw 'Please supply Country Alias value';
+                        }
+                        this.aliasCountry = aliasCountry;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "Code", {
+                    get: function () {
+                        return this.code;
+                    },
+                    set: function (code) {
+                        if (code === undefined) {
+                            throw 'Please supply country code value';
+                        }
+                        this.code = code;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "CurrencyCode", {
+                    get: function () {
+                        return this.currencyCode;
+                    },
+                    set: function (currencyCode) {
+                        if (currencyCode === undefined) {
+                            throw 'Please supply country currency code value';
+                        }
+                        this.currencyCode = currencyCode;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "CurrencyName", {
+                    get: function () {
+                        return this.currencyName;
+                    },
+                    set: function (currencyName) {
+                        if (currencyName === undefined) {
+                            throw 'Please supply country currency name value';
+                        }
+                        this.currencyName = currencyName;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "Photo", {
+                    get: function () {
+                        return this.photo;
+                    },
+                    set: function (photo) {
+                        if (photo === undefined) {
+                            throw 'Please supply country photo value';
+                        }
+                        this.photo = photo;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "Thumbnail", {
+                    get: function () {
+                        return this.thumbnail;
+                    },
+                    set: function (thumbnail) {
+                        if (thumbnail === undefined) {
+                            throw 'Please supply country thumbnail value';
+                        }
+                        this.thumbnail = thumbnail;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return Country;
+            }());
+            country.Country = Country;
+        })(country = models.country || (models.country = {}));
+    })(models = app.models || (app.models = {}));
+})(app || (app = {}));
+
+//# sourceMappingURL=../../../../maps/app/models/country/country.model.js.map
+
+var app;
+(function (app) {
+    var models;
+    (function (models) {
+        var country;
+        (function (country) {
+            'use strict';
+            var CountryService = (function () {
+                function CountryService(restApi, AuthService, $q) {
+                    this.restApi = restApi;
+                    this.AuthService = AuthService;
+                    this.$q = $q;
+                    DEBUG && console.log('feature service instanced');
+                    this.COUNTRY_URI = 'countries';
+                }
+                CountryService.prototype.getCountryByAlias = function (aliasCountry) {
+                    var self = this;
+                    var url = this.COUNTRY_URI + '/' + aliasCountry;
+                    var deferred = this.$q.defer();
+                    this.restApi.show({ url: url }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+                CountryService.prototype.getAllCountries = function () {
+                    var self = this;
+                    var url = this.COUNTRY_URI;
+                    var deferred = this.$q.defer();
+                    this.restApi.queryObject({ url: url }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+                CountryService.serviceId = 'mainApp.models.country.CountryService';
+                CountryService.$inject = [
+                    'mainApp.core.restApi.restApiService',
+                    'mainApp.auth.AuthService',
+                    '$q'
+                ];
+                return CountryService;
+            }());
+            country.CountryService = CountryService;
+            angular
+                .module('mainApp.models.country', [])
+                .service(CountryService.serviceId, CountryService);
+        })(country = models.country || (models.country = {}));
+    })(models = app.models || (app.models = {}));
+})(app || (app = {}));
+
+//# sourceMappingURL=../../../../maps/app/models/country/country.service.js.map
 
 var app;
 (function (app) {
@@ -9518,6 +9798,134 @@ var app;
 })(app || (app = {}));
 
 //# sourceMappingURL=../../../../maps/app/pages/landingPage/landingPage.service.js.map
+
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.countryProfilePage', [])
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.countryProfilePage', {
+            url: '/country/:aliasCountry',
+            views: {
+                'container': {
+                    templateUrl: 'app/pages/countryProfilePage/countryProfilePage.html',
+                    controller: 'mainApp.pages.countryProfilePage.CountryProfilePageController',
+                    controllerAs: 'vm'
+                }
+            },
+            parent: 'page',
+            data: {
+                requireLogin: false
+            },
+            params: {
+                aliasCountry: null,
+                title: 'Use Waysily to find language teachers and schools, have a complete immersion',
+                description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
+                url: 'https://www.waysily.com/',
+                robots: 'follow,index',
+                image: 'https://www.waysily.com/assets/images/waysily-shared.png'
+            },
+            cache: false,
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = true;
+                    $rootScope.activeFooter = true;
+                }]
+        });
+    }
+})();
+
+//# sourceMappingURL=../../../../maps/app/pages/countryProfilePage/countryProfilePage.config.js.map
+
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var countryProfilePage;
+        (function (countryProfilePage) {
+            var CountryProfilePageController = (function () {
+                function CountryProfilePageController($scope, $state, $stateParams, dataConfig, AuthService, CountryService, SchoolService, TeacherService, FunctionsUtil, $rootScope) {
+                    this.$scope = $scope;
+                    this.$state = $state;
+                    this.$stateParams = $stateParams;
+                    this.dataConfig = dataConfig;
+                    this.AuthService = AuthService;
+                    this.CountryService = CountryService;
+                    this.SchoolService = SchoolService;
+                    this.TeacherService = TeacherService;
+                    this.FunctionsUtil = FunctionsUtil;
+                    this.$rootScope = $rootScope;
+                    this._init();
+                }
+                CountryProfilePageController.prototype._init = function () {
+                    this.data = new app.models.country.Country();
+                    this.loading = true;
+                    this.activate();
+                };
+                CountryProfilePageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Country Profile Page: ' + this.$stateParams.aliasCountry;
+                    var self = this;
+                    DEBUG && console.log('countryProfilePage controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
+                    this.CountryService.getCountryByAlias(this.$stateParams.aliasCountry).then(function (response) {
+                        self.data = new app.models.country.Country(response);
+                        self._getCurrencyConverted(self.data.CurrencyCode);
+                        self._buildSchoolCards(self.data);
+                        self._buildTeacherCards(self.data);
+                        self.loading = false;
+                    });
+                };
+                CountryProfilePageController.prototype._buildTeacherCards = function (country) {
+                    var self = this;
+                    this.TeacherService.getAllTeachersByCountry(country.Id).then(function (response) {
+                        self._teachersList = response.results;
+                    }, function (error) {
+                        var ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _buildTeacherCards ';
+                        Raven.captureMessage(ERROR_MESSAGE, error);
+                    });
+                };
+                CountryProfilePageController.prototype._buildSchoolCards = function (country) {
+                    var self = this;
+                    this.SchoolService.getAllSchoolsByCountry(country.Id).then(function (response) {
+                        self._schoolsList = response.results;
+                    }, function (error) {
+                        var ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _buildSchoolCards ';
+                        Raven.captureMessage(ERROR_MESSAGE, error);
+                    });
+                };
+                CountryProfilePageController.prototype._getCurrencyConverted = function (code) {
+                    var self = this;
+                    this.FunctionsUtil.getCurrencyConverted(code).then(function (response) {
+                        self._currencyConverted = response;
+                    }, function (error) {
+                        var ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _getCurrencyConverted ';
+                        Raven.captureMessage(ERROR_MESSAGE, error);
+                        self._currencyConverted = '-';
+                    });
+                };
+                CountryProfilePageController.controllerId = 'mainApp.pages.countryProfilePage.CountryProfilePageController';
+                CountryProfilePageController.$inject = ['$scope',
+                    '$state',
+                    '$stateParams',
+                    'dataConfig',
+                    'mainApp.auth.AuthService',
+                    'mainApp.models.country.CountryService',
+                    'mainApp.models.school.SchoolService',
+                    'mainApp.models.teacher.TeacherService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    '$rootScope'];
+                return CountryProfilePageController;
+            }());
+            countryProfilePage.CountryProfilePageController = CountryProfilePageController;
+            angular
+                .module('mainApp.pages.countryProfilePage')
+                .controller(CountryProfilePageController.controllerId, CountryProfilePageController);
+        })(countryProfilePage = pages.countryProfilePage || (pages.countryProfilePage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+
+//# sourceMappingURL=../../../../maps/app/pages/countryProfilePage/countryProfilePage.controller.js.map
 
 (function () {
     'use strict';

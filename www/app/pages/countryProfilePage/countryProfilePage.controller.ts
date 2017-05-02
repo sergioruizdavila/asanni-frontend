@@ -68,6 +68,7 @@ module app.pages.countryProfilePage {
         _schoolsList: Array<app.models.school.School>;
         _teachersList: Array<app.models.teacher.Teacher>;
         private _countryContainers: Array<app.models.country.Country>;
+        private _currencyConverted: string;
         loading: boolean;
         // --------------------------------
 
@@ -81,6 +82,7 @@ module app.pages.countryProfilePage {
                                  'mainApp.models.country.CountryService',
                                  'mainApp.models.school.SchoolService',
                                  'mainApp.models.teacher.TeacherService',
+                                 'mainApp.core.util.FunctionsUtilService',
                                  '$rootScope'];
 
         /**********************************/
@@ -95,6 +97,7 @@ module app.pages.countryProfilePage {
             private CountryService: app.models.country.ICountryService,
             private SchoolService: app.models.school.ISchoolService,
             private TeacherService: app.models.teacher.ITeacherService,
+            private FunctionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private $rootScope: app.core.interfaces.IMainAppRootScope) {
 
             this._init();
@@ -131,6 +134,9 @@ module app.pages.countryProfilePage {
                     self.data = new app.models.country.Country(response);
                     //Build meta tags
                     //self._buildMetaTags(self.data);
+
+                    // Get currency converted
+                    self._getCurrencyConverted(self.data.CurrencyCode);
 
                     //Build Schools cards associated to this country
                     self._buildSchoolCards(self.data);
@@ -177,6 +183,25 @@ module app.pages.countryProfilePage {
                     //CONSTANTS
                     const ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _buildSchoolCards ';
                     Raven.captureMessage(ERROR_MESSAGE, error);
+                }
+            );
+        }
+
+
+
+        _getCurrencyConverted(code: string) {
+            //VARIABLES
+            let self = this;
+
+            this.FunctionsUtil.getCurrencyConverted(code).then(
+                function(response: string) {
+                    self._currencyConverted = response;
+                },
+                function(error) {
+                    //CONSTANTS
+                    const ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _getCurrencyConverted ';
+                    Raven.captureMessage(ERROR_MESSAGE, error);
+                    self._currencyConverted = '-';
                 }
             );
         }
