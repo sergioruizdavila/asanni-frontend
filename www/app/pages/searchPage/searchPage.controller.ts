@@ -153,7 +153,8 @@ module app.pages.searchPage {
         * @params {string} type - type of results list (students, teachers, schools, etc)
         * @return {string} result template path
         */
-
+        //TODO: Esta funciona esta repetida en countryProfilePage, deberia
+        //crearse un servicio global, donde se encargue de crear este tipo de shadows
         private _getResultLoading(type: string): string {
             //CONSTANTS
             const STUDENT_TYPE = 'student';

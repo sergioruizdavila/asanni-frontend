@@ -69,6 +69,10 @@ module app.pages.countryProfilePage {
         _teachersList: Array<app.models.teacher.Teacher>;
         private _countryContainers: Array<app.models.country.Country>;
         private _currencyConverted: string;
+        shadowsSchoolLoading: boolean;
+        shadowsTeacherLoading: boolean;
+        noSchoolResult: boolean;
+        noTeacherResult: boolean;
         loading: boolean;
         // --------------------------------
 
@@ -113,6 +117,18 @@ module app.pages.countryProfilePage {
             //Init loading
             this.loading = true;
 
+            //Init shadows school loading
+            this.shadowsSchoolLoading = true;
+
+            //Init shadows teacher loading
+            this.shadowsTeacherLoading = true;
+
+            //Init no school result message
+            this.noSchoolResult = false;
+
+            //Init no teacher result message
+            this.noTeacherResult = false;
+
             this.activate();
         }
 
@@ -154,18 +170,53 @@ module app.pages.countryProfilePage {
         /*            METHODS             */
         /**********************************/
 
+        /**
+        * _getResultLoading
+        * @description - this method return specific loading template
+        * based on type result (students, teachers, schools, etc)
+        * @use - this._getResultTemplate('student');
+        * @function
+        * @params {string} type - type of results list (students, teachers, schools, etc)
+        * @return {string} result template path
+        */
+        //TODO: Esta funciona esta repetida en searchPage, deberia crearse un
+        // servicio global, donde se encargue de crear este tipo de shadows
+        private _getResultLoading(type: string): string {
+            //CONSTANTS
+            const STUDENT_TYPE = 'student';
+            const TEACHER_TYPE = 'teacher';
+            const SCHOOL_TYPE = 'school';
+            /*********************************/
+
+            switch (type) {
+                case STUDENT_TYPE:
+                return 'app/pages/searchPage/studentResult/studentResult.html';
+                case TEACHER_TYPE:
+                return 'app/pages/searchPage/teacherLoading/teacherLoading.html';
+                case SCHOOL_TYPE:
+                return 'app/pages/searchPage/schoolLoading/schoolLoading.html';
+            }
+        }
+
+
         _buildTeacherCards(country: app.models.country.Country): void {
             //VARIABLES
             let self = this;
 
             this.TeacherService.getAllTeachersByCountry(country.Id).then(
                 function(response: ICountryTeachersQueryObject) {
-                    self._teachersList = response.results;
+                    if(response.results.length > 0) {
+                        self._teachersList = response.results;
+                    } else {
+                        self.noTeacherResult = true;
+                    }
+                    self.shadowsTeacherLoading = false;
                 },
                 function(error) {
                     //CONSTANTS
                     const ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _buildTeacherCards ';
                     Raven.captureMessage(ERROR_MESSAGE, error);
+                    self.shadowsTeacherLoading = false;
                 }
             );
         }
@@ -177,12 +228,19 @@ module app.pages.countryProfilePage {
 
             this.SchoolService.getAllSchoolsByCountry(country.Id).then(
                 function(response: ICountrySchoolsQueryObject) {
-                    self._schoolsList = response.results;
+                    if(response.results.length > 0) {
+                        self._schoolsList = response.results;
+                    } else {
+                        self.noSchoolResult = true;
+                    }
+
+                    self.shadowsSchoolLoading = false;
                 },
                 function(error) {
                     //CONSTANTS
                     const ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _buildSchoolCards ';
                     Raven.captureMessage(ERROR_MESSAGE, error);
+                    self.shadowsSchoolLoading = false;
                 }
             );
         }
@@ -204,6 +262,69 @@ module app.pages.countryProfilePage {
                     self._currencyConverted = '-';
                 }
             );
+        }
+
+
+
+        /**
+        * _recommendTeacher
+        * @description - user could recommend a known teacher
+        * @use - this._recommendTeacher();
+        * @function
+        * @return {void}
+        */
+
+        _recommendTeacher(): void {
+            //CONSTANTS
+            const CLICK_MIXPANEL = 'Click: Recommend Teacher from countryProfilePage: ' + this.$stateParams.aliasCountry;
+            //VARIABLES
+            let url = 'https://waysily.typeform.com/to/iAWFeg';
+            //MIXPANEL
+            mixpanel.track(CLICK_MIXPANEL);
+
+            window.open(url,'_blank');
+        }
+
+
+
+        /**
+        * _recommendSchool
+        * @description - user could recommend a known school
+        * @use - this._recommendTeacher();
+        * @function
+        * @return {void}
+        */
+
+        _recommendSchool(): void {
+            //CONSTANTS
+            const CLICK_MIXPANEL = 'Click: Recommend School from countryProfilePage: ' + this.$stateParams.aliasCountry;
+            //VARIABLES
+            let url = 'https://waysily.typeform.com/to/q5uT0P';
+            //MIXPANEL
+            mixpanel.track(CLICK_MIXPANEL);
+
+            window.open(url,'_blank');
+        }
+
+
+
+        /**
+        * _joinAsSchool
+        * @description - user could join as a school
+        * @use - this._joinAsSchool();
+        * @function
+        * @return {void}
+        */
+
+        _joinAsSchool(): void {
+            //CONSTANTS
+            const CLICK_MIXPANEL = 'Click: Join as a School from countryProfilePage: ' + this.$stateParams.aliasCountry;
+            //VARIABLES
+            let url = 'https://form.jotform.co/71177073983868';
+            //MIXPANEL
+            mixpanel.track(CLICK_MIXPANEL);
+
+            window.open(url,'_blank');
         }
 
 

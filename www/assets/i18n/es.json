@@ -85,6 +85,7 @@
     "%header.lang.options.es.text": "Español",
     "%header.search.placeholder.text": "¿Dónde ir?",
     "%header.join.teacher.button.text": "Únete como profesor",
+    "%header.join.school.button.text": "Únete como escuela",
     "%header.join.teacher.tooltip.first_part.text.legacy": "Un profesor en Waysily gana",
     "%header.join.teacher.tooltip.first_part.text.legacy2": "Un profesor privado gana",
     "%header.join.teacher.tooltip.first_part.text": "Podrías ganar",
@@ -348,9 +349,13 @@
     "%search.container.teacher.methodology.title.text": "Metodología",
 
     "__COUNTRY PROFILE PAGE__": "",
-    "%profile.country.title.text": "La magia de {{name}}",
+    "%profile.country.title.text": "La magia de {{country}}",
     "%profile.country.top_schools.title.text": "mejores escuelas",
     "%profile.country.top_teachers.title.text": "mejores profesores",
+    "%profile.country.no_result_teacher.title.text": "Aún no hay profesores registrados en {{country}}",
+    "%profile.country.no_result_teacher.description.text": "Recomienda o unete como profesor y llega a más de <span class='underline underline--primary'>6000 estudiantes</span> en {{country}}",
+    "%profile.country.no_result_school.title.text": "Estamos trabajando duro para agregar escuelas en {{country}}",
+    "%profile.country.no_result_school.description.text": "Recomienda tu escuela para que sea visible a más de <span class='underline underline--primary'>6000 estudiantes</span> en {{country}}",
 
     "__TEACHER PROFILE PAGE__": "",
     "%profile.teacher.large_message.text.legacy": "Asi se veria tu perfil cuando terminemos de validar tu información",

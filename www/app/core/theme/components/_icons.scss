@@ -185,6 +185,10 @@ If you have to modified here, you should look for any reference */
             @include sprite(tea);
         }
 
+        &--school {
+            @include sprite(school);
+        }
+
         &--snack {
             @include sprite(snack);
         }
@@ -256,6 +260,10 @@ If you have to modified here, you should look for any reference */
 
         &--shared-room {
             @include sprite(people);
+        }
+
+        &--teacher {
+            @include sprite(teacher);
         }
     }
 
@@ -289,6 +297,10 @@ If you have to modified here, you should look for any reference */
             @include sprite(tea);
         }
 
+        &--school {
+            @include sprite(school);
+        }
+
         &--snack {
             @include sprite(snack);
         }
@@ -360,6 +372,10 @@ If you have to modified here, you should look for any reference */
 
         &--shared-room {
             @include sprite(people);
+        }
+
+        &--teacher {
+            @include sprite(teacher);
         }
     }
 

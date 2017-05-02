@@ -52,7 +52,7 @@
                         <div class="col-xs-10 col-sm-8">
                             <h3 class="margin-reset space-top-2 space-3"
                                 translate="%profile.country.title.text"
-                                translate-value-name="{{ vm.data.Code | getI18nFilter:'country' }}"></h3>
+                                translate-value-country="{{ vm.data.Code | getI18nFilter:'country' }}"></h3>
                             <p class="ma-p ma-p--large">
                                 <span translate>
                                     {{ vm.data | translateFilter: 'description'}}
@@ -89,8 +89,79 @@
                         <div class="hidden-xs col-sm-2 col-md-2 col-lg-2"></div>
                     </div>
 
+
+                    <! No Results Message >
+                    <div class="row margin-reset center-xs space-top-7"
+                         ng-if="vm.noSchoolResult">
+                        <div class="hidden-xs col-sm-3 col-md-3 col-lg-3"></div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+                            <div class="ma-box border-1">
+                                <div class="ma-box__content">
+
+                                    <p class="ma-p ma-p--large text-center"
+                                        translate="%profile.country.no_result_school.title.text"
+                                        translate-value-country="{{ vm.data.Code | getI18nFilter:'country' }}">
+                                    </p>
+
+                                    <hr>
+
+                                    <p class="ma-p ma-p--small strong text-center space-2"
+                                       translate="%profile.country.no_result_school.description.text"
+                                       translate-value-country="{{ vm.data.Code | getI18nFilter:'country' }}">
+                                    </p>
+
+                                    <div class="row center-xs">
+                                        <! Join as school >
+                                        <div class="col-xs-12 col-sm-6">
+                                            <a class="ma-btn ma-btn--primary
+                                                      ma-btn--medium ma-btn--block"
+                                               translate
+                                               ng-click="vm._joinAsSchool()"
+                                               href>
+                                                %header.join.school.button.text
+                                            </a>
+                                        </div>
+                                        <! Responsive space >
+                                        <div class="col-xs-12 hidden-sm hidden-md hidden-lg space-2"></div>
+                                        <! Recommend school >
+                                        <div class="col-xs-12 col-sm-6">
+                                            <a class="ma-btn
+                                                      ma-btn--secondary
+                                                      ma-btn--medium ma-btn--block"
+                                               ng-click="vm._recommendSchool()"
+                                               translate
+                                               href>
+                                                %landing.recommend.school.button.text
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="hidden-xs col-sm-3 col-md-3 col-lg-3"></div>
+                    </div>
+
+
+                    <! Shadow school containers loading >
+                    <div class="row margin-reset center-xs"
+                         ng-show="vm.shadowsSchoolLoading">
+
+                        <div class="col-xs-12">
+                            <div class="countryProfilePage__teacher-container__card"
+                                 ng-include="vm._getResultLoading('school')"></div>
+                            <div class="countryProfilePage__teacher-container__card"
+                                 ng-include="vm._getResultLoading('school')"></div>
+                        </div>
+
+                    </div>
+
+
                     <! Schools list >
-                    <div class="row margin-reset center-xs">
+                    <div class="row margin-reset center-xs"
+                         ng-show="!vm.shadowsSchoolLoading">
                         <div class="col-xs-12">
 
                             <div class="countryProfilePage__teacher-container__card"
@@ -131,8 +202,78 @@
                         <div class="hidden-xs col-sm-2 col-md-2 col-lg-2"></div>
                     </div>
 
+
+                    <! No Results Message >
+                    <div class="row margin-reset center-xs space-top-7 space-11"
+                         ng-if="vm.noTeacherResult">
+
+                        <div class="hidden-xs col-sm-3 col-md-3 col-lg-3"></div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+                            <div class="ma-box border-1">
+                                <div class="ma-box__content">
+
+                                    <p class="ma-p ma-p--large text-center"
+                                        translate="%profile.country.no_result_teacher.title.text"
+                                        translate-value-country="{{ vm.data.Code | getI18nFilter:'country' }}">
+                                    </p>
+
+                                    <hr>
+
+                                    <p class="ma-p ma-p--small strong text-center space-2"
+                                       translate="%profile.country.no_result_teacher.description.text"
+                                       translate-value-country="{{ vm.data.Code | getI18nFilter:'country' }}">
+                                    </p>
+
+                                    <div class="row center-xs">
+                                        <! Join as a teacher >
+                                        <div class="col-xs-12 col-sm-6">
+                                            <a class="ma-btn ma-btn--primary
+                                                      ma-btn--medium ma-btn--block"
+                                               translate
+                                               href="/page/main/teacher">
+                                                %header.join.teacher.button.text
+                                            </a>
+                                        </div>
+                                        <! Responsive space >
+                                        <div class="col-xs-12 hidden-sm hidden-md hidden-lg space-2" style=""></div>
+                                        <! Recommend teacher >
+                                        <div class="col-xs-12 col-sm-6">
+                                            <a class="ma-btn
+                                                      ma-btn--secondary
+                                                      ma-btn--medium ma-btn--block"
+                                               ng-click="vm._recommendTeacher()"
+                                               translate
+                                               href>
+                                                %landing.recommend.teacher.button.text
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="hidden-xs col-sm-3 col-md-3 col-lg-3"></div>
+                    </div>
+
+
+                    <! Shadow teacher containers loading >
+                    <div class="row margin-reset center-xs"
+                         ng-show="vm.shadowsTeacherLoading">
+
+                        <div class="col-xs-12">
+                            <div class="countryProfilePage__teacher-container__card"
+                                 ng-include="vm._getResultLoading('teacher')"></div>
+                            <div class="countryProfilePage__teacher-container__card"
+                                 ng-include="vm._getResultLoading('teacher')"></div>
+                        </div>
+
+                    </div>
+
                     <! Teachers list >
-                    <div class="row margin-reset center-xs">
+                    <div class="row margin-reset center-xs"
+                         ng-show="!vm.shadowsTeacherLoading">
 
                         <div class="col-xs-12">
 

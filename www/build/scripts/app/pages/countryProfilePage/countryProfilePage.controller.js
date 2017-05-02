@@ -21,6 +21,10 @@ var app;
                 CountryProfilePageController.prototype._init = function () {
                     this.data = new app.models.country.Country();
                     this.loading = true;
+                    this.shadowsSchoolLoading = true;
+                    this.shadowsTeacherLoading = true;
+                    this.noSchoolResult = false;
+                    this.noTeacherResult = false;
                     this.activate();
                 };
                 CountryProfilePageController.prototype.activate = function () {
@@ -36,22 +40,49 @@ var app;
                         self.loading = false;
                     });
                 };
+                CountryProfilePageController.prototype._getResultLoading = function (type) {
+                    var STUDENT_TYPE = 'student';
+                    var TEACHER_TYPE = 'teacher';
+                    var SCHOOL_TYPE = 'school';
+                    switch (type) {
+                        case STUDENT_TYPE:
+                            return 'app/pages/searchPage/studentResult/studentResult.html';
+                        case TEACHER_TYPE:
+                            return 'app/pages/searchPage/teacherLoading/teacherLoading.html';
+                        case SCHOOL_TYPE:
+                            return 'app/pages/searchPage/schoolLoading/schoolLoading.html';
+                    }
+                };
                 CountryProfilePageController.prototype._buildTeacherCards = function (country) {
                     var self = this;
                     this.TeacherService.getAllTeachersByCountry(country.Id).then(function (response) {
-                        self._teachersList = response.results;
+                        if (response.results.length > 0) {
+                            self._teachersList = response.results;
+                        }
+                        else {
+                            self.noTeacherResult = true;
+                        }
+                        self.shadowsTeacherLoading = false;
                     }, function (error) {
                         var ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _buildTeacherCards ';
                         Raven.captureMessage(ERROR_MESSAGE, error);
+                        self.shadowsTeacherLoading = false;
                     });
                 };
                 CountryProfilePageController.prototype._buildSchoolCards = function (country) {
                     var self = this;
                     this.SchoolService.getAllSchoolsByCountry(country.Id).then(function (response) {
-                        self._schoolsList = response.results;
+                        if (response.results.length > 0) {
+                            self._schoolsList = response.results;
+                        }
+                        else {
+                            self.noSchoolResult = true;
+                        }
+                        self.shadowsSchoolLoading = false;
                     }, function (error) {
                         var ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _buildSchoolCards ';
                         Raven.captureMessage(ERROR_MESSAGE, error);
+                        self.shadowsSchoolLoading = false;
                     });
                 };
                 CountryProfilePageController.prototype._getCurrencyConverted = function (code) {
@@ -63,6 +94,24 @@ var app;
                         Raven.captureMessage(ERROR_MESSAGE, error);
                         self._currencyConverted = '-';
                     });
+                };
+                CountryProfilePageController.prototype._recommendTeacher = function () {
+                    var CLICK_MIXPANEL = 'Click: Recommend Teacher from countryProfilePage: ' + this.$stateParams.aliasCountry;
+                    var url = 'https://waysily.typeform.com/to/iAWFeg';
+                    mixpanel.track(CLICK_MIXPANEL);
+                    window.open(url, '_blank');
+                };
+                CountryProfilePageController.prototype._recommendSchool = function () {
+                    var CLICK_MIXPANEL = 'Click: Recommend School from countryProfilePage: ' + this.$stateParams.aliasCountry;
+                    var url = 'https://waysily.typeform.com/to/q5uT0P';
+                    mixpanel.track(CLICK_MIXPANEL);
+                    window.open(url, '_blank');
+                };
+                CountryProfilePageController.prototype._joinAsSchool = function () {
+                    var CLICK_MIXPANEL = 'Click: Join as a School from countryProfilePage: ' + this.$stateParams.aliasCountry;
+                    var url = 'https://form.jotform.co/71177073983868';
+                    mixpanel.track(CLICK_MIXPANEL);
+                    window.open(url, '_blank');
                 };
                 CountryProfilePageController.controllerId = 'mainApp.pages.countryProfilePage.CountryProfilePageController';
                 CountryProfilePageController.$inject = ['$scope',
