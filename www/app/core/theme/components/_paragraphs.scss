@@ -51,6 +51,14 @@
         }
     }
 
+    &--white {
+        color: $paragraph-white-font-color;
+
+        strong {
+            font-size: map-get($global-font-sizes, large);
+        }
+    }
+
     &--disable-line-through {
         text-decoration: line-through;
         color: #ccc;

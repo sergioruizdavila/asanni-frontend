@@ -9970,7 +9970,12 @@ var app;
                 CountryProfilePageController.prototype._getCurrencyConverted = function (code) {
                     var self = this;
                     this.FunctionsUtil.getCurrencyConverted(code).then(function (response) {
-                        self._currencyConverted = response;
+                        if (response > 0) {
+                            self._currencyConverted = response.toFixed(2).toString();
+                        }
+                        else {
+                            self._currencyConverted = '-';
+                        }
                     }, function (error) {
                         var ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _getCurrencyConverted ';
                         Raven.captureMessage(ERROR_MESSAGE, error);
@@ -9978,8 +9983,9 @@ var app;
                     });
                 };
                 CountryProfilePageController.prototype._getLocalTime = function (zone) {
+                    var FORMAT_TIME = 'LT';
                     var today = moment();
-                    this._localHour = today.tz(zone).format('LT').toLowerCase();
+                    this._localTime = today.tz(zone).format(FORMAT_TIME).toLowerCase();
                 };
                 CountryProfilePageController.prototype._recommendTeacher = function () {
                     var CLICK_MIXPANEL = 'Click: Recommend Teacher from countryProfilePage: ' + this.$stateParams.aliasCountry;

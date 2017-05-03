@@ -180,7 +180,7 @@ module app.pages.countryProfilePage {
         * based on type result (students, teachers, schools, etc)
         * @use - this._getResultTemplate('student');
         * @function
-        * @params {string} type - type of results list (students, teachers, schools, etc)
+        * @param {string} type - type of results list (students, teachers, schools, etc)
         * @return {string} result template path
         */
         //TODO: Esta funciona esta repetida en searchPage, deberia crearse un
@@ -203,6 +203,15 @@ module app.pages.countryProfilePage {
         }
 
 
+
+        /**
+        * _buildTeacherCards
+        * @description - this method build teacher cards associated to country
+        * @use - this._buildTeacherCards(country);
+        * @function
+        * @param {app.models.country.Country} country - country objects
+        * @return {void}
+        */
         _buildTeacherCards(country: app.models.country.Country): void {
             //VARIABLES
             let self = this;
@@ -226,6 +235,15 @@ module app.pages.countryProfilePage {
         }
 
 
+
+        /**
+        * _buildSchoolCards
+        * @description - this method build school cards associated to country
+        * @use - this._buildSchoolCards(country);
+        * @function
+        * @param {app.models.country.Country} country - country objects
+        * @return {void}
+        */
         _buildSchoolCards(country: app.models.country.Country): void {
             //VARIABLES
             let self = this;
@@ -251,13 +269,25 @@ module app.pages.countryProfilePage {
 
 
 
+        /**
+        * _getCurrencyConverted
+        * @description - this method get country currency converted
+        * @use - this._getCurrencyConverted(country);
+        * @function
+        * @param {string} code - country code
+        * @return {void}
+        */
         _getCurrencyConverted(code: string): void {
             //VARIABLES
             let self = this;
 
             this.FunctionsUtil.getCurrencyConverted(code).then(
-                function(response: string) {
-                    self._currencyConverted = response;
+                function(response: number) {
+                    if(response > 0) {
+                        self._currencyConverted = response.toFixed(2).toString();
+                    } else {
+                        self._currencyConverted = '-';
+                    }
                 },
                 function(error) {
                     //CONSTANTS
@@ -268,6 +298,16 @@ module app.pages.countryProfilePage {
             );
         }
 
+
+
+        /**
+        * _getLocalTime
+        * @description - this method get local time
+        * @use - this._getLocalTime(zone);
+        * @function
+        * @param {string} zone - country zone: e.g. 'America/Argentina/Buenos_Aires'
+        * @return {void}
+        */
         _getLocalTime(zone: string): void {
             //CONSTANTS
             const FORMAT_TIME = 'LT';
@@ -284,7 +324,6 @@ module app.pages.countryProfilePage {
         * @function
         * @return {void}
         */
-
         _recommendTeacher(): void {
             //CONSTANTS
             const CLICK_MIXPANEL = 'Click: Recommend Teacher from countryProfilePage: ' + this.$stateParams.aliasCountry;
@@ -305,7 +344,6 @@ module app.pages.countryProfilePage {
         * @function
         * @return {void}
         */
-
         _recommendSchool(): void {
             //CONSTANTS
             const CLICK_MIXPANEL = 'Click: Recommend School from countryProfilePage: ' + this.$stateParams.aliasCountry;
@@ -326,7 +364,6 @@ module app.pages.countryProfilePage {
         * @function
         * @return {void}
         */
-
         _joinAsSchool(): void {
             //CONSTANTS
             const CLICK_MIXPANEL = 'Click: Join as a School from countryProfilePage: ' + this.$stateParams.aliasCountry;

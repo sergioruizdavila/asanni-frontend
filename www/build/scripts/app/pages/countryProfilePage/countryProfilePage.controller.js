@@ -89,7 +89,12 @@ var app;
                 CountryProfilePageController.prototype._getCurrencyConverted = function (code) {
                     var self = this;
                     this.FunctionsUtil.getCurrencyConverted(code).then(function (response) {
-                        self._currencyConverted = response;
+                        if (response > 0) {
+                            self._currencyConverted = response.toFixed(2).toString();
+                        }
+                        else {
+                            self._currencyConverted = '-';
+                        }
                     }, function (error) {
                         var ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _getCurrencyConverted ';
                         Raven.captureMessage(ERROR_MESSAGE, error);

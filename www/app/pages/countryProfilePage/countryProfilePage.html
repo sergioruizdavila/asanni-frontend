@@ -5,73 +5,87 @@
     <div class="col-xs-12">
 
         <!------------------------ START: HERO BLOCK -------------------------->
-        <section class="countryProfilePage__hero ma-hero" style="height: 50vh;">
+        <section class="countryProfilePage__hero ma-hero">
 
             <div class="poster poster--main"
-                 ng-style="{'background': 'linear-gradient(rgba(18,18,18,0.4), rgba(18,18,18,0.4)), url(' + vm.data.photo + ')', 'background-size': 'cover'}">
+                 ng-style="{'background': 'linear-gradient(rgba(18,18,18,0.4), rgba(18,18,18,0.4)), url(' + vm.data.photo + ')', 'background-size': 'cover', 'background-position': 'center'}">
             </div>
 
             <! Country information >
             <div class="countryProfilePage__hero__info space-top-2 row">
-                <div class="col-xs-1 col-sm-2"></div>
-                <div class="col-xs-10 col-sm-8">
+                <div class="col-xs-1 col-sm-1 col-md-2"></div>
+
+                <div class="col-xs-10 col-sm-10 col-md-8">
                     <div class="row">
                         <div class="col-xs-6 text-left">
-                            <p class="ma-p ma-p--default margin-reset text-shadow"
-                               style="color: #fff;font-weight: 600;">
-                               local time
+                            <p class="countryProfilePage__hero__info__subtitle
+                                      ma-p ma-p--default ma-p--white
+                                      margin-reset text-shadow" translate>
+                               %profile.country.local_time.label.text
                             </p>
-                            <span class="text-shadow"
-                                  style="font-family: 'Monda', sans-serif;font-size: 37px;line-height: 1;">
+                            <span class="countryProfilePage__hero__info__time
+                                         text-shadow">
                                 {{vm._localTime}}
                             </span>
-                            <p class="ma-p ma-p--default margin-reset text-shadow space-top-2"
-                               style="color: #fff;font-weight: 600;">
-                               capital city
+                            <p class="countryProfilePage__hero__info__subtitle
+                                      ma-p ma-p--default  ma-p--white
+                                      margin-reset text-shadow space-top-2"
+                               translate>
+                               %profile.country.capital_city.label.text
                             </p>
-                            <h3 class="text-shadow animated fadeIn margin-reset">
+                            <h3 class="countryProfilePage__hero__info__h3
+                                       text-shadow animated fadeIn margin-reset">
                                 {{vm.data.Capital}}
                             </h3>
                         </div>
                         <div class="col-xs-6 text-right">
-                            <p class="ma-p ma-p--default margin-reset text-shadow"
-                               style="color: #fff;font-weight: 600;"
-                                translate>
+                            <p class="countryProfilePage__hero__info__subtitle
+                                      ma-p ma-p--default  ma-p--white
+                                      margin-reset text-shadow"
+                               translate>
                                 %global.currency.label.text
                             </p>
-                            <h4 class="text-shadow animated fadeIn text-right margin-reset">
+                            <h4 class="countryProfilePage__hero__info__currency
+                                       text-shadow animated fadeIn text-right margin-reset">
                                 {{vm.data.CurrencyName}} ({{vm.data.CurrencyCode}})
                             </h4>
 
-                            <h3 class="text-shadow animated fadeIn text-right space-top-2">
+                            <h3 class="countryProfilePage__hero__info__h3
+                                       text-shadow animated fadeIn text-right space-top-2">
                                 1 USD = {{vm._currencyConverted}} {{vm.data.CurrencyCode}}
                             </h3>
                         </div>
                     </div>
 
-                    <h1 class="text-shadow animated fadeIn margin-reset space-top-9 text-center"
-                        style="font-size:45px;"
+                    <h1 class="countryProfilePage__hero__info__title
+                               text-shadow animated fadeIn margin-reset
+                               space-top-9 text-center"
                         translate>
                         {{ vm.data.Code | getI18nFilter:'country' }}
                     </h1>
 
                 </div>
-                <div class="col-xs-1 col-sm-2"></div>
+
+                <div class="col-xs-1 col-sm-1 col-md-2"></div>
             </div>
 
-            <div class="row space-2" style="bottom: 0px;left: 0px;position: absolute;width: 100%;">
-                <div class="col-xs-1 col-sm-2"></div>
-                <div class="col-xs-10 col-sm-8">
-                    <h4 class="margin-reset text-shadow animated fadeIn"
-                        style="font-size: 25px; vertical-align: text-top;">
-                        {{vm.data.Recommend}} travellers
+            <div class="countryProfilePage__hero__footer row space-2 bottom-block">
+                <div class="col-xs-1 col-sm-1 col-md-2"></div>
+                <div class="col-xs-10 col-sm-10 col-md-8">
+                    <h4 class="countryProfilePage__hero__footer__title
+                               margin-reset text-shadow animated fadeIn"
+                        translate="%profile.country.travelers.label.text"
+                        translate-value-recommend="{{vm.data.Recommend}}">
                     </h4>
-                    <p class="ma-p ma-p--default margin-reset text-shadow"
-                       style="color: #fff;font-weight: 600;">
-                       recommend to learn Spanish
+                    <!-- TODO: Esta quemado: Español como idioma sugerido,
+                    cambiarlo cuando hayan paises de habla inglesa -->
+                    <p class="countryProfilePage__hero__footer__subtitle
+                              ma-p ma-p--default margin-reset text-shadow"
+                        translate>
+                       %profile.country.recommend.label.text
                     </p>
                 </div>
-                <div class="col-xs-1 col-sm-2"></div>
+                <div class="col-xs-1 col-sm-1 col-md-2"></div>
             </div>
 
     	</section>
@@ -86,8 +100,8 @@
                 <! Country description block >
                 <section class="space-top-8 space-10">
                     <div class="row">
-                        <div class="col-xs-1 col-sm-2"></div>
-                        <div class="col-xs-10 col-sm-8">
+                        <div class="col-xs-1 col-sm-1 col-md-2"></div>
+                        <div class="col-xs-10 col-sm-10 col-md-8">
                             <h3 class="margin-reset space-top-2 space-3"
                                 translate="%profile.country.title.text"
                                 translate-value-country="{{ vm.data.Code | getI18nFilter:'country' }}"></h3>
@@ -97,18 +111,18 @@
                                 </span>
                             </p>
                         </div>
-                        <div class="col-xs-1 col-sm-2"></div>
+                        <div class="col-xs-1 col-sm-1 col-md-2"></div>
                     </div>
                 </section>
 
 
                 <! Dashed Separator >
                 <div class="row space-12">
-                    <div class="col-xs-1 col-sm-2"></div>
-                    <div class="col-xs-10 col-sm-8">
+                    <div class="col-xs-1 col-sm-1 col-md-2"></div>
+                    <div class="col-xs-10 col-sm-10 col-md-8">
                         <div class="ma-separator-dashed-image"></div>
                     </div>
-                    <div class="col-xs-1 col-sm-2"></div>
+                    <div class="col-xs-1 col-sm-1 col-md-2"></div>
                 </div>
 
 
