@@ -106,8 +106,9 @@ var app;
                     return deferred.promise;
                 };
                 SchoolService.prototype.getAllSchoolsByCountry = function (countryId) {
+                    var statusParamUrl = '&status=VA';
                     var self = this;
-                    var url = this.COUNTRY_SCHOOL_URI + countryId;
+                    var url = this.COUNTRY_SCHOOL_URI + countryId + statusParamUrl;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {

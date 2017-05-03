@@ -258,9 +258,11 @@ module app.models.school {
         * @return {angular.IPromise<any>} return a promise with teachers list
         */
         getAllSchoolsByCountry(countryId: number): angular.IPromise<any> {
+            //CONSTANTS
+            const statusParamUrl = '&status=VA';
             //VARIABLES
             let self = this;
-            let url = this.COUNTRY_SCHOOL_URI + countryId;
+            let url = this.COUNTRY_SCHOOL_URI + countryId + statusParamUrl;
             let deferred = this.$q.defer();
 
             this.restApi.queryObject({url: url}).$promise
