@@ -69,6 +69,7 @@ module app.pages.countryProfilePage {
         _teachersList: Array<app.models.teacher.Teacher>;
         private _countryContainers: Array<app.models.country.Country>;
         private _currencyConverted: string;
+        private _localTime: string;
         shadowsSchoolLoading: boolean;
         shadowsTeacherLoading: boolean;
         noSchoolResult: boolean;
@@ -153,6 +154,9 @@ module app.pages.countryProfilePage {
 
                     // Get currency converted
                     self._getCurrencyConverted(self.data.CurrencyCode);
+
+                    // Get local hour
+                    self._getLocalTime(self.data.Zone);
 
                     //Build Schools cards associated to this country
                     self._buildSchoolCards(self.data);
@@ -247,7 +251,7 @@ module app.pages.countryProfilePage {
 
 
 
-        _getCurrencyConverted(code: string) {
+        _getCurrencyConverted(code: string): void {
             //VARIABLES
             let self = this;
 
@@ -262,6 +266,13 @@ module app.pages.countryProfilePage {
                     self._currencyConverted = '-';
                 }
             );
+        }
+
+        _getLocalTime(zone: string): void {
+            //CONSTANTS
+            const FORMAT_TIME = 'LT';
+            var today = moment();
+            this._localTime = today.tz(zone).format(FORMAT_TIME).toLowerCase();
         }
 
 

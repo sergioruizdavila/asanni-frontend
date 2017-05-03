@@ -35,6 +35,7 @@ var app;
                     this.CountryService.getCountryByAlias(this.$stateParams.aliasCountry).then(function (response) {
                         self.data = new app.models.country.Country(response);
                         self._getCurrencyConverted(self.data.CurrencyCode);
+                        self._getLocalTime(self.data.Zone);
                         self._buildSchoolCards(self.data);
                         self._buildTeacherCards(self.data);
                         self.loading = false;
@@ -94,6 +95,11 @@ var app;
                         Raven.captureMessage(ERROR_MESSAGE, error);
                         self._currencyConverted = '-';
                     });
+                };
+                CountryProfilePageController.prototype._getLocalTime = function (zone) {
+                    var FORMAT_TIME = 'LT';
+                    var today = moment();
+                    this._localTime = today.tz(zone).format(FORMAT_TIME).toLowerCase();
                 };
                 CountryProfilePageController.prototype._recommendTeacher = function () {
                     var CLICK_MIXPANEL = 'Click: Recommend Teacher from countryProfilePage: ' + this.$stateParams.aliasCountry;

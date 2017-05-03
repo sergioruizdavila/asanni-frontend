@@ -14,9 +14,12 @@ var app;
                     this.nameEs = obj.nameEs || '';
                     this.descriptionEn = obj.descriptionEn || '';
                     this.descriptionEs = obj.descriptionEs || '';
+                    this.recommend = obj.recommend || 0;
                     this.code = obj.code || '';
                     this.currencyCode = obj.currencyCode || '';
                     this.currencyName = obj.currencyName || '';
+                    this.capital = obj.capital || '';
+                    this.zone = obj.zone || '';
                     this.photo = obj.photo || '';
                     this.thumbnail = obj.thumbnail || '';
                 }
@@ -79,6 +82,19 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
+                Object.defineProperty(Country.prototype, "Recommend", {
+                    get: function () {
+                        return this.recommend;
+                    },
+                    set: function (recommend) {
+                        if (recommend === undefined) {
+                            throw 'Please supply country recommend value';
+                        }
+                        this.recommend = recommend;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 Object.defineProperty(Country.prototype, "AliasCountry", {
                     get: function () {
                         return this.aliasCountry;
@@ -127,6 +143,32 @@ var app;
                             throw 'Please supply country currency name value';
                         }
                         this.currencyName = currencyName;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "Capital", {
+                    get: function () {
+                        return this.capital;
+                    },
+                    set: function (capital) {
+                        if (capital === undefined) {
+                            throw 'Please supply country capital name value';
+                        }
+                        this.capital = capital;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "Zone", {
+                    get: function () {
+                        return this.zone;
+                    },
+                    set: function (zone) {
+                        if (zone === undefined) {
+                            throw 'Please supply country zone code value';
+                        }
+                        this.zone = zone;
                     },
                     enumerable: true,
                     configurable: true

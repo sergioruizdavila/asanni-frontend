@@ -23,9 +23,12 @@ module app.models.country {
         private nameEs: string;
         private descriptionEn: string;
         private descriptionEs: string;
+        private recommend: number;
         private code: string;
         private currencyCode: string;
         private currencyName: string;
+        private capital: string;
+        private zone: string;
         private photo: string;
         private thumbnail: string;
 
@@ -43,9 +46,12 @@ module app.models.country {
             this.nameEs = obj.nameEs || '';
             this.descriptionEn = obj.descriptionEn || '';
             this.descriptionEs = obj.descriptionEs || '';
+            this.recommend = obj.recommend || 0;
             this.code = obj.code || '';
             this.currencyCode = obj.currencyCode || '';
             this.currencyName = obj.currencyName || '';
+            this.capital = obj.capital || '';
+            this.zone = obj.zone || '';
             this.photo = obj.photo || '';
             this.thumbnail = obj.thumbnail || '';
 
@@ -95,6 +101,15 @@ module app.models.country {
             this.descriptionEs = descriptionEs;
         }
 
+        get Recommend() {
+            return this.recommend;
+        }
+
+        set Recommend(recommend: number) {
+            if (recommend === undefined) { throw 'Please supply country recommend value'; }
+            this.recommend = recommend;
+        }
+
         get AliasCountry() {
             return this.aliasCountry;
         }
@@ -129,6 +144,24 @@ module app.models.country {
         set CurrencyName(currencyName: string) {
             if (currencyName === undefined) { throw 'Please supply country currency name value'; }
             this.currencyName = currencyName;
+        }
+
+        get Capital() {
+            return this.capital;
+        }
+
+        set Capital(capital: string) {
+            if (capital === undefined) { throw 'Please supply country capital name value'; }
+            this.capital = capital;
+        }
+
+        get Zone() {
+            return this.zone;
+        }
+
+        set Zone(zone: string) {
+            if (zone === undefined) { throw 'Please supply country zone code value'; }
+            this.zone = zone;
         }
 
         get Photo() {

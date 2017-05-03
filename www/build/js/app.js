@@ -87,7 +87,6 @@
         'pascalprecht.translate',
         'ui.bootstrap',
         'ui.calendar',
-        'ui.bootstrap.datetimepicker',
         'ngFileUpload',
         'ngImgCrop'
     ]);
@@ -1403,9 +1402,12 @@ var app;
                     this.nameEs = obj.nameEs || '';
                     this.descriptionEn = obj.descriptionEn || '';
                     this.descriptionEs = obj.descriptionEs || '';
+                    this.recommend = obj.recommend || 0;
                     this.code = obj.code || '';
                     this.currencyCode = obj.currencyCode || '';
                     this.currencyName = obj.currencyName || '';
+                    this.capital = obj.capital || '';
+                    this.zone = obj.zone || '';
                     this.photo = obj.photo || '';
                     this.thumbnail = obj.thumbnail || '';
                 }
@@ -1468,6 +1470,19 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
+                Object.defineProperty(Country.prototype, "Recommend", {
+                    get: function () {
+                        return this.recommend;
+                    },
+                    set: function (recommend) {
+                        if (recommend === undefined) {
+                            throw 'Please supply country recommend value';
+                        }
+                        this.recommend = recommend;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 Object.defineProperty(Country.prototype, "AliasCountry", {
                     get: function () {
                         return this.aliasCountry;
@@ -1516,6 +1531,32 @@ var app;
                             throw 'Please supply country currency name value';
                         }
                         this.currencyName = currencyName;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "Capital", {
+                    get: function () {
+                        return this.capital;
+                    },
+                    set: function (capital) {
+                        if (capital === undefined) {
+                            throw 'Please supply country capital name value';
+                        }
+                        this.capital = capital;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "Zone", {
+                    get: function () {
+                        return this.zone;
+                    },
+                    set: function (zone) {
+                        if (zone === undefined) {
+                            throw 'Please supply country zone code value';
+                        }
+                        this.zone = zone;
                     },
                     enumerable: true,
                     configurable: true
@@ -9875,6 +9916,7 @@ var app;
                     this.CountryService.getCountryByAlias(this.$stateParams.aliasCountry).then(function (response) {
                         self.data = new app.models.country.Country(response);
                         self._getCurrencyConverted(self.data.CurrencyCode);
+                        self._getLocalTime(self.data.Zone);
                         self._buildSchoolCards(self.data);
                         self._buildTeacherCards(self.data);
                         self.loading = false;
@@ -9935,6 +9977,10 @@ var app;
                         self._currencyConverted = '-';
                     });
                 };
+                CountryProfilePageController.prototype._getLocalTime = function (zone) {
+                    var today = moment();
+                    this._localHour = today.tz(zone).format('LT').toLowerCase();
+                };
                 CountryProfilePageController.prototype._recommendTeacher = function () {
                     var CLICK_MIXPANEL = 'Click: Recommend Teacher from countryProfilePage: ' + this.$stateParams.aliasCountry;
                     var url = 'https://waysily.typeform.com/to/iAWFeg';
@@ -9949,7 +9995,7 @@ var app;
                 };
                 CountryProfilePageController.prototype._joinAsSchool = function () {
                     var CLICK_MIXPANEL = 'Click: Join as a School from countryProfilePage: ' + this.$stateParams.aliasCountry;
-                    var url = 'https://waysily.typeform.com/to/q5uT0P';
+                    var url = 'https://form.jotform.co/71177073983868';
                     mixpanel.track(CLICK_MIXPANEL);
                     window.open(url, '_blank');
                 };

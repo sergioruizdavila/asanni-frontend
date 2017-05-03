@@ -161,7 +161,7 @@ var paths = {
         "www/build/scripts/app/pages/schoolProfilePage/schoolProfilePage.config.js",
         "www/build/scripts/app/pages/schoolProfilePage/schoolProfilePage.controller.js",
     ],
-    appLibsJs: [],
+    appLibsJs: ["www/libs/moment-timezone/builds/moment-timezone-with-data.min.js"],
     vendorStyles: [
         'www/bower_components/normalize-css/normalize.css',
         'www/bower_components/animate.css/animate.min.css',
@@ -212,26 +212,6 @@ gulp.task('serveprod', function() {
     fallback: 'www/index.html'
   });
 });
-
-/*gulp.task('serveprod', function() {
-  gulp.src('www')
-    .pipe(webserver({
-      host: '0.0.0.0',
-      port: process.env.PORT || 5000,
-      livereload: false,
-      fallback: 'www/index.html',
-      open: true,
-      https: false,
-      middleware: function(req, res, next) {
-        if (req.headers['x-forwarded-proto'] != 'https') {
-            res.end('https://www.waysily.com' + req.originalUrl);
-        }
-        else {
-            next();
-        }
-      }
-    }));
-});*/
 
 /**
  * SASS to CSS - based on http://www.sitepoint.com/simple-gulpy-workflow-sass/
