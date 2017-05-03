@@ -65,55 +65,9 @@ module app.core.restApi {
     }
 
 
-    /********************************************/
-    /*       EXTERNAL REST API DEFINITION       */
-    /********************************************/
-    export class ExternalRestApiService {
-
-        /**********************************/
-        /*           PROPERTIES           */
-        /**********************************/
-        static serviceId = 'mainApp.core.restApi.externalRestApiService';
-
-
-        /*-- INJECT DEPENDENCIES--*/
-        static $inject = [
-            '$resource',
-            'dataConfig'
-        ];
-
-        /**********************************/
-        /*           CONSTRUCTOR          */
-        /**********************************/
-        constructor(private $resource: ng.resource.IResourceService,
-                    dataConfig: IDataConfig) {
-        }
-
-        /**********************************/
-        /*               API              */
-        /**********************************/
-        public static Api($resource, dataConfig: IDataConfig): IRestApi {
-
-            var resource = $resource(':url/:id', { url: '@url'},
-            {
-                show: { method: 'GET', params: {id: '@id'} },
-                query: { method: 'GET', isArray: true },
-                queryObject: { method: 'GET', isArray: false },
-                create: { method: 'POST' },
-                update: { method: 'PUT', params: { id: '@id' } },
-                remove: { method: 'DELETE', params: { id: '@id' } }
-            });
-
-            return <IRestApi>resource;
-
-        }
-
-    }
-
     angular
         .module('mainApp.core.restApi')
         .factory(RestApiService.serviceId, RestApiService.Api)
-        .factory(ExternalRestApiService.serviceId, ExternalRestApiService.Api)
         .factory('customHttpInterceptor', customHttpInterceptor)
         .config(configApi);
 
