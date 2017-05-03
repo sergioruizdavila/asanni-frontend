@@ -77,6 +77,22 @@
 
 //# sourceMappingURL=../../maps/app/app.module.js.map
 
+(function () {
+    'use strict';
+    angular.module('mainApp.core', [
+        'ngResource',
+        'ngCookies',
+        'ui.router',
+        'angular-oauth2',
+        'pascalprecht.translate',
+        'ui.bootstrap',
+        'ui.calendar',
+        'ngFileUpload',
+        'ngImgCrop'
+    ]);
+})();
+
+//# sourceMappingURL=../../maps/app/app.core.module.js.map
 
 DEBUG = true;
 (function () {
@@ -177,7 +193,7 @@ DEBUG = true;
                 });
             }
             else {
-                Raven.captureMessage('Error app.run.js method: userAccountInfo is null');
+                DEBUG && Raven.captureMessage('Error app.run.js method: userAccountInfo is null');
                 AuthService.logout();
             }
         }
@@ -9907,7 +9923,7 @@ var app;
                         self.shadowsTeacherLoading = false;
                     }, function (error) {
                         var ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _buildTeacherCards ';
-                        Raven.captureMessage(ERROR_MESSAGE, error);
+                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
                         self.shadowsTeacherLoading = false;
                     });
                 };
@@ -9923,7 +9939,7 @@ var app;
                         self.shadowsSchoolLoading = false;
                     }, function (error) {
                         var ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _buildSchoolCards ';
-                        Raven.captureMessage(ERROR_MESSAGE, error);
+                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
                         self.shadowsSchoolLoading = false;
                     });
                 };
@@ -9938,7 +9954,7 @@ var app;
                         }
                     }, function (error) {
                         var ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _getCurrencyConverted ';
-                        Raven.captureMessage(ERROR_MESSAGE, error);
+                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
                         self._currencyConverted = '-';
                     });
                 };

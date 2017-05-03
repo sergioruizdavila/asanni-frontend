@@ -228,7 +228,7 @@ module app.pages.countryProfilePage {
                 function(error) {
                     //CONSTANTS
                     const ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _buildTeacherCards ';
-                    Raven.captureMessage(ERROR_MESSAGE, error);
+                    DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
                     self.shadowsTeacherLoading = false;
                 }
             );
@@ -261,7 +261,7 @@ module app.pages.countryProfilePage {
                 function(error) {
                     //CONSTANTS
                     const ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _buildSchoolCards ';
-                    Raven.captureMessage(ERROR_MESSAGE, error);
+                    DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
                     self.shadowsSchoolLoading = false;
                 }
             );
@@ -292,7 +292,7 @@ module app.pages.countryProfilePage {
                 function(error) {
                     //CONSTANTS
                     const ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _getCurrencyConverted ';
-                    Raven.captureMessage(ERROR_MESSAGE, error);
+                    DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
                     self._currencyConverted = '-';
                 }
             );
