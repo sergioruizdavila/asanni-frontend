@@ -3790,8 +3790,9 @@ var app;
                     return deferred.promise;
                 };
                 TeacherService.prototype.getAllTeachersByCountry = function (countryId) {
+                    var statusParamUrl = '&status=VA';
                     var self = this;
-                    var url = this.COUNTRY_TEACHER_URI + countryId;
+                    var url = this.COUNTRY_TEACHER_URI + countryId + statusParamUrl;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {
