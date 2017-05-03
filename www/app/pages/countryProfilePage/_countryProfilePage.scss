@@ -1,0 +1,406 @@
+/*************************/
+/*       VARIABLES       */
+/*************************/
+$countryProfilePage-hero-info-time-font-family: 'Monda', sans-serif;
+$countryProfilePage-hero-info-time-font-size: 37px;
+
+$countryProfilePage-hero-info-title-font-size: 45px;
+
+$countryProfilePage-hero-info-subtitle-font-weight: 600;
+
+$countryProfilePage-hero-footer-title-font-size: 25px;
+
+
+/**********************************************************/
+/*                   USER PROFILE PAGE                    */
+/**********************************************************/
+
+.countryProfilePage {
+
+    &__hero {
+        height: 50vh;
+
+        .poster {
+            height: 100%!important;
+        }
+
+        &__info {
+
+            &__subtitle {
+                font-weight: $countryProfilePage-hero-info-subtitle-font-weight;
+            }
+
+            &__time {
+                font-family: $countryProfilePage-hero-info-time-font-family;
+                font-size: $countryProfilePage-hero-info-time-font-size;
+                line-height: 1;
+            }
+
+            &__title {
+                font-size: $countryProfilePage-hero-info-title-font-size;
+            }
+        }
+
+        &__footer {
+
+            &__title {
+                font-size: $countryProfilePage-hero-footer-title-font-size;
+                vertical-align: text-top;
+            }
+
+            &__subtitle {
+                color: $white;
+                font-weight: 600;
+            }
+        }
+    }
+
+    &__teacher-container {
+
+        &__card {
+            margin: 12px;
+            display: inline-block;
+        }
+
+    }
+}
+
+
+/*==========  Mobile First Method  ==========*/
+
+ /* Custom, iPhone Retina */
+ @media only screen and (min-width : 320px) {
+
+    .countryProfilePage {
+
+        &__hero {
+            height: 50vh;
+            min-height: 377px;
+
+            &__info {
+
+                &__subtitle {
+                    font-size: 13px;
+                }
+
+                &__time {
+                    font-size: 20px;
+                }
+
+                &__currency {
+                    font-size: 13px;
+                }
+
+                &__h3 {
+                    font-size: 15px;
+                }
+
+                &__title {
+                    font-size: 35px;
+                }
+            }
+
+            &__footer {
+
+                &__title {
+                    font-size: 19px;
+                }
+
+                &__subtitle {
+                    font-size: 12px;
+                }
+            }
+        }
+
+        &__teacher-container {
+
+            &__card {
+                margin: 0;
+                width: 100%;
+            }
+
+        }
+    }
+
+ }
+
+
+ /* Extra Small Devices, Phones */
+ @media only screen and (min-width : 480px) {
+
+    .countryProfilePage {
+
+        &__hero {
+            height: 50vh;
+            min-height: 377px;
+
+            &__info {
+
+                &__subtitle {
+                    font-size: 17px;
+                }
+
+                &__time {
+                    font-size: 37px;
+                }
+
+                &__currency {
+                    font-size: 18px;
+                }
+
+                &__h3 {
+                    font-size: 24px;
+                }
+
+                &__title {
+                    font-size: 45px;
+                }
+            }
+
+            &__footer {
+
+                &__title {
+                    font-size: 25px;
+                }
+
+                &__subtitle {
+                    font-size: 17px;
+                }
+            }
+        }
+
+        &__teacher-container {
+
+            &__card {
+                margin: 12px;
+                width: 100%;
+            }
+
+        }
+    }
+
+ }
+
+ /* Small Devices, Tablets */
+ @media only screen and (min-width : 768px) {
+
+    .countryProfilePage {
+
+        &__hero {
+            height: 30vh;
+            min-height: 377px;
+
+            &__info {
+
+                &__subtitle {
+                    font-size: 17px;
+                }
+
+                &__time {
+                    font-size: 37px;
+                }
+
+                &__currency {
+                    font-size: 18px;
+                }
+
+                &__h3 {
+                    font-size: 24px;
+                }
+
+                &__title {
+                    font-size: 45px;
+                }
+            }
+
+            &__footer {
+
+                &__title {
+                    font-size: 25px;
+                }
+
+                &__subtitle {
+                    font-size: 17px;
+                }
+            }
+        }
+
+        &__teacher-container {
+
+            &__card {
+                width: 300px;
+            }
+
+        }
+    }
+
+ }
+
+ /* Medium Devices, Desktops */
+ @media only screen and (min-width : 992px) {
+
+    .countryProfilePage {
+
+        &__hero {
+            height: 30vh;
+            min-height: 377px;
+
+            &__info {
+
+                &__subtitle {
+                    font-size: 17px;
+                }
+
+                &__time {
+                    font-size: 37px;
+                }
+
+                &__currency {
+                    font-size: 18px;
+                }
+
+                &__h3 {
+                    font-size: 24px;
+                }
+
+                &__title {
+                    font-size: 45px;
+                }
+            }
+
+            &__footer {
+
+                &__title {
+                    font-size: 25px;
+                }
+
+                &__subtitle {
+                    font-size: 17px;
+                }
+            }
+        }
+
+        &__teacher-container {
+
+            &__card {
+                margin: 12px;
+                width: 300px;
+            }
+
+        }
+    }
+
+ }
+
+ /* Large Devices, Wide Screens */
+ @media only screen and (min-width : 1200px) {
+
+    .countryProfilePage {
+
+        &__hero {
+            height: 50vh;
+            min-height: 400px;
+
+            &__info {
+
+                &__subtitle {
+                    font-size: 17px;
+                }
+
+                &__time {
+                    font-size: 37px;
+                }
+
+                &__currency {
+                    font-size: 18px;
+                }
+
+                &__h3 {
+                    font-size: 24px;
+                }
+
+                &__title {
+                    font-size: 45px;
+                }
+            }
+
+            &__footer {
+
+                &__title {
+                    font-size: 25px;
+                }
+
+                &__subtitle {
+                    font-size: 17px;
+                }
+            }
+        }
+
+        &__teacher-container {
+
+            &__card {
+                margin: 12px;
+                width: 300px;
+            }
+
+        }
+    }
+
+ }
+
+ /* Extra Large Devices, Wide Screens */
+ @media only screen and (min-width : 1600px) {
+
+    .countryProfilePage {
+
+        &__hero {
+            height: 50vh;
+            min-height: 400px;
+
+            &__info {
+
+                &__subtitle {
+                    font-size: 17px;
+                }
+
+                &__time {
+                    font-size: 37px;
+                }
+
+                &__currency {
+                    font-size: 18px;
+                }
+
+                &__h3 {
+                    font-size: 24px;
+                }
+
+                &__title {
+                    font-size: 60px;
+                    margin-top: 60px;
+                }
+            }
+
+            &__footer {
+
+                &__title {
+                    font-size: 25px;
+                }
+
+                &__subtitle {
+                    font-size: 17px;
+                }
+            }
+        }
+
+        &__teacher-container {
+
+            &__card {
+                margin: 12px;
+                width: 300px;
+            }
+
+        }
+    }
+
+ }

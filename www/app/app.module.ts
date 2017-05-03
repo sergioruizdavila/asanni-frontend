@@ -31,6 +31,7 @@
             'mainApp.pages.studentLandingPage',
             'mainApp.pages.teacherLandingPage',
             'mainApp.pages.landingPage',
+            'mainApp.pages.countryProfilePage',
             'mainApp.pages.resetPasswordPage',
             'mainApp.pages.searchPage',
             'mainApp.pages.createTeacherPage',

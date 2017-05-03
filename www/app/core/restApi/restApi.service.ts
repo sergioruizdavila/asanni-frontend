@@ -64,6 +64,7 @@ module app.core.restApi {
 
     }
 
+
     angular
         .module('mainApp.core.restApi')
         .factory(RestApiService.serviceId, RestApiService.Api)

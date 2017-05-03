@@ -19,7 +19,6 @@
         'pascalprecht.translate',
         'ui.bootstrap',
         'ui.calendar',
-        'ui.bootstrap.datetimepicker',
         'ngFileUpload',
         'ngImgCrop'
     ]);

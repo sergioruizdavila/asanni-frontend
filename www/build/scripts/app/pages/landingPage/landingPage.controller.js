@@ -56,7 +56,7 @@ var app;
                 LandingPageController.prototype.activate = function () {
                     var ENTER_MIXPANEL = 'Enter: Main Landing Page';
                     var self = this;
-                    console.log('landingPage controller actived');
+                    DEBUG && console.log('landingPage controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
                     if (this.$stateParams.id) {
                         var options = {
@@ -106,8 +106,15 @@ var app;
                     this.countryService.getAllCountries().then(function (response) {
                         self._countryContainers = response.results;
                     }, function (error) {
-                        Raven.captureMessage('Error landingPage.controller.js method: _buildCountryContainers');
+                        var ERROR_MESSAGE = 'Error landingPage.controller.js method: _buildCountryContainers';
+                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
                     });
+                };
+                LandingPageController.prototype.goToCountryDetails = function (aliasCountry) {
+                    var GOTO_MIXPANEL = 'Go to Country Details: ' + aliasCountry;
+                    mixpanel.track(GOTO_MIXPANEL);
+                    var url = this.$state.href('page.countryProfilePage', { aliasCountry: aliasCountry });
+                    window.open(url);
                 };
                 LandingPageController.prototype._sendCountryFeedback = function () {
                     var ENTER_MIXPANEL = 'Click: Send Country Feedback';

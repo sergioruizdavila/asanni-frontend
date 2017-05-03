@@ -21,6 +21,7 @@
         'mainApp.pages.studentLandingPage',
         'mainApp.pages.teacherLandingPage',
         'mainApp.pages.landingPage',
+        'mainApp.pages.countryProfilePage',
         'mainApp.pages.resetPasswordPage',
         'mainApp.pages.searchPage',
         'mainApp.pages.createTeacherPage',
@@ -86,7 +87,6 @@
         'pascalprecht.translate',
         'ui.bootstrap',
         'ui.calendar',
-        'ui.bootstrap.datetimepicker',
         'ngFileUpload',
         'ngImgCrop'
     ]);
@@ -193,7 +193,7 @@ DEBUG = true;
                 });
             }
             else {
-                Raven.captureMessage('Error app.run.js method: userAccountInfo is null');
+                DEBUG && Raven.captureMessage('Error app.run.js method: userAccountInfo is null');
                 AuthService.logout();
             }
         }
@@ -441,10 +441,13 @@ var app;
             (function (functionsUtil) {
                 'use strict';
                 var FunctionsUtilService = (function () {
-                    function FunctionsUtilService($filter, dataConfig, $translate) {
+                    function FunctionsUtilService(externalRestApi, $filter, dataConfig, $translate, $q, $http) {
+                        this.externalRestApi = externalRestApi;
                         this.$filter = $filter;
                         this.dataConfig = dataConfig;
                         this.$translate = $translate;
+                        this.$q = $q;
+                        this.$http = $http;
                         DEBUG && console.log('functionsUtil service called');
                     }
                     FunctionsUtilService.prototype.normalizeString = function (str) {
@@ -892,10 +895,30 @@ var app;
                         valueParsed = valueNormalized.toLowerCase().split(' ').join('-');
                         return valueParsed;
                     };
+                    FunctionsUtilService.prototype.getCurrencyConverted = function (code) {
+                        var BASE_API_URL = 'http://free.currencyconverterapi.com/api/v3/convert';
+                        var self = this;
+                        var joinedCode = 'USD_' + code;
+                        var url = BASE_API_URL + '?q=' + joinedCode + '&compact=y&callback=JSON_CALLBACK';
+                        var deferred = this.$q.defer();
+                        this.$http.jsonp(url)
+                            .success(function (data) {
+                            var value = data[joinedCode].val || '-';
+                            deferred.resolve(value);
+                        })
+                            .error(function (error) {
+                            DEBUG && console.error(error);
+                            deferred.reject(error);
+                        });
+                        return deferred.promise;
+                    };
                     FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
-                    FunctionsUtilService.$inject = ['$filter',
+                    FunctionsUtilService.$inject = ['mainApp.core.restApi.externalRestApiService',
+                        '$filter',
                         'dataConfig',
-                        '$translate'];
+                        '$translate',
+                        '$q',
+                        '$http'];
                     return FunctionsUtilService;
                 }());
                 functionsUtil.FunctionsUtilService = FunctionsUtilService;
@@ -1350,10 +1373,17 @@ var app;
                     if (obj === void 0) { obj = {}; }
                     DEBUG && console.log('Country Model instanced');
                     this.id = obj.id;
+                    this.aliasCountry = obj.aliasCountry || '';
                     this.nameEn = obj.nameEn || '';
                     this.nameEs = obj.nameEs || '';
-                    this.aliasCountry = obj.aliasCountry || '';
+                    this.descriptionEn = obj.descriptionEn || '';
+                    this.descriptionEs = obj.descriptionEs || '';
+                    this.recommend = obj.recommend || 0;
                     this.code = obj.code || '';
+                    this.currencyCode = obj.currencyCode || '';
+                    this.currencyName = obj.currencyName || '';
+                    this.capital = obj.capital || '';
+                    this.zone = obj.zone || '';
                     this.photo = obj.photo || '';
                     this.thumbnail = obj.thumbnail || '';
                 }
@@ -1390,6 +1420,45 @@ var app;
                     enumerable: true,
                     configurable: true
                 });
+                Object.defineProperty(Country.prototype, "DescriptionEn", {
+                    get: function () {
+                        return this.descriptionEn;
+                    },
+                    set: function (descriptionEn) {
+                        if (descriptionEn === undefined) {
+                            throw 'Please supply country description EN value';
+                        }
+                        this.descriptionEn = descriptionEn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "DescriptionEs", {
+                    get: function () {
+                        return this.descriptionEs;
+                    },
+                    set: function (descriptionEs) {
+                        if (descriptionEs === undefined) {
+                            throw 'Please supply country description ES value';
+                        }
+                        this.descriptionEs = descriptionEs;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "Recommend", {
+                    get: function () {
+                        return this.recommend;
+                    },
+                    set: function (recommend) {
+                        if (recommend === undefined) {
+                            throw 'Please supply country recommend value';
+                        }
+                        this.recommend = recommend;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 Object.defineProperty(Country.prototype, "AliasCountry", {
                     get: function () {
                         return this.aliasCountry;
@@ -1412,6 +1481,58 @@ var app;
                             throw 'Please supply country code value';
                         }
                         this.code = code;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "CurrencyCode", {
+                    get: function () {
+                        return this.currencyCode;
+                    },
+                    set: function (currencyCode) {
+                        if (currencyCode === undefined) {
+                            throw 'Please supply country currency code value';
+                        }
+                        this.currencyCode = currencyCode;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "CurrencyName", {
+                    get: function () {
+                        return this.currencyName;
+                    },
+                    set: function (currencyName) {
+                        if (currencyName === undefined) {
+                            throw 'Please supply country currency name value';
+                        }
+                        this.currencyName = currencyName;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "Capital", {
+                    get: function () {
+                        return this.capital;
+                    },
+                    set: function (capital) {
+                        if (capital === undefined) {
+                            throw 'Please supply country capital name value';
+                        }
+                        this.capital = capital;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Country.prototype, "Zone", {
+                    get: function () {
+                        return this.zone;
+                    },
+                    set: function (zone) {
+                        if (zone === undefined) {
+                            throw 'Please supply country zone code value';
+                        }
+                        this.zone = zone;
                     },
                     enumerable: true,
                     configurable: true
@@ -3609,6 +3730,7 @@ var app;
                     this.TEACHER_URI = 'teachers';
                     this.PROFILE_TEACHER_URI = 'teachers?profileId=';
                     this.STATUS_TEACHER_URI = 'teachers?status=';
+                    this.COUNTRY_TEACHER_URI = 'teachers?country=';
                     this.EXPERIENCES_URI = 'experiences';
                     this.EDUCATIONS_URI = 'educations';
                     this.CERTIFICATES_URI = 'certificates';
@@ -3655,6 +3777,22 @@ var app;
                 TeacherService.prototype.getAllTeachersByStatus = function (status) {
                     var self = this;
                     var url = this.STATUS_TEACHER_URI + status;
+                    var deferred = this.$q.defer();
+                    this.restApi.queryObject({ url: url }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+                TeacherService.prototype.getAllTeachersByCountry = function (countryId) {
+                    var self = this;
+                    var url = this.COUNTRY_TEACHER_URI + countryId;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {
@@ -5559,6 +5697,7 @@ var app;
                     this.SCHOOL_URI = 'schools';
                     this.USER_SCHOOL_URI = 'schools?userId=';
                     this.STATUS_SCHOOL_URI = 'schools?status=';
+                    this.COUNTRY_SCHOOL_URI = 'schools?country=';
                 }
                 SchoolService.prototype.getSchoolById = function (id) {
                     var self = this;
@@ -5634,6 +5773,22 @@ var app;
                 SchoolService.prototype.getAllSchoolsByStatus = function (status) {
                     var self = this;
                     var url = this.STATUS_SCHOOL_URI + status;
+                    var deferred = this.$q.defer();
+                    this.restApi.queryObject({ url: url }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+                SchoolService.prototype.getAllSchoolsByCountry = function (countryId) {
+                    var self = this;
+                    var url = this.COUNTRY_SCHOOL_URI + countryId;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {
@@ -9395,7 +9550,7 @@ var app;
                 LandingPageController.prototype.activate = function () {
                     var ENTER_MIXPANEL = 'Enter: Main Landing Page';
                     var self = this;
-                    console.log('landingPage controller actived');
+                    DEBUG && console.log('landingPage controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
                     if (this.$stateParams.id) {
                         var options = {
@@ -9445,8 +9600,15 @@ var app;
                     this.countryService.getAllCountries().then(function (response) {
                         self._countryContainers = response.results;
                     }, function (error) {
-                        Raven.captureMessage('Error landingPage.controller.js method: _buildCountryContainers');
+                        var ERROR_MESSAGE = 'Error landingPage.controller.js method: _buildCountryContainers';
+                        Raven.captureMessage(ERROR_MESSAGE, error);
                     });
+                };
+                LandingPageController.prototype.goToCountryDetails = function (aliasCountry) {
+                    var GOTO_MIXPANEL = 'Go to Country Details: ' + aliasCountry;
+                    mixpanel.track(GOTO_MIXPANEL);
+                    var url = this.$state.href('page.countryProfilePage', { aliasCountry: aliasCountry });
+                    window.open(url);
                 };
                 LandingPageController.prototype._sendCountryFeedback = function () {
                     var ENTER_MIXPANEL = 'Click: Send Country Feedback';
@@ -9653,6 +9815,194 @@ var app;
 })(app || (app = {}));
 
 //# sourceMappingURL=../../../../maps/app/pages/landingPage/landingPage.service.js.map
+
+(function () {
+    'use strict';
+    angular
+        .module('mainApp.pages.countryProfilePage', [])
+        .config(config);
+    function config($stateProvider) {
+        $stateProvider
+            .state('page.countryProfilePage', {
+            url: '/country/:aliasCountry',
+            views: {
+                'container': {
+                    templateUrl: 'app/pages/countryProfilePage/countryProfilePage.html',
+                    controller: 'mainApp.pages.countryProfilePage.CountryProfilePageController',
+                    controllerAs: 'vm'
+                }
+            },
+            parent: 'page',
+            data: {
+                requireLogin: false
+            },
+            params: {
+                aliasCountry: null,
+                title: 'Use Waysily to find language teachers and schools, have a complete immersion',
+                description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
+                url: 'https://www.waysily.com/',
+                robots: 'follow,index',
+                image: 'https://www.waysily.com/assets/images/waysily-shared.png'
+            },
+            cache: false,
+            onEnter: ['$rootScope', function ($rootScope) {
+                    $rootScope.activeHeader = true;
+                    $rootScope.activeFooter = true;
+                }]
+        });
+    }
+})();
+
+//# sourceMappingURL=../../../../maps/app/pages/countryProfilePage/countryProfilePage.config.js.map
+
+var app;
+(function (app) {
+    var pages;
+    (function (pages) {
+        var countryProfilePage;
+        (function (countryProfilePage) {
+            var CountryProfilePageController = (function () {
+                function CountryProfilePageController($scope, $state, $stateParams, dataConfig, AuthService, CountryService, SchoolService, TeacherService, FunctionsUtil, $rootScope) {
+                    this.$scope = $scope;
+                    this.$state = $state;
+                    this.$stateParams = $stateParams;
+                    this.dataConfig = dataConfig;
+                    this.AuthService = AuthService;
+                    this.CountryService = CountryService;
+                    this.SchoolService = SchoolService;
+                    this.TeacherService = TeacherService;
+                    this.FunctionsUtil = FunctionsUtil;
+                    this.$rootScope = $rootScope;
+                    this._init();
+                }
+                CountryProfilePageController.prototype._init = function () {
+                    this.data = new app.models.country.Country();
+                    this.loading = true;
+                    this.shadowsSchoolLoading = true;
+                    this.shadowsTeacherLoading = true;
+                    this.noSchoolResult = false;
+                    this.noTeacherResult = false;
+                    this.activate();
+                };
+                CountryProfilePageController.prototype.activate = function () {
+                    var ENTER_MIXPANEL = 'Enter: Country Profile Page: ' + this.$stateParams.aliasCountry;
+                    var self = this;
+                    DEBUG && console.log('countryProfilePage controller actived');
+                    mixpanel.track(ENTER_MIXPANEL);
+                    this.CountryService.getCountryByAlias(this.$stateParams.aliasCountry).then(function (response) {
+                        self.data = new app.models.country.Country(response);
+                        self._getCurrencyConverted(self.data.CurrencyCode);
+                        self._getLocalTime(self.data.Zone);
+                        self._buildSchoolCards(self.data);
+                        self._buildTeacherCards(self.data);
+                        self.loading = false;
+                    });
+                };
+                CountryProfilePageController.prototype._getResultLoading = function (type) {
+                    var STUDENT_TYPE = 'student';
+                    var TEACHER_TYPE = 'teacher';
+                    var SCHOOL_TYPE = 'school';
+                    switch (type) {
+                        case STUDENT_TYPE:
+                            return 'app/pages/searchPage/studentResult/studentResult.html';
+                        case TEACHER_TYPE:
+                            return 'app/pages/searchPage/teacherLoading/teacherLoading.html';
+                        case SCHOOL_TYPE:
+                            return 'app/pages/searchPage/schoolLoading/schoolLoading.html';
+                    }
+                };
+                CountryProfilePageController.prototype._buildTeacherCards = function (country) {
+                    var self = this;
+                    this.TeacherService.getAllTeachersByCountry(country.Id).then(function (response) {
+                        if (response.results.length > 0) {
+                            self._teachersList = response.results;
+                        }
+                        else {
+                            self.noTeacherResult = true;
+                        }
+                        self.shadowsTeacherLoading = false;
+                    }, function (error) {
+                        var ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _buildTeacherCards ';
+                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
+                        self.shadowsTeacherLoading = false;
+                    });
+                };
+                CountryProfilePageController.prototype._buildSchoolCards = function (country) {
+                    var self = this;
+                    this.SchoolService.getAllSchoolsByCountry(country.Id).then(function (response) {
+                        if (response.results.length > 0) {
+                            self._schoolsList = response.results;
+                        }
+                        else {
+                            self.noSchoolResult = true;
+                        }
+                        self.shadowsSchoolLoading = false;
+                    }, function (error) {
+                        var ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _buildSchoolCards ';
+                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
+                        self.shadowsSchoolLoading = false;
+                    });
+                };
+                CountryProfilePageController.prototype._getCurrencyConverted = function (code) {
+                    var self = this;
+                    this.FunctionsUtil.getCurrencyConverted(code).then(function (response) {
+                        if (response > 0) {
+                            self._currencyConverted = response.toFixed(2).toString();
+                        }
+                        else {
+                            self._currencyConverted = '-';
+                        }
+                    }, function (error) {
+                        var ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _getCurrencyConverted ';
+                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
+                        self._currencyConverted = '-';
+                    });
+                };
+                CountryProfilePageController.prototype._getLocalTime = function (zone) {
+                    var FORMAT_TIME = 'LT';
+                    var today = moment();
+                    this._localTime = today.tz(zone).format(FORMAT_TIME).toLowerCase();
+                };
+                CountryProfilePageController.prototype._recommendTeacher = function () {
+                    var CLICK_MIXPANEL = 'Click: Recommend Teacher from countryProfilePage: ' + this.$stateParams.aliasCountry;
+                    var url = 'https://waysily.typeform.com/to/iAWFeg';
+                    mixpanel.track(CLICK_MIXPANEL);
+                    window.open(url, '_blank');
+                };
+                CountryProfilePageController.prototype._recommendSchool = function () {
+                    var CLICK_MIXPANEL = 'Click: Recommend School from countryProfilePage: ' + this.$stateParams.aliasCountry;
+                    var url = 'https://waysily.typeform.com/to/q5uT0P';
+                    mixpanel.track(CLICK_MIXPANEL);
+                    window.open(url, '_blank');
+                };
+                CountryProfilePageController.prototype._joinAsSchool = function () {
+                    var CLICK_MIXPANEL = 'Click: Join as a School from countryProfilePage: ' + this.$stateParams.aliasCountry;
+                    var url = 'https://form.jotform.co/71177073983868';
+                    mixpanel.track(CLICK_MIXPANEL);
+                    window.open(url, '_blank');
+                };
+                CountryProfilePageController.controllerId = 'mainApp.pages.countryProfilePage.CountryProfilePageController';
+                CountryProfilePageController.$inject = ['$scope',
+                    '$state',
+                    '$stateParams',
+                    'dataConfig',
+                    'mainApp.auth.AuthService',
+                    'mainApp.models.country.CountryService',
+                    'mainApp.models.school.SchoolService',
+                    'mainApp.models.teacher.TeacherService',
+                    'mainApp.core.util.FunctionsUtilService',
+                    '$rootScope'];
+                return CountryProfilePageController;
+            }());
+            countryProfilePage.CountryProfilePageController = CountryProfilePageController;
+            angular
+                .module('mainApp.pages.countryProfilePage')
+                .controller(CountryProfilePageController.controllerId, CountryProfilePageController);
+        })(countryProfilePage = pages.countryProfilePage || (pages.countryProfilePage = {}));
+    })(pages = app.pages || (app.pages = {}));
+})(app || (app = {}));
+
+//# sourceMappingURL=../../../../maps/app/pages/countryProfilePage/countryProfilePage.controller.js.map
 
 (function () {
     'use strict';
@@ -14825,6 +15175,10 @@ var app;
                     controllerAs: 'vm'
                 }
             },
+            parent: 'page',
+            data: {
+                requireLogin: false
+            },
             params: {
                 aliasSchool: null,
                 title: 'Compare and find the best language school',
@@ -14832,10 +15186,6 @@ var app;
                 url: 'https://www.waysily.com/page/school',
                 image: 'https://s3.amazonaws.com/waysily-img/school-photo-prd/20-34d2e9a3-6a6a-424d-bbcf-da5966c2b51d.jpg',
                 robots: 'follow,index'
-            },
-            parent: 'page',
-            data: {
-                requireLogin: false
             },
             onEnter: ['$rootScope', function ($rootScope) {
                     $rootScope.activeHeader = true;

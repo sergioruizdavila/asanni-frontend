@@ -8,10 +8,13 @@ var app;
             (function (functionsUtil) {
                 'use strict';
                 var FunctionsUtilService = (function () {
-                    function FunctionsUtilService($filter, dataConfig, $translate) {
+                    function FunctionsUtilService(externalRestApi, $filter, dataConfig, $translate, $q, $http) {
+                        this.externalRestApi = externalRestApi;
                         this.$filter = $filter;
                         this.dataConfig = dataConfig;
                         this.$translate = $translate;
+                        this.$q = $q;
+                        this.$http = $http;
                         DEBUG && console.log('functionsUtil service called');
                     }
                     FunctionsUtilService.prototype.normalizeString = function (str) {
@@ -459,10 +462,30 @@ var app;
                         valueParsed = valueNormalized.toLowerCase().split(' ').join('-');
                         return valueParsed;
                     };
+                    FunctionsUtilService.prototype.getCurrencyConverted = function (code) {
+                        var BASE_API_URL = 'http://free.currencyconverterapi.com/api/v3/convert';
+                        var self = this;
+                        var joinedCode = 'USD_' + code;
+                        var url = BASE_API_URL + '?q=' + joinedCode + '&compact=y&callback=JSON_CALLBACK';
+                        var deferred = this.$q.defer();
+                        this.$http.jsonp(url)
+                            .success(function (data) {
+                            var value = data[joinedCode].val || '-';
+                            deferred.resolve(value);
+                        })
+                            .error(function (error) {
+                            DEBUG && console.error(error);
+                            deferred.reject(error);
+                        });
+                        return deferred.promise;
+                    };
                     FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
-                    FunctionsUtilService.$inject = ['$filter',
+                    FunctionsUtilService.$inject = ['mainApp.core.restApi.externalRestApiService',
+                        '$filter',
                         'dataConfig',
-                        '$translate'];
+                        '$translate',
+                        '$q',
+                        '$http'];
                     return FunctionsUtilService;
                 }());
                 functionsUtil.FunctionsUtilService = FunctionsUtilService;

@@ -38,6 +38,7 @@ module app.core.util.functionsUtil {
         showMainLoading:() => void;
         hideMainLoading:() => void;
         toUrlFormat:(value) => string;
+        getCurrencyConverted:(code: string) => angular.IPromise<any> ;
 
     }
 
@@ -78,16 +79,22 @@ module app.core.util.functionsUtil {
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/
-        public static $inject = ['$filter',
+        public static $inject = ['mainApp.core.restApi.externalRestApiService',
+                                 '$filter',
                                  'dataConfig',
-                                 '$translate'];
+                                 '$translate',
+                                 '$q',
+                                 '$http'];
 
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        constructor(private $filter: angular.IFilterService,
+        constructor(private externalRestApi: app.core.restApi.IRestApi,
+                    private $filter: angular.IFilterService,
                     private dataConfig: IDataConfig,
-                    private $translate: angular.translate.ITranslateService) {
+                    private $translate: angular.translate.ITranslateService,
+                    private $q: angular.IQService,
+                    private $http) {
             DEBUG && console.log('functionsUtil service called');
         }
 
@@ -942,6 +949,39 @@ module app.core.util.functionsUtil {
             valueParsed = valueNormalized.toLowerCase().split(' ').join('-');
 
             return valueParsed;
+
+        }
+
+
+
+        /**
+        * getCurrencyConverted
+        * @description - get country currency converted
+        * @use - this.CountryService.getCurrencyConverted('CO');
+        * @function
+        * @param {string} code - country code
+        * @return {angular.IPromise<any>} promise - return country currency converted
+        */
+        getCurrencyConverted(code: string): angular.IPromise<any> {
+            //CONSTANTS
+            const BASE_API_URL = 'http://free.currencyconverterapi.com/api/v3/convert';
+            //VARIABLES
+            let self = this;
+            let joinedCode = 'USD_' + code;
+            let url = BASE_API_URL + '?q='+ joinedCode +'&compact=y&callback=JSON_CALLBACK';
+            let deferred = this.$q.defer();
+
+            this.$http.jsonp(url)
+                .success(function(data) {
+                    let value = data[joinedCode].val || '-';
+                    deferred.resolve(value);
+                })
+                .error(function(error) {
+                    DEBUG && console.error(error);
+                    deferred.reject(error);
+                });
+
+            return deferred.promise;
 
         }
 

@@ -18,6 +18,7 @@ module app.models.school {
         getSchoolByUserId: (userId: string) => angular.IPromise<any>;
         getAllSchools: () => angular.IPromise<any>;
         getAllSchoolsByStatus: (status) => angular.IPromise<any>;
+        getAllSchoolsByCountry: (countryId) => angular.IPromise<any>;
         getMinorSchoolPrice: (prices: app.models.school.Price) => number;
         schoolFeatureRatingAverage: (school: app.models.school.School) => number;
         buildMetaTagValue: (school: app.models.school.School) => app.core.interfaces.IMetaTag;
@@ -44,6 +45,7 @@ module app.models.school {
         SCHOOL_URI: string;
         USER_SCHOOL_URI: string;
         STATUS_SCHOOL_URI: string;
+        COUNTRY_SCHOOL_URI: string;
         // --------------------------------
 
 
@@ -74,6 +76,7 @@ module app.models.school {
             this.SCHOOL_URI = 'schools';
             this.USER_SCHOOL_URI = 'schools?userId=';
             this.STATUS_SCHOOL_URI = 'schools?status=';
+            this.COUNTRY_SCHOOL_URI = 'schools?country=';
 
         }
 
@@ -219,12 +222,45 @@ module app.models.school {
         * getAllSchoolsByStatus
         * @description - get all Schools by status filter value
         * @function
+        * @param {string} status - status school
         * @return {angular.IPromise<any>} return a promise with teachers list
         */
-        getAllSchoolsByStatus(status): angular.IPromise<any> {
+        getAllSchoolsByStatus(status: string): angular.IPromise<any> {
             //VARIABLES
             let self = this;
             let url = this.STATUS_SCHOOL_URI + status;
+            let deferred = this.$q.defer();
+
+            this.restApi.queryObject({url: url}).$promise
+                .then(
+                    function(response) {
+                        deferred.resolve(response);
+                    },
+                    function(error) {
+                        DEBUG && console.error(error);
+                        if(error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    }
+                );
+
+            return deferred.promise;
+        }
+
+
+
+        /**
+        * getAllSchoolsByCountry
+        * @description - get all Schools by status filter value
+        * @function
+        * @param {number} countryId - country id
+        * @return {angular.IPromise<any>} return a promise with teachers list
+        */
+        getAllSchoolsByCountry(countryId: number): angular.IPromise<any> {
+            //VARIABLES
+            let self = this;
+            let url = this.COUNTRY_SCHOOL_URI + countryId;
             let deferred = this.$q.defer();
 
             this.restApi.queryObject({url: url}).$promise

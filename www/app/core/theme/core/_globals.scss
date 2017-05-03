@@ -382,12 +382,20 @@
     font-style: italic!important;
 }
 
+
 .centered {
     position: absolute;
     top: 50%;
     left: 50%;
     /* bring your own prefixes */
     transform: translate(-50%, -50%);
+}
+
+.bottom-block {
+    bottom: 0px;
+    left: 0px;
+    position: absolute;
+    width: 100%;
 }
 
 

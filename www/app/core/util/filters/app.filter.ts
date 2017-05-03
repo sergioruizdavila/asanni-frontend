@@ -14,10 +14,11 @@ module app.core.util.filters {
 
     /**
     * TranslateFilter
-    * @description - return value based on code from i18n json
-    * @use - {{ 'CO' | getI18nFilter:'country' }}
+    * @description - get i18n value from database field (e.j. 'feature_en', 'feature_es', etc)
+    * and take the respective value comparing with current language
+    * @use - {{ object | translateFilter:'feature' }}
     * @function
-    * @return {string} country translated (e.g. 'Estados Unidos')
+    * @return {string} value translated (e.g. 'Descripción de la caracteristica')
     */
 
     export function TranslateFilter(
