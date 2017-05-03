@@ -77,22 +77,6 @@
 
 //# sourceMappingURL=../../maps/app/app.module.js.map
 
-(function () {
-    'use strict';
-    angular.module('mainApp.core', [
-        'ngResource',
-        'ngCookies',
-        'ui.router',
-        'angular-oauth2',
-        'pascalprecht.translate',
-        'ui.bootstrap',
-        'ui.calendar',
-        'ngFileUpload',
-        'ngImgCrop'
-    ]);
-})();
-
-//# sourceMappingURL=../../maps/app/app.core.module.js.map
 
 DEBUG = true;
 (function () {
@@ -1271,33 +1255,9 @@ var app;
                 return RestApiService;
             }());
             restApi.RestApiService = RestApiService;
-            var ExternalRestApiService = (function () {
-                function ExternalRestApiService($resource, dataConfig) {
-                    this.$resource = $resource;
-                }
-                ExternalRestApiService.Api = function ($resource, dataConfig) {
-                    var resource = $resource(':url/:id', { url: '@url' }, {
-                        show: { method: 'GET', params: { id: '@id' } },
-                        query: { method: 'GET', isArray: true },
-                        queryObject: { method: 'GET', isArray: false },
-                        create: { method: 'POST' },
-                        update: { method: 'PUT', params: { id: '@id' } },
-                        remove: { method: 'DELETE', params: { id: '@id' } }
-                    });
-                    return resource;
-                };
-                ExternalRestApiService.serviceId = 'mainApp.core.restApi.externalRestApiService';
-                ExternalRestApiService.$inject = [
-                    '$resource',
-                    'dataConfig'
-                ];
-                return ExternalRestApiService;
-            }());
-            restApi.ExternalRestApiService = ExternalRestApiService;
             angular
                 .module('mainApp.core.restApi')
                 .factory(RestApiService.serviceId, RestApiService.Api)
-                .factory(ExternalRestApiService.serviceId, ExternalRestApiService.Api)
                 .factory('customHttpInterceptor', customHttpInterceptor)
                 .config(configApi);
             configApi.$inject = ['$httpProvider'];

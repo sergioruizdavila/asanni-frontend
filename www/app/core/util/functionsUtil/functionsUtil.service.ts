@@ -955,37 +955,14 @@ module app.core.util.functionsUtil {
 
 
         /**
-        * getCountryByAlias
-        * @description - get country by Alias Country
-        * @use - this.CountryService.getCountryByAlias('new-zealand');
+        * getCurrencyConverted
+        * @description - get country currency converted
+        * @use - this.CountryService.getCurrencyConverted('CO');
         * @function
-        * @param {string} aliasCountry - alias country value
-        * @return {angular.IPromise<any>} promise - return country by Alias
+        * @param {string} code - country code
+        * @return {angular.IPromise<any>} promise - return country currency converted
         */
-        getCurrencyConverted(code: string): any {
-            //CONSTANTS
-            /*const BASE_API_URL = 'http://free.currencyconverterapi.com/api/v3/convert';
-            //VARIABLES
-            let self = this;
-            let joinedCode = 'USD_' + code;
-            let url = BASE_API_URL + '?q='+ joinedCode +'&compact=y&callback=JSON_CALLBACK';
-            let deferred = this.$q.defer();
-
-            this.externalRestApi.show({url: url}).$promise
-                .then(
-                    function(response) {
-                        let value = response[joinedCode].val || '-';
-                        deferred.resolve(value);
-                    },
-                    function(error) {
-                        DEBUG && console.error(error);
-                        deferred.reject(error);
-                    }
-                );
-
-            return deferred.promise;*/
-
-
+        getCurrencyConverted(code: string): angular.IPromise<any> {
             //CONSTANTS
             const BASE_API_URL = 'http://free.currencyconverterapi.com/api/v3/convert';
             //VARIABLES
@@ -1005,7 +982,7 @@ module app.core.util.functionsUtil {
                 });
 
             return deferred.promise;
-            
+
         }
 
 
