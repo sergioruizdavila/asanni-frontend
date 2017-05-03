@@ -442,8 +442,7 @@ var app;
             (function (functionsUtil) {
                 'use strict';
                 var FunctionsUtilService = (function () {
-                    function FunctionsUtilService(externalRestApi, $filter, dataConfig, $translate, $q, $http) {
-                        this.externalRestApi = externalRestApi;
+                    function FunctionsUtilService($filter, dataConfig, $translate, $q, $http) {
                         this.$filter = $filter;
                         this.dataConfig = dataConfig;
                         this.$translate = $translate;
@@ -914,8 +913,7 @@ var app;
                         return deferred.promise;
                     };
                     FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
-                    FunctionsUtilService.$inject = ['mainApp.core.restApi.externalRestApiService',
-                        '$filter',
+                    FunctionsUtilService.$inject = ['$filter',
                         'dataConfig',
                         '$translate',
                         '$q',
