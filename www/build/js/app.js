@@ -94,7 +94,7 @@
 
 //# sourceMappingURL=../../maps/app/app.core.module.js.map
 
-DEBUG = true;
+DEBUG = false;
 (function () {
     'use strict';
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
@@ -9601,7 +9601,7 @@ var app;
                         self._countryContainers = response.results;
                     }, function (error) {
                         var ERROR_MESSAGE = 'Error landingPage.controller.js method: _buildCountryContainers';
-                        Raven.captureMessage(ERROR_MESSAGE, error);
+                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
                     });
                 };
                 LandingPageController.prototype.goToCountryDetails = function (aliasCountry) {
