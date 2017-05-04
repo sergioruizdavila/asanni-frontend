@@ -244,18 +244,21 @@ module app.pages.searchPage {
                 //MIXPANEL
                 mixpanel.track(GOTO_MIXPANEL);
 
-                //Validate if user is Authenticated
-                this.isAuthenticated = this.AuthService.isAuthenticated();
+                var url = this.$state.href('page.schoolProfilePage', {aliasSchool: aliasSchool});
+                window.open(url,'_blank');
 
-                //If user is logged, go to createTeacher page
-                if(this.isAuthenticated) {
+                //Validate if user is Authenticated
+                //this.isAuthenticated = this.AuthService.isAuthenticated();
+
+                //If user is logged, go to createTeacher page (LEGACY)
+                /*if(this.isAuthenticated) {
                     var url = this.$state.href('page.schoolProfilePage', {aliasSchool: aliasSchool});
                     window.open(url,'_blank');
                     return
                 } else {
                     this.functionsUtil.showMainLoading();
                     this._openSignUpModal();
-                }
+                }*/
 
             }
 

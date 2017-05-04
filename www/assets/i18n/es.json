@@ -351,7 +351,7 @@
     "__COUNTRY PROFILE PAGE__": "",
     "%profile.country.local_time.label.text": "hora local",
     "%profile.country.capital_city.label.text": "ciudad capital",
-    "%profile.country.travelers.label.text": "{{recommend}} travelers",
+    "%profile.country.travelers.label.text": "{{recommend}} viajeros",
     "%profile.country.recommend.label.text": "lo recomiendan para aprender Español",
     "%profile.country.title.text": "La magia de {{country}}",
     "%profile.country.top_schools.title.text": "mejores escuelas",

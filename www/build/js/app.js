@@ -896,7 +896,7 @@ var app;
                         return valueParsed;
                     };
                     FunctionsUtilService.prototype.getCurrencyConverted = function (code) {
-                        var BASE_API_URL = 'http://free.currencyconverterapi.com/api/v3/convert';
+                        var BASE_API_URL = 'https://free.currencyconverterapi.com/api/v3/convert';
                         var self = this;
                         var joinedCode = 'USD_' + code;
                         var url = BASE_API_URL + '?q=' + joinedCode + '&compact=y&callback=JSON_CALLBACK';
@@ -10426,16 +10426,8 @@ var app;
                 SchoolResultController.prototype.goToDetails = function (aliasSchool) {
                     var GOTO_MIXPANEL = 'Go to School Details: ' + aliasSchool;
                     mixpanel.track(GOTO_MIXPANEL);
-                    this.isAuthenticated = this.AuthService.isAuthenticated();
-                    if (this.isAuthenticated) {
-                        var url = this.$state.href('page.schoolProfilePage', { aliasSchool: aliasSchool });
-                        window.open(url, '_blank');
-                        return;
-                    }
-                    else {
-                        this.functionsUtil.showMainLoading();
-                        this._openSignUpModal();
-                    }
+                    var url = this.$state.href('page.schoolProfilePage', { aliasSchool: aliasSchool });
+                    window.open(url, '_blank');
                 };
                 SchoolResultController.prototype.hoverEvent = function (id, status) {
                     var hoverClass = 'ma-box--border-hover';
