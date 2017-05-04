@@ -79,8 +79,7 @@ module app.core.util.functionsUtil {
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/
-        public static $inject = ['mainApp.core.restApi.externalRestApiService',
-                                 '$filter',
+        public static $inject = ['$filter',
                                  'dataConfig',
                                  '$translate',
                                  '$q',
@@ -89,8 +88,7 @@ module app.core.util.functionsUtil {
         /**********************************/
         /*           CONSTRUCTOR          */
         /**********************************/
-        constructor(private externalRestApi: app.core.restApi.IRestApi,
-                    private $filter: angular.IFilterService,
+        constructor(private $filter: angular.IFilterService,
                     private dataConfig: IDataConfig,
                     private $translate: angular.translate.ITranslateService,
                     private $q: angular.IQService,

@@ -80,6 +80,7 @@
 (function () {
     'use strict';
     angular.module('mainApp.core', [
+        'ngRaven',
         'ngResource',
         'ngCookies',
         'ui.router',
@@ -94,7 +95,7 @@
 
 //# sourceMappingURL=../../maps/app/app.core.module.js.map
 
-DEBUG = true;
+DEBUG = false;
 (function () {
     'use strict';
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
@@ -441,8 +442,7 @@ var app;
             (function (functionsUtil) {
                 'use strict';
                 var FunctionsUtilService = (function () {
-                    function FunctionsUtilService(externalRestApi, $filter, dataConfig, $translate, $q, $http) {
-                        this.externalRestApi = externalRestApi;
+                    function FunctionsUtilService($filter, dataConfig, $translate, $q, $http) {
                         this.$filter = $filter;
                         this.dataConfig = dataConfig;
                         this.$translate = $translate;
@@ -913,8 +913,7 @@ var app;
                         return deferred.promise;
                     };
                     FunctionsUtilService.serviceId = 'mainApp.core.util.FunctionsUtilService';
-                    FunctionsUtilService.$inject = ['mainApp.core.restApi.externalRestApiService',
-                        '$filter',
+                    FunctionsUtilService.$inject = ['$filter',
                         'dataConfig',
                         '$translate',
                         '$q',
@@ -3791,8 +3790,9 @@ var app;
                     return deferred.promise;
                 };
                 TeacherService.prototype.getAllTeachersByCountry = function (countryId) {
+                    var statusParamUrl = '&status=VA';
                     var self = this;
-                    var url = this.COUNTRY_TEACHER_URI + countryId;
+                    var url = this.COUNTRY_TEACHER_URI + countryId + statusParamUrl;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {
@@ -5787,8 +5787,9 @@ var app;
                     return deferred.promise;
                 };
                 SchoolService.prototype.getAllSchoolsByCountry = function (countryId) {
+                    var statusParamUrl = '&status=VA';
                     var self = this;
-                    var url = this.COUNTRY_SCHOOL_URI + countryId;
+                    var url = this.COUNTRY_SCHOOL_URI + countryId + statusParamUrl;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {
