@@ -46,6 +46,7 @@ module app.models.school {
         private package: Package;
         private paymentMethod: PaymentMethod;
         private bookingFee: BookingFee;
+        private views: number;
         private active: boolean;
         private createdAt: string;
 
@@ -91,6 +92,7 @@ module app.models.school {
             this.paymentMethod = new PaymentMethod(obj.paymentMethod);
             this.bookingFee = new BookingFee(obj.bookingFee);
             this.active = obj.active || false;
+            this.views = obj.views || 0;
             this.createdAt = obj.createdAt || '';
 
         }
@@ -371,6 +373,15 @@ module app.models.school {
         set Active(active: boolean) {
             if (active === undefined) { throw 'Please supply active value of school'; }
             this.active = active;
+        }
+
+        get Views() {
+            return this.views;
+        }
+
+        set Views(views: number) {
+            if (views === undefined) { throw 'Please supply views value of school'; }
+            this.views = views;
         }
 
         get CreatedAt() {

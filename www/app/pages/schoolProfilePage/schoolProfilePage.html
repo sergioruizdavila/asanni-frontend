@@ -67,8 +67,8 @@
         <div class="row space-top-5 space-10"
              ng-hide="vm.loading">
 
-            <!--                       START: LEFT COLUMN                        -->
-            <!--------------------------------------------------------------------->
+            <!--                      START: LEFT COLUMN                     -->
+            <!----------------------------------------------------------------->
             <div id="schoolProfile-left-column" class="col-xs-12 col-sm-4 col-md-3">
 
                 <!-------------- START: SCHOOL PROFILE IMAGE BLOCK ---------------->
@@ -245,12 +245,12 @@
 
 
             </div>
-            <!--                        END: LEFT COLUMN                         -->
+            <!--                       END: LEFT COLUMN                      -->
 
 
 
-            <!--                     START: MIDDLE COLUMN                        -->
-            <!--------------------------------------------------------------------->
+            <!--                     START: MIDDLE COLUMN                    -->
+            <!----------------------------------------------------------------->
             <div id="schoolProfile-middle-column" class="col-sm-8 col-md-6">
 
                 <!--------------------- START: MAIN BLOCK ------------------------->
@@ -1444,15 +1444,15 @@
                 <!--                     END: MAIN BLOCK                         -->
 
             </div>
-            <!--                      END: MIDDLE COLUMN                         -->
+            <!--                      END: MIDDLE COLUMN                     -->
 
 
 
-            <!--                     START: RIGHT COLUMN                         -->
-            <!--------------------------------------------------------------------->
+            <!--                    START: RIGHT COLUMN                      -->
+            <!----------------------------------------------------------------->
             <div id="schoolProfile-right-column" class="col-xs-3 hidden-sm">
 
-                <!------------------- START: BOOK A CLASS BLOCK ------------------->
+                <!------------------ START: BOOK A CLASS BLOCK ---------------->
                 <div class="teacherProfilePage__booking-block row">
 
                     <div class="col-xs-12">
@@ -1482,7 +1482,7 @@
                                 </div>
                             </div>
 
-                            <! Rating List >
+                            <! Rating List & views >
                             <div class="ma-box__content">
 
                                 <! Atmosphere Rating >
@@ -1590,13 +1590,29 @@
                                     </div>
                                 </div>
 
+                                <hr>
+
+                                <! Amount of views >
+                                <div class="row middle-xs">
+                                    <div class="col-xs-8">
+                                        <span class="ma-label ma-label--simple"
+                                              translate="%profile.school.views.label.text"
+                                              translate-value-views="{{vm.data.Views}}">
+                                        </span>
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                        <i class="material-icons md-36 md-alert vertical-align-text-bottom">explore</i>
+                                    </div>
+                                </div>
+
                             </div>
+
                         </div>
 
                     </div>
 
                 </div>
-                <!--                   END: BOOK A CLASS BLOCK                   -->
+                <!--                 END: BOOK A CLASS BLOCK                 -->
 
             </div>
             <!--                      END: RIGHT COLUMN                          -->
