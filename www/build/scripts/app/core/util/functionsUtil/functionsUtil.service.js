@@ -462,7 +462,7 @@ var app;
                         return valueParsed;
                     };
                     FunctionsUtilService.prototype.getCurrencyConverted = function (code) {
-                        var BASE_API_URL = 'http://free.currencyconverterapi.com/api/v3/convert';
+                        var BASE_API_URL = 'https://free.currencyconverterapi.com/api/v3/convert';
                         var self = this;
                         var joinedCode = 'USD_' + code;
                         var url = BASE_API_URL + '?q=' + joinedCode + '&compact=y&callback=JSON_CALLBACK';

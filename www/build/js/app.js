@@ -95,7 +95,7 @@
 
 //# sourceMappingURL=../../maps/app/app.core.module.js.map
 
-DEBUG = false;
+DEBUG = true;
 (function () {
     'use strict';
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
@@ -4016,6 +4016,7 @@ var app;
                     this.paymentMethod = new PaymentMethod(obj.paymentMethod);
                     this.bookingFee = new BookingFee(obj.bookingFee);
                     this.active = obj.active || false;
+                    this.views = obj.views || 0;
                     this.createdAt = obj.createdAt || '';
                 }
                 Object.defineProperty(School.prototype, "Id", {
@@ -4411,6 +4412,19 @@ var app;
                             throw 'Please supply active value of school';
                         }
                         this.active = active;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(School.prototype, "Views", {
+                    get: function () {
+                        return this.views;
+                    },
+                    set: function (views) {
+                        if (views === undefined) {
+                            throw 'Please supply views value of school';
+                        }
+                        this.views = views;
                     },
                     enumerable: true,
                     configurable: true

@@ -556,6 +556,8 @@
     "%create.teacher.finish.description.part_2.text": "El tiempo de revisión toma de 3 a 4 días aproximadamente.",
 
     "__SCHOOL PROFILE PAGE__": "",
+    "%profile.school.views.label.text": "Recibió <strong>{{views}}</strong> visitas la semana pasada.",
+
     "%profile.school.language_exchange.title.text": "Intercambio de idiomas con locales",
     "%profile.school.tour.title.text": "tours",
     "%profile.school.city_tour.title.text": "Recorrido por la ciudad",
