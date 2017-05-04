@@ -962,7 +962,7 @@ module app.core.util.functionsUtil {
         */
         getCurrencyConverted(code: string): angular.IPromise<any> {
             //CONSTANTS
-            const BASE_API_URL = 'http://free.currencyconverterapi.com/api/v3/convert';
+            const BASE_API_URL = 'https://free.currencyconverterapi.com/api/v3/convert';
             //VARIABLES
             let self = this;
             let joinedCode = 'USD_' + code;
