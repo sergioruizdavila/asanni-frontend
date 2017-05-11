@@ -11,10 +11,13 @@ var app;
                     this.AuthService = AuthService;
                     this.$q = $q;
                     DEBUG && console.log('teacher service instanced');
+                    this.VALIDATED_VALUE = 'VA';
                     this.TEACHER_URI = 'teachers';
-                    this.PROFILE_TEACHER_URI = 'teachers?profileId=';
-                    this.STATUS_TEACHER_URI = 'teachers?status=';
-                    this.COUNTRY_TEACHER_URI = 'teachers?country=';
+                    this.COUNTRY_TEACHER_PARAM = 'country=';
+                    this.PROFILE_TEACHER_PARAM = 'profileId=';
+                    this.STATUS_TEACHER_PARAM = 'status=';
+                    this.LIMIT_TEACHER_PARAM = 'limit=';
+                    this.OFFSET_TEACHER_PARAM = 'offset=';
                     this.EXPERIENCES_URI = 'experiences';
                     this.EDUCATIONS_URI = 'educations';
                     this.CERTIFICATES_URI = 'certificates';
@@ -37,7 +40,8 @@ var app;
                 };
                 TeacherService.prototype.getTeacherByProfileId = function (profileId) {
                     var self = this;
-                    var url = this.PROFILE_TEACHER_URI + profileId;
+                    var url = this.TEACHER_URI
+                        + '?' + this.PROFILE_TEACHER_PARAM + profileId;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {
@@ -60,7 +64,8 @@ var app;
                 };
                 TeacherService.prototype.getAllTeachersByStatus = function (status) {
                     var self = this;
-                    var url = this.STATUS_TEACHER_URI + status;
+                    var url = this.TEACHER_URI
+                        + '?' + this.STATUS_TEACHER_PARAM + status;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {
@@ -75,9 +80,30 @@ var app;
                     return deferred.promise;
                 };
                 TeacherService.prototype.getAllTeachersByCountry = function (countryId) {
-                    var statusParamUrl = '&status=VA';
                     var self = this;
-                    var url = this.COUNTRY_TEACHER_URI + countryId + statusParamUrl;
+                    var url = this.TEACHER_URI
+                        + '?' + this.STATUS_TEACHER_PARAM + this.VALIDATED_VALUE
+                        + '&' + this.COUNTRY_TEACHER_PARAM + countryId;
+                    var deferred = this.$q.defer();
+                    this.restApi.queryObject({ url: url }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+                TeacherService.prototype.getAllTeachersByCountryAndRange = function (countryId, limit, offset) {
+                    var self = this;
+                    var url = this.TEACHER_URI
+                        + '?' + this.COUNTRY_TEACHER_PARAM + countryId
+                        + '&' + this.STATUS_TEACHER_PARAM + this.VALIDATED_VALUE
+                        + '&' + this.LIMIT_TEACHER_PARAM + limit
+                        + '&' + this.OFFSET_TEACHER_PARAM + offset;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {

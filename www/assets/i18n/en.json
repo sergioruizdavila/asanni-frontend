@@ -13,6 +13,7 @@
     "%global.no.button.text": "no",
     "%global.add.button.text": "+ Add",
     "%global.add_more.button.text": "+ Add More",
+    "%global.see_more.button.text": "see more...",
     "%global.upload_file.button.text": "Upload a file from your computer",
     "%global.uploading.button.text": "Uploading...",
     "%global.start.button.text": "Let's Start",

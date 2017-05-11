@@ -19,6 +19,20 @@ module app.pages.schoolProfilePage {
         disabled?: boolean;
     }
 
+    interface ICountryTeachersQueryObject {
+        next: string;
+        previous: string;
+        count: number;
+        results: Array<app.models.teacher.Teacher>;
+    }
+
+    interface ICountrySchoolsQueryObject {
+        next: string;
+        previous: string;
+        count: number;
+        results: Array<app.models.school.School>;
+    }
+
     /********************************/
     /*    STATEPARAMS INTERFACES    */
     /********************************/
@@ -41,14 +55,23 @@ module app.pages.schoolProfilePage {
         marker: string;
         private _paymentMethodsList: Array<IPaymentMethodsClass>;
         data: app.models.school.School;
+        country: app.models.country.Country;
+        _teachersList: Array<app.models.teacher.Teacher>;
+        _schoolsList: Array<app.models.school.School>;
         loading: boolean;
+        shadowsSchoolLoading: boolean;
+        shadowsTeacherLoading: boolean;
+        noTeacherResult: boolean;
+        noSchoolResult: boolean;
         // --------------------------------
 
 
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = [
             '$rootScope',
+            'mainApp.models.country.CountryService',
             'mainApp.models.school.SchoolService',
+            'mainApp.models.teacher.TeacherService',
             'mainApp.core.util.FunctionsUtilService',
             '$state',
             '$stateParams',
@@ -59,7 +82,9 @@ module app.pages.schoolProfilePage {
         /**********************************/
         constructor(
             private $rootScope: app.core.interfaces.IMainAppRootScope,
+            private CountryService: app.models.country.ICountryService,
             private SchoolService: app.models.school.ISchoolService,
+            private TeacherService: app.models.teacher.ITeacherService,
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private $state: ng.ui.IStateService,
             private $stateParams: ISchoolParams,
@@ -75,8 +100,23 @@ module app.pages.schoolProfilePage {
             //Init profile school data
             this.data = new app.models.school.School();
 
+            //Init country data
+            this.country = new app.models.country.Country();
+
             //Init loading
             this.loading = true;
+
+            //Init shadows school loading
+            this.shadowsSchoolLoading = true;
+
+            //Init shadows teacher loading
+            this.shadowsTeacherLoading = true;
+
+            //Init no school result message
+            this.noSchoolResult = false;
+
+            //Init no teacher result message
+            this.noTeacherResult = false;
 
             //Assign marker map
             this.marker = 'long';
@@ -88,6 +128,8 @@ module app.pages.schoolProfilePage {
         activate(): void {
             //CONSTANTS
             const ENTER_MIXPANEL = 'Enter: School Profile Page Id: ' + this.$stateParams.aliasSchool;
+            const SCROLL_TO_ID = 'schoolProfile-information';
+            const AVERAGE_RATING = 'schoolProfile-average-rating';
             //VARIABLES
             let self = this;
 
@@ -98,6 +140,10 @@ module app.pages.schoolProfilePage {
             DEBUG && console.log('schoolProfilePage controller actived');
             //MIXPANEL
             mixpanel.track(ENTER_MIXPANEL);
+
+            $(window).scroll(function() {
+                self.functionsUtil.stickContainer(this, SCROLL_TO_ID, AVERAGE_RATING);
+            });
 
             // Get School information
             this.SchoolService.getSchoolByAlias(this.$stateParams.aliasSchool).then(
@@ -123,6 +169,16 @@ module app.pages.schoolProfilePage {
                         {lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng)},
                         null
                     );
+
+                    //Build similar schools suggestions
+                    self._buildSchoolCards(self.data.Country);
+
+                    //Build teachers suggestions
+                    self._buildTeacherCards(self.data.Country);
+
+                    //Get country information
+                    self._getCountryInfo(self.data.Country);
+
                     self.loading = false;
                 }
             );
@@ -132,6 +188,37 @@ module app.pages.schoolProfilePage {
         /**********************************/
         /*            METHODS             */
         /**********************************/
+
+
+        /**
+        * _getResultLoading
+        * @description - this method return specific loading template
+        * based on type result (students, teachers, schools, etc)
+        * @use - this._getResultTemplate('student');
+        * @function
+        * @param {string} type - type of results list (students, teachers, schools, etc)
+        * @return {string} result template path
+        */
+        //TODO: Esta funciona esta repetida en searchPage, countryPage, deberia
+        // crearse un servicio global, donde se encargue de crear este tipo de shadows
+        private _getResultLoading(type: string): string {
+            //CONSTANTS
+            const STUDENT_TYPE = 'student';
+            const TEACHER_TYPE = 'teacher';
+            const SCHOOL_TYPE = 'school';
+            /*********************************/
+
+            switch (type) {
+                case STUDENT_TYPE:
+                return 'app/pages/searchPage/studentResult/studentResult.html';
+                case TEACHER_TYPE:
+                return 'app/pages/searchPage/teacherLoading/teacherLoading.html';
+                case SCHOOL_TYPE:
+                return 'app/pages/searchPage/schoolLoading/schoolLoading.html';
+            }
+        }
+
+
 
         /**
         * _buildMetaTags
@@ -152,6 +239,105 @@ module app.pages.schoolProfilePage {
             this.$rootScope.url = metaTags.url;
             this.$rootScope.robots = metaTags.robots;
             this.$rootScope.image = metaTags.image;
+        }
+
+
+
+        /**
+        * _buildTeacherCards
+        * @description - this method build teacher cards associated to country
+        * @use - this._buildTeacherCards(country);
+        * @function
+        * @param {number} countryId - country id
+        * @return {void}
+        */
+        _buildTeacherCards(countryId: number): void {
+            //CONSTANTS
+            const LIMIT = 3;
+            const OFFSET = 0;
+            //VARIABLES
+            let self = this;
+
+            this.TeacherService.getAllTeachersByCountryAndRange(countryId, LIMIT, OFFSET).then(
+                function(response: ICountryTeachersQueryObject) {
+                    if(response.results.length > 0) {
+                        self._teachersList = response.results;
+                    } else {
+                        self.noTeacherResult = true;
+                    }
+                    self.shadowsTeacherLoading = false;
+                },
+                function(error) {
+                    //CONSTANTS
+                    const ERROR_MESSAGE = 'Error schoolProfilePage.controller.js method: _buildTeacherCards ';
+                    DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
+                    self.shadowsTeacherLoading = false;
+                }
+            );
+        }
+
+
+
+        /**
+        * _buildSchoolCards
+        * @description - this method build school cards associated to country
+        * @use - this._buildSchoolCards(country);
+        * @function
+        * @param {number} countryId - country id
+        * @return {void}
+        */
+        _buildSchoolCards(countryId: number): void {
+            //CONSTANTS
+            const LIMIT = 3;
+            const OFFSET = 0;
+            //VARIABLES
+            let self = this;
+
+            this.SchoolService.getAllSchoolsByCountryAndRange(countryId, LIMIT, OFFSET).then(
+                function(response: ICountrySchoolsQueryObject) {
+                    if(response.results.length > 0) {
+                        self._schoolsList = response.results;
+                    } else {
+                        self.noSchoolResult = true;
+                    }
+
+                    self.shadowsSchoolLoading = false;
+                },
+                function(error) {
+                    //CONSTANTS
+                    const ERROR_MESSAGE = 'Error schoolProfilePage.controller.js method: _buildSchoolCards ';
+                    DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
+                    self.shadowsSchoolLoading = false;
+                }
+            );
+        }
+
+
+        /**
+        * _getCountryInfo
+        * @description - this method build school cards associated to country
+        * @use - this._getCountryInfo(countryId);
+        * @function
+        * @param {number} countryId - country id
+        * @return {void}
+        */
+        _getCountryInfo(countryId: number): void {
+            //VARIABLES
+            let self = this;
+
+            this.CountryService.getCountryById(countryId).then(
+                function(response) {
+                    if(response.id) {
+                        self.country = new app.models.country.Country(response);
+                    }
+                },
+                function(error) {
+                    //CONSTANTS
+                    const ERROR_MESSAGE = 'Error schoolProfilePage.controller.js method: _getCountryInfo ';
+                    DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
+                    self.shadowsSchoolLoading = false;
+                }
+            );
         }
 
 

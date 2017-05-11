@@ -48,7 +48,7 @@
 
     <div class="schoolProfilePage container">
 
-        <!----------------------- START: MAIN LOADING BLOCK ----------------------->
+        <!--------------------- START: MAIN LOADING BLOCK --------------------->
         <div class="row
                     ma-loading-container
                     ma-loading-container--center-screen"
@@ -60,11 +60,12 @@
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
-        <!--                     END: MAIN LOADING  BLOCK                        -->
+        <!--                    END: MAIN LOADING  BLOCK                     -->
 
 
-
-        <div class="row space-top-5 space-10"
+        <!----------------- START: SCHOOL PROFILE INFORMATION ----------------->
+        <div id="schoolProfile-information"
+             class="row space-top-5 space-5"
              ng-hide="vm.loading">
 
             <!--                      START: LEFT COLUMN                     -->
@@ -77,12 +78,15 @@
                             row space-2 text-center center-xs">
 
                     <div class="col-xs-12">
-                        <div class="ma-rectangle-photo-profile
-                                    ma-rectangle-photo-profile--large border-1">
+                        <a class="ma-rectangle-photo-profile
+                                  ma-rectangle-photo-profile--large border-1
+                                  link-reset"
+                            ng-href="{{vm.data.Photo}}"
+                            target="_blank">
                             <img class="img-responsive center-block"
                                  ng-src="{{vm.data.Photo}}"
                                  alt="{{vm.data.Name}}">
-                        </div>
+                        </a>
                     </div>
 
                 </div>
@@ -1457,7 +1461,8 @@
 
                     <div class="col-xs-12">
 
-                        <div class="ma-box ma-box--border-1">
+                        <div id="schoolProfile-average-rating"
+                             class="ma-box ma-box--border-1">
 
                             <! Average Rating >
                             <div class="ma-box__title">
@@ -1618,6 +1623,143 @@
             <!--                      END: RIGHT COLUMN                          -->
 
         </div>
+        <!--                END: SCHOOL PROFILE INFORMATION                  -->
+
+        <hr class="space-top-11 space-11">
+
+        <!---------------- START: SIMILAR SCHOOLS IN THE COUNTRY -------------->
+        <div id="schoolProfile-similar-schools"
+             class="row space-10">
+            <div class="col-xs-12">
+
+                <! Title >
+                <div class="row space-left-10 space-right-10">
+                    <div class="col-xs-12">
+                        <h3 class="margin-reset">
+                            Similar schools in {{vm.data.Location.Country | getI18nFilter:'country'}}
+                        </h3>
+                    </div>
+                </div>
+
+
+                <! Shadow school containers loading >
+                <div class="row margin-reset center-xs"
+                     ng-show="vm.shadowsSchoolLoading">
+
+                    <div class="col-xs-12">
+                        <div class="countryProfilePage__teacher-container__card"
+                             ng-include="vm._getResultLoading('school')"></div>
+                        <div class="countryProfilePage__teacher-container__card"
+                             ng-include="vm._getResultLoading('school')"></div>
+                    </div>
+
+                </div>
+
+
+                <! Schools list >
+                <div class="row margin-reset center-xs"
+                     ng-show="!vm.shadowsSchoolLoading">
+                    <div class="col-xs-12">
+
+                        <div class="countryProfilePage__teacher-container__card"
+                             ng-repeat="item in ::vm._schoolsList">
+                             <ma-school-result data-id="{{::item.id}}"
+                                               data-alias="{{::item.aliasSchool}}">
+                             </ma-school-result>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <! See more button >
+                <div class="row space-top-3 space-left-10 space-right-10"
+                     ng-show="!vm.shadowsSchoolLoading">
+                    <div class="col-xs-12 text-right">
+
+                        <a class="ma-link ma-link--box ma-link--box--default
+                                  ma-link--box--underline
+                                  ma-link--box--underline--primary
+                                  text-capitalize"
+                            ng-href="/page/country/{{vm.country.AliasCountry}}"
+                            translate>
+                            %global.see_more.button.text
+                        </a>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--               END: SIMILAR SCHOOLS IN THE COUNTRY               -->
+
+        <hr class="space-top-11 space-11">
+
+
+        <!--------------- START: TEACHERS OPTIONS IN THE COUNTRY -------------->
+        <div id="schoolProfile-teachers-options"
+             class="row space-15">
+
+            <div class="col-xs-12">
+
+                <! Title >
+                <div class="row space-left-10 space-right-10">
+                    <div class="col-xs-12">
+                        <h3 class="margin-reset">
+                            Top teachers in {{vm.data.Location.Country | getI18nFilter:'country'}}
+                        </h3>
+                    </div>
+                </div>
+
+                <! Shadow teacher containers loading >
+                <div class="row margin-reset center-xs"
+                     ng-show="vm.shadowsTeacherLoading">
+
+                    <div class="col-xs-12">
+                        <div class="countryProfilePage__teacher-container__card"
+                             ng-include="vm._getResultLoading('teacher')"></div>
+                        <div class="countryProfilePage__teacher-container__card"
+                             ng-include="vm._getResultLoading('teacher')"></div>
+                    </div>
+
+                </div>
+
+                <! Teachers list >
+                <div class="row margin-reset center-xs"
+                     ng-show="!vm.shadowsTeacherLoading">
+
+                    <div class="col-xs-12">
+
+                        <div class="countryProfilePage__teacher-container__card"
+                             ng-repeat="item in ::vm._teachersList">
+                            <ma-teacher-result></ma-teacher-result>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <! See more button >
+                <div class="row space-top-3 space-left-10 space-right-10"
+                     ng-show="!vm.shadowsSchoolLoading">
+                    <div class="col-xs-12 text-right">
+
+                        <a class="ma-link ma-link--box ma-link--box--default
+                                  ma-link--box--underline
+                                  ma-link--box--underline--primary
+                                  text-capitalize"
+                            ng-href="/page/country/{{vm.country.AliasCountry}}"
+                            translate>
+                            %global.see_more.button.text
+                        </a>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!--             END: TEACHERS OPTIONS IN THE COUNTRY                -->
 
     </div>
 

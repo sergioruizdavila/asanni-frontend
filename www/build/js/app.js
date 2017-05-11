@@ -80,7 +80,6 @@
 (function () {
     'use strict';
     angular.module('mainApp.core', [
-        'ngRaven',
         'ngResource',
         'ngCookies',
         'ui.router',
@@ -95,7 +94,7 @@
 
 //# sourceMappingURL=../../maps/app/app.core.module.js.map
 
-DEBUG = false;
+DEBUG = true;
 (function () {
     'use strict';
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
@@ -888,6 +887,27 @@ var app;
                             loading.className += ' hidden';
                         }
                     };
+                    FunctionsUtilService.prototype.stickContainer = function (self, scrollToId, div) {
+                        var regex = /(?:^|\s)normal-container(?!\S)/g;
+                        var unstickClass = 'normal-container';
+                        var hT = $('#' + scrollToId).offset().top;
+                        var hH = $('#' + scrollToId).outerHeight();
+                        var wH = $(window).height();
+                        var wS = $(self).scrollTop();
+                        var elem = document.getElementById(div);
+                        var pointToStick = null;
+                        var elementHeight = null;
+                        if (wS > (hT + hH - wH)) {
+                            elementHeight = elem.offsetHeight;
+                            pointToStick = document.getElementById(scrollToId).offsetHeight - elementHeight;
+                            elem.className += ' ' + unstickClass;
+                            elem.style.top = pointToStick + 'px';
+                        }
+                        else {
+                            elem.style.top = 'initial';
+                            elem.className = elem.className.replace(regex, '');
+                        }
+                    };
                     FunctionsUtilService.prototype.toUrlFormat = function (value) {
                         var valueParsed = '';
                         var valueNormalized = '';
@@ -1591,6 +1611,22 @@ var app;
                     var url = this.COUNTRY_URI + '/' + aliasCountry;
                     var deferred = this.$q.defer();
                     this.restApi.show({ url: url }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+                CountryService.prototype.getCountryById = function (id) {
+                    var self = this;
+                    var url = this.COUNTRY_URI;
+                    var deferred = this.$q.defer();
+                    this.restApi.show({ url: url, id: id }).$promise
                         .then(function (response) {
                         deferred.resolve(response);
                     }, function (error) {
@@ -3726,10 +3762,13 @@ var app;
                     this.AuthService = AuthService;
                     this.$q = $q;
                     DEBUG && console.log('teacher service instanced');
+                    this.VALIDATED_VALUE = 'VA';
                     this.TEACHER_URI = 'teachers';
-                    this.PROFILE_TEACHER_URI = 'teachers?profileId=';
-                    this.STATUS_TEACHER_URI = 'teachers?status=';
-                    this.COUNTRY_TEACHER_URI = 'teachers?country=';
+                    this.COUNTRY_TEACHER_PARAM = 'country=';
+                    this.PROFILE_TEACHER_PARAM = 'profileId=';
+                    this.STATUS_TEACHER_PARAM = 'status=';
+                    this.LIMIT_TEACHER_PARAM = 'limit=';
+                    this.OFFSET_TEACHER_PARAM = 'offset=';
                     this.EXPERIENCES_URI = 'experiences';
                     this.EDUCATIONS_URI = 'educations';
                     this.CERTIFICATES_URI = 'certificates';
@@ -3752,7 +3791,8 @@ var app;
                 };
                 TeacherService.prototype.getTeacherByProfileId = function (profileId) {
                     var self = this;
-                    var url = this.PROFILE_TEACHER_URI + profileId;
+                    var url = this.TEACHER_URI
+                        + '?' + this.PROFILE_TEACHER_PARAM + profileId;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {
@@ -3775,7 +3815,8 @@ var app;
                 };
                 TeacherService.prototype.getAllTeachersByStatus = function (status) {
                     var self = this;
-                    var url = this.STATUS_TEACHER_URI + status;
+                    var url = this.TEACHER_URI
+                        + '?' + this.STATUS_TEACHER_PARAM + status;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {
@@ -3790,9 +3831,30 @@ var app;
                     return deferred.promise;
                 };
                 TeacherService.prototype.getAllTeachersByCountry = function (countryId) {
-                    var statusParamUrl = '&status=VA';
                     var self = this;
-                    var url = this.COUNTRY_TEACHER_URI + countryId + statusParamUrl;
+                    var url = this.TEACHER_URI
+                        + '?' + this.STATUS_TEACHER_PARAM + this.VALIDATED_VALUE
+                        + '&' + this.COUNTRY_TEACHER_PARAM + countryId;
+                    var deferred = this.$q.defer();
+                    this.restApi.queryObject({ url: url }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+                TeacherService.prototype.getAllTeachersByCountryAndRange = function (countryId, limit, offset) {
+                    var self = this;
+                    var url = this.TEACHER_URI
+                        + '?' + this.COUNTRY_TEACHER_PARAM + countryId
+                        + '&' + this.STATUS_TEACHER_PARAM + this.VALIDATED_VALUE
+                        + '&' + this.LIMIT_TEACHER_PARAM + limit
+                        + '&' + this.OFFSET_TEACHER_PARAM + offset;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {
@@ -3987,6 +4049,7 @@ var app;
                         obj = {};
                     this.id = obj.id;
                     this.user = obj.user || '';
+                    this.country = obj.country;
                     this.photo = obj.photo || '';
                     this.name = obj.name || '';
                     this.aliasSchool = obj.aliasSchool || '';
@@ -4035,6 +4098,13 @@ var app;
                             throw 'Please supply school user id manager';
                         }
                         this.user = user;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(School.prototype, "Country", {
+                    get: function () {
+                        return this.country;
                     },
                     enumerable: true,
                     configurable: true
@@ -5708,10 +5778,13 @@ var app;
                     this.dataConfig = dataConfig;
                     this.$q = $q;
                     DEBUG && console.log('schools service instanced');
+                    this.VALIDATED_VALUE = 'VA';
                     this.SCHOOL_URI = 'schools';
-                    this.USER_SCHOOL_URI = 'schools?userId=';
-                    this.STATUS_SCHOOL_URI = 'schools?status=';
-                    this.COUNTRY_SCHOOL_URI = 'schools?country=';
+                    this.COUNTRY_SCHOOL_PARAM = 'country=';
+                    this.USER_SCHOOL_PARAM = 'userId=';
+                    this.STATUS_SCHOOL_PARAM = 'status=';
+                    this.LIMIT_SCHOOL_PARAM = 'limit=';
+                    this.OFFSET_SCHOOL_PARAM = 'offset=';
                 }
                 SchoolService.prototype.getSchoolById = function (id) {
                     var self = this;
@@ -5747,7 +5820,8 @@ var app;
                 };
                 SchoolService.prototype.getSchoolByUserId = function (userId) {
                     var self = this;
-                    var url = this.USER_SCHOOL_URI + userId;
+                    var url = this.SCHOOL_URI
+                        + '?' + this.USER_SCHOOL_PARAM + userId;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {
@@ -5786,7 +5860,8 @@ var app;
                 };
                 SchoolService.prototype.getAllSchoolsByStatus = function (status) {
                     var self = this;
-                    var url = this.STATUS_SCHOOL_URI + status;
+                    var url = this.SCHOOL_URI
+                        + '?' + this.STATUS_SCHOOL_PARAM + status;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {
@@ -5801,9 +5876,49 @@ var app;
                     return deferred.promise;
                 };
                 SchoolService.prototype.getAllSchoolsByCountry = function (countryId) {
-                    var statusParamUrl = '&status=VA';
                     var self = this;
-                    var url = this.COUNTRY_SCHOOL_URI + countryId + statusParamUrl;
+                    var url = this.SCHOOL_URI
+                        + '?' + this.STATUS_SCHOOL_PARAM + this.VALIDATED_VALUE
+                        + '&' + this.COUNTRY_SCHOOL_PARAM + countryId;
+                    var deferred = this.$q.defer();
+                    this.restApi.queryObject({ url: url }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+                SchoolService.prototype.getAllSchoolsByCountryAndRange = function (countryId, limit, offset) {
+                    var self = this;
+                    var url = this.SCHOOL_URI
+                        + '?' + this.COUNTRY_SCHOOL_PARAM + countryId
+                        + '&' + this.STATUS_SCHOOL_PARAM + this.VALIDATED_VALUE
+                        + '&' + this.LIMIT_SCHOOL_PARAM + limit
+                        + '&' + this.OFFSET_SCHOOL_PARAM + offset;
+                    var deferred = this.$q.defer();
+                    this.restApi.queryObject({ url: url }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+                SchoolService.prototype.getSchoolsByRange = function (limit, offset) {
+                    var self = this;
+                    var url = this.SCHOOL_URI
+                        + '?' + this.STATUS_SCHOOL_PARAM + this.VALIDATED_VALUE
+                        + '&' + this.LIMIT_SCHOOL_PARAM + limit
+                        + '&' + this.OFFSET_SCHOOL_PARAM + offset;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {
@@ -15211,9 +15326,11 @@ var app;
         var schoolProfilePage;
         (function (schoolProfilePage) {
             var SchoolProfilePageController = (function () {
-                function SchoolProfilePageController($rootScope, SchoolService, functionsUtil, $state, $stateParams, $filter) {
+                function SchoolProfilePageController($rootScope, CountryService, SchoolService, TeacherService, functionsUtil, $state, $stateParams, $filter) {
                     this.$rootScope = $rootScope;
+                    this.CountryService = CountryService;
                     this.SchoolService = SchoolService;
+                    this.TeacherService = TeacherService;
                     this.functionsUtil = functionsUtil;
                     this.$state = $state;
                     this.$stateParams = $stateParams;
@@ -15222,16 +15339,26 @@ var app;
                 }
                 SchoolProfilePageController.prototype._init = function () {
                     this.data = new app.models.school.School();
+                    this.country = new app.models.country.Country();
                     this.loading = true;
+                    this.shadowsSchoolLoading = true;
+                    this.shadowsTeacherLoading = true;
+                    this.noSchoolResult = false;
+                    this.noTeacherResult = false;
                     this.marker = 'long';
                     this.activate();
                 };
                 SchoolProfilePageController.prototype.activate = function () {
                     var ENTER_MIXPANEL = 'Enter: School Profile Page Id: ' + this.$stateParams.aliasSchool;
+                    var SCROLL_TO_ID = 'schoolProfile-information';
+                    var AVERAGE_RATING = 'schoolProfile-average-rating';
                     var self = this;
                     this._paymentMethodsList = this._buildPaymentMethodsClassList();
                     DEBUG && console.log('schoolProfilePage controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
+                    $(window).scroll(function () {
+                        self.functionsUtil.stickContainer(this, SCROLL_TO_ID, AVERAGE_RATING);
+                    });
                     this.SchoolService.getSchoolByAlias(this.$stateParams.aliasSchool).then(function (response) {
                         self.data = new app.models.school.School(response);
                         self._buildMetaTags(self.data);
@@ -15246,8 +15373,24 @@ var app;
                                 }
                             }
                         ], 'location-marker-map', { lat: parseFloat(self.data.Location.Position.Lat), lng: parseFloat(self.data.Location.Position.Lng) }, null);
+                        self._buildSchoolCards(self.data.Country);
+                        self._buildTeacherCards(self.data.Country);
+                        self._getCountryInfo(self.data.Country);
                         self.loading = false;
                     });
+                };
+                SchoolProfilePageController.prototype._getResultLoading = function (type) {
+                    var STUDENT_TYPE = 'student';
+                    var TEACHER_TYPE = 'teacher';
+                    var SCHOOL_TYPE = 'school';
+                    switch (type) {
+                        case STUDENT_TYPE:
+                            return 'app/pages/searchPage/studentResult/studentResult.html';
+                        case TEACHER_TYPE:
+                            return 'app/pages/searchPage/teacherLoading/teacherLoading.html';
+                        case SCHOOL_TYPE:
+                            return 'app/pages/searchPage/schoolLoading/schoolLoading.html';
+                    }
                 };
                 SchoolProfilePageController.prototype._buildMetaTags = function (school) {
                     var metaTags = this.SchoolService.buildMetaTagValue(school);
@@ -15256,6 +15399,54 @@ var app;
                     this.$rootScope.url = metaTags.url;
                     this.$rootScope.robots = metaTags.robots;
                     this.$rootScope.image = metaTags.image;
+                };
+                SchoolProfilePageController.prototype._buildTeacherCards = function (countryId) {
+                    var LIMIT = 3;
+                    var OFFSET = 0;
+                    var self = this;
+                    this.TeacherService.getAllTeachersByCountryAndRange(countryId, LIMIT, OFFSET).then(function (response) {
+                        if (response.results.length > 0) {
+                            self._teachersList = response.results;
+                        }
+                        else {
+                            self.noTeacherResult = true;
+                        }
+                        self.shadowsTeacherLoading = false;
+                    }, function (error) {
+                        var ERROR_MESSAGE = 'Error schoolProfilePage.controller.js method: _buildTeacherCards ';
+                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
+                        self.shadowsTeacherLoading = false;
+                    });
+                };
+                SchoolProfilePageController.prototype._buildSchoolCards = function (countryId) {
+                    var LIMIT = 3;
+                    var OFFSET = 0;
+                    var self = this;
+                    this.SchoolService.getAllSchoolsByCountryAndRange(countryId, LIMIT, OFFSET).then(function (response) {
+                        if (response.results.length > 0) {
+                            self._schoolsList = response.results;
+                        }
+                        else {
+                            self.noSchoolResult = true;
+                        }
+                        self.shadowsSchoolLoading = false;
+                    }, function (error) {
+                        var ERROR_MESSAGE = 'Error schoolProfilePage.controller.js method: _buildSchoolCards ';
+                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
+                        self.shadowsSchoolLoading = false;
+                    });
+                };
+                SchoolProfilePageController.prototype._getCountryInfo = function (countryId) {
+                    var self = this;
+                    this.CountryService.getCountryById(countryId).then(function (response) {
+                        if (response.Id) {
+                            self.country = new app.models.country.Country(response);
+                        }
+                    }, function (error) {
+                        var ERROR_MESSAGE = 'Error schoolProfilePage.controller.js method: _getCountryInfo ';
+                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
+                        self.shadowsSchoolLoading = false;
+                    });
                 };
                 SchoolProfilePageController.prototype.goToSite = function (url) {
                     var EMAIL_REGEX = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
@@ -15333,7 +15524,9 @@ var app;
                 SchoolProfilePageController.controllerId = 'mainApp.pages.schoolProfilePage.SchoolProfilePageController';
                 SchoolProfilePageController.$inject = [
                     '$rootScope',
+                    'mainApp.models.country.CountryService',
                     'mainApp.models.school.SchoolService',
+                    'mainApp.models.teacher.TeacherService',
                     'mainApp.core.util.FunctionsUtilService',
                     '$state',
                     '$stateParams',
