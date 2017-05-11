@@ -15439,7 +15439,7 @@ var app;
                 SchoolProfilePageController.prototype._getCountryInfo = function (countryId) {
                     var self = this;
                     this.CountryService.getCountryById(countryId).then(function (response) {
-                        if (response.Id) {
+                        if (response.id) {
                             self.country = new app.models.country.Country(response);
                         }
                     }, function (error) {
