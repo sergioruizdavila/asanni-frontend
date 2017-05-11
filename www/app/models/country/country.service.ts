@@ -14,6 +14,7 @@ module app.models.country {
     /**********************************/
     export interface ICountryService {
         getCountryByAlias: (aliasCountry: string) => angular.IPromise<any>;
+        getCountryById: (id: number) => angular.IPromise<any>;
         getAllCountries: () => angular.IPromise<any>;
     }
 
@@ -72,6 +73,38 @@ module app.models.country {
             let deferred = this.$q.defer();
 
             this.restApi.show({url: url}).$promise
+                .then(
+                    function(response) {
+                        deferred.resolve(response);
+                    },
+                    function(error) {
+                        DEBUG && console.error(error);
+                        if(error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    }
+                );
+
+            return deferred.promise;
+        }
+
+
+        /**
+        * getCountryById
+        * @description - get country by Id
+        * @use - this.CountryService.getCountryById(2);
+        * @function
+        * @param {string} id - country id
+        * @return {angular.IPromise<any>} promise - return country by Id
+        */
+        getCountryById(id: number): angular.IPromise<any> {
+            //VARIABLES
+            let self = this;
+            let url = this.COUNTRY_URI;
+            let deferred = this.$q.defer();
+
+            this.restApi.show({url: url, id: id}).$promise
                 .then(
                     function(response) {
                         deferred.resolve(response);

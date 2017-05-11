@@ -19,6 +19,8 @@ module app.models.school {
         getAllSchools: () => angular.IPromise<any>;
         getAllSchoolsByStatus: (status) => angular.IPromise<any>;
         getAllSchoolsByCountry: (countryId) => angular.IPromise<any>;
+        getAllSchoolsByCountryAndRange: (countryId: number, limit: number, offset: number) => angular.IPromise<any>;
+        getSchoolsByRange: (limit: number, offset: number) => angular.IPromise<any>;
         getMinorSchoolPrice: (prices: app.models.school.Price) => number;
         schoolFeatureRatingAverage: (school: app.models.school.School) => number;
         buildMetaTagValue: (school: app.models.school.School) => app.core.interfaces.IMetaTag;
@@ -42,10 +44,13 @@ module app.models.school {
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
+        VALIDATED_VALUE: string;
         SCHOOL_URI: string;
-        USER_SCHOOL_URI: string;
-        STATUS_SCHOOL_URI: string;
-        COUNTRY_SCHOOL_URI: string;
+        USER_SCHOOL_PARAM: string;
+        STATUS_SCHOOL_PARAM: string;
+        COUNTRY_SCHOOL_PARAM: string;
+        LIMIT_SCHOOL_PARAM: string;
+        OFFSET_SCHOOL_PARAM: string;
         // --------------------------------
 
 
@@ -73,10 +78,13 @@ module app.models.school {
             DEBUG && console.log('schools service instanced');
 
             //CONSTANTS
+            this.VALIDATED_VALUE = 'VA';
             this.SCHOOL_URI = 'schools';
-            this.USER_SCHOOL_URI = 'schools?userId=';
-            this.STATUS_SCHOOL_URI = 'schools?status=';
-            this.COUNTRY_SCHOOL_URI = 'schools?country=';
+            this.COUNTRY_SCHOOL_PARAM = 'country=';
+            this.USER_SCHOOL_PARAM = 'userId=';
+            this.STATUS_SCHOOL_PARAM = 'status=';
+            this.LIMIT_SCHOOL_PARAM = 'limit=';
+            this.OFFSET_SCHOOL_PARAM = 'offset=';
 
         }
 
@@ -159,7 +167,9 @@ module app.models.school {
         getSchoolByUserId(userId): angular.IPromise<any> {
             //VARIABLES
             let self = this;
-            let url = this.USER_SCHOOL_URI + userId;
+            //url = schools?userId=2
+            let url = this.SCHOOL_URI
+                    + '?' + this.USER_SCHOOL_PARAM + userId;
             let deferred = this.$q.defer();
 
             this.restApi.queryObject({url: url}).$promise
@@ -223,12 +233,14 @@ module app.models.school {
         * @description - get all Schools by status filter value
         * @function
         * @param {string} status - status school
-        * @return {angular.IPromise<any>} return a promise with teachers list
+        * @return {angular.IPromise<any>} return a promise with schools list
         */
         getAllSchoolsByStatus(status: string): angular.IPromise<any> {
             //VARIABLES
             let self = this;
-            let url = this.STATUS_SCHOOL_URI + status;
+            //url = schools?status=VA
+            let url = this.SCHOOL_URI
+                    + '?' + this.STATUS_SCHOOL_PARAM + status;
             let deferred = this.$q.defer();
 
             this.restApi.queryObject({url: url}).$promise
@@ -252,17 +264,100 @@ module app.models.school {
 
         /**
         * getAllSchoolsByCountry
-        * @description - get all Schools by status filter value
+        * @description - get all Schools by country filter value
         * @function
         * @param {number} countryId - country id
-        * @return {angular.IPromise<any>} return a promise with teachers list
+        * @return {angular.IPromise<any>} return a promise with schools list
         */
         getAllSchoolsByCountry(countryId: number): angular.IPromise<any> {
-            //CONSTANTS
-            const statusParamUrl = '&status=VA';
             //VARIABLES
             let self = this;
-            let url = this.COUNTRY_SCHOOL_URI + countryId + statusParamUrl;
+            //url = schools?status=VA&country=3
+            let url = this.SCHOOL_URI
+                    + '?' + this.STATUS_SCHOOL_PARAM + this.VALIDATED_VALUE
+                    + '&' + this.COUNTRY_SCHOOL_PARAM + countryId;
+            let deferred = this.$q.defer();
+
+            this.restApi.queryObject({url: url}).$promise
+                .then(
+                    function(response) {
+                        deferred.resolve(response);
+                    },
+                    function(error) {
+                        DEBUG && console.error(error);
+                        if(error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    }
+                );
+
+            return deferred.promise;
+        }
+
+
+
+        /**
+        * getAllSchoolsByCountryAndRange
+        * @description - get all Schools by country filter value and a range
+        * (limit and offset values)
+        * @function
+        * @param {number} countryId - country id
+        * @param {number} limit - indicates the maximum number of items to return
+        * @param {number} offset - indicates the starting position of the query
+        * in relation to the complete set of unpaginated items.
+        * @return {angular.IPromise<any>} return a promise with schools list
+        */
+        getAllSchoolsByCountryAndRange(
+            countryId: number, limit: number, offset: number): angular.IPromise<any> {
+            //VARIABLES
+            let self = this;
+            //url = schools?country=1&status=VA&limit=3&offset=0
+            let url = this.SCHOOL_URI
+                    + '?' + this.COUNTRY_SCHOOL_PARAM + countryId
+                    + '&' + this.STATUS_SCHOOL_PARAM + this.VALIDATED_VALUE
+                    + '&' + this.LIMIT_SCHOOL_PARAM + limit
+                    + '&' + this.OFFSET_SCHOOL_PARAM + offset;
+
+            let deferred = this.$q.defer();
+
+            this.restApi.queryObject({url: url}).$promise
+                .then(
+                    function(response) {
+                        deferred.resolve(response);
+                    },
+                    function(error) {
+                        DEBUG && console.error(error);
+                        if(error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    }
+                );
+
+            return deferred.promise;
+        }
+
+
+
+        /**
+        * getSchoolsByRange
+        * @description - get all Schools by a range (limit and offset values)
+        * @function
+        * @param {number} limit - indicates the maximum number of items to return
+        * @param {number} offset - indicates the starting position of the query
+        * in relation to the complete set of unpaginated items.
+        * @return {angular.IPromise<any>} return a promise with schools list
+        */
+        getSchoolsByRange(limit: number, offset: number): angular.IPromise<any> {
+            //VARIABLES
+            let self = this;
+            //url = schools?status=VA&limit=3&offset=0
+            let url = this.SCHOOL_URI
+                    + '?' + this.STATUS_SCHOOL_PARAM + this.VALIDATED_VALUE
+                    + '&' + this.LIMIT_SCHOOL_PARAM + limit
+                    + '&' + this.OFFSET_SCHOOL_PARAM + offset;
+
             let deferred = this.$q.defer();
 
             this.restApi.queryObject({url: url}).$promise

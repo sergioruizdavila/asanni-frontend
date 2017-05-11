@@ -29,6 +29,22 @@ var app;
                     });
                     return deferred.promise;
                 };
+                CountryService.prototype.getCountryById = function (id) {
+                    var self = this;
+                    var url = this.COUNTRY_URI;
+                    var deferred = this.$q.defer();
+                    this.restApi.show({ url: url, id: id }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
                 CountryService.prototype.getAllCountries = function () {
                     var self = this;
                     var url = this.COUNTRY_URI;

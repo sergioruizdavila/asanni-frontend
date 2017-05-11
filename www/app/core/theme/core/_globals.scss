@@ -398,6 +398,15 @@
     width: 100%;
 }
 
+.stick-container {
+    position: fixed !important;
+}
+
+.normal-container {
+    position: absolute !important;
+    width: 100% !important;
+}
+
 
 /******************** END - MODIFIERS *********************/
 

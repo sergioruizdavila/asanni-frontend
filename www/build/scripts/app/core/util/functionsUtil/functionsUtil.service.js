@@ -454,6 +454,27 @@ var app;
                             loading.className += ' hidden';
                         }
                     };
+                    FunctionsUtilService.prototype.stickContainer = function (self, scrollToId, div) {
+                        var regex = /(?:^|\s)normal-container(?!\S)/g;
+                        var unstickClass = 'normal-container';
+                        var hT = $('#' + scrollToId).offset().top;
+                        var hH = $('#' + scrollToId).outerHeight();
+                        var wH = $(window).height();
+                        var wS = $(self).scrollTop();
+                        var elem = document.getElementById(div);
+                        var pointToStick = null;
+                        var elementHeight = null;
+                        if (wS > (hT + hH - wH)) {
+                            elementHeight = elem.offsetHeight;
+                            pointToStick = document.getElementById(scrollToId).offsetHeight - elementHeight;
+                            elem.className += ' ' + unstickClass;
+                            elem.style.top = pointToStick + 'px';
+                        }
+                        else {
+                            elem.style.top = 'initial';
+                            elem.className = elem.className.replace(regex, '');
+                        }
+                    };
                     FunctionsUtilService.prototype.toUrlFormat = function (value) {
                         var valueParsed = '';
                         var valueNormalized = '';

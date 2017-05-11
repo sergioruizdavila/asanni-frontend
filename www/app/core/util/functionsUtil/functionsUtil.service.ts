@@ -38,7 +38,8 @@ module app.core.util.functionsUtil {
         showMainLoading:() => void;
         hideMainLoading:() => void;
         toUrlFormat:(value) => string;
-        getCurrencyConverted:(code: string) => angular.IPromise<any> ;
+        getCurrencyConverted:(code: string) => angular.IPromise<any>;
+        stickContainer:(self: any, scrollToId: string, div: string) => void;
 
     }
 
@@ -922,6 +923,33 @@ module app.core.util.functionsUtil {
             let loading = document.getElementById('mainLoading');
             if(loading){
                 loading.className += ' hidden';
+            }
+        }
+
+
+        stickContainer(self: any, scrollToId: string, div: string): void {
+            //CONSTANTS
+            const regex = /(?:^|\s)normal-container(?!\S)/g;
+            const unstickClass = 'normal-container';
+            //VARIABLES
+            let hT = $('#' + scrollToId).offset().top;
+            let hH = $('#' + scrollToId).outerHeight();
+            let wH = $(window).height();
+            let wS = $(self).scrollTop();
+            let elem = document.getElementById(div);
+            let pointToStick = null;
+            let elementHeight = null;
+
+            if (wS > (hT+hH-wH)) {
+                //stick div when scroll to 'scrollToId' div
+                elementHeight = elem.offsetHeight;
+                pointToStick = document.getElementById(scrollToId).offsetHeight - elementHeight;
+                elem.className += ' ' + unstickClass;
+                elem.style.top = pointToStick + 'px';
+            } else {
+                //unstick div when scroll far from 'scrollToId' div
+                elem.style.top = 'initial';
+                elem.className = elem.className.replace(regex, '');
             }
         }
 

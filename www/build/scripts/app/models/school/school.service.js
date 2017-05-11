@@ -13,10 +13,13 @@ var app;
                     this.dataConfig = dataConfig;
                     this.$q = $q;
                     DEBUG && console.log('schools service instanced');
+                    this.VALIDATED_VALUE = 'VA';
                     this.SCHOOL_URI = 'schools';
-                    this.USER_SCHOOL_URI = 'schools?userId=';
-                    this.STATUS_SCHOOL_URI = 'schools?status=';
-                    this.COUNTRY_SCHOOL_URI = 'schools?country=';
+                    this.COUNTRY_SCHOOL_PARAM = 'country=';
+                    this.USER_SCHOOL_PARAM = 'userId=';
+                    this.STATUS_SCHOOL_PARAM = 'status=';
+                    this.LIMIT_SCHOOL_PARAM = 'limit=';
+                    this.OFFSET_SCHOOL_PARAM = 'offset=';
                 }
                 SchoolService.prototype.getSchoolById = function (id) {
                     var self = this;
@@ -52,7 +55,8 @@ var app;
                 };
                 SchoolService.prototype.getSchoolByUserId = function (userId) {
                     var self = this;
-                    var url = this.USER_SCHOOL_URI + userId;
+                    var url = this.SCHOOL_URI
+                        + '?' + this.USER_SCHOOL_PARAM + userId;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {
@@ -91,7 +95,8 @@ var app;
                 };
                 SchoolService.prototype.getAllSchoolsByStatus = function (status) {
                     var self = this;
-                    var url = this.STATUS_SCHOOL_URI + status;
+                    var url = this.SCHOOL_URI
+                        + '?' + this.STATUS_SCHOOL_PARAM + status;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {
@@ -106,9 +111,49 @@ var app;
                     return deferred.promise;
                 };
                 SchoolService.prototype.getAllSchoolsByCountry = function (countryId) {
-                    var statusParamUrl = '&status=VA';
                     var self = this;
-                    var url = this.COUNTRY_SCHOOL_URI + countryId + statusParamUrl;
+                    var url = this.SCHOOL_URI
+                        + '?' + this.STATUS_SCHOOL_PARAM + this.VALIDATED_VALUE
+                        + '&' + this.COUNTRY_SCHOOL_PARAM + countryId;
+                    var deferred = this.$q.defer();
+                    this.restApi.queryObject({ url: url }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+                SchoolService.prototype.getAllSchoolsByCountryAndRange = function (countryId, limit, offset) {
+                    var self = this;
+                    var url = this.SCHOOL_URI
+                        + '?' + this.COUNTRY_SCHOOL_PARAM + countryId
+                        + '&' + this.STATUS_SCHOOL_PARAM + this.VALIDATED_VALUE
+                        + '&' + this.LIMIT_SCHOOL_PARAM + limit
+                        + '&' + this.OFFSET_SCHOOL_PARAM + offset;
+                    var deferred = this.$q.defer();
+                    this.restApi.queryObject({ url: url }).$promise
+                        .then(function (response) {
+                        deferred.resolve(response);
+                    }, function (error) {
+                        DEBUG && console.error(error);
+                        if (error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+                SchoolService.prototype.getSchoolsByRange = function (limit, offset) {
+                    var self = this;
+                    var url = this.SCHOOL_URI
+                        + '?' + this.STATUS_SCHOOL_PARAM + this.VALIDATED_VALUE
+                        + '&' + this.LIMIT_SCHOOL_PARAM + limit
+                        + '&' + this.OFFSET_SCHOOL_PARAM + offset;
                     var deferred = this.$q.defer();
                     this.restApi.queryObject({ url: url }).$promise
                         .then(function (response) {

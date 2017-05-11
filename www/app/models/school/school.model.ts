@@ -18,6 +18,7 @@ module app.models.school {
         /*-- PROPERTIES --*/
         private id: number;
         private user: string;
+        private country: number;
         private photo: string;
         private name: string;
         private aliasSchool: string;
@@ -63,6 +64,7 @@ module app.models.school {
             //init properties
             this.id = obj.id;
             this.user = obj.user || '';
+            this.country = obj.country;
             this.photo = obj.photo || '';
             this.name = obj.name || '';
             this.aliasSchool = obj.aliasSchool || '';
@@ -112,6 +114,10 @@ module app.models.school {
         set User(user: string) {
             if (user === undefined) { throw 'Please supply school user id manager'; }
             this.user = user;
+        }
+
+        get Country() {
+            return this.country;
         }
 
         get Photo() {

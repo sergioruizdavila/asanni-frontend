@@ -18,6 +18,7 @@ module app.models.teacher {
         getAllTeachers: () => angular.IPromise<any>;
         getAllTeachersByStatus: (status) => angular.IPromise<any>;
         getAllTeachersByCountry: (countryId) => angular.IPromise<any>;
+        getAllTeachersByCountryAndRange: (countryId: number, limit: number, offset: number) => angular.IPromise<any>;
         createTeacher: (teacher: app.models.teacher.Teacher) => angular.IPromise<any>;
         updateTeacher: (teacher: app.models.teacher.Teacher) => angular.IPromise<any>;
         createExperience: (teacherId: string, experience: app.models.teacher.Experience) => angular.IPromise<any>;
@@ -46,10 +47,13 @@ module app.models.teacher {
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
+        VALIDATED_VALUE: string;
         TEACHER_URI: string;
-        PROFILE_TEACHER_URI: string;
-        STATUS_TEACHER_URI: string;
-        COUNTRY_TEACHER_URI: string;
+        PROFILE_TEACHER_PARAM: string;
+        STATUS_TEACHER_PARAM: string;
+        COUNTRY_TEACHER_PARAM: string;
+        LIMIT_TEACHER_PARAM: string;
+        OFFSET_TEACHER_PARAM: string;
         EXPERIENCES_URI: string;
         EDUCATIONS_URI: string;
         CERTIFICATES_URI: string;
@@ -75,10 +79,13 @@ module app.models.teacher {
             DEBUG && console.log('teacher service instanced');
 
             //CONSTANTS
+            this.VALIDATED_VALUE = 'VA';
             this.TEACHER_URI = 'teachers';
-            this.PROFILE_TEACHER_URI = 'teachers?profileId=';
-            this.STATUS_TEACHER_URI = 'teachers?status=';
-            this.COUNTRY_TEACHER_URI = 'teachers?country=';
+            this.COUNTRY_TEACHER_PARAM = 'country=';
+            this.PROFILE_TEACHER_PARAM = 'profileId=';
+            this.STATUS_TEACHER_PARAM = 'status=';
+            this.LIMIT_TEACHER_PARAM = 'limit=';
+            this.OFFSET_TEACHER_PARAM = 'offset=';
             this.EXPERIENCES_URI = 'experiences';
             this.EDUCATIONS_URI = 'educations';
             this.CERTIFICATES_URI = 'certificates';
@@ -130,7 +137,9 @@ module app.models.teacher {
         getTeacherByProfileId(profileId): angular.IPromise<any> {
             //VARIABLES
             let self = this;
-            let url = this.PROFILE_TEACHER_URI + profileId;
+            //url = teachers?profileId=2
+            let url = this.TEACHER_URI
+                    + '?' + this.PROFILE_TEACHER_PARAM + profileId;
             let deferred = this.$q.defer();
 
             this.restApi.queryObject({url: url}).$promise
@@ -167,7 +176,9 @@ module app.models.teacher {
         getAllTeachersByStatus(status): angular.IPromise<any> {
             //VARIABLES
             let self = this;
-            let url = this.STATUS_TEACHER_URI + status;
+            //url = teachers?status=VA
+            let url = this.TEACHER_URI
+                    + '?' + this.STATUS_TEACHER_PARAM + status;
             let deferred = this.$q.defer();
 
             this.restApi.queryObject({url: url}).$promise
@@ -197,11 +208,56 @@ module app.models.teacher {
         * @return {angular.IPromise<any>} return a promise with teachers list
         */
         getAllTeachersByCountry(countryId): angular.IPromise<any> {
-            //CONSTANTS
-            const statusParamUrl = '&status=VA';
             //VARIABLES
             let self = this;
-            let url = this.COUNTRY_TEACHER_URI + countryId + statusParamUrl;
+            //url = teachers?status=VA&country=3
+            let url = this.TEACHER_URI
+                    + '?' + this.STATUS_TEACHER_PARAM + this.VALIDATED_VALUE
+                    + '&' + this.COUNTRY_TEACHER_PARAM + countryId;
+
+            let deferred = this.$q.defer();
+
+            this.restApi.queryObject({url: url}).$promise
+                .then(
+                    function(response) {
+                        deferred.resolve(response);
+                    },
+                    function(error) {
+                        DEBUG && console.error(error);
+                        if(error.statusText == 'Unauthorized') {
+                            self.AuthService.logout();
+                        }
+                        deferred.reject(error);
+                    }
+                );
+
+            return deferred.promise;
+        }
+
+
+
+        /**
+        * getAllTeachersByCountryAndRange
+        * @description - get all Teachers by country filter value and a range
+        * (limit and offset values)
+        * @function
+        * @param {number} countryId - country id
+        * @param {number} limit - indicates the maximum number of items to return
+        * @param {number} offset - indicates the starting position of the query
+        * in relation to the complete set of unpaginated items.
+        * @return {angular.IPromise<any>} return a promise with teachers list
+        */
+        getAllTeachersByCountryAndRange(
+            countryId: number, limit: number, offset: number): angular.IPromise<any> {
+            //VARIABLES
+            let self = this;
+            //url = teachers?country=1&status=VA&limit=3&offset=0
+            let url = this.TEACHER_URI
+                    + '?' + this.COUNTRY_TEACHER_PARAM + countryId
+                    + '&' + this.STATUS_TEACHER_PARAM + this.VALIDATED_VALUE
+                    + '&' + this.LIMIT_TEACHER_PARAM + limit
+                    + '&' + this.OFFSET_TEACHER_PARAM + offset;
+
             let deferred = this.$q.defer();
 
             this.restApi.queryObject({url: url}).$promise

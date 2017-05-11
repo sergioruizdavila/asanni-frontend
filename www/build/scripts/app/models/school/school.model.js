@@ -17,6 +17,7 @@ var app;
                         obj = {};
                     this.id = obj.id;
                     this.user = obj.user || '';
+                    this.country = obj.country;
                     this.photo = obj.photo || '';
                     this.name = obj.name || '';
                     this.aliasSchool = obj.aliasSchool || '';
@@ -65,6 +66,13 @@ var app;
                             throw 'Please supply school user id manager';
                         }
                         this.user = user;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(School.prototype, "Country", {
+                    get: function () {
+                        return this.country;
                     },
                     enumerable: true,
                     configurable: true
