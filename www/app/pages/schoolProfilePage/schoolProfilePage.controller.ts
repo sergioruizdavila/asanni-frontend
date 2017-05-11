@@ -56,8 +56,8 @@ module app.pages.schoolProfilePage {
         private _paymentMethodsList: Array<IPaymentMethodsClass>;
         data: app.models.school.School;
         country: app.models.country.Country;
-        _teachersList: Array<app.models.teacher.Teacher>;
-        _schoolsList: Array<app.models.school.School>;
+        private _teachersList: Array<app.models.teacher.Teacher>;
+        private _schoolsList: Array<app.models.school.School>;
         loading: boolean;
         shadowsSchoolLoading: boolean;
         shadowsTeacherLoading: boolean;
