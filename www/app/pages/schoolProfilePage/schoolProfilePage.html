@@ -1408,8 +1408,12 @@
                                         <! School Address >
                                         <div class="row">
                                             <div class="col-xs-12">
-                                                <p class="ma-p ma-p--default margin-reset">
-                                                    {{vm.data.Name}} is located in {{vm.data.Location.City}}, {{vm.data.Location.State}}, {{vm.data.Location.Country | getI18nFilter:'country'}}
+                                                <p class="ma-p ma-p--default margin-reset"
+                                                   translate="%profile.school.location.adrees.label.text"
+                                                   translate-value-name="{{vm.data.Name}}"
+                                                   translate-value-city="{{vm.data.Location.City}}"
+                                                   translate-value-state="{{vm.data.Location.State}}"
+                                                   translate-value-country="{{vm.data.Location.Country | getI18nFilter:'country'}}">
                                                 </p>
                                             </div>
                                         </div>
@@ -1635,8 +1639,9 @@
                 <! Title >
                 <div class="row space-left-10 space-right-10">
                     <div class="col-xs-12">
-                        <h3 class="margin-reset">
-                            Similar schools in {{vm.data.Location.Country | getI18nFilter:'country'}}
+                        <h3 class="margin-reset"
+                            translate="%profile.school.similar_schools.text"
+                            translate-value-country="{{vm.data.Location.Country | getI18nFilter:'country'}}">
                         </h3>
                     </div>
                 </div>
@@ -1705,8 +1710,9 @@
                 <! Title >
                 <div class="row space-left-10 space-right-10">
                     <div class="col-xs-12">
-                        <h3 class="margin-reset">
-                            Top teachers in {{vm.data.Location.Country | getI18nFilter:'country'}}
+                        <h3 class="margin-reset"
+                            translate="%profile.school.top_teachers.text"
+                            translate-value-country="{{vm.data.Location.Country | getI18nFilter:'country'}}">
                         </h3>
                     </div>
                 </div>

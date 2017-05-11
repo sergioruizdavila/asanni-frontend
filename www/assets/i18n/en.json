@@ -593,6 +593,12 @@
 
     "%profile.school.payment_method.text": "Payment methods accepted",
 
+    "%profile.school.location.adrees.label.text": "{{name}} is located in {{city}}, {{state}}, {{country}}",
+
+    "%profile.school.similar_schools.text": "Similar schools in {{country}}",
+
+    "%profile.school.top_teachers.text": "Top teachers in {{country}}",
+
     "__TOOLTIPS__": "",
     "%tooltip.modal_born.birthdate.text": "To activate your account, you must be 18 years of age or older.",
     "%tooltip.modal_born.cntry_birth.text": "It's important to know your country birth and identify your native language.",
