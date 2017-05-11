@@ -188,8 +188,10 @@
     "__LANDING PAGE__": "",
     "legacy": "",
     "%landing.header.join.label.text": "Join as:",
-    "%landing.puv": "Find a language Teacher / School",
-    "%landing.puv.description": "Waysily is a free community-based platform that helps you find local language tutors / schools in your area.",
+    "%landing.puv.legacy": "Find a language Teacher / School",
+    "%landing.puv": "Travel anywhere and fit into its culture",
+    "%landing.puv.description.legacy": "Waysily is a free community-based platform that helps you find local language tutors / schools in your area.",
+    "%landing.puv.description": "Waysily is a free community-based platform that brings together travelers with locals, teachers, and schools to learn a foreign language.",
     "%landing.explore.button.text": "explore",
 
     "%landing.mission.title.text": "Our mission",
