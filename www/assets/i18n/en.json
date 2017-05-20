@@ -383,7 +383,8 @@
     "%profile.teacher.review.communication.label.text": "Communication",
     "%profile.teacher.methodology.title.text": "Teaching methodology",
     "%profile.teacher.location.title.text": "Location",
-    "%profile.teacher.book.button.text": "Book a class",
+    "%profile.teacher.book.button.text.legacy": "Book a class",
+    "%profile.teacher.book.button.text": "Contact",
     "%profile.teacher.success_classes.label.text": "successful classes",
 
     "__CREATE TEACHER PAGE__": "",
