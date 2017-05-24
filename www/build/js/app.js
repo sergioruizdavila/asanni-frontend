@@ -15496,7 +15496,7 @@ var app;
                     mixpanel.track(CLICK_MIXPANEL);
                     this.isAuthenticated = this.AuthService.isAuthenticated();
                     if (this.isAuthenticated) {
-                        alert(this.SUCCESS_MESSAGE);
+                        this.messageUtil.success(this.SUCCESS_MESSAGE);
                     }
                     else {
                         this._openSignUpModal();
