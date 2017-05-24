@@ -15332,7 +15332,7 @@ var app;
         var schoolProfilePage;
         (function (schoolProfilePage) {
             var SchoolProfilePageController = (function () {
-                function SchoolProfilePageController(dataConfig, $rootScope, CountryService, SchoolService, TeacherService, functionsUtil, AuthService, $state, $stateParams, screenSize, $filter) {
+                function SchoolProfilePageController(dataConfig, $rootScope, CountryService, SchoolService, TeacherService, functionsUtil, AuthService, $uibModal, $state, $stateParams, screenSize, $filter) {
                     this.dataConfig = dataConfig;
                     this.$rootScope = $rootScope;
                     this.CountryService = CountryService;
@@ -15340,6 +15340,7 @@ var app;
                     this.TeacherService = TeacherService;
                     this.functionsUtil = functionsUtil;
                     this.AuthService = AuthService;
+                    this.$uibModal = $uibModal;
                     this.$state = $state;
                     this.$stateParams = $stateParams;
                     this.screenSize = screenSize;

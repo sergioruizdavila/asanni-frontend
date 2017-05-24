@@ -54,7 +54,6 @@ module app.pages.schoolProfilePage {
         isAuthenticated: boolean;
         mapConfig: components.map.IMapConfig;
         marker: string;
-        private _isMobile: angular.matchmedia.IScreenSize;
         private _paymentMethodsList: Array<IPaymentMethodsClass>;
         data: app.models.school.School;
         country: app.models.country.Country;
