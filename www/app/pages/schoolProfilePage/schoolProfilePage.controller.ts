@@ -428,7 +428,7 @@ module app.pages.schoolProfilePage {
         goToConfirm(): void {
             //CONSTANTS
             const CLICK_MIXPANEL = 'Click: Book a Class on School:' + this.data.Name;
-            this.SUCCESS_MESSAGE = this.$filter('translate')('%%profile.school.get_free_pass.message.text');
+            this.SUCCESS_MESSAGE = this.$filter('translate')('%profile.school.get_free_pass.message.text');
             //MIXPANEL
             mixpanel.track(CLICK_MIXPANEL);
 
@@ -436,7 +436,7 @@ module app.pages.schoolProfilePage {
             this.isAuthenticated = this.AuthService.isAuthenticated();
 
             if(this.isAuthenticated) {
-                this.messageUtil.success(this.SUCCESS_MESSAGE);
+                this.messageUtil.info(this.SUCCESS_MESSAGE);
             } else {
                 this._openSignUpModal();
             }
