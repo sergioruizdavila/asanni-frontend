@@ -36,9 +36,6 @@ var app;
                     this._paymentMethodsList = this._buildPaymentMethodsClassList();
                     DEBUG && console.log('schoolProfilePage controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
-                    this._isMobile = this.screenSize.on('xs, sm', function (isMatch) {
-                        this._isMobile = isMatch;
-                    });
                     if (!this.screenSize.is('xs, sm')) {
                         $(window).scroll(function () {
                             self.functionsUtil.stickContainer(this, SCROLL_TO_ID, AVERAGE_RATING);

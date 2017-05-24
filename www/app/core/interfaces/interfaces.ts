@@ -21,6 +21,7 @@ module app.core.interfaces {
         activeHeader: boolean;
         activeFooter: boolean;
         activeMessageBar: boolean;
+        isMobile: boolean;
     }
 
     /***********************************/

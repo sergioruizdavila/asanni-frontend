@@ -9,9 +9,10 @@
         'dataConfig',
         'mainApp.auth.AuthService',
         'mainApp.models.user.UserService',
-        'mainApp.localStorageService'
+        'mainApp.localStorageService',
+        'screenSize'
     ];
-    function run($rootScope, $state, dataConfig, AuthService, userService, localStorage) {
+    function run($rootScope, $state, dataConfig, AuthService, userService, localStorage, screenSize) {
         var productionHost = dataConfig.domain;
         var mixpanelTokenDEV = dataConfig.mixpanelTokenDEV;
         var mixpanelTokenPRD = dataConfig.mixpanelTokenPRD;
@@ -57,6 +58,9 @@
             $rootScope.url = toParams.url;
             $rootScope.robots = toParams.robots;
             $rootScope.image = toParams.image;
+        });
+        $rootScope.isMobile = screenSize.on('xs, sm', function (isMatch) {
+            $rootScope.isMobile = isMatch;
         });
     }
 })();

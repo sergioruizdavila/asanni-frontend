@@ -19,7 +19,8 @@
                 'dataConfig',
                 'mainApp.auth.AuthService',
                 'mainApp.models.user.UserService',
-                'mainApp.localStorageService'
+                'mainApp.localStorageService',
+                'screenSize'
             ];
 
     function run($rootScope: app.core.interfaces.IMainAppRootScope,
@@ -27,7 +28,8 @@
                  dataConfig: IDataConfig,
                  AuthService: app.auth.IAuthService,
                  userService: app.models.user.IUserService,
-                 localStorage): void {
+                 localStorage,
+                 screenSize: angular.matchmedia.IScreenSize): void {
 
         //VARIABLES
         let productionHost = dataConfig.domain;
@@ -94,6 +96,11 @@
                 $rootScope.image = toParams.image;
             }
         );
+
+        // Validate if is mobile
+        $rootScope.isMobile = screenSize.on('xs, sm', function(isMatch) {
+            $rootScope.isMobile = isMatch;
+        });
     }
 
 })();

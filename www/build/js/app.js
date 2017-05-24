@@ -163,9 +163,10 @@ DEBUG = false;
         'dataConfig',
         'mainApp.auth.AuthService',
         'mainApp.models.user.UserService',
-        'mainApp.localStorageService'
+        'mainApp.localStorageService',
+        'screenSize'
     ];
-    function run($rootScope, $state, dataConfig, AuthService, userService, localStorage) {
+    function run($rootScope, $state, dataConfig, AuthService, userService, screenSize, localStorage) {
         var productionHost = dataConfig.domain;
         var mixpanelTokenDEV = dataConfig.mixpanelTokenDEV;
         var mixpanelTokenPRD = dataConfig.mixpanelTokenPRD;
@@ -211,6 +212,9 @@ DEBUG = false;
             $rootScope.url = toParams.url;
             $rootScope.robots = toParams.robots;
             $rootScope.image = toParams.image;
+        });
+        $rootScope.isMobile = screenSize.on('xs, sm', function (isMatch) {
+            $rootScope.isMobile = isMatch;
         });
     }
 })();
@@ -15359,9 +15363,6 @@ var app;
                     this._paymentMethodsList = this._buildPaymentMethodsClassList();
                     DEBUG && console.log('schoolProfilePage controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
-                    this._isMobile = this.screenSize.on('xs, sm', function (isMatch) {
-                        this._isMobile = isMatch;
-                    });
                     if (!this.screenSize.is('xs, sm')) {
                         $(window).scroll(function () {
                             self.functionsUtil.stickContainer(this, SCROLL_TO_ID, AVERAGE_RATING);

@@ -140,6 +140,116 @@
         <!--------------------------------------------------------------------->
         <div id="teacherProfile-middle-column" class="col-sm-8 col-md-6">
 
+            <!------------- START: BOOK A CLASS BLOCK (SMALL SCREEN)----------->
+            <div class="row space-3"
+                 ng-class="{'hidden': !isMobile}">
+
+                <div class="col-xs-12">
+
+                    <div class="ma-box">
+                        <h4 class="ma-box__title margin-reset" translate>
+                            %search.container.teacher.price.title.text
+                        </h4>
+                        <div class="ma-box__content">
+                            <form class="meeting-box">
+
+                                <!------------------- START: CLASSES PRICE INFO BLOCK ----------------->
+                                <div class="search-result__teacher__block__price
+                                            row text-center space-1">
+                                    <div class="col-xs-5">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-12">
+                                                <p class="ma-p ma-p--default margin-reset"
+                                                   ng-class="{'ma-p--disable-line-through': !vm.data.price.privateClass.active}"
+                                                   translate>
+                                                    %search.container.teacher.price.private.title.text
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-12">
+                                                <p class="ma-p ma-p--info ma-p--default margin-reset"
+                                                   ng-if="vm.data.price.privateClass.active">
+                                                    ${{vm.data.price.privateClass.hourPrice}} / hr
+                                                </p>
+                                                <i class="material-icons md-24"
+                                                   ng-if="!vm.data.price.privateClass.active">
+                                                    event_busy
+                                                </i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="search-result__teacher__block__price
+                                            row text-center space-4">
+                                    <div class="col-xs-5">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-12">
+                                                <p class="ma-p ma-p--default
+                                                          margin-reset"
+                                                   ng-class="{'ma-p--disable-line-through': !vm.data.price.groupClass.active}"
+                                                   translate>
+                                                    %search.container.teacher.price.group.title.text
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-12">
+                                                <p class="ma-p ma-p--info ma-p--default margin-reset"
+                                                   ng-if="vm.data.price.groupClass.active">
+                                                    ${{vm.data.price.groupClass.hourPrice}} / hr
+                                                </p>
+                                                <i class="material-icons md-24"
+                                                   ng-if="!vm.data.price.groupClass.active">
+                                                    event_busy
+                                                </i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--                   END: CLASSES PRICE INFO BLOCK                 -->
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <button class="ma-btn ma-btn--primary
+                                                  ma-btn--large ma-btn--block
+                                                  text-capitalize"
+                                            ng-click="vm.goToConfirm()"
+                                            translate>
+                                            %global.free_class.button.text
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <hr class="hidden">
+
+                                <div class="row hidden">
+                                    <div class="col-xs-12 text-center">
+                                        <p class="ma-p ma-p--small margin-reset">
+                                            <strong class="space-right-1">70</strong>
+                                            <span translate>
+                                                %profile.teacher.success_classes.label.text
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <!--            END: BOOK A CLASS BLOCK (SMALL SCREEN)           -->
+
+
+
             <!-------------------- START: BASIC INFO BLOCK -------------------->
             <div id="teacherProfile-basicInfo-block"
                  class="space-3 row">
@@ -820,7 +930,9 @@
 
         <!--                     START: RIGHT COLUMN                         -->
         <!--------------------------------------------------------------------->
-        <div id="userProfile-right-column" class="col-xs-3 hidden-sm">
+        <div id="userProfile-right-column"
+             ng-class="{'hidden': isMobile}"
+             class="col-xs-3">
 
             <!------------------- START: BOOK A CLASS BLOCK ------------------->
             <div id="userProfile-meeting-block"

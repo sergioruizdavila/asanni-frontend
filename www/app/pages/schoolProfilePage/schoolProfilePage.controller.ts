@@ -144,10 +144,6 @@ module app.pages.schoolProfilePage {
             //MIXPANEL
             mixpanel.track(ENTER_MIXPANEL);
 
-            this._isMobile = this.screenSize.on('xs, sm', function(isMatch) {
-                this._isMobile = isMatch;
-            });
-
             //Assign to rating block the stick effect when is not mobile
             if (!this.screenSize.is('xs, sm')) {
                 $(window).scroll(function() {
