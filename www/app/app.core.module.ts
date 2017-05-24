@@ -20,7 +20,8 @@
         'ui.bootstrap',
         'ui.calendar',
         'ngFileUpload',
-        'ngImgCrop'
+        'ngImgCrop',
+        'matchMedia'
     ]);
 
 

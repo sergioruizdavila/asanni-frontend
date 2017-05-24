@@ -89,7 +89,8 @@
         'ui.bootstrap',
         'ui.calendar',
         'ngFileUpload',
-        'ngImgCrop'
+        'ngImgCrop',
+        'matchMedia'
     ]);
 })();
 
@@ -15327,7 +15328,7 @@ var app;
         var schoolProfilePage;
         (function (schoolProfilePage) {
             var SchoolProfilePageController = (function () {
-                function SchoolProfilePageController($rootScope, CountryService, SchoolService, TeacherService, functionsUtil, $state, $stateParams, $filter) {
+                function SchoolProfilePageController($rootScope, CountryService, SchoolService, TeacherService, functionsUtil, $state, $stateParams, screenSize, $filter) {
                     this.$rootScope = $rootScope;
                     this.CountryService = CountryService;
                     this.SchoolService = SchoolService;
@@ -15335,6 +15336,7 @@ var app;
                     this.functionsUtil = functionsUtil;
                     this.$state = $state;
                     this.$stateParams = $stateParams;
+                    this.screenSize = screenSize;
                     this.$filter = $filter;
                     this._init();
                 }
@@ -15357,9 +15359,14 @@ var app;
                     this._paymentMethodsList = this._buildPaymentMethodsClassList();
                     DEBUG && console.log('schoolProfilePage controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
-                    $(window).scroll(function () {
-                        self.functionsUtil.stickContainer(this, SCROLL_TO_ID, AVERAGE_RATING);
+                    this._isMobile = this.screenSize.on('xs, sm', function (isMatch) {
+                        this._isMobile = isMatch;
                     });
+                    if (!this.screenSize.is('xs, sm')) {
+                        $(window).scroll(function () {
+                            self.functionsUtil.stickContainer(this, SCROLL_TO_ID, AVERAGE_RATING);
+                        });
+                    }
                     this.SchoolService.getSchoolByAlias(this.$stateParams.aliasSchool).then(function (response) {
                         self.data = new app.models.school.School(response);
                         self._buildMetaTags(self.data);
@@ -15531,6 +15538,7 @@ var app;
                     'mainApp.core.util.FunctionsUtilService',
                     '$state',
                     '$stateParams',
+                    'screenSize',
                     '$filter'];
                 return SchoolProfilePageController;
             }());

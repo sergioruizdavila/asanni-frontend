@@ -53,6 +53,7 @@ module app.pages.schoolProfilePage {
         /**********************************/
         mapConfig: components.map.IMapConfig;
         marker: string;
+        private _isMobile: angular.matchmedia.IScreenSize;
         private _paymentMethodsList: Array<IPaymentMethodsClass>;
         data: app.models.school.School;
         country: app.models.country.Country;
@@ -75,6 +76,7 @@ module app.pages.schoolProfilePage {
             'mainApp.core.util.FunctionsUtilService',
             '$state',
             '$stateParams',
+            'screenSize',
             '$filter'];
 
         /**********************************/
@@ -88,6 +90,7 @@ module app.pages.schoolProfilePage {
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private $state: ng.ui.IStateService,
             private $stateParams: ISchoolParams,
+            private screenSize: angular.matchmedia.IScreenSize,
             private $filter: angular.IFilterService) {
 
             this._init();
@@ -141,9 +144,16 @@ module app.pages.schoolProfilePage {
             //MIXPANEL
             mixpanel.track(ENTER_MIXPANEL);
 
-            $(window).scroll(function() {
-                self.functionsUtil.stickContainer(this, SCROLL_TO_ID, AVERAGE_RATING);
+            this._isMobile = this.screenSize.on('xs, sm', function(isMatch) {
+                this._isMobile = isMatch;
             });
+
+            //Assign to rating block the stick effect when is not mobile
+            if (!this.screenSize.is('xs, sm')) {
+                $(window).scroll(function() {
+                    self.functionsUtil.stickContainer(this, SCROLL_TO_ID, AVERAGE_RATING);
+                });
+            }
 
             // Get School information
             this.SchoolService.getSchoolByAlias(this.$stateParams.aliasSchool).then(

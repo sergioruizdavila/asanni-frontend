@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "angular-cookies": "registry:dt/angular-cookies#1.4.0+20161206185711",
+    "angular-media-queries": "registry:dt/angular-media-queries#0.6.0+20161206185711",
     "aws-sdk": "registry:dt/aws-sdk#0.0.0+20161119044246",
     "debug": "registry:npm/debug#2.0.0+20160723033700",
     "ng-file-upload": "registry:dt/ng-file-upload#11.1.1+20161128184045"
