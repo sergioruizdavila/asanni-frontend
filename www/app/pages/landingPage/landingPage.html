@@ -284,7 +284,7 @@
             <a href class="ma-header__block__btn
                            ma-header--transparent__block__btn
                            ma-header--transparent__block__buttons-list__label
-                           text-shadow link-reset text-capitalize"
+                           link-reset text-capitalize"
                rel="nofollow"
                ng-click="vm._openLogInModal()" translate>
                 %global.login.label.text
@@ -302,7 +302,7 @@
             <a href class="ma-header__block__btn
                            ma-header--transparent__block__btn
                            ma-header--transparent__block__buttons-list__label
-                           text-shadow link-reset text-capitalize"
+                           link-reset text-capitalize"
                rel="nofollow"
                ng-click="vm._openSignUpModal()" translate>
                 %global.signup.label.text
@@ -321,7 +321,7 @@
             <div class="ma-header--transparent__block__buttons-list">
                 <span ng-if="!profileData.IsTeacher"
                       class="ma-header--transparent__block__buttons-list__label
-                             space-right-2 text-shadow"
+                             space-right-2"
                       translate>
                     %landing.header.join.label.text
                 </span>
@@ -371,7 +371,7 @@
     <!--------------------------- START: HERO BLOCK --------------------------->
     <section class="ma-hero">
 
-    <div class="poster poster--main"></div>
+    <div class="poster poster--gradient"></div>
 
     <!--video class="hidden-xs video-hero"
            autoplay loop muted poster="../../../assets/images/cover-waysily.png">
@@ -381,11 +381,11 @@
 
 	<div class="ma-hero__wrapper text-center">
 
-		<h1 class="ma-hero__wrapper__title text-shadow animated fadeIn"
+		<h1 class="ma-hero__wrapper__title animated fadeIn"
             translate>
             %landing.puv
         </h1>
-        <h2 class="ma-hero__wrapper__description text-shadow
+        <h2 class="ma-hero__wrapper__description
                    animated fadeIn" translate>
             %landing.puv.description
         </h2>
@@ -396,7 +396,7 @@
                             ma-hero__wrapper__btn-container__school">
                     <a id="landingPage-school-btn"
                             href="/page/search"
-                            class="ma-btn ma-btn--primary ma-btn--large"
+                            class="ma-btn ma-btn--tertiary ma-btn--large"
                             ng-click="vm.goToSearch('school');$event.preventDefault()"
                             translate>
                         %global.schools.text
@@ -406,7 +406,7 @@
                             ma-hero__wrapper__btn-container__teacher">
                     <a id="landingPage-teacher-btn"
                             href="/page/search"
-                            class="ma-btn ma-btn--primary ma-btn--large"
+                            class="ma-btn ma-btn--tertiary ma-btn--large"
                             ng-click="vm.goToSearch('teacher');$event.preventDefault()"
                             translate>
                         %global.teachers.text

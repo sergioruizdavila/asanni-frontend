@@ -36,6 +36,25 @@
             background: linear-gradient(rgba(18,18,18,0.6), rgba(18,18,18,0.4)), url(../../../../assets/images/hero-min.jpg);
             background-size: cover;
         }
+
+        &--gradient {
+            background-color: #78c878 !important;
+            background: -webkit-radial-gradient(farthest-corner at 20px 20px, #b0dda1 0%, #00a699) !important;
+            background: -moz-radial-gradient(farthest-corner at 20px 20px, #b0dda1 0%, #00a699) !important;
+            background: radial-gradient(farthest-corner at 20px 20px, #00a699 0%, #b0dda1) !important;
+            overflow: hidden !important;
+        }
+
+        //TODO: Guardo esto aqui por no tengo donde mas: es el degradado que tiene airbnb en
+        // su sección final. Este tiene el degradado circular.
+        // referencia: https://www.airbnb.com/work?s=footer
+        .gradient-test {
+            background-color: #78c878 !important;
+            background: -webkit-radial-gradient(farthest-corner at 48% 10%, #8ce071 0%, #00a699) !important;
+            background: -moz-radial-gradient(farthest-corner at 48% 10%, #8ce071 0%, #00a699) !important;
+            background: radial-gradient(farthest-corner at 48% 10%, #8ce071 0%, #00a699) !important;
+        }
+
     }
 
     .video-hero {

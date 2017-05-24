@@ -188,8 +188,10 @@
     "__LANDING PAGE__": "",
     "%landing.header.join.label.text.legacy": "Unirse como:",
     "%landing.header.join.label.text": "Únete como:",
-    "%landing.puv": "Encuentra un Profesor / Escuela de idiomas",
-    "%landing.puv.description": "Waysily es una plataforma gratuita basada en la comunidad que te ayuda a encontrar tutores / escuelas locales de idiomas.",
+    "%landing.puv.legacy": "Encuentra un Profesor / Escuela de idiomas",
+    "%landing.puv": "Viaja a cualquier lugar y encaja en su cultura",
+    "%landing.puv.description": "Waysily es una plataforma gratuita basada en la comunidad que reúne a los viajeros con locales, profesores y escuelas para aprender un idioma extranjero.",
+    "%landing.puv.description.legacy": "Waysily es una plataforma gratuita basada en la comunidad que te ayuda a encontrar tutores / escuelas locales de idiomas.",
     "%landing.explore.button.text": "explorar",
 
     "%landing.mission.title.text": "Nuestra misión",
@@ -381,7 +383,8 @@
     "%profile.teacher.review.communication.label.text": "Comunicación",
     "%profile.teacher.methodology.title.text": "Metodología de la enseñanza",
     "%profile.teacher.location.title.text": "Ubicación",
-    "%profile.teacher.book.button.text": "Reservar clases",
+    "%profile.teacher.book.button.text.legacy": "Reservar clases",
+    "%profile.teacher.book.button.text": "Contactar",
     "%profile.teacher.success_classes.label.text": " clases existosas",
 
     "__CREATE TEACHER PAGE__": "",
