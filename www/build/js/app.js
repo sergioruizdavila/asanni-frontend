@@ -15332,12 +15332,14 @@ var app;
         var schoolProfilePage;
         (function (schoolProfilePage) {
             var SchoolProfilePageController = (function () {
-                function SchoolProfilePageController($rootScope, CountryService, SchoolService, TeacherService, functionsUtil, $state, $stateParams, screenSize, $filter) {
+                function SchoolProfilePageController(dataConfig, $rootScope, CountryService, SchoolService, TeacherService, functionsUtil, AuthService, $state, $stateParams, screenSize, $filter) {
+                    this.dataConfig = dataConfig;
                     this.$rootScope = $rootScope;
                     this.CountryService = CountryService;
                     this.SchoolService = SchoolService;
                     this.TeacherService = TeacherService;
                     this.functionsUtil = functionsUtil;
+                    this.AuthService = AuthService;
                     this.$state = $state;
                     this.$stateParams = $stateParams;
                     this.screenSize = screenSize;
@@ -15467,6 +15469,37 @@ var app;
                         window.open(url, '_blank');
                     }
                 };
+                SchoolProfilePageController.prototype._openSignUpModal = function () {
+                    var self = this;
+                    var options = {
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        size: 'sm',
+                        templateUrl: this.dataConfig.modalSignUpTmpl,
+                        controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                        resolve: {
+                            dataSetModal: function () {
+                                return {
+                                    hasNextStep: false
+                                };
+                            }
+                        }
+                    };
+                    var modalInstance = this.$uibModal.open(options);
+                };
+                SchoolProfilePageController.prototype.goToConfirm = function () {
+                    var CLICK_MIXPANEL = 'Click: Book a Class on School:' + this.data.Name;
+                    mixpanel.track(CLICK_MIXPANEL);
+                    this.isAuthenticated = this.AuthService.isAuthenticated();
+                    if (this.isAuthenticated) {
+                        var url = 'https://waysily.typeform.com/to/NDPRAb';
+                        window.open(url, '_blank');
+                    }
+                    else {
+                        this._openSignUpModal();
+                    }
+                };
                 SchoolProfilePageController.prototype.assignAmenitieIconClass = function (amenitie) {
                     var size = 'small';
                     var amenitiePrefixClass = 'ma-liner-icons--' + size + '--';
@@ -15532,11 +15565,14 @@ var app;
                 };
                 SchoolProfilePageController.controllerId = 'mainApp.pages.schoolProfilePage.SchoolProfilePageController';
                 SchoolProfilePageController.$inject = [
+                    'dataConfig',
                     '$rootScope',
                     'mainApp.models.country.CountryService',
                     'mainApp.models.school.SchoolService',
                     'mainApp.models.teacher.TeacherService',
                     'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.auth.AuthService',
+                    '$uibModal',
                     '$state',
                     '$stateParams',
                     'screenSize',

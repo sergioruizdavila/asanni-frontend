@@ -51,6 +51,7 @@ module app.pages.schoolProfilePage {
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
+        isAuthenticated: boolean;
         mapConfig: components.map.IMapConfig;
         marker: string;
         private _isMobile: angular.matchmedia.IScreenSize;
@@ -69,11 +70,14 @@ module app.pages.schoolProfilePage {
 
         /*-- INJECT DEPENDENCIES --*/
         public static $inject = [
+            'dataConfig',
             '$rootScope',
             'mainApp.models.country.CountryService',
             'mainApp.models.school.SchoolService',
             'mainApp.models.teacher.TeacherService',
             'mainApp.core.util.FunctionsUtilService',
+            'mainApp.auth.AuthService',
+            '$uibModal',
             '$state',
             '$stateParams',
             'screenSize',
@@ -83,11 +87,14 @@ module app.pages.schoolProfilePage {
         /*           CONSTRUCTOR          */
         /**********************************/
         constructor(
+            private dataConfig: IDataConfig,
             private $rootScope: app.core.interfaces.IMainAppRootScope,
             private CountryService: app.models.country.ICountryService,
             private SchoolService: app.models.school.ISchoolService,
             private TeacherService: app.models.teacher.ITeacherService,
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
+            private AuthService: app.auth.IAuthService,
+            private $uibModal: ng.ui.bootstrap.IModalService,
             private $state: ng.ui.IStateService,
             private $stateParams: ISchoolParams,
             private screenSize: angular.matchmedia.IScreenSize,
@@ -369,6 +376,69 @@ module app.pages.schoolProfilePage {
             if(url) {
                 window.open(url,'_blank');
             }
+        }
+
+
+
+        /**
+        * _openSignUpModal
+        * @description - open Modal in order to sign up current user
+        * @use - this._openSignUpModal();
+        * @function
+        * @return {void}
+        */
+
+        private _openSignUpModal(): void {
+            let self = this;
+
+            // modal default options
+            let options: ng.ui.bootstrap.IModalSettings = {
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'sm',
+                templateUrl: this.dataConfig.modalSignUpTmpl,
+                controller: 'mainApp.components.modal.ModalSignUpController as vm',
+                resolve: {
+                    //one way to send data from this scope to modal
+                    dataSetModal: function () {
+                        return {
+                            hasNextStep: false
+                        }
+                    }
+                }
+            };
+
+            var modalInstance = this.$uibModal.open(options);
+
+        }
+
+
+
+        /**
+        * goToConfirm
+        * @description - go to book a class with current school
+        * @use - this.goToConfirm();
+        * @function
+        * @return {void}
+        */
+
+        goToConfirm(): void {
+            //CONSTANTS
+            const CLICK_MIXPANEL = 'Click: Book a Class on School:' + this.data.Name;
+            //MIXPANEL
+            mixpanel.track(CLICK_MIXPANEL);
+
+            //Validate if user is Authenticated
+            this.isAuthenticated = this.AuthService.isAuthenticated();
+
+            if(this.isAuthenticated) {
+                var url = 'https://waysily.typeform.com/to/NDPRAb';
+                window.open(url,'_blank');
+            } else {
+                this._openSignUpModal();
+            }
+
         }
 
 

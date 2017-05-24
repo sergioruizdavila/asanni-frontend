@@ -207,7 +207,6 @@ module app.pages.teacherProfilePage {
                 this._openSignUpModal();
             }
 
-
         }
 
 
