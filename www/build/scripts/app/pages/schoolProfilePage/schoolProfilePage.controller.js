@@ -5,13 +5,14 @@ var app;
         var schoolProfilePage;
         (function (schoolProfilePage) {
             var SchoolProfilePageController = (function () {
-                function SchoolProfilePageController(dataConfig, $rootScope, CountryService, SchoolService, TeacherService, functionsUtil, AuthService, $uibModal, $state, $stateParams, screenSize, $filter) {
+                function SchoolProfilePageController(dataConfig, $rootScope, CountryService, SchoolService, TeacherService, functionsUtil, messageUtil, AuthService, $uibModal, $state, $stateParams, screenSize, $filter) {
                     this.dataConfig = dataConfig;
                     this.$rootScope = $rootScope;
                     this.CountryService = CountryService;
                     this.SchoolService = SchoolService;
                     this.TeacherService = TeacherService;
                     this.functionsUtil = functionsUtil;
+                    this.messageUtil = messageUtil;
                     this.AuthService = AuthService;
                     this.$uibModal = $uibModal;
                     this.$state = $state;
@@ -164,11 +165,11 @@ var app;
                 };
                 SchoolProfilePageController.prototype.goToConfirm = function () {
                     var CLICK_MIXPANEL = 'Click: Book a Class on School:' + this.data.Name;
+                    this.SUCCESS_MESSAGE = this.$filter('translate')('%%profile.school.get_free_pass.message.text');
                     mixpanel.track(CLICK_MIXPANEL);
                     this.isAuthenticated = this.AuthService.isAuthenticated();
                     if (this.isAuthenticated) {
-                        var url = 'https://waysily.typeform.com/to/NDPRAb';
-                        window.open(url, '_blank');
+                        this.messageUtil.success(this.SUCCESS_MESSAGE);
                     }
                     else {
                         this._openSignUpModal();
@@ -245,6 +246,7 @@ var app;
                     'mainApp.models.school.SchoolService',
                     'mainApp.models.teacher.TeacherService',
                     'mainApp.core.util.FunctionsUtilService',
+                    'mainApp.core.util.messageUtilService',
                     'mainApp.auth.AuthService',
                     '$uibModal',
                     '$state',

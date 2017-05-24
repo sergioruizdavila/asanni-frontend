@@ -128,7 +128,7 @@ var app;
                             self.form.educations.push(newEducation);
                         }
                     }, function () {
-                        console.info('Modal dismissed at: ' + new Date());
+                        DEBUG && console.info('Modal dismissed at: ' + new Date());
                     });
                     $event.preventDefault();
                 };
@@ -155,7 +155,7 @@ var app;
                             self.form.certificates.push(newCertificate);
                         }
                     }, function () {
-                        console.info('Modal dismissed at: ' + new Date());
+                        DEBUG && console.info('Modal dismissed at: ' + new Date());
                     });
                     $event.preventDefault();
                 };

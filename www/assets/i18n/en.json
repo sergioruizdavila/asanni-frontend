@@ -563,6 +563,8 @@
     "%create.teacher.finish.description.part_2.text": "Review time takes 3 to 4 days.",
 
     "__SCHOOL PROFILE PAGE__": "",
+    "%profile.school.get_free_pass.message.text": "Please confirm your email in order to receive the free class pass",
+
     "%profile.school.views.label.text": "It's been viewed <strong>{{views}}</strong> times in the past week.",
 
     "%profile.school.language_exchange.title.text": "Language exchange with Locals",

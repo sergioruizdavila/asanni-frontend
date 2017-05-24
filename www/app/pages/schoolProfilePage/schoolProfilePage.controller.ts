@@ -64,6 +64,7 @@ module app.pages.schoolProfilePage {
         shadowsTeacherLoading: boolean;
         noTeacherResult: boolean;
         noSchoolResult: boolean;
+        SUCCESS_MESSAGE: string;
         // --------------------------------
 
 
@@ -75,6 +76,7 @@ module app.pages.schoolProfilePage {
             'mainApp.models.school.SchoolService',
             'mainApp.models.teacher.TeacherService',
             'mainApp.core.util.FunctionsUtilService',
+            'mainApp.core.util.messageUtilService',
             'mainApp.auth.AuthService',
             '$uibModal',
             '$state',
@@ -92,6 +94,7 @@ module app.pages.schoolProfilePage {
             private SchoolService: app.models.school.ISchoolService,
             private TeacherService: app.models.teacher.ITeacherService,
             private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
+            private messageUtil: app.core.util.messageUtil.IMessageUtilService,
             private AuthService: app.auth.IAuthService,
             private $uibModal: ng.ui.bootstrap.IModalService,
             private $state: ng.ui.IStateService,
@@ -425,6 +428,7 @@ module app.pages.schoolProfilePage {
         goToConfirm(): void {
             //CONSTANTS
             const CLICK_MIXPANEL = 'Click: Book a Class on School:' + this.data.Name;
+            this.SUCCESS_MESSAGE = this.$filter('translate')('%%profile.school.get_free_pass.message.text');
             //MIXPANEL
             mixpanel.track(CLICK_MIXPANEL);
 
@@ -432,8 +436,7 @@ module app.pages.schoolProfilePage {
             this.isAuthenticated = this.AuthService.isAuthenticated();
 
             if(this.isAuthenticated) {
-                var url = 'https://waysily.typeform.com/to/NDPRAb';
-                window.open(url,'_blank');
+                this.messageUtil.success(this.SUCCESS_MESSAGE);
             } else {
                 this._openSignUpModal();
             }

@@ -304,7 +304,7 @@ module app.pages.createTeacherPage {
                     self.form.educations.push(newEducation);
                 }
             }, function () {
-                console.info('Modal dismissed at: ' + new Date());
+                DEBUG && console.info('Modal dismissed at: ' + new Date());
             });
 
             $event.preventDefault();
@@ -347,7 +347,7 @@ module app.pages.createTeacherPage {
                     self.form.certificates.push(newCertificate);
                 }
             }, function () {
-                console.info('Modal dismissed at: ' + new Date());
+                DEBUG && console.info('Modal dismissed at: ' + new Date());
             });
 
             $event.preventDefault();
