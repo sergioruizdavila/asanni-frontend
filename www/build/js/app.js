@@ -166,7 +166,7 @@ DEBUG = false;
         'mainApp.localStorageService',
         'screenSize'
     ];
-    function run($rootScope, $state, dataConfig, AuthService, userService, screenSize, localStorage) {
+    function run($rootScope, $state, dataConfig, AuthService, userService, localStorage, screenSize) {
         var productionHost = dataConfig.domain;
         var mixpanelTokenDEV = dataConfig.mixpanelTokenDEV;
         var mixpanelTokenPRD = dataConfig.mixpanelTokenPRD;
