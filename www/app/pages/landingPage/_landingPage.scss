@@ -60,6 +60,18 @@ $landing-earlyAccessBlock-formBlock-formGroup-padding: 0;
     height: 100%;
     padding-bottom: 10px;
 
+    /* how it works */
+    &__how-it-works {
+        .ma-p {
+            text-align: center;
+        }
+
+        img {
+            height: 60px;
+            margin-bottom: 20px;
+        }
+    }
+
     /* our progress block */
     &__progress-block {
         .country-progress-block {
@@ -116,3 +128,74 @@ $landing-earlyAccessBlock-formBlock-formGroup-padding: 0;
     }
 
 }
+
+
+
+/*==========  Mobile First Method  ==========*/
+
+ /* Custom, iPhone Retina */
+ @media only screen and (min-width : 320px) {
+
+    .landingPage {
+        &__how-it-works {
+            .ma-p {
+                text-align: left;
+            }
+        }
+    }
+
+ }
+
+
+ /* Extra Small Devices, Phones */
+ @media only screen and (min-width : 480px) {
+
+    .landingPage {
+        &__how-it-works {
+            .ma-p {
+                text-align: left;
+            }
+        }
+    }
+
+ }
+
+ /* Small Devices, Tablets */
+ @media only screen and (min-width : 768px) {
+
+    .landingPage {
+        &__how-it-works {
+            .ma-p {
+                text-align: center;
+            }
+        }
+    }
+
+ }
+
+ /* Medium Devices, Desktops */
+ @media only screen and (min-width : 992px) {
+
+    .landingPage {
+        &__how-it-works {
+            .ma-p {
+                text-align: center;
+            }
+        }
+    }
+
+ }
+
+ /* Large Devices, Wide Screens */
+ @media only screen and (min-width : 1200px) {
+
+
+
+ }
+
+ /* Extra Large Devices, Wide Screens */
+ @media only screen and (min-width : 1600px) {
+
+
+
+ }

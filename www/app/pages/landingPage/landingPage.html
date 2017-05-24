@@ -371,57 +371,57 @@
     <!--------------------------- START: HERO BLOCK --------------------------->
     <section class="ma-hero">
 
-    <div class="poster poster--gradient"></div>
+        <div class="poster poster--gradient"></div>
 
-    <!--video class="hidden-xs video-hero"
-           autoplay loop muted poster="../../../assets/images/cover-waysily.png">
-        <source data-src="../../../assets/videos/hero-video-2.mp4"
-                type="video/mp4" src="../../../assets/videos/hero-video-2.mp4">
-    </video-->
+        <!--video class="hidden-xs video-hero"
+            autoplay loop muted poster="../../../assets/images/cover-waysily.png">
+            <source data-src="../../../assets/videos/hero-video-2.mp4"
+                    type="video/mp4" src="../../../assets/videos/hero-video-2.mp4">
+        </video-->
 
-	<div class="ma-hero__wrapper text-center">
+	    <div class="ma-hero__wrapper text-center">
 
-		<h1 class="ma-hero__wrapper__title animated fadeIn"
-            translate>
-            %landing.puv
-        </h1>
-        <h2 class="ma-hero__wrapper__description
-                   animated fadeIn" translate>
-            %landing.puv.description
-        </h2>
+    		<h1 class="ma-hero__wrapper__title animated fadeIn"
+                translate>
+                %landing.puv
+            </h1>
+            <h2 class="ma-hero__wrapper__description
+                       animated fadeIn" translate>
+                %landing.puv.description
+            </h2>
 
-		<div class="ma-hero__wrapper__btn-container">
-            <div class="row">
-                <div class="col-xs-12 col-sm-6
-                            ma-hero__wrapper__btn-container__school">
-                    <a id="landingPage-school-btn"
-                            href="/page/search"
-                            class="ma-btn ma-btn--tertiary ma-btn--large"
-                            ng-click="vm.goToSearch('school');$event.preventDefault()"
-                            translate>
-                        %global.schools.text
-                   </a>
+    		<div class="ma-hero__wrapper__btn-container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6
+                                ma-hero__wrapper__btn-container__school">
+                        <a id="landingPage-school-btn"
+                                href="/page/search"
+                                class="ma-btn ma-btn--tertiary ma-btn--large"
+                                ng-click="vm.goToSearch('school');$event.preventDefault()"
+                                translate>
+                            %global.schools.text
+                       </a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6
+                                ma-hero__wrapper__btn-container__teacher">
+                        <a id="landingPage-teacher-btn"
+                                href="/page/search"
+                                class="ma-btn ma-btn--tertiary ma-btn--large"
+                                ng-click="vm.goToSearch('teacher');$event.preventDefault()"
+                                translate>
+                            %global.teachers.text
+                       </a>
+                    </div>
                 </div>
-                <div class="col-xs-12 col-sm-6
-                            ma-hero__wrapper__btn-container__teacher">
-                    <a id="landingPage-teacher-btn"
-                            href="/page/search"
-                            class="ma-btn ma-btn--tertiary ma-btn--large"
-                            ng-click="vm.goToSearch('teacher');$event.preventDefault()"
-                            translate>
-                        %global.teachers.text
-                   </a>
+		    </div>
+
+            <div class="ma-hero__wrapper__go-down row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                    <i class="material-icons md-48 md-light"
+                       ng-click="vm.goDown()">keyboard_arrow_down</i>
                 </div>
             </div>
 
-		</div>
-
-        <div class="ma-hero__wrapper__go-down row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-                <i class="material-icons md-48 md-light"
-                   ng-click="vm.goDown()">keyboard_arrow_down</i>
-            </div>
-        </div>
 	</div>
 
 	</section>
@@ -465,6 +465,59 @@
 
     </section>
     <!--                        END: OUR MISSION BLOCK                       -->
+
+
+    <div class="ma-separator-dashed-image space-11 container"></div>
+
+
+    <!----------------------- START: HOW IT WORKS BLOCK ----------------------->
+    <section class="landingPage__how-it-works space-11 container">
+
+        <! Title >
+        <div class="row space-9 text-center">
+            <div class="col-xs-12">
+                <h2 class="margin-reset" translate>
+                    %landing.how_work.title.text
+                </h2>
+            </div>
+        </div>
+
+        <! Steps list >
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 space-2">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-3 text-center">
+                    <img src="../../../assets/images/communication.svg" alt="Search">
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-9">
+                    <p class="ma-p ma-p--default" translate>
+                        %landing.how_work.step1.text
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 space-2">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-3 text-center">
+                    <img src="../../../assets/images/receive_pass.svg" alt="Receive Pass">
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-9">
+                    <p class="ma-p ma-p--default" translate>
+                        %landing.how_work.step2.text
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 space-2">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-3 text-center">
+                    <img src="../../../assets/images/vehicle.svg" alt="Pick your pass">
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-9">
+                    <p class="ma-p ma-p--default" translate>
+                        %landing.how_work.step3.text
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!--                      END: HOW IT WORKS BLOCK                        -->
 
 
     <div class="ma-separator-dashed-image space-11 container"></div>
