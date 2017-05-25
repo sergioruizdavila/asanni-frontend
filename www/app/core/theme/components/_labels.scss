@@ -126,6 +126,10 @@
             background: 0 0;
             border: $label-box-secondary-border;
             color: $label-box-secondary-font-color;
+
+            &__input-to-edit {
+                border-bottom: 1px solid rgba(0, 181, 146, 0.22)!important;
+            }
         }
 
         &--secondary-hover {
@@ -217,6 +221,15 @@
 
         &--space5 {
             margin: 5px;
+        }
+
+        /// INPUT TO EDIT LABEL
+
+        &__input-to-edit {
+            width: 100%;
+            border: 0 hidden transparent;
+            padding: 4px;
+            outline: none;
         }
 
     }

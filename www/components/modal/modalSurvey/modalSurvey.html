@@ -96,8 +96,9 @@
                                 ma-label--box--alert-secondary-hover
                                 ma-label--box--block
                                 ma-label--box--default
-                                ma-label--box--check space-2">
-                        + Add my own suggestion
+                                ma-label--box--check space-2"
+                         translate>
+                        %modal.survey.add_feature.button.text
                     </div>
 
                     <! other option - input >
@@ -107,19 +108,21 @@
                                     ma-label--box--secondary
                                     ma-label--box--block
                                     ma-label--box--default space-2">
-                            <input type="text" name="" value="" style="width: 100%;
-                                    resize: vertical;
-                                    border: 0 hidden transparent;
-                                    border-bottom: 1px solid rgba(0, 181, 146, 0.22);
-                                    padding: 4px;
-                                    outline: none;" ng-model="vm.other" autofocus="true">
+                            <input class="ma-label--box__input-to-edit
+                                          ma-label--box--secondary__input-to-edit"
+                                   ng-class="{'ma-input--invalid': !vm.validate.other.valid}"
+                                   type="text" name="otherFeature"
+                                   translate
+                                   translate-attr-placeholder="%modal.survey.other_option.placeholder.text"
+                                   ng-model="vm.other" autofocus="true">
                         </div>
                         <! other option - add button >
                         <button type="button" name="button"
                                 ng-click="vm.saveOption(vm.other, true)"
                                 class="ma-btn ma-btn--primary
-                                       ma-btn--default pull-right space-3">
-                            Add
+                                       ma-btn--default pull-right space-3"
+                                translate>
+                            %global.add.button.text
                         </button>
                     </div>
                 </div>
