@@ -16,14 +16,6 @@ module components.modal.modalSurvey {
         activate: () => void;
     }
 
-    interface IModalSurveyScope extends ng.IScope {
-
-    }
-
-    interface IModalSurveyForm {
-        option: string;
-    }
-
 
     class ModalSurveyController implements IModalSurveyController {
 
@@ -32,7 +24,6 @@ module components.modal.modalSurvey {
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
-        form: IModalSurveyForm;
         loading: boolean;
         success: boolean;
         optionsList: any;
@@ -84,11 +75,6 @@ module components.modal.modalSurvey {
             // Init Add option active
             this.addActive = false;
 
-            //Init form
-            this.form = {
-                option: ''
-            };
-
             this.activate();
         }
 
@@ -124,19 +110,32 @@ module components.modal.modalSurvey {
         * to FeatureService in order to save it on database
         * @use - this.saveOption(option);
         * @function
+        * @param {string} option - option selected or added
+        * @param {boolean} isOther - If is a new option added by the user
         * @return {void}
         */
 
-        saveOption(option): void {
+        saveOption(option: string, isOther: boolean = false): void {
             //CONSTANTS
-            const CLICK_MIXPANEL = 'Click: Selected feature option ' + option.id;
+            let click_mixpanel = '';
+
             //VARIABLES
             let self = this;
             let feedback = new app.models.feedback.Feedback();
-            feedback.NextFeature = option.id;
 
+            // show loading
             this.loading = true;
 
+            // Validate if is a selected option or a added option
+            if(isOther) {
+                click_mixpanel = 'Click: Added new feature option: ' + option;
+                feedback.NextOtherFeature = option;
+            } else {
+                click_mixpanel = 'Click: Selected feature option: ' + option;
+                feedback.NextFeature = parseInt(option);
+            }
+
+            // Save new feedback on DB
             this.FeedbackService.createFeedback(feedback).then(
                 function(response) {
                     if(response.id) {
@@ -146,8 +145,9 @@ module components.modal.modalSurvey {
                     }
                 },
                 function(error) {
-                    //Show error
-                    self.messageUtil.error('');
+                    //CONSTANTS
+                    const ERROR_MESSAGE = 'Error modalSurvey.controller.js method: saveOption ';
+                    Raven.captureMessage(ERROR_MESSAGE, error);
                 }
             );
         }

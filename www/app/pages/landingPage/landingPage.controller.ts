@@ -315,7 +315,7 @@ module app.pages.landingPage {
                 function(error) {
                     //CONSTANTS
                     const ERROR_MESSAGE = 'Error landingPage.controller.js method: _buildCountryContainers';
-                    DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
+                    Raven.captureMessage(ERROR_MESSAGE, error);
                 }
             );
         }

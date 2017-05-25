@@ -96,7 +96,7 @@
 
 //# sourceMappingURL=../../maps/app/app.core.module.js.map
 
-DEBUG = false;
+DEBUG = true;
 (function () {
     'use strict';
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
@@ -1824,6 +1824,7 @@ var app;
                     this.id = obj.id;
                     this.nextCountry = obj.nextCountry || '';
                     this.nextFeature = obj.nextFeature || 0;
+                    this.nextOtherFeature = obj.nextOtherFeature || '';
                 }
                 Object.defineProperty(Feedback.prototype, "Id", {
                     get: function () {
@@ -1854,6 +1855,19 @@ var app;
                             throw 'Please supply next feature';
                         }
                         this.nextFeature = nextFeature;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Feedback.prototype, "NextOtherFeature", {
+                    get: function () {
+                        return this.nextOtherFeature;
+                    },
+                    set: function (nextOtherFeature) {
+                        if (nextOtherFeature === undefined) {
+                            throw 'Please supply next other feature';
+                        }
+                        this.nextOtherFeature = nextOtherFeature;
                     },
                     enumerable: true,
                     configurable: true
@@ -8919,10 +8933,7 @@ var components;
                     this.loading = true;
                     this.success = false;
                     this.optionsList = [];
-                    this.addActive;
-                    this.form = {
-                        option: ''
-                    };
+                    this.addActive = false;
                     this.activate();
                 };
                 ModalSurveyController.prototype.activate = function () {
@@ -8935,19 +8946,28 @@ var components;
                         self.loading = false;
                     });
                 };
-                ModalSurveyController.prototype.saveOption = function (option) {
-                    var CLICK_MIXPANEL = 'Click: Selected feature option ' + option.id;
+                ModalSurveyController.prototype.saveOption = function (option, isOther) {
+                    if (isOther === void 0) { isOther = false; }
+                    var click_mixpanel = '';
                     var self = this;
                     var feedback = new app.models.feedback.Feedback();
-                    feedback.NextFeature = option.id;
                     this.loading = true;
+                    if (isOther) {
+                        click_mixpanel = 'Click: Added new feature option: ' + option;
+                        feedback.NextOtherFeature = option;
+                    }
+                    else {
+                        click_mixpanel = 'Click: Selected feature option: ' + option;
+                        feedback.NextFeature = parseInt(option);
+                    }
                     this.FeedbackService.createFeedback(feedback).then(function (response) {
                         if (response.id) {
                             self.success = true;
                             self.loading = false;
                         }
                     }, function (error) {
-                        self.messageUtil.error('');
+                        var ERROR_MESSAGE = 'Error modalSurvey.controller.js method: saveOption ';
+                        Raven.captureMessage(ERROR_MESSAGE, error);
                     });
                 };
                 ModalSurveyController.prototype.close = function () {
@@ -9738,7 +9758,7 @@ var app;
                         self._countryContainers = response.results;
                     }, function (error) {
                         var ERROR_MESSAGE = 'Error landingPage.controller.js method: _buildCountryContainers';
-                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
+                        Raven.captureMessage(ERROR_MESSAGE, error);
                     });
                 };
                 LandingPageController.prototype.goToCountryDetails = function (aliasCountry) {
@@ -10060,7 +10080,7 @@ var app;
                         self.shadowsTeacherLoading = false;
                     }, function (error) {
                         var ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _buildTeacherCards ';
-                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
+                        Raven.captureMessage(ERROR_MESSAGE, error);
                         self.shadowsTeacherLoading = false;
                     });
                 };
@@ -10076,7 +10096,7 @@ var app;
                         self.shadowsSchoolLoading = false;
                     }, function (error) {
                         var ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _buildSchoolCards ';
-                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
+                        Raven.captureMessage(ERROR_MESSAGE, error);
                         self.shadowsSchoolLoading = false;
                     });
                 };
@@ -10091,7 +10111,7 @@ var app;
                         }
                     }, function (error) {
                         var ERROR_MESSAGE = 'Error countryProfilePage.controller.js method: _getCurrencyConverted ';
-                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
+                        Raven.captureMessage(ERROR_MESSAGE, error);
                         self._currencyConverted = '-';
                     });
                 };
@@ -15428,7 +15448,7 @@ var app;
                         self.shadowsTeacherLoading = false;
                     }, function (error) {
                         var ERROR_MESSAGE = 'Error schoolProfilePage.controller.js method: _buildTeacherCards ';
-                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
+                        Raven.captureMessage(ERROR_MESSAGE, error);
                         self.shadowsTeacherLoading = false;
                     });
                 };
@@ -15446,7 +15466,7 @@ var app;
                         self.shadowsSchoolLoading = false;
                     }, function (error) {
                         var ERROR_MESSAGE = 'Error schoolProfilePage.controller.js method: _buildSchoolCards ';
-                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
+                        Raven.captureMessage(ERROR_MESSAGE, error);
                         self.shadowsSchoolLoading = false;
                     });
                 };
@@ -15458,7 +15478,7 @@ var app;
                         }
                     }, function (error) {
                         var ERROR_MESSAGE = 'Error schoolProfilePage.controller.js method: _getCountryInfo ';
-                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
+                        Raven.captureMessage(ERROR_MESSAGE, error);
                         self.shadowsSchoolLoading = false;
                     });
                 };

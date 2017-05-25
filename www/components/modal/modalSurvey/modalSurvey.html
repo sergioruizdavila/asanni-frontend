@@ -76,7 +76,7 @@
 
                     <! default options >
                     <div ng-repeat="option in vm.optionsList"
-                         ng-click="vm.saveOption(option)"
+                         ng-click="vm.saveOption(option.id)"
                          class="ma-label
                                 ma-label--box
                                 ma-label--box--secondary
@@ -101,7 +101,7 @@
                     </div>
 
                     <! other option - input >
-                    <div ng-if="::vm.addActive">
+                    <div ng-if="vm.addActive">
                         <div class="ma-label
                                     ma-label--box
                                     ma-label--box--secondary
@@ -112,10 +112,11 @@
                                     border: 0 hidden transparent;
                                     border-bottom: 1px solid rgba(0, 181, 146, 0.22);
                                     padding: 4px;
-                                    outline: none;" autofocus="true">
+                                    outline: none;" ng-model="vm.other" autofocus="true">
                         </div>
                         <! other option - add button >
                         <button type="button" name="button"
+                                ng-click="vm.saveOption(vm.other, true)"
                                 class="ma-btn ma-btn--primary
                                        ma-btn--default pull-right space-3">
                             Add

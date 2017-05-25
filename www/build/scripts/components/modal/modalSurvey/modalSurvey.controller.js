@@ -21,9 +21,6 @@ var components;
                     this.success = false;
                     this.optionsList = [];
                     this.addActive = false;
-                    this.form = {
-                        option: ''
-                    };
                     this.activate();
                 };
                 ModalSurveyController.prototype.activate = function () {
@@ -36,19 +33,28 @@ var components;
                         self.loading = false;
                     });
                 };
-                ModalSurveyController.prototype.saveOption = function (option) {
-                    var CLICK_MIXPANEL = 'Click: Selected feature option ' + option.id;
+                ModalSurveyController.prototype.saveOption = function (option, isOther) {
+                    if (isOther === void 0) { isOther = false; }
+                    var click_mixpanel = '';
                     var self = this;
                     var feedback = new app.models.feedback.Feedback();
-                    feedback.NextFeature = option.id;
                     this.loading = true;
+                    if (isOther) {
+                        click_mixpanel = 'Click: Added new feature option: ' + option;
+                        feedback.NextOtherFeature = option;
+                    }
+                    else {
+                        click_mixpanel = 'Click: Selected feature option: ' + option;
+                        feedback.NextFeature = parseInt(option);
+                    }
                     this.FeedbackService.createFeedback(feedback).then(function (response) {
                         if (response.id) {
                             self.success = true;
                             self.loading = false;
                         }
                     }, function (error) {
-                        self.messageUtil.error('');
+                        var ERROR_MESSAGE = 'Error modalSurvey.controller.js method: saveOption ';
+                        Raven.captureMessage(ERROR_MESSAGE, error);
                     });
                 };
                 ModalSurveyController.prototype.close = function () {
