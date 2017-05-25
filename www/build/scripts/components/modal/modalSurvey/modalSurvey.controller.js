@@ -20,6 +20,7 @@ var components;
                     this.loading = true;
                     this.success = false;
                     this.optionsList = [];
+                    this.addActive = false;
                     this.form = {
                         option: ''
                     };

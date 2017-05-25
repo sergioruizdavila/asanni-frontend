@@ -36,6 +36,7 @@ module components.modal.modalSurvey {
         loading: boolean;
         success: boolean;
         optionsList: any;
+        addActive: boolean;
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/
@@ -79,6 +80,9 @@ module components.modal.modalSurvey {
 
             // Init options List
             this.optionsList = [];
+
+            // Init Add option active
+            this.addActive = false;
 
             //Init form
             this.form = {

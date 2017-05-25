@@ -537,6 +537,10 @@ $label-box-alert-background: map-get($main-palette, alert);
 $label-box-alert-secondary-font-color: map-get($main-palette, alert);
 $label-box-alert-secondary-border: 2px solid map-get($main-palette, alert);
 
+$label-box-alert-secondary-hover-font-color: $white;
+$label-box-alert-secondary-hover-background: map-get($main-palette, alert);
+$label-box-alert-secondary-hover-border: 2px solid map-get($main-palette, alert);
+
 $label-box-gray-font-color: $black;
 $label-box-gray-background: $light-gray;
 $label-box-gray-secondary-border: 2px solid $light-gray;
