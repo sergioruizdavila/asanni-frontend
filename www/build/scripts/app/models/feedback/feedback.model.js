@@ -11,6 +11,7 @@ var app;
                     this.id = obj.id;
                     this.nextCountry = obj.nextCountry || '';
                     this.nextFeature = obj.nextFeature || 0;
+                    this.nextOtherFeature = obj.nextOtherFeature || '';
                 }
                 Object.defineProperty(Feedback.prototype, "Id", {
                     get: function () {
@@ -41,6 +42,19 @@ var app;
                             throw 'Please supply next feature';
                         }
                         this.nextFeature = nextFeature;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Feedback.prototype, "NextOtherFeature", {
+                    get: function () {
+                        return this.nextOtherFeature;
+                    },
+                    set: function (nextOtherFeature) {
+                        if (nextOtherFeature === undefined) {
+                            throw 'Please supply next other feature';
+                        }
+                        this.nextOtherFeature = nextOtherFeature;
                     },
                     enumerable: true,
                     configurable: true

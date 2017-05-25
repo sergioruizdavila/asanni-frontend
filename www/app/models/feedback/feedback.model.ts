@@ -20,6 +20,7 @@ module app.models.feedback {
         private id: string;
         private nextCountry: string;
         private nextFeature: number;
+        private nextOtherFeature: string;
 
         /**********************************/
         /*           CONSTRUCTOR          */
@@ -32,6 +33,7 @@ module app.models.feedback {
             this.id = obj.id;
             this.nextCountry = obj.nextCountry || '';
             this.nextFeature = obj.nextFeature || 0;
+            this.nextOtherFeature = obj.nextOtherFeature || '';
 
         }
 
@@ -59,6 +61,15 @@ module app.models.feedback {
         set NextFeature(nextFeature: number) {
             if (nextFeature === undefined) { throw 'Please supply next feature'; }
             this.nextFeature = nextFeature;
+        }
+
+        get NextOtherFeature() {
+            return this.nextOtherFeature;
+        }
+
+        set NextOtherFeature(nextOtherFeature: string) {
+            if (nextOtherFeature === undefined) { throw 'Please supply next other feature'; }
+            this.nextOtherFeature = nextOtherFeature;
         }
 
     }

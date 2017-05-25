@@ -13,15 +13,12 @@ module components.modal.modalSurvey {
     /**********************************/
     interface IModalSurveyController {
         close: () => void;
+        validate: IModalSurveyValidate;
         activate: () => void;
     }
 
-    interface IModalSurveyScope extends ng.IScope {
-
-    }
-
-    interface IModalSurveyForm {
-        option: string;
+    interface IModalSurveyValidate {
+        other: app.core.util.functionsUtil.IValid;
     }
 
 
@@ -32,10 +29,12 @@ module components.modal.modalSurvey {
         /**********************************/
         /*           PROPERTIES           */
         /**********************************/
-        form: IModalSurveyForm;
         loading: boolean;
         success: boolean;
         optionsList: any;
+        addActive: boolean;
+        other: string;
+        validate: IModalSurveyValidate;
         // --------------------------------
 
         /*-- INJECT DEPENDENCIES --*/
@@ -46,6 +45,7 @@ module components.modal.modalSurvey {
             'dataConfig',
             'mainApp.models.feature.FeatureService',
             'mainApp.models.feedback.FeedbackService',
+            'mainApp.core.util.FunctionsUtilService',
             'mainApp.core.util.messageUtilService'
         ];
 
@@ -60,6 +60,7 @@ module components.modal.modalSurvey {
             private dataConfig: IDataConfig,
             private FeatureService: app.models.feature.IFeatureService,
             private FeedbackService: app.models.feedback.IFeedbackService,
+            private functionsUtil: app.core.util.functionsUtil.IFunctionsUtilService,
             private messageUtil: app.core.util.messageUtil.IMessageUtilService) {
 
             this._init();
@@ -80,9 +81,15 @@ module components.modal.modalSurvey {
             // Init options List
             this.optionsList = [];
 
-            //Init form
-            this.form = {
-                option: ''
+            // Init Add option active
+            this.addActive = false;
+
+            // Init 'other feature' field
+            this.other = '';
+
+            // Build validate object fields
+            this.validate = {
+                other: {valid: true, message: ''}
             };
 
             this.activate();
@@ -115,24 +122,69 @@ module components.modal.modalSurvey {
 
 
         /**
+        * _validateForm
+        * @description - Validate each field on form
+        * @use - this._validateForm();
+        * @function
+        * @return {boolean} formValid - return If the complete form is valid or not.
+        */
+        private _validateForm(): boolean {
+            //CONSTANTS
+            const NULL_ENUM = app.core.util.functionsUtil.Validation.Null;
+            const EMPTY_ENUM = app.core.util.functionsUtil.Validation.Empty;
+            /***************************************************/
+            //VARIABLES
+            let formValid = true;
+
+            //Validate 'Other Feature' fields
+            let other_rules = [NULL_ENUM, EMPTY_ENUM];
+            this.validate.other = this.functionsUtil.validator(this.other, other_rules);
+            if(!this.validate.other.valid) {
+                formValid = this.validate.other.valid;
+            }
+
+            return formValid;
+        }
+
+
+
+        /**
         * saveOption
         * @description - when user click select one survey option, send this one
         * to FeatureService in order to save it on database
         * @use - this.saveOption(option);
         * @function
+        * @param {string} option - option selected or added
+        * @param {boolean} isOther - If is a new option added by the user
         * @return {void}
         */
 
-        saveOption(option): void {
+        saveOption(option: string, isOther: boolean = false): void {
             //CONSTANTS
-            const CLICK_MIXPANEL = 'Click: Selected feature option ' + option.id;
+            let click_mixpanel = '';
+
             //VARIABLES
             let self = this;
             let feedback = new app.models.feedback.Feedback();
-            feedback.NextFeature = option.id;
+            let formValid = true;
 
+            // Validate if is a selected option or a added option
+            if(isOther) {
+                click_mixpanel = 'Click: Added new feature option: ' + option;
+                //Validate data form
+                formValid = this._validateForm();
+                feedback.NextOtherFeature = option;
+            } else {
+                click_mixpanel = 'Click: Selected feature option: ' + option;
+                feedback.NextFeature = parseInt(option);
+            }
+
+            if (!formValid) { return; }
+
+            // show loading
             this.loading = true;
 
+            // Save new feedback on DB
             this.FeedbackService.createFeedback(feedback).then(
                 function(response) {
                     if(response.id) {
@@ -142,10 +194,13 @@ module components.modal.modalSurvey {
                     }
                 },
                 function(error) {
-                    //Show error
-                    self.messageUtil.error('');
+                    //CONSTANTS
+                    const ERROR_MESSAGE = 'Error modalSurvey.controller.js method: saveOption ';
+                    Raven.captureMessage(ERROR_MESSAGE, error);
                 }
             );
+
+
         }
 
 

@@ -100,7 +100,7 @@ var app;
                         self.shadowsTeacherLoading = false;
                     }, function (error) {
                         var ERROR_MESSAGE = 'Error schoolProfilePage.controller.js method: _buildTeacherCards ';
-                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
+                        Raven.captureMessage(ERROR_MESSAGE, error);
                         self.shadowsTeacherLoading = false;
                     });
                 };
@@ -118,7 +118,7 @@ var app;
                         self.shadowsSchoolLoading = false;
                     }, function (error) {
                         var ERROR_MESSAGE = 'Error schoolProfilePage.controller.js method: _buildSchoolCards ';
-                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
+                        Raven.captureMessage(ERROR_MESSAGE, error);
                         self.shadowsSchoolLoading = false;
                     });
                 };
@@ -130,7 +130,7 @@ var app;
                         }
                     }, function (error) {
                         var ERROR_MESSAGE = 'Error schoolProfilePage.controller.js method: _getCountryInfo ';
-                        DEBUG && Raven.captureMessage(ERROR_MESSAGE, error);
+                        Raven.captureMessage(ERROR_MESSAGE, error);
                         self.shadowsSchoolLoading = false;
                     });
                 };

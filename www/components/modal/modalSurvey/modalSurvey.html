@@ -73,8 +73,10 @@
                  ng-class="{'invisible': vm.loading}"
                  class="row center-xs space-1">
                 <div class="col-xs-12 text-center">
+
+                    <! default options >
                     <div ng-repeat="option in vm.optionsList"
-                         ng-click="vm.saveOption(option)"
+                         ng-click="vm.saveOption(option.id)"
                          class="ma-label
                                 ma-label--box
                                 ma-label--box--secondary
@@ -83,6 +85,45 @@
                                 ma-label--box--default
                                 ma-label--box--check space-2">
                         {{option | translateFilter: 'feature'}}
+                    </div>
+
+                    <! other option - add checked label >
+                    <div ng-click="vm.addActive = true"
+                         ng-if="!vm.addActive"
+                         class="ma-label
+                                ma-label--box
+                                ma-label--box--alert-secondary
+                                ma-label--box--alert-secondary-hover
+                                ma-label--box--block
+                                ma-label--box--default
+                                ma-label--box--check space-2"
+                         translate>
+                        %modal.survey.add_feature.button.text
+                    </div>
+
+                    <! other option - input >
+                    <div ng-if="vm.addActive">
+                        <div class="ma-label
+                                    ma-label--box
+                                    ma-label--box--secondary
+                                    ma-label--box--block
+                                    ma-label--box--default space-2">
+                            <input class="ma-label--box__input-to-edit
+                                          ma-label--box--secondary__input-to-edit"
+                                   ng-class="{'ma-input--invalid': !vm.validate.other.valid}"
+                                   type="text" name="otherFeature"
+                                   translate
+                                   translate-attr-placeholder="%modal.survey.other_option.placeholder.text"
+                                   ng-model="vm.other" autofocus="true">
+                        </div>
+                        <! other option - add button >
+                        <button type="button" name="button"
+                                ng-click="vm.saveOption(vm.other, true)"
+                                class="ma-btn ma-btn--primary
+                                       ma-btn--default pull-right space-3"
+                                translate>
+                            %global.add.button.text
+                        </button>
                     </div>
                 </div>
             </div>

@@ -182,6 +182,8 @@
 
     "%modal.survey.title.text": "Let's build Waysily together",
     "%modal.survey.description.text": "Which would you like the following functionality to be:",
+    "%modal.survey.other_option.placeholder.text": "What would you like to include?",
+    "%modal.survey.add_feature.button.text": "+ Add my own suggestion",
     "%modal.survey.sent.title.text": "Your recommendation was sent!",
     "%modal.survey.sent.description.text": "Thanks for your recommendation, we'll review all recommendations received, and we'll be working on the most requested by all our users. We will be posting the new features on Twitter.",
     "%modal.survey.help_text.text": "Select the option you want",

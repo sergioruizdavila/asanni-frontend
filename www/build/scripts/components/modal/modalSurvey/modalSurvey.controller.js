@@ -5,13 +5,14 @@ var components;
         var modalSurvey;
         (function (modalSurvey) {
             var ModalSurveyController = (function () {
-                function ModalSurveyController($rootScope, $filter, $uibModalInstance, dataConfig, FeatureService, FeedbackService, messageUtil) {
+                function ModalSurveyController($rootScope, $filter, $uibModalInstance, dataConfig, FeatureService, FeedbackService, functionsUtil, messageUtil) {
                     this.$rootScope = $rootScope;
                     this.$filter = $filter;
                     this.$uibModalInstance = $uibModalInstance;
                     this.dataConfig = dataConfig;
                     this.FeatureService = FeatureService;
                     this.FeedbackService = FeedbackService;
+                    this.functionsUtil = functionsUtil;
                     this.messageUtil = messageUtil;
                     this._init();
                 }
@@ -20,8 +21,10 @@ var components;
                     this.loading = true;
                     this.success = false;
                     this.optionsList = [];
-                    this.form = {
-                        option: ''
+                    this.addActive = false;
+                    this.other = '';
+                    this.validate = {
+                        other: { valid: true, message: '' }
                     };
                     this.activate();
                 };
@@ -35,11 +38,35 @@ var components;
                         self.loading = false;
                     });
                 };
-                ModalSurveyController.prototype.saveOption = function (option) {
-                    var CLICK_MIXPANEL = 'Click: Selected feature option ' + option.id;
+                ModalSurveyController.prototype._validateForm = function () {
+                    var NULL_ENUM = 2;
+                    var EMPTY_ENUM = 3;
+                    var formValid = true;
+                    var other_rules = [NULL_ENUM, EMPTY_ENUM];
+                    this.validate.other = this.functionsUtil.validator(this.other, other_rules);
+                    if (!this.validate.other.valid) {
+                        formValid = this.validate.other.valid;
+                    }
+                    return formValid;
+                };
+                ModalSurveyController.prototype.saveOption = function (option, isOther) {
+                    if (isOther === void 0) { isOther = false; }
+                    var click_mixpanel = '';
                     var self = this;
                     var feedback = new app.models.feedback.Feedback();
-                    feedback.NextFeature = option.id;
+                    var formValid = true;
+                    if (isOther) {
+                        click_mixpanel = 'Click: Added new feature option: ' + option;
+                        formValid = this._validateForm();
+                        feedback.NextOtherFeature = option;
+                    }
+                    else {
+                        click_mixpanel = 'Click: Selected feature option: ' + option;
+                        feedback.NextFeature = parseInt(option);
+                    }
+                    if (!formValid) {
+                        return;
+                    }
                     this.loading = true;
                     this.FeedbackService.createFeedback(feedback).then(function (response) {
                         if (response.id) {
@@ -47,7 +74,8 @@ var components;
                             self.loading = false;
                         }
                     }, function (error) {
-                        self.messageUtil.error('');
+                        var ERROR_MESSAGE = 'Error modalSurvey.controller.js method: saveOption ';
+                        Raven.captureMessage(ERROR_MESSAGE, error);
                     });
                 };
                 ModalSurveyController.prototype.close = function () {
@@ -61,6 +89,7 @@ var components;
                     'dataConfig',
                     'mainApp.models.feature.FeatureService',
                     'mainApp.models.feedback.FeedbackService',
+                    'mainApp.core.util.FunctionsUtilService',
                     'mainApp.core.util.messageUtilService'
                 ];
                 return ModalSurveyController;

@@ -183,7 +183,9 @@
     "%modal.survey.title.text": "Construyamos está comunidad juntos",
     "%modal.survey.description.text": "Cual te gustaría que fuera la siguiente funcionalidad:",
     "%modal.survey.sent.title.text": "¡Tu recomendación fue enviada!",
-    "%modal.survey.sent.description.text": "Muchas gracias, revisaremos todas las recomendaciones recibidas, y estaremos trabajando en las más solicitadas por los usuarios. Publicaremos las nuevas características en nuestro Twitter.",
+    "%modal.survey.other_option.placeholder.text": "¿Qué te gustaría incluir?",
+    "%modal.survey.add_feature.button.text": "+ Agregar mi propia sugerencia",
+    "%modal.survey.sent.description.text": "Muchas gracias, revisaremos todas las recomendaciones recibidas, y estaremos trabajando en las más solicitadas por los usuarios. Publicaremos las nuevas características en Twitter.",
     "%modal.survey.help_text.text": "Presiona la opción que deseas",
 
     "__LANDING PAGE__": "",
