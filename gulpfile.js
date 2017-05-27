@@ -229,7 +229,7 @@ gulp.task('serveprod', function() {
     port: process.env.PORT || 5000,
     livereload: false,
     middleware: function(connect, opt) {
-      return [app.use(compress());];
+      return [app.use(compress())];
     },
     fallback: 'www/index.html'
   });
