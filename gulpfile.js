@@ -229,7 +229,7 @@ gulp.task('serveprod', function() {
     port: process.env.PORT || 5000,
     livereload: false,
     middleware: function(connect, opt) {
-      return [app.use(require('prerender-node').set('prerenderServiceUrl', 'http://service.prerender.io/').set('prerenderToken', 'JV1wlWf2vRAaydCSuqs7')); app.use(compress());];
+      return [app.use(compress());];
     },
     fallback: 'www/index.html'
   });
