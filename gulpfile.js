@@ -19,7 +19,6 @@ var gzip = require('gulp-gzip');
 
 var express = require('express');
 var forceHttps = require('express-force-https');
-//var connectGzip = require('connect-gzip').gzip();
 var compress = require('compression');
 
 var app = express();
@@ -31,7 +30,6 @@ app.use(require('prerender-node').set('prerenderServiceUrl', 'http://service.pre
 // Force https
 app.use(forceHttps);
 // Gzip
-//app.use(connectGzip);
 app.use(compress());
 
 /*Path Files*/
@@ -229,7 +227,10 @@ gulp.task('serveprod', function() {
     port: process.env.PORT || 5000,
     livereload: false,
     middleware: function(connect, opt) {
-      return [app.use(compress())];
+      return [
+          app.use(compress()),
+          app.use(require('prerender-node').set('prerenderServiceUrl', 'http://service.prerender.io/').set('prerenderToken', 'JV1wlWf2vRAaydCSuqs7'))
+      ];
     },
     fallback: 'www/index.html'
   });
@@ -309,6 +310,7 @@ gulp.task('ts', function () {
 gulp.task('vendorCSS', function () {
   return gulp.src(paths.vendorStyles)
     .pipe(concat('vendor.min.css'))
+    .pipe(gzip())
     .pipe(gulp.dest('www/build/css'));
 });
 
