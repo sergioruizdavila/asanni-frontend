@@ -16,6 +16,8 @@
   "dependencies": {
     "angular-bootstrap-datetimepicker": "^1.1.2",
     "bower": "^1.7.9",
+    "compression": "^1.6.2",
+    "connect-gzip": "^0.1.6",
     "express": "^4.15.2",
     "express-force-https": "^1.0.0",
     "prerender-node": "^2.7.1"
@@ -27,6 +29,7 @@
     "gulp-concat": "^2.6.1",
     "gulp-connect": "^5.0.0",
     "gulp-debug": "^2.1.2",
+    "gulp-gzip": "^1.4.0",
     "gulp-imagemin": "^3.2.0",
     "gulp-inject": "^4.1.0",
     "gulp-ng-annotate": "^2.0.0",

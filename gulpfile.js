@@ -15,9 +15,12 @@ var size = require('gulp-size');
 var plumber = require('gulp-plumber');
 var imagemin = require('gulp-imagemin');
 var pngcrush = require('imagemin-pngcrush');
+var gzip = require('gulp-gzip');
 
 var express = require('express');
 var forceHttps = require('express-force-https');
+//var connectGzip = require('connect-gzip').gzip();
+var compress = require('compression');
 
 var app = express();
 
@@ -27,6 +30,9 @@ bien, eliminar este comentario. */
 app.use(require('prerender-node').set('prerenderServiceUrl', 'http://service.prerender.io/').set('prerenderToken', 'JV1wlWf2vRAaydCSuqs7'));
 // Force https
 app.use(forceHttps);
+// Gzip
+//app.use(connectGzip);
+app.use(compress());
 
 /*Path Files*/
 var paths = {
@@ -179,6 +185,22 @@ var paths = {
     sassdocOptions: {dest: './www/css/doc'}
 };
 
+/**
+ * GET PROJECT'S SIZE INFO
+ * @desc This task is the responsible to return project's size info
+ */
+
+gulp.task('info', function(){
+
+ return gulp.src([
+    'www/build/css/*.css',
+    'www/build/js/*.js'
+ ])
+ .pipe(size({
+     showFiles: true
+ }))
+});
+
 
 /**
  * LOCAL SERVER
@@ -207,7 +229,7 @@ gulp.task('serveprod', function() {
     port: process.env.PORT || 5000,
     livereload: false,
     middleware: function(connect, opt) {
-      return [app.use(require('prerender-node').set('prerenderServiceUrl', 'http://service.prerender.io/').set('prerenderToken', 'JV1wlWf2vRAaydCSuqs7'))];
+      return [app.use(require('prerender-node').set('prerenderServiceUrl', 'http://service.prerender.io/').set('prerenderToken', 'JV1wlWf2vRAaydCSuqs7')); app.use(compress());];
     },
     fallback: 'www/index.html'
   });
@@ -299,6 +321,7 @@ gulp.task('bowerJS', function () {
   return gulp.src(lib.ext('js').files)
     .pipe(concat('vendor.min.js'))
     .pipe(uglify())
+    .pipe(gzip())
     .pipe(gulp.dest('www/build/js'));
 });
 
@@ -311,6 +334,7 @@ gulp.task('libsJS', function () {
   return gulp.src(paths.appLibsJs)
     .pipe(concat('vendor-libs.min.js'))
     .pipe(uglify())
+    .pipe(gzip())
     .pipe(gulp.dest('www/build/js'));
 });
 
@@ -322,6 +346,7 @@ gulp.task('libsJS', function () {
 gulp.task('appJS', function () {
   return gulp.src(paths.appJs)
     .pipe(concat('app.js'))
+    .pipe(gzip())
     //.pipe(ngAnnotate())
     //.pipe(uglify())
     .pipe(gulp.dest('www/build/js'));
