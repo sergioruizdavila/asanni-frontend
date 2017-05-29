@@ -391,9 +391,10 @@
             </h2>
 
     		<div class="ma-hero__wrapper__btn-container">
-                <div class="row">
+                <div class="row center-xs">
+                    <! School Button Legacy >
                     <div class="col-xs-12 col-sm-6
-                                ma-hero__wrapper__btn-container__school">
+                                ma-hero__wrapper__btn-container__school hidden">
                         <a id="landingPage-school-btn"
                                 href="/page/search"
                                 class="ma-btn ma-btn--tertiary ma-btn--large"
@@ -402,14 +403,40 @@
                             %global.schools.text
                        </a>
                     </div>
+                    <! Teacher Button Legacy >
                     <div class="col-xs-12 col-sm-6
-                                ma-hero__wrapper__btn-container__teacher">
+                                ma-hero__wrapper__btn-container__teacher hidden">
                         <a id="landingPage-teacher-btn"
                                 href="/page/search"
                                 class="ma-btn ma-btn--tertiary ma-btn--large"
                                 ng-click="vm.goToSearch('teacher');$event.preventDefault()"
                                 translate>
                             %global.teachers.text
+                       </a>
+                    </div>
+                    <! Search near my location >
+                    <div class="col-xs-12 text-center space-2">
+                        <a id="landingPage-search-btn"
+                                href="/page/search"
+                                class="ma-btn ma-btn--tertiary ma-btn--large"
+                                ng-click="vm.goToSearch('school');$event.preventDefault()"
+                                translate>
+                            %landing.search.button.text
+                       </a>
+                    </div>
+                    <! Help me to match the best option for me >
+                    <div class="col-xs-12 text-center">
+                        <a id="landingPage-search-btn"
+                                href="/page/search"
+                                class="ma-link ma-link--simple ma-link--simple--small"
+                                ng-click="vm.goToSearch('teacher');$event.preventDefault()"
+                                style="color: white;font-weight: 100;text-decoration: underline;">
+                            <span translate>
+                                $landing.find_match.link.text
+                            </span>
+                            <i class="material-icons md-18 vertical-align-text-bottom">
+                                arrow_forward
+                            </i>
                        </a>
                     </div>
                 </div>

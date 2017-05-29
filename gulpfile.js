@@ -348,9 +348,8 @@ gulp.task('libsJS', function () {
 gulp.task('appJS', function () {
   return gulp.src(paths.appJs)
     .pipe(concat('app.js'))
+    .pipe(gulp.dest('www/build/js'))
     .pipe(gzip())
-    //.pipe(ngAnnotate())
-    //.pipe(uglify())
     .pipe(gulp.dest('www/build/js'));
 });
 

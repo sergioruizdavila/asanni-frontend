@@ -98,6 +98,9 @@ var app;
                 LandingPageController.prototype.goToSearch = function (target) {
                     var SEARCH_PAGE_STATE = 'page.searchPage';
                     var GOTO_MIXPANEL = 'Go to Search from: ' + target + ' btn';
+                    if (target == 'teacher') {
+                        GOTO_MIXPANEL = 'AYUDAME A TOMAR UNA DECISION';
+                    }
                     mixpanel.track(GOTO_MIXPANEL);
                     this.$state.go(SEARCH_PAGE_STATE, { target: target }, { reload: true });
                 };

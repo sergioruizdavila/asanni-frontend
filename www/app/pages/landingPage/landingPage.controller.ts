@@ -287,8 +287,13 @@ module app.pages.landingPage {
         goToSearch(target: string): void {
             //CONSTANTS
             const SEARCH_PAGE_STATE = 'page.searchPage';
-            const GOTO_MIXPANEL = 'Go to Search from: ' + target + ' btn';
+            let GOTO_MIXPANEL = 'Go to Search from: ' + target + ' btn';
             /************************/
+
+            //TODO: TEST - Remover despues de probar el link: 'Ayudame a encontrar'
+            if(target == 'teacher') {
+                GOTO_MIXPANEL = 'AYUDAME A TOMAR UNA DECISION';
+            }
 
             //MIXPANEL
             mixpanel.track(GOTO_MIXPANEL);
