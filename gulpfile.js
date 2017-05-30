@@ -30,7 +30,7 @@ app.use(require('prerender-node').set('prerenderServiceUrl', 'http://service.pre
 // Force https
 app.use(forceHttps);
 // Gzip
-app.use(compress());
+//app.use(compress());
 
 /*Path Files*/
 var paths = {

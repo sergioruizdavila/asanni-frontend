@@ -138,7 +138,7 @@ var app;
                 };
                 LandingPageController.prototype._recommendSchool = function () {
                     var CLICK_MIXPANEL = 'Click: Recommend School';
-                    var url = 'https://waysily.typeform.com/to/q5uT0P';
+                    var url = 'https://form.jotform.co/71480400807854';
                     mixpanel.track(CLICK_MIXPANEL);
                     window.open(url, '_blank');
                 };

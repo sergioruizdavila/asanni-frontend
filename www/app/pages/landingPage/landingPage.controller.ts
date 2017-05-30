@@ -434,7 +434,7 @@ module app.pages.landingPage {
             //CONSTANTS
             const CLICK_MIXPANEL = 'Click: Recommend School';
             //VARIABLES
-            let url = 'https://waysily.typeform.com/to/q5uT0P';
+            let url = 'https://form.jotform.co/71480400807854';
             //MIXPANEL
             mixpanel.track(CLICK_MIXPANEL);
 

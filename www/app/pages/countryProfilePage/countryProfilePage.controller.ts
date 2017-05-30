@@ -344,11 +344,12 @@ module app.pages.countryProfilePage {
         * @function
         * @return {void}
         */
+        //TODO: Se deshabilito este botón por ahora, eliminar cuando no sea necesario
         _recommendSchool(): void {
             //CONSTANTS
             const CLICK_MIXPANEL = 'Click: Recommend School from countryProfilePage: ' + this.$stateParams.aliasCountry;
             //VARIABLES
-            let url = 'https://waysily.typeform.com/to/q5uT0P';
+            let url = 'https://form.jotform.co/71480400807854';
             //MIXPANEL
             mixpanel.track(CLICK_MIXPANEL);
 
@@ -368,7 +369,7 @@ module app.pages.countryProfilePage {
             //CONSTANTS
             const CLICK_MIXPANEL = 'Click: Join as a School from countryProfilePage: ' + this.$stateParams.aliasCountry;
             //VARIABLES
-            let url = 'https://form.jotform.co/71177073983868';
+            let url = 'https://form.jotform.co/71480400807854';
             //MIXPANEL
             mixpanel.track(CLICK_MIXPANEL);
 

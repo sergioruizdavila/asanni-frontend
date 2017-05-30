@@ -9831,7 +9831,7 @@ var app;
                 };
                 LandingPageController.prototype._recommendSchool = function () {
                     var CLICK_MIXPANEL = 'Click: Recommend School';
-                    var url = 'https://waysily.typeform.com/to/q5uT0P';
+                    var url = 'https://form.jotform.co/71480400807854';
                     mixpanel.track(CLICK_MIXPANEL);
                     window.open(url, '_blank');
                 };
@@ -10153,13 +10153,13 @@ var app;
                 };
                 CountryProfilePageController.prototype._recommendSchool = function () {
                     var CLICK_MIXPANEL = 'Click: Recommend School from countryProfilePage: ' + this.$stateParams.aliasCountry;
-                    var url = 'https://waysily.typeform.com/to/q5uT0P';
+                    var url = 'https://form.jotform.co/71480400807854';
                     mixpanel.track(CLICK_MIXPANEL);
                     window.open(url, '_blank');
                 };
                 CountryProfilePageController.prototype._joinAsSchool = function () {
                     var CLICK_MIXPANEL = 'Click: Join as a School from countryProfilePage: ' + this.$stateParams.aliasCountry;
-                    var url = 'https://form.jotform.co/71177073983868';
+                    var url = 'https://form.jotform.co/71480400807854';
                     mixpanel.track(CLICK_MIXPANEL);
                     window.open(url, '_blank');
                 };

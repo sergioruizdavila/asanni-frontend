@@ -1829,7 +1829,8 @@
 
         <!---------------- START: SIMILAR SCHOOLS IN THE COUNTRY -------------->
         <div id="schoolProfile-similar-schools"
-             class="row space-10">
+             class="row space-10"
+             ng-if="vm._schoolsList">
             <div class="col-xs-12">
 
                 <! Title >
@@ -1875,7 +1876,8 @@
 
                 <! See more button >
                 <div class="row space-top-3 space-left-10 space-right-10"
-                     ng-show="!vm.shadowsSchoolLoading">
+                     ng-show="!vm.shadowsSchoolLoading"
+                     ng-class="{'space-10': !vm._teachersList}">
                     <div class="col-xs-12 text-right">
 
                         <a class="ma-link ma-link--box ma-link--box--default
@@ -1894,12 +1896,13 @@
         </div>
         <!--               END: SIMILAR SCHOOLS IN THE COUNTRY               -->
 
-        <hr class="space-top-11 space-11">
+        <hr class="space-top-11 space-11" ng-if="vm._teachersList">
 
 
         <!--------------- START: TEACHERS OPTIONS IN THE COUNTRY -------------->
         <div id="schoolProfile-teachers-options"
-             class="row space-15">
+             class="row space-15"
+             ng-if="vm._teachersList">
 
             <div class="col-xs-12">
 
