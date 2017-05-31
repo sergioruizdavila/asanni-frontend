@@ -455,6 +455,69 @@
     <!--                          END: HERO BLOCK                            -->
 
 
+    <!------------------------ START: OUR PROGRESS BLOCK ---------------------->
+    <section class="landingPage__progress-block space-top-11 space-11 container">
+
+        <div class="row center-xs space-5">
+            <div class="hidden-xs col-sm-2 col-md-2 col-lg-2"></div>
+            <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 text-center">
+                <h2 class="margin-reset" translate>
+                    %landing.best_countries.title.text
+                </h2>
+                <p class="ma-p ma-p--large" translate>
+                    %landing.best_countries.description.text
+                </p>
+            </div>
+            <div class="hidden-xs col-sm-2 col-md-2 col-lg-2"></div>
+        </div>
+
+        <div class="row center-xs">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 space-5"
+                         ng-repeat="country in ::vm._countryContainers track by $index">
+
+                        <! Country Box >
+                        <a ng-href="/page/country/{{country.aliasCountry}}"
+                           class="link-reset"
+                           ng-click="vm.goToCountryDetails(country.aliasCountry);$event.preventDefault()">
+                            <div id="landingPage-country-box-{{::country.code}}"
+                                 class="country-progress-block
+                                        country-progress-block--first text-left"
+                                 ng-style="{'background-image': 'url(' + country.thumbnail + ')'}">
+                                <h2 class="country-progress-block__text
+                                           margin-reset space-3" translate>
+                                    {{ country.code | getI18nFilter:'country' }}
+                                </h2>
+
+                                <! Country information LEGACY >
+                                <!--p class="country-progress-block__text
+                                          country-progress-block__text--strong
+                                          ma-p ma-p--large text-right margin-reset">
+                                    <span>21 </span>
+                                    <span translate>%global.schools.text</span>
+                                </p>
+                                <p class="country-progress-block__text
+                                          country-progress-block__text--strong
+                                          ma-p ma-p--large text-right margin-reset">
+                                    <span>24 </span>
+                                    <span translate>%global.teachers.text</span>
+                                </p-->
+                            </div>
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!--                       END: OUR PROGRESS BLOCK                       -->
+
+
+    <div class="ma-separator-dashed-image space-12 container"></div>
+
 
     <!------------------------- START: OUR MISSION BLOCK ---------------------->
     <section class="space-top-8 space-11 container">
@@ -548,70 +611,6 @@
 
 
     <div class="ma-separator-dashed-image space-11 container"></div>
-
-
-    <!------------------------ START: OUR PROGRESS BLOCK ---------------------->
-    <section class="landingPage__progress-block space-top-11 space-11 container">
-
-        <div class="row center-xs space-5">
-            <div class="hidden-xs col-sm-2 col-md-2 col-lg-2"></div>
-            <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 text-center">
-                <h2 class="margin-reset" translate>
-                    %landing.best_countries.title.text
-                </h2>
-                <p class="ma-p ma-p--large" translate>
-                    %landing.best_countries.description.text
-                </p>
-            </div>
-            <div class="hidden-xs col-sm-2 col-md-2 col-lg-2"></div>
-        </div>
-
-        <div class="row center-xs">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="row">
-                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 space-5"
-                         ng-repeat="country in ::vm._countryContainers track by $index">
-
-                        <! Country Box >
-                        <a ng-href="/page/country/{{country.aliasCountry}}"
-                           class="link-reset"
-                           ng-click="vm.goToCountryDetails(country.aliasCountry);$event.preventDefault()">
-                            <div id="landingPage-country-box-{{::country.code}}"
-                                 class="country-progress-block
-                                        country-progress-block--first text-left"
-                                 ng-style="{'background-image': 'url(' + country.thumbnail + ')'}">
-                                <h2 class="country-progress-block__text
-                                           margin-reset space-3" translate>
-                                    {{ country.code | getI18nFilter:'country' }}
-                                </h2>
-
-                                <! Country information LEGACY >
-                                <!--p class="country-progress-block__text
-                                          country-progress-block__text--strong
-                                          ma-p ma-p--large text-right margin-reset">
-                                    <span>21 </span>
-                                    <span translate>%global.schools.text</span>
-                                </p>
-                                <p class="country-progress-block__text
-                                          country-progress-block__text--strong
-                                          ma-p ma-p--large text-right margin-reset">
-                                    <span>24 </span>
-                                    <span translate>%global.teachers.text</span>
-                                </p-->
-                            </div>
-                        </a>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-    </section>
-    <!--                       END: OUR PROGRESS BLOCK                       -->
-
-
-    <div class="ma-separator-dashed-image space-12 container"></div>
 
 
     <!-------------------- START: RECOMMEND SECTION BLOCK --------------------->
