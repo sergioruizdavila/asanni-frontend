@@ -15548,6 +15548,18 @@ var app;
                         this._openSignUpModal();
                     }
                 };
+                SchoolProfilePageController.prototype.editSchool = function () {
+                    var CLICK_MIXPANEL = 'Click TEST: Edit School:' + this.data.Name;
+                    this.SUCCESS_MESSAGE = this.$filter('translate')('%global.working.message.text');
+                    mixpanel.track(CLICK_MIXPANEL);
+                    this.messageUtil.info(this.SUCCESS_MESSAGE);
+                };
+                SchoolProfilePageController.prototype.shareSchool = function () {
+                    var CLICK_MIXPANEL = 'Click TEST: Share School:' + this.data.Name;
+                    this.SUCCESS_MESSAGE = this.$filter('translate')('%global.working.message.text');
+                    mixpanel.track(CLICK_MIXPANEL);
+                    this.messageUtil.info(this.SUCCESS_MESSAGE);
+                };
                 SchoolProfilePageController.prototype.assignAmenitieIconClass = function (amenitie) {
                     var size = 'small';
                     var amenitiePrefixClass = 'ma-liner-icons--' + size + '--';

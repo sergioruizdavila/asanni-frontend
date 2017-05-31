@@ -446,6 +446,48 @@ module app.pages.schoolProfilePage {
 
 
         /**
+        * editSchool
+        * @description - edit button school's information
+        * @use - this.editSchool();
+        * @function
+        * @return {void}
+        */
+
+        editSchool(): void {
+            //CONSTANTS
+            const CLICK_MIXPANEL = 'Click TEST: Edit School:' + this.data.Name;
+            this.SUCCESS_MESSAGE = this.$filter('translate')('%global.working.message.text');
+            //MIXPANEL
+            mixpanel.track(CLICK_MIXPANEL);
+
+            this.messageUtil.info(this.SUCCESS_MESSAGE);
+
+        }
+
+
+
+        /**
+        * shareSchool
+        * @description - share button school's information
+        * @use - this.editSchool();
+        * @function
+        * @return {void}
+        */
+
+        shareSchool(): void {
+            //CONSTANTS
+            const CLICK_MIXPANEL = 'Click TEST: Share School:' + this.data.Name;
+            this.SUCCESS_MESSAGE = this.$filter('translate')('%global.working.message.text');
+            //MIXPANEL
+            mixpanel.track(CLICK_MIXPANEL);
+
+            this.messageUtil.info(this.SUCCESS_MESSAGE);
+
+        }
+
+
+
+        /**
         * assignAmenitieIconClass
         * @description - build amenities icons class
         * (e.g. ma-liner-icons--default--wifi, ma-liner-icons--default--tv)

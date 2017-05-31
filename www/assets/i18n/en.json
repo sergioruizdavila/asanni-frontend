@@ -73,6 +73,7 @@
     "%global.terms_and_details.label.text": "Terms & details",
     "%global.average.label.text": "average",
     "%global.only.label.text": "only",
+    "%global.working.message.text": "We're working on it right now. If you have a suggestion you could write us on Twitter: @waysily",
 
     "%global.validation.null.message.text": "Required",
     "%global.validation.empty.message.text": "Required",
