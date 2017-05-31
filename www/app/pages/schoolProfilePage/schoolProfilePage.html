@@ -226,9 +226,11 @@
 
 
                 <!------------------ START: VARIETY BUTTONS BLOCK ----------------->
-                <div class="schoolProfilePage__buttons-block row center-xs margin-reset">
+                <div class="schoolProfilePage__buttons-block
+                            row center-xs margin-reset space-5">
                     <div class="schoolProfilePage__buttons-block__left
-                                col-xs-12 col-sm-12 col-md-5 text-center space-2">
+                                col-xs-12 col-sm-12 col-md-5 text-center space-2"
+                         ng-class="{'schoolProfilePage__buttons-block__right': isMobile}">
                         <button class="ma-btn
                                        ma-btn--secondary ma-btn--medium text-capitalize"
                                 ng-click="vm.editSchool()"
@@ -236,8 +238,7 @@
                             %global.edit.label.text
                         </button>
                     </div>
-                    <div class="schoolProfilePage__buttons-block__right
-                                col-xs-12 col-sm-12 col-md-7 text-center padding-reset">
+                    <div class="col-xs-12 col-sm-12 col-md-7 text-center padding-reset">
                         <button class="ma-btn
                                        ma-btn--secondary ma-btn--medium text-capitalize"
                                 ng-click="vm.shareSchool()"
