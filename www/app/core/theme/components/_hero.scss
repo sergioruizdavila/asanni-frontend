@@ -28,8 +28,13 @@
         }
 
         &--teacher {
-            background: linear-gradient(rgba(18,18,18,0.6), rgba(18,18,18,0.5)), url(../../../../assets/images/hero-teacher.jpg);
-            background-size: cover;
+            //background: linear-gradient(rgba(18,18,18,0.6), rgba(18,18,18,0.5)), url(../../../../assets/images/hero-teacher.jpg);
+            //background-size: cover;
+            background-color: #4285f4 !important;
+            background: -webkit-radial-gradient(farthest-corner at 20px 20px, #a1d2dd 0%, #004aa6) !important;
+            background: -moz-radial-gradient(farthest-corner at 20px 20px, #a1d2dd 0%, #004aa6) !important;
+            background: radial-gradient(farthest-corner at 20px 20px, #004aa6 0%, #a1d2dd) !important;
+            overflow: hidden !important;
         }
 
         &--main {
