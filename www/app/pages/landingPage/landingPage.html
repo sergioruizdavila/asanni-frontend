@@ -418,14 +418,29 @@
                     <div class="col-xs-12 text-center space-2">
                         <a id="landingPage-search-btn"
                                 href="/page/search"
-                                class="ma-btn ma-btn--tertiary ma-btn--large"
+                                class="ma-btn ma-btn--tertiary"
+                                ng-class="isMobile ? 'ma-btn--medium' : 'ma-btn--large'"
                                 ng-click="vm.goToSearch('school');$event.preventDefault()"
                                 translate>
                             %landing.search.button.text
                        </a>
                     </div>
+                    <! Show me the best option >
+                    <div class="col-xs-12 text-center space-2">
+                        <a id="landingPage-search-btn"
+                                href="http://www.querybag.com"
+                                target="_blank"
+                                class="ma-btn ma-btn--alert ma-btn--default"
+                                uib-tooltip-template="'bestOption.tmpl.html'"
+                                tooltip-placement="bottom"
+                                tooltip-animation="false"
+                                tooltip-class="ma-tooltip ma-tooltip--gray ma-tooltip--small"
+                                translate>
+                            %landing.querybag.button.text
+                       </a>
+                    </div>
                     <! Help me to match the best option for me >
-                    <div class="col-xs-12 text-center">
+                    <!--div class="col-xs-12 text-center">
                         <a id="landingPage-search-btn"
                                 href="/page/search"
                                 class="ma-link ma-link--simple ma-link--simple--small"
@@ -438,7 +453,7 @@
                                 arrow_forward
                             </i>
                        </a>
-                    </div>
+                   </div-->
                 </div>
 		    </div>
 
@@ -836,3 +851,11 @@
 
 </div>
 <!--                        END: MAIN LANDING PAGE                           -->
+
+
+<!-- TEMPLATES -->
+<script type="text/ng-template" id="bestOption.tmpl.html">
+  <span class="strong" translate>
+    %landing.best_option.tooltip.text
+  </span>
+</script>
