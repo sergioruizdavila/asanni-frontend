@@ -210,7 +210,9 @@
     "%landing.puv.description.legacy2": "Waysily es una plataforma gratuita basada en la comunidad que te ayuda a encontrar tutores / escuelas locales de idiomas.",
     "%landing.explore.button.text": "explorar",
     "%landing.search.button.text": "Buscar cerca de mi ubicación",
-    "$landing.find_match.link.text": "Necesito algo rápidamente, ayúdame a encontrar la mejor opción que coincida conmigo.",
+    "%landing.find_match.link.text": "Necesito algo rápidamente, ayúdame a encontrar la mejor opción que coincida conmigo.",
+    "%landing.querybag.button.text": "Muestrame la mejor opción",
+    "%landing.best_option.tooltip.text": "Encontramos por ti la mejor opción para aprender un idioma. Es para gente perezosa como nosotros :)",
 
     "%landing.mission.title.text": "Nuestra misión",
     "%landing.mission.description.text": "Darle a todos el lugar perfecto para encontrar profesores, escuelas y personas alrededor del mundo para aprender un idioma.",

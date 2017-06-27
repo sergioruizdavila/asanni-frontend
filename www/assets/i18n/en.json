@@ -210,7 +210,9 @@
     "%landing.puv.description": "Waysily is a free community-based platform that brings together travelers with locals, teachers, and schools to learn a foreign language.",
     "%landing.explore.button.text": "explore",
     "%landing.search.button.text": "Search near my location",
-    "$landing.find_match.link.text": "I need something quickly, help me find the best option that matches with me",
+    "%landing.find_match.link.text": "I need something quickly, help me find the best option that matches with me",
+    "%landing.querybag.button.text": "Show me the best option",
+    "%landing.best_option.tooltip.text": "We find for you the best option to learn a language. It's for lazy people like me :)",
 
     "%landing.mission.title.text": "Our mission",
     "%landing.mission.description.text": "To give everyone the perfect place to find teachers, schools, and people around the world to learn a language.",
