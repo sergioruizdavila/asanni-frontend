@@ -9678,10 +9678,11 @@ var app;
         var landingPage;
         (function (landingPage) {
             var LandingPageController = (function () {
-                function LandingPageController($scope, $state, $stateParams, dataConfig, $uibModal, AuthService, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, countryService, $rootScope) {
+                function LandingPageController($scope, $state, $stateParams, $filter, dataConfig, $uibModal, AuthService, messageUtil, functionsUtil, LandingPageService, FeedbackService, getDataFromJson, countryService, $rootScope) {
                     this.$scope = $scope;
                     this.$state = $state;
                     this.$stateParams = $stateParams;
+                    this.$filter = $filter;
                     this.dataConfig = dataConfig;
                     this.$uibModal = $uibModal;
                     this.AuthService = AuthService;
@@ -9731,6 +9732,7 @@ var app;
                     var self = this;
                     DEBUG && console.log('landingPage controller actived');
                     mixpanel.track(ENTER_MIXPANEL);
+                    this._changeLanguageText();
                     if (this.$stateParams.id) {
                         var options = {
                             animation: false,
@@ -9756,6 +9758,65 @@ var app;
                 };
                 LandingPageController.prototype.slideNavMenu = function () {
                     this._slideout = !this._slideout;
+                };
+                LandingPageController.prototype._changeLanguageText = function () {
+                    var languages = [
+                        this.$filter('translate')('%landing.puv.option_1.text'),
+                        this.$filter('translate')('%landing.puv.option_2.text'),
+                        this.$filter('translate')('%landing.puv.option_3.text'),
+                        this.$filter('translate')('%landing.puv.option_4.text'),
+                        this.$filter('translate')('%landing.puv.option_5.text'),
+                        this.$filter('translate')('%landing.puv.option_6.text'),
+                        this.$filter('translate')('%landing.puv.option_7.text'),
+                        this.$filter('translate')('%landing.puv.option_8.text'),
+                        this.$filter('translate')('%landing.puv.option_9.text')
+                    ];
+                    var language = [];
+                    var el;
+                    var $textChange = $('.text_change');
+                    var $container = $('#container');
+                    $textChange.text(languages[0]);
+                    for (var i = 0; i < languages.length; i++) {
+                        el = $('<div class="measurable">' + languages[i] + '</div>');
+                        $container.append(el);
+                        language.push(el.width());
+                    }
+                    var positions = [];
+                    $('#container > span').each(function () {
+                        positions.push($(this).position());
+                    });
+                    $('#container > span').each(function () {
+                        var pos = positions.shift();
+                        $(this).css({
+                            position: 'absolute',
+                            left: pos.left,
+                            top: pos.top
+                        });
+                    });
+                    var textInitialWidth = $textChange.width();
+                    var activeWordsIndex = 0;
+                    var interval = 4000;
+                    setInterval(function () {
+                        activeWordsIndex++;
+                        var languageIndex = activeWordsIndex % languages.length;
+                        $textChange.text(languages[languageIndex]);
+                        var languageLineOffset = (language[languageIndex] - textInitialWidth) / 2;
+                        $('.static.second').css({
+                            transform: 'translateX(' + (-languageLineOffset) + 'px)'
+                        });
+                        $textChange.css({
+                            transition: 'none',
+                            transform: 'translate(' + (-languageLineOffset) + 'px, 30px)',
+                            opacity: '0'
+                        });
+                        setTimeout(function () {
+                            $textChange.css({
+                                transition: 'all 1s ease',
+                                transform: 'translate(' + (-languageLineOffset) + 'px, 0px)',
+                                opacity: '1'
+                            });
+                        }, 50);
+                    }, 4000);
                 };
                 LandingPageController.prototype.changeLanguage = function () {
                     this.functionsUtil.changeLanguage(this.form.language);

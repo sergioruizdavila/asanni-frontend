@@ -381,9 +381,9 @@
 
 	    <div class="ma-hero__wrapper text-center">
 
-    		<h1 class="ma-hero__wrapper__title animated fadeIn"
-                translate>
-                %landing.puv
+    		<h1 class="ma-hero__wrapper__title animated fadeIn">
+                <span translate>%landing.puv</span>
+                <span class="text_change" style="transition: transform 1s ease;"></span>
             </h1>
             <h2 class="ma-hero__wrapper__description
                        animated fadeIn" translate>
@@ -442,11 +442,12 @@
                 </div>
 		    </div>
 
-            <div class="ma-hero__wrapper__go-down row">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-                    <i class="material-icons md-48 md-light"
-                       ng-click="vm.goDown()">keyboard_arrow_down</i>
-                </div>
+            <div class="hidden-xs ma-hero__wrapper__go-down row">
+               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                  <i class="material-icons md-48 md-light animation-scroll">
+                     keyboard_arrow_down
+                  </i>
+               </div>
             </div>
 
 	</div>
@@ -571,7 +572,7 @@
 
     <div class="ma-separator-dashed-image space-11 container"></div>
 
-    
+
     <!------------------------- START: OUR MISSION BLOCK ---------------------->
     <section class="space-top-8 space-11 container">
         <div class="row center-xs">

@@ -87,6 +87,7 @@ module app.pages.landingPage {
         public static $inject = ['$scope',
                                  '$state',
                                  '$stateParams',
+                                 '$filter',
                                  'dataConfig',
                                  '$uibModal',
                                  'mainApp.auth.AuthService',
@@ -105,6 +106,7 @@ module app.pages.landingPage {
             private $scope: angular.IScope,
             private $state: ng.ui.IStateService,
             private $stateParams: IParams,
+            private $filter: angular.IFilterService,
             private dataConfig: IDataConfig,
             private $uibModal: ng.ui.bootstrap.IModalService,
             private AuthService: app.auth.IAuthService,
@@ -183,6 +185,9 @@ module app.pages.landingPage {
             //MIXPANEL
             mixpanel.track(ENTER_MIXPANEL);
 
+            //Change language on puv text
+            this._changeLanguageText();
+
             //Validate if come from recommendation email
             if(this.$stateParams.id) {
 
@@ -232,6 +237,92 @@ module app.pages.landingPage {
 
         slideNavMenu(): void {
             this._slideout = !this._slideout;
+        }
+
+
+
+        /**
+        * _changeLanguageText
+        * @description - change language text dynamically (on PUV)
+        * @use - this._changeLanguageText();
+        * @function
+        * @return {void}
+        */
+
+        _changeLanguageText(): void {
+           let languages = [
+              this.$filter('translate')('%landing.puv.option_1.text'),
+              this.$filter('translate')('%landing.puv.option_2.text'),
+              this.$filter('translate')('%landing.puv.option_3.text'),
+              this.$filter('translate')('%landing.puv.option_4.text'),
+              this.$filter('translate')('%landing.puv.option_5.text'),
+              this.$filter('translate')('%landing.puv.option_6.text'),
+              this.$filter('translate')('%landing.puv.option_7.text'),
+              this.$filter('translate')('%landing.puv.option_8.text'),
+              this.$filter('translate')('%landing.puv.option_9.text')
+           ];
+
+           let language = [];
+           let el;
+           let $textChange = $('.text_change');
+           let $container = $('#container');
+
+           // init static
+           $textChange.text(languages[0]);
+
+           // create measurables
+           for (var i = 0; i < languages.length; i++) {
+              el = $('<div class="measurable">' + languages[i] + '</div>');
+              $container.append(el);
+              language.push(el.width());
+           }
+
+           // absolutize //
+           let positions = [];
+           $('#container > span').each(function() {
+              positions.push($(this).position());
+           });
+           $('#container > span').each(function() {
+              var pos = positions.shift();
+              $(this).css({
+                 position: 'absolute',
+                 left: pos.left,
+                 top: pos.top
+              });
+           });
+
+           // remember initial sizes
+           let textInitialWidth = $textChange.width();
+
+           // loop the loop //
+           let activeWordsIndex = 0;
+           let interval = 4000;
+           setInterval(function() {
+              activeWordsIndex++;
+              var languageIndex = activeWordsIndex % languages.length;
+
+              $textChange.text(languages[languageIndex]);
+
+              var languageLineOffset = (language[languageIndex] - textInitialWidth) / 2;
+
+              $('.static.second').css({
+                 transform: 'translateX(' + (-languageLineOffset) + 'px)'
+              });
+
+              $textChange.css({
+                 transition: 'none',
+                 transform: 'translate(' + (-languageLineOffset) + 'px, 30px)',
+                 opacity: '0'
+              });
+              setTimeout(function() {
+                 $textChange.css({
+                    transition: 'all 1s ease',
+                    transform: 'translate(' + (-languageLineOffset) + 'px, 0px)',
+                    opacity: '1'
+                 });
+              }, 50);
+           }, 4000);
+
         }
 
 
