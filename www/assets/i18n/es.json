@@ -406,8 +406,9 @@
     "%profile.teacher.review.communication.label.text": "Comunicación",
     "%profile.teacher.methodology.title.text": "Metodología de la enseñanza",
     "%profile.teacher.location.title.text": "Ubicación",
+    "%profile.teacher.book.button.text.legacy2": "Contactar",
     "%profile.teacher.book.button.text.legacy": "Reservar clases",
-    "%profile.teacher.book.button.text": "Contactar",
+    "%profile.teacher.book.button.text": "Obtener contacto",
     "%profile.teacher.success_classes.label.text": " clases existosas",
 
     "__CREATE TEACHER PAGE__": "",

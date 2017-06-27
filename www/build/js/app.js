@@ -9995,6 +9995,7 @@ var app;
                 LandingPageController.$inject = ['$scope',
                     '$state',
                     '$stateParams',
+                    '$filter',
                     'dataConfig',
                     '$uibModal',
                     'mainApp.auth.AuthService',
