@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>https://www.waysily.com/</loc>
+        <loc>http://www.waysily.com/</loc>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
-        <lastmod>2017-04-22T23:00:55+00:00</lastmod>
+        <lastmod>2017-07-06T23:00:55+00:00</lastmod>
     </url>
     <url>
-        <loc>https://www.waysily.com/page/main/teacher</loc>
+        <loc>http://www.waysily.com/page/main/teacher</loc>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
-        <lastmod>2017-04-22T23:00:55+00:00</lastmod>
+        <lastmod>2017-07-06T23:00:55+00:00</lastmod>
     </url>
     <url>
-        <loc>https://www.waysily.com/page/search</loc>
+        <loc>http://www.waysily.com/page/search</loc>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
-        <lastmod>2017-04-22T23:00:55+00:00</lastmod>
+        <lastmod>2017-07-06T23:00:55+00:00</lastmod>
     </url>
 </urlset>
