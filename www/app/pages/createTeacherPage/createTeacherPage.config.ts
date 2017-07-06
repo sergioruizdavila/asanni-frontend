@@ -13,6 +13,8 @@
 
     function config($stateProvider: angular.ui.IStateProvider) {
 
+        const CLIENT_URL = 'http://www.waysily.com';
+
         $stateProvider
             .state('page.createTeacherPage', {
                 url: '/create/teacher',
@@ -32,9 +34,9 @@
                 params: {
                     title: 'Join as a teacher',
                     description: 'Build a reputation, become visible and earn 340 USD on average doing what you most passionate about.',
-                    url: 'https://www.waysily.com/page/users/edit/info',
+                    url: CLIENT_URL + '/page/users/edit/info',
                     robots: 'nofollow',
-                    image: 'https://www.waysily.com/assets/images/waysily-shared.png',
+                    image: CLIENT_URL + '/assets/images/waysily-shared.png',
                     type: ''
                 },
                 data: {

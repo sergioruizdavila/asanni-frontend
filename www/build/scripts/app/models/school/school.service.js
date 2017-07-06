@@ -240,7 +240,7 @@ var app;
                     return average;
                 };
                 SchoolService.prototype.buildMetaTagValue = function (school) {
-                    var imageUrl = 'https://www.waysily.com/assets/images/waysily-shared.png';
+                    var imageUrl = this.dataConfig.clientUrl + '/assets/images/waysily-shared.png';
                     var metaTags = { title: '', description: '', image: '', robots: '', url: '' };
                     metaTags.title = school.Name;
                     if (school.Price.Active) {
@@ -270,7 +270,7 @@ var app;
                     metaTags.description += 'Find everything ' + school.Name + ' offers to learn a language.';
                     metaTags.image = imageUrl;
                     metaTags.robots = 'follow,index';
-                    metaTags.url = 'https://' + this.dataConfig.domain + '/page/school/' + school.AliasSchool;
+                    metaTags.url = this.dataConfig.clientUrl + '/page/school/' + school.AliasSchool;
                     return metaTags;
                 };
                 SchoolService.serviceId = 'mainApp.models.school.SchoolService';

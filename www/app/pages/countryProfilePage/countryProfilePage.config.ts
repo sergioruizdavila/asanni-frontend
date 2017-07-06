@@ -14,6 +14,8 @@
 
     function config($stateProvider: angular.ui.IStateProvider) {
 
+        const CLIENT_URL = 'http://www.waysily.com';
+
         $stateProvider
             .state('page.countryProfilePage', {
                 url: '/country/:aliasCountry',
@@ -32,9 +34,9 @@
                     aliasCountry: null,
                     title: 'Use Waysily to find language teachers and schools, have a complete immersion',
                     description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
-                    url: 'https://www.waysily.com/',
+                    url: CLIENT_URL,
                     robots: 'follow,index',
-                    image: 'https://www.waysily.com/assets/images/waysily-shared.png'
+                    image: CLIENT_URL + '/assets/images/waysily-shared.png'
                 },
                 cache: false,
                 onEnter: ['$rootScope', function ($rootScope) {

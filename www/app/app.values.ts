@@ -18,6 +18,7 @@ interface IDataConfig {
     baseUrl: string;
     domain: string;
     https: boolean;
+    clientUrl: string;
     autoRefreshTokenIntervalSeconds: number;
     usernameMinLength: number;
     usernameMaxLength: number;
@@ -59,6 +60,9 @@ interface IDataConfig {
 
     'use strict';
 
+    const HTTP = 'http://';
+    const HTTPS = 'https://';
+
     let BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
     let BUCKETS3 = 'waysily-img/profile-avatar-prd';
 
@@ -88,6 +92,7 @@ interface IDataConfig {
         baseUrl: BASE_URL,
         domain: 'www.waysily.com',
         https: false,
+        clientUrl: 'http://www.waysily.com',
         autoRefreshTokenIntervalSeconds: 300,
         usernameMinLength: 8,
         usernameMaxLength: 80,
@@ -123,6 +128,10 @@ interface IDataConfig {
         earlyIdLocalStorage: 'waysily.early_id',
         cookieName: 'token'
     };
+
+    let clientUrl = dataConfig.https ? HTTPS + dataConfig.domain : HTTP + dataConfig.domain;
+
+    dataConfig.clientUrl = clientUrl;
 
 
     angular

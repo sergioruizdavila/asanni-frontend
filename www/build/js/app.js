@@ -99,6 +99,8 @@
 DEBUG = false;
 (function () {
     'use strict';
+    var HTTP = 'http://';
+    var HTTPS = 'https://';
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/profile-avatar-prd';
     if (DEBUG) {
@@ -110,6 +112,7 @@ DEBUG = false;
         baseUrl: BASE_URL,
         domain: 'www.waysily.com',
         https: false,
+        clientUrl: 'http://www.waysily.com',
         autoRefreshTokenIntervalSeconds: 300,
         usernameMinLength: 8,
         usernameMaxLength: 80,
@@ -145,6 +148,8 @@ DEBUG = false;
         earlyIdLocalStorage: 'waysily.early_id',
         cookieName: 'token'
     };
+    var clientUrl = dataConfig.https ? HTTPS + dataConfig.domain : HTTP + dataConfig.domain;
+    dataConfig.clientUrl = clientUrl;
     angular
         .module('mainApp')
         .constant('dataConfig', dataConfig);
@@ -6025,7 +6030,7 @@ var app;
                     return average;
                 };
                 SchoolService.prototype.buildMetaTagValue = function (school) {
-                    var imageUrl = 'https://www.waysily.com/assets/images/waysily-shared.png';
+                    var imageUrl = this.dataConfig.clientUrl + '/assets/images/waysily-shared.png';
                     var metaTags = { title: '', description: '', image: '', robots: '', url: '' };
                     metaTags.title = school.Name;
                     if (school.Price.Active) {
@@ -6055,7 +6060,7 @@ var app;
                     metaTags.description += 'Find everything ' + school.Name + ' offers to learn a language.';
                     metaTags.image = imageUrl;
                     metaTags.robots = 'follow,index';
-                    metaTags.url = 'https://' + this.dataConfig.domain + '/page/school/' + school.AliasSchool;
+                    metaTags.url = this.dataConfig.clientUrl + '/page/school/' + school.AliasSchool;
                     return metaTags;
                 };
                 SchoolService.serviceId = 'mainApp.models.school.SchoolService';
@@ -9239,6 +9244,7 @@ var app;
         .module('mainApp.pages.teacherLandingPage', [])
         .config(config);
     function config($stateProvider) {
+        var CLIENT_URL = 'http://www.waysily.com';
         $stateProvider
             .state('page.teacherLandingPage', {
             url: '/main/teacher',
@@ -9253,8 +9259,8 @@ var app;
                 id: null,
                 title: 'Join as a language teacher, and teach to travelers in your area',
                 description: 'Build a reputation, become visible and earn 340 USD on average doing what you most passionate about.',
-                url: 'https://www.waysily.com/page/main/teacher',
-                image: 'https://www.waysily.com/assets/images/waysily-shared.png',
+                url: CLIENT_URL + '/page/main/teacher',
+                image: CLIENT_URL + '/assets/images/waysily-shared.png',
                 robots: 'follow,index'
             },
             parent: 'page',
@@ -9614,6 +9620,7 @@ var app;
         .module('mainApp.pages.landingPage', [])
         .config(config);
     function config($stateProvider) {
+        var CLIENT_URL = 'http://www.waysily.com';
         $stateProvider
             .state('page.landingPage', {
             url: '/main',
@@ -9631,9 +9638,9 @@ var app;
             params: {
                 title: 'Use Waysily to find language teachers and schools, have a complete immersion',
                 description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
-                url: 'https://www.waysily.com/',
+                url: CLIENT_URL,
                 robots: 'follow,index',
-                image: 'https://www.waysily.com/assets/images/waysily-shared.png',
+                image: CLIENT_URL + '/assets/images/waysily-shared.png',
                 showLogin: false,
             },
             cache: false,
@@ -9655,8 +9662,8 @@ var app;
                 id: null,
                 title: 'Use Waysily to find language teachers and schools, have a complete immersion',
                 description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
-                url: 'https://www.waysily.com/main/recommendation',
-                image: 'https://www.waysily.com/assets/images/waysily-shared.png',
+                url: CLIENT_URL + '/main/recommendation',
+                image: CLIENT_URL + '/assets/images/waysily-shared.png',
                 robots: 'noindex'
             },
             parent: 'page',
@@ -10066,6 +10073,7 @@ var app;
         .module('mainApp.pages.countryProfilePage', [])
         .config(config);
     function config($stateProvider) {
+        var CLIENT_URL = 'http://www.waysily.com';
         $stateProvider
             .state('page.countryProfilePage', {
             url: '/country/:aliasCountry',
@@ -10084,9 +10092,9 @@ var app;
                 aliasCountry: null,
                 title: 'Use Waysily to find language teachers and schools, have a complete immersion',
                 description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
-                url: 'https://www.waysily.com/',
+                url: CLIENT_URL,
                 robots: 'follow,index',
-                image: 'https://www.waysily.com/assets/images/waysily-shared.png'
+                image: CLIENT_URL + '/assets/images/waysily-shared.png'
             },
             cache: false,
             onEnter: ['$rootScope', function ($rootScope) {
@@ -10254,6 +10262,7 @@ var app;
         .module('mainApp.pages.searchPage', [])
         .config(config);
     function config($stateProvider) {
+        var CLIENT_URL = 'http://www.waysily.com';
         $stateProvider
             .state('page.searchPage', {
             url: '/search',
@@ -10271,9 +10280,9 @@ var app;
             params: {
                 title: 'Use Waysily to find language teachers and schools, have a complete immersion',
                 description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
-                url: 'https://www.waysily.com/search',
+                url: CLIENT_URL + '/search',
                 robots: 'follow,index',
-                image: 'https://www.waysily.com/assets/images/waysily-shared.png',
+                image: CLIENT_URL + '/assets/images/waysily-shared.png',
                 country: null,
                 target: null
             },
@@ -10809,6 +10818,7 @@ var app;
         .module('mainApp.pages.editProfile', [])
         .config(config);
     function config($stateProvider) {
+        var CLIENT_URL = 'http://www.waysily.com';
         $stateProvider
             .state('page.editProfile', {
             url: '/users/edit',
@@ -10828,9 +10838,9 @@ var app;
             params: {
                 title: 'Profile',
                 description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
-                url: 'https://www.waysily.com/page/users/edit/info',
+                url: CLIENT_URL + '/page/users/edit/info',
                 robots: 'nofollow',
-                image: 'https://www.waysily.com/assets/images/waysily-shared.png'
+                image: CLIENT_URL + '/assets/images/waysily-shared.png'
             },
             data: {
                 requireLogin: true
@@ -11751,6 +11761,7 @@ var app;
         .module('mainApp.pages.editTeacher', [])
         .config(config);
     function config($stateProvider) {
+        var CLIENT_URL = 'http://www.waysily.com';
         $stateProvider
             .state('page.editTeacher', {
             url: '/teachers/edit',
@@ -11770,9 +11781,9 @@ var app;
             params: {
                 title: 'Teacher Profile',
                 description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
-                url: 'https://www.waysily.com/page/teachers/edit/teach',
+                url: CLIENT_URL + '/page/teachers/edit/teach',
                 robots: 'nofollow',
-                image: 'https://www.waysily.com/assets/images/waysily-shared.png'
+                image: CLIENT_URL + '/assets/images/waysily-shared.png'
             },
             data: {
                 requireLogin: true
@@ -13022,6 +13033,7 @@ var app;
         .module('mainApp.pages.createTeacherPage', [])
         .config(config);
     function config($stateProvider) {
+        var CLIENT_URL = 'http://www.waysily.com';
         $stateProvider
             .state('page.createTeacherPage', {
             url: '/create/teacher',
@@ -13041,9 +13053,9 @@ var app;
             params: {
                 title: 'Join as a teacher',
                 description: 'Build a reputation, become visible and earn 340 USD on average doing what you most passionate about.',
-                url: 'https://www.waysily.com/page/users/edit/info',
+                url: CLIENT_URL + '/page/users/edit/info',
                 robots: 'nofollow',
-                image: 'https://www.waysily.com/assets/images/waysily-shared.png',
+                image: CLIENT_URL + '/assets/images/waysily-shared.png',
                 type: ''
             },
             data: {
@@ -15401,6 +15413,7 @@ var app;
         .module('mainApp.pages.schoolProfilePage', [])
         .config(config);
     function config($stateProvider) {
+        var CLIENT_URL = 'http://www.waysily.com';
         $stateProvider
             .state('page.schoolProfilePage', {
             url: '/school/:aliasSchool',
@@ -15419,7 +15432,7 @@ var app;
                 aliasSchool: null,
                 title: 'Compare and find the best language school',
                 description: 'The best way to fit in a country when you travel is by learning their language. Find a language school and immerse yourself in the local culture.',
-                url: 'https://www.waysily.com/page/school',
+                url: CLIENT_URL + '/page/school',
                 image: 'https://s3.amazonaws.com/waysily-img/school-photo-prd/20-34d2e9a3-6a6a-424d-bbcf-da5966c2b51d.jpg',
                 robots: 'follow,index'
             },

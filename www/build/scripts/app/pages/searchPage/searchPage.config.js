@@ -4,6 +4,7 @@
         .module('mainApp.pages.searchPage', [])
         .config(config);
     function config($stateProvider) {
+        var CLIENT_URL = 'http://www.waysily.com';
         $stateProvider
             .state('page.searchPage', {
             url: '/search',
@@ -21,9 +22,9 @@
             params: {
                 title: 'Use Waysily to find language teachers and schools, have a complete immersion',
                 description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
-                url: 'https://www.waysily.com/search',
+                url: CLIENT_URL + '/search',
                 robots: 'follow,index',
-                image: 'https://www.waysily.com/assets/images/waysily-shared.png',
+                image: CLIENT_URL + '/assets/images/waysily-shared.png',
                 country: null,
                 target: null
             },
