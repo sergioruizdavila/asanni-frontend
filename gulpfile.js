@@ -28,7 +28,7 @@ permite que siga funcionando el prerender, en cuanto se valide que todo sigue fu
 bien, eliminar este comentario. */
 app.use(require('prerender-node').set('prerenderServiceUrl', 'http://service.prerender.io/').set('prerenderToken', 'JV1wlWf2vRAaydCSuqs7'));
 // Force https
-app.use(forceHttps);
+//app.use(forceHttps);
 // Gzip
 //app.use(compress());
 

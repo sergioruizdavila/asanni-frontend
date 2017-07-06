@@ -508,7 +508,8 @@ module app.models.school {
 
         buildMetaTagValue (school: app.models.school.School): app.core.interfaces.IMetaTag {
             //CONSTANTS
-            const imageUrl = 'https://www.waysily.com/assets/images/waysily-shared.png';
+            //const imageUrl = 'https://www.waysily.com/assets/images/waysily-shared.png';
+            const imageUrl = this.dataConfig.clientUrl + '/assets/images/waysily-shared.png';
             //VARIABLES
             let metaTags: app.core.interfaces.IMetaTag = {title:'',description:'',image:'',robots:'', url:''};
 
@@ -552,7 +553,8 @@ module app.models.school {
             metaTags.robots = 'follow,index';
 
             //Build canonical url
-            metaTags.url = 'https://' + this.dataConfig.domain + '/page/school/' + school.AliasSchool;
+            //metaTags.url = 'https://' + this.dataConfig.domain + '/page/school/' + school.AliasSchool;
+            metaTags.url = this.dataConfig.clientUrl + '/page/school/' + school.AliasSchool;
 
             return metaTags;
         }

@@ -13,6 +13,8 @@
 
     function config($stateProvider: angular.ui.IStateProvider) {
 
+        const CLIENT_URL = 'http://www.waysily.com';
+
         $stateProvider
             .state('page.editProfile', {
                 url: '/users/edit',
@@ -32,9 +34,9 @@
                 params: {
                     title: 'Profile',
                     description: 'Waysily is a free community-based platform that helps you find local language teachers / schools in your area to have a complete immersion.',
-                    url: 'https://www.waysily.com/page/users/edit/info',
+                    url: CLIENT_URL + '/page/users/edit/info',
                     robots: 'nofollow',
-                    image: 'https://www.waysily.com/assets/images/waysily-shared.png'
+                    image: CLIENT_URL + '/assets/images/waysily-shared.png'
                 },
                 data: {
                     requireLogin: true

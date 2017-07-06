@@ -1,6 +1,8 @@
 DEBUG = false;
 (function () {
     'use strict';
+    var HTTP = 'http://';
+    var HTTPS = 'https://';
     var BASE_URL = 'https://waysily-server-production.herokuapp.com/api/v1/';
     var BUCKETS3 = 'waysily-img/profile-avatar-prd';
     if (DEBUG) {
@@ -12,6 +14,7 @@ DEBUG = false;
         baseUrl: BASE_URL,
         domain: 'www.waysily.com',
         https: false,
+        clientUrl: 'http://www.waysily.com',
         autoRefreshTokenIntervalSeconds: 300,
         usernameMinLength: 8,
         usernameMaxLength: 80,
@@ -47,6 +50,8 @@ DEBUG = false;
         earlyIdLocalStorage: 'waysily.early_id',
         cookieName: 'token'
     };
+    var clientUrl = dataConfig.https ? HTTPS + dataConfig.domain : HTTP + dataConfig.domain;
+    dataConfig.clientUrl = clientUrl;
     angular
         .module('mainApp')
         .constant('dataConfig', dataConfig);
