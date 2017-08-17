@@ -1,47 +1,25 @@
-# **Angular-Typescript-Gulp**
+# Waysily Client project
 
-##Overview
+This project is the base code of: http://www.waysily.com, a platform to join students with language teachers and language school. Feel free to use the code and the information from this project, if you have any question you could write us on Twitter: [@seruda](https://www.twitter.com/seruda) or [@rosa7082](https://www.twitter.com/rosa7082)
 
-It's a base structure **Angular + Typescript + Gulp** for the starter who want to start a web application.
+## Tools used
 
-###Client
-
-Client side contains the following technologies:
-
-* [Angular 1.5.8](https://github.com/angular/angular.js)
-* [Typescript 1.8.10] (https://www.typescriptlang.org)
-* [Sass](http://sass-lang.com)
-* [Gulp](http://gulpjs.com)
-* [Bower](https://bower.io)
-* [npm 3.9.5] (https://www.npmjs.com)
-
-## Getting Started
-
-You have to install previously:
-
-* NodeJS (npm)
-* Bower
-* Gulp
-* Typescript
-* Tsd
-* Gem (Ruby)
-* Sass
-
-You have to git clone this repository:
-```
-git clone https://github.com/sergioruizdavila/asanni-frontend
-```
-
-### Installation for Client Side
-
-Open a terminal **(on root project)**:
-
-- `npm install`
-- `bower install`
-- `sudo tsd reinstall —save —overwrite` if you want to update each typing definition: `tsd update -so`
+- Angular 1.5.8
+- Typescript
+- Sass
+- Gulp
 
 
-#### Run Project
+## Install and run
+1. ```npm install```
+2. ```bower install```
+3. ```gulp build-vendor```
+4. ```gulp dev```
 
-- `gulp` (with this command you will run local server)
-- Go to browser: **http://localhost:8080**
+If you have any problem to run this project, feel free to ping us!
+
+P.S. You can find the server-side of this project here:
+
+[https://github.com/sruda/waysily-server](https://github.com/sruda/waysily-server)
+
+It's based on: Django Rest Framework and REST API.
