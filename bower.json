@@ -10,6 +10,7 @@
     "tests"
   ],
   "dependencies": {
+    "angular": "1.5.8",
     "underscore": "1.8.3",
     "moment": "2.10.6",
     "lodash": "4.0.0",
@@ -18,9 +19,13 @@
     "material-design-icons": "2.2.3",
     "animate.css": "3.5.2",
     "jquery": "3.1.0",
+    "angular-cookies": "1.5.8",
     "angular-resource": "1.5.8",
     "angular-oauth2": "4.1.0",
     "angular-ui-router": "0.3.1",
+    "angular-translate": "2.13.0",
+    "angular-translate-loader-url": "2.13.0",
+    "angular-translate-loader-static-files": "2.13.0",
     "angular-translate-storage-cookie": "2.13.1",
     "normalize-css": "4.2.0",
     "bootstrap": "3.3.7",
