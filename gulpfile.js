@@ -457,6 +457,8 @@ gulp.task('sprite', ['png-sprite-' + iconsType]);
 gulp.task('build-vendor', ['bowerJS', 'libsJS', 'ts', 'appJS', 'vendorCSS', 'images']);
 /*DEV*/
 gulp.task('dev', ['sass', 'webserver', 'build-vendor', 'watch']);
+/*PROD - Netlify*/
+gulp.task('prod', ['sass', 'build-vendor']);
 /*gulp.task('dev', ['sass', 'build-vendor', 'watch']);*/
 /*PROD*/
 gulp.task('heroku:production', ['sass', 'serveprod']);
