@@ -36,15 +36,15 @@
   },
   "devDependencies": {
     "angular-mocks": "1.4.8",
-    "jasmine-expect": "1.22.3",
-    "angular-translate": "2.13.0",
-    "angular-translate-loader-url": "2.13.0",
-    "angular-translate-loader-static-files": "2.13.0"
+    "jasmine-expect": "1.22.3"
   },
   "resolutions": {
     "angular": "1.5.8",
-    "fullcalendar": "^3.0.1",
-    "jquery": "^3.1.0",
-    "angular-cookies": "1.5.8"
+    "fullcalendar": "3.0.1",
+    "jquery": "3.1.0",
+    "angular-cookies": "1.5.8",
+    "angular-translate": "2.13.0",
+    "angular-translate-loader-url": "2.13.0",
+    "angular-translate-loader-static-files": "2.13.0"
   }
 }
